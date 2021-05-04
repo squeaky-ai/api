@@ -13,7 +13,7 @@ phases:
     commands:
       - docker build -t api:latest .
       - docker tag api:latest "${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com/api:latest"
-      - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com/api:latest
+      - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com/api:latest"
 
   post_build:
     commands:
