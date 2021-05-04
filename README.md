@@ -1,7 +1,6 @@
-# Squeaky!
+# Squeaky Api!
 
 ### Requirements
-- Node.js v14
 - Ruby 3.0.0
 - Redis 5.x
 - Postgres 12.x
@@ -11,17 +10,12 @@ In order to send mail through the API, you will need AWS credentials located at 
 
 ### Installation
 ```shell
-$ git clone git@github.com:squeaky-ai/squeaky.git
+$ git clone git@github.com:squeaky-ai/api.git
+$ cd api
 
-# Install dependencies and start the server
-$ cd squeaky/server
+# Start bare metal
 $ bundle install
 $ rails server
-
-# Install dependencies and start the client
-$ cd squeaky/client
-$ yarn install
-$ yarn dev
 
 # Or, start with docker
 $ docker-compose build
