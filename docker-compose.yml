@@ -1,8 +1,8 @@
 version: '2.0'
 
 services:
-  server:
-    build: ./server
+  web:
+    build: .
     ports:
       - 4000:4000
     environment:
@@ -12,7 +12,7 @@ services:
       - postgres
       - redis
     volumes:
-      - './server:/app'
+      - '.:/app'
       - '~/.aws:/root/.aws'
 
   postgres:
@@ -24,9 +24,9 @@ services:
       POSTGRES_USER: 'squeaky'
       POSTGRES_PASSWORD: 'squeaky'
     volumes:
-      - './server/tmp/postgres-data:/var/lib/postgresql/data'
+      - 'tmp/postgres-data:/var/lib/postgresql/data'
 
   redis:
     image: redis:5-alpine
     volumes:
-      - './server/tmp/redis-data:/data'
+      - 'tmp/redis-data:/data'
