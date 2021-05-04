@@ -1,5 +1,7 @@
 # Squeaky Api!
 
+![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiUXA2em9YQlV6TTZhWGdsb0lOTDVCQ2poNVpPUVV5dUg1cFFrYS9OaEw5MGZhL29IYmF4SkVodElmUEsvdjJ5bUFiYXNneXRYUjhFRld4dE1oQlRTckhzPSIsIml2UGFyYW1ldGVyU3BlYyI6IjNNUGIrclZRWThrYUhaKzgiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+
 ### Requirements
 - Ruby 3.0.0
 - Redis 5.x
