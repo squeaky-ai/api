@@ -7,7 +7,7 @@ phases:
 
   pre_build:
     commands:
-      - docker login -u squeakyai -p ${squeaky_docker_password}
+      - docker login -u squeakyai -p "${SQUEAKY_DOCKER_PASSWORD}"
       - $(aws ecr get-login --no-include-email)
   build:
     commands:
