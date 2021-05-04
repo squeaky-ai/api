@@ -5,5 +5,7 @@ Rails.application.routes.draw do
     mount GraphqlPlayground::Rails::Engine, at: '/playground', graphql_path: '/graphql'
   end
 
+  get '/ping', to: 'ping#index'
+
   post '/graphql', to: 'graphql#execute'
 end
