@@ -12,15 +12,23 @@ module Types
 
     def resolve(object:, arguments:, **_rest)
       query = Recording
-              .build_query.key_expr(':site_id = ?'.dup, object.object.uuid)
+              .build_query
+              .key_expr(':site_id = ?'.dup, object.object.uuid)
               .scan_ascending(false)
               .limit(arguments[:first])
               .exclusive_start_key(arguments[:cursor])
               .complete!
 
-      # query.last_evaluated_key
+      cursor = query.last_evaluated_key
 
-      query.page.map(&:serialize)
+      {
+        items: query.page.map(&:serialize),
+        pagination: {
+          cursor: cursor,
+          page_size: arguments[:first],
+          is_last: !cursor
+        }
+      }
     end
   end
 end

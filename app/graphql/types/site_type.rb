@@ -12,7 +12,7 @@ module Types
     field :uuid, String, null: false
     field :verified_at, String, null: true
     field :team, [TeamType], null: false
-    field :recordings, [RecordingType, { null: true }], null: false, extensions: [RecordingExtension]
+    field :recordings, RecordingType, null: false, extensions: [RecordingExtension]
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
