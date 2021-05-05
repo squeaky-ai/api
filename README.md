@@ -32,3 +32,7 @@ $ docker-compose up
 $ rails db:create
 $ rails db:migrate
 ```
+
+### Usage
+- [Playground](http://localhost:4000/playground) (disabled in production)
+- [GraphQL endpoint](http://localhost:4000/api/graphql)
