@@ -11,13 +11,11 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
-      query = Recording
-              .build_query
-              .key_expr(':site_id = ?'.dup, object.object.uuid)
-              .scan_ascending(false)
-              .limit(arguments[:first])
-              .exclusive_start_key(arguments[:cursor])
-              .complete!
+      # Get the paginated response so that we can handle
+      # the paging for the front end. Unforunately this
+      # does not get the total count, so that will require
+      # a seperate query
+      query = recording_query(object.object.uuid, arguments[:first], arguments[:cursor])
 
       cursor = query.last_evaluated_key
 
@@ -29,6 +27,16 @@ module Types
           is_last: !cursor
         }
       }
+    end
+
+    def recording_query(uuid, first, cursor)
+      Recording
+        .build_query
+        .key_expr(':site_id = ?'.dup, uuid)
+        .scan_ascending(false)
+        .limit(first)
+        .exclusive_start_key(cursor)
+        .complete!
     end
   end
 end
