@@ -6,7 +6,7 @@ class PingController < ApplicationController
     ActiveRecord::Base.connection.verify!
     render plain: 'PONG'
   rescue StandardError => e
-    log.error(e)
+    logger.error(e)
     render plain: 'NOT PONG!', status: 500
   end
 end
