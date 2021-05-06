@@ -34,7 +34,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :ses
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 4000 }
+  config.action_mailer.default_url_options = { protocol: 'http', host: 'localhost', port: 4000 }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

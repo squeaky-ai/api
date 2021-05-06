@@ -18,8 +18,8 @@ RSpec.describe JsonWebToken do
 
       it 'contains the user id and expiry' do
         contents = JsonWebToken.decode(@token)
-        expect(contents[:id]).to eq(payload[:id])
-        expect(contents[:exp]).to eq(expiry.to_i)
+        expect(contents[:id]).to eq payload[:id]
+        expect(contents[:exp]).to eq expiry.to_i
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe JsonWebToken do
 
       it 'sets a default expiry of 1 month' do
         contents = JsonWebToken.decode(@token)
-        expect(contents[:exp]).to eq(1.month.from_now.to_i)
+        expect(contents[:exp]).to eq 1.month.from_now.to_i
       end
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe JsonWebToken do
 
       it 'returns the id' do
         payload = JsonWebToken.decode(token)
-        expect(payload[:id]).to eq(payload[:id])
+        expect(payload[:id]).to eq payload[:id]
       end
     end
 

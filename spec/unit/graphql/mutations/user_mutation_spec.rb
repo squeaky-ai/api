@@ -15,8 +15,8 @@ RSpec.describe Mutations::UserMutation do
       it 'sets the user as an instance variable' do
         response = instance.ready?({})
 
-        expect(response).to eq(true)
-        expect(instance.instance_variable_get(:@user)).to eq(user)
+        expect(response).to be true
+        expect(instance.instance_variable_get(:@user)).to eq user
       end
     end
 

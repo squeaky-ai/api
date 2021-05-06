@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
       let(:instance) { described_class.new(first_name: first_name, last_name: last_name) }
 
       it 'returns the full name' do
-        expect(instance.full_name).to eq("#{first_name} #{last_name}")
+        expect(instance.full_name).to eq "#{first_name} #{last_name}"
       end
     end
   end

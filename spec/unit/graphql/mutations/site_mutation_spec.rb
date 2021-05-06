@@ -59,9 +59,9 @@ RSpec.describe Mutations::SiteMutation do
         it 'sets the user and the site as instance variables' do
           response = instance.ready?({ site_id: 1 })
 
-          expect(response).to eq(true)
-          expect(instance.instance_variable_get(:@user)).to eq(user)
-          expect(instance.instance_variable_get(:@site)).to eq(site)
+          expect(response).to be true
+          expect(instance.instance_variable_get(:@user)).to eq user
+          expect(instance.instance_variable_get(:@site)).to eq site
         end
       end
     end

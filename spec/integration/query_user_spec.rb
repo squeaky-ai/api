@@ -38,10 +38,10 @@ RSpec.describe 'Query User', type: :request do
       result = graphql_query(QUERY, { 'Authorization': "Bearer #{token}" })
       body = result['data']['user']
 
-      expect(body['id']).to eq(user.id.to_s)
-      expect(body['firstName']).to eq(user.first_name)
-      expect(body['lastName']).to eq(user.last_name)
-      expect(body['email']).to eq(user.email)
+      expect(body['id']).to eq user.id.to_s
+      expect(body['firstName']).to eq user.first_name
+      expect(body['lastName']).to eq user.last_name
+      expect(body['email']).to eq user.email
     end
   end
 end

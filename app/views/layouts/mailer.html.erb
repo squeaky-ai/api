@@ -97,15 +97,15 @@
     <body>
       <div class="wrapper">
         <div class="header">
-          <a href='https://squeaky.ai'>
-            <img src="https://squeaky.ai/logo.svg" width="154" height="48" alt="Logo">
+          <a href="<%= @web_url %>">
+            <img src="<%= @web_url %>/logo.svg" width="154" height="48" alt="Logo">
           </a>
         </div>
           <%= yield %>
       </div>
       <div class="footer">
         <div class="wrapper">
-          <a href='https://squeaky.ai'>Squeaky.ai</a>
+          <a href="<%= @web_url %>">Squeaky.ai</a>
           <span class="divider"> | </span>
           <span>Privacy focused behavioural analytics.</span>
         </div>

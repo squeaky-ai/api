@@ -17,7 +17,7 @@ RSpec.describe OneTimePassword do
 
     it 'returns the token' do
       token = OneTimePassword.new('foo@bar.com').create!
-      expect(token).to eq('123456')
+      expect(token).to eq '123456'
     end
 
     it 'stores the value in redis' do
