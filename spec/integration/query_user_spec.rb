@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'faker'
 require 'rails_helper'
 
 QUERY = <<-GRAPHQL
@@ -25,13 +24,7 @@ RSpec.describe 'Query User', type: :request do
   end
 
   context 'when the bearer token is provided' do
-    let(:user) do
-      User.create(
-        first_name: Faker::Name.first_name,
-        last_name: Faker::Name.last_name,
-        email: Faker::Internet.email
-      )
-    end
+    let(:user) { create_user }
     let(:token) { JsonWebToken.encode(id: user.id) }
 
     it 'returns the user' do

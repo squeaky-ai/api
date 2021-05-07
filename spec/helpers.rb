@@ -10,4 +10,12 @@ module Helpers
     post graphql_path, params: params.to_json, headers: headers
     JSON.parse(@response.body)
   end
+
+  def create_user
+    User.create(
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
+      email: Faker::Internet.email
+    )
+  end
 end

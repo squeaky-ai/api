@@ -26,7 +26,7 @@ RSpec.describe GraphqlController, type: :controller do
       end
 
       context 'and it contains a valid bearer token' do
-        let(:user) { User.create(email: Faker::Internet.email) }
+        let(:user) { create_user }
 
         it 'returns the user in the token' do
           request.headers['Authorization'] = "Bearer #{JsonWebToken.encode(id: user.id)}"

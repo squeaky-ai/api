@@ -38,16 +38,12 @@ RSpec.describe Site, type: :model do
   describe '#owner_name' do
     let(:instance) { described_class.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0) }
 
-    let(:first_name) { Faker::Name.first_name }
-    let(:last_name) { Faker::Name.last_name }
+    let(:user) { create_user }
 
-    before do
-      user = User.create(first_name: first_name, last_name: last_name, email: Faker::Internet.email)
-      Team.create(role: 2, user: user, site: instance)
-    end
+    before { Team.create(role: 2, user: user, site: instance) }
 
     it 'returns the owners full name' do
-      expect(instance.owner_name).to eq "#{first_name} #{last_name}"
+      expect(instance.owner_name).to eq "#{user.first_name} #{user.last_name}"
     end
   end
 
