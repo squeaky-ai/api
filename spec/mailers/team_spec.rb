@@ -6,9 +6,8 @@ RSpec.describe TeamMailer, type: :mailer do
   describe 'invite' do
     let(:token) { '__fake_jwt__' }
     let(:email) { Faker::Internet.email }
-    let(:site_name) { Faker::Company.name }
 
-    let(:site) { Site.create(name: site_name, url: Faker::Internet.url, plan: 0) }
+    let(:site) { create_site }
     let(:inviter) { create_user }
 
     let(:mail) { described_class.invite(email, site, inviter, token) }
@@ -28,16 +27,15 @@ RSpec.describe TeamMailer, type: :mailer do
     end
 
     it 'includes the sites name in the body' do
-      expect(mail.body.encoded).to include site_name
+      expect(mail.body.encoded).to include site.name
     end
   end
 
   describe 'member_left' do
     let(:email) { Faker::Internet.email }
-    let(:site_name) { Faker::Company.name }
 
     let(:leaver) { create_user }
-    let(:site) { Site.create(name: site_name, url: Faker::Internet.url, plan: 0) }
+    let(:site) { create_site }
 
     let(:mail) { described_class.member_left(email, site, leaver) }
 
@@ -52,15 +50,14 @@ RSpec.describe TeamMailer, type: :mailer do
     end
 
     it 'includes the sites name in the body' do
-      expect(mail.body.encoded).to include site_name
+      expect(mail.body.encoded).to include site.name
     end
   end
 
   describe 'member_removed' do
     let(:email) { Faker::Internet.email }
-    let(:site_name) { Faker::Company.name }
 
-    let(:site) { Site.create(name: site_name, url: Faker::Internet.url, plan: 0) }
+    let(:site) { create_site }
     let(:user) { create_user }
 
     let(:mail) { described_class.member_removed(email, site, user) }
@@ -72,7 +69,7 @@ RSpec.describe TeamMailer, type: :mailer do
     end
 
     it 'includes the sites name in the body' do
-      expect(mail.body.encoded).to include site_name
+      expect(mail.body.encoded).to include site.name
     end
   end
 end

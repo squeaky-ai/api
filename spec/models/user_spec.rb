@@ -13,13 +13,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user has filled out their name' do
-      let(:first_name) { Faker::Name.first_name }
-      let(:last_name) { Faker::Name.last_name }
-
-      let(:instance) { described_class.new(first_name: first_name, last_name: last_name) }
+      let(:instance) { create_user }
 
       it 'returns the full name' do
-        expect(instance.full_name).to eq "#{first_name} #{last_name}"
+        expect(instance.full_name).to eq "#{instance.first_name} #{instance.last_name}"
       end
     end
   end
@@ -36,10 +33,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is a member' do
-      let(:instance) { described_class.create(email: Faker::Internet.email) }
+      let(:instance) { create_user }
 
       let(:site) do
-        site = Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
+        site = create_site
         Team.create(role: 0, user: instance, site: site)
         site
       end
@@ -50,10 +47,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is an admin' do
-      let(:instance) { described_class.create(email: Faker::Internet.email) }
+      let(:instance) { create_user }
 
       let(:site) do
-        site = Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
+        site = create_site
         Team.create(role: 1, user: instance, site: site)
         site
       end
@@ -64,10 +61,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is the owner' do
-      let(:instance) { described_class.create(email: Faker::Internet.email) }
+      let(:instance) { create_user }
 
       let(:site) do
-        site = Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
+        site = create_site
         Team.create(role: 2, user: instance, site: site)
         site
       end
@@ -80,11 +77,9 @@ RSpec.describe User, type: :model do
 
   describe '#member_of?' do
     context 'when the user is not a member of the team' do
-      let(:instance) { described_class.create(email: Faker::Internet.email) }
+      let(:instance) { create_user }
 
-      let(:site) do
-        Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
-      end
+      let(:site) { create_site }
 
       it 'returns false' do
         expect(instance.member_of?(site)).to be false
@@ -92,10 +87,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is a member of the team' do
-      let(:instance) { described_class.create(email: Faker::Internet.email) }
+      let(:instance) { create_user }
 
       let(:site) do
-        site = Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
+        site = create_site
         Team.create(role: 2, user: instance, site: site)
         site
       end

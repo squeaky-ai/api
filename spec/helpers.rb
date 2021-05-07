@@ -12,10 +12,10 @@ module Helpers
   end
 
   def create_user
-    User.create(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      email: Faker::Internet.email
-    )
+    User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: Faker::Internet.email)
+  end
+
+  def create_site
+    Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
   end
 end
