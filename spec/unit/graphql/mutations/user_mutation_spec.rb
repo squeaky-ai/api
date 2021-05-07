@@ -7,27 +7,27 @@ RSpec.describe Mutations::UserMutation do
     context 'when the user exists in the context' do
       let(:user) { double('user') }
 
-      let(:instance) do
+      let(:subject) do
         context = { current_user: user }
         described_class.new(object: {}, context: context, field: '')
       end
 
       it 'sets the user as an instance variable' do
-        response = instance.ready?({})
+        response = subject.ready?({})
 
         expect(response).to be true
-        expect(instance.instance_variable_get(:@user)).to eq user
+        expect(subject.instance_variable_get(:@user)).to eq user
       end
     end
 
     context 'when the user does not exist in the context' do
-      let(:instance) do
+      let(:subject) do
         context = { current_user: nil }
         described_class.new(object: {}, context: context, field: '')
       end
 
       it 'raises an Unauthorized error' do
-        expect { instance.ready?({}) }.to raise_error(Errors::Unauthorized)
+        expect { subject.ready?({}) }.to raise_error(Errors::Unauthorized)
       end
     end
   end

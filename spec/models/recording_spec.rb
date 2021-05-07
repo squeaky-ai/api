@@ -24,10 +24,10 @@ RSpec.describe Recording, type: :model do
   end
 
   describe '#serialize' do
-    let(:instance) { described_class.new(recording_fixture) }
+    let(:subject) { described_class.new(recording_fixture) }
 
     it 'contains the expected key' do
-      expect(instance.serialize.keys).to eq %i[
+      expect(subject.serialize.keys).to eq %i[
         id
         user
         active
@@ -44,19 +44,19 @@ RSpec.describe Recording, type: :model do
   end
 
   describe '#page_count' do
-    let(:instance) do
+    let(:subject) do
       fixture = recording_fixture.dup
       fixture[:page_views] = Set.new(['/', '/pricing', '/pricing/test'])
       described_class.new(fixture)
     end
 
     it 'returns the number of pages visited' do
-      expect(instance.page_count).to eq 3
+      expect(subject.page_count).to eq 3
     end
   end
 
   describe '#duration' do
-    let(:instance) do
+    let(:subject) do
       fixture = recording_fixture.dup
       fixture[:connected_at] = (DateTime.now - 5 / 86_400.0).iso8601
       fixture[:disconnected_at] = DateTime.now.iso8601
@@ -64,7 +64,7 @@ RSpec.describe Recording, type: :model do
     end
 
     it 'returns the difference between the connected and disconnected dates' do
-      expect(instance.duration).to eq 5
+      expect(subject.duration).to eq 5
     end
   end
 end

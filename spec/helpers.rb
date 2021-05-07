@@ -18,4 +18,8 @@ module Helpers
   def create_site
     Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
   end
+
+  def create_team(user:, site:, role:)
+    Team.create(user: user, site: site, role: role)
+  end
 end

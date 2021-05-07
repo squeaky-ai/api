@@ -36,29 +36,28 @@ RSpec.describe Site, type: :model do
   end
 
   describe '#owner_name' do
-    let(:instance) { described_class.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0) }
-
     let(:user) { create_user }
+    let(:subject) { create_site }
 
-    before { Team.create(role: 2, user: user, site: instance) }
+    before { create_team(user: user, site: subject, role: 2) }
 
     it 'returns the owners full name' do
-      expect(instance.owner_name).to eq "#{user.first_name} #{user.last_name}"
+      expect(subject.owner_name).to eq "#{user.first_name} #{user.last_name}"
     end
   end
 
   describe '#admins' do
-    let(:instance) { described_class.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0) }
+    let(:subject) { create_site }
 
     before do
-      Team.create(role: 0, user: User.new, site: instance)
-      Team.create(role: 1, user: User.new, site: instance)
-      Team.create(role: 2, user: User.new, site: instance)
-      instance.reload
+      create_team(user: create_user, site: subject, role: 0)
+      create_team(user: create_user, site: subject, role: 1)
+      create_team(user: create_user, site: subject, role: 2)
+      subject.reload
     end
 
     it 'returns only the team members that are admins' do
-      admins = instance.admins
+      admins = subject.admins
 
       expect(admins.size).to eq 2
       admins.each { |a| expect(a.admin?).to be true }
