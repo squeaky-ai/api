@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The controller responsible for handling all the GraphQL requests.
+# Every request will attempt to fetch the user from the Authorization
+# header, although it is the responsibility of the Query/Mutation
+# to ensure the user is properly authorized
 class GraphqlController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
@@ -10,9 +14,7 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      current_user: current_user
-    }
+    context = { current_user: current_user }
     result = SqueakySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
@@ -26,17 +28,10 @@ class GraphqlController < ApplicationController
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param
-    when String
-      if variables_param.present?
-        JSON.parse(variables_param) || {}
-      else
-        {}
-      end
     when Hash
       variables_param
     when ActionController::Parameters
-      variables_param.to_unsafe_hash # GraphQL-Ruby will validate name and type of incoming variables.
-    when nil
+      variables_param.to_unsafe_hash
       {}
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"
@@ -56,12 +51,10 @@ class GraphqlController < ApplicationController
 
     return unless bearer
 
-    begin
-      token = JsonWebToken.decode(bearer)
-      User.find(token[:id])
-    rescue StandardError => e
-      logger.error e
-      nil
-    end
+    token = JsonWebToken.decode(bearer)
+    User.find(token[:id])
+  rescue StandardError => e
+    logger.error e
+    nil
   end
 end
