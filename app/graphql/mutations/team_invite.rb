@@ -27,11 +27,11 @@ module Mutations
       # Invite the user with a pending status unless they are
       # already a team member
       unless invited_user.member_of?(@site)
-        Team.create({ status: 1, role: role, user: invited_user, site: @site })
-      end
+        team = Team.create({ status: 1, role: role, user: invited_user, site: @site })
 
-      token = JsonWebToken.encode({ email: email, id: @site.id }, 1.day.from_now)
-      TeamMailer.invite(email, @site, @user, token).deliver_now
+        token = JsonWebToken.encode({ site_id: site_id, team_id: team.id }, 1.day.from_now)
+        TeamMailer.invite(email, @site, @user, token).deliver_now
+      end
 
       @site.reload
     end
