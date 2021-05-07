@@ -43,6 +43,7 @@ en:
     validation:
       forbidden: 'You lack the required permissions to do this'
       team_role_invalid: 'Team role is invalid'
+      team_not_found: 'Team member not found'
   auth:
     validation:
       token_invalid: 'Token is incorrect or has expired'

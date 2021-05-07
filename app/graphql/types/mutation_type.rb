@@ -45,5 +45,8 @@ module Types
     field :team_update,
           mutation: Mutations::TeamUpdate,
           description: 'Update a team member'
+    field :team_transfer,
+          mutation: Mutations::TeamTransfer,
+          description: 'Transfer ownership of the site to another team member'
   end
 end

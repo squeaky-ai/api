@@ -16,8 +16,12 @@ class Site < ApplicationRecord
   # The plural sounds weird
   alias_attribute :team, :teams
 
+  def owner
+    team.find(&:owner?)
+  end
+
   def owner_name
-    team.find(&:owner?).user.full_name
+    owner.user.full_name
   end
 
   def admins
