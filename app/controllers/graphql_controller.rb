@@ -9,7 +9,6 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
-
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
@@ -32,6 +31,7 @@ class GraphqlController < ApplicationController
       variables_param
     when ActionController::Parameters
       variables_param.to_unsafe_hash
+    when nil
       {}
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"

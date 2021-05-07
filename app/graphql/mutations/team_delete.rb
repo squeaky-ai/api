@@ -35,9 +35,7 @@ module Mutations
           # there's no point in sending the email. However we
           # should definitely send it if some other team member
           # removed you
-          unless m.user.id == @user.id
-            TeamMailer.member_removed(m.user.email, @site, member.user).deliver_now
-          end
+          TeamMailer.member_removed(m.user.email, @site, member.user).deliver_now unless m.user.id == @user.id
         else
           # This should get send to everyone in the team
           TeamMailer.member_left(m.user.email, @site, member.user).deliver_now

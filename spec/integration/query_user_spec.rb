@@ -32,7 +32,7 @@ RSpec.describe 'Query User', type: :request do
         email: Faker::Internet.email
       )
     end
-    let(:token) { JsonWebToken.encode({ id: user.id }) }
+    let(:token) { JsonWebToken.encode(id: user.id) }
 
     it 'returns the user' do
       result = graphql_query(QUERY, Authorization: "Bearer #{token}")

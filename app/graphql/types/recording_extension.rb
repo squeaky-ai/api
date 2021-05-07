@@ -6,8 +6,8 @@ module Types
   class RecordingExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:query, String, required: false, description: 'Search for specific data')
-      field.argument(:first, Integer, required: false, default_value: 10, description: 'The number of results to return')
-      field.argument(:cursor, String, required: false, description: 'The cursor to fetch the next set of results')
+      field.argument(:first, Integer, required: false, default_value: 10, description: 'The number of items to return')
+      field.argument(:cursor, String, required: false, description: 'The cursor to fetch the next set of items')
     end
 
     def resolve(object:, arguments:, **_rest)

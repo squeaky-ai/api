@@ -17,7 +17,7 @@ module Mutations
     def resolve(site_id:)
       # The user may want to validate more than once
       # so we store a timestamp rather than a boolean
-      @site.update({ verified_at: Time.now }) if script_tag_exists?
+      @site.update(verified_at: Time.now) if script_tag_exists?
 
       @site
     end

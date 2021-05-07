@@ -34,5 +34,5 @@ $ rails db:migrate
 ```
 
 ### Usage
-- [Playground](http://localhost:4000/playground) (disabled in production)
+- [Playground](http://localhost:4000/) (disabled in production)
 - [GraphQL endpoint](http://localhost:4000/api/graphql)

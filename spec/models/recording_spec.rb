@@ -5,7 +5,7 @@ require 'rails_helper'
 require 'securerandom'
 
 RSpec.describe Recording, type: :model do
-  let(:fixture) do
+  let(:recording_fixture) do
     {
       site_id: SecureRandom.uuid,
       session_id: Faker::String.random(length: 8),
