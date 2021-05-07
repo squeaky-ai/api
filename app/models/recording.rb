@@ -2,6 +2,9 @@
 
 require 'aws-record'
 
+# These are the recordings that are displayed in the filtered
+# table. They're stored in Dynamo and are populated by the
+# gateway Lambda
 class Recording
   include Aws::Record
 

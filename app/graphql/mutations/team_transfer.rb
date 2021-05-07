@@ -18,12 +18,12 @@ module Mutations
       raise Errors::TeamNotFound unless new_owner
 
       # Make the old owner an admin
-      @site.owner.role = 1
-      @site.owner.save
+      @site.owner.update(role: 1)
 
       # Set the new owners role to owner
-      new_owner.role = 2
-      new_owner.save
+      new_owner.update(role: 2)
+
+      TeamMailer.became_owner(new_owner.user.email, @site, @user).deliver_now
 
       @site
     end

@@ -3,6 +3,10 @@
 require 'uri'
 require 'securerandom'
 
+# The main site model. The only unique constraint is the
+# url as we can't have people having multiple sites. There
+# is a seperate table in Dynamo that is used for the host
+# check so that we don't have to bombard this
 class Site < ApplicationRecord
   validates :url, uniqueness: { message: I18n.t('site.plan.site_in_use') }
 

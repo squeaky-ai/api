@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The main user model. Users do not have any permissions
+# of their own, instead they are set on a per site basis
+# as part of the team model
 class User < ApplicationRecord
   has_many :teams
   has_many :sites, through: :teams

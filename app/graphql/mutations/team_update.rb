@@ -22,7 +22,13 @@ module Mutations
 
       # The owners role can't be changed here, it must
       # be transferred
-      team.update(role: role) unless team.owner?
+      return @site if team.owner?
+
+      team.update(role: role)
+
+      # If the user becomes an admin we send then an email. 
+      # TODO: Are we supposed to send emails for the other roles?
+      TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 
       @site
     end
