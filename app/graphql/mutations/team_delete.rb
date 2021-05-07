@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Mutations
+  # Admins can delete others (excluding the other), and anyone
+  # can leave the site. The emails are different for users who
+  # leave, vs being removed
   class TeamDelete < SiteMutation
     null false
 

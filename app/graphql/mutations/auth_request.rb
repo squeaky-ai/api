@@ -3,6 +3,10 @@
 require 'date'
 
 module Mutations
+  # Generate an auth token and send it to the users email
+  # address so that they can verify it against the one that 
+  # we store. The client must provide the auth_type as the
+  # behaviour is different between the two
   class AuthRequest < Mutations::BaseMutation
     null false
 

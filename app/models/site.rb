@@ -4,7 +4,7 @@ require 'uri'
 require 'securerandom'
 
 class Site < ApplicationRecord
-  validates :url, uniqueness: { message: 'This site is already registered' }
+  validates :url, uniqueness: { message: I18n.t('site.plan.site_in_use') }
 
   # Generate a uuid for the site when it's created
   # that will be used publicly
@@ -22,6 +22,17 @@ class Site < ApplicationRecord
 
   def admins
     team.filter(&:admin?)
+  end
+
+  def plan_name
+    case plan
+    when 0
+      I18n.t 'site.plan.essentials'
+    when 1
+      I18n.t 'site.plan.premium'
+    when 2
+      I18n.t 'site.plan.unlimited'
+    end
   end
 
   def self.format_uri(url)

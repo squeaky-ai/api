@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Mutations
+  # Resend the invitation email to the user, only if they
+  # are pending. TODO: We should probably set a limit on
+  # this so people can't be spammed with invites
   class TeamInviteResend < SiteMutation
     null false
 

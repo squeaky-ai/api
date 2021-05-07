@@ -9,7 +9,9 @@ module Types
     field :url, String, null: false
     field :avatar, String, null: true
     field :plan, Integer, null: false
+    field :plan_name, String, null: false
     field :uuid, String, null: false
+    field :owner_name, String, null: false
     field :verified_at, String, null: true
     field :team, [TeamType], null: false
     field :recordings, RecordingType, null: false, extensions: [RecordingExtension]

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module Mutations
+  # Verify that the auth token the user supplied matches
+  # the one we store in redis. If it's valid then we
+  # generate a jwt so they use other endpoints. If the
+  # user does not exist at this point they will be created
   class AuthVerify < Mutations::BaseMutation
     null false
 

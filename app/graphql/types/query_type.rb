@@ -23,7 +23,9 @@ module Types
     end
 
     def site(id:)
-      context[:current_user].sites.find { |s| s.id == id.to_i }
+      x = context[:current_user].sites.find { |s| s.id == id.to_i }
+      puts '@@@', x.owner_name
+      x
     end
 
     def sites

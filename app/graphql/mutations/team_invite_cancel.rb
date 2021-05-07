@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Mutations
+  # Cancel an invitation to join the site, only if it is
+  # pending. Otherwise this endpoint could be used to 
+  # sneakily delete any user
   class TeamInviteCancel < SiteMutation
     null false
 
