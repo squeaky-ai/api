@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Generate a random six digit and store it in redis against
+# the users' email. We then send that token to their email
+# address so they can verify that they are who they say they
+# are
 class OneTimePassword
   def initialize(email)
     @email = email

@@ -1,0 +1,6 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - db/**/*
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context']

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A controller that exposes a ping endpoint so that the 
+# A controller that exposes a ping endpoint so that the
 # ALB can check the app is healthy. After a few failed
 # attemps the app will be killed and restarted
 class PingController < ApplicationController

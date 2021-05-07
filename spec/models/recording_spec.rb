@@ -5,7 +5,7 @@ require 'rails_helper'
 require 'securerandom'
 
 RSpec.describe Recording, type: :model do
-  def recording_fixture
+  let(:fixture) do
     {
       site_id: SecureRandom.uuid,
       session_id: Faker::String.random(length: 8),
@@ -13,7 +13,7 @@ RSpec.describe Recording, type: :model do
       locale: 'en-gb',
       start_page: '/',
       exit_page: '/pricing',
-      useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15',
+      useragent: Faker::Internet.user_agent,
       viewport_x: 1920,
       viewport_y: 1080,
       active: false,
