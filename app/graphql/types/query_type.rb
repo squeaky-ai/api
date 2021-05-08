@@ -23,9 +23,9 @@ module Types
     end
 
     def site(id:)
-      x = context[:current_user].sites.find { |s| s.id == id.to_i }
-      puts '@@@', x.owner_name
-      x
+      raise Errors::Unauthorized unless context[:current_user]
+
+      context[:current_user].sites.find { |s| s.id == id.to_i }
     end
 
     def sites

@@ -14,6 +14,6 @@ module Helpers
   end
 
   def create_team(user:, site:, role:)
-    Team.create(user: user, site: site, role: role)
+    Team.create(user: user, site: site, role: role, status: 0)
   end
 end
