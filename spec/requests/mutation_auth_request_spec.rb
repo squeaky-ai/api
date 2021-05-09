@@ -23,18 +23,29 @@ RSpec.describe 'Mutation auth request', type: :request do
 
     context 'and the user has an account' do
       let(:user) { create_user }
+      let(:token) { '123456' }
       let(:subject) { graphql_request(auth_request_mutation, { email: user.email, auth_type: 'LOGIN' }, nil) }
 
       before do
         stub = double
         allow(stub).to receive(:deliver_now)
         allow(AuthMailer).to receive(:login).and_return(stub)
-        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return('123456')
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return(token)
       end
 
-      it 'sends the login email with a token' do
+      it 'returns a timestamp for when the email was sent' do
         expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
-        expect(AuthMailer).to have_received(:login).with(user.email, '123456')
+      end
+
+      it 'sends an email' do
+        subject
+        expect(AuthMailer).to have_received(:login).with(user.email, token)
+      end
+
+      it 'stores the token in redis' do
+        subject
+        stored_token = Redis.current.get("auth:#{user.email}")
+        expect(token).to eq stored_token
       end
     end
   end
@@ -42,18 +53,29 @@ RSpec.describe 'Mutation auth request', type: :request do
   context 'when the AuthType is SIGNUP' do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }
+      let(:token) { '123456' }
       let(:subject) { graphql_request(auth_request_mutation, { email: email, auth_type: 'SIGNUP' }, nil) }
 
       before do
         stub = double
         allow(stub).to receive(:deliver_now)
         allow(AuthMailer).to receive(:signup).and_return(stub)
-        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return('123456')
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return(token)
       end
 
-      it 'sends the signup email with a token' do
+      it 'returns a timestamp for when the email was sent' do
         expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
-        expect(AuthMailer).to have_received(:signup).with(email, '123456')
+      end
+
+      it 'sends an email' do
+        subject
+        expect(AuthMailer).to have_received(:signup).with(email, token)
+      end
+
+      it 'stores the token in redis' do
+        subject
+        stored_token = Redis.current.get("auth:#{email}")
+        expect(token).to eq stored_token
       end
     end
 
