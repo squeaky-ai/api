@@ -1,0 +1,69 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+auth_request_mutation = <<-GRAPHQL
+  mutation($email: String!, $auth_type: Auth!) {
+    authRequest(input: { email: $email, authType: $auth_type }) {
+      emailSentAt
+    }
+  }
+GRAPHQL
+
+RSpec.describe 'Mutation auth request', type: :request do
+  context 'when the AuthType is LOGIN' do
+    context 'and the user does not have an account' do
+      let(:email) { Faker::Internet.email }
+      let(:subject) { graphql_request(auth_request_mutation, { email: email, auth_type: 'LOGIN' }, nil) }
+
+      it 'raises an error' do
+        expect(subject['errors'][0]['message']).to eq 'User account does not exist'
+      end
+    end
+
+    context 'and the user has an account' do
+      let(:user) { create_user }
+      let(:subject) { graphql_request(auth_request_mutation, { email: user.email, auth_type: 'LOGIN' }, nil) }
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(AuthMailer).to receive(:login).and_return(stub)
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return('123456')
+      end
+
+      it 'sends the login email with a token' do
+        expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
+        expect(AuthMailer).to have_received(:login).with(user.email, '123456')
+      end
+    end
+  end
+
+  context 'when the AuthType is SIGNUP' do
+    context 'and the user does not have an account' do
+      let(:email) { Faker::Internet.email }
+      let(:subject) { graphql_request(auth_request_mutation, { email: email, auth_type: 'SIGNUP' }, nil) }
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(AuthMailer).to receive(:signup).and_return(stub)
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return('123456')
+      end
+
+      it 'sends the signup email with a token' do
+        expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
+        expect(AuthMailer).to have_received(:signup).with(email, '123456')
+      end
+    end
+
+    context 'and the user has an account' do
+      let(:user) { create_user }
+      let(:subject) { graphql_request(auth_request_mutation, { email: user.email, auth_type: 'SIGNUP' }, nil) }
+
+      it 'raises an error' do
+        expect(subject['errors'][0]['message']).to eq 'User account already exists'
+      end
+    end
+  end
+end

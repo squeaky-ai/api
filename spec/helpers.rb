@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Helpers
-  def graphql_query(query, variables, user)
+  def graphql_request(query, variables, user)
     SqueakySchema.execute(query, context: { current_user: user }, variables: variables)
   end
 

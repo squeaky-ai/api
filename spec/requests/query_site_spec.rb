@@ -32,7 +32,7 @@ RSpec.describe 'Query Site', type: :request do
     let(:site) { create_site }
 
     it 'raises an error' do
-      response = graphql_query(site_query, { id: site.id }, nil)
+      response = graphql_request(site_query, { id: site.id }, nil)
 
       expect(response['errors'][0]['message']).to eq 'Unauthorized'
     end
@@ -42,7 +42,7 @@ RSpec.describe 'Query Site', type: :request do
     let(:user) { create_user }
 
     it 'returns nil' do
-      response = graphql_query(site_query, { id: Faker::Number.number }, user)
+      response = graphql_request(site_query, { id: Faker::Number.number }, user)
 
       expect(response['data']['site']).to be_nil
     end
@@ -53,7 +53,7 @@ RSpec.describe 'Query Site', type: :request do
     let(:site) { create_site_and_team(user) }
 
     it 'returns the site' do
-      response = graphql_query(site_query, { id: site.id }, user)
+      response = graphql_request(site_query, { id: site.id }, user)
 
       expect(response['data']['site']).to eq(
         {

@@ -16,7 +16,7 @@ GRAPHQL
 RSpec.describe 'Query User', type: :request do
   context 'when there is no current_user' do
     it 'returns null' do
-      response = graphql_query(user_query, {}, nil)
+      response = graphql_request(user_query, {}, nil)
 
       expect(response['data']['user']).to be_nil
     end
@@ -26,7 +26,7 @@ RSpec.describe 'Query User', type: :request do
     let(:user) { create_user }
 
     it 'returns the user' do
-      response = graphql_query(user_query, {}, user)
+      response = graphql_request(user_query, {}, user)
 
       expect(response['data']['user']).to eq(
         {

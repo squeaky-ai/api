@@ -32,7 +32,7 @@ RSpec.describe 'Query Sites', type: :request do
     let(:site) { create_site }
 
     it 'raises an error' do
-      response = graphql_query(sites_query, {}, nil)
+      response = graphql_request(sites_query, {}, nil)
 
       expect(response['errors'][0]['message']).to eq 'Unauthorized'
     end
@@ -42,7 +42,7 @@ RSpec.describe 'Query Sites', type: :request do
     let(:user) { create_user }
 
     it 'returns an empty array' do
-      response = graphql_query(sites_query, {}, user)
+      response = graphql_request(sites_query, {}, user)
 
       expect(response['data']['sites']).to eq []
     end
@@ -55,7 +55,7 @@ RSpec.describe 'Query Sites', type: :request do
     before { site }
 
     it 'returns the list of sites' do
-      response = graphql_query(sites_query, {}, user)
+      response = graphql_request(sites_query, {}, user)
 
       expect(response['data']['sites']).to eq(
         [
