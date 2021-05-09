@@ -13,7 +13,7 @@ module Mutations
 
     type Types::SiteType
 
-    def resolve(site_id:, name: nil, url: nil)
+    def resolve(name: nil, url: nil, **_rest)
       update = {}
       update[:name] = name if name
 

@@ -15,7 +15,7 @@ module Mutations
 
     type Types::SiteType
 
-    def resolve(site_id:, team_id:, role:)
+    def resolve(team_id:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 
       team = @site.team.find { |t| t.id == team_id.to_i }
@@ -26,7 +26,7 @@ module Mutations
 
       team.update(role: role)
 
-      # If the user becomes an admin we send then an email. 
+      # If the user becomes an admin we send then an email.
       # TODO: Are we supposed to send emails for the other roles?
       TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 

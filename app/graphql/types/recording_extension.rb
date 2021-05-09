@@ -3,6 +3,10 @@
 require 'time'
 
 module Types
+  # The 'recordings' field on the site is handled here as
+  # we only want to load the data if it is requested. The
+  # gateway is responsible for populating this and it is
+  # stored in Dynamo
   class RecordingExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:query, String, required: false, description: 'Search for specific data')
