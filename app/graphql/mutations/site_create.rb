@@ -21,7 +21,7 @@ module Mutations
       # Set the current user as the admin of the site
       # and skip the confirmation steps
       Team.create(status: 0, role: 2, user: user, site: site)
-      site
+      site.reload
     end
 
     def ready?(_args)

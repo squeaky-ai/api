@@ -8,7 +8,7 @@ require 'securerandom'
 # is a seperate table in Dynamo that is used for the host
 # check so that we don't have to bombard this
 class Site < ApplicationRecord
-  validates :url, uniqueness: { message: I18n.t('site.plan.site_in_use') }
+  validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 
   # Generate a uuid for the site when it's created
   # that will be used publicly
