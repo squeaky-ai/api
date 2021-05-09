@@ -34,11 +34,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is a member' do
       let(:subject) { create_user }
-
-      let(:site) do
-        team = create_team(user: subject, site: create_site, role: 0)
-        team.site
-      end
+      let(:site) { create_site_and_team(subject, role: 0) }
 
       it 'returns false' do
         expect(subject.admin_for?(site)).to be false
@@ -47,11 +43,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is an admin' do
       let(:subject) { create_user }
-
-      let(:site) do
-        team = create_team(user: subject, site: create_site, role: 1)
-        team.site
-      end
+      let(:site) { create_site_and_team(subject, role: 1) }
 
       it 'returns true' do
         expect(subject.admin_for?(site)).to be true
@@ -60,11 +52,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is the owner' do
       let(:subject) { create_user }
-
-      let(:site) do
-        team = create_team(user: subject, site: create_site, role: 2)
-        team.site
-      end
+      let(:site) { create_site_and_team(subject, role: 2) }
 
       it 'returns true' do
         expect(subject.admin_for?(site)).to be true
@@ -75,7 +63,6 @@ RSpec.describe User, type: :model do
   describe '#member_of?' do
     context 'when the user is not a member of the team' do
       let(:subject) { create_user }
-
       let(:site) { create_site }
 
       it 'returns false' do
@@ -85,11 +72,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is a member of the team' do
       let(:subject) { create_user }
-
-      let(:site) do
-        team = create_team(user: subject, site: create_site, role: 2)
-        team.site
-      end
+      let(:site) { create_site_and_team(subject) }
 
       it 'returns true' do
         expect(subject.member_of?(site)).to be true

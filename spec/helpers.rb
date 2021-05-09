@@ -16,4 +16,11 @@ module Helpers
   def create_team(user:, site:, role:)
     Team.create(user: user, site: site, role: role, status: 0)
   end
+
+  def create_site_and_team(user, role: 2)
+    site = Site.create(name: Faker::Company.name, url: Faker::Internet.url, plan: 0)
+    site.team << Team.new(user: user, site: site, role: role, status: 0)
+    site.save
+    site
+  end
 end

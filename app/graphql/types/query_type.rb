@@ -29,6 +29,8 @@ module Types
     end
 
     def sites
+      raise Errors::Unauthorized unless context[:current_user]
+
       context[:current_user].sites
     end
   end
