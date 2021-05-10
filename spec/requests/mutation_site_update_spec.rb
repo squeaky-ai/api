@@ -47,6 +47,11 @@ RSpec.describe 'Mutation site update', type: :request do
       it 'returns the updated site' do
         expect(url).to start_with subject['data']['siteUpdate']['url']
       end
+
+      it 'updates the record' do
+        subject
+        expect(url).to start_with site.reload.url
+      end
     end
   end
 
@@ -58,6 +63,11 @@ RSpec.describe 'Mutation site update', type: :request do
 
     it 'returns the updated site' do
       expect(name).to eq subject['data']['siteUpdate']['name']
+    end
+
+    it 'updates the record' do
+      subject
+      expect(site.reload.name).to eq name
     end
   end
 end
