@@ -4,3 +4,6 @@ AllCops:
     - db/**/*
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context']
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
