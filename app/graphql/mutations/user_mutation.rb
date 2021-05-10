@@ -7,7 +7,7 @@ module Mutations
   # be logged in, such as updating their name or
   # email
   class UserMutation < BaseMutation
-    def ready?(_args)
+    def ready?(_args = {})
       @user = context[:current_user]
 
       raise Errors::Unauthorized unless @user

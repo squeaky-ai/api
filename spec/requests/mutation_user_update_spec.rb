@@ -34,6 +34,7 @@ RSpec.describe 'Mutation user update', type: :request do
   end
 
   it 'updates the record' do
+    subject
     user.reload
     expect(user.first_name).to eq first_name
     expect(user.last_name).to eq last_name

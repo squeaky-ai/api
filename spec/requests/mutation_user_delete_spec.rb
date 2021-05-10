@@ -15,12 +15,11 @@ RSpec.describe 'Mutation user delete', type: :request do
   let(:subject) { graphql_request(user_delete_mutation, {}, user) }
 
   it 'returns nil' do
-    puts '@@@@', subject['errors']
     expect(subject['data']['userDelete']).to be_nil
   end
 
   it 'deletes the record' do
-    user.reload
-    expect(user).to be_nil
+    subject
+    expect { user.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
