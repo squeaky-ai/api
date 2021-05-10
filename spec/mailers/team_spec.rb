@@ -22,11 +22,13 @@ RSpec.describe TeamMailer, type: :mailer do
     end
 
     it 'includes the user name in the body' do
-      expect(mail.body.encoded).to include "#{user.first_name} #{user.last_name}"
+      body = mail.body.encoded.sub('&#39;', '\'')
+      expect(body).to include "#{user.first_name} #{user.last_name}"
     end
 
     it 'includes the sites name in the body' do
-      expect(mail.body.encoded).to include site.name
+      body = mail.body.encoded.sub('&#39;', '\'')
+      expect(body).to include site.name
     end
   end
 
@@ -43,11 +45,13 @@ RSpec.describe TeamMailer, type: :mailer do
     end
 
     it 'includes the user name in the body' do
-      expect(mail.body.encoded).to include "#{user.first_name} #{user.last_name}"
+      body = mail.body.encoded.sub('&#39;', '\'')
+      expect(body).to include "#{user.first_name} #{user.last_name}"
     end
 
     it 'includes the sites name in the body' do
-      expect(mail.body.encoded).to include site.name
+      body = mail.body.encoded.sub('&#39;', '\'')
+      expect(body).to include site.name
     end
   end
 

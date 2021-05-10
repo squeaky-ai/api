@@ -8,7 +8,7 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :team_id, Integer, required: true
+    argument :team_id, ID, required: true
 
     type Types::SiteType
 
