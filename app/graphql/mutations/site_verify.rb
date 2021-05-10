@@ -26,7 +26,7 @@ module Mutations
 
     def script_tag_exists?
       uri = URI(@site.url)
-      res = Net::HTTP.get(uri, { 'User-Agent': 'Squeaky.ai verification check' })
+      res = Net::HTTP.get(uri, { 'User-Agent': 'Squeaky.ai (verification check)' })
 
       res.include?(@site.uuid)
     end
