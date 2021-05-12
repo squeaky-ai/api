@@ -58,7 +58,10 @@ RSpec.describe 'Mutation site verify', type: :request do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user) }
       let(:invited_user) { create_user }
-      let(:subject) { graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user) }
+
+      let(:subject) do
+        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user)
+      end
 
       before do
         create_team(user: invited_user, site: site, role: 1)
@@ -82,7 +85,10 @@ RSpec.describe 'Mutation site verify', type: :request do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user) }
       let(:invited_user) { create_user }
-      let(:subject) { graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user) }
+
+      let(:subject) do
+        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user)
+      end
 
       before do
         stub = double

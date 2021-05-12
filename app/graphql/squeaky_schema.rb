@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Top level schema class for GraphQL
 class SqueakySchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)

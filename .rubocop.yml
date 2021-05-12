@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - db/**/*
 Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context', 'it']
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*
