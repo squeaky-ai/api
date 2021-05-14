@@ -20,7 +20,7 @@ module Mutations
 
       raise Errors::TeamInviteExpired unless member
 
-      member.update(status: 0)
+      member.update(status: Team::ACCEPTED)
 
       # TODO: Is there a better thing to return here? The
       # user may not have ever logged in

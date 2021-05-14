@@ -17,7 +17,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     context 'when a site with this url already exists' do
       let(:url) { Faker::Internet.url }
       let(:user) { create_user }
-      let(:site) { create_site_and_team(user) }
+      let(:site) { create_site_and_team(user: user) }
       let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
 
       before { create_site(url: Site.format_uri(url)) }
@@ -30,7 +30,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     context 'when the url is invalid' do
       let(:url) { 'fdsdfgdfgdfgdfg' }
       let(:user) { create_user }
-      let(:site) { create_site_and_team(user) }
+      let(:site) { create_site_and_team(user: user) }
       let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
 
       it 'raises an error' do
@@ -41,7 +41,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     context 'when the url is valid' do
       let(:url) { Faker::Internet.url }
       let(:user) { create_user }
-      let(:site) { create_site_and_team(user) }
+      let(:site) { create_site_and_team(user: user) }
       let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
 
       it 'returns the updated site' do
@@ -58,7 +58,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
   context 'when updating the name' do
     let(:name) { Faker::Company.name }
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
     let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, name: name }, user) }
 
     it 'returns the updated site' do

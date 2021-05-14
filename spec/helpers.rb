@@ -23,11 +23,11 @@ module Helpers
     Site.create({ **default, **args })
   end
 
-  def create_team(user:, site:, role:, status: 0)
+  def create_team(user:, site:, role:, status: Team::ACCEPTED)
     Team.create(user: user, site: site, role: role, status: status)
   end
 
-  def create_site_and_team(user, role: 2, status: 0)
+  def create_site_and_team(user:, role: Team::OWNER, status: Team::ACCEPTED)
     site = create_site
     site.team << create_team(user: user, site: site, role: role, status: status)
     site.save

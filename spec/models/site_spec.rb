@@ -37,7 +37,7 @@ RSpec.describe Site, type: :model do
 
   describe '#owner_name' do
     let(:user) { create_user }
-    let(:subject) { create_site_and_team(user) }
+    let(:subject) { create_site_and_team(user: user) }
 
     it 'returns the owners full name' do
       expect(subject.owner_name).to eq "#{user.first_name} #{user.last_name}"
@@ -48,9 +48,9 @@ RSpec.describe Site, type: :model do
     let(:subject) { create_site }
 
     before do
-      create_team(user: create_user, site: subject, role: 0)
-      create_team(user: create_user, site: subject, role: 1)
-      create_team(user: create_user, site: subject, role: 2)
+      create_team(user: create_user, site: subject, role: Team::MEMBER)
+      create_team(user: create_user, site: subject, role: Team::ADMIN)
+      create_team(user: create_user, site: subject, role: Team::OWNER)
     end
 
     it 'returns only the team members that are admins' do

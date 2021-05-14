@@ -50,7 +50,7 @@ RSpec.describe 'QuerySite', type: :request do
 
   context 'when the site does exist' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
 
     it 'returns the site' do
       response = graphql_request(site_query, { id: site.id }, user)

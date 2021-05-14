@@ -23,9 +23,9 @@ GRAPHQL
 RSpec.describe Mutations::TeamInvite, type: :request do
   context 'when the invited user does not have an account' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
     let(:email) { Faker::Internet.email }
-    let(:subject) { graphql_request(team_invite_mutation, { site_id: site.id, email: email, role: 1 }, user) }
+    let(:subject) { graphql_request(team_invite_mutation, { site_id: site.id, email: email, role: Team::ADMIN }, user) }
 
     before do
       stub = double
@@ -56,15 +56,15 @@ RSpec.describe Mutations::TeamInvite, type: :request do
   context 'when the user alredy has an account' do
     context 'and they are already a member' do
       let(:user) { create_user }
-      let(:site) { create_site_and_team(user) }
+      let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
       let(:subject) do
-        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user)
+        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 
       before do
-        create_team(user: invited_user, site: site, role: 1)
+        create_team(user: invited_user, site: site, role: Team::ADMIN)
 
         stub = double
         allow(stub).to receive(:deliver_now)
@@ -83,11 +83,11 @@ RSpec.describe Mutations::TeamInvite, type: :request do
 
     context 'and they are not a member' do
       let(:user) { create_user }
-      let(:site) { create_site_and_team(user) }
+      let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
       let(:subject) do
-        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: 1 }, user)
+        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 
       before do

@@ -8,7 +8,7 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :team_id, String, required: true
+    argument :team_id, ID, required: true
 
     type Types::SiteType
 
@@ -16,12 +16,13 @@ module Mutations
       new_owner = @site.team.find { |t| t.id == team_id.to_i }
 
       raise Errors::TeamNotFound unless new_owner
+      raise Errors::Forbidden unless @user.owner_for?(@site)
 
       # Make the old owner an admin
-      @site.owner.update(role: 1)
+      @site.owner.update(role: Team::ADMIN)
 
       # Set the new owners role to owner
-      new_owner.update(role: 2)
+      new_owner.update(role: Team::OWNER)
 
       TeamMailer.became_owner(new_owner.user.email, @site, @user).deliver_now
 

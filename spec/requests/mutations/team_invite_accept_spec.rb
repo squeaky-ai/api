@@ -56,8 +56,8 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
 
   context 'when the token is valid' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team) { create_team(user: create_user, site: site, role: 1, status: 1) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: team.id }) }
     let(:subject) { graphql_request(team_invite_accept_mutation, { token: token }, nil) }
 

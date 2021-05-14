@@ -13,6 +13,12 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def owner_for?(site)
+    return false unless site
+
+    site.owner.user.id == id
+  end
+
   def admin_for?(site)
     return false unless site
 

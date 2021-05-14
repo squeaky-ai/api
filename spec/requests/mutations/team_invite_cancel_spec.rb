@@ -23,7 +23,7 @@ GRAPHQL
 RSpec.describe Mutations::TeamInviteCancel, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
     let(:team_id) { 234 }
     let(:subject) { graphql_request(team_invite_cancel_mutation, { site_id: site.id, team_id: team_id }, user) }
 
@@ -40,8 +40,8 @@ RSpec.describe Mutations::TeamInviteCancel, type: :request do
 
   context 'when the team member exist but is not pending' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team_member) { create_team(user: create_user, site: site, role: 1, status: 0) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
     let(:subject) { graphql_request(team_invite_cancel_mutation, { site_id: site.id, team_id: team_member.id }, user) }
 
     before { team_member } # Otherwise subject will be responsible for creating the team
@@ -59,8 +59,8 @@ RSpec.describe Mutations::TeamInviteCancel, type: :request do
 
   context 'when the team member exist and is pending' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team_member) { create_team(user: create_user, site: site, role: 1, status: 1) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
     let(:subject) { graphql_request(team_invite_cancel_mutation, { site_id: site.id, team_id: team_member.id }, user) }
 
     before { team_member }

@@ -50,7 +50,7 @@ RSpec.describe 'QuerySites', type: :request do
 
   context 'when the user is a member of a site' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
 
     before { site }
 

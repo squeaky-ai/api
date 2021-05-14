@@ -14,7 +14,7 @@ GRAPHQL
 RSpec.describe Mutations::SiteVerify, type: :request do
   context 'when the tracking script can be found' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
     let(:subject) { graphql_request(site_verify_mutation, { site_id: site.id }, user) }
 
     before do
@@ -36,7 +36,7 @@ RSpec.describe Mutations::SiteVerify, type: :request do
 
   context 'when the tracking script can not be found' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
     let(:subject) { graphql_request(site_verify_mutation, { site_id: site.id }, user) }
 
     before { allow(Net::HTTP).to receive(:get).and_return('') }

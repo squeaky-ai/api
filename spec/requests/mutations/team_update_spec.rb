@@ -23,8 +23,8 @@ GRAPHQL
 RSpec.describe Mutations::TeamUpdate, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: 4324, role: 1 }, user) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: 4324, role: Team::ADMIN }, user) }
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -34,8 +34,8 @@ RSpec.describe Mutations::TeamUpdate, type: :request do
 
   context 'when the role is not valid' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team) { create_team(user: create_user, site: site, role: 0, status: 0) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team) { create_team(user: create_user, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
     let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: 5 }, user) }
 
     it 'raises an error' do
@@ -46,10 +46,10 @@ RSpec.describe Mutations::TeamUpdate, type: :request do
 
   context 'when trying to modify the owner of the site' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
+    let(:site) { create_site_and_team(user: user) }
 
     let(:subject) do
-      graphql_request(team_update_mutation, { site_id: site.id, team_id: site.team[0].id, role: 1 }, user)
+      graphql_request(team_update_mutation, { site_id: site.id, team_id: site.team[0].id, role: Team::ADMIN }, user)
     end
 
     it 'raises an error' do
@@ -60,9 +60,9 @@ RSpec.describe Mutations::TeamUpdate, type: :request do
 
   context 'when the user is made an admin' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team) { create_team(user: create_user, site: site, role: 0, status: 0) }
-    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: 1 }, user) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team) { create_team(user: create_user, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
+    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: Team::ADMIN }, user) }
 
     before do
       stub = double
@@ -84,9 +84,9 @@ RSpec.describe Mutations::TeamUpdate, type: :request do
 
   context 'when the user is made a member' do
     let(:user) { create_user }
-    let(:site) { create_site_and_team(user) }
-    let(:team) { create_team(user: create_user, site: site, role: 1, status: 0) }
-    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: 0 }, user) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: Team::MEMBER }, user) }
 
     before do
       stub = double
