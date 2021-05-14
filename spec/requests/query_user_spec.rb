@@ -13,7 +13,7 @@ user_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Query User', type: :request do
+RSpec.describe 'QueryUser', type: :request do
   context 'when there is no current_user' do
     it 'returns null' do
       response = graphql_request(user_query, {}, nil)

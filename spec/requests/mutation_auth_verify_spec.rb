@@ -10,7 +10,7 @@ auth_verify_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation auth request', type: :request do
+RSpec.describe Mutations::AuthVerify, type: :request do
   context 'when there is no token stored for this user' do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }

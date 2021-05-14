@@ -27,7 +27,7 @@ sites_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Query Sites', type: :request do
+RSpec.describe 'QuerySites', type: :request do
   context 'when there is no current_user' do
     let(:site) { create_site }
 

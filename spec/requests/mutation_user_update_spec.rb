@@ -13,7 +13,7 @@ user_update_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation user update', type: :request do
+RSpec.describe Mutations::UserUpdate, type: :request do
   let(:user) { create_user }
   let(:first_name) { Faker::Name.first_name }
   let(:last_name) { Faker::Name.last_name }

@@ -10,7 +10,7 @@ auth_request_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation auth request', type: :request do
+RSpec.describe Mutations::AuthRequest, type: :request do
   context 'when the AuthType is LOGIN' do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }

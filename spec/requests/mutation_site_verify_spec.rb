@@ -11,7 +11,7 @@ site_verify_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation site verify', type: :request do
+RSpec.describe Mutations::SiteVerify, type: :request do
   context 'when the tracking script can be found' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user) }

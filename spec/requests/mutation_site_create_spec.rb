@@ -27,7 +27,7 @@ site_create_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation site create', type: :request do
+RSpec.describe Mutations::SiteCreate, type: :request do
   context 'when a site with this url already exists' do
     let(:url) { Faker::Internet.url }
     let(:user) { create_user }

@@ -10,7 +10,7 @@ user_delete_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation user delete', type: :request do
+RSpec.describe Mutations::UserDelete, type: :request do
   let(:user) { create_user }
   let(:subject) { graphql_request(user_delete_mutation, {}, user) }
 

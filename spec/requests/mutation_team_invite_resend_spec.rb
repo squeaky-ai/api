@@ -20,7 +20,7 @@ team_invite_resend_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation team invite resend', type: :request do
+RSpec.describe Mutations::TeamInviteResend, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user) }

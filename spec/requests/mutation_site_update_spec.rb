@@ -12,7 +12,7 @@ site_update_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation site update', type: :request do
+RSpec.describe Mutations::SiteUpdate, type: :request do
   context 'when updating the url' do
     context 'when a site with this url already exists' do
       let(:url) { Faker::Internet.url }
