@@ -57,22 +57,14 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
       graphql_request(team_transfer_mutation, { site_id: site.id, team_id: new_owner_team.id }, old_owner_team.user)
     end
 
-    before { site.reload }
+    before do
+      stub = double
+      allow(stub).to receive(:deliver_now)
+      allow(TeamMailer).to receive(:became_owner).and_return(stub)
+    end
 
     it 'returns the updated site' do
-      response = subject['data']['teamTransfer']
-      expect(response['team']).to eq [
-        {
-          'id' => old_owner_team.id.to_s,
-          'role' => Team::ADMIN,
-          'status' => Team::ACCEPTED,
-          'user' => {
-            'id' => old_owner.id.to_s,
-            'firstName' => old_owner.first_name,
-            'lastName' => old_owner.last_name,
-            'email' => old_owner.email
-          }
-        },
+      expect(subject['data']['teamTransfer']['team']).to eq [
         {
           'id' => new_owner_team.id.to_s,
           'role' => Team::OWNER,
@@ -83,12 +75,32 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
             'lastName' => new_owner.last_name,
             'email' => new_owner.email
           }
+        },
+        {
+          'id' => old_owner_team.id.to_s,
+          'role' => Team::ADMIN,
+          'status' => Team::ACCEPTED,
+          'user' => {
+            'id' => old_owner.id.to_s,
+            'firstName' => old_owner.first_name,
+            'lastName' => old_owner.last_name,
+            'email' => old_owner.email
+          }
         }
       ]
     end
 
-    # it 'makes the user an admin' do
-    #   expect { subject }.to change { site.owner }.from(old_owner_team).to(new_owner_team)
-    # end
+    it 'makes the old owner an admin' do
+      expect { subject }.to change { old_owner_team.reload.role }.from(Team::OWNER).to(Team::ADMIN)
+    end
+
+    it 'makes the new owner the owner' do
+      expect { subject }.to change { new_owner_team.reload.role }.from(Team::ADMIN).to(Team::OWNER)
+    end
+
+    it 'sends an email to the new owner' do
+      subject
+      expect(TeamMailer).to have_received(:became_owner).with(new_owner.email, site, old_owner)
+    end
   end
 end

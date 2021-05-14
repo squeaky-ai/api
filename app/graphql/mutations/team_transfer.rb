@@ -13,16 +13,16 @@ module Mutations
     type Types::SiteType
 
     def resolve(team_id:, **_rest)
+      old_owner = @site.owner
       new_owner = @site.team.find { |t| t.id == team_id.to_i }
 
       raise Errors::TeamNotFound unless new_owner
       raise Errors::Forbidden unless @user.owner_for?(@site)
 
-      # Make the old owner an admin
-      @site.owner.update(role: Team::ADMIN)
-
-      # Set the new owners role to owner
-      new_owner.update(role: Team::OWNER)
+      ActiveRecord::Base.transaction do
+        old_owner.update(role: Team::ADMIN)
+        new_owner.update(role: Team::OWNER)
+      end
 
       TeamMailer.became_owner(new_owner.user.email, @site, @user).deliver_now
 
