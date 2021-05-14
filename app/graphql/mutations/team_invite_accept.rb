@@ -15,14 +15,21 @@ module Mutations
     def resolve(token:)
       payload = JsonWebToken.decode(token)
 
-      site = Site.find(payload.site_id.to_i)
-      member = site.team.find { |t| t.id == payload.team_id.to_i }
+      site = Site.find(payload['site_id'].to_i)
+      member = site.team.find { |t| t.id == payload['team_id'].to_i }
+
+      raise Errors::TeamInviteExpired unless member
 
       member.update(status: 0)
 
       # TODO: Is there a better thing to return here? The
       # user may not have ever logged in
       site
+    rescue JWT::ExpiredSignature
+      raise Errors::TeamInviteExpired
+    rescue JWT::DecodeError => e
+      Rails.logger.warn e
+      raise Errors::TeamInviteInvalid
     end
   end
 end

@@ -54,7 +54,7 @@ class GraphqlController < ApplicationController
     token = JsonWebToken.decode(bearer)
     User.find(token[:id])
   rescue StandardError => e
-    logger.error e
+    logger.warn e
     nil
   end
 end
