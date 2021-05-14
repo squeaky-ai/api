@@ -50,6 +50,7 @@ en:
     validation:
       token_invalid: 'Token is incorrect or has expired'
       unauthorized: 'Unauthorized'
+      forbidden: 'Forbidden'
   user:
     validation:
       account_exists: 'User account already exists'

@@ -10,7 +10,7 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :team_id, Integer, required: true
+    argument :team_id, ID, required: true
     argument :role, Integer, required: true
 
     type Types::SiteType
@@ -20,9 +20,11 @@ module Mutations
 
       team = @site.team.find { |t| t.id == team_id.to_i }
 
+      raise Errors::TeamNotFound unless team
+
       # The owners role can't be changed here, it must
       # be transferred
-      return @site if team.owner?
+      raise Errors::Forbidden if team.owner?
 
       team.update(role: role)
 
