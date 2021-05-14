@@ -20,7 +20,7 @@ team_invite_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'Mutation site verify', type: :request do
+RSpec.describe 'Mutation team invite', type: :request do
   context 'when the invited user does not have an account' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user) }
@@ -37,14 +37,14 @@ RSpec.describe 'Mutation site verify', type: :request do
     it 'returns the invited user' do
       team = subject['data']['teamInvite']['team']
       invited_team_member = team.find { |t| t['user']['email'] == email }
-      expect(invited_team_member).to be_truthy
+      expect(invited_team_member).not_to be nil
     end
 
     it 'creates them an account' do
       subject
       invited_user = User.find_by(email: email)
-      expect(invited_user).to be_truthy
-      expect(invited_user.invited_at).to be_truthy
+      expect(invited_user).not_to be nil
+      expect(invited_user.invited_at).not_to be nil
     end
 
     it 'sends an invite request to the email' do
@@ -100,7 +100,7 @@ RSpec.describe 'Mutation site verify', type: :request do
       it 'returns the added team member' do
         team = subject['data']['teamInvite']['team']
         invited_team_member = team.find { |t| t['user']['email'] == invited_user.email }
-        expect(invited_team_member).to be_truthy
+        expect(invited_team_member).not_to be nil
       end
 
       it 'adds them to the team' do

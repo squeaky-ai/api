@@ -60,7 +60,7 @@ RSpec.describe 'Mutation site create', type: :request do
       it 'returns the created site' do
         site = subject['data']['siteCreate']
 
-        expect(site['id']).to be_truthy
+        expect(site['id']).not_to be nil
         expect(name).to eq site['name']
         expect(url).to start_with site['url']
       end
@@ -79,7 +79,7 @@ RSpec.describe 'Mutation site create', type: :request do
       end
 
       it 'generates a uuid' do
-        expect(subject['data']['siteCreate']['uuid']).to be_truthy
+        expect(subject['data']['siteCreate']['uuid']).not_to be nil
       end
     end
   end

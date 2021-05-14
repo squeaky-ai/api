@@ -8,19 +8,20 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :team_id, Integer, required: true
+    argument :team_id, ID, required: true
 
     type Types::SiteType
 
     def resolve(team_id:, **_rest)
       member = @site.team.find { |t| t.id == team_id.to_i }
 
-      if member.pending?
-        token = JsonWebToken.encode({ email: member.user.email, id: @site.id }, 1.day.from_now)
+      if member&.pending?
+        email = member.user.email
+        token = JsonWebToken.encode({ email: email, id: @site.id }, 1.day.from_now)
         TeamMailer.invite(email, @site, @user, token).deliver_now
       end
 
-      site
+      @site
     end
   end
 end

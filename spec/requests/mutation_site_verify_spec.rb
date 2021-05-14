@@ -30,7 +30,7 @@ RSpec.describe 'Mutation site verify', type: :request do
     end
 
     it 'returns the verifiedAt timestamp' do
-      expect(subject['data']['siteVerify']['verifiedAt']).to be_truthy
+      expect(subject['data']['siteVerify']['verifiedAt']).not_to be nil
     end
   end
 

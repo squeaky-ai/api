@@ -34,7 +34,7 @@ RSpec.describe 'Mutation auth request', type: :request do
       end
 
       it 'returns a timestamp for when the email was sent' do
-        expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
+        expect(subject['data']['authRequest']['emailSentAt']).not_to be nil
       end
 
       it 'sends an email' do
@@ -64,7 +64,7 @@ RSpec.describe 'Mutation auth request', type: :request do
       end
 
       it 'returns a timestamp for when the email was sent' do
-        expect(subject['data']['authRequest']['emailSentAt']).to be_truthy
+        expect(subject['data']['authRequest']['emailSentAt']).not_to be nil
       end
 
       it 'sends an email' do

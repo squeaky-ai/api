@@ -13,7 +13,7 @@ RSpec.describe JsonWebToken do
       end
 
       it 'retruns a jwt' do
-        expect(@token).to be_truthy
+        expect(@token).not_to be nil
       end
 
       it 'contains the user id and expiry' do

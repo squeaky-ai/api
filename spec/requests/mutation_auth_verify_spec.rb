@@ -45,12 +45,12 @@ RSpec.describe 'Mutation auth request', type: :request do
       end
 
       it 'returns a jwt' do
-        expect(subject['data']['authVerify']['jwt']).to be_truthy
+        expect(subject['data']['authVerify']['jwt']).not_to be nil
       end
 
       it 'sets the last sign in time' do
         subject
-        expect(user.reload.last_signed_in_at).to be_truthy
+        expect(user.reload.last_signed_in_at).not_to be nil
       end
 
       it 'does not create a user' do
@@ -70,7 +70,7 @@ RSpec.describe 'Mutation auth request', type: :request do
       end
 
       it 'returns a jwt' do
-        expect(subject['data']['authVerify']['jwt']).to be_truthy
+        expect(subject['data']['authVerify']['jwt']).not_to be nil
       end
 
       it 'does create a user' do
