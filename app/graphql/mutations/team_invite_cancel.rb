@@ -8,7 +8,7 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :team_id, Integer, required: true
+    argument :team_id, ID, required: true
 
     type Types::SiteType
 
@@ -16,7 +16,7 @@ module Mutations
       member = @site.team.find { |t| t.id == team_id.to_i }
       member.destroy if member&.pending?
 
-      @site
+      @site.reload
     end
   end
 end
