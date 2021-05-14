@@ -13,7 +13,7 @@ module Mutations
     type Types::SiteType
 
     def resolve(token:)
-      payload = JsonWebToken.decode(token)
+      payload = extract_payload(token)
 
       site = Site.find(payload['site_id'].to_i)
       member = site.team.find { |t| t.id == payload['team_id'].to_i }
@@ -25,6 +25,12 @@ module Mutations
       # TODO: Is there a better thing to return here? The
       # user may not have ever logged in
       site
+    end
+
+    private
+
+    def extract_payload(token)
+      JsonWebToken.decode(token)
     rescue JWT::ExpiredSignature
       raise Errors::TeamInviteExpired
     rescue JWT::DecodeError => e

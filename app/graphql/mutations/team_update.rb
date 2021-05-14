@@ -4,8 +4,7 @@ module Mutations
   # Update a team members role so long as they don't try to
   # make someone the owner, and they aren't trying to modify
   # the owner. Use team_transfer_ownership if you want to
-  # make someone else the owner. TODO: Send an email if someone
-  # is updated to an admin
+  # make someone else the owner
   class TeamUpdate < SiteMutation
     null false
 
