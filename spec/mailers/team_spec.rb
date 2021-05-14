@@ -58,8 +58,7 @@ RSpec.describe TeamMailer, type: :mailer do
   describe 'member_removed' do
     let(:email) { Faker::Internet.email }
     let(:site) { create_site }
-    let(:user) { create_user }
-    let(:mail) { described_class.member_removed(email, site, user) }
+    let(:mail) { described_class.member_removed(email, site) }
 
     it 'renders the headers' do
       expect(mail.subject).to eq "You have been removed from the #{site.name} team on Squeaky."

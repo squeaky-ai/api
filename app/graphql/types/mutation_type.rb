@@ -35,7 +35,10 @@ module Types
           description: 'Invite a team member by sending them an email'
     field :team_delete,
           mutation: Mutations::TeamDelete,
-          description: 'Delete a team member, or leave a team'
+          description: 'Delete a team member'
+    field :team_leave,
+          mutation: Mutations::TeamLeave,
+          description: 'Leave a team'
     field :team_invite_cancel,
           mutation: Mutations::TeamInviteCancel,
           description: 'Cancel a team members invite if their status is pending'

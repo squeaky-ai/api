@@ -18,9 +18,8 @@ class TeamMailer < ApplicationMailer
   end
 
   # Used when a user has been removed by another member
-  def member_removed(email, site, user)
+  def member_removed(email, site)
     @site = site
-    @user = user
     mail(to: email, subject: "You have been removed from the #{site.name} team on Squeaky.")
   end
 
