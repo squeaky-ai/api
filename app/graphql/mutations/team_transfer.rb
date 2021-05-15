@@ -14,7 +14,7 @@ module Mutations
 
     def resolve(team_id:, **_rest)
       old_owner = @site.owner
-      new_owner = @site.team.find { |t| t.id == team_id.to_i }
+      new_owner = @site.member(team_id)
 
       raise Errors::TeamNotFound unless new_owner
       raise Errors::Forbidden unless @user.owner_for?(@site)

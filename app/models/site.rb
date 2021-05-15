@@ -20,6 +20,10 @@ class Site < ApplicationRecord
   # The plural sounds weird
   alias_attribute :team, :teams
 
+  ESSENTIALS = 0
+  PREMIUM = 1
+  UNLIMITED = 2
+
   def owner
     team.find(&:owner?)
   end
@@ -32,13 +36,17 @@ class Site < ApplicationRecord
     team.filter(&:admin?)
   end
 
+  def member(id)
+    team.find { |t| t.id == id.to_i }
+  end
+
   def plan_name
     case plan
-    when 0
+    when ESSENTIALS
       I18n.t 'site.plan.essentials'
-    when 1
+    when PREMIUM
       I18n.t 'site.plan.premium'
-    when 2
+    when UNLIMITED
       I18n.t 'site.plan.unlimited'
     end
   end

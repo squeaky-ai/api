@@ -17,7 +17,7 @@ module Mutations
     def resolve(team_id:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 
-      team = @site.team.find { |t| t.id == team_id.to_i }
+      team = @site.member(team_id)
 
       raise Errors::TeamNotFound unless team
 

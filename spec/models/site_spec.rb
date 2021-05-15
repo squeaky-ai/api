@@ -37,27 +37,71 @@ RSpec.describe Site, type: :model do
 
   describe '#owner_name' do
     let(:user) { create_user }
-    let(:subject) { create_site_and_team(user: user) }
+    let(:site) { create_site_and_team(user: user) }
+    let(:subject) { site.owner_name }
 
     it 'returns the owners full name' do
-      expect(subject.owner_name).to eq "#{user.first_name} #{user.last_name}"
+      expect(subject).to eq "#{user.first_name} #{user.last_name}"
     end
   end
 
   describe '#admins' do
-    let(:subject) { create_site }
+    let(:site) { create_site }
+    let(:subject) { site.admins }
 
     before do
-      create_team(user: create_user, site: subject, role: Team::MEMBER)
-      create_team(user: create_user, site: subject, role: Team::ADMIN)
-      create_team(user: create_user, site: subject, role: Team::OWNER)
+      create_team(user: create_user, site: site, role: Team::MEMBER)
+      create_team(user: create_user, site: site, role: Team::ADMIN)
+      create_team(user: create_user, site: site, role: Team::OWNER)
     end
 
     it 'returns only the team members that are admins' do
-      admins = subject.admins
+      expect(subject.size).to eq 2
+      subject.each { |a| expect(a.admin?).to be true }
+    end
+  end
 
-      expect(admins.size).to eq 2
-      admins.each { |a| expect(a.admin?).to be true }
+  describe '#owner' do
+    let(:user) { create_user }
+    let(:site) { create_site }
+    let(:team) { create_team(user: user, site: site, role: Team::OWNER) }
+    let(:subject) { site.owner }
+
+    before { team }
+
+    it 'returns the owner' do
+      expect(subject).to eq team
+    end
+  end
+
+  describe '#member' do
+    context 'when a member exists' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+      let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN) }
+      let(:subject) { site.member(team.id) }
+
+      it 'returns the team member' do
+        expect(subject).to eq team
+      end
+    end
+
+    context 'when a member does not exist' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+      let(:subject) { site.member(423) }
+
+      it 'returns nil' do
+        expect(subject).to be nil
+      end
+    end
+  end
+
+  describe '#plan_name' do
+    it 'returns the correct plan' do
+      expect(create_site(plan: Site::ESSENTIALS).plan_name).to eq 'Essentials'
+      expect(create_site(plan: Site::PREMIUM).plan_name).to eq 'Premium'
+      expect(create_site(plan: Site::UNLIMITED).plan_name).to eq 'Unlimited'
     end
   end
 end

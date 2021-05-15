@@ -110,4 +110,8 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#site' do
+    # TODO
+  end
 end

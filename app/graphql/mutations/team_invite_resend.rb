@@ -13,7 +13,7 @@ module Mutations
     type Types::SiteType
 
     def resolve(site_id:, team_id:)
-      member = @site.team.find { |t| t.id == team_id.to_i }
+      member = @site.member(team_id)
 
       if member&.pending?
         email = member.user.email

@@ -14,7 +14,7 @@ module Mutations
 
     def resolve(name:, url:)
       user = context[:current_user]
-      site = Site.create(name: name, url: uri(url), plan: 0)
+      site = Site.create(name: name, url: uri(url), plan: Site::ESSENTIALS)
 
       raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 

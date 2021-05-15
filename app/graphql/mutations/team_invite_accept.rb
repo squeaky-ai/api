@@ -16,7 +16,7 @@ module Mutations
       payload = extract_payload(token)
 
       site = Site.find(payload['site_id'].to_i)
-      member = site.team.find { |t| t.id == payload['team_id'].to_i }
+      member = site.member(payload['team_id'])
 
       raise Errors::TeamInviteExpired unless member
 

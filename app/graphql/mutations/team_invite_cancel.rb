@@ -13,7 +13,7 @@ module Mutations
     type Types::SiteType
 
     def resolve(team_id:, **_rest)
-      member = @site.team.find { |t| t.id == team_id.to_i }
+      member = @site.member(team_id)
       member.destroy if member&.pending?
 
       @site.reload

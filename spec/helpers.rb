@@ -18,7 +18,7 @@ module Helpers
     default = {
       name: Faker::Company.name,
       url: Faker::Internet.url,
-      plan: 0
+      plan: Site::ESSENTIALS
     }
     Site.create({ **default, **args })
   end

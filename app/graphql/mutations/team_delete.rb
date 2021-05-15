@@ -12,7 +12,7 @@ module Mutations
     type Types::SiteType
 
     def resolve(team_id:, **_rest)
-      team = @site.team.find { |t| t.id == team_id.to_i }
+      team = @site.member(team_id)
 
       return @site if team.owner?
       return @site if team.user.id == @user.id
