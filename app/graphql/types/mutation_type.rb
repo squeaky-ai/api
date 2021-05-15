@@ -28,6 +28,9 @@ module Types
     field :site_verify,
           mutation: Mutations::SiteVerify,
           description: 'Verify that the site has the script installed correctly'
+    field :site_delete,
+          mutation: Mutations::SiteDelete,
+          description: 'Delete the site, team and any recording data'
 
     # Team
     field :team_invite,

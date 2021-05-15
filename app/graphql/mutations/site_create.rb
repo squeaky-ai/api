@@ -25,7 +25,7 @@ module Mutations
 
       # Add the authorization details for the gateway
       # so that the lambdas can check for auth
-      create_authorizer!(site)
+      site.create_authorizer!
 
       site.reload
     end
@@ -39,17 +39,6 @@ module Mutations
       raise Errors::SiteInvalidUri unless formatted_uri
 
       formatted_uri
-    end
-
-    def create_authorizer!(site)
-      params = {
-        site_id: site.uuid,
-        origin: site.url,
-        active: true,
-        updated_at: nil,
-        created_at: DateTime.now.iso8601
-      }
-      Authorizer.new(params).save!
     end
   end
 end

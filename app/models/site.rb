@@ -15,7 +15,7 @@ class Site < ApplicationRecord
   # that will be used publicly
   attribute :uuid, :string, default: -> { SecureRandom.uuid }
 
-  has_many :teams
+  has_many :teams, dependent: :destroy
   has_many :users, through: :teams
 
   # The plural sounds weird
@@ -50,6 +50,21 @@ class Site < ApplicationRecord
     when UNLIMITED
       I18n.t 'site.plan.unlimited'
     end
+  end
+
+  def create_authorizer!
+    params = {
+      site_id: uuid,
+      origin: url,
+      active: true,
+      updated_at: nil,
+      created_at: DateTime.now.iso8601
+    }
+    Authorizer.new(params).save!
+  end
+
+  def delete_authorizer!
+    Authorizer.find(site_id: uuid)&.delete! || false
   end
 
   def self.format_uri(url)
