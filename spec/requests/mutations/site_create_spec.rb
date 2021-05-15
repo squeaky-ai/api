@@ -57,6 +57,11 @@ RSpec.describe Mutations::SiteCreate, type: :request do
       let(:user) { create_user }
       let(:subject) { graphql_request(site_create_mutation, { url: url, name: name }, user) }
 
+      after do
+        site = subject['data']['siteCreate']
+        Authorizer.find(site_id: site['uuid']).delete!
+      end
+
       it 'returns the created site' do
         site = subject['data']['siteCreate']
 
@@ -80,6 +85,17 @@ RSpec.describe Mutations::SiteCreate, type: :request do
 
       it 'generates a uuid' do
         expect(subject['data']['siteCreate']['uuid']).not_to be nil
+      end
+
+      it 'creates the authorization record in dynamo' do
+        site = subject['data']['siteCreate']
+        item = Authorizer.find(site_id: site['uuid'])
+
+        expect(item.site_id).to eq site['uuid']
+        expect(item.active).to eq true
+        expect(item.origin).to eq site['url']
+        expect(item.updated_at).to be nil
+        expect(item.created_at).not_to be nil
       end
     end
   end

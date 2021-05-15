@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require 'date'
+
 module Mutations
   # Create a new site and set the current_user as the
   # owner. The uri must be valid and also unique. Any
   # ActiveRecord errors will be raised as GraphQL errors
-  class SiteCreate < BaseMutation
+  class SiteCreate < UserMutation
     null false
 
     argument :name, String, required: true
@@ -13,21 +15,19 @@ module Mutations
     type Types::SiteType
 
     def resolve(name:, url:)
-      user = context[:current_user]
       site = Site.create(name: name, url: uri(url), plan: Site::ESSENTIALS)
 
       raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 
       # Set the current user as the admin of the site
       # and skip the confirmation steps
-      Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: user, site: site)
+      Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site: site)
+
+      # Add the authorization details for the gateway
+      # so that the lambdas can check for auth
+      create_authorizer!(site)
+
       site.reload
-    end
-
-    def ready?(_args)
-      raise Errors::Unauthorized unless context[:current_user]
-
-      true
     end
 
     private
@@ -39,6 +39,17 @@ module Mutations
       raise Errors::SiteInvalidUri unless formatted_uri
 
       formatted_uri
+    end
+
+    def create_authorizer!(site)
+      params = {
+        site_id: site.uuid,
+        origin: site.url,
+        active: true,
+        updated_at: nil,
+        created_at: DateTime.now.iso8601
+      }
+      Authorizer.new(params).save!
     end
   end
 end
