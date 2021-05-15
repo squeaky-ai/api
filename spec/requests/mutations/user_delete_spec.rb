@@ -12,7 +12,11 @@ GRAPHQL
 
 RSpec.describe Mutations::UserDelete, type: :request do
   let(:user) { create_user }
-  let(:subject) { graphql_request(user_delete_mutation, {}, user) }
+
+  let(:subject) do
+    variables = {}
+    graphql_request(user_delete_mutation, variables, user)
+  end
 
   it 'returns nil' do
     expect(subject['data']['userDelete']).to be_nil

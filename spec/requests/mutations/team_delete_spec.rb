@@ -17,7 +17,11 @@ RSpec.describe Mutations::TeamDelete, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(team_delete_mutation, { site_id: site.id, team_id: site.owner.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: site.owner.id }
+      graphql_request(team_delete_mutation, variables, user)
+    end
 
     before { team }
 
@@ -41,7 +45,11 @@ RSpec.describe Mutations::TeamDelete, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(team_delete_mutation, { site_id: site.id, team_id: team.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team.id }
+      graphql_request(team_delete_mutation, variables, user)
+    end
 
     before { team }
 
@@ -65,7 +73,11 @@ RSpec.describe Mutations::TeamDelete, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(team_delete_mutation, { site_id: site.id, team_id: team.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team.id }
+      graphql_request(team_delete_mutation, variables, user)
+    end
 
     before do
       team

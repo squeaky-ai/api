@@ -25,7 +25,11 @@ RSpec.describe Mutations::TeamInviteResend, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:team_id) { 234 }
-    let(:subject) { graphql_request(team_invite_resend_mutation, { site_id: site.id, team_id: team_id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team_id }
+      graphql_request(team_invite_resend_mutation, variables, user)
+    end
 
     before do
       stub = double
@@ -49,7 +53,11 @@ RSpec.describe Mutations::TeamInviteResend, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
-    let(:subject) { graphql_request(team_invite_resend_mutation, { site_id: site.id, team_id: team_member.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team_member.id }
+      graphql_request(team_invite_resend_mutation, variables, user)
+    end
 
     before do
       stub = double
@@ -73,7 +81,11 @@ RSpec.describe Mutations::TeamInviteResend, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
-    let(:subject) { graphql_request(team_invite_resend_mutation, { site_id: site.id, team_id: team_member.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team_member.id }
+      graphql_request(team_invite_resend_mutation, variables, user)
+    end
 
     before do
       stub = double

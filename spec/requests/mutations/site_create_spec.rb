@@ -31,7 +31,11 @@ RSpec.describe Mutations::SiteCreate, type: :request do
   context 'when a site with this url already exists' do
     let(:url) { Faker::Internet.url }
     let(:user) { create_user }
-    let(:subject) { graphql_request(site_create_mutation, { url: url, name: Faker::Company.name }, user) }
+
+    let(:subject) do
+      variables = { url: url, name: Faker::Company.name }
+      graphql_request(site_create_mutation, variables, user)
+    end
 
     before { create_site(url: Site.format_uri(url)) }
 
@@ -44,7 +48,11 @@ RSpec.describe Mutations::SiteCreate, type: :request do
     context 'when the url is invalid' do
       let(:url) { 'sdfsjkldfjsdklfsd' }
       let(:user) { create_user }
-      let(:subject) { graphql_request(site_create_mutation, { url: url, name: Faker::Company.name }, user) }
+
+      let(:subject) do
+        variables = { url: url, name: Faker::Company.name }
+        graphql_request(site_create_mutation, variables, user)
+      end
 
       it 'raises an error' do
         expect(subject['errors'][0]['message']).to eq 'The provided uri is not valid'
@@ -55,7 +63,11 @@ RSpec.describe Mutations::SiteCreate, type: :request do
       let(:url) { Faker::Internet.url }
       let(:name) { Faker::Company.name }
       let(:user) { create_user }
-      let(:subject) { graphql_request(site_create_mutation, { url: url, name: name }, user) }
+
+      let(:subject) do
+        variables = { url: url, name: name }
+        graphql_request(site_create_mutation, variables, user)
+      end
 
       after do
         site = subject['data']['siteCreate']

@@ -24,7 +24,11 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:subject) { graphql_request(team_transfer_mutation, { site_id: site.id, team_id: 4234 }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: 4234 }
+      graphql_request(team_transfer_mutation, variables, user)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -36,7 +40,11 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(team_transfer_mutation, { site_id: site.id, team_id: team.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team.id }
+      graphql_request(team_transfer_mutation, variables, user)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']

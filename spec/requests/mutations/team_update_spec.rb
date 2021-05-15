@@ -44,7 +44,11 @@ RSpec.describe Mutations::TeamUpdate, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:team) { create_team(user: create_user, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
-    let(:subject) { graphql_request(team_update_mutation, { site_id: site.id, team_id: team.id, role: 5 }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, team_id: team.id, role: 5 }
+      graphql_request(team_update_mutation, variables, user)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']

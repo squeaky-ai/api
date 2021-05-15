@@ -18,7 +18,11 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:url) { Faker::Internet.url }
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
-      let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
+
+      let(:subject) do
+        variables = { site_id: site.id, url: url }
+        graphql_request(site_update_mutation, variables, user)
+      end
 
       before { create_site(url: Site.format_uri(url)) }
 
@@ -31,7 +35,11 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:url) { 'fdsdfgdfgdfgdfg' }
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
-      let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
+
+      let(:subject) do
+        variables = { site_id: site.id, url: url }
+        graphql_request(site_update_mutation, variables, user)
+      end
 
       it 'raises an error' do
         expect(subject['errors'][0]['message']).to eq 'The provided uri is not valid'
@@ -42,7 +50,11 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:url) { Faker::Internet.url }
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
-      let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, url: url }, user) }
+
+      let(:subject) do
+        variables = { site_id: site.id, url: url }
+        graphql_request(site_update_mutation, variables, user)
+      end
 
       it 'returns the updated site' do
         expect(url).to start_with subject['data']['siteUpdate']['url']
@@ -59,7 +71,11 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     let(:name) { Faker::Company.name }
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:subject) { graphql_request(site_update_mutation, { site_id: site.id, name: name }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, name: name }
+      graphql_request(site_update_mutation, variables, user)
+    end
 
     it 'returns the updated site' do
       expect(name).to eq subject['data']['siteUpdate']['name']

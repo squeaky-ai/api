@@ -14,7 +14,11 @@ RSpec.describe Mutations::AuthRequest, type: :request do
   context 'when the AuthType is LOGIN' do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }
-      let(:subject) { graphql_request(auth_request_mutation, { email: email, auth_type: 'LOGIN' }, nil) }
+
+      let(:subject) do
+        variables = { email: email, auth_type: 'LOGIN' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
 
       it 'raises an error' do
         expect(subject['errors'][0]['message']).to eq 'User account does not exist'
@@ -24,7 +28,11 @@ RSpec.describe Mutations::AuthRequest, type: :request do
     context 'and the user has an account' do
       let(:user) { create_user }
       let(:token) { '123456' }
-      let(:subject) { graphql_request(auth_request_mutation, { email: user.email, auth_type: 'LOGIN' }, nil) }
+
+      let(:subject) do
+        variables = { email: user.email, auth_type: 'LOGIN' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
 
       before do
         stub = double
@@ -54,7 +62,11 @@ RSpec.describe Mutations::AuthRequest, type: :request do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }
       let(:token) { '123456' }
-      let(:subject) { graphql_request(auth_request_mutation, { email: email, auth_type: 'SIGNUP' }, nil) }
+
+      let(:subject) do
+        variables = { email: email, auth_type: 'SIGNUP' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
 
       before do
         stub = double
@@ -81,7 +93,11 @@ RSpec.describe Mutations::AuthRequest, type: :request do
 
     context 'and the user has an account' do
       let(:user) { create_user }
-      let(:subject) { graphql_request(auth_request_mutation, { email: user.email, auth_type: 'SIGNUP' }, nil) }
+
+      let(:subject) do
+        variables = { email: user.email, auth_type: 'SIGNUP' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
 
       it 'raises an error' do
         expect(subject['errors'][0]['message']).to eq 'User account already exists'

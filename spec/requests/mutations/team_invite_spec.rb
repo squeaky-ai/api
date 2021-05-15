@@ -25,7 +25,11 @@ RSpec.describe Mutations::TeamInvite, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:email) { Faker::Internet.email }
-    let(:subject) { graphql_request(team_invite_mutation, { site_id: site.id, email: email, role: Team::ADMIN }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id, email: email, role: Team::ADMIN }
+      graphql_request(team_invite_mutation, variables, user)
+    end
 
     before do
       stub = double

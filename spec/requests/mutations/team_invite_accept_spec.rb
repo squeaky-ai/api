@@ -24,7 +24,11 @@ GRAPHQL
 RSpec.describe Mutations::TeamInviteAccept, type: :request do
   context 'when the token is not valid' do
     let(:token) { 'sdfdsfdsfdsf' }
-    let(:subject) { graphql_request(team_invite_accept_mutation, { token: token }, nil) }
+
+    let(:subject) do
+      variables = { token: token }
+      graphql_request(team_invite_accept_mutation, variables, nil)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -35,7 +39,11 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
   context 'when the token has expired' do
     let(:site) { create_site }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }, 1.month.ago) }
-    let(:subject) { graphql_request(team_invite_accept_mutation, { token: token }, nil) }
+
+    let(:subject) do
+      variables = { token: token }
+      graphql_request(team_invite_accept_mutation, variables, nil)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -46,7 +54,11 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
   context 'when the token is valid, but has been cancelled' do
     let(:site) { create_site }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }) } # The team won't exist
-    let(:subject) { graphql_request(team_invite_accept_mutation, { token: token }, nil) }
+
+    let(:subject) do
+      variables = { token: token }
+      graphql_request(team_invite_accept_mutation, variables, nil)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -59,7 +71,11 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: team.id }) }
-    let(:subject) { graphql_request(team_invite_accept_mutation, { token: token }, nil) }
+
+    let(:subject) do
+      variables = { token: token }
+      graphql_request(team_invite_accept_mutation, variables, nil)
+    end
 
     it 'returns the updated site' do
       response = subject['data']['teamInviteAccept']

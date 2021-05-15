@@ -14,7 +14,11 @@ RSpec.describe Mutations::TeamLeave, type: :request do
   context 'when the user is the owner' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:subject) { graphql_request(team_leave_mutation, { site_id: site.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id }
+      graphql_request(team_leave_mutation, variables, user)
+    end
 
     it 'returns the unmodified site' do
       expect(subject['data']['teamLeave']['id']).to eq site.id.to_s
@@ -29,7 +33,11 @@ RSpec.describe Mutations::TeamLeave, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(team_leave_mutation, { site_id: site.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id }
+      graphql_request(team_leave_mutation, variables, user)
+    end
 
     before do
       team

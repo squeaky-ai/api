@@ -15,7 +15,11 @@ RSpec.describe Mutations::SiteDelete, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:subject) { graphql_request(site_delete_mutation, { site_id: site.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id }
+      graphql_request(site_delete_mutation, variables, user)
+    end
 
     before { team }
 
@@ -36,7 +40,11 @@ RSpec.describe Mutations::SiteDelete, type: :request do
   context 'when the user is the owner' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:subject) { graphql_request(site_delete_mutation, { site_id: site.id }, user) }
+
+    let(:subject) do
+      variables = { site_id: site.id }
+      graphql_request(site_delete_mutation, variables, user)
+    end
 
     before do
       site.create_authorizer!

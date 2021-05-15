@@ -14,7 +14,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
   context 'when there is no token stored for this user' do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
-    let(:subject) { graphql_request(auth_verify_mutation, { email: email, token: token }, nil) }
+
+    let(:subject) do
+      variables = { email: email, token: token }
+      graphql_request(auth_verify_mutation, variables, nil)
+    end
 
     it 'raises an error' do
       expect(subject['errors'][0]['message']).to eq 'Token is incorrect or has expired'
@@ -24,7 +28,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
   context 'when there is a token stored but it does not match' do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
-    let(:subject) { graphql_request(auth_verify_mutation, { email: email, token: token }, nil) }
+
+    let(:subject) do
+      variables = { email: email, token: token }
+      graphql_request(auth_verify_mutation, variables, nil)
+    end
 
     before { Redis.current.set("auth:#{email}", '654321') }
 
@@ -37,7 +45,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
     context 'and the user already has an account' do
       let(:user) { create_user }
       let(:token) { '123456' }
-      let(:subject) { graphql_request(auth_verify_mutation, { email: user.email, token: token }, nil) }
+
+      let(:subject) do
+        variables = { email: user.email, token: token }
+        graphql_request(auth_verify_mutation, variables, nil)
+      end
 
       before do
         Redis.current.set("auth:#{user.email}", token)
@@ -62,7 +74,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }
       let(:token) { '123456' }
-      let(:subject) { graphql_request(auth_verify_mutation, { email: email, token: token }, nil) }
+
+      let(:subject) do
+        variables = { email: email, token: token }
+        graphql_request(auth_verify_mutation, variables, nil)
+      end
 
       before do
         Redis.current.set("auth:#{email}", token)
