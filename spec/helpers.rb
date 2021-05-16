@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+
 module Helpers
   def graphql_request(query, variables, user)
     SqueakySchema.execute(query, context: { current_user: user }, variables: variables)
@@ -32,5 +34,20 @@ module Helpers
     site.team << create_team(user: user, site: site, role: role, status: status)
     site.save
     site
+  end
+
+  def create_recording(args = {}, site:)
+    default = {
+      session_id: SecureRandom.uuid,
+      viewer_id: SecureRandom.uuid,
+      locale: 'en-gb',
+      start_page: '/',
+      exit_page: '/',
+      useragent: Faker::Internet.user_agent,
+      viewport_x: 1920,
+      viewport_y: 1080,
+      page_views: ['/']
+    }
+    site.recordings << Recording.create({ **default, **args })
   end
 end

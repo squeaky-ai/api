@@ -5,9 +5,7 @@ require 'date'
 require 'securerandom'
 
 # The main site model. The only unique constraint is the
-# url as we can't have people having multiple sites. There
-# is a seperate table in Dynamo that is used for the host
-# check so that we don't have to bombard this
+# url as we can't have people having multiple sites
 class Site < ApplicationRecord
   validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 
@@ -16,6 +14,7 @@ class Site < ApplicationRecord
   attribute :uuid, :string, default: -> { SecureRandom.uuid }
 
   has_many :teams, dependent: :destroy
+  has_many :recordings, dependent: :destroy
   has_many :users, through: :teams
 
   # The plural sounds weird
@@ -50,21 +49,6 @@ class Site < ApplicationRecord
     when UNLIMITED
       I18n.t 'site.plan.unlimited'
     end
-  end
-
-  def create_authorizer!
-    params = {
-      site_id: uuid,
-      origin: url,
-      active: true,
-      updated_at: nil,
-      created_at: DateTime.now.iso8601
-    }
-    Authorizer.new(params).save!
-  end
-
-  def delete_authorizer!
-    Authorizer.find(site_id: uuid)&.delete! || false
   end
 
   def self.format_uri(url)

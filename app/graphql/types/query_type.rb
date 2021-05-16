@@ -28,7 +28,9 @@ module Types
     def site(id:)
       raise Errors::Unauthorized unless context[:current_user]
 
-      context[:current_user].sites.find { |s| s.id == id.to_i }
+      context[:current_user].sites.find(id.to_i)
+    rescue ActiveRecord::RecordNotFound
+      nil
     end
 
     def sites

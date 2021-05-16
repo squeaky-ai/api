@@ -5,6 +5,8 @@ AllCops:
     - db/**/*
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context', 'it']
+Metrics/MethodLength:
+  CountAsOne: ['hash', 'array']
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*

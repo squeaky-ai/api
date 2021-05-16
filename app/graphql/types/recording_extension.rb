@@ -3,10 +3,9 @@
 require 'time'
 
 module Types
-  # The 'recordings' field on the site is handled here as
-  # we only want to load the data if it is requested. The
-  # gateway is responsible for populating this and it is
-  # stored in Dynamo
+  # Fetch a paginated list of recordings for the site. We return a
+  # cursor containing the next page offset so that the FE does not
+  # need to manage the batching
   class RecordingExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:query, String, required: false, description: 'Search for specific data')
@@ -15,32 +14,38 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
-      # Get the paginated response so that we can handle
-      # the paging for the front end. Unforunately this
-      # does not get the total count, so that will require
-      # a seperate query
-      query = recording_query(object.object.uuid, arguments[:first], arguments[:cursor])
+      limit, page = parse_pagination(arguments)
+      recordings = object.object.recordings.page(page).per(limit)
 
-      cursor = query.last_evaluated_key
+      is_last = recordings.last_page? || recordings.out_of_range?
 
       {
-        items: query.page.map(&:serialize),
-        pagination: {
-          cursor: cursor,
-          page_size: arguments[:first],
-          is_last: !cursor
-        }
+        items: recordings,
+        pagination: build_pagination(is_last, page, recordings.total_count)
       }
     end
 
-    def recording_query(uuid, first, cursor)
-      Recording
-        .build_query
-        .key_expr(':site_id = ?'.dup, uuid)
-        .scan_ascending(false)
-        .limit(first)
-        .exclusive_start_key(cursor)
-        .complete!
+    private
+
+    def parse_pagination(arguments)
+      limit = arguments[:first]
+      page = page(arguments[:cursor])
+
+      [limit, page]
+    end
+
+    def build_pagination(is_last, page, total)
+      {
+        is_last: is_last,
+        total: total,
+        cursor: is_last ? nil : Cursors.encode({ page: page + 1 })
+      }
+    end
+
+    def page(cursor)
+      return 1 unless cursor
+
+      Cursors.decode(cursor)['page']
     end
   end
 end

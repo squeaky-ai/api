@@ -23,10 +23,6 @@ module Mutations
       # and skip the confirmation steps
       Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site: site)
 
-      # Add the authorization details for the gateway
-      # so that the lambdas can check for auth
-      site.create_authorizer!
-
       site.reload
     end
 

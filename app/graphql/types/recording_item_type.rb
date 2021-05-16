@@ -4,9 +4,10 @@ module Types
   class RecordingItemType < Types::BaseObject
     description 'The recording object'
 
-    field :id, ID, null: false # session_id
+    field :id, ID, null: false
     field :active, Boolean, null: false
-    field :user, String, null: false
+    field :session_id, String, null: false
+    field :viewer_id, String, null: false
     field :locale, String, null: false
     field :duration, Integer, null: false
     field :page_count, Integer, null: false

@@ -47,10 +47,6 @@ RSpec.describe Mutations::SiteDelete, type: :request do
     end
 
     before do
-      site.create_authorizer!
-    end
-
-    before do
       create_team(user: create_user, site: site, role: Team::MEMBER)
       create_team(user: create_user, site: site, role: Team::MEMBER)
       create_team(user: create_user, site: site, role: Team::MEMBER)
@@ -69,10 +65,6 @@ RSpec.describe Mutations::SiteDelete, type: :request do
 
     it 'deletes the team members' do
       expect { subject }.to change { Team.where(site_id: site.id).size }.from(4).to(0)
-    end
-
-    it 'delets the authorizer from Dynamo' do
-      expect { subject }.to change { Authorizer.find(site_id: site.uuid).nil? }.from(false).to(true)
     end
   end
 end

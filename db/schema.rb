@@ -10,14 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_01_133535) do
+ActiveRecord::Schema.define(version: 2021_05_16_072822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "recordings", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "viewer_id", null: false
+    t.string "locale", null: false
+    t.string "start_page", null: false
+    t.string "exit_page", null: false
+    t.string "useragent", null: false
+    t.string "viewport_x", null: false
+    t.string "viewport_y", null: false
+    t.string "page_views", default: [], array: true
+    t.bigint "site_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["site_id"], name: "index_recordings_on_site_id"
+  end
+
   create_table "sites", force: :cascade do |t|
-    t.string "name"
-    t.string "url"
+    t.string "name", null: false
+    t.string "url", null: false
     t.string "avatar"
     t.string "uuid", null: false
     t.integer "plan", null: false
@@ -25,6 +41,7 @@ ActiveRecord::Schema.define(version: 2021_05_01_133535) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["url"], name: "index_sites_on_url", unique: true
+    t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end
 
   create_table "teams", force: :cascade do |t|

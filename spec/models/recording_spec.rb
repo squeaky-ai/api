@@ -1,53 +1,12 @@
 # frozen_string_literal: true
 
-require 'date'
 require 'rails_helper'
-require 'securerandom'
 
 RSpec.describe Recording, type: :model do
-  let(:recording_fixture) do
-    {
-      site_id: SecureRandom.uuid,
-      session_id: Faker::String.random(length: 8),
-      viewer_id: Faker::String.random(length: 8),
-      locale: 'en-gb',
-      start_page: '/',
-      exit_page: '/pricing',
-      useragent: Faker::Internet.user_agent,
-      viewport_x: 1920,
-      viewport_y: 1080,
-      active: false,
-      page_views: Set.new,
-      connected_at: DateTime.now.iso8601,
-      disconnected_at: DateTime.now.iso8601
-    }
-  end
-
-  describe '#serialize' do
-    let(:subject) { described_class.new(recording_fixture) }
-
-    it 'contains the expected key' do
-      expect(subject.serialize.keys).to eq %i[
-        id
-        user
-        active
-        locale
-        duration
-        page_count
-        start_page
-        exit_page
-        useragent
-        viewport_x
-        viewport_y
-      ]
-    end
-  end
-
   describe '#page_count' do
     let(:subject) do
-      fixture = recording_fixture.dup
-      fixture[:page_views] = Set.new(['/', '/pricing', '/pricing/test'])
-      described_class.new(fixture)
+      pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
+      described_class.new(page_views: pages)
     end
 
     it 'returns the number of pages visited' do
@@ -57,10 +16,9 @@ RSpec.describe Recording, type: :model do
 
   describe '#duration' do
     let(:subject) do
-      fixture = recording_fixture.dup
-      fixture[:connected_at] = (DateTime.now - 5 / 86_400.0).iso8601
-      fixture[:disconnected_at] = DateTime.now.iso8601
-      described_class.new(fixture)
+      created_at = (DateTime.now - 5 / 86_400.0)
+      updated_at = DateTime.now
+      described_class.new(created_at: created_at, updated_at: updated_at)
     end
 
     it 'returns the difference between the connected and disconnected dates' do
