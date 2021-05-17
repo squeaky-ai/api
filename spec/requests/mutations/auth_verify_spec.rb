@@ -15,7 +15,7 @@ RSpec.describe Mutations::AuthVerify, type: :request do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
 
-    let(:subject) do
+    subject do
       variables = { email: email, token: token }
       graphql_request(auth_verify_mutation, variables, nil)
     end
@@ -29,7 +29,7 @@ RSpec.describe Mutations::AuthVerify, type: :request do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
 
-    let(:subject) do
+    subject do
       variables = { email: email, token: token }
       graphql_request(auth_verify_mutation, variables, nil)
     end
@@ -46,7 +46,7 @@ RSpec.describe Mutations::AuthVerify, type: :request do
       let(:user) { create_user }
       let(:token) { '123456' }
 
-      let(:subject) do
+      subject do
         variables = { email: user.email, token: token }
         graphql_request(auth_verify_mutation, variables, nil)
       end
@@ -75,7 +75,7 @@ RSpec.describe Mutations::AuthVerify, type: :request do
       let(:email) { Faker::Internet.email }
       let(:token) { '123456' }
 
-      let(:subject) do
+      subject do
         variables = { email: email, token: token }
         graphql_request(auth_verify_mutation, variables, nil)
       end

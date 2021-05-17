@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Team, type: :model do
   describe '#owner?' do
     context 'when the user is the owner' do
-      let(:subject) { described_class.new(role: Team::OWNER) }
+      subject { described_class.new(role: Team::OWNER) }
 
       it 'returns true' do
         expect(subject.owner?).to be true
@@ -13,7 +13,7 @@ RSpec.describe Team, type: :model do
     end
 
     context 'when the user is not the owner' do
-      let(:subject) { described_class.new(role: Team::ADMIN) }
+      subject { described_class.new(role: Team::ADMIN) }
 
       it 'returns false' do
         expect(subject.owner?).to be false
@@ -23,7 +23,7 @@ RSpec.describe Team, type: :model do
 
   describe '#admin?' do
     context 'when the user is the owner' do
-      let(:subject) { described_class.new(role: Team::OWNER) }
+      subject { described_class.new(role: Team::OWNER) }
 
       it 'returns true' do
         expect(subject.admin?).to be true
@@ -31,7 +31,7 @@ RSpec.describe Team, type: :model do
     end
 
     context 'when the user is an admin' do
-      let(:subject) { described_class.new(role: Team::ADMIN) }
+      subject { described_class.new(role: Team::ADMIN) }
 
       it 'returns true' do
         expect(subject.admin?).to be true
@@ -39,7 +39,7 @@ RSpec.describe Team, type: :model do
     end
 
     context 'when the user is a member' do
-      let(:subject) { described_class.new(role: Team::MEMBER) }
+      subject { described_class.new(role: Team::MEMBER) }
 
       it 'returns false' do
         expect(subject.admin?).to be false
@@ -49,7 +49,7 @@ RSpec.describe Team, type: :model do
 
   describe '#pending?' do
     context 'when the user has accepted the invite' do
-      let(:subject) { described_class.new(status: Team::ACCEPTED) }
+      subject { described_class.new(status: Team::ACCEPTED) }
 
       it 'returns false' do
         expect(subject.pending?).to be false
@@ -57,7 +57,7 @@ RSpec.describe Team, type: :model do
     end
 
     context 'when the user has not accepted the invite' do
-      let(:subject) { described_class.new(status: Team::PENDING) }
+      subject { described_class.new(status: Team::PENDING) }
 
       it 'returns true' do
         expect(subject.pending?).to be true

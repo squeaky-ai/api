@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Mutations::SiteMutation do
   describe '#ready?' do
     context 'when the user does not exist in the context' do
-      let(:subject) do
+      subject do
         context = { current_user: nil }
         described_class.new(object: {}, context: context, field: '')
       end
@@ -18,7 +18,7 @@ RSpec.describe Mutations::SiteMutation do
     context 'when the user exists but the site does not' do
       let(:user) { double('user', { sites: [] }) }
 
-      let(:subject) do
+      subject do
         context = { current_user: user }
         described_class.new(object: {}, context: context, field: '')
       end
@@ -33,7 +33,7 @@ RSpec.describe Mutations::SiteMutation do
         let(:site) { double('site', id: 1) }
         let(:user) { double('user', sites: [site]) }
 
-        let(:subject) do
+        subject do
           allow(user).to receive(:admin_for?).and_return(false)
 
           context = { current_user: user }
@@ -49,7 +49,7 @@ RSpec.describe Mutations::SiteMutation do
         let(:site) { double('site', id: 1) }
         let(:user) { double('user', { sites: [site] }) }
 
-        let(:subject) do
+        subject do
           allow(user).to receive(:admin_for?).and_return(true)
 
           context = { current_user: user }

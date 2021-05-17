@@ -26,7 +26,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:email) { Faker::Internet.email }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, email: email, role: Team::ADMIN }
       graphql_request(team_invite_mutation, variables, user)
     end
@@ -63,7 +63,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
-      let(:subject) do
+      subject do
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 
@@ -90,7 +90,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
-      let(:subject) do
+      subject do
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 

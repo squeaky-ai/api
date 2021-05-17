@@ -6,7 +6,8 @@ RSpec.describe AuthMailer, type: :mailer do
   describe 'login' do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
-    let(:subject) { described_class.login(email, token) }
+
+    subject { described_class.login(email, token) }
 
     it 'renders the headers' do
       expect(subject.subject).to eq 'Log in to Squeaky.ai'
@@ -22,7 +23,8 @@ RSpec.describe AuthMailer, type: :mailer do
   describe 'signup' do
     let(:email) { Faker::Internet.email }
     let(:token) { '123456' }
-    let(:subject) { described_class.signup(email, token) }
+
+    subject { described_class.signup(email, token) }
 
     it 'renders the headers' do
       expect(subject.subject).to eq 'Your sign-up code for Squeaky.ai'

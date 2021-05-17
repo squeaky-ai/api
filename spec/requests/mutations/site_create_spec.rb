@@ -32,7 +32,7 @@ RSpec.describe Mutations::SiteCreate, type: :request do
     let(:url) { Faker::Internet.url }
     let(:user) { create_user }
 
-    let(:subject) do
+    subject do
       variables = { url: url, name: Faker::Company.name }
       graphql_request(site_create_mutation, variables, user)
     end
@@ -49,7 +49,7 @@ RSpec.describe Mutations::SiteCreate, type: :request do
       let(:url) { 'sdfsjkldfjsdklfsd' }
       let(:user) { create_user }
 
-      let(:subject) do
+      subject do
         variables = { url: url, name: Faker::Company.name }
         graphql_request(site_create_mutation, variables, user)
       end
@@ -64,7 +64,7 @@ RSpec.describe Mutations::SiteCreate, type: :request do
       let(:name) { Faker::Company.name }
       let(:user) { create_user }
 
-      let(:subject) do
+      subject do
         variables = { url: url, name: name }
         graphql_request(site_create_mutation, variables, user)
       end

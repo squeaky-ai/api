@@ -26,7 +26,7 @@ RSpec.describe Mutations::TeamInviteCancel, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:team_id) { 234 }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, team_id: team_id }
       graphql_request(team_invite_cancel_mutation, variables, user)
     end
@@ -47,7 +47,7 @@ RSpec.describe Mutations::TeamInviteCancel, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, team_id: team_member.id }
       graphql_request(team_invite_cancel_mutation, variables, user)
     end
@@ -70,7 +70,7 @@ RSpec.describe Mutations::TeamInviteCancel, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:team_member) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, team_id: team_member.id }
       graphql_request(team_invite_cancel_mutation, variables, user)
     end

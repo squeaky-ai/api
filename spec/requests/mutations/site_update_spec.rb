@@ -19,7 +19,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
 
-      let(:subject) do
+      subject do
         variables = { site_id: site.id, url: url }
         graphql_request(site_update_mutation, variables, user)
       end
@@ -36,7 +36,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
 
-      let(:subject) do
+      subject do
         variables = { site_id: site.id, url: url }
         graphql_request(site_update_mutation, variables, user)
       end
@@ -51,7 +51,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
 
-      let(:subject) do
+      subject do
         variables = { site_id: site.id, url: url }
         graphql_request(site_update_mutation, variables, user)
       end
@@ -72,7 +72,7 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, name: name }
       graphql_request(site_update_mutation, variables, user)
     end

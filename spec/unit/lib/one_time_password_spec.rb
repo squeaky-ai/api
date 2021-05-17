@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe OneTimePassword do
   describe 'initialize' do
-    let(:subject) { OneTimePassword.new('foo@bar.com') }
+    subject { OneTimePassword.new('foo@bar.com') }
 
     it 'instantiates an instance of the class' do
       expect(subject).to be_a OneTimePassword
@@ -12,7 +12,7 @@ RSpec.describe OneTimePassword do
   end
 
   describe '#create!' do
-    let(:subject) { OneTimePassword.new('foo@bar.com') }
+    subject { OneTimePassword.new('foo@bar.com') }
 
     before do
       allow(Redis.current).to receive(:set)
@@ -32,7 +32,7 @@ RSpec.describe OneTimePassword do
 
   describe '#verify' do
     context 'when the token does not exist' do
-      let(:subject) { OneTimePassword.new('foo@bar.com') }
+      subject { OneTimePassword.new('foo@bar.com') }
 
       before do
         allow(Redis.current).to receive(:get).and_return(nil)
@@ -45,7 +45,7 @@ RSpec.describe OneTimePassword do
     end
 
     context 'when the token exists but does not match' do
-      let(:subject) { OneTimePassword.new('foo@bar.com') }
+      subject { OneTimePassword.new('foo@bar.com') }
 
       before do
         allow(Redis.current).to receive(:get).and_return('123456')
@@ -58,7 +58,7 @@ RSpec.describe OneTimePassword do
     end
 
     context 'when the token exists and it matches' do
-      let(:subject) { OneTimePassword.new('foo@bar.com') }
+      subject { OneTimePassword.new('foo@bar.com') }
 
       before do
         allow(Redis.current).to receive(:get).and_return('123456')
@@ -72,7 +72,7 @@ RSpec.describe OneTimePassword do
   end
 
   describe '#delete' do
-    let(:subject) { OneTimePassword.new('foo@bar.com') }
+    subject { OneTimePassword.new('foo@bar.com') }
 
     before do
       allow(Redis.current).to receive(:del)

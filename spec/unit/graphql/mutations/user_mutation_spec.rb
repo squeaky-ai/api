@@ -7,7 +7,7 @@ RSpec.describe Mutations::UserMutation do
     context 'when the user exists in the context' do
       let(:user) { double('user') }
 
-      let(:subject) do
+      subject do
         context = { current_user: user }
         described_class.new(object: {}, context: context, field: '')
       end
@@ -21,7 +21,7 @@ RSpec.describe Mutations::UserMutation do
     end
 
     context 'when the user does not exist in the context' do
-      let(:subject) do
+      subject do
         context = { current_user: nil }
         described_class.new(object: {}, context: context, field: '')
       end

@@ -15,7 +15,7 @@ RSpec.describe Mutations::AuthRequest, type: :request do
     context 'and the user does not have an account' do
       let(:email) { Faker::Internet.email }
 
-      let(:subject) do
+      subject do
         variables = { email: email, auth_type: 'LOGIN' }
         graphql_request(auth_request_mutation, variables, nil)
       end
@@ -29,7 +29,7 @@ RSpec.describe Mutations::AuthRequest, type: :request do
       let(:user) { create_user }
       let(:token) { '123456' }
 
-      let(:subject) do
+      subject do
         variables = { email: user.email, auth_type: 'LOGIN' }
         graphql_request(auth_request_mutation, variables, nil)
       end
@@ -63,7 +63,7 @@ RSpec.describe Mutations::AuthRequest, type: :request do
       let(:email) { Faker::Internet.email }
       let(:token) { '123456' }
 
-      let(:subject) do
+      subject do
         variables = { email: email, auth_type: 'SIGNUP' }
         graphql_request(auth_request_mutation, variables, nil)
       end
@@ -94,7 +94,7 @@ RSpec.describe Mutations::AuthRequest, type: :request do
     context 'and the user has an account' do
       let(:user) { create_user }
 
-      let(:subject) do
+      subject do
         variables = { email: user.email, auth_type: 'SIGNUP' }
         graphql_request(auth_request_mutation, variables, nil)
       end

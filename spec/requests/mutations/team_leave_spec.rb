@@ -15,7 +15,7 @@ RSpec.describe Mutations::TeamLeave, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id }
       graphql_request(team_leave_mutation, variables, user)
     end
@@ -34,7 +34,7 @@ RSpec.describe Mutations::TeamLeave, type: :request do
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id }
       graphql_request(team_leave_mutation, variables, user)
     end

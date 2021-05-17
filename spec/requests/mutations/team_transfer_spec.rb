@@ -25,7 +25,7 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, team_id: 4234 }
       graphql_request(team_transfer_mutation, variables, user)
     end
@@ -41,7 +41,7 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
     let(:site) { create_site_and_team(user: create_user) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id, team_id: team.id }
       graphql_request(team_transfer_mutation, variables, user)
     end
@@ -61,7 +61,7 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
     let(:new_owner) { create_user }
     let(:new_owner_team) { create_team(user: new_owner, site: site, role: Team::ADMIN) }
 
-    let(:subject) do
+    subject do
       graphql_request(team_transfer_mutation, { site_id: site.id, team_id: new_owner_team.id }, old_owner_team.user)
     end
 

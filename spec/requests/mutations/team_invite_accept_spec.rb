@@ -25,7 +25,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
   context 'when the token is not valid' do
     let(:token) { 'sdfdsfdsfdsf' }
 
-    let(:subject) do
+    subject do
       variables = { token: token }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
@@ -40,7 +40,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:site) { create_site }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }, 1.month.ago) }
 
-    let(:subject) do
+    subject do
       variables = { token: token }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
@@ -55,7 +55,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:site) { create_site }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }) } # The team won't exist
 
-    let(:subject) do
+    subject do
       variables = { token: token }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
@@ -72,7 +72,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
     let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: team.id }) }
 
-    let(:subject) do
+    subject do
       variables = { token: token }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end

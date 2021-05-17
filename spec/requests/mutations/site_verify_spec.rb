@@ -16,7 +16,7 @@ RSpec.describe Mutations::SiteVerify, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id }
       graphql_request(site_verify_mutation, variables, user)
     end
@@ -42,7 +42,7 @@ RSpec.describe Mutations::SiteVerify, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { site_id: site.id }
       graphql_request(site_verify_mutation, variables, user)
     end

@@ -38,7 +38,8 @@ RSpec.describe Site, type: :model do
   describe '#owner_name' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:subject) { site.owner_name }
+
+    subject { site.owner_name }
 
     it 'returns the owners full name' do
       expect(subject).to eq "#{user.first_name} #{user.last_name}"
@@ -47,7 +48,8 @@ RSpec.describe Site, type: :model do
 
   describe '#admins' do
     let(:site) { create_site }
-    let(:subject) { site.admins }
+
+    subject { site.admins }
 
     before do
       create_team(user: create_user, site: site, role: Team::MEMBER)
@@ -65,7 +67,8 @@ RSpec.describe Site, type: :model do
     let(:user) { create_user }
     let(:site) { create_site }
     let(:team) { create_team(user: user, site: site, role: Team::OWNER) }
-    let(:subject) { site.owner }
+
+    subject { site.owner }
 
     before { team }
 
@@ -79,7 +82,8 @@ RSpec.describe Site, type: :model do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
       let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN) }
-      let(:subject) { site.member(team.id) }
+
+      subject { site.member(team.id) }
 
       it 'returns the team member' do
         expect(subject).to eq team
@@ -89,7 +93,8 @@ RSpec.describe Site, type: :model do
     context 'when a member does not exist' do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
-      let(:subject) { site.member(423) }
+
+      subject { site.member(423) }
 
       it 'returns nil' do
         expect(subject).to be nil

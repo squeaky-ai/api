@@ -37,7 +37,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { id: site.id, first: 10 }
       graphql_request(site_recordings_query, variables, user)
     end
@@ -63,7 +63,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:subject) do
+    subject do
       variables = { id: site.id, first: 10 }
       graphql_request(site_recordings_query, variables, user)
     end
@@ -94,7 +94,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     before { 15.times { create_recording(site: site) } }
 
     context 'when the first request is made' do
-      let(:subject) do
+      subject do
         variables = { id: site.id, first: 10, cursor: nil }
         graphql_request(site_recordings_query, variables, user)
       end
@@ -113,7 +113,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     end
 
     context 'when the second request is made' do
-      let(:subject) do
+      subject do
         variables = { id: site.id, first: 10, cursor: 'eyJwYWdlIjoyfQ==' }
         graphql_request(site_recordings_query, variables, user)
       end
