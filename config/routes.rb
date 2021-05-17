@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   scope '/api' do
     get '/ping', to: 'ping#index'
     post '/graphql', to: 'graphql#execute'
+
+    mount ActionCable.server => '/cable'
   end
 end

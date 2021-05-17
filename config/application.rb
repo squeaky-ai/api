@@ -13,7 +13,7 @@ require 'action_mailer/railtie'
 require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
-# require 'sprockets/railtie'
+require 'action_cable/engine'
 require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -40,5 +40,8 @@ module Squeaky
     config.api_only = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.action_cable.disable_request_forgery_protection = true
+    config.action_cable.url = '/cable'
   end
 end
