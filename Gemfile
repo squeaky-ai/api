@@ -8,6 +8,7 @@ ruby '3.0.0'
 gem 'aws-sdk-rails', '~> 3'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'graphql'
+gem 'graphql_playground-rails'
 gem 'jwt'
 gem 'kaminari'
 gem 'pg', '~> 1.1'
@@ -22,7 +23,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'graphql_playground-rails'
   gem 'listen', '~> 3.3'
   gem 'spring'
 end
