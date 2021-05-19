@@ -11,7 +11,9 @@ module Mutations
     argument :email, String, required: true
     argument :token, String, required: true
 
-    field :jwt, String, null: true
+    field :jwt, String, null: false
+    field :user, Types::UserType, null: false
+    field :expires_at, String, null: false
 
     def resolve(email:, token:)
       user = User.find_by(email: email)
@@ -25,8 +27,9 @@ module Mutations
       user ||= User.create(email: email)
       user.update(last_signed_in_at: Time.now)
 
-      jwt = JsonWebToken.encode(id: user.id)
-      { jwt: jwt }
+      exp = 1.month.from_now
+      jwt = JsonWebToken.encode(id: user.id, exp: exp)
+      { jwt: jwt, user: user, expires_at: exp.iso8601 }
     end
   end
 end

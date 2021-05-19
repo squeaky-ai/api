@@ -6,6 +6,11 @@ auth_verify_mutation = <<-GRAPHQL
   mutation($email: String!, $token: String!) {
     authVerify(input: { email: $email, token: $token }) {
       jwt
+      user {
+        id
+        email
+      }
+      expiresAt
     }
   }
 GRAPHQL
@@ -60,6 +65,19 @@ RSpec.describe Mutations::AuthVerify, type: :request do
         expect(subject['data']['authVerify']['jwt']).not_to be nil
       end
 
+      it 'returns the user' do
+        expect(subject['data']['authVerify']['user']).to eq(
+          {
+            'id' => user.id.to_s,
+            'email' => user.email
+          }
+        )
+      end
+
+      it 'returns the expiry' do
+        expect(subject['data']['authVerify']['expiresAt']).not_to be nil
+      end
+
       it 'sets the last sign in time' do
         subject
         expect(user.reload.last_signed_in_at).not_to be nil
@@ -87,6 +105,10 @@ RSpec.describe Mutations::AuthVerify, type: :request do
 
       it 'returns a jwt' do
         expect(subject['data']['authVerify']['jwt']).not_to be nil
+      end
+
+      it 'returns the created user' do
+        expect(subject['data']['authVerify']['user']['email']).to eq email
       end
 
       it 'does create a user' do
