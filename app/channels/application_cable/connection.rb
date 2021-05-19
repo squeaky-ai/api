@@ -35,7 +35,7 @@ module ApplicationCable
 
     def verified_user(site)
       {
-        site: site,
+        site_id: site.id,
         viewer_id: request.params['viewer_id'],
         session_id: request.params['session_id']
       }

@@ -40,7 +40,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 
       expect(connection.current_user).to eq(
         {
-          site: site,
+          site_id: site.id,
           viewer_id: viewer_id,
           session_id: session_id
         }
