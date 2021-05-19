@@ -13,6 +13,7 @@ gem 'jwt'
 gem 'kaminari'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
+gem 'rack-cors'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.1'
 gem 'redis', '~> 4.0'
 
