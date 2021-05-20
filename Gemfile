@@ -9,6 +9,7 @@ gem 'aws-sdk-rails', '~> 3'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'graphql'
 gem 'graphql_playground-rails'
+gem 'json-schema'
 gem 'jwt'
 gem 'kaminari'
 gem 'pg', '~> 1.1'

@@ -27,12 +27,11 @@ class EventChannel < ApplicationCable::Channel
   #   data: '{"action":"page_view"}'
   # }
   def event(data)
-    puts '@@', data
-  end
-
-  private
-
-  def key
-    "#{current_user[:site_id]}:#{current_user[:session_id]}:#{current_user[:viewer_id]}"
+    # Given that this part of the site is very write
+    # heavy we hand it off to the job to be processed
+    # in it's own time
+    data.delete('action')
+    event = Recordings::Event.validate!(data)
+    EventHandlerJob.perform_later({ event: event, user: current_user }.deep_symbolize_keys!)
   end
 end
