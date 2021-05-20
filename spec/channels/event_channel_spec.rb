@@ -52,7 +52,32 @@ RSpec.describe EventChannel, type: :channel do
     end
   end
 
-  describe 'when an event is published' do
+  describe 'when a page_view is published' do
+    let(:site_id) { Faker::Number.number(digits: 10) }
+    let(:viewer_id) { SecureRandom.uuid }
+    let(:session_id) { SecureRandom.uuid }
+    let(:event) { new_recording_page_view }
+
+    let(:current_user) do
+      {
+        site_id: site_id,
+        viewer_id: viewer_id,
+        session_id: session_id
+      }
+    end
+
+    before { allow(Recordings::PageViewJob).to receive(:perform_later) }
+
+    it 'hands the processing off to the PageView job' do
+      stub_connection current_user: current_user
+      subscribe
+
+      perform :page_view, event
+      expect(Recordings::PageViewJob).to have_received(:perform_later).with({ **event, **current_user })
+    end
+  end
+
+  describe 'when a event is published' do
     let(:site_id) { Faker::Number.number(digits: 10) }
     let(:viewer_id) { SecureRandom.uuid }
     let(:session_id) { SecureRandom.uuid }
@@ -66,19 +91,14 @@ RSpec.describe EventChannel, type: :channel do
       }
     end
 
-    before { allow(EventHandlerJob).to receive(:perform_later) }
+    before { allow(Recordings::EventJob).to receive(:perform_later) }
 
-    it 'hands the processing off to the event_handler job' do
+    it 'hands the processing off to the Event job' do
       stub_connection current_user: current_user
       subscribe
 
       perform :event, event
-      expect(EventHandlerJob).to have_received(:perform_later).with(
-        {
-          context: current_user,
-          event: event
-        }
-      )
+      expect(Recordings::EventJob).to have_received(:perform_later).with({ **event, **current_user })
     end
   end
 end

@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe EventHandlerJob, type: :job do
+RSpec.describe Recordings::PageViewJob, type: :job do
   include ActiveJob::TestHelper
 
-  context 'when the event is the first of this session' do
+  context 'when the PageView is the first of this session' do
     let(:site) { create_site }
-    let(:event) { new_recording_event }
+    let(:event) { new_recording_page_view }
 
     let(:context) do
       {
@@ -17,7 +17,7 @@ RSpec.describe EventHandlerJob, type: :job do
       }
     end
 
-    subject { described_class.perform_later({ event: event, context: context }) }
+    subject { described_class.perform_later({ **event, **context }) }
 
     it 'creates the recording' do
       expect { perform_enqueued_jobs { subject } }.to change { site.reload.recordings.size }.from(0).to(1)
@@ -43,7 +43,7 @@ RSpec.describe EventHandlerJob, type: :job do
     let(:site) { create_site }
     let(:viewer_id) { SecureRandom.uuid }
     let(:session_id) { SecureRandom.uuid }
-    let(:event) { new_recording_event({ href: '/contact' }) }
+    let(:event) { new_recording_page_view({ href: '/contact' }) }
 
     let(:context) do
       {
@@ -53,7 +53,7 @@ RSpec.describe EventHandlerJob, type: :job do
       }
     end
 
-    subject { described_class.perform_later({ event: event, context: context }) }
+    subject { described_class.perform_later({ **event, **context }) }
 
     before do
       args = { session_id: session_id, viewer_id: viewer_id }

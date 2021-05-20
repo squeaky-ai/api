@@ -36,19 +36,24 @@ module Helpers
     site
   end
 
-  def new_recording_event(args = {})
+  def new_recording_page_view(args = {})
     default = {
       href: '/',
       locale: 'en-gb',
-      position: 0,
       useragent: Faker::Internet.user_agent,
-      timestamp: 0,
+      viewport_x: 0,
+      viewport_y: 0
+    }
+    { **default, **args }
+  end
+
+  def new_recording_event(args = {})
+    default = {
+      position: 0,
       mouse_x: 0,
       mouse_y: 0,
       scroll_x: 0,
-      scroll_y: 0,
-      viewport_x: 0,
-      viewport_y: 0
+      scroll_y: 0
     }
     { **default, **args }
   end

@@ -24,14 +24,22 @@ class EventChannel < ApplicationCable::Channel
   # {
   #   command: 'message',
   #   identifier: '{"channel":"EventChannel"}'
-  #   data: '{"action":"page_view"}'
+  #   data: '{"action":"page_view", "href": "/", "locale": "en-gb", "useragent": "...", "timestamp": 000000000}'
+  # }
+  def page_view(data)
+    data.delete('action')
+    Recordings::PageView.validate!(data)
+    Recordings::PageViewJob.perform_later({ **data, **current_user }.deep_symbolize_keys!)
+  end
+
+  # {
+  #   command: 'message',
+  #   identifier: '{"channel":"EventChannel"}'
+  #   data: '{"action":"event", "position": 0, "mouse_x": 0, "mouse_y": 0, ...}'
   # }
   def event(data)
-    # Given that this part of the site is very write
-    # heavy we hand it off to the job to be processed
-    # in it's own time
     data.delete('action')
-    event = Recordings::Event.validate!(data)
-    EventHandlerJob.perform_later({ event: event, context: current_user }.deep_symbolize_keys!)
+    Recordings::Event.validate!(data)
+    Recordings::EventJob.perform_later({ **data, **current_user }.deep_symbolize_keys!)
   end
 end

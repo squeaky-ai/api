@@ -3,38 +3,37 @@
 require 'json-schema'
 
 module Recordings
-  # Validate that incoming events from the websocket match
-  # the above schema before they are handed over to the job
+  # Validate that the incoming event from the websocket
+  # matches the above schema before they are handed over
+  # to the job. Also offer methods to get and receive the
+  # events from redis
   class Event
     SCHEMA = {
       type: 'object',
-      required: %w[
-        href
-        locale
-        position
-        useragent
-        timestamp
-        mouse_x
-        mouse_y
-        scroll_x
-        scroll_y
-        viewport_x
-        viewport_y
-      ],
+      required: %w[mouse_x mouse_y scroll_x scroll_y position],
       properties: {
-        href: { type: 'string' },
-        locale: { type: 'string' },
-        position: { type: 'integer' },
-        useragent: { type: 'string' },
-        timestamp: { type: 'integer' },
         mouse_x: { type: 'integer' },
         mouse_y: { type: 'integer' },
         scroll_x: { type: 'integer' },
         scroll_y: { type: 'integer' },
-        viewport_x: { type: 'integer' },
-        viewport_y: { type: 'integer' }
+        position: { type: 'integer' }
       }
     }.freeze
+
+    def initialize(context)
+      @site_id = context[:site_id]
+      @viewer_id = context[:viewer_id]
+      @session_id = context[:session_id]
+    end
+
+    def add(event)
+      Redis.current.rpush(key, event.to_json)
+    end
+
+    def list(start, stop)
+      results = Redis.current.lrange(key, start, stop)
+      results.map { |r| JSON.parse(r) }
+    end
 
     def self.validate!(event)
       JSON::Validator.validate!(Event::SCHEMA, event, strict: true)
@@ -42,6 +41,12 @@ module Recordings
     rescue JSON::Schema::ValidationError => e
       Rails.logger.warn e
       raise
+    end
+
+    private
+
+    def key
+      "#{@site_id}:#{@session_id}:#{@viewer_id}"
     end
   end
 end
