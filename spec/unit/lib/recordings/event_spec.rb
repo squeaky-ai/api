@@ -39,22 +39,7 @@ RSpec.describe Recordings::Event do
     end
 
     context 'when the data is valid but has extra stuff' do
-      let(:event) do
-        {
-          href: '/',
-          locale: 'en-gb',
-          position: 0,
-          useragent: Faker::Internet.user_agent,
-          timestamp: 0,
-          mouse_x: 0,
-          mouse_y: 0,
-          scroll_x: 0,
-          scroll_y: 0,
-          viewport_x: 0,
-          viewport_y: 0,
-          should_not_exist: '!!'
-        }
-      end
+      let(:event) { new_recording_event({ should_not_exist: '!!' }) }
 
       subject { described_class.validate!(event) }
 
@@ -64,21 +49,7 @@ RSpec.describe Recordings::Event do
     end
 
     context 'when the data is valid' do
-      let(:event) do
-        {
-          href: '/',
-          locale: 'en-gb',
-          position: 0,
-          useragent: Faker::Internet.user_agent,
-          timestamp: 0,
-          mouse_x: 0,
-          mouse_y: 0,
-          scroll_x: 0,
-          scroll_y: 0,
-          viewport_x: 0,
-          viewport_y: 0
-        }
-      end
+      let(:event) { new_recording_event }
 
       subject { described_class.validate!(event) }
 

@@ -36,6 +36,23 @@ module Helpers
     site
   end
 
+  def new_recording_event(args = {})
+    default = {
+      href: '/',
+      locale: 'en-gb',
+      position: 0,
+      useragent: Faker::Internet.user_agent,
+      timestamp: 0,
+      mouse_x: 0,
+      mouse_y: 0,
+      scroll_x: 0,
+      scroll_y: 0,
+      viewport_x: 0,
+      viewport_y: 0
+    }
+    { **default, **args }
+  end
+
   def create_recording(args = {}, site:)
     default = {
       session_id: SecureRandom.uuid,

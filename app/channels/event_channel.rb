@@ -32,6 +32,6 @@ class EventChannel < ApplicationCable::Channel
     # in it's own time
     data.delete('action')
     event = Recordings::Event.validate!(data)
-    EventHandlerJob.perform_later({ event: event, user: current_user }.deep_symbolize_keys!)
+    EventHandlerJob.perform_later({ event: event, context: current_user }.deep_symbolize_keys!)
   end
 end

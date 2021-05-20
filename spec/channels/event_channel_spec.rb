@@ -56,28 +56,13 @@ RSpec.describe EventChannel, type: :channel do
     let(:site_id) { Faker::Number.number(digits: 10) }
     let(:viewer_id) { SecureRandom.uuid }
     let(:session_id) { SecureRandom.uuid }
+    let(:event) { new_recording_event }
 
     let(:current_user) do
       {
         site_id: site_id,
         viewer_id: viewer_id,
         session_id: session_id
-      }
-    end
-
-    let(:event) do
-      {
-        href: '/',
-        locale: 'en-gb',
-        position: 0,
-        useragent: Faker::Internet.user_agent,
-        timestamp: 0,
-        mouse_x: 0,
-        mouse_y: 0,
-        scroll_x: 0,
-        scroll_y: 0,
-        viewport_x: 0,
-        viewport_y: 0
       }
     end
 
@@ -90,7 +75,7 @@ RSpec.describe EventChannel, type: :channel do
       perform :event, event
       expect(EventHandlerJob).to have_received(:perform_later).with(
         {
-          user: current_user,
+          context: current_user,
           event: event
         }
       )
