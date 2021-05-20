@@ -17,6 +17,8 @@ module Types
       limit, page = parse_pagination(arguments)
       recordings = object.object.recordings.page(page).per(limit)
 
+      # TODO: Add query
+
       is_last = recordings.last_page? || recordings.out_of_range?
 
       {

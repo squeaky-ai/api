@@ -8,10 +8,12 @@ class Team < ApplicationRecord
   belongs_to :site
   belongs_to :user
 
+  # Roles
   OWNER = 2
   ADMIN = 1
   MEMBER = 0
 
+  # Statuses
   PENDING = 1
   ACCEPTED = 0
 

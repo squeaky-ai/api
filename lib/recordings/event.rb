@@ -35,6 +35,10 @@ module Recordings
       results.map { |r| JSON.parse(r) }
     end
 
+    def size
+      Redis.current.llen(key)
+    end
+
     def self.validate!(event)
       JSON::Validator.validate!(Event::SCHEMA, event, strict: true)
       event

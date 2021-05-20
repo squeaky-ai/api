@@ -80,6 +80,35 @@ RSpec.describe Recordings::Event do
     end
   end
 
+  describe '#size' do
+    let(:site_id) { Faker::Number.number(digits: 10) }
+    let(:viewer_id) { SecureRandom.uuid }
+    let(:session_id) { SecureRandom.uuid }
+
+    let(:context) do
+      {
+        site_id: site_id,
+        viewer_id: viewer_id,
+        session_id: session_id
+      }
+    end
+
+    subject { described_class.new(context).size }
+
+    before do
+      allow(Redis.current).to receive(:llen).and_return 5
+    end
+
+    it 'gets length of the items in the redis list' do
+      expect(Redis.current).to receive(:llen).with("#{site_id}:#{session_id}:#{viewer_id}")
+      subject
+    end
+
+    it 'returns the value from redis' do
+      expect(subject).to eq 5
+    end
+  end
+
   describe '.validate!' do
     context 'when the data is totally not valid' do
       let(:event) do

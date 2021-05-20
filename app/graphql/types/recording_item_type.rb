@@ -16,6 +16,7 @@ module Types
     field :useragent, String, null: false
     field :viewport_x, Integer, null: false
     field :viewport_y, Integer, null: false
+    field :events, EventType, null: false, extensions: [EventExtension]
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
