@@ -70,6 +70,18 @@ module Helpers
       viewport_y: 1080,
       page_views: ['/']
     }
-    site.recordings << Recording.create({ **default, **args })
+    recording = Recording.create({ **default, **args })
+    site.recordings << recording
+    recording
+  end
+
+  def create_event(args = {}, recording:)
+    event = Recordings::Event.new(
+      site_id: recording.site.id,
+      viewer_id: recording.viewer_id,
+      session_id: recording.session_id
+    )
+
+    event.add(new_recording_event(args))
   end
 end

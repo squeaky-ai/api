@@ -53,8 +53,8 @@ RSpec.describe Recordings::Event do
     let(:site_id) { Faker::Number.number(digits: 10) }
     let(:viewer_id) { SecureRandom.uuid }
     let(:session_id) { SecureRandom.uuid }
-    let(:start) { double('start') }
-    let(:stop) { double('stop') }
+    let(:start) { 0 }
+    let(:stop) { 10 }
 
     let(:context) do
       {
@@ -71,7 +71,7 @@ RSpec.describe Recordings::Event do
     end
 
     it 'gets a range of events from the redis list' do
-      expect(Redis.current).to receive(:lrange).with("#{site_id}:#{session_id}:#{viewer_id}", start, stop)
+      expect(Redis.current).to receive(:lrange).with("#{site_id}:#{session_id}:#{viewer_id}", start, stop - 1)
       subject
     end
 

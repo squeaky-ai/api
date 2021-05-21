@@ -19,12 +19,12 @@ module Types
       event = Recordings::Event.new(context)
 
       size = event.size
-      events = event.list(offset, limit - 1)
+      events = event.list(offset, offset + limit)
       is_last = offset + limit >= size
 
       {
         items: events,
-        pagination: build_pagination(is_last, offset, size)
+        pagination: build_pagination(is_last, limit + offset, size)
       }
     end
 

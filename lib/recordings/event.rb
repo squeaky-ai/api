@@ -31,7 +31,8 @@ module Recordings
     end
 
     def list(start, stop)
-      results = Redis.current.lrange(key, start, stop)
+      # Redis includes the right element, so subtract 1
+      results = Redis.current.lrange(key, start, stop - 1)
       results.map { |r| JSON.parse(r) }
     end
 
