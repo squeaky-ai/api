@@ -51,7 +51,7 @@ module Recordings
     private
 
     def key
-      "#{@site_id}:#{@session_id}:#{@viewer_id}"
+      "event:#{@site_id}:#{@session_id}:#{@viewer_id}"
     end
   end
 end

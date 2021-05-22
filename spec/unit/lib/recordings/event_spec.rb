@@ -44,7 +44,7 @@ RSpec.describe Recordings::Event do
     end
 
     it 'pushes the event to the redis list' do
-      expect(Redis.current).to receive(:rpush).with("#{site_id}:#{session_id}:#{viewer_id}", event.to_json)
+      expect(Redis.current).to receive(:rpush).with("event:#{site_id}:#{session_id}:#{viewer_id}", event.to_json)
       subject
     end
   end
@@ -71,7 +71,7 @@ RSpec.describe Recordings::Event do
     end
 
     it 'gets a range of events from the redis list' do
-      expect(Redis.current).to receive(:lrange).with("#{site_id}:#{session_id}:#{viewer_id}", start, stop - 1)
+      expect(Redis.current).to receive(:lrange).with("event:#{site_id}:#{session_id}:#{viewer_id}", start, stop - 1)
       subject
     end
 
@@ -100,7 +100,7 @@ RSpec.describe Recordings::Event do
     end
 
     it 'gets length of the items in the redis list' do
-      expect(Redis.current).to receive(:llen).with("#{site_id}:#{session_id}:#{viewer_id}")
+      expect(Redis.current).to receive(:llen).with("event:#{site_id}:#{session_id}:#{viewer_id}")
       subject
     end
 

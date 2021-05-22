@@ -19,7 +19,7 @@ module Recordings
       # All of these can be set regardless, overriding the
       # old values makes no difference
       recording.attributes = {
-        locale: payload[:locale],
+        locale: payload[:locale].downcase,
         exit_page: payload[:href],
         useragent: payload[:useragent],
         viewport_x: payload[:viewport_x],

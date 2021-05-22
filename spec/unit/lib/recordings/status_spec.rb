@@ -43,7 +43,7 @@ RSpec.describe Recordings::Status do
     end
 
     it 'stores the value in redis with the expiry' do
-      expect(Redis.current).to receive(:set).with("#{site_id}:#{session_id}:#{viewer_id}", '1', { ex: 60 })
+      expect(Redis.current).to receive(:set).with("status:#{site_id}:#{session_id}:#{viewer_id}", '1', { ex: 60 })
       subject.active!
     end
   end
@@ -69,7 +69,7 @@ RSpec.describe Recordings::Status do
       end
 
       it 'gets the value from redis' do
-        expect(Redis.current).to receive(:get).with("#{site_id}:#{session_id}:#{viewer_id}")
+        expect(Redis.current).to receive(:get).with("status:#{site_id}:#{session_id}:#{viewer_id}")
         subject.active?
       end
 
@@ -98,7 +98,7 @@ RSpec.describe Recordings::Status do
       end
 
       it 'gets the value from redis' do
-        expect(Redis.current).to receive(:get).with("#{site_id}:#{session_id}:#{viewer_id}")
+        expect(Redis.current).to receive(:get).with("status:#{site_id}:#{session_id}:#{viewer_id}")
         subject.active?
       end
 
@@ -128,7 +128,7 @@ RSpec.describe Recordings::Status do
     end
 
     it 'removes the key from redis' do
-      expect(Redis.current).to receive(:del).with("#{site_id}:#{session_id}:#{viewer_id}")
+      expect(Redis.current).to receive(:del).with("status:#{site_id}:#{session_id}:#{viewer_id}")
       subject.inactive!
     end
   end
