@@ -24,18 +24,7 @@ class EventChannel < ApplicationCable::Channel
   # {
   #   command: 'message',
   #   identifier: '{"channel":"EventChannel"}'
-  #   data: '{"action":"page_view", "href": "/", "locale": "en-gb", "useragent": "...", "timestamp": 000000000}'
-  # }
-  def page_view(data)
-    data.delete('action')
-    Recordings::PageView.validate!(data)
-    Recordings::PageViewJob.perform_later({ **data, **current_user }.deep_symbolize_keys!)
-  end
-
-  # {
-  #   command: 'message',
-  #   identifier: '{"channel":"EventChannel"}'
-  #   data: '{"action":"event", "position": 0, "mouse_x": 0, "mouse_y": 0, ...}'
+  #   data: '{"action":"event", "events": [], ...}'
   # }
   def event(data)
     data.delete('action')

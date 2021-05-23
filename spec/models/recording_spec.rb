@@ -25,4 +25,46 @@ RSpec.describe Recording, type: :model do
       expect(subject.duration).to eq 5
     end
   end
+
+  describe '#start_page' do
+    context 'when there are no page views' do
+      subject { described_class.new }
+
+      it 'returns a ?' do
+        expect(subject.start_page).to eq '?'
+      end
+    end
+
+    context 'when there are page views' do
+      subject do
+        pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
+        described_class.new(page_views: pages)
+      end
+
+      it 'returns the start_page' do
+        expect(subject.start_page).to eq '/'
+      end
+    end
+  end
+
+  describe '#exit_page' do
+    context 'when there are no page views' do
+      subject { described_class.new }
+
+      it 'returns a ?' do
+        expect(subject.exit_page).to eq '?'
+      end
+    end
+
+    context 'when there are page views' do
+      subject do
+        pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
+        described_class.new(page_views: pages)
+      end
+
+      it 'returns the exit_page' do
+        expect(subject.exit_page).to eq '/pricing/test'
+      end
+    end
+  end
 end

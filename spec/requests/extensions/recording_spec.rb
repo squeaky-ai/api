@@ -19,6 +19,28 @@ site_recordings_query = <<-GRAPHQL
           useragent
           viewportX
           viewportY
+          events {
+            ... on Scroll {
+              type
+              x
+              y
+              time
+              timestamp
+            }
+            ... on Cursor {
+              type
+              x
+              y
+              time
+              timestamp
+            }
+            ... on Interaction {
+              type
+              selector
+              time
+              timestamp
+            }
+          }
           createdAt
           updatedAt
         }
@@ -129,6 +151,56 @@ RSpec.describe Types::RecordingExtension, type: :request do
         expect(response['pagination']['isLast']).to be true
         expect(response['pagination']['cursor']).to be nil
       end
+    end
+  end
+
+  context 'when there are events stored' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      events = [
+        {
+          type: 'cursor',
+          x: 0,
+          y: 0,
+          time: 0,
+          timestamp: 0
+        },
+        {
+          type: 'click',
+          selector: 'body',
+          time: 0,
+          timestamp: 0
+        }
+      ]
+      create_recording({ events: events }, site: site)
+    end
+
+    subject do
+      variables = { id: site.id, first: 10 }
+      graphql_request(site_recordings_query, variables, user)
+    end
+
+    it 'returns the events' do
+      response = subject['data']['site']['recordings']['items'][0]
+      expect(response['events']).to eq(
+        [
+          {
+            'type' => 'cursor',
+            'x' => 0,
+            'y' => 0,
+            'time' => 0,
+            'timestamp' => 0
+          },
+          {
+            'type' => 'click',
+            'selector' => 'body',
+            'time' => 0,
+            'timestamp' => 0
+          }
+        ]
+      )
     end
   end
 end
