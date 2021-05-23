@@ -14,6 +14,14 @@ class Recording < ApplicationRecord
     page_views.uniq.size
   end
 
+  def start_page
+    page_views.first || '?'
+  end
+
+  def exit_page
+    page_views.last || '?'
+  end
+
   def duration
     return 0 unless created_at && updated_at
 

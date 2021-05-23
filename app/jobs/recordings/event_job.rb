@@ -2,29 +2,42 @@
 
 module Recordings
   # Pick up messages from the event method in the event
-  # channel and dump it into redis
+  # channel and update the recording item in the database
   class EventJob < ApplicationJob
     queue_as :default
 
     def perform(payload)
       ctx = context(payload)
+      recording = Recording.find_by(ctx) || Recording.new(ctx)
 
-      Recordings::Event.new(ctx).add(
-        mouse_x: payload[:mouse_x],
-        mouse_y: payload[:mouse_y],
-        scroll_x: payload[:scroll_x],
-        scroll_y: payload[:scroll_y],
-        position: payload[:position]
-      )
+      update_recording!(payload, recording)
     end
 
     private
 
-    def context(event)
+    def update_recording!(payload, recording)
+      # All of these can be set regardless, overriding the
+      # old values makes no difference
+      recording.attributes = {
+        locale: payload[:locale].downcase,
+        useragent: payload[:useragent],
+        viewport_x: payload[:viewport_x],
+        viewport_y: payload[:viewport_y]
+      }
+      # Keep a history of all the pages they visit, we can uniq
+      # them to get a page count, or select the first or last to
+      # get the start/exit page
+      recording.page_views.push(payload[:path])
+      # Push all the new events into the list of events
+      recording.events.push(*payload[:events])
+      recording.save
+    end
+
+    def context(payload)
       {
-        site_id: event[:site_id],
-        viewer_id: event[:viewer_id],
-        session_id: event[:session_id]
+        site_id: payload[:site_id],
+        viewer_id: payload[:viewer_id],
+        session_id: payload[:session_id]
       }
     end
   end

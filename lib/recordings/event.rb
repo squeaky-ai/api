@@ -10,35 +10,44 @@ module Recordings
   class Event
     SCHEMA = {
       type: 'object',
-      required: %w[mouse_x mouse_y scroll_x scroll_y position],
+      required: %w[path locale useragent viewport_x viewport_y events],
       properties: {
-        mouse_x: { type: 'integer' },
-        mouse_y: { type: 'integer' },
-        scroll_x: { type: 'integer' },
-        scroll_y: { type: 'integer' },
-        position: { type: 'integer' }
+        path: { type: 'string' },
+        locale: { type: 'string' },
+        useragent: { type: 'string' },
+        viewport_x: { type: 'integer' },
+        viewport_y: { type: 'integer' },
+        events: {
+          type: 'array',
+          items: {
+            type: 'object',
+            oneOf: [
+              {
+                # Covers: InteractionEvent
+                properties: {
+                  type: { type: 'string' },
+                  selector: { type: 'string' },
+                  time: { type: 'integer' },
+                  timestamp: { type: 'interger' }
+                },
+                required: %w[type selector time timestamp]
+              },
+              {
+                # Covers: ScrollEvent | CursorEvent
+                properties: {
+                  type: { type: 'string' },
+                  x: { type: 'integer' },
+                  y: { type: 'integer' },
+                  time: { type: 'integer' },
+                  timestamp: { type: 'interger' }
+                },
+                required: %w[type x y time timestamp]
+              }
+            ]
+          }
+        }
       }
     }.freeze
-
-    def initialize(context)
-      @site_id = context[:site_id]
-      @viewer_id = context[:viewer_id]
-      @session_id = context[:session_id]
-    end
-
-    def add(event)
-      Redis.current.rpush(key, event.to_json)
-    end
-
-    def list(start, stop)
-      # Redis includes the right element, so subtract 1
-      results = Redis.current.lrange(key, start, stop - 1)
-      results.map { |r| JSON.parse(r) }
-    end
-
-    def size
-      Redis.current.llen(key)
-    end
 
     def self.validate!(event)
       JSON::Validator.validate!(Event::SCHEMA, event, strict: true)
@@ -46,12 +55,6 @@ module Recordings
     rescue JSON::Schema::ValidationError => e
       Rails.logger.warn e
       raise
-    end
-
-    private
-
-    def key
-      "event:#{@site_id}:#{@session_id}:#{@viewer_id}"
     end
   end
 end
