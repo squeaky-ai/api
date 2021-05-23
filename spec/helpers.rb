@@ -45,7 +45,7 @@ module Helpers
       viewport_y: 0,
       events: [
         {
-          type: 'mouse',
+          type: 'cursor',
           x: 0,
           y: 0,
           time: 0,

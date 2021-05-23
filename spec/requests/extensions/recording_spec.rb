@@ -20,12 +20,26 @@ site_recordings_query = <<-GRAPHQL
           viewportX
           viewportY
           events {
-            type
-            selector
-            x
-            y
-            time
-            timestamp
+            ... on Scroll {
+              type
+              x
+              y
+              time
+              timestamp
+            }
+            ... on Cursor {
+              type
+              x
+              y
+              time
+              timestamp
+            }
+            ... on Interaction {
+              type
+              selector
+              time
+              timestamp
+            }
           }
           createdAt
           updatedAt
@@ -147,7 +161,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     before do
       events = [
         {
-          type: 'mouse',
+          type: 'cursor',
           x: 0,
           y: 0,
           time: 0,
@@ -173,7 +187,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
       expect(response['events']).to eq(
         [
           {
-            'type' => 'mouse',
+            'type' => 'cursor',
             'x' => 0,
             'y' => 0,
             'time' => 0,

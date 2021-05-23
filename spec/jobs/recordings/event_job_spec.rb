@@ -89,7 +89,7 @@ RSpec.describe Recordings::EventJob, type: :job do
       new_recording_event(
         events: [
           {
-            type: 'mouse',
+            type: 'cursor',
             x: 0,
             y: 0,
             time: 0,
@@ -119,7 +119,7 @@ RSpec.describe Recordings::EventJob, type: :job do
       perform_enqueued_jobs { subject }
       expect(site.reload.recordings[0].events).to eq [
         {
-          'type' => 'mouse',
+          'type' => 'cursor',
           'x' => 0,
           'y' => 0,
           'time' => 0,
