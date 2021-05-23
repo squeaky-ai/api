@@ -43,7 +43,5 @@ module Squeaky
 
     config.action_cable.disable_request_forgery_protection = true
     config.action_cable.url = '/cable'
-
-    config.active_job.queue_adapter = :sidekiq
   end
 end

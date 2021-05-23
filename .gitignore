@@ -13,4 +13,8 @@ storage
 config/master.key
 
 # Rspec
+coverage
 spec/examples.txt
+
+# System stuff
+.DS_Store

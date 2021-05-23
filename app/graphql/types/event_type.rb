@@ -8,13 +8,14 @@ module Types
     possible_types Types::Events::CursorType, Types::Events::ScrollType, Types::Events::InteractionType
 
     def self.resolve_type(object, _context)
-      case object['type']
-      when 'cursor'
+      if object['type'] == 'cursor'
         Types::Events::CursorType
-      when 'scroll'
+      elsif object['type'] == 'scroll'
         Types::Events::ScrollType
-      else
+      elsif %w[click hover focus blur].include?(object['type'])
         Types::Events::InteractionType
+      else
+        raise "Not sure how to handle #{object['type']}"
       end
     end
   end
