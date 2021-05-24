@@ -1,12 +1,54 @@
 # frozen_string_literal: true
 
+require 'date'
 require 'rails_helper'
+require 'securerandom'
 
 RSpec.describe Recording, type: :model do
+  let(:recording_fixture) do
+    {
+      site_id: SecureRandom.uuid,
+      session_id: Faker::String.random(length: 8),
+      viewer_id: Faker::String.random(length: 8),
+      locale: 'en-gb',
+      start_page: '/',
+      exit_page: '/pricing',
+      useragent: Faker::Internet.user_agent,
+      viewport_x: 1920,
+      viewport_y: 1080,
+      active: false,
+      page_views: Set.new,
+      connected_at: DateTime.now.iso8601,
+      disconnected_at: DateTime.now.iso8601
+    }
+  end
+
+  describe '#serialize' do
+    let(:subject) { described_class.new(recording_fixture) }
+
+    it 'contains the expected key' do
+      expect(subject.serialize.keys).to eq %i[
+        id
+        site_id
+        viewer_id
+        active
+        locale
+        duration
+        page_count
+        start_page
+        exit_page
+        useragent
+        viewport_x
+        viewport_y
+      ]
+    end
+  end
+
   describe '#page_count' do
-    subject do
-      pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
-      described_class.new(page_views: pages)
+    let(:subject) do
+      fixture = recording_fixture.dup
+      fixture[:page_views] = Set.new(['/', '/pricing', '/pricing/test'])
+      described_class.new(fixture)
     end
 
     it 'returns the number of pages visited' do
@@ -15,10 +57,11 @@ RSpec.describe Recording, type: :model do
   end
 
   describe '#duration' do
-    subject do
-      created_at = (DateTime.now - 5 / 86_400.0)
-      updated_at = DateTime.now
-      described_class.new(created_at: created_at, updated_at: updated_at)
+    let(:subject) do
+      fixture = recording_fixture.dup
+      fixture[:connected_at] = (DateTime.now - 5 / 86_400.0).iso8601
+      fixture[:disconnected_at] = DateTime.now.iso8601
+      described_class.new(fixture)
     end
 
     it 'returns the difference between the connected and disconnected dates' do
@@ -26,45 +69,11 @@ RSpec.describe Recording, type: :model do
     end
   end
 
-  describe '#start_page' do
-    context 'when there are no page views' do
-      subject { described_class.new }
+  describe '#event_key' do
+    let(:subject) { described_class.new(recording_fixture) }
 
-      it 'returns a ?' do
-        expect(subject.start_page).to eq '?'
-      end
-    end
-
-    context 'when there are page views' do
-      subject do
-        pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
-        described_class.new(page_views: pages)
-      end
-
-      it 'returns the start_page' do
-        expect(subject.start_page).to eq '/'
-      end
-    end
-  end
-
-  describe '#exit_page' do
-    context 'when there are no page views' do
-      subject { described_class.new }
-
-      it 'returns a ?' do
-        expect(subject.exit_page).to eq '?'
-      end
-    end
-
-    context 'when there are page views' do
-      subject do
-        pages = ['/', '/', '/pricing', '/pricing', '/pricing/test']
-        described_class.new(page_views: pages)
-      end
-
-      it 'returns the exit_page' do
-        expect(subject.exit_page).to eq '/pricing/test'
-      end
+    it 'returns the event key' do
+      expect(subject.event_key).to eq "#{subject.site_id}_#{subject.session_id}"
     end
   end
 end

@@ -2,13 +2,19 @@
 
 require 'spec_helper'
 
-RSpec.describe Types::EventType do
-  context 'when the event type is "cursor"' do
-    let(:event) do
-      {
-        'type' => 'cursor'
-      }
+RSpec.describe Types::EventItemType do
+  context 'when the event type is "page_view"' do
+    let(:event) { Event.new(type: 'page_view') }
+
+    subject { described_class.resolve_type(event, nil) }
+
+    it 'returns the PageViewType' do
+      expect(subject).to eq Types::Events::PageViewType
     end
+  end
+
+  context 'when the event type is "cursor"' do
+    let(:event) { Event.new(type: 'cursor') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -18,11 +24,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is "scroll"' do
-    let(:event) do
-      {
-        'type' => 'scroll'
-      }
-    end
+    let(:event) { Event.new(type: 'scroll') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -32,11 +34,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is "click"' do
-    let(:event) do
-      {
-        'type' => 'click'
-      }
-    end
+    let(:event) { Event.new(type: 'click') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -46,11 +44,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is "hover"' do
-    let(:event) do
-      {
-        'type' => 'hover'
-      }
-    end
+    let(:event) { Event.new(type: 'hover') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -60,11 +54,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is "focus"' do
-    let(:event) do
-      {
-        'type' => 'focus'
-      }
-    end
+    let(:event) { Event.new(type: 'focus') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -74,11 +64,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is "blur"' do
-    let(:event) do
-      {
-        'type' => 'blur'
-      }
-    end
+    let(:event) { Event.new(type: 'blur') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -88,11 +74,7 @@ RSpec.describe Types::EventType do
   end
 
   context 'when the event type is not known' do
-    let(:event) do
-      {
-        'type' => 'teapot'
-      }
-    end
+    let(:event) { Event.new(type: 'teapot') }
 
     subject { described_class.resolve_type(event, nil) }
 

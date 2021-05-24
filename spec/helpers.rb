@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'date'
 require 'securerandom'
 
 module Helpers
@@ -36,54 +37,38 @@ module Helpers
     site
   end
 
-  def new_recording_event(args = {})
-    default = {
-      path: '/',
-      locale: 'en-gb',
-      useragent: Faker::Internet.user_agent,
-      viewport_x: 0,
-      viewport_y: 0,
-      events: [
-        {
-          type: 'cursor',
-          x: 0,
-          y: 0,
-          time: 0,
-          timestamp: 0
-        },
-        {
-          type: 'click',
-          selector: 'body',
-          time: 0,
-          timestamp: 0
-        }
-      ]
-    }
-    { **default, **args }
-  end
-
   def create_recording(args = {}, site:)
     default = {
+      site_id: site.uuid,
       session_id: SecureRandom.uuid,
       viewer_id: SecureRandom.uuid,
-      locale: 'en-gb',
+      locale: 'en-GB',
+      start_page: '/',
+      exit_page: '/',
       useragent: Faker::Internet.user_agent,
       viewport_x: 0,
       viewport_y: 0,
-      page_views: ['/']
+      active: 0,
+      connected_at: DateTime.now.iso8601,
+      disconnected_at: DateTime.now.iso8601
     }
-    recording = Recording.create({ **default, **args })
-    site.recordings << recording
+    recording = Recording.new({ **default, **args })
+    recording.save!
     recording
   end
 
   def create_event(args = {}, recording:)
-    event = Recordings::Event.new(
-      site_id: recording.site.id,
-      viewer_id: recording.viewer_id,
-      session_id: recording.session_id
-    )
-
-    event.add(new_recording_event(args))
+    default = {
+      site_session_id: recording.event_key,
+      event_id: SecureRandom.uuid,
+      type: 'cursor',
+      x: 0,
+      y: 0,
+      time: 0,
+      timestamp: 0
+    }
+    event = Event.new({ **default, **args })
+    event.save!
+    event
   end
 end

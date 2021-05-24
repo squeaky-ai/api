@@ -83,4 +83,12 @@ RSpec.describe OneTimePassword do
       subject.delete!
     end
   end
+
+  describe '#generate_token' do
+    subject { OneTimePassword.new('foo@bar.com') }
+
+    it 'returns a random 6 digit number' do
+      expect(subject.send(:generate_token).size).to eq 6
+    end
+  end
 end

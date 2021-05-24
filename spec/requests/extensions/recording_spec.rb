@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($id: ID!, $query: String, $first: Int, $cursor: String) {
+  query($id: ID!, $first: Int, $cursor: String) {
     site(id: $id) {
-      recordings(query: $query, first: $first, cursor: $cursor) {
+      recordings(first: $first, cursor: $cursor) {
         items {
           id
-          active
+          siteId
           viewerId
-          sessionId
+          active
           locale
           duration
           pageCount
@@ -19,35 +19,12 @@ site_recordings_query = <<-GRAPHQL
           useragent
           viewportX
           viewportY
-          events {
-            ... on Scroll {
-              type
-              x
-              y
-              time
-              timestamp
-            }
-            ... on Cursor {
-              type
-              x
-              y
-              time
-              timestamp
-            }
-            ... on Interaction {
-              type
-              selector
-              time
-              timestamp
-            }
-          }
-          createdAt
-          updatedAt
+          connectedAt
+          disconnectedAt
         }
         pagination {
           cursor
           isLast
-          total
         }
       }
     }
@@ -74,7 +51,6 @@ RSpec.describe Types::RecordingExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
-          'total' => 0,
           'isLast' => true
         }
       )
@@ -90,9 +66,13 @@ RSpec.describe Types::RecordingExtension, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { 5.times { create_recording(site: site) } }
+    before do
+      @recordings = 5.times.map { create_recording(site: site) }
+    end
 
-    it 'returns no items' do
+    after { @recordings.each(&:delete!) }
+
+    it 'returns the items' do
       response = subject['data']['site']['recordings']
       expect(response['items'].size).to eq 5
     end
@@ -102,7 +82,6 @@ RSpec.describe Types::RecordingExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
-          'total' => 5,
           'isLast' => true
         }
       )
@@ -112,95 +91,36 @@ RSpec.describe Types::RecordingExtension, type: :request do
   context 'when paginating' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-
-    before { 15.times { create_recording(site: site) } }
-
-    context 'when the first request is made' do
-      subject do
-        variables = { id: site.id, first: 10, cursor: nil }
-        graphql_request(site_recordings_query, variables, user)
-      end
-
-      it 'returns the first set of results' do
-        response = subject['data']['site']['recordings']
-        expect(response['items'].size).to eq 10
-      end
-
-      it 'returns the correct pagination' do
-        response = subject['data']['site']['recordings']
-        expect(response['pagination']['total']).to eq 15
-        expect(response['pagination']['isLast']).to be false
-        expect(response['pagination']['cursor']).not_to be nil
-      end
-    end
-
-    context 'when the second request is made' do
-      subject do
-        variables = { id: site.id, first: 10, cursor: 'eyJwYWdlIjoyfQ==' }
-        graphql_request(site_recordings_query, variables, user)
-      end
-
-      it 'returns the second set of results' do
-        response = subject['data']['site']['recordings']
-        expect(response['items'].size).to eq 5
-      end
-
-      it 'returns the correct pagination' do
-        response = subject['data']['site']['recordings']
-        expect(response['pagination']['total']).to eq 15
-        expect(response['pagination']['isLast']).to be true
-        expect(response['pagination']['cursor']).to be nil
-      end
-    end
-  end
-
-  context 'when there are events stored' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: user) }
+    let(:cursor) { nil }
 
     before do
-      events = [
-        {
-          type: 'cursor',
-          x: 0,
-          y: 0,
-          time: 0,
-          timestamp: 0
-        },
-        {
-          type: 'click',
-          selector: 'body',
-          time: 0,
-          timestamp: 0
-        }
-      ]
-      create_recording({ events: events }, site: site)
+      @recordings = 15.times.map { create_recording(site: site) }
+
+      variables = { id: site.id, first: 10, cursor: nil }
+      response = graphql_request(site_recordings_query, variables, user)
+
+      # Take the cursor from the first request and use it for
+      # the second
+      @cursor = response['data']['site']['recordings']['pagination']['cursor']
+      response
     end
 
+    after { @recordings.each(&:delete!) }
+
     subject do
-      variables = { id: site.id, first: 10 }
+      variables = { id: site.id, first: 10, cursor: @cursor }
       graphql_request(site_recordings_query, variables, user)
     end
 
-    it 'returns the events' do
-      response = subject['data']['site']['recordings']['items'][0]
-      expect(response['events']).to eq(
-        [
-          {
-            'type' => 'cursor',
-            'x' => 0,
-            'y' => 0,
-            'time' => 0,
-            'timestamp' => 0
-          },
-          {
-            'type' => 'click',
-            'selector' => 'body',
-            'time' => 0,
-            'timestamp' => 0
-          }
-        ]
-      )
+    it 'returns the second set of results' do
+      response = subject['data']['site']['recordings']
+      expect(response['items'].size).to eq 5
+    end
+
+    it 'returns the correct pagination' do
+      response = subject['data']['site']['recordings']
+      expect(response['pagination']['isLast']).to be true
+      expect(response['pagination']['cursor']).to be nil
     end
   end
 end

@@ -14,7 +14,6 @@ class Site < ApplicationRecord
   attribute :uuid, :string, default: -> { SecureRandom.uuid }
 
   has_many :teams, dependent: :destroy
-  has_many :recordings, dependent: :destroy
   has_many :users, through: :teams
 
   # The plural sounds weird

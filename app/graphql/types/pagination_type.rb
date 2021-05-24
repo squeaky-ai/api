@@ -6,6 +6,5 @@ module Types
 
     field :cursor, String, null: true
     field :is_last, Boolean, null: false
-    field :total, Integer, null: false
   end
 end

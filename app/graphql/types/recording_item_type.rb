@@ -5,9 +5,9 @@ module Types
     description 'The recording object'
 
     field :id, ID, null: false
-    field :active, Boolean, null: false
-    field :session_id, String, null: false
+    field :site_id, ID, null: false
     field :viewer_id, String, null: false
+    field :active, Boolean, null: false
     field :locale, String, null: false
     field :duration, Integer, null: false
     field :page_count, Integer, null: false
@@ -16,8 +16,8 @@ module Types
     field :useragent, String, null: false
     field :viewport_x, Integer, null: false
     field :viewport_y, Integer, null: false
-    field :events, [EventType], null: false
-    field :created_at, String, null: false
-    field :updated_at, String, null: true
+    field :events, EventType, null: false, extensions: [EventExtension]
+    field :connected_at, String, null: false
+    field :disconnected_at, String, null: true
   end
 end
