@@ -6,5 +6,6 @@ module Types
 
     field :cursor, String, null: true
     field :is_last, Boolean, null: false
+    field :page_size, Integer, null: false
   end
 end

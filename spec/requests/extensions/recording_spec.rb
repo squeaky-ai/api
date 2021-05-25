@@ -25,6 +25,7 @@ site_recordings_query = <<-GRAPHQL
         pagination {
           cursor
           isLast
+          pageSize
         }
       }
     }
@@ -51,7 +52,8 @@ RSpec.describe Types::RecordingExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
-          'isLast' => true
+          'isLast' => true,
+          'pageSize' => 10
         }
       )
     end
@@ -66,9 +68,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before do
-      @recordings = 5.times.map { create_recording(site: site) }
-    end
+    before { @recordings = create_recordings(site: site, count: 5) }
 
     after { @recordings.each(&:delete!) }
 
@@ -82,9 +82,50 @@ RSpec.describe Types::RecordingExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
-          'isLast' => true
+          'isLast' => true,
+          'pageSize' => 10
         }
       )
+    end
+  end
+
+  context 'when limiting the results' do
+    context 'when the number is below the minimum' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before { @recording = create_recording(site: site) }
+
+      after { @recording.delete! }
+
+      subject do
+        variables = { id: site.id, first: -1 }
+        graphql_request(site_recordings_query, variables, user)
+      end
+
+      it 'raises it to the minimum' do
+        response = subject['data']['site']['recordings']
+        expect(response['pagination']['pageSize']).to eq 1
+      end
+    end
+
+    context 'when the number is above the maximum' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before { @recording = create_recording(site: site) }
+
+      after { @recording.delete! }
+
+      subject do
+        variables = { id: site.id, first: 51 }
+        graphql_request(site_recordings_query, variables, user)
+      end
+
+      it 'lowers it to the maximum' do
+        response = subject['data']['site']['recordings']
+        expect(response['pagination']['pageSize']).to eq 50
+      end
     end
   end
 
@@ -94,7 +135,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:cursor) { nil }
 
     before do
-      @recordings = 15.times.map { create_recording(site: site) }
+      @recordings = create_recordings(site: site, count: 15)
 
       variables = { id: site.id, first: 10, cursor: nil }
       response = graphql_request(site_recordings_query, variables, user)
@@ -119,8 +160,13 @@ RSpec.describe Types::RecordingExtension, type: :request do
 
     it 'returns the correct pagination' do
       response = subject['data']['site']['recordings']
-      expect(response['pagination']['isLast']).to be true
-      expect(response['pagination']['cursor']).to be nil
+      expect(response['pagination']).to eq(
+        {
+          'cursor' => nil,
+          'isLast' => true,
+          'pageSize' => 10
+        }
+      )
     end
   end
 end

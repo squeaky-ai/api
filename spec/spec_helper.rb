@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'helpers'
+require 'fixtures/events'
+require 'fixtures/recordings'
 require 'simplecov'
 
 SimpleCov.start 'rails'

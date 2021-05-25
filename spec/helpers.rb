@@ -38,37 +38,20 @@ module Helpers
   end
 
   def create_recording(args = {}, site:)
-    default = {
-      site_id: site.uuid,
-      session_id: SecureRandom.uuid,
-      viewer_id: SecureRandom.uuid,
-      locale: 'en-GB',
-      start_page: '/',
-      exit_page: '/',
-      useragent: Faker::Internet.user_agent,
-      viewport_x: 0,
-      viewport_y: 0,
-      active: 0,
-      connected_at: DateTime.now.iso8601,
-      disconnected_at: DateTime.now.iso8601
-    }
-    recording = Recording.new({ **default, **args })
+    recording = Fixtures::Recordings.new(site).create(args)
     recording.save!
     recording
   end
 
-  def create_event(args = {}, recording:)
-    default = {
-      site_session_id: recording.event_key,
-      event_id: SecureRandom.uuid,
-      type: 'cursor',
-      x: 0,
-      y: 0,
-      time: 0,
-      timestamp: 0
-    }
-    event = Event.new({ **default, **args })
-    event.save!
-    event
+  def create_recordings(site:, count:)
+    recordings = Fixtures::Recordings.new(site).sample(count)
+    Aws::Record::Transactions.transact_write(transact_items: recordings.map { |e| { save: e } })
+    recordings
+  end
+
+  def create_events(recording:, count:)
+    events = Fixtures::Events.new(recording).sample(count)
+    Aws::Record::Transactions.transact_write(transact_items: events.map { |e| { save: e } })
+    events
   end
 end

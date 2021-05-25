@@ -12,9 +12,11 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
+      # We don't want to be pulling back too much in one go
+      page_size = arguments[:first].clamp(1, 50)
       # Get the paginated response so that we can handle
       # the paging for the front end
-      query = recording_query(object.object.uuid, arguments[:first], Cursor.decode(arguments[:cursor]))
+      query = recording_query(object.object.uuid, page_size, Cursor.decode(arguments[:cursor]))
 
       items = query.page.map(&:serialize)
       cursor = query.last_evaluated_key
@@ -23,7 +25,8 @@ module Types
         items: items,
         pagination: {
           cursor: Cursor.encode(cursor),
-          is_last: !cursor
+          is_last: !cursor,
+          page_size: page_size
         }
       }
     end

@@ -11,10 +11,12 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
+      # We don't want to be pulling back too much in one go
+      page_size = arguments[:first].clamp(1, 100)
       # Get the paginated response so that we can handle
       # the paging for the front end
       key = "#{object.object[:site_id]}_#{object.object[:id]}"
-      query = events_query(key, arguments[:first], Cursor.decode(arguments[:cursor]))
+      query = events_query(key, page_size, Cursor.decode(arguments[:cursor]))
 
       items = query.page
       cursor = query.last_evaluated_key
@@ -23,7 +25,8 @@ module Types
         items: items,
         pagination: {
           cursor: Cursor.encode(cursor),
-          is_last: !cursor
+          is_last: !cursor,
+          page_size: page_size
         }
       }
     end

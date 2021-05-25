@@ -21,6 +21,8 @@ class Event
   string_attr :selector
   integer_attr :x
   integer_attr :y
+  integer_attr :viewport_x
+  integer_attr :viewport_y
 
   # Required for all
   integer_attr :time
