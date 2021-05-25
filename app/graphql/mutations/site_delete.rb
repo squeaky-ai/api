@@ -15,6 +15,7 @@ module Mutations
     def resolve(**_args)
       raise Errors::Forbidden unless @user.owner_for?(@site)
 
+      @site.delete_authorizer!
       @site.destroy
 
       nil

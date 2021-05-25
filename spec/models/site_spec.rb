@@ -109,4 +109,72 @@ RSpec.describe Site, type: :model do
       expect(create_site(plan: Site::UNLIMITED).plan_name).to eq 'Unlimited'
     end
   end
+
+  describe '#create_authorizer!' do
+    context 'when the authorizer does not exist' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.create_authorizer! }
+
+      after { site.delete_authorizer! }
+
+      it 'returns the authorizer' do
+        expect(subject).to be_instance_of(Authorizer)
+      end
+
+      it 'creates the authorizer in Dynamo' do
+        expect { subject }.to change { Authorizer.find(site_id: site.uuid).nil? }.from(true).to(false)
+      end
+    end
+
+    context 'when the authorizer already exists' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.create_authorizer! }
+
+      before { site.create_authorizer! }
+
+      after { site.delete_authorizer! }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error Aws::Record::Errors::ConditionalWriteFailed
+      end
+    end
+  end
+
+  describe '#delete_authorizer!' do
+    context 'when the authorizer does not exist' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.delete_authorizer! }
+
+      it 'returns nil' do
+        expect(subject).to be nil
+      end
+
+      it 'does not delete anything' do
+        expect { subject }.not_to change { Authorizer.find(site_id: site.uuid).nil? }
+      end
+    end
+
+    context 'when the authorizer exists' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.delete_authorizer! }
+
+      before { site.create_authorizer! }
+
+      it 'returns nil' do
+        expect(subject).to be nil
+      end
+
+      it 'deletes the authorizer' do
+        expect { subject }.to change { Authorizer.find(site_id: site.uuid).nil? }.from(false).to(true)
+      end
+    end
+  end
 end

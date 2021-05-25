@@ -21,7 +21,10 @@ RSpec.describe Mutations::SiteDelete, type: :request do
       graphql_request(site_delete_mutation, variables, user)
     end
 
-    before { team }
+    before do
+      team
+      allow_any_instance_of(Site).to receive(:delete_authorizer!)
+    end
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
@@ -65,6 +68,11 @@ RSpec.describe Mutations::SiteDelete, type: :request do
 
     it 'deletes the team members' do
       expect { subject }.to change { Team.where(site_id: site.id).size }.from(4).to(0)
+    end
+
+    it 'deletes the authorizer' do
+      expect_any_instance_of(Site).to receive(:delete_authorizer!)
+      subject
     end
   end
 end

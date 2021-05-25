@@ -50,6 +50,18 @@ class Site < ApplicationRecord
     end
   end
 
+  def create_authorizer!
+    authorizer = Authorizer.new(site_id: uuid, active: true, origin: url)
+    authorizer.save!
+    authorizer
+  end
+
+  def delete_authorizer!
+    authorizer = Authorizer.find(site_id: uuid)
+    authorizer&.delete!
+    nil
+  end
+
   def self.format_uri(url)
     uri = URI(url)
     return nil unless uri.scheme && uri.host

@@ -64,6 +64,8 @@ RSpec.describe Mutations::SiteCreate, type: :request do
       let(:name) { Faker::Company.name }
       let(:user) { create_user }
 
+      before { allow_any_instance_of(Site).to receive(:create_authorizer!) }
+
       subject do
         variables = { url: url, name: name }
         graphql_request(site_create_mutation, variables, user)
@@ -92,6 +94,11 @@ RSpec.describe Mutations::SiteCreate, type: :request do
 
       it 'generates a uuid' do
         expect(subject['data']['siteCreate']['uuid']).not_to be nil
+      end
+
+      it 'creates the authorizer' do
+        expect_any_instance_of(Site).to receive(:create_authorizer!)
+        subject
       end
     end
   end
