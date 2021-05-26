@@ -4,6 +4,8 @@
 # an identifier. The value is a hash that contains
 # the limit so we can set limits on a per-key basis
 class Backoff
+  EXPIRY = 60 * 10
+
   def initialize(identifier, limit = 10)
     @identifier = identifier
     @limit = limit
@@ -12,11 +14,12 @@ class Backoff
   def incr!
     value = Redis.current.hgetall(key)
 
-    raise BackoffExceeded if exceeded?(value)
+    raise Errors::BackoffExceeded if exceeded?(value)
 
     if value.empty?
-      Redis.current.hset(key, { count: 0, limit: @limit })
+      create!
     else
+      Rails.logger.info "Backing off #{@identifier} to #{value['count'] + 1}"
       Redis.current.hincrby(key, 'count', 1)
     end
   end
@@ -38,12 +41,8 @@ class Backoff
     "backoff:#{@identifier}"
   end
 
-  # An exception to throw when the limit has been exceeded
-  # that we can catch in the GraphQL handler to throw a more
-  # suitable error for the front end
-  class BackoffExceeded < StandardError
-    def initialize(msg = 'Backoff limit exceeded')
-      super
-    end
+  def create!
+    Redis.current.hset(key, { count: 0, limit: @limit })
+    Redis.current.expire(key, EXPIRY)
   end
 end

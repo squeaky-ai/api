@@ -17,19 +17,30 @@ module Mutations
 
     def resolve(email:, token:)
       user = User.find_by(email: email)
-
       otp = OneTimePassword.new(email)
-      token_valid = otp.verify(token)
 
-      raise Errors::AuthInvalid unless token_valid
+      unless otp.verify(token)
+        @backoff.incr!
+        raise Errors::AuthInvalid
+      end
 
       otp.delete!
+      @backoff.clear!
       user ||= User.create(email: email)
       user.update(last_signed_in_at: Time.now)
 
       exp = 1.month.from_now
       jwt = JsonWebToken.encode(id: user.id, exp: exp)
       { jwt: jwt, user: user, expires_at: exp.iso8601 }
+    end
+
+    def ready?(_args)
+      # The ship has sailed at this point and they'll have to
+      # wait 10 minutes for the token to expire
+      @backoff = Backoff.new(context[:request].remote_ip)
+      raise Errors::BackoffExceeded if @backoff.exceeded?
+
+      true
     end
   end
 end

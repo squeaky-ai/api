@@ -22,7 +22,7 @@ RSpec.describe Backoff do
       subject { described_class.new(identifier).incr! }
 
       it 'raises an error' do
-        expect { subject }.to raise_error Backoff::BackoffExceeded
+        expect { subject }.to raise_error Errors::BackoffExceeded
       end
     end
 
@@ -32,6 +32,7 @@ RSpec.describe Backoff do
       before do
         allow(Redis.current).to receive(:hgetall).and_return({})
         allow(Redis.current).to receive(:hset)
+        allow(Redis.current).to receive(:expire)
       end
 
       subject { described_class.new(identifier).incr! }
@@ -39,6 +40,11 @@ RSpec.describe Backoff do
       it 'sets the hash in redis' do
         subject
         expect(Redis.current).to have_received(:hset).with("backoff:#{identifier}", { count: 0, limit: 10 })
+      end
+
+      it 'sets an expiry' do
+        subject
+        expect(Redis.current).to have_received(:expire).with("backoff:#{identifier}", Backoff::EXPIRY)
       end
     end
 

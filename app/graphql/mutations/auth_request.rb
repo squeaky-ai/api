@@ -37,5 +37,14 @@ module Mutations
         AuthMailer.signup(email, token).deliver_now
       end
     end
+
+    def ready?(_args)
+      # The backoff will be cleared when the user gets the
+      # token correct, or they will need to wait for the
+      # key to expire. Given there's no right/wrong to this
+      # path, we incr! every single time
+      Backoff.new(context[:request].remote_ip).incr!
+      true
+    end
   end
 end

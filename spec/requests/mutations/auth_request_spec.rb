@@ -104,4 +104,50 @@ RSpec.describe Mutations::AuthRequest, type: :request do
       end
     end
   end
+
+  context 'when making many requests' do
+    context 'and the user has not hit the limit' do
+      let(:user) { create_user }
+      let(:token) { '123456' }
+
+      subject do
+        variables = { email: user.email, auth_type: 'LOGIN' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(AuthMailer).to receive(:login).and_return(stub)
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return(token)
+      end
+
+      it 'increments the backoff' do
+        expect_any_instance_of(Backoff).to receive(:incr!)
+        subject
+      end
+    end
+
+    context 'and the user has hit the limit' do
+      let(:user) { create_user }
+      let(:token) { '123456' }
+
+      subject do
+        variables = { email: user.email, auth_type: 'LOGIN' }
+        graphql_request(auth_request_mutation, variables, nil)
+      end
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(AuthMailer).to receive(:login).and_return(stub)
+        allow_any_instance_of(Backoff).to receive(:exceeded?).and_return true
+        allow_any_instance_of(OneTimePassword).to receive(:generate_token).and_return(token)
+      end
+
+      it 'raises an error' do
+        expect(subject['errors'][0]['message']).to eq 'Backoff exceeded'
+      end
+    end
+  end
 end

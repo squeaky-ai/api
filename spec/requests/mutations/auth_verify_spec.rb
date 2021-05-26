@@ -28,6 +28,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
     it 'raises an error' do
       expect(subject['errors'][0]['message']).to eq 'Token is incorrect or has expired'
     end
+
+    it 'increments the backoff' do
+      expect_any_instance_of(Backoff).to receive(:incr!)
+      subject
+    end
   end
 
   context 'when there is a token stored but it does not match' do
@@ -43,6 +48,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
 
     it 'raises an error' do
       expect(subject['errors'][0]['message']).to eq 'Token is incorrect or has expired'
+    end
+
+    it 'increments the backoff' do
+      expect_any_instance_of(Backoff).to receive(:incr!)
+      subject
     end
   end
 
@@ -87,6 +97,11 @@ RSpec.describe Mutations::AuthVerify, type: :request do
         subject
         expect(User).not_to have_received(:create)
       end
+
+      it 'clears the backoff' do
+        expect_any_instance_of(Backoff).to receive(:clear!)
+        subject
+      end
     end
 
     context 'and the user does not have an account' do
@@ -115,6 +130,29 @@ RSpec.describe Mutations::AuthVerify, type: :request do
         subject
         expect(User).to have_received(:create)
       end
+
+      it 'clears the backoff' do
+        expect_any_instance_of(Backoff).to receive(:clear!)
+        subject
+      end
+    end
+  end
+
+  context 'when the backoff has already hit the limit' do
+    let(:email) { Faker::Internet.email }
+    let(:token) { '123456' }
+
+    subject do
+      variables = { email: email, token: token }
+      graphql_request(auth_verify_mutation, variables, nil)
+    end
+
+    before do
+      allow_any_instance_of(Backoff).to receive(:exceeded?).and_return true
+    end
+
+    it 'raises an error' do
+      expect(subject['errors'][0]['message']).to eq 'Backoff exceeded'
     end
   end
 end

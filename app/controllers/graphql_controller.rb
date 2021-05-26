@@ -11,11 +11,13 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
   def execute
     variables = prepare_variables(params[:variables])
-    query = params[:query]
-    operation_name = params[:operationName]
-    context = { current_user: current_user }
-    result = SqueakySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
+
+    render json: SqueakySchema.execute(
+      params[:query],
+      variables: variables,
+      operation_name: params[:operationName],
+      context: { current_user: current_user, request: request }
+    )
   rescue StandardError => e
     raise e unless Rails.env.development?
 
