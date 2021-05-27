@@ -19,8 +19,6 @@ site_recordings_query = <<-GRAPHQL
           useragent
           viewportX
           viewportY
-          connectedAt
-          disconnectedAt
         }
         pagination {
           cursor
@@ -32,7 +30,7 @@ site_recordings_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Types::RecordingExtension, type: :request do
+RSpec.describe Types::RecordingsExtension, type: :request do
   context 'when there are no recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

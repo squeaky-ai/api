@@ -5,7 +5,7 @@ module Types
   # we only want to load the data if it is requested. The
   # gateway is responsible for populating this and it is
   # stored in Dynamo
-  class RecordingExtension < GraphQL::Schema::FieldExtension
+  class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:first, Integer, required: false, default_value: 10, description: 'The number of items to return')
       field.argument(:cursor, String, required: false, description: 'The cursor to fetch the next set of items')

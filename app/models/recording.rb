@@ -41,6 +41,10 @@ class Recording
     }
   end
 
+  def active
+    false # TODO
+  end
+
   def page_count
     page_views.size
   end

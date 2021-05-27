@@ -12,7 +12,7 @@ module Types
       field :viewport_x, Integer, null: false
       field :viewport_y, Integer, null: false
       field :time, Integer, null: false
-      field :timestamp, Integer, null: false
+      field :timestamp, GraphQL::Types::BigInt, null: false
     end
   end
 end

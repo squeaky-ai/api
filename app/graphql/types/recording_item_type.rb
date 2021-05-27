@@ -17,7 +17,5 @@ module Types
     field :viewport_x, Integer, null: false
     field :viewport_y, Integer, null: false
     field :events, EventType, null: false, extensions: [EventExtension]
-    field :connected_at, String, null: false
-    field :disconnected_at, String, null: true
   end
 end

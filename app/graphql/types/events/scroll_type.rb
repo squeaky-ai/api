@@ -9,7 +9,7 @@ module Types
       field :x, Integer, null: false
       field :y, Integer, null: false
       field :time, Integer, null: false
-      field :timestamp, Integer, null: false
+      field :timestamp, GraphQL::Types::BigInt, null: false
     end
   end
 end
