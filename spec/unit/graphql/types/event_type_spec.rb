@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::EventItemType do
+RSpec.describe Types::EventType do
   context 'when the event type is "page_view"' do
     let(:event) { Event.new(type: 'page_view') }
 

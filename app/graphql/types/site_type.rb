@@ -14,7 +14,11 @@ module Types
     field :owner_name, String, null: false
     field :verified_at, String, null: true
     field :team, [TeamType], null: false
-    field :recordings, RecordingType, null: false, extensions: [RecordingsExtension]
+    # Fetch a single recording
+    field :recording, RecordingType, null: true, extensions: [RecordingExtension]
+    # Fetch a list of recordings, refrain from fetching
+    # events inside of here to prevent n+1
+    field :recordings, RecordingsType, null: false, extensions: [RecordingsExtension]
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end

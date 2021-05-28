@@ -14,7 +14,7 @@ class Event
   string_attr :type
 
   # Not all of these are used at once, refer to the
-  # EventItemType for examples
+  # EventType for examples
   string_attr :path
   string_attr :locale
   string_attr :useragent

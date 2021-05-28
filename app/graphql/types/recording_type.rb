@@ -2,9 +2,20 @@
 
 module Types
   class RecordingType < Types::BaseObject
-    description 'The paginated recordings'
+    description 'The recording object'
 
-    field :items, [RecordingItemType, { null: true }], null: false
-    field :pagination, PaginationType, null: false
+    field :id, ID, null: false
+    field :site_id, ID, null: false
+    field :viewer_id, String, null: false
+    field :active, Boolean, null: false
+    field :locale, String, null: false
+    field :duration, Integer, null: false
+    field :page_count, Integer, null: false
+    field :start_page, String, null: false
+    field :exit_page, String, null: false
+    field :useragent, String, null: false
+    field :viewport_x, Integer, null: false
+    field :viewport_y, Integer, null: false
+    field :events, EventsType, null: false, extensions: [EventsExtension]
   end
 end

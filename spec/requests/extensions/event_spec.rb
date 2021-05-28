@@ -51,7 +51,7 @@ site_events_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Types::EventExtension, type: :request do
+RSpec.describe Types::EventsExtension, type: :request do
   context 'when there are no events' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

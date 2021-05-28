@@ -4,7 +4,7 @@ module Types
   # Fetch a list of paginated events from Dynamo. We return a
   # cursor containing the offset so that the front end can
   # easilly fetch the next batch of results
-  class EventExtension < GraphQL::Schema::FieldExtension
+  class EventsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:first, Integer, required: false, default_value: 10, description: 'The number of items to return')
       field.argument(:cursor, String, required: false, description: 'The cursor to fetch the next set of items')
