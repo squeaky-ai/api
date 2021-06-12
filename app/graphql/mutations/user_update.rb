@@ -13,7 +13,11 @@ module Mutations
     type Types::UserType
 
     def resolve(**args)
-      @user.update(args)
+      @user.update!(args)
+      # The user needs to be confirmed for their email to
+      # update. We may want want to resend the email in the
+      # future
+      @user.confirm
       @user
     end
   end
