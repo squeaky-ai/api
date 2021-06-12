@@ -5,7 +5,6 @@
 # attemps the app will be killed and restarted
 class PingController < ApplicationController
   def index
-    Redis.current.ping
     ActiveRecord::Base.connection.verify!
     render plain: 'PONG'
   rescue StandardError => e

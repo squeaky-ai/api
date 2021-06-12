@@ -16,7 +16,7 @@ class GraphqlController < ApplicationController
       params[:query],
       variables: variables,
       operation_name: params[:operationName],
-      context: { current_user: current_user, request: request }
+      context: { current_user: current_user!, request: request }
     )
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -45,5 +45,11 @@ class GraphqlController < ApplicationController
     logger.error error.backtrace.join("\n")
 
     render json: { errors: [{ message: error.message, backtrace: error.backtrace }], data: {} }, status: 500
+  end
+
+  def current_user!
+    raise Errors::Unauthorized unless current_user
+
+    current_user
   end
 end

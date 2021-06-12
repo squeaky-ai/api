@@ -4,7 +4,6 @@
 
 ### Requirements
 - Ruby 3.0.0
-- Redis 5.x
 - Postgres 12.x
 - Or, Docker and docker-compose
 
