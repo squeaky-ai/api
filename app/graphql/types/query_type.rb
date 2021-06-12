@@ -9,7 +9,7 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     field :user, UserType, null: true do
-      description "Get the user from the Bearer token.\nIt will return null if there is no session"
+      description "Get the user from the session.\nIt will return null if there is no session"
     end
 
     field :site, SiteType, null: true do

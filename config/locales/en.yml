@@ -51,7 +51,6 @@ en:
       token_invalid: 'Token is incorrect or has expired'
       unauthorized: 'Unauthorized'
       forbidden: 'Forbidden'
-      backoff_exceeded: 'Backoff exceeded'
   user:
     validation:
       account_exists: 'User account already exists'

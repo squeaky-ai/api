@@ -2,14 +2,6 @@
 
 module Types
   class MutationType < Types::BaseObject
-    # Auth
-    field :auth_request,
-          mutation: Mutations::AuthRequest,
-          description: 'Requst an auth token to be sent to the provided email'
-    field :auth_verify,
-          mutation: Mutations::AuthVerify,
-          description: 'Verify that the auth token matches the one stored'
-
     # Users
     field :user_update,
           mutation: Mutations::UserUpdate,

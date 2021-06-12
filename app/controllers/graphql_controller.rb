@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # The controller responsible for handling all the GraphQL requests.
-# Every request will attempt to fetch the user from the Authorization
-# header, although it is the responsibility of the Query/Mutation
-# to ensure the user is properly authorized
+# Every request will attempt to fetch the user from devise although it
+# is the responsibility of the Query/Mutation to ensure the user is
+# properly authorized
 class GraphqlController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
@@ -45,18 +45,5 @@ class GraphqlController < ApplicationController
     logger.error error.backtrace.join("\n")
 
     render json: { errors: [{ message: error.message, backtrace: error.backtrace }], data: {} }, status: 500
-  end
-
-  def current_user
-    header = request.headers['Authorization']
-    bearer = header.split('Bearer ').last if header
-
-    return unless bearer
-
-    token = JsonWebToken.decode(bearer)
-    User.find(token[:id])
-  rescue StandardError => e
-    logger.warn e
-    nil
   end
 end
