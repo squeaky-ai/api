@@ -5,13 +5,6 @@ require 'securerandom'
 
 module Helpers
   def graphql_request(query, variables, user)
-    env = Rack::MockRequest.env_for('/')
-    # Create a fake request object with a random ip address
-    # so that the backoff doesn't get triggered
-    request = ActionDispatch::Request.new(env)
-    request.remote_ip = Faker::Internet.ip_v4_address
-
-    # Set the context and make the GraphQL request
     context = { current_user: user, request: request }
     SqueakySchema.execute(query, context: context, variables: variables)
   end
@@ -20,9 +13,12 @@ module Helpers
     default = {
       first_name: Faker::Name.first_name,
       last_name: Faker::Name.last_name,
-      email: Faker::Internet.email
+      email: Faker::Internet.email,
+      password: Faker::String.random
     }
-    User.create({ **default, **args })
+    user = User.create({ **default, **args })
+    user.confirm
+    user
   end
 
   def create_site(args = {})

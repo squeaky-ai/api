@@ -4,6 +4,17 @@
 # of their own, instead they are set on a per site basis
 # as part of the team model
 class User < ApplicationRecord
+  # Include default devise modules. Others available are: :omniauthable
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :validatable,
+         :confirmable,
+         :timeoutable,
+         :lockable,
+         :trackable
+
   has_many :teams
   has_many :sites, through: :teams
 
@@ -29,5 +40,17 @@ class User < ApplicationRecord
     return false unless site
 
     site.team.any? { |t| t.user.id == id }
+  end
+
+  def serialize
+    {
+      'id' => id,
+      'firstName' => first_name,
+      'lastName' => last_name,
+      'email' => email,
+      'lastSignedInAt' => last_signed_in_at,
+      'createdAt' => created_at,
+      'updatedAt' => updated_at
+    }
   end
 end
