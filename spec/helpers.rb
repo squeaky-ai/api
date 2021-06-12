@@ -16,7 +16,9 @@ module Helpers
       email: Faker::Internet.email,
       password: Faker::String.random
     }
-    User.create({ **default, **args })
+    user = User.create({ **default, **args })
+    user.confirm
+    user
   end
 
   def create_site(args = {})

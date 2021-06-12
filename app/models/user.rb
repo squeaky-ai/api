@@ -41,4 +41,16 @@ class User < ApplicationRecord
 
     site.team.any? { |t| t.user.id == id }
   end
+
+  def serialize
+    {
+      'id' => id,
+      'firstName' => first_name,
+      'lastName' => last_name,
+      'email' => email,
+      'lastSignedInAt' => last_signed_in_at,
+      'createdAt' => created_at,
+      'updatedAt' => updated_at
+    }
+  end
 end

@@ -10,7 +10,7 @@ module Auth
     def current
       return render nothing: true, status: :unauthorized unless user_signed_in?
 
-      render json: current_user
+      render json: current_user.serialize
     end
   end
 end
