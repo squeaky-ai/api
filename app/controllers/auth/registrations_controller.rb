@@ -11,5 +11,12 @@ module Auth
       user = User.find_by(email: params.require(:email))
       render json: { exists: user.present? }
     end
+
+    def create
+      build_resource(sign_up_params)
+
+      resource.save
+      render json: resource
+    end
   end
 end
