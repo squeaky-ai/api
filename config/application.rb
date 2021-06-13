@@ -40,5 +40,8 @@ module Squeaky
     config.api_only = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 30.days
   end
 end
