@@ -32,8 +32,11 @@ Rails.application.routes.draw do
         # body: { "email": string }
         post 'confirm', to: 'auth/confirmations#create', as: :user_confirmation
         # GET /api/auth/confirm
-        # query: { "confirmation_token": stirng }
+        # query: { "confirmation_token": string }
         get 'confirm', to: 'auth/confirmations#show'
+        # GET /api/auth/email_exists
+        # query: { "email": string }
+        get 'email_exists', to: 'auth/registrations#email_exists'
       end
     end
   end
