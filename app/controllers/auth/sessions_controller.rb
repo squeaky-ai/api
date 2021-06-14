@@ -12,5 +12,19 @@ module Auth
 
       render json: current_user.serialize
     end
+
+    private
+
+    def respond_with(resource, _opts = {})
+      render json: resource
+    end
+
+    def respond_to_on_destroy
+      head :no_content
+    end
+
+    def flash
+      {}
+    end
   end
 end
