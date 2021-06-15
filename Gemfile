@@ -8,6 +8,7 @@ ruby '3.0.0'
 gem 'aws-sdk-rails', '~> 3'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
+gem 'devise_invitable', '~> 2.0.0'
 gem 'graphql'
 gem 'graphql_playground-rails'
 gem 'jwt'

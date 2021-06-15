@@ -13,7 +13,8 @@ class User < ApplicationRecord
          :confirmable,
          :timeoutable,
          :lockable,
-         :trackable
+         :trackable,
+         :invitable
 
   has_many :teams
   has_many :sites, through: :teams

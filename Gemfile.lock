@@ -103,6 +103,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise_invitable (2.0.5)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     diff-lcs (1.4.4)
     docile (1.4.0)
     erubi (1.10.0)
@@ -227,6 +230,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   devise
+  devise_invitable (~> 2.0.0)
   faker
   graphql
   graphql_playground-rails
