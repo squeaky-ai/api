@@ -21,6 +21,10 @@ module Helpers
     user
   end
 
+  def invite_user(email = nil)
+    User.invite!(email: email || Faker::Internet.email) { |u| u.skip_invitation = true }
+  end
+
   def create_site(args = {})
     default = {
       name: Faker::Company.name,

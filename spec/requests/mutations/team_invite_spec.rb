@@ -26,16 +26,11 @@ RSpec.describe Mutations::TeamInvite, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:email) { Faker::Internet.email }
 
+    before { site }
+
     subject do
       variables = { site_id: site.id, email: email, role: Team::ADMIN }
       graphql_request(team_invite_mutation, variables, user)
-    end
-
-    before do
-      stub = double
-      allow(stub).to receive(:deliver_now)
-      allow(TeamMailer).to receive(:invite).and_return(stub)
-      allow(JsonWebToken).to receive(:encode).and_return '__jwt__'
     end
 
     it 'returns the invited user' do
@@ -48,12 +43,11 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       subject
       invited_user = User.find_by(email: email)
       expect(invited_user).not_to be nil
-      expect(invited_user.invited_at).not_to be nil
+      expect(invited_user.invitation_sent_at).not_to be nil
     end
 
     it 'sends an invite request to the email' do
-      subject
-      expect(TeamMailer).to have_received(:invite).with(email, site, user, '__jwt__')
+      expect { subject }.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
   end
 
@@ -80,8 +74,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       end
 
       it 'does not send an email' do
-        subject
-        expect(TeamMailer).not_to have_received(:invite)
+        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
       end
     end
 
@@ -90,15 +83,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
+      before { site }
+
       subject do
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
-      end
-
-      before do
-        stub = double
-        allow(stub).to receive(:deliver_now)
-        allow(TeamMailer).to receive(:invite).and_return(stub)
-        allow(JsonWebToken).to receive(:encode).and_return '__jwt__'
       end
 
       it 'returns the added team member' do
@@ -112,8 +100,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       end
 
       it 'sends an invite request to the email' do
-        subject
-        expect(TeamMailer).to have_received(:invite).with(invited_user.email, site, user, '__jwt__')
+        expect { subject }.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
     end
   end

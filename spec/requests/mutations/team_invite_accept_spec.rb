@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_invite_accept_mutation = <<-GRAPHQL
-  mutation($token: String!) {
-    teamInviteAccept(input: { token: $token }) {
+  mutation($token: String!, $password: String!) {
+    teamInviteAccept(input: { token: $token, password: $password }) {
       id
       team {
         id
@@ -26,7 +26,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:token) { 'sdfdsfdsfdsf' }
 
     subject do
-      variables = { token: token }
+      variables = { token: token, password: Faker::String.random }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -36,27 +36,12 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     end
   end
 
-  context 'when the token has expired' do
-    let(:site) { create_site }
-    let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }, 1.month.ago) }
-
-    subject do
-      variables = { token: token }
-      graphql_request(team_invite_accept_mutation, variables, nil)
-    end
-
-    it 'raises an error' do
-      error = subject['errors'][0]['message']
-      expect(error).to eq 'Team invite has expired'
-    end
-  end
-
   context 'when the token is valid, but has been cancelled' do
     let(:site) { create_site }
-    let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: 9345 }) } # The team won't exist
+    let(:user) { invite_user } # The team won't exist
 
     subject do
-      variables = { token: token }
+      variables = { token: user.raw_invitation_token, password: Faker::String.random }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -69,11 +54,10 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
   context 'when the token is valid' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
-    let(:token) { JsonWebToken.encode({ site_id: site.id, team_id: team.id }) }
+    let(:team) { create_team(user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
     subject do
-      variables = { token: token }
+      variables = { token: team.user.raw_invitation_token, password: Faker::String.random }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 

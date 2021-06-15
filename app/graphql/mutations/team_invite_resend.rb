@@ -12,14 +12,9 @@ module Mutations
 
     type Types::SiteType
 
-    def resolve(site_id:, team_id:)
+    def resolve(team_id:, **_rest)
       member = @site.member(team_id)
-
-      if member&.pending?
-        email = member.user.email
-        token = JsonWebToken.encode({ site_id: site_id, team_id: team_id }, 1.day.from_now)
-        TeamMailer.invite(email, @site, @user, token).deliver_now
-      end
+      member.user.invite!(@user) if member&.pending?
 
       @site
     end

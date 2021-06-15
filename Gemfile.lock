@@ -120,7 +120,6 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
-    jwt (2.2.3)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -234,7 +233,6 @@ DEPENDENCIES
   faker
   graphql
   graphql_playground-rails
-  jwt
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)

@@ -15,23 +15,14 @@ module Mutations
 
     type Types::SiteType
 
-    def resolve(site_id:, email:, role:)
+    def resolve(email:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 
-      invited_user = User.find_or_create_by(email: email) do |u|
-        # Allows us to tell which users were invited and which
-        # signed up on their own
-        u.invited_at = Time.now
-      end
+      # Either gets the user if they already exist, or creates
+      # the ghost user and send the invite
+      user = User.invite!({ email: email }, @user)
 
-      # Invite the user with a pending status unless they are
-      # already a team member
-      unless invited_user.member_of?(@site)
-        team = Team.create(status: Team::PENDING, role: role, user: invited_user, site: @site)
-
-        token = JsonWebToken.encode({ site_id: site_id, team_id: team.id }, 1.day.from_now)
-        TeamMailer.invite(email, @site, @user, token).deliver_now
-      end
+      Team.create(status: Team::PENDING, role: role, user: user, site: @site) unless user.member_of?(@site)
 
       @site.reload
     end
