@@ -21,6 +21,11 @@ module Types
       description "Get a list of sites for the user.\nWarning: Loading the recordings here is n+1 and expensive!"
     end
 
+    field :user_invitation, UserType, null: true do
+      description 'Get the user from the invite token'
+      argument :token, String, required: true
+    end
+
     def user
       context[:current_user]
     end
@@ -37,6 +42,10 @@ module Types
       raise Errors::Unauthorized unless context[:current_user]
 
       context[:current_user].sites
+    end
+
+    def user_invitation(token:)
+      User.find_by_invitation_token(token, true)
     end
   end
 end
