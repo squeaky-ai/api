@@ -1,4 +1,4 @@
 <h1>You’ve been invited to join Squeaky</h1>
-<p>TODO has invited you to the TODO team on Squeaky.  Please click the button below to sign-up.</p>
+<p><%=  @invited_by.full_name %> has invited you to the <%= @site_name %> team on Squeaky.  Please click the button below to sign-up.</p>
 <a href="<%= @web_url %>/auth/accept?token=<%= @token %>" class="button">Accept Invitation</a>
 <p class="small">If you believe you have received this email in error you can safely ignore it.</p>

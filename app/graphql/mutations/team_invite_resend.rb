@@ -14,7 +14,7 @@ module Mutations
 
     def resolve(team_id:, **_rest)
       member = @site.member(team_id)
-      member.user.invite!(@user) if member&.pending?
+      member.user.invite!(@user, { site_name: @site.name }) if member&.pending?
 
       @site
     end

@@ -20,7 +20,7 @@ module Mutations
 
       # Either gets the user if they already exist, or creates
       # the ghost user and send the invite
-      user = User.invite!({ email: email }, @user)
+      user = User.invite!({ email: email }, @user, { site_name: @site.name })
 
       Team.create(status: Team::PENDING, role: role, user: user, site: @site) unless user.member_of?(@site)
 
