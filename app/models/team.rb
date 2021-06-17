@@ -28,4 +28,15 @@ class Team < ApplicationRecord
   def pending?
     status == PENDING
   end
+
+  def role_name
+    case role
+    when OWNER
+      'Owner'
+    when ADMIN
+      'Admin'
+    when MEMBER
+      'User'
+    end
+  end
 end

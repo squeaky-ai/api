@@ -64,4 +64,30 @@ RSpec.describe Team, type: :model do
       end
     end
   end
+
+  describe '#role_name' do
+    context 'when the user is the owner' do
+      subject { described_class.new(role: Team::OWNER) }
+
+      it 'returns owner' do
+        expect(subject.role_name).to eq 'Owner'
+      end
+    end
+
+    context 'when the user is an admin' do
+      subject { described_class.new(role: Team::ADMIN) }
+
+      it 'returns admin' do
+        expect(subject.role_name).to eq 'Admin'
+      end
+    end
+
+    context 'when the user is a member' do
+      subject { described_class.new(role: Team::MEMBER) }
+
+      it 'returns user' do
+        expect(subject.role_name).to eq 'User'
+      end
+    end
+  end
 end
