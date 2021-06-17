@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'aws-record'
+require 'user_agent_parser'
 
 # These are the recordings that are displayed in the filtered
 # table. They're stored in Dynamo and are populated by the
@@ -36,6 +37,8 @@ class Recording
       start_page: start_page,
       exit_page: exit_page,
       useragent: useragent,
+      device_type: device_type,
+      browser: browser,
       viewport_x: viewport_x,
       viewport_y: viewport_y
     }
@@ -43,6 +46,14 @@ class Recording
 
   def active
     false # TODO
+  end
+
+  def device_type
+    UserAgentParser.parse(useragent).device.family
+  end
+
+  def browser
+    UserAgentParser.parse(useragent).family
   end
 
   def page_count

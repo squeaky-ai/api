@@ -14,6 +14,8 @@ module Types
     field :start_page, String, null: false
     field :exit_page, String, null: false
     field :useragent, String, null: false
+    field :device_type, String, null: true
+    field :browser, String, null: true
     field :viewport_x, Integer, null: false
     field :viewport_y, Integer, null: false
     field :events, EventsType, null: false, extensions: [EventsExtension]

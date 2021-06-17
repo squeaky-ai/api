@@ -38,6 +38,8 @@ RSpec.describe Recording, type: :model do
         start_page
         exit_page
         useragent
+        device_type
+        browser
         viewport_x
         viewport_y
       ]
@@ -74,6 +76,32 @@ RSpec.describe Recording, type: :model do
 
     it 'returns the event key' do
       expect(subject.event_key).to eq "#{subject.site_id}_#{subject.session_id}"
+    end
+  end
+
+  describe '#device_type' do
+    let(:subject) do
+      fixture = recording_fixture.dup
+      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/14.1.1 Safari/605.1.15'
+      described_class.new(fixture)
+    end
+
+    it 'returns the device type' do
+      expect(subject.device_type).to eq 'Mac'
+    end
+  end
+
+  describe '#browser' do
+    let(:subject) do
+      fixture = recording_fixture.dup
+      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/14.1.1 Safari/605.1.15'
+      described_class.new(fixture)
+    end
+
+    it 'returns the browser' do
+      expect(subject.browser).to eq 'Safari'
     end
   end
 end

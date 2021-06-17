@@ -14,6 +14,7 @@ gem 'graphql_playground-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.1'
+gem 'user_agent_parser', '~> 2.7.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
