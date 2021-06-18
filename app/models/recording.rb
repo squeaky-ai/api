@@ -22,8 +22,8 @@ class Recording
   integer_attr :viewport_y
   boolean_attr :active
   string_set_attr :page_views, default_value: Set.new
-  string_attr :connected_at
-  string_attr :disconnected_at
+  integer_attr :connected_at
+  integer_attr :disconnected_at
 
   def serialize
     {
@@ -61,7 +61,7 @@ class Recording
   end
 
   def duration
-    Time.parse(disconnected_at) - Time.parse(connected_at)
+    disconnected_at - connected_at
   end
 
   def event_key
