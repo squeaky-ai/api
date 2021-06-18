@@ -54,4 +54,11 @@ class User < ApplicationRecord
       'updatedAt' => updated_at
     }
   end
+
+  def invite_to_team!
+    # This is a procted devise method but we want to call
+    # it to bypass the default invite flow when the user
+    # already has an account
+    generate_invitation_token!
+  end
 end

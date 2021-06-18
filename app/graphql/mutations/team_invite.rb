@@ -18,13 +18,28 @@ module Mutations
     def resolve(email:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 
-      # Either gets the user if they already exist, or creates
-      # the ghost user and send the invite
-      user = User.invite!({ email: email }, @user, { site_name: @site.name })
+      user = User.find_by(email: email)
 
-      Team.create(status: Team::PENDING, role: role, user: user, site: @site) unless user.member_of?(@site)
+      return @site if user&.member_of?(@site)
+
+      user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
+
+      Team.create(status: Team::PENDING, role: role, user: user, site: @site)
 
       @site.reload
+    end
+
+    private
+
+    def send_new_user_invite!(email)
+      User.invite!({ email: email }, @user, { site_name: @site.name, new_user: true })
+    end
+
+    def send_existing_user_invite!(user)
+      user.invite_to_team!
+      opts = { site_name: @site.name, new_user: false }
+      AuthMailer.invitation_instructions(user, user.raw_invitation_token, opts).deliver_now
+      user
     end
   end
 end

@@ -63,10 +63,6 @@ RSpec.describe Mutations::TeamInvite, type: :request do
 
       before do
         create_team(user: invited_user, site: site, role: Team::ADMIN)
-
-        stub = double
-        allow(stub).to receive(:deliver_now)
-        allow(TeamMailer).to receive(:invite).and_return(stub)
       end
 
       it 'does not add them a second time' do
@@ -86,6 +82,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       before { site }
 
       subject do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(AuthMailer).to receive(:invitation_instructions).and_return(stub)
+
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 
@@ -99,8 +99,9 @@ RSpec.describe Mutations::TeamInvite, type: :request do
         expect { subject }.to change { site.team.size }.from(1).to(2)
       end
 
-      it 'sends an invite request to the email' do
-        expect { subject }.to change { ActionMailer::Base.deliveries.size }.by(1)
+      it 'sends the email' do
+        subject
+        expect(AuthMailer).to have_received(:invitation_instructions)
       end
     end
   end

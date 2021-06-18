@@ -8,6 +8,7 @@ class AuthMailer < Devise::Mailer
     @token = token
     @invited_by = record.invited_by
     @site_name = opts[:site_name]
+    @new_user = opts[:new_user] || true
     devise_mail(record, :invitation_instructions, opts)
   end
 end
