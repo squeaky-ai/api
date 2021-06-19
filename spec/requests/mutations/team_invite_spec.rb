@@ -99,6 +99,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
         expect { subject }.to change { site.team.size }.from(1).to(2)
       end
 
+      it 'does not change the users password' do
+        expect { subject }.not_to change { User.find(invited_user.id).encrypted_password }
+      end
+
       it 'sends the email' do
         subject
         expect(AuthMailer).to have_received(:invitation_instructions)

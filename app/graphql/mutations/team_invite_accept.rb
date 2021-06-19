@@ -17,11 +17,13 @@ module Mutations
       user = User.find_by_invitation_token(token, true)
       raise Errors::TeamInviteInvalid unless user
 
-      user.password = password if password
-      user.accept_invitation!
-
       team = user.teams.find_by(status: Team::PENDING)
       raise Errors::TeamInviteExpired unless team
+
+      user.password = password if password
+      user.accept_invitation
+      user.confirm
+      user.save
 
       team.update(status: Team::ACCEPTED)
 
