@@ -10,6 +10,13 @@ namespace :elasticsearch do
     es.indices.create(index: 'recordings') unless es.indices.exists(index: 'recordings')
   end
 
+  task delete_recordings_index: :environment do
+    Rails.logger.info('Deleting recordings index')
+
+    es = SearchClient
+    es.indices.delete(index: 'recordings') if es.indices.exists(index: 'recordings')
+  end
+
   task import_recordings_data: :environment do
     Rails.logger.info('Importing recordings data')
 
