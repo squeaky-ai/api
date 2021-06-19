@@ -7,6 +7,6 @@ module Types
     description 'The paginated events'
 
     field :items, [EventType, { null: true }], null: false
-    field :pagination, PaginationType, null: false
+    field :pagination, EventPaginationType, null: false
   end
 end

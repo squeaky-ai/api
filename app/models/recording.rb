@@ -31,7 +31,7 @@ class Recording
       site_id: site_id,
       viewer_id: viewer_id,
       active: active,
-      locale: locale,
+      language: Locale.get_language(locale),
       duration: duration,
       page_count: page_count,
       start_page: start_page,

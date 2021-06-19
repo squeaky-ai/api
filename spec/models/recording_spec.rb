@@ -32,7 +32,7 @@ RSpec.describe Recording, type: :model do
         site_id
         viewer_id
         active
-        locale
+        language
         duration
         page_count
         start_page

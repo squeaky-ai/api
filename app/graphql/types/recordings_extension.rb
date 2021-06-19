@@ -7,37 +7,44 @@ module Types
   # stored in Dynamo
   class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
-      field.argument(:first, Integer, required: false, default_value: 10, description: 'The number of items to return')
-      field.argument(:cursor, String, required: false, description: 'The cursor to fetch the next set of items')
+      field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
+      field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
+      field.argument(:query, String, required: false, default_value: '', description: 'The search query')
     end
 
     def resolve(object:, arguments:, **_rest)
-      # We don't want to be pulling back too much in one go
-      page_size = arguments[:first].clamp(1, 50)
-      # Get the paginated response so that we can handle
-      # the paging for the front end
-      query = recording_query(object.object.uuid, page_size, Cursor.decode(arguments[:cursor]))
-
-      items = query.page.map(&:serialize)
-      cursor = query.last_evaluated_key
+      search = search(arguments, object.object.uuid)
+      results = SearchClient.search(index: 'recordings', body: search)
 
       {
-        items: items,
-        pagination: {
-          cursor: Cursor.encode(cursor),
-          is_last: !cursor,
-          page_size: page_size
+        items: items(results),
+        pagination: pagination(results, arguments[:size])
+      }
+    end
+
+    private
+
+    def search(arguments, uuid)
+      {
+        from: arguments[:page] * arguments[:size],
+        size: arguments[:size],
+        query: {
+          match: {
+            site_id: uuid
+          }
         }
       }
     end
 
-    def recording_query(uuid, first, cursor)
-      Recording
-        .build_query
-        .key_expr(':site_id = ?'.dup, uuid)
-        .limit(first)
-        .exclusive_start_key(cursor)
-        .complete!
+    def items(results)
+      results['hits']['hits'].map { |r| r['_source'] }
+    end
+
+    def pagination(results, size)
+      {
+        page_size: size,
+        page_count: (results['hits']['total']['value'] / size).to_i
+      }
     end
   end
 end
