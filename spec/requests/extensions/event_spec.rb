@@ -3,47 +3,44 @@
 require 'rails_helper'
 
 site_events_query = <<-GRAPHQL
-  query($id: ID!, $first: Int, $cursor: String) {
-    site(id: $id) {
-      recordings {
-        items {
-          id
-          events(first: $first, cursor: $cursor) {
-            items {
-              ... on PageView {
-                type
-                locale
-                useragent
-                path
-                time
-                timestamp
-              }
-              ... on Scroll {
-                type
-                x
-                y
-                time
-                timestamp
-              }
-              ... on Cursor {
-                type
-                x
-                y
-                time
-                timestamp
-              }
-              ... on Interaction {
-                type
-                selector
-                time
-                timestamp
-              }
+  query($site_id: ID!, $recording_id: ID!, $first: Int, $cursor: String) {
+    site(id: $site_id) {
+      recording(id: $recording_id) {
+        events(first: $first, cursor: $cursor) {
+          items {
+            ... on PageView {
+              type
+              locale
+              useragent
+              path
+              time
+              timestamp
             }
-            pagination {
-              cursor
-              isLast
-              pageSize
+            ... on Scroll {
+              type
+              x
+              y
+              time
+              timestamp
             }
+            ... on Cursor {
+              type
+              x
+              y
+              time
+              timestamp
+            }
+            ... on Interaction {
+              type
+              selector
+              time
+              timestamp
+            }
+          }
+          pagination {
+            cursor
+            isLast
+            pageSize
           }
         }
       }
@@ -61,17 +58,17 @@ RSpec.describe Types::EventsExtension, type: :request do
     after { @recording.delete! }
 
     subject do
-      variables = { id: site.id, first: 10 }
+      variables = { site_id: site.id, recording_id: @recording.session_id, first: 10 }
       graphql_request(site_events_query, variables, user)
     end
 
     it 'returns no items' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['items']).to eq []
     end
 
     it 'returns the correct pagination' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
@@ -97,17 +94,17 @@ RSpec.describe Types::EventsExtension, type: :request do
     end
 
     subject do
-      variables = { id: site.id, first: 10 }
+      variables = { site_id: site.id, recording_id: @recording.session_id, first: 10 }
       graphql_request(site_events_query, variables, user)
     end
 
     it 'returns some items' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['items'].size).to eq 5
     end
 
     it 'returns the correct pagination' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,
@@ -128,12 +125,12 @@ RSpec.describe Types::EventsExtension, type: :request do
       after { @recording.delete! }
 
       subject do
-        variables = { id: site.id, first: -1 }
+        variables = { site_id: site.id, recording_id: @recording.session_id, first: -1 }
         graphql_request(site_events_query, variables, user)
       end
 
       it 'raises it to the minimum' do
-        response = subject['data']['site']['recordings']['items'][0]['events']
+        response = subject['data']['site']['recording']['events']
         expect(response['pagination']['pageSize']).to eq 1
       end
     end
@@ -147,12 +144,12 @@ RSpec.describe Types::EventsExtension, type: :request do
       after { @recording.delete! }
 
       subject do
-        variables = { id: site.id, first: 101 }
+        variables = { site_id: site.id, recording_id: @recording.session_id, first: 101 }
         graphql_request(site_events_query, variables, user)
       end
 
       it 'lowers it to the maximum' do
-        response = subject['data']['site']['recordings']['items'][0]['events']
+        response = subject['data']['site']['recording']['events']
         expect(response['pagination']['pageSize']).to eq 100
       end
     end
@@ -167,12 +164,12 @@ RSpec.describe Types::EventsExtension, type: :request do
       @recording = create_recording(site: site)
       @events = create_events(count: 15, recording: @recording)
 
-      variables = { id: site.id, first: 10, cursor: nil }
+      variables = { site_id: site.id, recording_id: @recording.session_id, first: 10, cursor: nil }
       response = graphql_request(site_events_query, variables, user)
 
       # Take the cursor from the first request and use it for
       # the second
-      @cursor = response['data']['site']['recordings']['items'][0]['events']['pagination']['cursor']
+      @cursor = response['data']['site']['recording']['events']['pagination']['cursor']
       response
     end
 
@@ -182,17 +179,17 @@ RSpec.describe Types::EventsExtension, type: :request do
     end
 
     subject do
-      variables = { id: site.id, first: 10, cursor: @cursor }
+      variables = { site_id: site.id, recording_id: @recording.session_id, first: 10, cursor: @cursor }
       graphql_request(site_events_query, variables, user)
     end
 
     it 'returns the second set of results' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['items'].size).to eq 5
     end
 
     it 'returns the correct pagination' do
-      response = subject['data']['site']['recordings']['items'][0]['events']
+      response = subject['data']['site']['recording']['events']
       expect(response['pagination']).to eq(
         {
           'cursor' => nil,

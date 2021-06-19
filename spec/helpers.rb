@@ -51,10 +51,17 @@ module Helpers
     recording
   end
 
-  def create_recordings(site:, count:)
+  def create_es_recordings(site:, count:)
     recordings = Fixtures::Recordings.new(site).sample(count)
-    Aws::Record::Transactions.transact_write(transact_items: recordings.map { |e| { save: e } })
-    recordings
+
+    SearchClient.bulk(
+      refresh: 'wait_for',
+      body: recordings.map do |record|
+        {
+          index: { _index: Recording::INDEX, data: record.serialize }
+        }
+      end
+    )
   end
 
   def create_events(recording:, count:)

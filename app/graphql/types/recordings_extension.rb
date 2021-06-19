@@ -14,7 +14,7 @@ module Types
 
     def resolve(object:, arguments:, **_rest)
       search = search(arguments, object.object.uuid)
-      results = SearchClient.search(index: 'recordings', body: search)
+      results = SearchClient.search(index: Recording::INDEX, body: search)
 
       {
         items: items(results),
@@ -43,7 +43,7 @@ module Types
     def pagination(results, size)
       {
         page_size: size,
-        page_count: (results['hits']['total']['value'] / size).to_i
+        page_count: (results['hits']['total']['value'].to_f / size).ceil
       }
     end
   end

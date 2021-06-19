@@ -7,14 +7,18 @@ namespace :elasticsearch do
     Rails.logger.info('Creating recordings index')
 
     es = SearchClient
-    es.indices.create(index: 'recordings') unless es.indices.exists(index: 'recordings')
+    index = Recording::INDEX
+
+    es.indices.create(index: index) unless es.indices.exists(index: index)
   end
 
   task delete_recordings_index: :environment do
     Rails.logger.info('Deleting recordings index')
 
     es = SearchClient
-    es.indices.delete(index: 'recordings') if es.indices.exists(index: 'recordings')
+    index = Recording::INDEX
+
+    es.indices.delete(index: index) if es.indices.exists(index: index)
   end
 
   task import_recordings_data: :environment do
@@ -22,6 +26,7 @@ namespace :elasticsearch do
 
     records = []
     es = SearchClient
+    index = Recording::INDEX
 
     Recording.scan.each { |r| records << r }
 
@@ -29,7 +34,7 @@ namespace :elasticsearch do
       es.bulk(
         body: slice.map do |record|
           {
-            index: { _index: 'recordings', data: record.serialize }
+            index: { _index: index, data: record.serialize }
           }
         end
       )
