@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 team_invite_accept_mutation = <<-GRAPHQL
-  mutation($token: String!, $password: String!) {
+  mutation($token: String!, $password: String) {
     teamInviteAccept(input: { token: $token, password: $password }) {
       id
       team {
@@ -52,24 +52,43 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
   end
 
   context 'when the token is valid' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: user) }
-    let(:team) { create_team(user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
+    context 'when it is a new user' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+      let(:team) { create_team(user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
-    subject do
-      variables = { token: team.user.raw_invitation_token, password: Faker::String.random }
-      graphql_request(team_invite_accept_mutation, variables, nil)
+      subject do
+        variables = { token: team.user.raw_invitation_token, password: Faker::String.random }
+        graphql_request(team_invite_accept_mutation, variables, nil)
+      end
+
+      it 'sets the team status as accepted' do
+        expect { subject }.to change { Team.find(team.id).pending? }.from(true).to(false)
+      end
+
+      it 'updates the password' do
+        expect { subject }.to change { User.find(team.user.id).encrypted_password }
+      end
     end
 
-    it 'returns the updated site' do
-      response = subject['data']['teamInviteAccept']
-      team_member = response['team'].find { |t| t['id'] == team.id.to_s }
-      expect(response['id']).to eq site.id.to_s
-      expect(team_member).not_to be nil
-    end
+    context 'when it is an existing user' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+      let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
-    it 'updates the record' do
-      expect { subject }.to change { site.team.size }.from(1).to(2)
+      subject do
+        team.user.invite_to_team!
+        variables = { token: team.user.reload.raw_invitation_token }
+        graphql_request(team_invite_accept_mutation, variables, nil)
+      end
+
+      it 'sets the team status as accepted' do
+        expect { subject }.to change { Team.find(team.id).pending? }.from(true).to(false)
+      end
+
+      it 'does not update the password' do
+        expect { subject }.not_to change { User.find(team.user.id).encrypted_password }
+      end
     end
   end
 end

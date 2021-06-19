@@ -9,22 +9,23 @@ module Mutations
     null false
 
     argument :token, String, required: true
-    argument :password, String, required: true
+    argument :password, String, required: false
 
     type Types::SiteType
 
-    def resolve(token:, password:)
+    def resolve(token:, password: nil)
       user = User.find_by_invitation_token(token, true)
       raise Errors::TeamInviteInvalid unless user
 
-      User.accept_invitation!(invitation_token: token, password: password)
+      user.password = password if password
+      user.accept_invitation!
 
-      member = user.teams.find_by(status: Team::PENDING)
-      raise Errors::TeamInviteExpired unless member
+      team = user.teams.find_by(status: Team::PENDING)
+      raise Errors::TeamInviteExpired unless team
 
-      member.update(status: Team::ACCEPTED)
+      team.update(status: Team::ACCEPTED)
 
-      member.site.reload
+      team.site.reload
     end
   end
 end
