@@ -38,7 +38,6 @@ class Recording
       page_count: page_count,
       start_page: start_page,
       exit_page: exit_page,
-      useragent: useragent,
       device_type: device_type,
       browser: browser,
       viewport_x: viewport_x,

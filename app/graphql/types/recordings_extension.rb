@@ -25,15 +25,25 @@ module Types
     private
 
     def search(arguments, uuid)
-      {
+      params = {
         from: arguments[:page] * arguments[:size],
         size: arguments[:size],
         query: {
-          match: {
-            site_id: uuid
+          bool: {
+            must: [
+              { term: { 'site_id.keyword': uuid } }
+            ]
           }
         }
       }
+
+      unless arguments[:query].empty?
+        params[:query][:bool][:filter] = [
+          { query_string: { query: "*#{arguments[:query]}*" } }
+        ]
+      end
+
+      params
     end
 
     def items(results)
