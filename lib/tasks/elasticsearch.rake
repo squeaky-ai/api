@@ -30,7 +30,11 @@ namespace :elasticsearch do
 
     Recording.scan.each { |r| records << r }
 
-    records.each_slice(250) do |slice|
+    Rails.logger.info("Found #{records.size} items in Dynamo")
+
+    records.each_slice(250).with_index do |slice, i|
+      Rails.logger.info("Bulk inserting batch #{i}")
+
       es.bulk(
         body: slice.map do |record|
           {
