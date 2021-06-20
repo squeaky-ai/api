@@ -10,11 +10,13 @@ site_recording_query = <<-GRAPHQL
         siteId
         viewerId
         active
-        locale
+        language
         duration
         pageCount
         startPage
         exitPage
+        browser
+        deviceType
         useragent
         viewportX
         viewportY

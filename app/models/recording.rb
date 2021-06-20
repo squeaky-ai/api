@@ -9,6 +9,8 @@ require 'user_agent_parser'
 class Recording
   include Aws::Record
 
+  INDEX = Rails.configuration.elasticsearch['recordings_index']
+
   set_table_name 'Recordings'
 
   string_attr :site_id, hash_key: true
@@ -31,7 +33,7 @@ class Recording
       site_id: site_id,
       viewer_id: viewer_id,
       active: active,
-      locale: locale,
+      language: Locale.get_language(locale),
       duration: duration,
       page_count: page_count,
       start_page: start_page,

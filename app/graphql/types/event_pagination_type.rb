@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Types
-  class PaginationType < Types::BaseObject
-    description 'The pagination object'
+  class EventPaginationType < Types::BaseObject
+    description 'Pagination for event objects'
 
     field :cursor, String, null: true
     field :is_last, Boolean, null: false

@@ -43,5 +43,7 @@ module Squeaky
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
+
+    config.elasticsearch = config_for(:elasticsearch)
   end
 end

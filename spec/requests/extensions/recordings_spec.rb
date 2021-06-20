@@ -3,27 +3,28 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($id: ID!, $first: Int, $cursor: String) {
+  query($id: ID!, $size: Int, $page: Int) {
     site(id: $id) {
-      recordings(first: $first, cursor: $cursor) {
+      recordings(size: $size, page: $page) {
         items {
           id
           siteId
           viewerId
           active
-          locale
+          language
           duration
           pageCount
           startPage
           exitPage
+          deviceType
+          browser
           useragent
           viewportX
           viewportY
         }
         pagination {
-          cursor
-          isLast
           pageSize
+          pageCount
         }
       }
     }
@@ -36,7 +37,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { id: site.id, first: 10 }
+      variables = { id: site.id, size: 15, page: 0 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -49,9 +50,8 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       response = subject['data']['site']['recordings']
       expect(response['pagination']).to eq(
         {
-          'cursor' => nil,
-          'isLast' => true,
-          'pageSize' => 10
+          'pageSize' => 15,
+          'pageCount' => 0
         }
       )
     end
@@ -62,13 +62,13 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { id: site.id, first: 10 }
+      variables = { id: site.id, size: 15, page: 0 }
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { @recordings = create_recordings(site: site, count: 5) }
-
-    after { @recordings.each(&:delete!) }
+    before do
+      create_es_recordings(site: site, count: 5)
+    end
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -79,51 +79,10 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       response = subject['data']['site']['recordings']
       expect(response['pagination']).to eq(
         {
-          'cursor' => nil,
-          'isLast' => true,
-          'pageSize' => 10
+          'pageSize' => 15,
+          'pageCount' => 1
         }
       )
-    end
-  end
-
-  context 'when limiting the results' do
-    context 'when the number is below the minimum' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      before { @recording = create_recording(site: site) }
-
-      after { @recording.delete! }
-
-      subject do
-        variables = { id: site.id, first: -1 }
-        graphql_request(site_recordings_query, variables, user)
-      end
-
-      it 'raises it to the minimum' do
-        response = subject['data']['site']['recordings']
-        expect(response['pagination']['pageSize']).to eq 1
-      end
-    end
-
-    context 'when the number is above the maximum' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      before { @recording = create_recording(site: site) }
-
-      after { @recording.delete! }
-
-      subject do
-        variables = { id: site.id, first: 51 }
-        graphql_request(site_recordings_query, variables, user)
-      end
-
-      it 'lowers it to the maximum' do
-        response = subject['data']['site']['recordings']
-        expect(response['pagination']['pageSize']).to eq 50
-      end
     end
   end
 
@@ -133,21 +92,14 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:cursor) { nil }
 
     before do
-      @recordings = create_recordings(site: site, count: 15)
+      create_es_recordings(site: site, count: 15)
 
-      variables = { id: site.id, first: 10, cursor: nil }
-      response = graphql_request(site_recordings_query, variables, user)
-
-      # Take the cursor from the first request and use it for
-      # the second
-      @cursor = response['data']['site']['recordings']['pagination']['cursor']
-      response
+      variables = { id: site.id, size: 10, page: 0 }
+      graphql_request(site_recordings_query, variables, user)
     end
 
-    after { @recordings.each(&:delete!) }
-
     subject do
-      variables = { id: site.id, first: 10, cursor: @cursor }
+      variables = { id: site.id, size: 10, page: 1 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -160,9 +112,8 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       response = subject['data']['site']['recordings']
       expect(response['pagination']).to eq(
         {
-          'cursor' => nil,
-          'isLast' => true,
-          'pageSize' => 10
+          'pageSize' => 10,
+          'pageCount' => 2
         }
       )
     end
