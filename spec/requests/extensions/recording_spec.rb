@@ -17,7 +17,6 @@ site_recording_query = <<-GRAPHQL
         exitPage
         browser
         deviceType
-        useragent
         viewportX
         viewportY
       }

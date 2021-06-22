@@ -37,7 +37,6 @@ RSpec.describe Recording, type: :model do
         page_count
         start_page
         exit_page
-        useragent
         device_type
         browser
         viewport_x

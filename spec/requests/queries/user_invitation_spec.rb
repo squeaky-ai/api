@@ -6,28 +6,58 @@ user_invitation = <<-GRAPHQL
   query($token: String!) {
     userInvitation(token: $token) {
       email
+      hasPending
     }
   }
 GRAPHQL
 
 RSpec.describe 'QueryUserInvitation', type: :request do
   context 'when there is no user invitation' do
-    it 'returns null' do
-      response = graphql_request(user_invitation, { token: Faker::String.random }, nil)
+    subject do
+      graphql_request(user_invitation, { token: Faker::String.random }, nil)
+    end
 
-      expect(response['data']['userInvitation']).to be_nil
+    it 'returns no email and pending status' do
+      expect(subject['data']['userInvitation']).to eq(
+        'email' => nil,
+        'hasPending' => false
+      )
     end
   end
 
   context 'when there is a user invitation' do
-    let(:user) { invite_user }
+    let(:user) { create_user }
 
-    it 'returns the user' do
-      response = graphql_request(user_invitation, { token: user.raw_invitation_token }, nil)
+    subject do
+      user.invite_to_team!
+      graphql_request(user_invitation, { token: user.raw_invitation_token }, nil)
+    end
 
-      expect(response['data']['userInvitation']).to eq(
+    before { create_site_and_team(user: user, status: Team::PENDING) }
+
+    it 'returns the email and pending status' do
+      expect(subject['data']['userInvitation']).to eq(
         {
-          'email' => user.email
+          'email' => user.email,
+          'hasPending' => true
+        }
+      )
+    end
+  end
+
+  context 'when there is a user invitation but it has been revoked' do
+    let(:user) { create_user }
+
+    subject do
+      user.invite_to_team!
+      graphql_request(user_invitation, { token: user.raw_invitation_token }, nil)
+    end
+
+    it 'returns the email and pending status' do
+      expect(subject['data']['userInvitation']).to eq(
+        {
+          'email' => user.email,
+          'hasPending' => false
         }
       )
     end

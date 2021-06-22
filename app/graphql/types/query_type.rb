@@ -21,7 +21,7 @@ module Types
       description "Get a list of sites for the user.\nWarning: Loading the recordings here is n+1 and expensive!"
     end
 
-    field :user_invitation, UserType, null: true do
+    field :user_invitation, UserInvitationType, null: true do
       description 'Get the user from the invite token'
       argument :token, String, required: true
     end
@@ -45,7 +45,7 @@ module Types
     end
 
     def user_invitation(token:)
-      User.find_by_invitation_token(token, true)
+      User.find_team_invitation(token)
     end
   end
 end

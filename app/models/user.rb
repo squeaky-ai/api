@@ -61,4 +61,17 @@ class User < ApplicationRecord
     # already has an account
     generate_invitation_token!
   end
+
+  def pending_team_invitation?
+    teams.where(status: Team::PENDING).size.positive?
+  end
+
+  def self.find_team_invitation(token)
+    user = User.find_by_invitation_token(token, true)
+
+    {
+      email: user&.email,
+      has_pending: user&.pending_team_invitation? || false
+    }
+  end
 end
