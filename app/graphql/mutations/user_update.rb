@@ -18,6 +18,7 @@ module Mutations
       # update. We may want want to resend the email in the
       # future
       @user.confirm
+      UserMailer.updated(@user).deliver_now
       @user
     end
   end

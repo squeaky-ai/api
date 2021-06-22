@@ -20,6 +20,10 @@ RSpec.describe Mutations::UserUpdate, type: :request do
   let(:email) { Faker::Internet.email }
 
   subject do
+    stub = double
+    allow(stub).to receive(:deliver_now)
+    allow(UserMailer).to receive(:updated).and_return(stub)
+
     update = { first_name: first_name, last_name: last_name, email: email }
     graphql_request(user_update_mutation, update, user)
   end
@@ -39,5 +43,10 @@ RSpec.describe Mutations::UserUpdate, type: :request do
     expect(user.first_name).to eq first_name
     expect(user.last_name).to eq last_name
     expect(user.email).to eq email
+  end
+
+  it 'sends an email' do
+    subject
+    expect(UserMailer).to have_received(:updated)
   end
 end
