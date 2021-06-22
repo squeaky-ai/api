@@ -19,11 +19,13 @@ RSpec.describe Mutations::UserUpdate, type: :request do
   let(:last_name) { Faker::Name.last_name }
   let(:email) { Faker::Internet.email }
 
-  subject do
+  before do
     stub = double
     allow(stub).to receive(:deliver_now)
     allow(UserMailer).to receive(:updated).and_return(stub)
+  end
 
+  subject do
     update = { first_name: first_name, last_name: last_name, email: email }
     graphql_request(user_update_mutation, update, user)
   end
