@@ -16,7 +16,7 @@ class User < ApplicationRecord
          :trackable,
          :invitable
 
-  has_many :teams
+  has_many :teams, dependent: :destroy
   has_many :sites, through: :teams
 
   def full_name
