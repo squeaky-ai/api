@@ -18,6 +18,7 @@ module Mutations
       # return false, so we check the length of the errors
       raise GraphQL::ExecutionError, @user.errors.full_messages.first if @user.errors.size.positive?
 
+      @user.save
       @user
     end
   end

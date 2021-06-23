@@ -57,7 +57,7 @@ RSpec.describe Mutations::UserUpdate, type: :request do
     end
 
     it 'sends the email' do
-      expect { subject }.to change { ActionMailer::Base.deliveries.size }.from(1).to(2)
+      expect { subject }.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
   end
 end
