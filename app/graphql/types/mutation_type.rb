@@ -8,7 +8,10 @@ module Types
           description: 'Update a user\'s details'
     field :user_delete,
           mutation: Mutations::UserDelete,
-          description: 'Delet a user'
+          description: 'Delete a user'
+    field :user_password,
+          mutation: Mutations::UserPassword,
+          description: 'Update the users password'
 
     # Sites
     field :site_create,
