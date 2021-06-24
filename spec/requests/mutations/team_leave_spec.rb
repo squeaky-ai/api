@@ -59,7 +59,7 @@ RSpec.describe Mutations::TeamLeave, type: :request do
       expect { subject }.to change { site.team.size }.from(2).to(1)
     end
 
-    it 'sends an email to the remaining team members' do
+    it 'sends an email to the owner' do
       subject
       expect(TeamMailer).to have_received(:member_left).with(site.owner.user.email, site, user).once
     end

@@ -16,21 +16,10 @@ module Mutations
 
       return @site if team.owner?
 
-      team.delete
-      send_emails(team)
+      TeamMailer.member_left(@site.owner.user.email, @site, team.user).deliver_now
+      team.destroy
 
       nil
-    end
-
-    private
-
-    def send_emails(team)
-      @site.team.each do |m|
-        # Don't send this to yourself
-        next if m.id == team.id
-
-        TeamMailer.member_left(m.user.email, @site, team.user).deliver_now
-      end
     end
   end
 end
