@@ -58,7 +58,7 @@ RSpec.describe Site, type: :model do
     end
 
     it 'returns only the team members that are admins' do
-      expect(subject.size).to eq 2
+      expect(subject.size).to eq 1
       subject.each { |a| expect(a.admin?).to be true }
     end
   end

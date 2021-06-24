@@ -94,8 +94,8 @@ RSpec.describe User, type: :model do
 
       subject { user }
 
-      it 'returns true' do
-        expect(subject.admin_for?(site)).to be true
+      it 'returns false' do
+        expect(subject.admin_for?(site)).to be false
       end
     end
   end

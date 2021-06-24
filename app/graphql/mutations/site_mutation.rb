@@ -10,10 +10,10 @@ module Mutations
       @user = context[:current_user]
       raise Errors::Unauthorized unless @user
 
-      @site = @user.sites.find { |s| s.id == args[:site_id].to_i }
+      @site = @user.sites.find_by(id: args[:site_id].to_i)
 
       raise Errors::SiteNotFound unless @site
-      raise Errors::SiteForbidden unless @user.admin_for?(@site)
+      raise Errors::SiteForbidden unless @user.admin_for?(@site) || @user.owner_for?(@site)
 
       true
     end

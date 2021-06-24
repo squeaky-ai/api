@@ -22,7 +22,11 @@ class Team < ApplicationRecord
   end
 
   def admin?
-    role > MEMBER
+    role == ADMIN
+  end
+
+  def member?
+    role == MEMBER
   end
 
   def pending?

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Admins can delete others (excluding the owner), if leaving
-  # a site then the team_leave mutation should be used instead
+  # Admins can delete users, but not other admins or the owner,
+  # if leaving a site then the team_leave mutation should be
+  # used instead
   class TeamDelete < SiteMutation
     null false
 
@@ -16,6 +17,7 @@ module Mutations
 
       return @site if team.owner?
       return @site if team.user.id == @user.id
+      return @site if team.admin? && @user.admin_for?(@site)
 
       team.delete
       TeamMailer.member_removed(team.user.email, @site).deliver_now

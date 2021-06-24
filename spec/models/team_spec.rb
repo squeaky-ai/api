@@ -25,8 +25,8 @@ RSpec.describe Team, type: :model do
     context 'when the user is the owner' do
       subject { described_class.new(role: Team::OWNER) }
 
-      it 'returns true' do
-        expect(subject.admin?).to be true
+      it 'returns false' do
+        expect(subject.admin?).to be false
       end
     end
 
@@ -43,6 +43,32 @@ RSpec.describe Team, type: :model do
 
       it 'returns false' do
         expect(subject.admin?).to be false
+      end
+    end
+  end
+
+  describe '#member?' do
+    context 'when the user is the owner' do
+      subject { described_class.new(role: Team::OWNER) }
+
+      it 'returns false' do
+        expect(subject.member?).to be false
+      end
+    end
+
+    context 'when the user is an admin' do
+      subject { described_class.new(role: Team::ADMIN) }
+
+      it 'returns false' do
+        expect(subject.member?).to be false
+      end
+    end
+
+    context 'when the user is a member' do
+      subject { described_class.new(role: Team::MEMBER) }
+
+      it 'returns true' do
+        expect(subject.member?).to be true
       end
     end
   end
