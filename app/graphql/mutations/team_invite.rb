@@ -20,7 +20,7 @@ module Mutations
 
       user = User.find_by(email: email)
 
-      return @site if user&.member_of?(@site)
+      raise Errors::TeamExists if user&.member_of?(@site)
 
       user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 

@@ -44,6 +44,7 @@ en:
       forbidden: 'You lack the required permissions to do this'
       team_role_invalid: 'Team role is invalid'
       team_not_found: 'Team member not found'
+      team_exists: 'Team member already exists'
       invite_invalid: 'Team invite is invalid'
       invite_expired: 'Team invite has expired'
   auth:

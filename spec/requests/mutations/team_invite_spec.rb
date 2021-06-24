@@ -65,6 +65,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
         create_team(user: invited_user, site: site, role: Team::ADMIN)
       end
 
+      it 'returns an error' do
+        expect(subject['errors'][0]['message']).to eq 'Team member already exists'
+      end
+
       it 'does not add them a second time' do
         expect { subject }.not_to change { site.team.size }
       end
