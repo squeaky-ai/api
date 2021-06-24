@@ -85,4 +85,19 @@ RSpec.describe 'QuerySites', type: :request do
       )
     end
   end
+
+  context 'when the user has a pending invite' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: create_user) }
+
+    before do
+      create_team(user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
+    end
+
+    it 'does not return the site' do
+      response = graphql_request(sites_query, {}, user)
+
+      expect(response['data']['sites']).to eq([])
+    end
+  end
 end

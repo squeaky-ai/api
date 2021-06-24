@@ -33,7 +33,9 @@ module Types
     def site(id:)
       raise Errors::Unauthorized unless context[:current_user]
 
-      context[:current_user].sites.find(id.to_i)
+      # We don't show pending sites to the user in the UI
+      team = { status: Team::ACCEPTED }
+      context[:current_user].sites.where(id: id.to_i, team: team).first
     rescue ActiveRecord::RecordNotFound
       nil
     end
@@ -41,7 +43,9 @@ module Types
     def sites
       raise Errors::Unauthorized unless context[:current_user]
 
-      context[:current_user].sites
+      # We don't show pending sites to the user in the UI
+      team = { status: Team::ACCEPTED }
+      context[:current_user].sites.where(team: team)
     end
 
     def user_invitation(token:)
