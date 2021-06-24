@@ -36,9 +36,13 @@ module Mutations
     end
 
     def send_existing_user_invite!(user)
+      user.invited_by = @user
+      user.save
       user.invite_to_team!
+
       opts = { site_name: @site.name, new_user: false }
       AuthMailer.invitation_instructions(user, user.raw_invitation_token, opts).deliver_now
+
       user
     end
   end
