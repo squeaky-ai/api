@@ -10,12 +10,14 @@ module Mutations
     argument :site_id, ID, required: true
     argument :name, String, required: false
     argument :url, String, required: false
+    argument :dismiss_checklist, Boolean, required: false
 
     type Types::SiteType
 
-    def resolve(name: nil, url: nil, **_rest)
+    def resolve(name: nil, url: nil, dismiss_checklist: nil, **_rest)
       update = {}
       update[:name] = name if name
+      update[:checklist_dismissed_at] = Time.now if dismiss_checklist
 
       if url
         update[:url] = uri(url)

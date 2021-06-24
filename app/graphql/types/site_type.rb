@@ -13,6 +13,7 @@ module Types
     field :uuid, String, null: false
     field :owner_name, String, null: false
     field :verified_at, String, null: true
+    field :checklist_dismissed_at, String, null: true
     field :team, [TeamType], null: false
     # Fetch a single recording
     field :recording, RecordingType, null: true, extensions: [RecordingExtension]

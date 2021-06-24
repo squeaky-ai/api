@@ -133,7 +133,6 @@ RSpec.describe User, type: :model do
         'firstName' => user.first_name,
         'lastName' => user.last_name,
         'email' => user.email,
-        'lastSignedInAt' => user.last_signed_in_at,
         'createdAt' => user.created_at,
         'updatedAt' => user.updated_at
       )

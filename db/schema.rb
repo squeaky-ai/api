@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_15_150640) do
+ActiveRecord::Schema.define(version: 2021_06_24_092022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_150640) do
     t.datetime "verified_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "checklist_dismissed_at"
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end
@@ -43,8 +44,6 @@ ActiveRecord::Schema.define(version: 2021_06_15_150640) do
     t.string "first_name"
     t.string "last_name"
     t.string "email"
-    t.datetime "invited_at"
-    t.datetime "last_signed_in_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "encrypted_password", default: "", null: false
