@@ -75,4 +75,32 @@ RSpec.describe Mutations::SiteDelete, type: :request do
       subject
     end
   end
+
+  context 'when there are other members in the team' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    let(:team_user1) { create_user }
+    let(:team_user2) { create_user }
+
+    before do
+      stub = double
+      allow(stub).to receive(:deliver_now)
+      allow(SiteMailer).to receive(:destroyed).and_return(stub)
+
+      create_team(user: team_user1, site: site, role: Team::ADMIN)
+      create_team(user: team_user2, site: site, role: Team::MEMBER)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_delete_mutation, variables, user)
+    end
+
+    it 'sends the email to the team members' do
+      subject
+      expect(SiteMailer).to have_received(:destroyed).with(team_user1.email, site)
+      expect(SiteMailer).to have_received(:destroyed).with(team_user2.email, site)
+    end
+  end
 end

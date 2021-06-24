@@ -1,0 +1,5 @@
+<h1>The team account for <%= @site.name %> has been deleted</h1>
+<p><%= @site.owner.user.full_name %> has deleted <%= @site.name %>, and its associated team, from Squeaky.</p>
+<p>If you believe this may have occured in error, please contact <%= @site.owner.user.first_name %> directly.</p>
+<a href="<%= @web_url %>" class="button">Visit Squeaky</a>
+<p class="small">If you believe you have received this email in error you can safely ignore it.</p>

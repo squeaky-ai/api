@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
-
 module Mutations
   # Create a new site and set the current_user as the
   # owner. The uri must be valid and also unique. Any

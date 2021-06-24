@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
-
 module Mutations
   # Delete the site and clean up any data that we have
   # stored. This action can only be done by the owner
@@ -16,6 +14,8 @@ module Mutations
       raise Errors::Forbidden unless @user.owner_for?(@site)
 
       @site.delete_authorizer!
+      # Send an email to everyone in the team besides the owner
+      @site.team.each { |t| SiteMailer.destroyed(t.user.email, @site).deliver_now unless t.owner? }
       @site.destroy
 
       nil

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'uri'
-require 'date'
 require 'securerandom'
 
 # The main site model. The only unique constraint is the
