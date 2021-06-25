@@ -21,9 +21,10 @@ module Mutations
 
       raise Errors::TeamNotFound unless team
 
-      # The owners role can't be changed here, it must
-      # be transferred
+      # The owners role can't be changed here, it must be transferred
       raise Errors::Forbidden if team.owner?
+      # Admins can't change the roles of other admins
+      raise Errors::Forbidden if team.admin? && @user.admin_for?(@site)
 
       team.update(role: role)
 
