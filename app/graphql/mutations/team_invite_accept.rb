@@ -20,7 +20,13 @@ module Mutations
       team = user.teams.find_by(status: Team::PENDING)
       raise Errors::TeamInviteExpired unless team
 
+      # This would be confusing for the user as they've
+      # not had the opportunity to set their password yet
+      user.skip_password_change_notification!
       user.password = password if password
+
+      # Accept and confirm the email, we don't need a follow
+      # up confirm as the invite email serves the same purpose
       user.accept_invitation
       user.confirm
       user.save

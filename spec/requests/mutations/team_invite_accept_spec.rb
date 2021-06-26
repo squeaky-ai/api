@@ -57,6 +57,8 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
       let(:site) { create_site_and_team(user: user) }
       let(:team) { create_team(user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
+      before { team }
+
       subject do
         variables = { token: team.user.raw_invitation_token, password: Faker::String.random }
         graphql_request(team_invite_accept_mutation, variables, nil)
@@ -69,12 +71,18 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
       it 'updates the password' do
         expect { subject }.to change { User.find(team.user.id).encrypted_password }
       end
+
+      it 'does not send any emails' do
+        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+      end
     end
 
     context 'when it is an existing user' do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
       let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
+
+      before { team }
 
       subject do
         team.user.invite_to_team!
@@ -88,6 +96,10 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
 
       it 'does not update the password' do
         expect { subject }.not_to change { User.find(team.user.id).encrypted_password }
+      end
+
+      it 'does not send any emails' do
+        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
       end
     end
   end
