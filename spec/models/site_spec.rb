@@ -177,17 +177,4 @@ RSpec.describe Site, type: :model do
       end
     end
   end
-
-  describe '#days_since_last_recording' do
-    context 'when there are no recordings' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      subject { site.days_since_last_recording }
-
-      it 'returns -1' do
-        expect(subject).to eq(-1)
-      end
-    end
-  end
 end

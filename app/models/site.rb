@@ -65,10 +65,6 @@ class Site < ApplicationRecord
     update!(verified_at: Time.now)
   end
 
-  def days_since_last_recording
-    -1
-  end
-
   def self.format_uri(url)
     uri = URI(url)
     return nil unless uri.scheme && uri.host
