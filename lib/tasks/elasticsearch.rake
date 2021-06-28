@@ -38,7 +38,11 @@ namespace :elasticsearch do
       es.bulk(
         body: slice.map do |record|
           {
-            index: { _index: index, data: record.serialize }
+            index: {
+              _index: index,
+              _id: "#{record.site_id}_#{record.viewer_id}_#{record.session_id}",
+              data: record.serialize
+            }
           }
         end
       )

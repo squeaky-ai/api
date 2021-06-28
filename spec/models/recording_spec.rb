@@ -16,7 +16,6 @@ RSpec.describe Recording, type: :model do
       useragent: Faker::Internet.user_agent,
       viewport_x: 1920,
       viewport_y: 1080,
-      active: false,
       page_views: Set.new,
       connected_at: DateTime.now.iso8601,
       disconnected_at: DateTime.now.iso8601

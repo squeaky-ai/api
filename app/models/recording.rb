@@ -22,7 +22,6 @@ class Recording
   string_attr :useragent
   integer_attr :viewport_x
   integer_attr :viewport_y
-  boolean_attr :active
   string_set_attr :page_views, default_value: Set.new
   integer_attr :connected_at
   integer_attr :disconnected_at

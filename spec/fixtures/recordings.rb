@@ -19,7 +19,6 @@ module Fixtures
         useragent: Faker::Internet.user_agent,
         viewport_x: 0,
         viewport_y: 0,
-        active: 0,
         connected_at: DateTime.now.iso8601,
         disconnected_at: DateTime.now.iso8601,
         **args
