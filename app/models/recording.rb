@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+require 'date'
 require 'aws-record'
-require 'user_agent_parser'
 
 # These are the recordings that are displayed in the filtered
 # table. They're stored in Dynamo and are populated by the
@@ -33,15 +33,19 @@ class Recording
       site_id: site_id,
       viewer_id: viewer_id,
       active: active,
-      language: Locale.get_language(locale),
+      language: language,
       duration: duration,
+      duration_string: duration_string,
+      pages: pages,
       page_count: page_count,
       start_page: start_page,
       exit_page: exit_page,
       device_type: device_type,
       browser: browser,
+      browser_string: browser_string,
       viewport_x: viewport_x,
-      viewport_y: viewport_y
+      viewport_y: viewport_y,
+      date_string: date_string
     }
   end
 
@@ -49,12 +53,24 @@ class Recording
     false # TODO
   end
 
+  def user_agent
+    @user_agent ||= UserAgent.parse(useragent)
+  end
+
   def device_type
-    UserAgentParser.parse(useragent).device.family
+    user_agent.mobile? ? 'Mobile' : 'Computer'
   end
 
   def browser
-    UserAgentParser.parse(useragent).family
+    user_agent.browser
+  end
+
+  def browser_string
+    "#{browser} Version #{user_agent.version}"
+  end
+
+  def pages
+    page_views.to_a
   end
 
   def page_count
@@ -65,7 +81,20 @@ class Recording
     disconnected_at - connected_at
   end
 
+  def duration_string
+    Time.at(duration).utc.strftime('%M:%S')
+  end
+
   def event_key
     "#{site_id}_#{session_id}"
+  end
+
+  def language
+    Locale.get_language(locale)
+  end
+
+  def date_string
+    date = Time.at(connected_at / 1000).to_datetime
+    date.strftime("#{date.day.ordinalize} %B %Y")
   end
 end

@@ -12,13 +12,17 @@ site_recording_query = <<-GRAPHQL
         active
         language
         duration
+        durationString
+        pages
         pageCount
         startPage
         exitPage
-        browser
         deviceType
+        browser
+        browserString
         viewportX
         viewportY
+        dateString
       }
     }
   }

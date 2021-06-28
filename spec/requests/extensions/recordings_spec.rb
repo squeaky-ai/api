@@ -13,14 +13,17 @@ site_recordings_query = <<-GRAPHQL
           active
           language
           duration
+          durationString
+          pages
           pageCount
           startPage
           exitPage
           deviceType
           browser
-          useragent
+          browserString
           viewportX
           viewportY
+          dateString
         }
         pagination {
           pageSize
