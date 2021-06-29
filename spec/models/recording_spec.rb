@@ -88,7 +88,7 @@ RSpec.describe Recording, type: :model do
   describe '#duration' do
     let(:subject) do
       fixture = recording_fixture.dup
-      fixture[:connected_at] = (Time.now.to_f * 1000).to_i - 5
+      fixture[:connected_at] = (Time.now.to_f * 1000).to_i - 5000
       fixture[:disconnected_at] = (Time.now.to_f * 1000).to_i
       described_class.new(fixture)
     end
@@ -101,7 +101,7 @@ RSpec.describe Recording, type: :model do
   describe '#duration_string' do
     let(:subject) do
       fixture = recording_fixture.dup
-      fixture[:connected_at] = (Time.now.to_f * 1000).to_i - 5
+      fixture[:connected_at] = (Time.now.to_f * 1000).to_i - 5000
       fixture[:disconnected_at] = (Time.now.to_f * 1000).to_i
       described_class.new(fixture)
     end

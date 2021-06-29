@@ -77,7 +77,7 @@ class Recording
   end
 
   def duration
-    disconnected_at - connected_at
+    (disconnected_at - connected_at) / 1000
   end
 
   def duration_string
