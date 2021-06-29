@@ -1,0 +1,2 @@
+queues:
+  recordings: https://sqs.eu-west-1.amazonaws.com/404356446913/recordings
