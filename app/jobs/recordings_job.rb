@@ -11,7 +11,12 @@ class RecordingsJob < ApplicationJob
     message = JSON.parse(args)
     recording = Recording.find(site_id: message['site_id'], session_id: message['session_id'])
 
-    return unless recording
+    unless recording
+      Rails.logger.warn 'No recording found in DynamoDB'
+      return
+    end
+
+    Rails.logger.info 'Indexing recording into ElasticSearch'
 
     SearchClient.update(
       index: Recording::INDEX,
