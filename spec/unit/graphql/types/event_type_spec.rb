@@ -13,6 +13,16 @@ RSpec.describe Types::EventType do
     end
   end
 
+  context 'when the event type is "snapshot"' do
+    let(:event) { Event.new(type: 'snapshot') }
+
+    subject { described_class.resolve_type(event, nil) }
+
+    it 'returns the SnapshotType' do
+      expect(subject).to eq Types::Events::SnapshotType
+    end
+  end
+
   context 'when the event type is "cursor"' do
     let(:event) { Event.new(type: 'cursor') }
 
