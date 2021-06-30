@@ -40,18 +40,15 @@ module Types
         .limit(first)
         .exclusive_start_key(format_cursor(cursor))
         .scan_ascending(true)
+        .on_index(:timestamp)
         .complete!
     end
 
     def format_cursor(cursor)
       return nil if cursor.nil? || cursor.empty?
 
-      # The timestamp gets serialized as a string and
-      # must be converted back to an int
-      {
-        'site_session_id' => cursor['site_session_id'],
-        'timestamp' => cursor['timestamp'].to_i
-      }
+      cursor['timestamp'] = cursor['timestamp'].to_i
+      cursor
     end
   end
 end

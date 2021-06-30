@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+
 module Fixtures
   class Events
     def initialize(recording)
@@ -14,6 +16,7 @@ module Fixtures
     def page_view
       Event.new(
         site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
         type: 'page_view',
         path: '/',
         viewport_x: 0,
@@ -28,6 +31,7 @@ module Fixtures
     def scroll
       Event.new(
         site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
         type: 'scroll',
         x: 0,
         y: 0,
@@ -39,6 +43,7 @@ module Fixtures
     def cursor
       Event.new(
         site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
         type: 'cursor',
         x: 0,
         y: 0,
@@ -50,6 +55,7 @@ module Fixtures
     def interaction
       Event.new(
         site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
         type: %w[click hover focus blur].sample,
         selector: 'body',
         time: 0,

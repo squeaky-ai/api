@@ -10,7 +10,7 @@ class Event
   set_table_name 'Events'
 
   string_attr :site_session_id, hash_key: true
-  integer_attr :timestamp, range_key: true
+  string_attr :event_id, range_key: true
   string_attr :type
 
   # Not all of these are used at once, refer to the
@@ -28,4 +28,5 @@ class Event
 
   # Required for all
   integer_attr :time
+  integer_attr :timestamp
 end
