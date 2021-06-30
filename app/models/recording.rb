@@ -44,7 +44,8 @@ class Recording
       browser_string: browser_string,
       viewport_x: viewport_x,
       viewport_y: viewport_y,
-      date_string: date_string
+      date_string: date_string,
+      timestamp: disconnected_at
     }
   end
 

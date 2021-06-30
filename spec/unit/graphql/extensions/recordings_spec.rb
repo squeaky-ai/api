@@ -22,7 +22,7 @@ RSpec.describe Types::RecordingsExtension do
       let(:object) { double('object', object: double('object', uuid: uuid)) }
 
       subject do
-        arguments = { page: page, size: size, query: query }
+        arguments = { page: page, size: size, query: query, sort: 'DESC' }
         described_class.new(field: field, options: nil).resolve(object: object, arguments: arguments)
       end
 
@@ -37,6 +37,12 @@ RSpec.describe Types::RecordingsExtension do
           body: {
             from: page * size,
             size: size,
+            sort: {
+              timestamp: {
+                order: 'desc',
+                unmapped_type: 'date_nanos'
+              }
+            },
             query: {
               bool: {
                 must: [
@@ -59,7 +65,7 @@ RSpec.describe Types::RecordingsExtension do
       let(:object) { double('object', object: double('object', uuid: uuid)) }
 
       subject do
-        arguments = { page: page, size: size, query: query }
+        arguments = { page: page, size: size, query: query, sort: 'DESC' }
         described_class.new(field: field, options: nil).resolve(object: object, arguments: arguments)
       end
 
@@ -74,6 +80,12 @@ RSpec.describe Types::RecordingsExtension do
           body: {
             from: page * size,
             size: size,
+            sort: {
+              timestamp: {
+                order: 'desc',
+                unmapped_type: 'date_nanos'
+              }
+            },
             query: {
               bool: {
                 must: [

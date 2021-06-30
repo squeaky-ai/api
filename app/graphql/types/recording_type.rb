@@ -21,6 +21,7 @@ module Types
     field :viewport_x, Integer, null: false
     field :viewport_y, Integer, null: false
     field :date_string, String, null: false
+    field :timestamp, GraphQL::Types::BigInt, null: false
     field :events, EventsType, null: false, extensions: [EventsExtension]
   end
 end

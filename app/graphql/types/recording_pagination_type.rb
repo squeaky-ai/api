@@ -6,5 +6,6 @@ module Types
 
     field :page_size, Integer, null: false
     field :page_count, Integer, null: false
+    field :sort, SortType, null: false
   end
 end

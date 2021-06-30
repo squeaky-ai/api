@@ -9,6 +9,9 @@ module Fixtures
     end
 
     def create(args = {})
+      now = (Time.now.to_f * 1000).to_i
+      connected_at = Faker::Number.between(from: now - 20_000, to: now)
+
       Recording.new(
         site_id: @site.uuid,
         session_id: SecureRandom.uuid,
@@ -19,8 +22,8 @@ module Fixtures
         useragent: Faker::Internet.user_agent,
         viewport_x: 0,
         viewport_y: 0,
-        connected_at: DateTime.now.iso8601,
-        disconnected_at: DateTime.now.iso8601,
+        connected_at: connected_at,
+        disconnected_at: Faker::Number.between(from: connected_at, to: now),
         **args
       )
     end

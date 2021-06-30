@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($id: ID!, $size: Int, $page: Int) {
+  query($id: ID!, $size: Int, $page: Int, $sort: Sort) {
     site(id: $id) {
-      recordings(size: $size, page: $page) {
+      recordings(size: $size, page: $page, sort: $sort) {
         items {
           id
           siteId
@@ -24,10 +24,12 @@ site_recordings_query = <<-GRAPHQL
           viewportX
           viewportY
           dateString
+          timestamp
         }
         pagination {
           pageSize
           pageCount
+          sort
         }
       }
     }
@@ -54,7 +56,8 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 15,
-          'pageCount' => 0
+          'pageCount' => 0,
+          'sort' => 'DESC'
         }
       )
     end
@@ -83,7 +86,8 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 15,
-          'pageCount' => 1
+          'pageCount' => 1,
+          'sort' => 'DESC'
         }
       )
     end
@@ -116,9 +120,74 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 10,
-          'pageCount' => 2
+          'pageCount' => 2,
+          'sort' => 'DESC'
         }
       )
+    end
+  end
+
+  context 'when sorting results' do
+    context 'when sorting by descending' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject do
+        variables = { id: site.id, size: 15, page: 0, sort: 'DESC' }
+        graphql_request(site_recordings_query, variables, user)
+      end
+
+      before do
+        create_es_recordings(site: site, count: 5)
+      end
+
+      it 'returns the items with the oldest first' do
+        items = subject['data']['site']['recordings']['items']
+        timestamps = items.map { |i| i['timestamp'].to_i }
+        expect(timestamps).to eq timestamps.sort.reverse
+      end
+
+      it 'returns the correct pagination' do
+        response = subject['data']['site']['recordings']
+        expect(response['pagination']).to eq(
+          {
+            'pageSize' => 15,
+            'pageCount' => 1,
+            'sort' => 'DESC'
+          }
+        )
+      end
+    end
+
+    context 'when sorting by ascending' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject do
+        variables = { id: site.id, size: 15, page: 0, sort: 'ASC' }
+        graphql_request(site_recordings_query, variables, user)
+      end
+
+      before do
+        create_es_recordings(site: site, count: 5)
+      end
+
+      it 'returns the items with the newest first' do
+        items = subject['data']['site']['recordings']['items']
+        timestamps = items.map { |i| i['timestamp'].to_i }
+        expect(timestamps).to eq timestamps.sort
+      end
+
+      it 'returns the correct pagination' do
+        response = subject['data']['site']['recordings']
+        expect(response['pagination']).to eq(
+          {
+            'pageSize' => 15,
+            'pageCount' => 1,
+            'sort' => 'ASC'
+          }
+        )
+      end
     end
   end
 end

@@ -10,6 +10,7 @@ module Types
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
       field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
       field.argument(:query, String, required: false, default_value: '', description: 'The search query')
+      field.argument(:sort, SortType, required: false, default_value: 'DESC', description: 'The sort order')
     end
 
     def resolve(object:, arguments:, **_rest)
@@ -18,7 +19,7 @@ module Types
 
       {
         items: items(results),
-        pagination: pagination(results, arguments[:size])
+        pagination: pagination(arguments, results, arguments[:size])
       }
     end
 
@@ -28,6 +29,12 @@ module Types
       params = {
         from: arguments[:page] * arguments[:size],
         size: arguments[:size],
+        sort: {
+          timestamp: {
+            unmapped_type: 'date_nanos',
+            order: arguments[:sort].downcase
+          }
+        },
         query: {
           bool: {
             must: [
@@ -50,10 +57,11 @@ module Types
       results['hits']['hits'].map { |r| r['_source'] }
     end
 
-    def pagination(results, size)
+    def pagination(arguments, results, size)
       {
         page_size: size,
-        page_count: (results['hits']['total']['value'].to_f / size).ceil
+        page_count: (results['hits']['total']['value'].to_f / size).ceil,
+        sort: arguments[:sort]
       }
     end
   end
