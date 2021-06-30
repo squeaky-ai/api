@@ -31,13 +31,27 @@ module Types
       }
     end
 
+    private
+
     def events_query(key, first, cursor)
       Event
         .build_query
         .key_expr(':site_session_id = ?'.dup, key)
         .limit(first)
-        .exclusive_start_key(cursor)
+        .exclusive_start_key(format_cursor(cursor))
+        .scan_ascending(true)
         .complete!
+    end
+
+    def format_cursor(cursor)
+      return nil if cursor.nil? || cursor.empty?
+
+      # The timestamp gets serialized as a string and
+      # must be converted back to an int
+      {
+        'site_session_id' => cursor['site_session_id'],
+        'timestamp' => cursor['timestamp'].to_i
+      }
     end
   end
 end

@@ -8,6 +8,13 @@ site_events_query = <<-GRAPHQL
       recording(id: $recording_id) {
         events(first: $first, cursor: $cursor) {
           items {
+            ... on Snapshot {
+              type
+              event
+              snapshot
+              time
+              timestamp
+            }
             ... on PageView {
               type
               locale
@@ -101,6 +108,13 @@ RSpec.describe Types::EventsExtension, type: :request do
     it 'returns some items' do
       response = subject['data']['site']['recording']['events']
       expect(response['items'].size).to eq 5
+    end
+
+    it 'returns the events in ascending order' do
+      items = subject['data']['site']['recording']['events']['items']
+      timestamps = items.map { |i| i['timestamp'].to_i }
+
+      expect(timestamps).to eq timestamps.sort
     end
 
     it 'returns the correct pagination' do
