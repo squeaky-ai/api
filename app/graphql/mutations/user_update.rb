@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update a users details. TODO: should we send an email
-  # confirmation here?
+  # Update a users details.
   class UserUpdate < UserMutation
     null false
 
