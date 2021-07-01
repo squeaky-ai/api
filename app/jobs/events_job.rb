@@ -15,8 +15,7 @@ class EventsJob < ApplicationJob
 
     @client = Aws::DynamoDB::Client.new
 
-    @site_id = message['site_id']
-    @session_id = message['session_id']
+    @viewer = message['viewer']
     @events = message['events']
 
     store_events!
@@ -24,6 +23,18 @@ class EventsJob < ApplicationJob
   end
 
   private
+
+  def site_id
+    @viewer['site_id']
+  end
+
+  def session_id
+    @viewer['session_id']
+  end
+
+  def viewer_id
+    @viewer['viewer_id']
+  end
 
   # Insert a batch of events into Dynamo for the best
   # performance. Although we never use the event_id it is
@@ -38,7 +49,7 @@ class EventsJob < ApplicationJob
           {
             put_request: {
               item: {
-                site_session_id: "#{@site_id}_#{@session_id}",
+                site_session_id: "#{site_id}_#{session_id}",
                 event_id: SecureRandom.uuid,
                 **event
               }
@@ -62,8 +73,8 @@ class EventsJob < ApplicationJob
     @client.update_item(
       table_name: Recording.table_name,
       key: {
-        site_id: @site_id,
-        session_id: @session_id
+        site_id: site_id,
+        session_id: session_id
       },
       update_expression: 'SET locale = :locale, ' \
                          'viewer_id = :viewer_id, ' \
@@ -79,7 +90,7 @@ class EventsJob < ApplicationJob
         ':locale': event['locale'],
         ':path': event['path'],
         ':page_view': [event['path']],
-        ':viewer_id': event['viewer_id'],
+        ':viewer_id': viewer_id,
         ':useragent': event['useragent'],
         ':viewport_x': event['viewport_x'],
         ':viewport_y': event['viewport_y'],
@@ -98,13 +109,13 @@ class EventsJob < ApplicationJob
   # present DynamoDB does not support RETURN_ALL, only new
   # or updated
   def sync_recording!
-    key = { site_id: @site_id, session_id: @session_id }
+    key = { site_id: site_id, session_id: session_id }
     # Best to use consistent read here as it was just updated
     recording = Recording.find_with_opts(key: key, consistent_read: true)
 
     SearchClient.update(
       index: Recording::INDEX,
-      id: "#{recording.site_id}_#{recording.viewer_id}_#{recording.session_id}",
+      id: "#{site_id}_#{viewer_id}_#{session_id}",
       body: {
         doc: recording.serialize,
         doc_as_upsert: true
