@@ -79,7 +79,7 @@ class EventsJob < ApplicationJob
         ':locale': event['locale'],
         ':path': event['path'],
         ':page_view': [event['path']],
-        ':viewer_id': event['viewer.viewer_id'],
+        ':viewer_id': event['viewer_id'],
         ':useragent': event['useragent'],
         ':viewport_x': event['viewport_x'],
         ':viewport_y': event['viewport_y'],
