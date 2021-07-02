@@ -21,10 +21,12 @@ class Event
   string_attr :selector
   string_attr :event
   string_attr :snapshot
+  string_attr :node
   integer_attr :x
   integer_attr :y
   integer_attr :viewport_x
   integer_attr :viewport_y
+  boolean_attr :visibile
 
   # Required for all
   integer_attr :time

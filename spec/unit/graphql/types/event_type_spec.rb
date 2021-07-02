@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Types::EventType do
-  context 'when the event type is "page_view"' do
-    let(:event) { Event.new(type: 'page_view') }
+  context 'when the event type is "pageview"' do
+    let(:event) { Event.new(type: 'pageview') }
 
     subject { described_class.resolve_type(event, nil) }
 
@@ -20,6 +20,16 @@ RSpec.describe Types::EventType do
 
     it 'returns the SnapshotType' do
       expect(subject).to eq Types::Events::SnapshotType
+    end
+  end
+
+  context 'when the event type is "visibility"' do
+    let(:event) { Event.new(type: 'visibility') }
+
+    subject { described_class.resolve_type(event, nil) }
+
+    it 'returns the VisibilityType' do
+      expect(subject).to eq Types::Events::VisibilityType
     end
   end
 

@@ -13,11 +13,11 @@ module Fixtures
       Faker::Number.between(from: now - 20_000, to: now)
     end
 
-    def page_view
+    def pageview
       Event.new(
         site_session_id: @recording.event_key,
         event_id: SecureRandom.uuid,
-        type: 'page_view',
+        type: 'pageview',
         path: '/',
         viewport_x: 0,
         viewport_y: 0,
@@ -64,7 +64,7 @@ module Fixtures
     end
 
     def sample(count)
-      count.times.map { [page_view, scroll, cursor, interaction].sample }
+      count.times.map { [pageview, scroll, cursor, interaction].sample }
     end
   end
 end

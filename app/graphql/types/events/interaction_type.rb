@@ -7,6 +7,7 @@ module Types
 
       field :type, String, null: false
       field :selector, String, null: false
+      field :node, String, null: false
       field :time, Integer, null: false
       field :timestamp, GraphQL::Types::BigInt, null: false
     end

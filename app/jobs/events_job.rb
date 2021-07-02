@@ -66,7 +66,7 @@ class EventsJob < ApplicationJob
   # which should make it thread safe, as well as much
   # faster.
   def store_recording!
-    event = @events.find { |e| e['type'] == 'page_view' }
+    event = @events.find { |e| e['type'] == 'pageview' }
 
     return unless event
 
@@ -83,13 +83,13 @@ class EventsJob < ApplicationJob
                          'useragent = :useragent, ' \
                          'viewport_x = :viewport_x, ' \
                          'viewport_y = :viewport_y, ' \
-                         'page_views = list_append(if_not_exists(page_views, :empty_list), :page_view), ' \
+                         'page_views = list_append(if_not_exists(page_views, :empty_list), :pageview), ' \
                          'connected_at = if_not_exists(connected_at, :connected_at), ' \
                          'disconnected_at = :disconnected_at',
       expression_attribute_values: {
         ':locale': event['locale'],
         ':path': event['path'],
-        ':page_view': [event['path']],
+        ':pageview': [event['path']],
         ':viewer_id': viewer_id,
         ':useragent': event['useragent'],
         ':viewport_x': event['viewport_x'],

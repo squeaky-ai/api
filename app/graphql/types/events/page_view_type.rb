@@ -3,7 +3,7 @@
 module Types
   module Events
     class PageViewType < Types::BaseObject
-      description 'The page_view event object'
+      description 'The pageview event object'
 
       field :type, String, null: false
       field :path, String, null: false
