@@ -5,7 +5,6 @@ module Types
     description 'Pagination for event objects'
 
     field :cursor, String, null: true
-    field :is_last, Boolean, null: false
-    field :page_size, Integer, null: false
+    field :has_next, Boolean, null: false
   end
 end

@@ -5,6 +5,7 @@ module Types
     class InteractionType < Types::BaseObject
       description 'The interaction event object'
 
+      field :event_id, String, null: false
       field :type, String, null: false
       field :selector, String, null: false
       field :node, String, null: false

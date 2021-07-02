@@ -5,6 +5,7 @@ module Types
     class SnapshotType < Types::BaseObject
       description 'The snapshot event object'
 
+      field :event_id, String, null: false
       field :type, String, null: false
       field :event, String, null: false
       field :snapshot, String, null: false

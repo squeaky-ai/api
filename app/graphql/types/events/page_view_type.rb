@@ -5,6 +5,7 @@ module Types
     class PageViewType < Types::BaseObject
       description 'The pageview event object'
 
+      field :event_id, String, null: false
       field :type, String, null: false
       field :path, String, null: false
       field :locale, String, null: false

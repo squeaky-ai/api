@@ -5,6 +5,7 @@ module Types
     class CursorType < Types::BaseObject
       description 'The cursor event object'
 
+      field :event_id, String, null: false
       field :type, String, null: false
       field :x, Integer, null: false
       field :y, Integer, null: false
