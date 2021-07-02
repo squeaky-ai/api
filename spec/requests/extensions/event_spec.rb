@@ -3,50 +3,44 @@
 require 'rails_helper'
 
 site_events_query = <<-GRAPHQL
-  query($site_id: ID!, $recording_id: ID!, $cursor: String) {
+  query($site_id: ID!, $recording_id: ID!) {
     site(id: $site_id) {
       recording(id: $recording_id) {
-        events(cursor: $cursor) {
-          items {
-            ... on Snapshot {
-              type
-              event
-              snapshot
-              time
-              timestamp
-            }
-            ... on PageView {
-              type
-              locale
-              useragent
-              path
-              time
-              timestamp
-            }
-            ... on Scroll {
-              type
-              x
-              y
-              time
-              timestamp
-            }
-            ... on Cursor {
-              type
-              x
-              y
-              time
-              timestamp
-            }
-            ... on Interaction {
-              type
-              selector
-              time
-              timestamp
-            }
+        events {
+          ... on Snapshot {
+            type
+            event
+            snapshot
+            time
+            timestamp
           }
-          pagination {
-            cursor
-            hasNext
+          ... on PageView {
+            type
+            locale
+            useragent
+            path
+            time
+            timestamp
+          }
+          ... on Scroll {
+            type
+            x
+            y
+            time
+            timestamp
+          }
+          ... on Cursor {
+            type
+            x
+            y
+            time
+            timestamp
+          }
+          ... on Interaction {
+            type
+            selector
+            time
+            timestamp
           }
         }
       }
@@ -69,18 +63,8 @@ RSpec.describe Types::EventsExtension, type: :request do
     end
 
     it 'returns no items' do
-      response = subject['data']['site']['recording']['events']
-      expect(response['items']).to eq []
-    end
-
-    it 'returns the correct pagination' do
-      response = subject['data']['site']['recording']['events']
-      expect(response['pagination']).to eq(
-        {
-          'cursor' => nil,
-          'hasNext' => false
-        }
-      )
+      events = subject['data']['site']['recording']['events']
+      expect(events).to eq []
     end
   end
 
@@ -104,25 +88,15 @@ RSpec.describe Types::EventsExtension, type: :request do
     end
 
     it 'returns some items' do
-      response = subject['data']['site']['recording']['events']
-      expect(response['items'].size).to eq 5
+      events = subject['data']['site']['recording']['events']
+      expect(events.size).to eq 5
     end
 
     it 'returns the events in ascending order' do
-      items = subject['data']['site']['recording']['events']['items']
-      timestamps = items.map { |i| i['timestamp'].to_i }
+      events = subject['data']['site']['recording']['events']
+      timestamps = events.map { |i| i['timestamp'].to_i }
 
       expect(timestamps).to eq timestamps.sort
-    end
-
-    it 'returns the correct pagination' do
-      response = subject['data']['site']['recording']['events']
-      expect(response['pagination']).to eq(
-        {
-          'cursor' => nil,
-          'hasNext' => false
-        }
-      )
     end
   end
 end

@@ -52,12 +52,36 @@ module Fixtures
       )
     end
 
+    def visibility
+      Event.new(
+        site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
+        type: 'visibility',
+        visibile: [true, false].sample,
+        time: 0,
+        timestamp: timestamp
+      )
+    end
+
     def interaction
       Event.new(
         site_session_id: @recording.event_key,
         event_id: SecureRandom.uuid,
         type: %w[click hover focus blur].sample,
         selector: 'body',
+        node: '',
+        time: 0,
+        timestamp: timestamp
+      )
+    end
+
+    def snapshot
+      Event.new(
+        site_session_id: @recording.event_key,
+        event_id: SecureRandom.uuid,
+        type: 'snapshot',
+        event: %w[initialize applyChanged].sample,
+        snapshot: '',
         time: 0,
         timestamp: timestamp
       )
@@ -65,6 +89,10 @@ module Fixtures
 
     def sample(count)
       count.times.map { [pageview, scroll, cursor, interaction].sample }
+    end
+
+    def of_type(types)
+      types.map { |t| send(t) }
     end
   end
 end

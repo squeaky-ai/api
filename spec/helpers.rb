@@ -68,4 +68,10 @@ module Helpers
     Aws::Record::Transactions.transact_write(transact_items: events.map { |e| { save: e } })
     events
   end
+
+  def create_events_of_type(recording:, types:)
+    events = Fixtures::Events.new(recording).of_type(types)
+    Aws::Record::Transactions.transact_write(transact_items: events.map { |e| { save: e } })
+    events
+  end
 end
