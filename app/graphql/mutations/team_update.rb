@@ -28,8 +28,6 @@ module Mutations
 
       team.update(role: role)
 
-      # If the user becomes an admin we send then an email.
-      # TODO: Are we supposed to send emails for the other roles?
       TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 
       @site
