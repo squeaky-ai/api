@@ -35,7 +35,7 @@ RSpec.describe EventsJob, type: :job do
     let(:event) do
       {
         viewer: {
-          site_id: site.id,
+          site_id: site.uuid,
           viewer_id: viewer_id,
           session_id: session_id
         },
@@ -102,7 +102,7 @@ RSpec.describe EventsJob, type: :job do
     let(:event) do
       {
         viewer: {
-          site_id: site.id,
+          site_id: site.uuid,
           viewer_id: viewer_id,
           session_id: session_id
         },

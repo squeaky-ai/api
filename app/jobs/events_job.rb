@@ -16,15 +16,13 @@ class EventsJob < ApplicationJob
     @viewer = message['viewer']
     @events = message['events']
 
+    @site = Site.find_by(uuid: message['viewer']['site_id'])
+
     store_events!
     store_recording!
   end
 
   private
-
-  def site_id
-    @viewer['site_id']
-  end
 
   def session_id
     @viewer['session_id']
@@ -42,7 +40,7 @@ class EventsJob < ApplicationJob
       }
     end
 
-    Event.new(site_id, session_id).push!(events)
+    Event.new(@site.id, session_id).push!(events)
   end
 
   def store_recording!
@@ -50,7 +48,7 @@ class EventsJob < ApplicationJob
 
     return unless event
 
-    recording = Recording.find_by(site_id: site_id, session_id: session_id)
+    recording = @site.recordings.find_by(session_id: session_id)
 
     recording = recording ? stamp_existing_recording!(recording, event) : create_new_recording!(event)
 
@@ -71,7 +69,7 @@ class EventsJob < ApplicationJob
     timestamp = DateTime.strptime(event['timestamp'].to_s, '%Q')
 
     Recording.create(
-      site_id: site_id,
+      site: @site,
       session_id: session_id,
       viewer_id: viewer_id,
       locale: event['locale'],
@@ -90,7 +88,7 @@ class EventsJob < ApplicationJob
   def index_to_elasticsearch!(recording)
     SearchClient.update(
       index: Recording::INDEX,
-      id: "#{site_id}_#{viewer_id}_#{session_id}",
+      id: "#{@site.id}_#{viewer_id}_#{session_id}",
       body: {
         doc: recording.to_h,
         doc_as_upsert: true
