@@ -9,7 +9,6 @@ module Types
       field :type, String, null: false
       field :event, String, null: false
       field :snapshot, String, null: false
-      field :time, Integer, null: false
       field :timestamp, GraphQL::Types::BigInt, null: false
     end
   end

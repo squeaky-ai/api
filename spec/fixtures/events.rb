@@ -13,7 +13,6 @@ module Fixtures
         'viewport_y' => 0,
         'locale' => 'en-gb',
         'useragent' => Faker::Internet.user_agent,
-        'time' => 0,
         'timestamp' => timestamp
       }
     end
@@ -24,7 +23,6 @@ module Fixtures
         'type' => 'scroll',
         'x' => 0,
         'y' => 0,
-        'time' => 0,
         'timestamp' => timestamp
       }
     end
@@ -35,7 +33,6 @@ module Fixtures
         'type' => 'cursor',
         'x' => 0,
         'y' => 0,
-        'time' => 0,
         'timestamp' => timestamp
       }
     end
@@ -45,7 +42,6 @@ module Fixtures
         'event_id' => SecureRandom.uuid,
         'type' => 'visibility',
         'visibile' => [true, false].sample,
-        'time' => 0,
         'timestamp' => timestamp
       }
     end
@@ -56,7 +52,6 @@ module Fixtures
         'type' => %w[click hover focus blur].sample,
         'selector' => 'body',
         'node' => '',
-        'time' => 0,
         'timestamp' => timestamp
       }
     end
@@ -67,7 +62,6 @@ module Fixtures
         'type' => 'snapshot',
         'event' => %w[initialize applyChanged].sample,
         'snapshot' => '',
-        'time' => 0,
         'timestamp' => timestamp
       }
     end

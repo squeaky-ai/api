@@ -12,14 +12,12 @@ events_fixture = [
     Version/14.1.1 Safari/605.1.15',
     viewport_x: 1920,
     viewport_y: 1080,
-    time: 0,
     timestamp: 162_538_814_178_1
   },
   {
     type: 'click',
     selector: 'body',
     node: 'body',
-    time: 0,
     timestamp: 162_538_814_178_2
   }
 ]

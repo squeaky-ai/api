@@ -8,7 +8,6 @@ module Types
       field :event_id, String, null: false
       field :type, String, null: false
       field :visible, Boolean, null: false
-      field :time, Integer, null: false
       field :timestamp, GraphQL::Types::BigInt, null: false
     end
   end

@@ -26,7 +26,6 @@ RSpec.describe Event do
         5.times.map do
           {
             'event_id' => SecureRandom.uuid,
-            'time' => 0,
             'timestamp' => 0
           }
         end
@@ -52,7 +51,6 @@ RSpec.describe Event do
         5.times.map do
           {
             'event_id' => SecureRandom.uuid,
-            'time' => 0,
             'timestamp' => 0
           }
         end
@@ -74,7 +72,6 @@ RSpec.describe Event do
         5.times.map do
           {
             'event_id' => SecureRandom.uuid,
-            'time' => 0,
             'timestamp' => 0
           }
         end

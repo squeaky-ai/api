@@ -11,7 +11,6 @@ site_events_query = <<-GRAPHQL
             type
             event
             snapshot
-            time
             timestamp
           }
           ... on PageView {
@@ -19,27 +18,23 @@ site_events_query = <<-GRAPHQL
             locale
             useragent
             path
-            time
             timestamp
           }
           ... on Scroll {
             type
             x
             y
-            time
             timestamp
           }
           ... on Cursor {
             type
             x
             y
-            time
             timestamp
           }
           ... on Interaction {
             type
             selector
-            time
             timestamp
           }
         }
