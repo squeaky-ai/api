@@ -58,7 +58,7 @@ class EventsJob < ApplicationJob
   # The only things that change between sessions are the
   # pages and the disconnected_at
   def stamp_existing_recording!(recording, event)
-    recording.stamp(event['href'], event['timestamp'])
+    recording.stamp(event['path'], event['timestamp'])
   end
 
   # New recordings share the same connected_at and
@@ -73,7 +73,7 @@ class EventsJob < ApplicationJob
       session_id: session_id,
       viewer_id: viewer_id,
       locale: event['locale'],
-      page_views: [event['href']],
+      page_views: [event['path']],
       useragent: event['useragent'],
       viewport_x: event['viewport_x'],
       viewport_y: event['viewport_y'],

@@ -82,8 +82,8 @@ class Recording < ApplicationRecord
 
   # Stamp the recording with the latest page view and
   # set the disconnected_at timestamp to the latest
-  def stamp(href, timestamp)
-    pages = page_views.push(href)
+  def stamp(path, timestamp)
+    pages = page_views.push(path)
     disconnected_at = DateTime.strptime(timestamp.to_s, '%Q')
     update(page_views: pages, disconnected_at: disconnected_at)
     self

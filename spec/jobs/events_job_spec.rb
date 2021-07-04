@@ -7,7 +7,7 @@ events_fixture = [
   {
     type: 'pageview',
     locale: 'en-GB',
-    href: '/',
+    path: '/',
     useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
     Version/14.1.1 Safari/605.1.15',
     viewport_x: 1920,
