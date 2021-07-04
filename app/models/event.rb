@@ -1,34 +1,27 @@
 # frozen_string_literal: true
 
-require 'aws-record'
-
-# These are the events that are used for the playback. They're
-# stored in Dynamo and are populated by the gateway Lambda
+# Helper class for getting the recording events in
+# and out of Redis
 class Event
-  include Aws::Record
+  def initialize(site_id, session_id)
+    @site_id = site_id
+    @session_id = session_id
+  end
 
-  set_table_name 'Events'
+  def list
+    Redis.current
+         .lrange(key, 0, -1)
+         .map { |e| JSON.parse(e) }
+         .sort_by { |e| e['timestamp'] }
+  end
 
-  string_attr :site_session_id, hash_key: true
-  string_attr :event_id, range_key: true
-  string_attr :type
+  def push!(events)
+    Redis.current.rpush(key, events.map(&:to_json))
+  end
 
-  # Not all of these are used at once, refer to the
-  # EventType for examples
-  string_attr :path
-  string_attr :locale
-  string_attr :useragent
-  string_attr :selector
-  string_attr :event
-  string_attr :snapshot
-  string_attr :node
-  integer_attr :x
-  integer_attr :y
-  integer_attr :viewport_x
-  integer_attr :viewport_y
-  boolean_attr :visibile
+  private
 
-  # Required for all
-  integer_attr :time
-  integer_attr :timestamp
+  def key
+    "recording::events::#{@site_id}::#{@session_id}"
+  end
 end

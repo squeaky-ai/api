@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_092022) do
+ActiveRecord::Schema.define(version: 2021_07_03_121105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "recordings", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "viewer_id", null: false
+    t.string "locale", null: false
+    t.string "page_views", default: [], null: false, array: true
+    t.string "useragent", null: false
+    t.integer "viewport_x", null: false
+    t.integer "viewport_y", null: false
+    t.datetime "connected_at", null: false
+    t.datetime "disconnected_at", null: false
+    t.bigint "site_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["site_id"], name: "index_recordings_on_site_id"
+  end
 
   create_table "sites", force: :cascade do |t|
     t.string "name", null: false

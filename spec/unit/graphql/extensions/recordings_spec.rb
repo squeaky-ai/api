@@ -13,13 +13,13 @@ search_mock = {
 RSpec.describe Types::RecordingsExtension do
   describe '#resolve' do
     context 'when providing pagination' do
-      let(:uuid) { SecureRandom.uuid }
+      let(:id) { SecureRandom.uuid }
       let(:page) { 0 }
       let(:size) { 15 }
       let(:query) { '' }
 
       let(:field) { double('field', argument: {}) }
-      let(:object) { double('object', object: double('object', uuid: uuid)) }
+      let(:object) { double('object', object: double('object', id: id)) }
 
       subject do
         arguments = { page: page, size: size, query: query, sort: 'DESC' }
@@ -46,7 +46,7 @@ RSpec.describe Types::RecordingsExtension do
             query: {
               bool: {
                 must: [
-                  { term: { 'site_id.keyword': uuid } }
+                  { term: { 'site_id.keyword': id } }
                 ]
               }
             }
@@ -56,13 +56,13 @@ RSpec.describe Types::RecordingsExtension do
     end
 
     describe 'when providing a search term' do
-      let(:uuid) { SecureRandom.uuid }
+      let(:id) { SecureRandom.uuid }
       let(:page) { 0 }
       let(:size) { 15 }
       let(:query) { Faker::String.random }
 
       let(:field) { double('field', argument: {}) }
-      let(:object) { double('object', object: double('object', uuid: uuid)) }
+      let(:object) { double('object', object: double('object', id: id)) }
 
       subject do
         arguments = { page: page, size: size, query: query, sort: 'DESC' }
@@ -89,7 +89,7 @@ RSpec.describe Types::RecordingsExtension do
             query: {
               bool: {
                 must: [
-                  { term: { 'site_id.keyword': uuid } }
+                  { term: { 'site_id.keyword': id } }
                 ],
                 filter: [
                   { query_string: { query: "*#{query}*" } }

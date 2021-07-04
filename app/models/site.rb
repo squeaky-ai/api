@@ -14,6 +14,7 @@ class Site < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_many :users, through: :teams
+  has_many :recordings, dependent: :destroy
 
   # The plural sounds weird
   alias_attribute :team, :teams
@@ -50,15 +51,11 @@ class Site < ApplicationRecord
   end
 
   def create_authorizer!
-    authorizer = Authorizer.new(site_id: uuid, active: true, origin: url)
-    authorizer.save!
-    authorizer
+    Redis.current.set("authorizer::#{uuid}", url)
   end
 
   def delete_authorizer!
-    authorizer = Authorizer.find(site_id: uuid)
-    authorizer&.delete!
-    nil
+    Redis.current.del("authorizer::#{uuid}")
   end
 
   def verify!

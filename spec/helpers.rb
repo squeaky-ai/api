@@ -57,21 +57,15 @@ module Helpers
       refresh: 'wait_for',
       body: recordings.map do |record|
         {
-          index: { _index: Recording::INDEX, data: record.serialize }
+          index: { _index: Recording::INDEX, data: record.to_h }
         }
       end
     )
   end
 
-  def create_events(recording:, count:)
-    events = Fixtures::Events.new(recording).sample(count)
-    Aws::Record::Transactions.transact_write(transact_items: events.map { |e| { save: e } })
-    events
-  end
-
-  def create_events_of_type(recording:, types:)
-    events = Fixtures::Events.new(recording).of_type(types)
-    Aws::Record::Transactions.transact_write(transact_items: events.map { |e| { save: e } })
+  def create_events(site_id:, session_id:, count:)
+    events = Fixtures::Events.new.sample(count)
+    Event.new(site_id, session_id).push!(events)
     events
   end
 end

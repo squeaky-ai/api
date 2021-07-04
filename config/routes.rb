@@ -5,11 +5,6 @@ Rails.application.routes.draw do
     get 'ping', to: 'ping#index'
     post 'graphql', to: 'graphql#execute'
 
-    # Enable the GraphQL playground
-    mount GraphqlPlayground::Rails::Engine,
-          at: 'playground',
-          graphql_path: 'graphql'
-
     # Required to load devise
     devise_for :users, only: []
 

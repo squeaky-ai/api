@@ -8,18 +8,14 @@ module Types
   # recording was stored.
   class LastRecordingExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
-      last_recording = Recording.query(
-        key_condition_expression: 'site_id = :site_id',
-        expression_attribute_values: { ':site_id': object.object[:uuid] },
-        limit: 1,
-        index_name: 'last_updated_at',
-        scan_index_forward: false
-      )
+      last_recording = Recording
+                       .where(site_id: object.object[:id])
+                       .order(disconnected_at: :desc)
+                       .first
 
-      return -1 if last_recording.empty?
+      return -1 unless last_recording
 
-      date = Time.at(last_recording.page.first.disconnected_at / 1000).to_datetime
-      (DateTime.now - date).to_i
+      (DateTime.now.utc - last_recording.disconnected_at) / 1.day
     end
   end
 end

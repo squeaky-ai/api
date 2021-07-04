@@ -119,12 +119,8 @@ RSpec.describe Site, type: :model do
 
       after { site.delete_authorizer! }
 
-      it 'returns the authorizer' do
-        expect(subject).to be_instance_of(Authorizer)
-      end
-
-      it 'creates the authorizer in Dynamo' do
-        expect { subject }.to change { Authorizer.find(site_id: site.uuid).nil? }.from(true).to(false)
+      it 'creates the authorizer' do
+        expect { subject }.to change { Redis.current.get("authorizer::#{site.uuid}") }.from(nil).to(site.url)
       end
     end
 
@@ -138,8 +134,8 @@ RSpec.describe Site, type: :model do
 
       after { site.delete_authorizer! }
 
-      it 'raises an error' do
-        expect { subject }.to raise_error Aws::Record::Errors::ConditionalWriteFailed
+      it 'has no effect' do
+        expect { subject }.not_to change { Redis.current.get("authorizer::#{site.uuid}") }
       end
     end
   end
@@ -151,12 +147,8 @@ RSpec.describe Site, type: :model do
 
       subject { site.delete_authorizer! }
 
-      it 'returns nil' do
-        expect(subject).to be nil
-      end
-
       it 'does not delete anything' do
-        expect { subject }.not_to change { Authorizer.find(site_id: site.uuid).nil? }
+        expect { subject }.not_to change { Redis.current.get("authorizer::#{site.uuid}") }
       end
     end
 
@@ -168,12 +160,8 @@ RSpec.describe Site, type: :model do
 
       before { site.create_authorizer! }
 
-      it 'returns nil' do
-        expect(subject).to be nil
-      end
-
-      it 'deletes the authorizer' do
-        expect { subject }.to change { Authorizer.find(site_id: site.uuid).nil? }.from(false).to(true)
+      it 'deletes the record' do
+        expect { subject }.to change { Redis.current.get("authorizer::#{site.uuid}") }.from(site.url).to(nil)
       end
     end
   end

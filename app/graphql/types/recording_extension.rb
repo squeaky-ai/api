@@ -11,8 +11,10 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
-      recording = Recording.find(site_id: object.object[:uuid], session_id: arguments[:id])
-      recording&.serialize
+      site_id = object.object[:id]
+      session_id = arguments[:id]
+
+      Recording.find_by(site_id: site_id, session_id: session_id)&.to_h
     end
   end
 end

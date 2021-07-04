@@ -72,9 +72,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before do
-      create_es_recordings(site: site, count: 5)
-    end
+    before { create_es_recordings(site: site, count: 5) }
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -133,13 +131,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { id: site.id, size: 15, page: 0, sort: 'DESC' }
+        variables = { id: site.id, size: 5, page: 0, sort: 'DESC' }
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before do
-        create_es_recordings(site: site, count: 5)
-      end
+      before { create_es_recordings(site: site, count: 5) }
 
       it 'returns the items with the oldest first' do
         items = subject['data']['site']['recordings']['items']
@@ -151,7 +147,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         response = subject['data']['site']['recordings']
         expect(response['pagination']).to eq(
           {
-            'pageSize' => 15,
+            'pageSize' => 5,
             'pageCount' => 1,
             'sort' => 'DESC'
           }
@@ -164,13 +160,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { id: site.id, size: 15, page: 0, sort: 'ASC' }
+        variables = { id: site.id, size: 5, page: 0, sort: 'ASC' }
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before do
-        create_es_recordings(site: site, count: 5)
-      end
+      before { create_es_recordings(site: site, count: 5) }
 
       it 'returns the items with the newest first' do
         items = subject['data']['site']['recordings']['items']
@@ -182,7 +176,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         response = subject['data']['site']['recordings']
         expect(response['pagination']).to eq(
           {
-            'pageSize' => 15,
+            'pageSize' => 5,
             'pageCount' => 1,
             'sort' => 'ASC'
           }

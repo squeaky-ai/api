@@ -14,7 +14,7 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
-      search = search(arguments, object.object.uuid)
+      search = search(arguments, object.object.id)
       results = SearchClient.search(index: Recording::INDEX, body: search)
 
       {

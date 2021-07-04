@@ -21,7 +21,7 @@ RSpec.describe Auth::SessionsController, type: :controller do
         sign_in user
         get :current
         expect(response).to have_http_status(200)
-        expect(response.body).to eq(user.serialize.to_json)
+        expect(response.body).to eq(user.to_h.to_json)
       end
     end
   end

@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 site_recording_query = <<-GRAPHQL
-  query($site_id: ID!, $recording_id: ID!) {
+  query($site_id: ID!, $session_id: ID!) {
     site(id: $site_id) {
-      recording(id: $recording_id) {
+      recording(id: $session_id) {
         id
         siteId
         viewerId
@@ -34,7 +34,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: Faker::String.random(length: 4) }
+      variables = { site_id: site.id, session_id: Faker::String.random(length: 4) }
       graphql_request(site_recording_query, variables, user)
     end
 
@@ -47,15 +47,12 @@ RSpec.describe Types::RecordingExtension, type: :request do
   context 'when the recording does exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
+    let(:recording) { create_recording(site: site) }
 
     subject do
-      variables = { site_id: site.id, recording_id: @recording.serialize[:id] }
+      variables = { site_id: site.id, session_id: recording.session_id }
       graphql_request(site_recording_query, variables, user)
     end
-
-    before { @recording = create_recording(site: site) }
-
-    after { @recording.delete! }
 
     it 'returns the item' do
       response = subject['data']['site']['recording']

@@ -13,14 +13,14 @@ module Types
                    Types::Events::VisibilityType
 
     def self.resolve_type(object, _context)
-      return Types::Events::PageViewType    if object.type == 'pageview'
-      return Types::Events::CursorType      if object.type == 'cursor'
-      return Types::Events::ScrollType      if object.type == 'scroll'
-      return Types::Events::SnapshotType    if object.type == 'snapshot'
-      return Types::Events::VisibilityType  if object.type == 'visibility'
-      return Types::Events::InteractionType if %w[click hover focus blur].include?(object.type)
+      return Types::Events::PageViewType    if object['type'] == 'pageview'
+      return Types::Events::CursorType      if object['type'] == 'cursor'
+      return Types::Events::ScrollType      if object['type'] == 'scroll'
+      return Types::Events::SnapshotType    if object['type'] == 'snapshot'
+      return Types::Events::VisibilityType  if object['type'] == 'visibility'
+      return Types::Events::InteractionType if %w[click hover focus blur].include?(object['type'])
 
-      raise "Not sure how to handle #{object.type}"
+      raise "Not sure how to handle #{object['type']}"
     end
   end
 end

@@ -36,11 +36,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
         graphql_request(site_last_recording_query, variables, user)
       end
 
-      before do
-        @recording = create_recording({ disconnected_at: Time.now.to_i * 1000 }, site: site)
-      end
-
-      after { @recording.delete! }
+      before { create_recording({ disconnected_at: DateTime.now }, site: site) }
 
       it 'returns the number of days' do
         response = subject['data']['site']['daysSinceLastRecording']
@@ -57,11 +53,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
         graphql_request(site_last_recording_query, variables, user)
       end
 
-      before do
-        @recording = create_recording({ disconnected_at: (Time.now - 5.days).to_i * 1000 }, site: site)
-      end
-
-      after { @recording.delete! }
+      before { create_recording({ disconnected_at: DateTime.now - 5.days }, site: site) }
 
       it 'returns the number of days' do
         response = subject['data']['site']['daysSinceLastRecording']
@@ -80,15 +72,9 @@ RSpec.describe Types::RecordingExtension, type: :request do
     end
 
     before do
-      @recording1 = create_recording({ disconnected_at: (Time.now - 1.days).to_i * 1000 }, site: site)
-      @recording2 = create_recording({ disconnected_at: (Time.now - 3.days).to_i * 1000 }, site: site)
-      @recording3 = create_recording({ disconnected_at: (Time.now - 5.days).to_i * 1000 }, site: site)
-    end
-
-    after do
-      @recording1.delete!
-      @recording2.delete!
-      @recording3.delete!
+      create_recording({ disconnected_at: DateTime.now - 1.days }, site: site)
+      create_recording({ disconnected_at: DateTime.now - 3.days }, site: site)
+      create_recording({ disconnected_at: DateTime.now - 5.days }, site: site)
     end
 
     it 'returns the nearest recordings days' do

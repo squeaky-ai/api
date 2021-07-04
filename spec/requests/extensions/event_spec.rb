@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 site_events_query = <<-GRAPHQL
-  query($site_id: ID!, $recording_id: ID!) {
+  query($site_id: ID!, $session_id: ID!) {
     site(id: $site_id) {
-      recording(id: $recording_id) {
+      recording(id: $session_id) {
         events {
           ... on Snapshot {
             type
@@ -55,10 +55,8 @@ RSpec.describe Types::EventsExtension, type: :request do
 
     before { @recording = create_recording(site: site) }
 
-    after { @recording.delete! }
-
     subject do
-      variables = { site_id: site.id, recording_id: @recording.session_id }
+      variables = { site_id: site.id, session_id: @recording.session_id }
       graphql_request(site_events_query, variables, user)
     end
 
@@ -74,16 +72,11 @@ RSpec.describe Types::EventsExtension, type: :request do
 
     before do
       @recording = create_recording(site: site)
-      @events = create_events(count: 5, recording: @recording)
-    end
-
-    after do
-      @recording.delete!
-      @events.each(&:delete!)
+      create_events(count: 5, site_id: site.id, session_id: @recording.session_id)
     end
 
     subject do
-      variables = { site_id: site.id, recording_id: @recording.session_id }
+      variables = { site_id: site.id, session_id: @recording.session_id }
       graphql_request(site_events_query, variables, user)
     end
 

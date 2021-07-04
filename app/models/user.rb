@@ -43,7 +43,7 @@ class User < ApplicationRecord
     site.team.any? { |t| t.user.id == id }
   end
 
-  def serialize
+  def to_h
     {
       'id' => id,
       'firstName' => first_name,

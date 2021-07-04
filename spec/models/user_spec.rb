@@ -124,11 +124,11 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#serialize' do
+  describe '#to_h' do
     let(:user) { create_user }
 
     it 'serialized the user for the front end' do
-      expect(user.serialize).to eq(
+      expect(user.to_h).to eq(
         'id' => user.id,
         'firstName' => user.first_name,
         'lastName' => user.last_name,

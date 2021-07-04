@@ -24,11 +24,9 @@ namespace :elasticsearch do
   task import_recordings_data: :environment do
     Rails.logger.info('Importing recordings data')
 
-    records = []
+    records = Recording.all
     es = SearchClient
     index = Recording::INDEX
-
-    Recording.scan.each { |r| records << r }
 
     Rails.logger.info("Found #{records.size} items in Dynamo")
 
@@ -41,7 +39,7 @@ namespace :elasticsearch do
             index: {
               _index: index,
               _id: "#{record.site_id}_#{record.viewer_id}_#{record.session_id}",
-              data: record.serialize
+              data: record.to_h
             }
           }
         end

@@ -1,21 +1,13 @@
 # frozen_string_literal: true
 
 module Types
-  # Fetch all of the events from Dynamo. The AWS::Record client
-  # will automatically loop through the last_evaluated_key to
-  # fetch all of the items.
+  # Fetch all of the events from Redis
   class EventsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
-      key = "#{object.object[:site_id]}_#{object.object[:id]}"
+      site_id = object.object[:site_id]
+      session_id = object.object[:id]
 
-      query = Event
-              .build_query
-              .key_expr(':site_session_id = ?'.dup, key)
-              .scan_ascending(true)
-              .on_index(:timestamp)
-              .complete!
-
-      query.each
+      Event.new(site_id, session_id).list
     end
   end
 end
