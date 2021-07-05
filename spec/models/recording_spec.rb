@@ -191,12 +191,38 @@ RSpec.describe Recording, type: :model do
   end
 
   describe '#date_string' do
-    subject do
-      described_class.new(recording_fixture)
-    end
+    subject { described_class.new(recording_fixture) }
 
     it 'returns a nicely formatted date' do
       expect(subject.date_string).to eq '3rd July 2021'
+    end
+  end
+
+  describe '#events' do
+    context 'when there are no events' do
+      subject { described_class.new(recording_fixture).events }
+
+      it 'returns an empty array' do
+        expect(subject).to eq([])
+      end
+    end
+
+    context 'when there are some events' do
+      let(:site) { create_site }
+
+      let(:instance) do
+        fixture = recording_fixture.dup
+        fixture[:site_id] = site.id
+        described_class.new(fixture)
+      end
+
+      before { create_events(count: 5, site_id: site.id, session_id: instance.session_id) }
+
+      subject { instance.events }
+
+      it 'returns the events' do
+        expect(subject.size).to eq(5)
+      end
     end
   end
 end

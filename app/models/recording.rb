@@ -88,4 +88,8 @@ class Recording < ApplicationRecord
     update(page_views: pages, disconnected_at: disconnected_at)
     self
   end
+
+  def events
+    Event.new(site_id, session_id).list
+  end
 end

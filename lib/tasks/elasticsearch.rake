@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 namespace :elasticsearch do
-  desc 'Create the recordings index'
-
   task create_recordings_index: :environment do
     Rails.logger.info('Creating recordings index')
 

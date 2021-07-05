@@ -19,6 +19,10 @@ class Event
     Redis.current.rpush(key, events.map(&:to_json))
   end
 
+  def dump
+    Redis.current.dump(key)
+  end
+
   private
 
   def key
