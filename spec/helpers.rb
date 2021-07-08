@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'zlib'
+require 'base64'
 require 'securerandom'
 
 module Helpers
@@ -67,5 +69,10 @@ module Helpers
     events = Fixtures::Events.new.sample(count)
     Event.new(site_id, session_id).push!(events)
     events
+  end
+
+  def gzip(payload)
+    x = Zlib::Deflate.new.deflate(payload.to_json, Zlib::FINISH)
+    Base64.encode64(x)
   end
 end

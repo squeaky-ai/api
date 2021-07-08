@@ -31,19 +31,19 @@ RSpec.describe EventsJob, type: :job do
     let(:session_id) { SecureRandom.uuid }
 
     let(:event) do
-      {
+      gzip(
         viewer: {
           site_id: site.uuid,
           viewer_id: viewer_id,
           session_id: session_id
         },
         events: events_fixture
-      }
+      )
     end
 
     before { allow(SearchClient).to receive(:update) }
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'creates the new recording' do
       expect { subject }.to change { Site.find(site.id).recordings.size }.from(0).to(1)
@@ -98,14 +98,14 @@ RSpec.describe EventsJob, type: :job do
     let(:session_id) { SecureRandom.uuid }
 
     let(:event) do
-      {
+      gzip(
         viewer: {
           site_id: site.uuid,
           viewer_id: viewer_id,
           session_id: session_id
         },
         events: events_fixture
-      }
+      )
     end
 
     before do
@@ -126,7 +126,7 @@ RSpec.describe EventsJob, type: :job do
       )
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'updates the page_views' do
       expect { subject }.to change { site.recordings.first.page_views }.from(['/test']).to(['/test', '/'])

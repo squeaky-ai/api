@@ -56,6 +56,15 @@ namespace :recording do
       Base64.decode64(body['event_dump'])
     )
 
+    SearchClient.update(
+      index: Recording::INDEX,
+      id: "#{recording.site_id}_#{recording.viewer_id}_#{recording.session_id}",
+      body: {
+        doc: recording.to_h,
+        doc_as_upsert: true
+      }
+    )
+
     Rails.logger.info("Recording imported: #{key}")
   end
 end

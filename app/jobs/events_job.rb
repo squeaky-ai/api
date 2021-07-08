@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'zlib'
+require 'base64'
 require 'securerandom'
 
 # Pick up validated events from the events queue and
@@ -11,7 +13,7 @@ class EventsJob < ApplicationJob
   self.queue_adapter = :amazon_sqs
 
   def perform(args)
-    message = JSON.parse(args)
+    message = extract_body(args)
 
     @viewer = message['viewer']
     @events = message['events']
@@ -23,6 +25,17 @@ class EventsJob < ApplicationJob
   end
 
   private
+
+  def extract_body(args)
+    zstream = Zlib::Inflate.new
+
+    str = Base64.decode64(args)
+    str = zstream.inflate(str)
+    zstream.finish
+    zstream.close
+
+    JSON.parse(str)
+  end
 
   def session_id
     @viewer['session_id']
