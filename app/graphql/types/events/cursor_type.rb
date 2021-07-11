@@ -9,6 +9,8 @@ module Types
       field :type, String, null: false
       field :x, Integer, null: false
       field :y, Integer, null: false
+      field :offset_x, Integer, null: false
+      field :offset_y, Integer, null: false
       field :timestamp, GraphQL::Types::BigInt, null: false
     end
   end
