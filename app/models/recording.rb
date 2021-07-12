@@ -8,7 +8,7 @@ class Recording < ApplicationRecord
   belongs_to :site
 
   has_many :tags, dependent: :destroy
-  has_many :notes, dependant: :destroy
+  has_many :notes, dependent: :destroy
 
   INDEX = Rails.configuration.elasticsearch['recordings_index']
 

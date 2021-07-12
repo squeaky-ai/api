@@ -3,10 +3,8 @@ AllCops:
   Exclude:
     - bin/*
     - db/**/*
+    - spec/**/*
 Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context', 'it', 'namespace']
+  IgnoredMethods: ['namespace']
 Metrics/MethodLength:
   CountAsOne: ['hash', 'array']
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - spec/**/*

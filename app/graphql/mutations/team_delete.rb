@@ -12,6 +12,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN]
+    end
+
     def resolve(team_id:, **_rest)
       team = @site.member(team_id)
 

@@ -11,9 +11,10 @@ module Mutations
       raise Errors::Unauthorized unless @user
 
       @site = @user.sites.find_by(id: args[:site_id].to_i)
-
       raise Errors::SiteNotFound unless @site
-      raise Errors::SiteForbidden unless @user.admin_for?(@site) || @user.owner_for?(@site)
+
+      team = @site.team.find_by(user_id: @user.id)
+      raise Errors::SiteForbidden unless permitted_roles.include?(team.role)
 
       true
     end

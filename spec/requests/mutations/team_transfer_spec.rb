@@ -48,7 +48,7 @@ RSpec.describe Mutations::TeamTransfer, type: :request do
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
-      expect(error).to eq 'Forbidden'
+      expect(error).to eq 'You lack the required permissions to do this'
     end
   end
 

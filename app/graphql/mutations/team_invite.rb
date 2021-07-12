@@ -15,6 +15,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN]
+    end
+
     def resolve(email:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 

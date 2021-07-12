@@ -10,9 +10,11 @@ module Mutations
 
     type Types::SiteType
 
-    def resolve(**_args)
-      raise Errors::Forbidden unless @user.owner_for?(@site)
+    def permitted_roles
+      [Team::OWNER]
+    end
 
+    def resolve(**_args)
       @site.delete_authorizer!
       # Send an email to everyone in the team besides the owner
       @site.team.each { |t| SiteMailer.destroyed(t.user.email, @site).deliver_now unless t.owner? }

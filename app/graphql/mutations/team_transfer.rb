@@ -12,12 +12,15 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER]
+    end
+
     def resolve(team_id:, **_rest)
       old_owner = @site.owner
       new_owner = @site.member(team_id)
 
       raise Errors::TeamNotFound unless new_owner
-      raise Errors::Forbidden unless @user.owner_for?(@site)
 
       ActiveRecord::Base.transaction do
         old_owner.update(role: Team::ADMIN)

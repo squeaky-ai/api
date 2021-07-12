@@ -12,6 +12,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN, Team::MEMBER]
+    end
+
     def resolve(session_id:, tag_id:, name:, **_rest)
       recording = @site.recordings.find_by(session_id: session_id)
 

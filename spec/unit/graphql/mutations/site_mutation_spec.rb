@@ -2,6 +2,24 @@
 
 require 'rails_helper'
 
+class AllRolesClass < Mutations::SiteMutation
+  def permitted_roles
+    [Team::OWNER, Team::ADMIN, Team::MEMBER]
+  end
+end
+
+class AdminAndAboveClass < Mutations::SiteMutation
+  def permitted_roles
+    [Team::OWNER, Team::ADMIN]
+  end
+end
+
+class OwnerOnlyClass < Mutations::SiteMutation
+  def permitted_roles
+    [Team::OWNER]
+  end
+end
+
 RSpec.describe Mutations::SiteMutation do
   describe '#ready?' do
     context 'when the user does not exist in the context' do
@@ -30,56 +48,97 @@ RSpec.describe Mutations::SiteMutation do
 
     context 'when the user exists and so does the site' do
       context 'and the user is a member' do
-        let(:user) { create_user }
-        let(:site) { create_site_and_team(user: create_user) }
+        context 'and the permitted roles includes members' do
+          let(:user) { create_user }
+          let(:site) { create_site_and_team(user: create_user) }
 
-        before { create_team(user: user, site: site, role: Team::MEMBER) }
+          before { create_team(user: user, site: site, role: Team::MEMBER) }
 
-        subject do
-          context = { current_user: user }
-          described_class.new(object: {}, context: context, field: '')
+          subject do
+            context = { current_user: user }
+
+            AllRolesClass.new(object: {}, context: context, field: '')
+          end
+
+          it 'returns true' do
+            response = subject.ready?({ site_id: site.id })
+
+            expect(response).to be true
+          end
         end
 
-        it 'raises an SiteForbidden error' do
-          expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteForbidden)
+        context 'and the permitted roles does not include members' do
+          let(:user) { create_user }
+          let(:site) { create_site_and_team(user: create_user) }
+
+          before { create_team(user: user, site: site, role: Team::MEMBER) }
+
+          subject do
+            context = { current_user: user }
+
+            AdminAndAboveClass.new(object: {}, context: context, field: '')
+          end
+
+          it 'raises an SiteForbidden error' do
+            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteForbidden)
+          end
         end
       end
 
       context 'and the user is an admin' do
-        let(:user) { create_user }
-        let(:site) { create_site_and_team(user: create_user) }
+        context 'and the permitted roles includes admins' do
+          let(:user) { create_user }
+          let(:site) { create_site_and_team(user: create_user) }
 
-        before { create_team(user: user, site: site, role: Team::ADMIN) }
+          before { create_team(user: user, site: site, role: Team::ADMIN) }
 
-        subject do
-          context = { current_user: user }
-          described_class.new(object: {}, context: context, field: '')
+          subject do
+            context = { current_user: user }
+
+            AdminAndAboveClass.new(object: {}, context: context, field: '')
+          end
+
+          it 'returns true' do
+            response = subject.ready?({ site_id: site.id })
+
+            expect(response).to be true
+          end
         end
 
-        it 'sets the user and the site as instance variables' do
-          response = subject.ready?({ site_id: site.id })
+        context 'and the permitted roles does not include admins' do
+          let(:user) { create_user }
+          let(:site) { create_site_and_team(user: create_user) }
 
-          expect(response).to be true
-          expect(subject.instance_variable_get(:@user)).to eq user
-          expect(subject.instance_variable_get(:@site)).to eq site
+          before { create_team(user: user, site: site, role: Team::ADMIN) }
+
+          subject do
+            context = { current_user: user }
+
+            OwnerOnlyClass.new(object: {}, context: context, field: '')
+          end
+
+          it 'raises an SiteForbidden error' do
+            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteForbidden)
+          end
         end
       end
 
       context 'and the user is the owner' do
         let(:user) { create_user }
-        let(:site) { create_site_and_team(user: user, role: Team::OWNER) }
+        let(:site) { create_site_and_team(user: create_user) }
+
+        before { create_team(user: user, site: site, role: Team::OWNER) }
 
         subject do
           context = { current_user: user }
-          described_class.new(object: {}, context: context, field: '')
+
+          OwnerOnlyClass.new(object: {}, context: context, field: '')
         end
 
-        it 'sets the user and the site as instance variables' do
+        it 'returns true' do
           response = subject.ready?({ site_id: site.id })
 
           expect(response).to be true
-          expect(subject.instance_variable_get(:@user)).to eq user
-          expect(subject.instance_variable_get(:@site)).to eq site
         end
       end
     end

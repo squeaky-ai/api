@@ -28,7 +28,7 @@ RSpec.describe Mutations::SiteDelete, type: :request do
 
     it 'raises an error' do
       error = subject['errors'][0]['message']
-      expect(error).to eq 'Forbidden'
+      expect(error).to eq 'You lack the required permissions to do this'
     end
 
     it 'does not delete the site' do

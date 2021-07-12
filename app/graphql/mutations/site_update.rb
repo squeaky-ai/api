@@ -14,6 +14,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN]
+    end
+
     def resolve(name: nil, url: nil, dismiss_checklist: nil, **_rest)
       update = {}
       update[:name] = name if name

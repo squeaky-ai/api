@@ -14,6 +14,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN]
+    end
+
     def resolve(**_args)
       # The user may want to validate more than once
       # so we store a timestamp rather than a boolean

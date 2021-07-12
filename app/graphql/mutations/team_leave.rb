@@ -11,6 +11,10 @@ module Mutations
 
     type Types::SiteType
 
+    def permitted_roles
+      [Team::OWNER, Team::ADMIN]
+    end
+
     def resolve(**_rest)
       team = @site.team.find { |t| t.user.id == @user.id }
 
