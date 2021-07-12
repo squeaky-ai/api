@@ -42,6 +42,7 @@ RSpec.describe Recording, type: :model do
         viewport_x
         viewport_y
         date_string
+        tags
         timestamp
       ]
     end

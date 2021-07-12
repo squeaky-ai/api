@@ -52,5 +52,16 @@ module Types
     field :team_transfer,
           mutation: Mutations::TeamTransfer,
           description: 'Transfer ownership of the site to another team member'
+
+    # Recordings
+    field :tag_create,
+          mutation: Mutations::TagCreate,
+          description: 'Create a new tag against a recording'
+    field :tag_update,
+          mutation: Mutations::TagUpdate,
+          description: 'Update the name of an existing tag'
+    field :tag_delete,
+          mutation: Mutations::TagDelete,
+          description: 'Delete the tag'
   end
 end

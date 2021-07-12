@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_03_121105) do
+ActiveRecord::Schema.define(version: 2021_07_11_180217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,14 @@ ActiveRecord::Schema.define(version: 2021_07_03_121105) do
     t.datetime "checklist_dismissed_at"
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "recording_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recording_id"], name: "index_tags_on_recording_id"
   end
 
   create_table "teams", force: :cascade do |t|

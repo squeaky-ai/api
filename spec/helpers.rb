@@ -71,6 +71,10 @@ module Helpers
     events
   end
 
+  def create_tag(name = nil, recording:)
+    Tag.create(recording: recording, name: name || Faker::Book.title)
+  end
+
   def gzip(payload)
     x = Zlib::Deflate.new.deflate(payload.to_json, Zlib::FINISH)
     Base64.encode64(x)

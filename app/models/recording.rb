@@ -6,6 +6,7 @@
 # preformatted
 class Recording < ApplicationRecord
   belongs_to :site
+  has_many :tags, dependent: :destroy
 
   INDEX = Rails.configuration.elasticsearch['recordings_index']
 
@@ -76,6 +77,7 @@ class Recording < ApplicationRecord
       viewport_x: viewport_x,
       viewport_y: viewport_y,
       date_string: date_string,
+      tags: tags.map(&:to_h),
       timestamp: disconnected_at.to_i * 1000
     }
   end

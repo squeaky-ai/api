@@ -59,7 +59,7 @@ RSpec.describe EventsJob, type: :job do
         viewer_id: viewer_id,
         active: false,
         language: 'English (GB)',
-        duration: 0,
+        duration: 0.0,
         duration_string: '00:00',
         pages: ['/'],
         page_count: 1,
@@ -71,6 +71,7 @@ RSpec.describe EventsJob, type: :job do
         viewport_x: 1920,
         viewport_y: 1080,
         date_string: '4th July 2021',
+        tags: [],
         timestamp: 162_538_814_100_0
       )
     end
