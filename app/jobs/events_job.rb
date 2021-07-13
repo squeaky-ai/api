@@ -99,11 +99,14 @@ class EventsJob < ApplicationJob
   # we can easilly reference later when we come to upsert
   # again
   def index_to_elasticsearch!(recording)
+    # We don't want those getting indexed
+    doc = recording.to_h.except(:tags, :notes)
+
     SearchClient.update(
       index: Recording::INDEX,
       id: "#{@site.id}_#{viewer_id}_#{session_id}",
       body: {
-        doc: recording.to_h,
+        doc: doc,
         doc_as_upsert: true
       }
     )

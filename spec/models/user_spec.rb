@@ -174,7 +174,7 @@ RSpec.describe User, type: :model do
 
   describe '.find_team_invitation' do
     context 'when the token does not match a user' do
-      let(:token) { Faker::String.random }
+      let(:token) { Faker::Lorem.sentence }
 
       subject { User.find_team_invitation(token) }
 

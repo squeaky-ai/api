@@ -8,8 +8,8 @@ RSpec.describe Recording, type: :model do
   let(:recording_fixture) do
     {
       site_id: SecureRandom.uuid,
-      session_id: Faker::String.random(length: 8),
-      viewer_id: Faker::String.random(length: 8),
+      session_id: Faker::Lorem.word,
+      viewer_id: Faker::Lorem.word,
       locale: 'en-gb',
       page_views: ['/'],
       useragent: Faker::Internet.user_agent,
@@ -43,6 +43,7 @@ RSpec.describe Recording, type: :model do
         viewport_y
         date_string
         tags
+        notes
         timestamp
       ]
     end

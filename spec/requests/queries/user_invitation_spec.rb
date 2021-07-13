@@ -14,7 +14,7 @@ GRAPHQL
 RSpec.describe 'QueryUserInvitation', type: :request do
   context 'when there is no user invitation' do
     subject do
-      graphql_request(user_invitation, { token: Faker::String.random }, nil)
+      graphql_request(user_invitation, { token: Faker::Lorem.sentence }, nil)
     end
 
     it 'returns no email and pending status' do

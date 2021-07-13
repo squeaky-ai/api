@@ -59,7 +59,7 @@ RSpec.describe Types::RecordingsExtension do
       let(:id) { SecureRandom.uuid }
       let(:page) { 0 }
       let(:size) { 15 }
-      let(:query) { Faker::String.random }
+      let(:query) { Faker::Lorem.sentence }
 
       let(:field) { double('field', argument: {}) }
       let(:object) { double('object', object: double('object', id: id)) }

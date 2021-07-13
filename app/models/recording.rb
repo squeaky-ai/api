@@ -80,6 +80,7 @@ class Recording < ApplicationRecord
       viewport_y: viewport_y,
       date_string: date_string,
       tags: tags.map(&:to_h),
+      notes: notes.map(&:to_h),
       timestamp: disconnected_at.to_i * 1000
     }
   end

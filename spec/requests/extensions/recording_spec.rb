@@ -34,7 +34,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, session_id: Faker::String.random(length: 4) }
+      variables = { site_id: site.id, session_id: Faker::Lorem.word }
       graphql_request(site_recording_query, variables, user)
     end
 

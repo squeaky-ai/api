@@ -12,8 +12,8 @@ GRAPHQL
 
 RSpec.describe Mutations::UserUpdate, type: :request do
   context 'when the current password is incorrect' do
-    let(:old_password) { Faker::String.random }
-    let(:new_password) { Faker::String.random }
+    let(:old_password) { Faker::Lorem.sentence }
+    let(:new_password) { Faker::Lorem.sentence }
     let(:user) { create_user }
 
     before { user }
@@ -37,8 +37,8 @@ RSpec.describe Mutations::UserUpdate, type: :request do
   end
 
   context 'when the current password is correct' do
-    let(:old_password) { Faker::String.random }
-    let(:new_password) { Faker::String.random }
+    let(:old_password) { Faker::Lorem.sentence }
+    let(:new_password) { Faker::Lorem.sentence }
     let(:user) { create_user(password: old_password) }
 
     before { user }

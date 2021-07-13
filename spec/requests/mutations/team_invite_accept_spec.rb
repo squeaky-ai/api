@@ -26,7 +26,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:token) { 'sdfdsfdsfdsf' }
 
     subject do
-      variables = { token: token, password: Faker::String.random }
+      variables = { token: token, password: Faker::Lorem.sentence }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
     let(:user) { invite_user } # The team won't exist
 
     subject do
-      variables = { token: user.raw_invitation_token, password: Faker::String.random }
+      variables = { token: user.raw_invitation_token, password: Faker::Lorem.sentence }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -60,7 +60,7 @@ RSpec.describe Mutations::TeamInviteAccept, type: :request do
       before { team }
 
       subject do
-        variables = { token: team.user.raw_invitation_token, password: Faker::String.random }
+        variables = { token: team.user.raw_invitation_token, password: Faker::Lorem.sentence }
         graphql_request(team_invite_accept_mutation, variables, nil)
       end
 

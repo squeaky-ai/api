@@ -15,7 +15,7 @@ module Helpers
       first_name: Faker::Name.first_name,
       last_name: Faker::Name.last_name,
       email: Faker::Internet.email,
-      password: Faker::String.random
+      password: Faker::Lorem.sentence
     }
     user = User.create({ **default, **args })
     user.confirm
@@ -73,6 +73,15 @@ module Helpers
 
   def create_tag(name = nil, recording:)
     Tag.create(recording: recording, name: name || Faker::Book.title)
+  end
+
+  def create_note(args = {}, recording:, user:)
+    default = {
+      body: Faker::Lorem.sentence,
+      timestamp: Faker::Number.number(digits: 5),
+      **args
+    }
+    Note.create(recording: recording, user: user, **default)
   end
 
   def gzip(payload)
