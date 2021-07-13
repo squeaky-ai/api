@@ -66,7 +66,7 @@ RSpec.describe Mutations::NoteCreate, type: :request do
       notes = subject['data']['noteCreate']['recording']['notes']
       expect(notes.size).to eq 1
       expect(notes[0]['body']).to eq body
-      expect(notes[0]['timestamp']).to eq '00:03'
+      expect(notes[0]['timestamp']).to eq 3000
       expect(notes[0]['user']['firstName']).to eq user.first_name
     end
 
