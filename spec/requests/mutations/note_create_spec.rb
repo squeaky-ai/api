@@ -50,7 +50,7 @@ RSpec.describe Mutations::NoteCreate, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site) }
     let(:body) { Faker::Book.title }
-    let(:timestamp) { Faker::Number.number(digits: 5) }
+    let(:timestamp) { 3000 }
 
     subject do
       variables = {
@@ -66,7 +66,7 @@ RSpec.describe Mutations::NoteCreate, type: :request do
       notes = subject['data']['noteCreate']['recording']['notes']
       expect(notes.size).to eq 1
       expect(notes[0]['body']).to eq body
-      expect(notes[0]['timestamp']).to eq timestamp
+      expect(notes[0]['timestamp']).to eq '00:03'
       expect(notes[0]['user']['firstName']).to eq user.first_name
     end
 

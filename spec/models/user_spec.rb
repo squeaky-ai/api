@@ -130,11 +130,12 @@ RSpec.describe User, type: :model do
     it 'serialized the user for the front end' do
       expect(user.to_h).to eq(
         'id' => user.id,
-        'firstName' => user.first_name,
-        'lastName' => user.last_name,
+        'first_name' => user.first_name,
+        'last_name' => user.last_name,
+        'full_name' => user.full_name,
         'email' => user.email,
-        'createdAt' => user.created_at,
-        'updatedAt' => user.updated_at
+        'created_at' => user.created_at,
+        'updated_at' => user.updated_at
       )
     end
   end

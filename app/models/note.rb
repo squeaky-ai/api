@@ -10,7 +10,7 @@ class Note < ApplicationRecord
       id: id,
       body: body,
       timestamp: timestamp,
-      user: user,
+      user: user.to_h,
       created_at: created_at,
       updated_at: updated_at
     }

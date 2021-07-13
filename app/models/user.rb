@@ -46,11 +46,12 @@ class User < ApplicationRecord
   def to_h
     {
       'id' => id,
-      'firstName' => first_name,
-      'lastName' => last_name,
+      'first_name' => first_name,
+      'last_name' => last_name,
+      'full_name' => full_name,
       'email' => email,
-      'createdAt' => created_at,
-      'updatedAt' => updated_at
+      'created_at' => created_at,
+      'updated_at' => updated_at
     }
   end
 
