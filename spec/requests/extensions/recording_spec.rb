@@ -23,6 +23,7 @@ site_recording_query = <<-GRAPHQL
         viewportX
         viewportY
         dateString
+        events
       }
     }
   }
@@ -57,6 +58,30 @@ RSpec.describe Types::RecordingExtension, type: :request do
     it 'returns the item' do
       response = subject['data']['site']['recording']
       expect(response).not_to be nil
+    end
+  end
+
+  context 'when there are some events' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    let(:recording) do
+      rec = create_recording(site: site)
+
+      data = { href: "http://localhost/", width: 0, height: 0 }
+      rec.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
+
+      rec
+    end
+
+    subject do
+      variables = { site_id: site.id, session_id: recording.session_id }
+      graphql_request(site_recording_query, variables, user)
+    end
+
+    it 'returns the item with the events' do
+      response = subject['data']['site']['recording']
+      expect(response['events']).not_to be nil
     end
   end
 end

@@ -40,6 +40,7 @@ RSpec.describe Recording, type: :model do
         tags
         notes
         timestamp
+        events
       ]
     end
   end

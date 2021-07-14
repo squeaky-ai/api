@@ -56,7 +56,8 @@ RSpec.describe EventsJob, type: :job do
         date_string: '14th July 2021',
         tags: [],
         notes: [],
-        timestamp: 1626272709481
+        timestamp: 1626272709481,
+        events: recording.events.to_json
       )
     end
 
@@ -68,7 +69,7 @@ RSpec.describe EventsJob, type: :job do
     it 'indexes the recording into elasticsearch' do
       subject
 
-      doc = site.reload.recordings.first.to_h.except(:tags, :notes)
+      doc = site.reload.recordings.first.to_h.except(:tags, :notes, :events)
 
       expect(SearchClient).to have_received(:update).with(
         index: Recording::INDEX,
@@ -137,7 +138,7 @@ RSpec.describe EventsJob, type: :job do
     it 'indexes the recording into elasticsearch' do
       subject
       
-      doc = site.reload.recordings.first.to_h.except(:tags, :notes)
+      doc = site.reload.recordings.first.to_h.except(:tags, :notes, :events)
 
       expect(SearchClient).to have_received(:update).with(
         index: Recording::INDEX,

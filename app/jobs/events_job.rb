@@ -63,7 +63,7 @@ class EventsJob < ApplicationJob
   # again
   def index_to_elasticsearch!(recording)
     # We don't want those getting indexed
-    doc = recording.to_h.except(:tags, :notes)
+    doc = recording.to_h.except(:tags, :notes, :events)
 
     SearchClient.update(
       index: Recording::INDEX,
