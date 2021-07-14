@@ -15,7 +15,7 @@ class EventsJob < ApplicationJob
   def perform(args)
     message = extract_body(args)
 
-    @event = JSON.parse(message['event'])
+    @event = message['event']
     @viewer_id = message['viewer']['viewer_id']
     @session_id = message['viewer']['session_id']
 

@@ -3,7 +3,17 @@
 require 'rails_helper'
 require 'securerandom'
 
-event_fixture = '{"type":4,"data":{"href":"http://localhost:8080/","width":1920,"height":1080,"locale":"en-gb","useragent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0"},"timestamp":1626272709481}'
+event_fixture = {
+  type: 4, 
+  data: {
+    href: 'http://localhost:8080/',
+    width: 1920,
+    height: 1080,
+    locale: 'en-gb',
+    useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0'
+  },
+  timestamp: 1626272709481
+}
 
 RSpec.describe EventsJob, type: :job do
   include ActiveJob::TestHelper
