@@ -3,24 +3,7 @@
 require 'rails_helper'
 require 'securerandom'
 
-events_fixture = [
-  {
-    type: 'pageview',
-    locale: 'en-GB',
-    path: '/',
-    useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-    Version/14.1.1 Safari/605.1.15',
-    viewport_x: 1920,
-    viewport_y: 1080,
-    timestamp: 162_538_814_178_1
-  },
-  {
-    type: 'click',
-    selector: 'body',
-    node: 'body',
-    timestamp: 162_538_814_178_2
-  }
-]
+event_fixture = '{"type":4,"data":{"href":"http://localhost:8080/","width":1920,"height":1080,"locale":"en-gb","useragent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0"},"timestamp":1626272709481}'
 
 RSpec.describe EventsJob, type: :job do
   include ActiveJob::TestHelper
@@ -37,7 +20,7 @@ RSpec.describe EventsJob, type: :job do
           viewer_id: viewer_id,
           session_id: session_id
         },
-        events: events_fixture
+        event: event_fixture
       )
     end
 
@@ -59,26 +42,27 @@ RSpec.describe EventsJob, type: :job do
         viewer_id: viewer_id,
         active: false,
         language: 'English (GB)',
-        duration: 0.0,
+        duration: 0,
         duration_string: '00:00',
         pages: ['/'],
         page_count: 1,
         start_page: '/',
         exit_page: '/',
         device_type: 'Computer',
-        browser: 'Safari',
-        browser_string: 'Safari Version 14.1.1',
+        browser: 'Firefox',
+        browser_string: 'Firefox Version 91.0',
         viewport_x: 1920,
         viewport_y: 1080,
-        date_string: '4th July 2021',
+        date_string: '14th July 2021',
         tags: [],
         notes: [],
-        timestamp: 162_538_814_100_0
+        timestamp: 1626272709481
       )
     end
 
     it 'stores the events in redis' do
-      expect { subject }.to change { Event.new(site.id.to_s, session_id).list.size }.from(0).to(2)
+      subject
+      expect(site.reload.recordings.first.events.size).to eq 1
     end
 
     it 'indexes the recording into elasticsearch' do
@@ -109,26 +93,31 @@ RSpec.describe EventsJob, type: :job do
           viewer_id: viewer_id,
           session_id: session_id
         },
-        events: events_fixture
+        event: event_fixture
       )
     end
 
     before do
       allow(SearchClient).to receive(:update)
 
-      Recording.create(
+      recording = Recording.create(
         site_id: site.id,
         session_id: session_id,
         viewer_id: viewer_id,
         locale: 'en-GB',
-        page_views: ['/test'],
         useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.1.1 Safari/605.1.15',
-        viewport_x: 1920,
-        viewport_y: 1080,
-        connected_at: DateTime.new(2021, 7, 4, 9, 0, 0),
-        disconnected_at: DateTime.new(2021, 7, 4, 9, 0, 0)
+        Version/14.1.1 Safari/605.1.15'
       )
+
+      data = { 
+        href: 'http://localhost:8080/test', 
+        width: 1920, 
+        height: 1080, 
+        locale: 'en-gb', 
+        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' 
+      }
+
+      recording.events << Event.new(recording: recording, event_type: 4, data: data, timestamp: 1626272709480)
     end
 
     subject { described_class.perform_now(event) }
@@ -142,7 +131,7 @@ RSpec.describe EventsJob, type: :job do
     end
 
     it 'stores the events in redis' do
-      expect { subject }.to change { Event.new(site.id.to_s, session_id).list.size }.from(0).to(2)
+      expect { subject }.to change { site.recordings.first.events.size }.from(1).to(2)
     end
 
     it 'indexes the recording into elasticsearch' do

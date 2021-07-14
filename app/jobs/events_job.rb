@@ -15,13 +15,15 @@ class EventsJob < ApplicationJob
   def perform(args)
     message = extract_body(args)
 
-    @viewer = message['viewer']
-    @events = message['events']
+    @event = JSON.parse(message['event'])
+    @viewer_id = message['viewer']['viewer_id']
+    @session_id = message['viewer']['session_id']
 
     @site = Site.find_by(uuid: message['viewer']['site_id'])
 
-    store_events!
-    store_recording!
+    recording = find_or_create_recording!
+    store_event!(recording)
+    index_to_elasticsearch!(recording)
   end
 
   private
@@ -37,65 +39,26 @@ class EventsJob < ApplicationJob
     JSON.parse(str)
   end
 
-  def session_id
-    @viewer['session_id']
-  end
-
-  def viewer_id
-    @viewer['viewer_id']
-  end
-
-  def store_events!
-    events = @events.map do |event|
-      {
-        event_id: SecureRandom.uuid,
-        **event
-      }
-    end
-
-    Event.new(@site.id, session_id).push!(events)
-  end
-
-  def store_recording!
-    event = @events.find { |e| e['type'] == 'pageview' }
-
-    return unless event
-
-    recording = @site.recordings.find_by(session_id: session_id)
-
-    recording = recording ? stamp_existing_recording!(recording, event) : create_new_recording!(event)
-
-    index_to_elasticsearch!(recording)
-  end
-
-  # The only things that change between sessions are the
-  # pages and the disconnected_at
-  def stamp_existing_recording!(recording, event)
-    recording.stamp(event['path'], event['timestamp'])
-  end
-
-  # New recordings share the same connected_at and
-  # disconnected_at and only the disconnected_at will be
-  # updated with subsequent page views
-  def create_new_recording!(event)
-    # The gateway supplies the date as milliseconds
-    timestamp = DateTime.strptime(event['timestamp'].to_s, '%Q')
-
-    Recording.create(
+  def find_or_create_recording!
+    @site.recordings.find_by(session_id: @session_id) || Recording.create(
       site: @site,
-      session_id: session_id,
-      viewer_id: viewer_id,
-      locale: event['locale'],
-      page_views: [event['path']],
-      useragent: event['useragent'],
-      viewport_x: event['viewport_x'],
-      viewport_y: event['viewport_y'],
-      connected_at: timestamp,
-      disconnected_at: timestamp
+      session_id: @session_id,
+      viewer_id: @viewer_id,
+      locale: 'TODO',
+      useragent: 'TODO'
     )
   end
 
-  # Upsert te entire recording hash using a key that
+  def store_event!(recording)
+    Event.create(
+      recording: recording,
+      event_type: @event['type'],
+      data: @event['data'],
+      timestamp: @event['timestamp']
+    )
+  end
+
+  # Upsert the entire recording hash using a key that
   # we can easilly reference later when we come to upsert
   # again
   def index_to_elasticsearch!(recording)
@@ -104,7 +67,7 @@ class EventsJob < ApplicationJob
 
     SearchClient.update(
       index: Recording::INDEX,
-      id: "#{@site.id}_#{viewer_id}_#{session_id}",
+      id: "#{@site.id}_#{@viewer_id}_#{@session_id}",
       body: {
         doc: doc,
         doc_as_upsert: true

@@ -9,13 +9,14 @@ module Types
   class LastRecordingExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       last_recording = Recording
+                       .includes(:events)
                        .where(site_id: object.object[:id])
-                       .order(disconnected_at: :desc)
+                       .order('events.timestamp desc')
                        .first
 
       return -1 unless last_recording
 
-      (DateTime.now.utc - last_recording.disconnected_at) / 1.day
+      (Time.now.to_i - (last_recording.disconnected_at / 1000)) / 1.day
     end
   end
 end

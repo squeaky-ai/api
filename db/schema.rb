@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_155955) do
+ActiveRecord::Schema.define(version: 2021_07_14_141452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.jsonb "data", null: false
+    t.bigint "recording_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "event_type", null: false
+    t.bigint "timestamp", null: false
+    t.index ["recording_id"], name: "index_events_on_recording_id"
+  end
 
   create_table "notes", force: :cascade do |t|
     t.string "body"
@@ -30,12 +40,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_155955) do
     t.string "session_id", null: false
     t.string "viewer_id", null: false
     t.string "locale", null: false
-    t.string "page_views", default: [], null: false, array: true
     t.string "useragent", null: false
-    t.integer "viewport_x", null: false
-    t.integer "viewport_y", null: false
-    t.datetime "connected_at", null: false
-    t.datetime "disconnected_at", null: false
     t.bigint "site_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -1,31 +1,18 @@
 # frozen_string_literal: true
 
-# Helper class for getting the recording events in
-# and out of Redis
-class Event
-  def initialize(site_id, session_id)
-    @site_id = site_id
-    @session_id = session_id
-  end
+class Event < ApplicationRecord
+  belongs_to :recording
 
-  def list
-    Redis.current
-         .lrange(key, 0, -1)
-         .map { |e| JSON.parse(e) }
-         .sort_by { |e| e['timestamp'] }
-  end
+  # Event types from rrweb
+  DOM_LOADED_CONTENT = 0
+  LOAD = 1
+  FULL_SNAPSHOT = 2
+  INCREMENTAL_SNAPSHOT = 3
+  META = 4
+  CUSTOM = 5
+  PLUGIN = 6
 
-  def push!(events)
-    Redis.current.rpush(key, events.map(&:to_json))
-  end
-
-  def dump
-    Redis.current.dump(key)
-  end
-
-  private
-
-  def key
-    "recording::events::#{@site_id}::#{@session_id}"
+  def is_type?(event)
+    event_type == event
   end
 end

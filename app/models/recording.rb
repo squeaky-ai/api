@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'uri'
+
 # Permanent storage for recordings, although they are searched
 # for in ElasticSearch. The #to_h method should be used to
 # return data to the front end as it includes a bunch of stuff
@@ -9,6 +11,7 @@ class Recording < ApplicationRecord
 
   has_many :tags, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   INDEX = Rails.configuration.elasticsearch['recordings_index']
 
@@ -32,20 +35,67 @@ class Recording < ApplicationRecord
     "#{browser} Version #{user_agent.version}"
   end
 
+  def locale
+    event = events.find { |e| e.is_type?(Event::META) }
+
+    event ? event.data['locale'] : ''
+  end
+
+  def useragent
+    event = events.find { |e| e.is_type?(Event::META) }
+    return unless event
+
+    event.data['useragent']
+  end
+
   def page_count
-    page_views.size
+    page_views.size || 0
   end
 
   def start_page
-    page_views.first
+    page_views.first || '/'
   end
 
   def exit_page
-    page_views.last
+    page_views.last || '/'
   end
 
   def duration
-    disconnected_at - connected_at
+    ((disconnected_at - connected_at) / 1000).to_i
+  end
+
+  def page_views
+    @page_views ||= events.each_with_object([]) do |event, memo|
+      memo << URI(event.data['href']).path || '/' if event.is_type?(Event::META)
+    end
+  end
+
+  def connected_at
+    event = events.first
+    return 0 unless event
+
+    event.timestamp
+  end
+
+  def disconnected_at
+    event = events.last
+    return 0 unless event
+
+    event.timestamp
+  end
+
+  def viewport_x
+    event = events.find { |e| e.is_type?(Event::META) }
+    return 0 unless event
+
+    event.data['width']
+  end
+
+  def viewport_y
+    event = events.find { |e| e.is_type?(Event::META) }
+    return 0 unless event
+
+    event.data['height']
   end
 
   def duration_string
@@ -57,7 +107,8 @@ class Recording < ApplicationRecord
   end
 
   def date_string
-    connected_at.strftime("#{connected_at.day.ordinalize} %B %Y")
+    date = Time.at(connected_at / 1000).utc
+    date.strftime("#{date.day.ordinalize} %B %Y")
   end
 
   def to_h
@@ -81,20 +132,7 @@ class Recording < ApplicationRecord
       date_string: date_string,
       tags: tags.map(&:to_h),
       notes: notes.map(&:to_h),
-      timestamp: disconnected_at.to_i * 1000
+      timestamp: disconnected_at.to_i
     }
-  end
-
-  # Stamp the recording with the latest page view and
-  # set the disconnected_at timestamp to the latest
-  def stamp(path, timestamp)
-    pages = page_views.push(path)
-    disconnected_at = DateTime.strptime(timestamp.to_s, '%Q')
-    update(page_views: pages, disconnected_at: disconnected_at)
-    self
-  end
-
-  def events
-    Event.new(site_id, session_id).list
   end
 end

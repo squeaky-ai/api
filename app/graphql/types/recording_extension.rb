@@ -2,9 +2,7 @@
 
 module Types
   # The 'recording' field on the site is handled here as
-  # we only want to load the data if it is requested. The
-  # gateway is responsible for populating this and it is
-  # stored in Dynamo
+  # we only want to load the data if it is requested.
   class RecordingExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:id, GraphQL::Types::ID, required: true, description: 'The id of the recording')

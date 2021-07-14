@@ -36,7 +36,10 @@ RSpec.describe Types::RecordingExtension, type: :request do
         graphql_request(site_last_recording_query, variables, user)
       end
 
-      before { create_recording({ disconnected_at: DateTime.now }, site: site) }
+      before do
+        recording = create_recording(site: site)
+        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: Time.now.to_i * 1000)
+      end
 
       it 'returns the number of days' do
         response = subject['data']['site']['daysSinceLastRecording']
@@ -53,7 +56,10 @@ RSpec.describe Types::RecordingExtension, type: :request do
         graphql_request(site_last_recording_query, variables, user)
       end
 
-      before { create_recording({ disconnected_at: DateTime.now - 5.days }, site: site) }
+      before do
+        recording = create_recording(site: site)
+        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: (Time.now - 5.days).to_i * 1000)
+      end
 
       it 'returns the number of days' do
         response = subject['data']['site']['daysSinceLastRecording']
@@ -72,9 +78,10 @@ RSpec.describe Types::RecordingExtension, type: :request do
     end
 
     before do
-      create_recording({ disconnected_at: DateTime.now - 1.days }, site: site)
-      create_recording({ disconnected_at: DateTime.now - 3.days }, site: site)
-      create_recording({ disconnected_at: DateTime.now - 5.days }, site: site)
+      3.times do |i|
+        recording = create_recording(site: site)
+        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: (Time.now - (i + 1).days).to_i * 1000)
+      end
     end
 
     it 'returns the nearest recordings days' do

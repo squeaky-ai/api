@@ -65,9 +65,9 @@ module Helpers
     )
   end
 
-  def create_events(site_id:, session_id:, count:)
-    events = Fixtures::Events.new.sample(count)
-    Event.new(site_id, session_id).push!(events)
+  def create_events(recording:, count:)
+    events = Fixtures::Events.new(recording).sample(count)
+    events.each { |e| e.save! }
     events
   end
 

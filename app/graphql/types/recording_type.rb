@@ -24,6 +24,6 @@ module Types
     field :timestamp, GraphQL::Types::BigInt, null: false
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
-    field :events, [EventType, { null: true }], null: false, extensions: [EventsExtension]
+    field :events, String, null: false
   end
 end
