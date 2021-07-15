@@ -99,6 +99,8 @@ class Recording < ApplicationRecord
   end
 
   def duration_string
+    return '00:00' if duration.zero?
+
     Time.at(duration).utc.strftime('%M:%S')
   end
 

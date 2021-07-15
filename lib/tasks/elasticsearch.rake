@@ -26,7 +26,7 @@ namespace :elasticsearch do
     es = SearchClient
     index = Recording::INDEX
 
-    Rails.logger.info("Found #{records.size} items in Dynamo")
+    Rails.logger.info("Found #{records.size} recordings")
 
     records.each_slice(250).with_index do |slice, i|
       Rails.logger.info("Bulk inserting batch #{i}")

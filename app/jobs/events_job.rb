@@ -5,8 +5,9 @@ require 'base64'
 require 'securerandom'
 
 # Pick up validated events from the events queue and
-# store them in DynamoDB. Page views should be placed onto
-# the recordings queue to be indexed into elasticsearch
+# store them in the database. The body is gzipped so
+# that it doesn't take up too much space in Redis.
+# Page views trigger an update in elasticsearch.
 class EventsJob < ApplicationJob
   queue_as :default
 

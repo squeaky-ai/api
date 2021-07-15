@@ -3,8 +3,8 @@
 module Types
   # The 'recordings' field on the site is handled here as
   # we only want to load the data if it is requested. The
-  # gateway is responsible for populating this and it is
-  # stored in Dynamo
+  # source of truth is in the database, but this is grabbed
+  # from elasticsearch
   class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')

@@ -3,9 +3,9 @@
 require 'date'
 
 module Types
-  # Query Dynamo with the LSI to get the timestamp so that
-  # we can return how many days it's been since the last
-  # recording was stored.
+  # Query the database using the last events timestamp
+  # so we know long it's been since they last received
+  # a recording
   class LastRecordingExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       last_recording = Recording
