@@ -8,9 +8,7 @@ require 'securerandom'
 # store them in DynamoDB. Page views should be placed onto
 # the recordings queue to be indexed into elasticsearch
 class EventsJob < ApplicationJob
-  queue_as :events
-
-  self.queue_adapter = :amazon_sqs
+  queue_as :default
 
   def perform(args)
     message = extract_body(args)
@@ -25,6 +23,9 @@ class EventsJob < ApplicationJob
     store_event!(recording)
     index_to_elasticsearch!(recording)
   end
+
+  # TODO
+  def jid=(args); end
 
   private
 
