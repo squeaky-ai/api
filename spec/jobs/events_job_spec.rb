@@ -67,7 +67,7 @@ RSpec.describe EventsJob, type: :job do
         tags: [],
         notes: [],
         timestamp: 1626272709481,
-        events: recording.events.to_json
+        events: recording.events.map(&:to_h).to_json
       )
     end
 

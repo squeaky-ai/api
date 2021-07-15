@@ -39,8 +39,8 @@ RSpec.describe Recording, type: :model do
         date_string
         tags
         notes
-        timestamp
         events
+        timestamp
       ]
     end
   end

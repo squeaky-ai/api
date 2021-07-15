@@ -37,7 +37,6 @@ class Recording < ApplicationRecord
 
   def locale
     event = events.find { |e| e.type?(Event::META) }
-
     event ? event.data['locale'] : ''
   end
 
@@ -134,8 +133,9 @@ class Recording < ApplicationRecord
       date_string: date_string,
       tags: tags.map(&:to_h),
       notes: notes.map(&:to_h),
-      timestamp: disconnected_at.to_i,
-      events: events.to_json
+      # No way we can schema this in GQL so just stringify it 🚀
+      events: events.map(&:to_h).to_json,
+      timestamp: disconnected_at.to_i
     }
   end
 end

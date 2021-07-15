@@ -18,4 +18,12 @@ class Event < ApplicationRecord
   def type?(event)
     event_type == event
   end
+
+  def to_h
+    {
+      type: event_type,
+      data: data,
+      timestamp: timestamp
+    }
+  end
 end

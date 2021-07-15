@@ -3,5 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#to_h' do
+    let(:now) { Time.now.to_i * 1000 }
+
+    it 'serializes the event' do
+      event = Event.new(event_type: Event::META, data: {}, timestamp: now)
+
+      expect(event.to_h).to eq({
+        type: Event::META,
+        data: {},
+        timestamp: now
+      })
+    end
+  end
 end
