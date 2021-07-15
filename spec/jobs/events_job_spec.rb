@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'securerandom'
 
 event_fixture = {
-  type: 4, 
+  type: Event::META, 
   data: {
     href: 'http://localhost:8080/',
     width: 1920,
@@ -84,6 +84,7 @@ RSpec.describe EventsJob, type: :job do
       expect(SearchClient).to have_received(:update).with(
         index: Recording::INDEX,
         id: "#{site.id}_#{viewer_id}_#{session_id}",
+        retry_on_conflict: 3,
         body: {
           doc: doc,
           doc_as_upsert: true
@@ -153,11 +154,64 @@ RSpec.describe EventsJob, type: :job do
       expect(SearchClient).to have_received(:update).with(
         index: Recording::INDEX,
         id: "#{site.id}_#{viewer_id}_#{session_id}",
+        retry_on_conflict: 3,
         body: {
           doc: doc,
           doc_as_upsert: true
         }
       )
+    end
+  end
+
+  context 'when the payload does not contain any META events' do
+    let(:site) { create_site }
+    let(:viewer_id) { SecureRandom.uuid }
+    let(:session_id) { SecureRandom.uuid }
+
+    let(:event) do
+      gzip(
+        viewer: {
+          site_id: site.uuid,
+          viewer_id: viewer_id,
+          session_id: session_id
+        },
+        event: {
+          type: Event::INCREMENTAL_SNAPSHOT, 
+          data: {},
+          timestamp: 1626272709481
+        }
+      )
+    end
+
+    before do
+      allow(SearchClient).to receive(:update)
+
+      recording = Recording.create(
+        site_id: site.id,
+        session_id: session_id,
+        viewer_id: viewer_id,
+        locale: 'en-GB',
+        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/14.1.1 Safari/605.1.15'
+      )
+
+      data = { 
+        href: 'http://localhost:8080/test', 
+        width: 1920, 
+        height: 1080, 
+        locale: 'en-gb', 
+        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' 
+      }
+
+      recording.events << Event.new(recording: recording, event_type: 4, data: data, timestamp: 1626272709480)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'does note update elasticsearch' do
+      subject
+
+      expect(SearchClient).not_to have_received(:update)
     end
   end
 end

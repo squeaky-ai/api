@@ -59,16 +59,21 @@ class EventsJob < ApplicationJob
     )
   end
 
-  # Upsert the entire recording hash using a key that
-  # we can easilly reference later when we come to upsert
-  # again
   def index_to_elasticsearch!(recording)
+    # Don't both reindexing unless they change page so that
+    # we don't spam ES
+    return unless @event['type'] == Event::META
+
     # We don't want those getting indexed
     doc = recording.to_h.except(:tags, :notes, :events)
 
+    # Upsert the entire recording hash using a key that
+    # we can easilly reference later when we come to upsert
+    # again
     SearchClient.update(
       index: Recording::INDEX,
       id: "#{@site.id}_#{@viewer_id}_#{@session_id}",
+      retry_on_conflict: 3,
       body: {
         doc: doc,
         doc_as_upsert: true
