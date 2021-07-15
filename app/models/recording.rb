@@ -36,13 +36,13 @@ class Recording < ApplicationRecord
   end
 
   def locale
-    event = events.find { |e| e.is_type?(Event::META) }
+    event = events.find { |e| e.type?(Event::META) }
 
     event ? event.data['locale'] : ''
   end
 
   def useragent
-    event = events.find { |e| e.is_type?(Event::META) }
+    event = events.find { |e| e.type?(Event::META) }
     return unless event
 
     event.data['useragent']
@@ -66,7 +66,7 @@ class Recording < ApplicationRecord
 
   def page_views
     @page_views ||= events.each_with_object([]) do |event, memo|
-      memo << URI(event.data['href']).path || '/' if event.is_type?(Event::META)
+      memo << URI(event.data['href']).path || '/' if event.type?(Event::META)
     end
   end
 
@@ -85,21 +85,21 @@ class Recording < ApplicationRecord
   end
 
   def viewport_x
-    event = events.find { |e| e.is_type?(Event::META) }
+    event = events.find { |e| e.type?(Event::META) }
     return 0 unless event
 
     event.data['width']
   end
 
   def viewport_y
-    event = events.find { |e| e.is_type?(Event::META) }
+    event = events.find { |e| e.type?(Event::META) }
     return 0 unless event
 
     event.data['height']
   end
 
   def duration_string
-    return '00:00' if duration.zero?
+    return '00:00' if duration.zero? || duration.negative?
 
     Time.at(duration).utc.strftime('%M:%S')
   end
