@@ -10,6 +10,7 @@ RSpec.describe Event, type: :model do
       event = Event.new(event_type: Event::META, data: {}, timestamp: now)
 
       expect(event.to_h).to eq({
+        id: event.id,
         type: Event::META,
         data: {},
         timestamp: now

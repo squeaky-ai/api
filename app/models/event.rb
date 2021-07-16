@@ -21,6 +21,7 @@ class Event < ApplicationRecord
 
   def to_h
     {
+      id: id,
       type: event_type,
       data: data,
       timestamp: timestamp
