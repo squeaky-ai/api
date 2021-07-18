@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   scope 'api' do
     get 'ping', to: 'ping#index'
     post 'graphql', to: 'graphql#execute'
+
+    # Allow anyone who is a squeaky admin to view the sidekiq
+    # dashboard
+    authenticate :user, ->(u) { u.squeaky_admin? } do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 
     # Required to load devise
     devise_for :users, only: []

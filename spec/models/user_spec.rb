@@ -124,6 +124,28 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#squeaky_admin?' do
+    context 'when the users email matches an admin' do
+      let(:user) { create_user(email: User::SQUEAKY_ADMINS.first) }
+
+      subject { user.squeaky_admin? }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when the users email matches an admin' do
+      let(:user) { create_user }
+
+      subject { user.squeaky_admin? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+  end
+
   describe '#to_h' do
     let(:user) { create_user }
 

@@ -19,6 +19,10 @@ class User < ApplicationRecord
   has_many :teams, dependent: :destroy
   has_many :sites, through: :teams
 
+  SQUEAKY_ADMINS = [
+    'lewismonteith@gmail.com'
+  ].freeze
+
   def full_name
     return nil unless first_name && last_name
 
@@ -41,6 +45,10 @@ class User < ApplicationRecord
     return false unless site
 
     site.team.any? { |t| t.user.id == id }
+  end
+
+  def squeaky_admin?
+    SQUEAKY_ADMINS.include?(email)
   end
 
   def to_h
