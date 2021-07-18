@@ -16,7 +16,7 @@ class Recording < ApplicationRecord
   INDEX = Rails.configuration.elasticsearch['recordings_index']
 
   def active
-    false
+    Redis.current.get("active::#{site_id}_#{session_id}") == 'true'
   end
 
   def user_agent

@@ -45,6 +45,42 @@ RSpec.describe Recording, type: :model do
     end
   end
 
+  describe '#active' do
+    context 'when there is no record in Redis' do
+      let (:instance) { described_class.new(recording_fixture) }
+    
+      subject { instance.active }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
+    context 'when there is something in Redis but its not a stringified boolean' do
+      let (:instance) { described_class.new(recording_fixture) }
+
+      before { Redis.current.set("active::#{instance.site_id}_#{instance.session_id}", 'teapot') }
+    
+      subject { instance.active }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
+    context 'when there is something in Redis and it says it is active' do
+      let (:instance) { described_class.new(recording_fixture) }
+
+      before { Redis.current.set("active::#{instance.site_id}_#{instance.session_id}", 'true') }
+    
+      subject { instance.active }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+  end
+
   describe '#user_agent' do
     subject do
       recording = described_class.new(recording_fixture)
