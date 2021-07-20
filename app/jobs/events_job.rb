@@ -25,7 +25,7 @@ class EventsJob < ApplicationJob
     index_to_elasticsearch!(recording)
   end
 
-  # TODO
+  # Seems to error without this, not sure why
   def jid=(args); end
 
   private
@@ -45,9 +45,7 @@ class EventsJob < ApplicationJob
     @site.recordings.find_by(session_id: @session_id) || Recording.create(
       site: @site,
       session_id: @session_id,
-      viewer_id: @viewer_id,
-      locale: 'TODO',
-      useragent: 'TODO'
+      viewer_id: @viewer_id
     )
   end
 
