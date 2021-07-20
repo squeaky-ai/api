@@ -115,10 +115,7 @@ RSpec.describe EventsJob, type: :job do
       recording = Recording.create(
         site_id: site.id,
         session_id: session_id,
-        viewer_id: viewer_id,
-        locale: 'en-GB',
-        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.1.1 Safari/605.1.15'
+        viewer_id: viewer_id
       )
 
       data = { 
@@ -189,10 +186,7 @@ RSpec.describe EventsJob, type: :job do
       recording = Recording.create(
         site_id: site.id,
         session_id: session_id,
-        viewer_id: viewer_id,
-        locale: 'en-GB',
-        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.1.1 Safari/605.1.15'
+        viewer_id: viewer_id
       )
 
       data = { 

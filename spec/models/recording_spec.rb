@@ -9,9 +9,7 @@ RSpec.describe Recording, type: :model do
     {
       site_id: SecureRandom.uuid,
       session_id: Faker::Lorem.word,
-      viewer_id: Faker::Lorem.word,
-      locale: 'en-gb',
-      useragent: Faker::Internet.user_agent
+      viewer_id: Faker::Lorem.word
     }
   end
 

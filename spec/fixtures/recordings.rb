@@ -13,8 +13,6 @@ module Fixtures
         site: @site,
         session_id: SecureRandom.uuid,
         viewer_id: SecureRandom.uuid,
-        locale: 'en-GB',
-        useragent: Faker::Internet.user_agent,
         **args
       )
     end
