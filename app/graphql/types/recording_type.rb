@@ -22,6 +22,8 @@ module Types
     field :viewport_x, Integer, null: true
     field :viewport_y, Integer, null: true
     field :date_string, String, null: true
+    field :connected_at, String, null: true
+    field :disconnected_at, String, null: true
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
     field :events, String, null: false, extensions: [EventExtension]
