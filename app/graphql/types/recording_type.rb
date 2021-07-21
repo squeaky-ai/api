@@ -6,6 +6,7 @@ module Types
 
     field :id, ID, null: false
     field :site_id, ID, null: false
+    field :session_id, String, null: false
     field :viewer_id, String, null: false
     field :active, Boolean, null: false
     field :language, String, null: false
@@ -23,6 +24,6 @@ module Types
     field :date_string, String, null: true
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
-    field :events, String, null: false
+    field :events, String, null: false, extensions: [EventExtension]
   end
 end
