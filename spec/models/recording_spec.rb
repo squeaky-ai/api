@@ -43,54 +43,15 @@ RSpec.describe Recording, type: :model do
     end
   end
 
-  describe '#active' do
-    context 'when there is no record in Redis' do
-      let (:instance) { described_class.new(recording_fixture) }
-    
-      subject { instance.active }
-
-      it 'returns false' do
-        expect(subject).to be false
-      end
-    end
-
-    context 'when there is something in Redis but its not a stringified boolean' do
-      let (:instance) { described_class.new(recording_fixture) }
-
-      before { Redis.current.set("active::#{instance.site_id}_#{instance.session_id}", 'teapot') }
-    
-      subject { instance.active }
-
-      it 'returns false' do
-        expect(subject).to be false
-      end
-    end
-
-    context 'when there is something in Redis and it says it is active' do
-      let (:instance) { described_class.new(recording_fixture) }
-
-      before { Redis.current.set("active::#{instance.site_id}_#{instance.session_id}", 'true') }
-    
-      subject { instance.active }
-
-      it 'returns true' do
-        expect(subject).to be true
-      end
-    end
-  end
-
   describe '#user_agent' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15' }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+      described_class.new(fixture).user_agent
     end
 
     it 'returns an instance of UserAgent' do
-      expect(subject.user_agent).to be_instance_of(UserAgent::Browsers::Webkit)
+      expect(subject).to be_instance_of(UserAgent::Browsers::Webkit)
     end
   end
 
@@ -98,81 +59,62 @@ RSpec.describe Recording, type: :model do
     let (:instance) { described_class.new(recording_fixture) }
     
     subject do
-      recording = described_class.new(recording_fixture)
-
-      ['/', '/contact', '/test'].each do |path|
-        data = { href: "http://localhost#{path}", width: 0, height: 0 }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-      end
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:page_views] = ['/', '/contact', '/test']
+      described_class.new(fixture).page_count
     end
 
     it 'returns the number of pages visited' do
-      expect(subject.page_count).to eq 3
+      expect(subject).to eq 3
     end
   end
 
   describe '#duration' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0 }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389205000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:connected_at] = 1625389200000
+      fixture[:disconnected_at] = 1625389205000
+      described_class.new(fixture).duration
     end
 
     it 'returns the difference between the connected and disconnected dates' do
-      expect(subject.duration).to eq 5
+      expect(subject).to eq 5
     end
   end
 
   describe '#duration_string' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0 }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389205000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:connected_at] = 1625389200000
+      fixture[:disconnected_at] = 1625389205000
+      described_class.new(fixture).duration_string
     end
 
     it 'returns the difference in a formatted string' do
-      expect(subject.duration_string).to eq '00:05'
+      expect(subject).to eq '00:05'
     end
   end
 
   describe '#locale' do
     context 'when there is a locale in the events' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0, locale: 'en-gb' }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        fixture = recording_fixture.dup
+        fixture[:locale] = 'en-GB'
+        described_class.new(fixture).locale
       end
 
       it 'returns the locale' do
-        expect(subject.locale).to eq 'en-gb'
+        expect(subject).to eq 'en-GB'
       end
     end
 
-    context 'when there is no locale in the events' do
+    context 'when there is no locale' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0 }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        described_class.new(recording_fixture).locale
       end
 
       it 'returns nil' do
-        expect(subject.locale).to be nil
+        expect(subject).to be nil
       end
     end
   end
@@ -180,109 +122,86 @@ RSpec.describe Recording, type: :model do
   describe '#device_type' do
     context 'when the device is a computer' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15' }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        fixture = recording_fixture.dup
+        fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        described_class.new(fixture).device_type
       end
 
       it 'returns the device type' do
-        expect(subject.device_type).to eq 'Computer'
+        expect(subject).to eq 'Computer'
       end
     end
 
     context 'when the devise is a mobile' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0, useragent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1' }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        fixture = recording_fixture.dup
+        fixture[:useragent] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1'
+        described_class.new(fixture).device_type
       end
 
       it 'returns the device type' do
-        expect(subject.device_type).to eq 'Mobile'
+        expect(subject).to eq 'Mobile'
       end
     end
   end
 
   describe '#browser' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15' }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+      described_class.new(fixture).browser
     end
 
     it 'returns the browser' do
-      expect(subject.browser).to eq 'Safari'
+      expect(subject).to eq 'Safari'
     end
   end
 
   describe '#browser_string' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15' }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+      described_class.new(fixture).browser_string
     end
 
     it 'returns the browser string' do
-      expect(subject.browser_string).to eq 'Safari Version 14.1.1'
+      expect(subject).to eq 'Safari Version 14.1.1'
     end
   end
 
   describe '#language' do
     context 'when the locale is known' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0, locale: 'en-gb' }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        fixture = recording_fixture.dup
+        fixture[:locale] = 'en-GB'
+        described_class.new(fixture).language
       end
 
       it 'returns the language' do
-        expect(subject.language).to eq 'English (GB)'
+        expect(subject).to eq 'English (GB)'
       end
     end
 
     context 'when the locale is not known' do
       subject do
-        recording = described_class.new(recording_fixture)
-  
-        data = { href: 'http://localhost/', width: 0, height: 0, locale: 'za-4f' }
-        recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-  
-        recording
+        described_class.new(recording_fixture).language
       end
 
       it 'returns the fallback' do
-        expect(subject.language).to eq 'Unknown'
+        expect(subject).to eq 'Unknown'
       end
     end
   end
 
   describe '#date_string' do
     subject do
-      recording = described_class.new(recording_fixture)
-
-      data = { href: 'http://localhost/', width: 0, height: 0 }
-      recording.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
-
-      recording
+      fixture = recording_fixture.dup
+      fixture[:connected_at] = 1625389200000
+      described_class.new(fixture).date_string
     end
 
     it 'returns a nicely formatted date' do
-      expect(subject.date_string).to eq '4th July 2021'
+      expect(subject).to eq '4th July 2021'
     end
   end
 end

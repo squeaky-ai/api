@@ -2,22 +2,15 @@
 
 require 'uri'
 
-# Permanent storage for recordings, although they are searched
-# for in ElasticSearch. The #to_h method should be used to
-# return data to the front end as it includes a bunch of stuff
-# preformatted
+# Permanent storage for recordings. The #to_h method should
+# be used to return data to the front end as it includes a
+# bunch of stuff preformatted
 class Recording < ApplicationRecord
   belongs_to :site
 
   has_many :tags, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
-
-  INDEX = Rails.configuration.elasticsearch['recordings_index']
-
-  def active
-    Redis.current.get("active::#{site_id}_#{session_id}") == 'true'
-  end
 
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
@@ -35,18 +28,6 @@ class Recording < ApplicationRecord
     "#{browser} Version #{user_agent.version}"
   end
 
-  def locale
-    event = events.find { |e| e.type?(Event::META) }
-    event ? event.data['locale'] : ''
-  end
-
-  def useragent
-    event = events.find { |e| e.type?(Event::META) }
-    return unless event
-
-    event.data['useragent']
-  end
-
   def page_count
     page_views.size || 0
   end
@@ -60,41 +41,10 @@ class Recording < ApplicationRecord
   end
 
   def duration
-    ((disconnected_at - connected_at) / 1000).to_i
-  end
+    start = connected_at || 0
+    finish = disconnected_at || 0
 
-  def page_views
-    @page_views ||= events.each_with_object([]) do |event, memo|
-      memo << URI(event.data['href']).path || '/' if event.type?(Event::META)
-    end
-  end
-
-  def connected_at
-    event = events.first
-    return 0 unless event
-
-    event.timestamp
-  end
-
-  def disconnected_at
-    event = events.last
-    return 0 unless event
-
-    event.timestamp
-  end
-
-  def viewport_x
-    event = events.find { |e| e.type?(Event::META) }
-    return 0 unless event
-
-    event.data['width']
-  end
-
-  def viewport_y
-    event = events.find { |e| e.type?(Event::META) }
-    return 0 unless event
-
-    event.data['height']
+    (finish - start) / 1000
   end
 
   def duration_string
@@ -108,6 +58,8 @@ class Recording < ApplicationRecord
   end
 
   def date_string
+    return nil if connected_at.nil?
+
     date = Time.at(connected_at / 1000).utc
     date.strftime("#{date.day.ordinalize} %B %Y")
   end
@@ -135,7 +87,7 @@ class Recording < ApplicationRecord
       notes: notes.map(&:to_h),
       # No way we can schema this in GQL so just stringify it 🚀
       events: events.map(&:to_h).to_json,
-      timestamp: disconnected_at.to_i
+      timestamp: disconnected_at || 0
     }
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_20_131905) do
+ActiveRecord::Schema.define(version: 2021_07_21_092434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,14 @@ ActiveRecord::Schema.define(version: 2021_07_20_131905) do
     t.bigint "site_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "connected_at"
+    t.bigint "disconnected_at"
+    t.string "page_views", default: [], null: false, array: true
+    t.string "locale"
+    t.boolean "active", default: false
+    t.string "useragent"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
     t.index ["site_id"], name: "index_recordings_on_site_id"
   end
 

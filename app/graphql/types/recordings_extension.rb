@@ -2,9 +2,7 @@
 
 module Types
   # The 'recordings' field on the site is handled here as
-  # we only want to load the data if it is requested. The
-  # source of truth is in the database, but this is grabbed
-  # from elasticsearch
+  # we only want to load the data if it is requested
   class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
@@ -14,53 +12,24 @@ module Types
     end
 
     def resolve(object:, arguments:, **_rest)
-      search = search(arguments, object.object.id)
-      results = SearchClient.search(index: Recording::INDEX, body: search)
+      recordings = Recording
+                   .where(site_id: object.object['id'])
+                   .page(arguments[:page])
+                   .per(arguments[:size])
+                   .order(connected_at: arguments[:sort].downcase.to_sym)
 
+      # TODO: Search
+      
       {
-        items: items(results),
-        pagination: pagination(arguments, results, arguments[:size])
+        items: recordings.map(&:to_h),
+        pagination: pagination(arguments, recordings, arguments[:size])
       }
     end
 
-    private
-
-    def search(arguments, uuid)
-      params = {
-        from: arguments[:page] * arguments[:size],
-        size: arguments[:size],
-        sort: {
-          timestamp: {
-            unmapped_type: 'date_nanos',
-            order: arguments[:sort].downcase
-          }
-        },
-        query: {
-          bool: {
-            must: [
-              { term: { 'site_id.keyword': uuid } }
-            ]
-          }
-        }
-      }
-
-      unless arguments[:query].empty?
-        params[:query][:bool][:filter] = [
-          { query_string: { query: "*#{arguments[:query]}*" } }
-        ]
-      end
-
-      params
-    end
-
-    def items(results)
-      results['hits']['hits'].map { |r| r['_source'] }
-    end
-
-    def pagination(arguments, results, size)
+    def pagination(arguments, recordings, size)
       {
         page_size: size,
-        page_count: (results['hits']['total']['value'].to_f / size).ceil,
+        page_count: recordings.total_pages,
         sort: arguments[:sort]
       }
     end

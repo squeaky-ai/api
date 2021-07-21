@@ -37,8 +37,8 @@ RSpec.describe Types::RecordingExtension, type: :request do
       end
 
       before do
-        recording = create_recording(site: site)
-        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: Time.now.to_i * 1000)
+        timestamp = Time.now.to_i * 1000
+        recording = create_recording({ disconnected_at: timestamp }, site: site)
       end
 
       it 'returns the number of days' do
@@ -57,8 +57,8 @@ RSpec.describe Types::RecordingExtension, type: :request do
       end
 
       before do
-        recording = create_recording(site: site)
-        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: (Time.now - 5.days).to_i * 1000)
+        timestamp = (Time.now - 5.days).to_i * 1000
+        recording = create_recording({ disconnected_at: timestamp }, site: site)
       end
 
       it 'returns the number of days' do
@@ -79,8 +79,8 @@ RSpec.describe Types::RecordingExtension, type: :request do
 
     before do
       3.times do |i|
-        recording = create_recording(site: site)
-        recording.events << Event.new(event_type: Event::META, data: {}, timestamp: (Time.now - (i + 1).days).to_i * 1000)
+        timestamp = (Time.now - (i + 1).days).to_i * 1000
+        recording = create_recording({ disconnected_at: timestamp }, site: site)
       end
     end
 

@@ -52,17 +52,10 @@ module Helpers
     recording
   end
 
-  def create_es_recordings(site:, count:)
+  def create_recordings(site:, count:)
     recordings = Fixtures::Recordings.new(site).sample(count)
-
-    SearchClient.bulk(
-      refresh: 'wait_for',
-      body: recordings.map do |record|
-        {
-          index: { _index: Recording::INDEX, data: record.to_h }
-        }
-      end
-    )
+    recordings.each { |r| r.save! }
+    recordings
   end
 
   def create_events(recording:, count:)

@@ -18,9 +18,9 @@ module Types
     field :device_type, String, null: true
     field :browser, String, null: true
     field :browser_string, String, null: true
-    field :viewport_x, Integer, null: false
-    field :viewport_y, Integer, null: false
-    field :date_string, String, null: false
+    field :viewport_x, Integer, null: true
+    field :viewport_y, Integer, null: true
+    field :date_string, String, null: true
     field :timestamp, GraphQL::Types::BigInt, null: false
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false

@@ -66,12 +66,4 @@ RSpec.configure do |config|
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
-
-  config.before(:all) do
-    SearchClient.indices.create(index: Recording::INDEX)
-  end
-
-  config.after(:all) do
-    SearchClient.indices.delete(index: Recording::INDEX)
-  end
 end
