@@ -62,7 +62,7 @@ class EventsJob < ApplicationJob
   def update_recording!(recording)
     if event_type == 'connected'
       recording.active = true
-      recording.connected_at = event
+      recording.connected_at = event unless recording.connected_at
     end
 
     if event_type == 'disconnected'
