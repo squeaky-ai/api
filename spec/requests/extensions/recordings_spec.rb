@@ -14,7 +14,7 @@ site_recordings_query = <<-GRAPHQL
           language
           duration
           durationString
-          pages
+          pageViews
           pageCount
           startPage
           exitPage
@@ -24,7 +24,6 @@ site_recordings_query = <<-GRAPHQL
           viewportX
           viewportY
           dateString
-          timestamp
         }
         pagination {
           pageSize

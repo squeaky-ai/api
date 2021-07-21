@@ -11,7 +11,7 @@ module Types
     field :language, String, null: false
     field :duration, Integer, null: false
     field :duration_string, String, null: false
-    field :pages, [String, { null: true }], null: false
+    field :page_views, [String, { null: true }], null: false
     field :page_count, Integer, null: false
     field :start_page, String, null: false
     field :exit_page, String, null: false
@@ -21,7 +21,6 @@ module Types
     field :viewport_x, Integer, null: true
     field :viewport_y, Integer, null: true
     field :date_string, String, null: true
-    field :timestamp, GraphQL::Types::BigInt, null: false
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
     field :events, String, null: false

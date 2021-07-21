@@ -114,35 +114,6 @@ RSpec.describe EventsJob, type: :job do
       expect { subject }.to change { Site.find(site.id).recordings.size }.from(0).to(1)
     end
 
-    it 'sets the expected data for the recording' do
-      subject
-      recording = site.reload.recordings.first
-
-      expect(recording.to_h).to eq(
-        id: session_id,
-        site_id: site.id.to_s,
-        viewer_id: viewer_id,
-        active: false,
-        language: 'English (GB)',
-        duration: 0,
-        duration_string: '00:00',
-        pages: ['/'],
-        page_count: 1,
-        start_page: '/',
-        exit_page: '/',
-        device_type: 'Computer',
-        browser: 'Firefox',
-        browser_string: 'Firefox Version 91.0',
-        viewport_x: 1920,
-        viewport_y: 1080,
-        date_string: nil,
-        tags: [],
-        notes: [],
-        timestamp: 0,
-        events: recording.events.map(&:to_h).to_json
-      )
-    end
-
     it 'stores the event' do
       subject
       expect(site.reload.recordings.first.events.size).to eq 1

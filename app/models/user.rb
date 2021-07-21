@@ -51,18 +51,6 @@ class User < ApplicationRecord
     SQUEAKY_ADMINS.include?(email)
   end
 
-  def to_h
-    {
-      'id' => id,
-      'first_name' => first_name,
-      'last_name' => last_name,
-      'full_name' => full_name,
-      'email' => email,
-      'created_at' => created_at,
-      'updated_at' => updated_at
-    }
-  end
-
   def invite_to_team!
     # This is a procted devise method but we want to call
     # it to bypass the default invite flow when the user

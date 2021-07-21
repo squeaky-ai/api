@@ -12,7 +12,7 @@ module Types
       site_id = object.object[:id]
       session_id = arguments[:id]
 
-      Recording.find_by(site_id: site_id, session_id: session_id)&.to_h
+      Recording.find_by(site_id: site_id, session_id: session_id)
     end
   end
 end

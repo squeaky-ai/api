@@ -13,36 +13,6 @@ RSpec.describe Recording, type: :model do
     }
   end
 
-  describe '#to_h' do
-    subject { described_class.new(recording_fixture) }
-
-    it 'contains the expected key' do
-      expect(subject.to_h.keys).to eq %i[
-        id
-        site_id
-        viewer_id
-        active
-        language
-        duration
-        duration_string
-        pages
-        page_count
-        start_page
-        exit_page
-        device_type
-        browser
-        browser_string
-        viewport_x
-        viewport_y
-        date_string
-        tags
-        notes
-        events
-        timestamp
-      ]
-    end
-  end
-
   describe '#user_agent' do
     subject do
       fixture = recording_fixture.dup

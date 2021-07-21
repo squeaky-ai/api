@@ -19,9 +19,9 @@ module Types
                    .order(connected_at: arguments[:sort].downcase.to_sym)
 
       # TODO: Search
-      
+
       {
-        items: recordings.map(&:to_h),
+        items: recordings,
         pagination: pagination(arguments, recordings, arguments[:size])
       }
     end

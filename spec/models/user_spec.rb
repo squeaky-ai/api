@@ -146,22 +146,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#to_h' do
-    let(:user) { create_user }
-
-    it 'serialized the user for the front end' do
-      expect(user.to_h).to eq(
-        'id' => user.id,
-        'first_name' => user.first_name,
-        'last_name' => user.last_name,
-        'full_name' => user.full_name,
-        'email' => user.email,
-        'created_at' => user.created_at,
-        'updated_at' => user.updated_at
-      )
-    end
-  end
-
   describe '#invite_to_team!' do
     let(:user) { create_user }
 

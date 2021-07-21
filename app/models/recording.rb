@@ -2,9 +2,7 @@
 
 require 'uri'
 
-# Permanent storage for recordings. The #to_h method should
-# be used to return data to the front end as it includes a
-# bunch of stuff preformatted
+# Permanent storage for recordings
 class Recording < ApplicationRecord
   belongs_to :site
 
@@ -62,32 +60,5 @@ class Recording < ApplicationRecord
 
     date = Time.at(connected_at / 1000).utc
     date.strftime("#{date.day.ordinalize} %B %Y")
-  end
-
-  def to_h
-    {
-      id: session_id,
-      site_id: site_id.to_s,
-      viewer_id: viewer_id,
-      active: active,
-      language: language,
-      duration: duration,
-      duration_string: duration_string,
-      pages: page_views,
-      page_count: page_count,
-      start_page: start_page,
-      exit_page: exit_page,
-      device_type: device_type,
-      browser: browser,
-      browser_string: browser_string,
-      viewport_x: viewport_x,
-      viewport_y: viewport_y,
-      date_string: date_string,
-      tags: tags.map(&:to_h),
-      notes: notes.map(&:to_h),
-      # No way we can schema this in GQL so just stringify it 🚀
-      events: events.map(&:to_h).to_json,
-      timestamp: disconnected_at || 0
-    }
   end
 end

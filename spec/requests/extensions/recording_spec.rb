@@ -13,7 +13,7 @@ site_recording_query = <<-GRAPHQL
         language
         duration
         durationString
-        pages
+        pageViews
         pageCount
         startPage
         exitPage
