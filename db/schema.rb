@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_092434) do
+ActiveRecord::Schema.define(version: 2021_07_22_192003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "events", force: :cascade do |t|
+    t.integer "event_type", null: false
     t.jsonb "data", null: false
+    t.bigint "timestamp", null: false
     t.bigint "recording_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "event_type", null: false
-    t.bigint "timestamp", null: false
     t.index ["recording_id"], name: "index_events_on_recording_id"
   end
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_092434) do
     t.string "useragent"
     t.integer "viewport_x"
     t.integer "viewport_y"
+    t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
   end
 

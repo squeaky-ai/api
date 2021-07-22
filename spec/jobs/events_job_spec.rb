@@ -114,6 +114,14 @@ RSpec.describe EventsJob, type: :job do
       expect { subject }.to change { Site.find(site.id).recordings.size }.from(0).to(1)
     end
 
+    it 'includes the session details' do
+      subject
+      recording = site.reload.recordings.first
+      expect(recording.site_id).to eq site.id
+      expect(recording.viewer_id).to eq viewer_id
+      expect(recording.session_id).to eq session_id
+    end
+
     it 'stores the event' do
       subject
       expect(site.reload.recordings.first.events.size).to eq 1
@@ -152,6 +160,14 @@ RSpec.describe EventsJob, type: :job do
 
     it 'updates the page_views' do
       expect { subject }.to change { site.recordings.first.page_views }.from(['/test']).to(['/test', '/'])
+    end
+
+    it 'includes the session details' do
+      subject
+      recording = site.reload.recordings.first
+      expect(recording.site_id).to eq site.id
+      expect(recording.viewer_id).to eq viewer_id
+      expect(recording.session_id).to eq session_id
     end
 
     it 'stores the events' do

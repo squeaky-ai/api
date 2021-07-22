@@ -52,11 +52,10 @@ class EventsJob < ApplicationJob
   end
 
   def find_or_create_recording!
-    @site.recordings.find_by(session_id: session_id) || Recording.create(
-      site: @site,
-      session_id: session_id,
-      viewer_id: viewer_id
-    )
+    # This very nearly was a disaster, the previous implementation
+    # did find || create which shit the bed when two or more events
+    # both tried to create a recording!
+    @site.recordings.create_or_find_by!(session_id: session_id) { |r| r.viewer_id = viewer_id }
   end
 
   def update_recording!(recording)
