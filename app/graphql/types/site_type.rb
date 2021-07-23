@@ -21,6 +21,7 @@ module Types
     # Fetch a list of recordings, refrain from fetching
     # events inside of here to prevent n+1
     field :recordings, RecordingsType, null: false, extensions: [RecordingsExtension]
+    field :analytics, AnalyticsType, null: false, extensions: [AnalyticsExtension]
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
