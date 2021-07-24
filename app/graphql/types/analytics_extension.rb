@@ -16,7 +16,8 @@ module Types
         page_views: page_views(site_id, date_string),
         average_session_duration: average_session_duration(site_id, date_string),
         pages_per_session: pages_per_session(site_id, date_string),
-        pages: pages(site_id, date_string)
+        pages: pages(site_id, date_string),
+        browsers: browsers(site_id, date_string)
       }
     end
 
@@ -28,6 +29,7 @@ module Types
         FROM recordings
         WHERE site_id = ? AND created_at::date = ?;
       SQL
+
       execute(sql, [site_id, date_string])[0][0].to_i
     end
 
@@ -37,6 +39,7 @@ module Types
         FROM recordings
         WHERE site_id = ? AND created_at::date = ?;
       SQL
+
       execute(sql, [site_id, date_string])[0][0].to_i
     end
 
@@ -46,6 +49,7 @@ module Types
         FROM recordings
         WHERE site_id = ? AND created_at::date = ?;
       SQL
+
       execute(sql, [site_id, date_string])[0][0].to_i
     end
 
@@ -55,6 +59,7 @@ module Types
         FROM recordings
         WHERE site_id = ? AND created_at::date = ?;
       SQL
+
       execute(sql, [site_id, date_string])[0][0].to_f
     end
 
@@ -67,8 +72,29 @@ module Types
         group by p.page_view
         order by page_view_count desc;
       SQL
+
       result = execute(sql, [site_id, date_string])
       result.map { |r| [[:path, r[0]], [:count, r[1]]].to_h }
+    end
+
+    def browsers(site_id, date_string)
+      sql = <<-SQL
+        SELECT DISTINCT(useragent), count(*)
+        FROM recordings
+        WHERE site_id = ? AND created_at::date = ?
+        GROUP BY useragent;
+      SQL
+
+      result = execute(sql, [site_id, date_string])
+      out = {}
+
+      result.each do |r|
+        browser = UserAgent.parse(r[0]).browser
+        out[browser] ||= 0
+        out[browser] += r[1]
+      end
+
+      out.map { |k, v| { name: k, count: v } }
     end
 
     def execute(query, variables)

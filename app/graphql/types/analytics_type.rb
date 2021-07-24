@@ -9,5 +9,6 @@ module Types
     field :average_session_duration, Integer, null: false
     field :pages_per_session, Float, null: false
     field :pages, [AnalyticsPageType, { null: true }], null: false
+    field :browsers, [AnalyticsBrowserType, { null: true }], null: false
   end
 end
