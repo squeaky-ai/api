@@ -9,6 +9,8 @@ module Types
     field :session_id, String, null: false
     field :viewer_id, String, null: false
     field :active, Boolean, null: false
+    field :viewed, Boolean, null: false
+    field :bookmarked, Boolean, null: false
     field :language, String, null: false
     field :duration, Integer, null: false
     field :duration_string, String, null: false
@@ -21,7 +23,6 @@ module Types
     field :browser_string, String, null: true
     field :viewport_x, Integer, null: true
     field :viewport_y, Integer, null: true
-    field :date_string, String, null: true
     field :connected_at, String, null: true
     field :disconnected_at, String, null: true
     field :tags, [TagType, { null: true }], null: false

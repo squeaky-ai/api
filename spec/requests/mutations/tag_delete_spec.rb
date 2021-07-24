@@ -4,10 +4,10 @@ require 'rails_helper'
 require 'securerandom'
 
 tag_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $session_id: ID!, $tag_id: ID!) {
-    tagDelete(input: { siteId: $site_id, sessionId: $session_id, tagId: $tag_id }) {
+  mutation($site_id: ID!, $recording_id: ID!, $tag_id: ID!) {
+    tagDelete(input: { siteId: $site_id, recordingId: $recording_id, tagId: $tag_id }) {
       id
-      recording(id: $session_id) {
+      recording(recordingId: $recording_id) {
         tags {
           id
           name
@@ -23,7 +23,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, session_id: SecureRandom.uuid, tag_id: Faker::Number.rand.to_s }
+      variables = { site_id: site.id, recording_id: SecureRandom.uuid, tag_id: Faker::Number.rand.to_s }
       graphql_request(tag_delete_mutation, variables, user)
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
     let(:recording) { create_recording(site: site) }
 
     subject do
-      variables = { site_id: site.id, session_id: recording.session_id, tag_id: Faker::Number.rand.to_s }
+      variables = { site_id: site.id, recording_id: recording.id, tag_id: Faker::Number.rand.to_s }
       graphql_request(tag_delete_mutation, variables, user)
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
     before { tag }
 
     subject do
-      variables = { site_id: site.id, session_id: recording.session_id, tag_id: tag.id.to_s }
+      variables = { site_id: site.id, recording_id: recording.id, tag_id: tag.id.to_s }
       graphql_request(tag_delete_mutation, variables, user)
     end
 

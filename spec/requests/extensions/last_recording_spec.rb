@@ -4,7 +4,7 @@ require 'rails_helper'
 
 site_last_recording_query = <<-GRAPHQL
   query($site_id: ID!) {
-    site(id: $site_id) {
+    site(siteId: $site_id) {
       daysSinceLastRecording
     }
   }

@@ -6,7 +6,7 @@ module Mutations
     null false
 
     argument :site_id, ID, required: true
-    argument :session_id, ID, required: true
+    argument :recording_id, ID, required: true
     argument :note_id, ID, required: true
     argument :body, String, required: false
     argument :timestamp, Integer, required: false
@@ -17,8 +17,8 @@ module Mutations
       [Team::OWNER, Team::ADMIN, Team::MEMBER]
     end
 
-    def resolve(session_id:, note_id:, body: nil, timestamp: nil, **_rest)
-      recording = @site.recordings.find_by(session_id: session_id)
+    def resolve(recording_id:, note_id:, body: nil, timestamp: nil, **_rest)
+      recording = @site.recordings.find_by(id: recording_id)
 
       raise Errors::RecordingNotFound unless recording
 

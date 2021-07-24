@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_query = <<-GRAPHQL
-  query($id: ID!) {
-    site(id: $id) {
+  query($site_id: ID!) {
+    site(siteId: $site_id) {
       id
       name
       url
@@ -32,7 +32,7 @@ RSpec.describe 'QuerySite', type: :request do
     let(:site) { create_site }
 
     it 'raises an error' do
-      response = graphql_request(site_query, { id: site.id }, nil)
+      response = graphql_request(site_query, { site_id: site.id }, nil)
 
       expect(response['errors'][0]['message']).to eq 'Unauthorized'
     end
@@ -42,7 +42,7 @@ RSpec.describe 'QuerySite', type: :request do
     let(:user) { create_user }
 
     it 'returns nil' do
-      response = graphql_request(site_query, { id: Faker::Number.number }, user)
+      response = graphql_request(site_query, { site_id: Faker::Number.number }, user)
 
       expect(response['data']['site']).to be_nil
     end
@@ -53,7 +53,7 @@ RSpec.describe 'QuerySite', type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     it 'returns the site' do
-      response = graphql_request(site_query, { id: site.id }, user)
+      response = graphql_request(site_query, { site_id: site.id }, user)
 
       expect(response['data']['site']).to eq(
         {
@@ -91,7 +91,7 @@ RSpec.describe 'QuerySite', type: :request do
     end
 
     it 'does not return the site' do
-      response = graphql_request(site_query, { id: site.id }, user)
+      response = graphql_request(site_query, { site_id: site.id }, user)
 
       expect(response['data']['site']).to be_nil
     end

@@ -1,26 +1,25 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an existing tag
-  class TagDelete < SiteMutation
+  # Mark a recording as viewed
+  class RecordingViewed < SiteMutation
     null false
 
     argument :site_id, ID, required: true
     argument :recording_id, ID, required: true
-    argument :tag_id, ID, required: true
 
     type Types::SiteType
 
     def permitted_roles
-      [Team::OWNER, Team::ADMIN, Team::MEMBER]
+      [Team::OWNER, Team::ADMIN]
     end
 
-    def resolve(recording_id:, tag_id:, **_rest)
+    def resolve(recording_id:, **_rest)
       recording = @site.recordings.find_by(id: recording_id)
 
       raise Errors::RecordingNotFound unless recording
 
-      recording.tags.find_by_id(tag_id)&.destroy
+      recording.update(viewed: true)
 
       @site
     end

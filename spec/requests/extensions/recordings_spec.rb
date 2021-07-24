@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($id: ID!, $size: Int, $page: Int, $sort: Sort) {
-    site(id: $id) {
+  query($site_id: ID!, $size: Int, $page: Int, $sort: Sort) {
+    site(siteId: $site_id) {
       recordings(size: $size, page: $page, sort: $sort) {
         items {
           id
@@ -23,7 +23,6 @@ site_recordings_query = <<-GRAPHQL
           browserString
           viewportX
           viewportY
-          dateString
         }
         pagination {
           pageSize
@@ -41,7 +40,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { id: site.id, size: 15, page: 1 }
+      variables = { site_id: site.id, size: 15, page: 1 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -67,7 +66,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { id: site.id, size: 15, page: 1 }
+      variables = { site_id: site.id, size: 15, page: 1 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -98,12 +97,12 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     before do
       create_recordings(site: site, count: 15)
 
-      variables = { id: site.id, size: 10, page: 1 }
+      variables = { site_id: site.id, size: 10, page: 1 }
       graphql_request(site_recordings_query, variables, user)
     end
 
     subject do
-      variables = { id: site.id, size: 10, page: 2 }
+      variables = { site_id: site.id, size: 10, page: 2 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -130,7 +129,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { id: site.id, size: 5, page: 1, sort: 'DATE_DESC' }
+        variables = { site_id: site.id, size: 5, page: 1, sort: 'DATE_DESC' }
         graphql_request(site_recordings_query, variables, user)
       end
 
@@ -159,7 +158,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { id: site.id, size: 5, page: 1, sort: 'DATE_ASC' }
+        variables = { site_id: site.id, size: 5, page: 1, sort: 'DATE_ASC' }
         graphql_request(site_recordings_query, variables, user)
       end
 

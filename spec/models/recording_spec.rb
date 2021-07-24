@@ -162,16 +162,4 @@ RSpec.describe Recording, type: :model do
       end
     end
   end
-
-  describe '#date_string' do
-    subject do
-      fixture = recording_fixture.dup
-      fixture[:connected_at] = 1625389200000
-      described_class.new(fixture).date_string
-    end
-
-    it 'returns a nicely formatted date' do
-      expect(subject).to eq '4th July 2021'
-    end
-  end
 end

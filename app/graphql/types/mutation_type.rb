@@ -72,5 +72,14 @@ module Types
     field :note_delete,
           mutation: Mutations::NoteDelete,
           description: 'Delete a note'
+    field :recording_delete,
+          mutation: Mutations::RecordingDelete,
+          description: 'Delete a recording'
+    field :recording_viewed,
+          mutation: Mutations::RecordingViewed,
+          description: 'Mark a recording as viewed'
+    field :recording_bookmarked,
+          mutation: Mutations::RecordingBookmarked,
+          description: 'Set a recordings bookmarked status'
   end
 end

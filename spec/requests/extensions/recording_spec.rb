@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 site_recording_query = <<-GRAPHQL
-  query($site_id: ID!, $session_id: ID!) {
-    site(id: $site_id) {
-      recording(id: $session_id) {
+  query($site_id: ID!, $recording_id: ID!) {
+    site(siteId: $site_id) {
+      recording(recordingId: $recording_id) {
         id
         siteId
         viewerId
@@ -22,7 +22,6 @@ site_recording_query = <<-GRAPHQL
         browserString
         viewportX
         viewportY
-        dateString
       }
     }
   }
@@ -34,7 +33,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, session_id: Faker::Lorem.word }
+      variables = { site_id: site.id, recording_id: Faker::Lorem.word }
       graphql_request(site_recording_query, variables, user)
     end
 
@@ -50,7 +49,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:recording) { create_recording(site: site) }
 
     subject do
-      variables = { site_id: site.id, session_id: recording.session_id }
+      variables = { site_id: site.id, recording_id: recording.id }
       graphql_request(site_recording_query, variables, user)
     end
 

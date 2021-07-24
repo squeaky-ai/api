@@ -54,11 +54,4 @@ class Recording < ApplicationRecord
   def language
     Locale.get_language(locale)
   end
-
-  def date_string
-    return nil if connected_at.nil?
-
-    date = Time.at(connected_at / 1000).utc
-    date.strftime("#{date.day.ordinalize} %B %Y")
-  end
 end

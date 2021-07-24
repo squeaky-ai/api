@@ -4,10 +4,10 @@ require 'rails_helper'
 require 'securerandom'
 
 note_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $session_id: ID!, $note_id: ID!) {
-    noteDelete(input: { siteId: $site_id, sessionId: $session_id, noteId: $note_id }) {
+  mutation($site_id: ID!, $recording_id: ID!, $note_id: ID!) {
+    noteDelete(input: { siteId: $site_id, recordingId: $recording_id, noteId: $note_id }) {
       id
-      recording(id: $session_id) {
+      recording(recordingId: $recording_id) {
         notes {
           id
           body
@@ -30,7 +30,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
     subject do
       variables = {
         site_id: site.id,
-        session_id: SecureRandom.uuid,
+        recording_id: SecureRandom.uuid,
         note_id: SecureRandom.uuid
       }
       graphql_request(note_delete_mutation, variables, user)
@@ -50,7 +50,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
     subject do
       variables = {
         site_id: site.id,
-        session_id: recording.session_id,
+        recording_id: recording.id,
         note_id: SecureRandom.uuid
       }
       graphql_request(note_delete_mutation, variables, user)
@@ -83,7 +83,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
         subject do
           variables = {
             site_id: site.id,
-            session_id: recording.session_id,
+            recording_id: recording.id,
             note_id: note.id.to_s
           }
           graphql_request(note_delete_mutation, variables, user)
@@ -114,7 +114,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
         subject do
           variables = {
             site_id: site.id,
-            session_id: recording.session_id,
+            recording_id: recording.id,
             note_id: note.id.to_s
           }
           graphql_request(note_delete_mutation, variables, user)
@@ -142,7 +142,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
       subject do
         variables = {
           site_id: site.id,
-          session_id: recording.session_id,
+          recording_id: recording.id,
           note_id: note.id.to_s
         }
         graphql_request(note_delete_mutation, variables, user)
@@ -169,7 +169,7 @@ RSpec.describe Mutations::NoteDelete, type: :request do
       subject do
         variables = {
           site_id: site.id,
-          session_id: recording.session_id,
+          recording_id: recording.id,
           note_id: note.id.to_s
         }
         graphql_request(note_delete_mutation, variables, user)

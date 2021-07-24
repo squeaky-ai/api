@@ -14,7 +14,7 @@ module Types
 
     field :site, SiteType, null: true do
       description 'Get a single site'
-      argument :id, ID, required: true
+      argument :site_id, ID, required: true
     end
 
     field :sites, [SiteType, { null: true }], null: false do
@@ -30,12 +30,12 @@ module Types
       context[:current_user]
     end
 
-    def site(id:)
+    def site(site_id:)
       raise Errors::Unauthorized unless context[:current_user]
 
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
-      context[:current_user].sites.where(id: id.to_i, team: team).first
+      context[:current_user].sites.where(id: site_id.to_i, team: team).first
     rescue ActiveRecord::RecordNotFound
       nil
     end
