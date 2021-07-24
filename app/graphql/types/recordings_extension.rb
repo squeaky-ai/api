@@ -31,7 +31,7 @@ module Types
     def pagination(arguments, recordings, size)
       {
         page_size: size,
-        page_count: recordings.total_pages,
+        total: recordings.total_count,
         sort: arguments[:sort]
       }
     end

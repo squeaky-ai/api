@@ -27,7 +27,7 @@ site_recordings_query = <<-GRAPHQL
         }
         pagination {
           pageSize
-          pageCount
+          total
           sort
         }
       }
@@ -55,7 +55,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 15,
-          'pageCount' => 0,
+          'total' => 0,
           'sort' => 'DATE_DESC'
         }
       )
@@ -83,7 +83,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 15,
-          'pageCount' => 1,
+          'total' => 5,
           'sort' => 'DATE_DESC'
         }
       )
@@ -117,7 +117,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 10,
-          'pageCount' => 2,
+          'total' => 15,
           'sort' => 'DATE_DESC'
         }
       )
@@ -147,7 +147,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         expect(response['pagination']).to eq(
           {
             'pageSize' => 5,
-            'pageCount' => 1,
+            'total' => 5,
             'sort' => 'DATE_DESC'
           }
         )
@@ -176,7 +176,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         expect(response['pagination']).to eq(
           {
             'pageSize' => 5,
-            'pageCount' => 1,
+            'total' => 5,
             'sort' => 'DATE_ASC'
           }
         )
