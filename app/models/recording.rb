@@ -6,9 +6,15 @@ require 'uri'
 class Recording < ApplicationRecord
   belongs_to :site
 
+  has_one :event, dependent: :destroy, autosave: true
   has_many :tags, dependent: :destroy
   has_many :notes, dependent: :destroy
-  has_many :events, dependent: :destroy
+
+  after_create -> { create_event! }
+
+  def events
+    event.events
+  end
 
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)

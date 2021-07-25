@@ -14,9 +14,7 @@ class EventsJob < ApplicationJob
     @message = extract_body(args)
     @site = Site.find_by(uuid: @message['viewer']['site_id'])
 
-    recording = find_or_create_recording!
-    update_recording!(recording)
-    store_event!(recording)
+    update_recording!
   end
 
   # Seems to error without this, not sure why
@@ -58,34 +56,31 @@ class EventsJob < ApplicationJob
     @site.recordings.create_or_find_by!(session_id: session_id) { |r| r.viewer_id = viewer_id }
   end
 
-  def update_recording!(recording)
-    if event_type == 'connected'
-      recording.active = true
-      recording.connected_at = event unless recording.connected_at
-    end
+  def update_recording!
+    # TODO: I think it goes without saying that this is a bit messy!
+    recording = find_or_create_recording!
 
-    if event_type == 'disconnected'
-      recording.active = false
-      recording.disconnected_at = event
-    end
+    mark_active(recording) if event_type == 'connected'
+    mark_inactive(recording) if event_type == 'disconnected'
+    apply_event_args(recording) if event_type == 'event' && event['type'] == Event::META
+    store_event!(recording)
 
-    if event_type == 'event' && event['type'] == Event::META
-      attributes = format_event_for_stamp(recording)
-      recording.update(attributes)
-    end
-
-    recording.save
+    recording.save!
   end
 
-  def store_event!(recording)
-    return unless event_type == 'event'
+  def mark_active(recording)
+    recording.active = true
+    recording.connected_at = event unless recording.connected_at
+  end
 
-    Event.create(
-      recording: recording,
-      event_type: event['type'],
-      data: event['data'],
-      timestamp: event['timestamp']
-    )
+  def mark_inactive(recording)
+    recording.active = false
+    recording.disconnected_at = event
+  end
+
+  def apply_event_args(recording)
+    attributes = format_event_for_stamp(recording)
+    recording.update(attributes)
   end
 
   def format_event_for_stamp(recording)
@@ -96,5 +91,24 @@ class EventsJob < ApplicationJob
       useragent: event['data']['useragent'],
       page_views: recording.page_views << URI(event['data']['href']).path
     }
+  end
+
+  def store_event!(recording)
+    return unless event_type == 'event'
+
+    sql = <<-SQL
+      UPDATE events
+      SET events = array_append(events, ?)
+      WHERE recording_id = ?;
+    SQL
+
+    entry = {
+      type: event['type'],
+      data: event['data'],
+      timestamp: event['timestamp']
+    }.to_json
+
+    query = ActiveRecord::Base.sanitize_sql_array([sql, entry, recording.id])
+    ActiveRecord::Base.connection.execute(query)
   end
 end

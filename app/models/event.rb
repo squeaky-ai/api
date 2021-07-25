@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# All of the events that come from the websocket
+# A place to dump all the events
 class Event < ApplicationRecord
   belongs_to :recording
-
-  default_scope { order('timestamp asc') }
 
   # Event types from rrweb
   DOM_LOADED_CONTENT = 0
@@ -14,8 +12,4 @@ class Event < ApplicationRecord
   META = 4
   CUSTOM = 5
   PLUGIN = 6
-
-  def type?(event)
-    event_type == event
-  end
 end

@@ -16,9 +16,9 @@ module Types
 
       recordings = Recording
                    .where(site_id: object.object['id'])
+                   .order(order)
                    .page(arguments[:page])
                    .per(arguments[:size])
-                   .order(order)
 
       # TODO: Search
 
