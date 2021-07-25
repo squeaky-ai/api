@@ -16,7 +16,6 @@ gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.1'
 gem 'redis'
-gem 'sidekiq', '~> 6.2.1'
 gem 'useragent'
 
 group :development, :test do
