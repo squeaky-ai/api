@@ -66,8 +66,8 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:recording) { create_recording(site: site) }
 
     before do
-      recording.events << { type: Event::META, data: {}, timestamp: 123 }.to_json
-      recording.save
+      event = { type: Event::META, data: {}, timestamp: 123 }.to_json
+      Redis.current.lpush("events::#{site.uuid}::#{recording.session_id}", event)
     end
 
     subject do
