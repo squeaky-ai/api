@@ -13,6 +13,8 @@ module Fixtures
         site: @site,
         session_id: SecureRandom.uuid,
         viewer_id: SecureRandom.uuid,
+        connected_at: Time.now.to_i * 1000,
+        disconnected_at: (Time.now.to_i + 1000) * 1000,
         **args
       )
     end

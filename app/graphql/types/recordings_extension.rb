@@ -15,7 +15,7 @@ module Types
       order = order_by(arguments[:sort])
 
       recordings = Recording
-                   .where(site_id: object.object['id'])
+                   .where('site_id = ? AND disconnected_at IS NOT NULL', object.object['id'])
                    .order(order)
                    .page(arguments[:page])
                    .per(arguments[:size])
