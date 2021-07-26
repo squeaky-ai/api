@@ -9,7 +9,6 @@ site_recording_query = <<-GRAPHQL
         id
         siteId
         viewerId
-        active
         language
         duration
         durationString

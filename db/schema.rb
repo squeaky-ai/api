@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_072800) do
+ActiveRecord::Schema.define(version: 2021_07_26_093822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 2021_07_26_072800) do
     t.bigint "disconnected_at"
     t.string "page_views", default: [], null: false, array: true
     t.string "locale"
-    t.boolean "active", default: false
     t.string "useragent"
     t.integer "viewport_x"
     t.integer "viewport_y"
