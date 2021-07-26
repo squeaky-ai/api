@@ -58,6 +58,12 @@ module Helpers
     recordings
   end
 
+  def create_events(recording:, count:)
+    events = Fixtures::Events.new(recording).sample(count)
+    events.each { |e| e.save! }
+    events
+  end
+
   def create_tag(name = nil, recording:)
     Tag.create(recording: recording, name: name || Faker::Book.title)
   end

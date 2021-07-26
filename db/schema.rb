@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_093822) do
+ActiveRecord::Schema.define(version: 2021_07_14_115259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "migrations", force: :cascade do |t|
-    t.bigint "version", null: false
+  create_table "events", force: :cascade do |t|
+    t.integer "event_type", null: false
+    t.jsonb "data", null: false
+    t.bigint "timestamp", null: false
+    t.bigint "recording_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recording_id"], name: "index_events_on_recording_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -33,18 +39,18 @@ ActiveRecord::Schema.define(version: 2021_07_26_093822) do
   create_table "recordings", force: :cascade do |t|
     t.string "session_id", null: false
     t.string "viewer_id", null: false
+    t.boolean "viewed", default: false
+    t.boolean "bookmarked", default: false
+    t.string "locale", null: false
+    t.string "page_views", default: [], null: false, array: true
+    t.string "useragent", null: false
+    t.integer "viewport_x", null: false
+    t.integer "viewport_y", null: false
+    t.bigint "connected_at", null: false
+    t.bigint "disconnected_at", null: false
     t.bigint "site_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "connected_at"
-    t.bigint "disconnected_at"
-    t.string "page_views", default: [], null: false, array: true
-    t.string "locale"
-    t.string "useragent"
-    t.integer "viewport_x"
-    t.integer "viewport_y"
-    t.boolean "viewed", default: false
-    t.boolean "bookmarked", default: false
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
   end
@@ -55,10 +61,10 @@ ActiveRecord::Schema.define(version: 2021_07_26_093822) do
     t.string "avatar"
     t.string "uuid", null: false
     t.integer "plan", null: false
+    t.datetime "checklist_dismissed_at"
     t.datetime "verified_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "checklist_dismissed_at"
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end
@@ -86,8 +92,6 @@ ActiveRecord::Schema.define(version: 2021_07_26_093822) do
     t.string "first_name"
     t.string "last_name"
     t.string "email"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -112,6 +116,8 @@ ActiveRecord::Schema.define(version: 2021_07_26_093822) do
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

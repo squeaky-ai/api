@@ -13,6 +13,10 @@ module Fixtures
         site: @site,
         session_id: SecureRandom.uuid,
         viewer_id: SecureRandom.uuid,
+        locale: 'en-GB',
+        useragent: Faker::Internet.user_agent,
+        viewport_x: 1920,
+        viewport_y: 1080,
         connected_at: Time.now.to_i * 1000,
         disconnected_at: (Time.now.to_i + 1000) * 1000,
         **args

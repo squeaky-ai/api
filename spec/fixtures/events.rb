@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 module Fixtures
   class Events
     def initialize(recording)
@@ -10,12 +8,12 @@ module Fixtures
 
     def sample(count)
       count.times.map do |i|
-        {
-          type: [Event::FULL_SNAPSHOT, Event::INCREMENTAL_SNAPSHOT, Event::META].sample,
+        Event.new(
+          event_type: [Event::FULL_SNAPSHOT, Event::INCREMENTAL_SNAPSHOT, Event::META].sample,
           data: {},
           recording: @recording,
           timestamp: (Time.now.to_i + 1) * 1000
-        }
+        )
       end
     end
   end

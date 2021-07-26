@@ -8,6 +8,7 @@ class CreateSites < ActiveRecord::Migration[6.1]
       t.string :avatar
       t.string :uuid, null: false
       t.integer :plan, null: false
+      t.datetime :checklist_dismissed_at
       t.datetime :verified_at
 
       t.timestamps

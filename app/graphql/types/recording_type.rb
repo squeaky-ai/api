@@ -26,6 +26,6 @@ module Types
     field :disconnected_at, String, null: true
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
-    field :events, [String, { null: true }], null: false
+    field :events, String, null: false, extensions: [EventExtension]
   end
 end
