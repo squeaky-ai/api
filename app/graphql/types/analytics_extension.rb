@@ -12,6 +12,7 @@ module Types
       date_string = arguments[:date_string].split('/').join('-')
 
       {
+        views_and_visitors_per_hour: views_and_visitors_per_hour(site_id, date_string),
         visitors: visitors(site_id, date_string),
         page_views: page_views(site_id, date_string),
         average_session_duration: average_session_duration(site_id, date_string),
@@ -22,6 +23,27 @@ module Types
     end
 
     private
+
+    def views_and_visitors_per_hour(site_id, date_string)
+      sql = <<-SQL
+        SELECT SUM(array_length(page_views, 1)) page_views, count(DISTINCT viewer_id) visitors, date_trunc('hour', created_at) per_hour
+        FROM recordings
+        WHERE site_id = ? AND created_at::date = ?
+        GROUP BY per_hour
+        ORDER BY per_hour;
+      SQL
+
+      result = execute(sql, [site_id, date_string])
+
+      (0..24).to_a.map do |hour|
+        match = result.find { |r| r[2].hour == hour }
+        {
+          hour: hour,
+          page_views: match ? match[0] : 0,
+          visitors: match ? match[1] : 0
+        }
+      end
+    end
 
     def visitors(site_id, date_string)
       sql = <<-SQL

@@ -4,6 +4,7 @@ module Types
   class AnalyticsType < Types::BaseObject
     description 'The analytics'
 
+    field :views_and_visitors_per_hour, [AnalyticsViewsAndVistorsType], null: false
     field :visitors, Integer, null: false
     field :page_views, Integer, null: false
     field :average_session_duration, Integer, null: false
