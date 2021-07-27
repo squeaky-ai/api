@@ -54,4 +54,16 @@ class Recording < ApplicationRecord
   def language
     Locale.get_language(locale)
   end
+
+  def previous_recording
+    recordings = site.recordings
+    index = recordings.index(self)
+    index.zero? ? nil : recordings[index - 1]
+  end
+
+  def next_recording
+    recordings = site.recordings
+    index = recordings.index(self)
+    index >= recordings.size ? nil : recordings[index + 1]
+  end
 end

@@ -21,6 +21,12 @@ site_recording_query = <<-GRAPHQL
         browserString
         viewportX
         viewportY
+        previousRecording {
+          id
+        }
+        nextRecording {
+          id
+        }
       }
     }
   }
@@ -55,6 +61,27 @@ RSpec.describe Types::RecordingExtension, type: :request do
     it 'returns the item' do
       response = subject['data']['site']['recording']
       expect(response).not_to be nil
+    end
+  end
+
+  context 'when selecting the next and previous recordings' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:recordings) { create_recordings(site: site, count: 3) }
+
+    subject do
+      variables = { site_id: site.id, recording_id: recordings[1].id }
+      graphql_request(site_recording_query, variables, user)
+    end
+
+    it 'returns the previous recording' do
+      previous_rec = subject['data']['site']['recording']['previousRecording']
+      expect(previous_rec['id']).to eq recordings.first.id.to_s
+    end
+
+    it 'returns the next recording' do
+      next_rec = subject['data']['site']['recording']['nextRecording']
+      expect(next_rec['id']).to eq recordings.last.id.to_s
     end
   end
 end

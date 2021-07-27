@@ -27,5 +27,7 @@ module Types
     field :tags, [TagType, { null: true }], null: false
     field :notes, [NoteType, { null: true }], null: false
     field :events, String, null: false, extensions: [EventExtension]
+    field :previous_recording, RecordingType, null: true
+    field :next_recording, RecordingType, null: true
   end
 end

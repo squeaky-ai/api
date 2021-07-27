@@ -162,4 +162,78 @@ RSpec.describe Recording, type: :model do
       end
     end
   end
+
+  describe '#previous_recording' do
+    context 'when there is only one recording' do
+      let(:site) { create_site }
+      let(:recordings) { create_recordings(site: site, count: 1) }
+
+      subject { recordings[0].previous_recording }
+
+      it 'returns nil' do
+        expect(subject).to be nil
+      end
+    end
+
+    context 'when there is more than one recording' do
+      context 'when this recording is the first' do
+        let(:site) { create_site }
+        let(:recordings) { create_recordings(site: site, count: 3) }
+
+        subject { recordings.first.previous_recording }
+
+        it 'returns nil' do
+          expect(subject).to be nil
+        end
+      end
+
+      context 'when this recording not the first' do
+        let(:site) { create_site }
+        let(:recordings) { create_recordings(site: site, count: 3) }
+
+        subject { recordings[1].previous_recording }
+
+        it 'returns the previous recording' do
+          expect(subject.id).to be recordings.first.id
+        end
+      end
+    end
+  end
+
+  describe '#next_recording' do
+    context 'when there is only one recording' do
+      let(:site) { create_site }
+      let(:recordings) { create_recordings(site: site, count: 1) }
+
+      subject { recordings.first.next_recording }
+
+      it 'returns nil' do
+        expect(subject).to be nil
+      end
+    end
+
+    context 'when there is more than one recording' do
+      context 'when this recording is the last' do
+        let(:site) { create_site }
+        let(:recordings) { create_recordings(site: site, count: 3) }
+
+        subject { recordings.last.next_recording }
+
+        it 'returns nil' do
+          expect(subject).to be nil
+        end
+      end
+
+      context 'when this recording not the last' do
+        let(:site) { create_site }
+        let(:recordings) { create_recordings(site: site, count: 3) }
+
+        subject { recordings[1].next_recording }
+
+        it 'returns the previous recording' do
+          expect(subject.id).to be recordings[2].id
+        end
+      end
+    end
+  end
 end
