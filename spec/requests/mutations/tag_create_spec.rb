@@ -55,4 +55,31 @@ RSpec.describe Mutations::TagCreate, type: :request do
       expect { subject }.to change { recording.reload.tags.size }.from(0).to(1)
     end
   end
+
+  context 'when a tag with that name exists already' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:recording) { create_recording(site: site) }
+    let(:name) { Faker::Book.title }
+
+    before do
+      recording.tags << Tag.new(name: name)
+      recording.save
+    end
+
+    subject do
+      variables = { site_id: site.id, recording_id: recording.id, name: name }
+      graphql_request(tag_create_mutation, variables, user)
+    end
+
+    it 'returns the unmodified site' do
+      tags = subject['data']['tagCreate']['recording']['tags']
+      expect(tags.size).to eq 1
+      expect(tags[0]['name']).to eq name
+    end
+
+    it 'does note create the record' do
+      expect { subject }.not_to change { recording.reload.tags.size }
+    end
+  end
 end
