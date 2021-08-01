@@ -100,4 +100,17 @@ RSpec.describe 'QuerySites', type: :request do
       expect(response['data']['sites']).to eq([])
     end
   end
+
+  context 'when the user is a superuser' do
+    let(:user) { create_user(superuser: true) }
+    let(:site) { create_site_and_team(user: create_user) }
+
+    before { site }
+
+    it 'returns all the sites' do
+      response = graphql_request(sites_query, {}, user)
+
+      expect(response['data']['sites'].size).to eq 1
+    end
+  end
 end

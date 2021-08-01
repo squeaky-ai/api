@@ -96,4 +96,26 @@ RSpec.describe 'QuerySite', type: :request do
       expect(response['data']['site']).to be_nil
     end
   end
+
+  context 'when the user is not authorized' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: create_user) }
+
+    it 'does not return the site' do
+      response = graphql_request(site_query, { site_id: site.id }, user)
+
+      expect(response['data']['site']).to be_nil
+    end
+  end
+
+  context 'when the user is not authorized but they are a superuser' do
+    let(:user) { create_user(superuser: true) }
+    let(:site) { create_site_and_team(user: create_user) }
+
+    it 'returns the site' do
+      response = graphql_request(site_query, { site_id: site.id }, user)
+
+      expect(response['data']['site']).not_to be_nil
+    end
+  end
 end

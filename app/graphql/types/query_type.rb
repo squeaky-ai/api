@@ -33,15 +33,21 @@ module Types
     def site(site_id:)
       raise Errors::Unauthorized unless context[:current_user]
 
+      # Super users don't play by the rules
+      return Site.find_by(id: site_id.to_i) if context[:current_user].superuser?
+
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
-      context[:current_user].sites.where(id: site_id.to_i, team: team).first
+      context[:current_user].sites.find_by(id: site_id.to_i, team: team)
     rescue ActiveRecord::RecordNotFound
       nil
     end
 
     def sites
       raise Errors::Unauthorized unless context[:current_user]
+
+      # Show everything to superusers
+      return Site.all if context[:current_user].superuser?
 
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }

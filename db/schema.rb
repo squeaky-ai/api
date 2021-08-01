@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_14_115259) do
+ActiveRecord::Schema.define(version: 2021_08_01_095112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 2021_07_14_115259) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recording_id"], name: "index_events_on_recording_id"
+  end
+
+  create_table "migrations", force: :cascade do |t|
+    t.bigint "version", null: false
   end
 
   create_table "notes", force: :cascade do |t|
@@ -118,6 +122,7 @@ ActiveRecord::Schema.define(version: 2021_07_14_115259) do
     t.integer "invitations_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "superuser", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
