@@ -42,8 +42,8 @@ module Types
       orders = {
         'DATE_DESC' => 'connected_at DESC',
         'DATE_ASC' => 'connected_at ASC',
-        'DURATION_DESC' => '(disconnected_at - connected_at) DESC',
-        'DURATION_ASC' => '(disconnected_at - connected_at) ASC',
+        'DURATION_DESC' => 'disconnected_at - connected_at DESC',
+        'DURATION_ASC' => 'disconnected_at - connected_at ASC',
         'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC',
         'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC'
       }
