@@ -32,7 +32,7 @@ module Mutations
       # If the user is an admin or higher they can delete what
       # they want. Otherwise, members can only delete their
       # own notes
-      note.user.id == @user.id || @user.admin_for?(@site) || @user.owner_for?(@site)
+      note.user&.id == @user.id || @user.admin_for?(@site) || @user.owner_for?(@site)
     end
   end
 end

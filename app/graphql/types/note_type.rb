@@ -7,7 +7,7 @@ module Types
     field :id, ID, null: false
     field :body, String, null: false
     field :timestamp, Integer, null: true
-    field :user, UserType, null: false
+    field :user, UserType, null: true
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
