@@ -141,6 +141,38 @@ RSpec.describe Mutations::SiteMutation do
           expect(response).to be true
         end
       end
+
+      context 'and the user is not a member' do
+        let(:user) { create_user }
+        let(:site) { create_site_and_team(user: create_user) }
+
+        subject do
+          context = { current_user: user }
+
+          AllRolesClass.new(object: {}, context: context, field: '')
+        end
+
+        it 'raises an error' do
+          expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteNotFound)
+        end
+      end
+
+      context 'and the user is a superuser' do
+        let(:user) { create_user(superuser: true) }
+        let(:site) { create_site_and_team(user: create_user) }
+
+        subject do
+          context = { current_user: user }
+
+          AllRolesClass.new(object: {}, context: context, field: '')
+        end
+
+        it 'returns true' do
+          response = subject.ready?({ site_id: site.id })
+
+          expect(response).to be true
+        end
+      end
     end
   end
 end

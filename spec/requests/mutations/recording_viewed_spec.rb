@@ -49,4 +49,24 @@ RSpec.describe Mutations::RecordingViewed, type: :request do
       expect { subject }.to change { Recording.find_by(id: recording.id).viewed }.from(false).to(true)
     end
   end
+
+  context 'when a superuser is viewing' do
+    let(:user) { create_user(superuser: true) }
+    let(:site) { create_site_and_team(user: create_user) }
+    let(:recording) { create_recording(site: site )}
+
+    subject do
+      variables = { site_id: site.id, recording_id: recording.id }
+      graphql_request(recording_viewed_mutation, variables, user)
+    end
+
+    it 'does not mark the site as recorded' do
+      response = subject['data']['recordingViewed']['recording']
+      expect(response['viewed']).to be false
+    end
+
+    it 'does not update the recording in the database' do
+      expect { subject }.not_to change { Recording.find_by(id: recording.id).viewed }
+    end
+  end
 end
