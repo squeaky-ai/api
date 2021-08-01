@@ -63,6 +63,22 @@ RSpec.describe Types::RecordingExtension, type: :request do
     end
   end
 
+  context 'when the recording is soft deleted' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:recording) { create_recording({ deleted: true }, site: site) }
+
+    subject do
+      variables = { site_id: site.id, recording_id: recording.id }
+      graphql_request(site_recording_query, variables, user)
+    end
+
+    it 'returns nil' do
+      response = subject['data']['site']['recording']
+      expect(response).to be nil
+    end
+  end
+
   context 'when selecting the next and previous recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

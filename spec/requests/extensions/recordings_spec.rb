@@ -87,6 +87,26 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     end
   end
 
+  context 'when a recording is soft deleted' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    subject do
+      variables = { site_id: site.id, size: 15, page: 1 }
+      graphql_request(site_recordings_query, variables, user)
+    end
+
+    before do
+      create_recordings(site: site, count: 5)
+      create_recording({ deleted: true }, site: site)
+    end
+
+    it 'returns the items' do
+      response = subject['data']['site']['recordings']
+      expect(response['items'].size).to eq 5
+    end
+  end
+
   context 'when paginating' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

@@ -19,7 +19,7 @@ module Mutations
 
       raise Errors::RecordingNotFound unless recording
 
-      recording.destroy!
+      recording.update!(deleted: true)
 
       @site
     end
