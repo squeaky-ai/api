@@ -12,7 +12,6 @@ site_recordings_query = <<-GRAPHQL
           viewerId
           language
           duration
-          durationString
           pageViews
           pageCount
           startPage

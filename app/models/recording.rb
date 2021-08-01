@@ -39,16 +39,7 @@ class Recording < ApplicationRecord
   end
 
   def duration
-    start = connected_at || 0
-    finish = disconnected_at || 0
-
-    (finish - start) / 1000
-  end
-
-  def duration_string
-    return '00:00' if duration.zero? || duration.negative?
-
-    Time.at(duration).utc.strftime('%M:%S')
+    (disconnected_at || 0) - (connected_at || 0)
   end
 
   def language

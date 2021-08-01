@@ -48,20 +48,7 @@ RSpec.describe Recording, type: :model do
     end
 
     it 'returns the difference between the connected and disconnected dates' do
-      expect(subject).to eq 5
-    end
-  end
-
-  describe '#duration_string' do
-    subject do
-      fixture = recording_fixture.dup
-      fixture[:connected_at] = 1625389200000
-      fixture[:disconnected_at] = 1625389205000
-      described_class.new(fixture).duration_string
-    end
-
-    it 'returns the difference in a formatted string' do
-      expect(subject).to eq '00:05'
+      expect(subject).to eq 5000
     end
   end
 
