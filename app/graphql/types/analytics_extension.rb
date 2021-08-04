@@ -1,125 +1,16 @@
 # frozen_string_literal: true
 
 module Types
-  # Analytics data
+  # An abstract class to help with analytics extensions
   class AnalyticsExtension < GraphQL::Schema::FieldExtension
     def apply
-      field.argument(:date_string, String, required: true, description: 'The date to fetch data for')
-    end
-
-    def resolve(object:, arguments:, **_rest)
-      site_id = object.object[:id]
-      date_string = arguments[:date_string].split('/').join('-')
-
-      {
-        views_and_visitors_per_hour: views_and_visitors_per_hour(site_id, date_string),
-        visitors: visitors(site_id, date_string),
-        page_views: page_views(site_id, date_string),
-        average_session_duration: average_session_duration(site_id, date_string),
-        pages_per_session: pages_per_session(site_id, date_string),
-        pages: pages(site_id, date_string),
-        browsers: browsers(site_id, date_string)
-      }
+      field.argument(:from_date, String, required: true, description: 'The to start from')
+      field.argument(:to_date, String, required: true, description: 'The to end at')
     end
 
     private
 
-    def views_and_visitors_per_hour(site_id, date_string)
-      sql = <<-SQL
-        SELECT SUM(array_length(page_views, 1)) page_views, count(DISTINCT viewer_id) visitors, date_trunc('hour', created_at) per_hour
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?
-        GROUP BY per_hour
-        ORDER BY per_hour;
-      SQL
-
-      result = execute(sql, [site_id, date_string])
-
-      (0..24).to_a.map do |hour|
-        match = result.find { |r| r[2].hour == hour }
-        {
-          hour: hour,
-          page_views: match ? match[0] : 0,
-          visitors: match ? match[1] : 0
-        }
-      end
-    end
-
-    def visitors(site_id, date_string)
-      sql = <<-SQL
-        SELECT COUNT ( DISTINCT(viewer_id) )
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?;
-      SQL
-
-      execute(sql, [site_id, date_string])[0][0].to_i
-    end
-
-    def page_views(site_id, date_string)
-      sql = <<-SQL
-        SELECT SUM( array_length(page_views, 1) )
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?;
-      SQL
-
-      execute(sql, [site_id, date_string])[0][0].to_i
-    end
-
-    def average_session_duration(site_id, date_string)
-      sql = <<-SQL
-        SELECT AVG( (disconnected_at - connected_at) ) as DURATION
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?;
-      SQL
-
-      execute(sql, [site_id, date_string])[0][0].to_i
-    end
-
-    def pages_per_session(site_id, date_string)
-      sql = <<-SQL
-        SELECT AVG( array_length(page_views, 1) )
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?;
-      SQL
-
-      execute(sql, [site_id, date_string])[0][0].to_f
-    end
-
-    def pages(site_id, date_string)
-      sql = <<-SQL
-        SELECT p.page_view, count(*) page_view_count
-        FROM recordings r
-        cross join lateral unnest(r.page_views) p(page_view)
-        WHERE r.site_id = ? AND r.created_at::date = ?
-        group by p.page_view
-        order by page_view_count desc;
-      SQL
-
-      result = execute(sql, [site_id, date_string])
-      result.map { |r| [[:path, r[0]], [:count, r[1]]].to_h }
-    end
-
-    def browsers(site_id, date_string)
-      sql = <<-SQL
-        SELECT DISTINCT(useragent), count(*)
-        FROM recordings
-        WHERE site_id = ? AND created_at::date = ?
-        GROUP BY useragent;
-      SQL
-
-      result = execute(sql, [site_id, date_string])
-      out = {}
-
-      result.each do |r|
-        browser = UserAgent.parse(r[0]).browser
-        out[browser] ||= 0
-        out[browser] += r[1]
-      end
-
-      out.map { |k, v| { name: k, count: v } }
-    end
-
-    def execute(query, variables)
+    def execute_sql(query, variables)
       # TODO: Is this even right haha? It seems so jank for
       # something I would have thought would be clean in
       # Rails

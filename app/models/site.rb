@@ -68,4 +68,10 @@ class Site < ApplicationRecord
 
     "#{uri.scheme}://#{uri.host.downcase}"
   end
+
+  def analytics
+    {
+      site_id: id
+    }
+  end
 end
