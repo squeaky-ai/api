@@ -54,7 +54,7 @@ module Types
     def order_by(sort)
       orders = {
         'RECORDINGS_COUNT_DESC' => 'recording_count DESC',
-        'RECORDING_COUNT_ASC' => 'recording_count ASC',
+        'RECORDINGS_COUNT_ASC' => 'recording_count ASC',
         'FIRST_VIEWED_AT_DESC' => 'first_viewed_at DESC',
         'FIRST_VIEWED_AT_ASC' => 'first_viewed_at ASC',
         'LAST_ACTIVITY_AT_DESC' => 'last_activity_at DESC',
