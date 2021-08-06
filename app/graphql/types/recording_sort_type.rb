@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class SortType < Types::BaseEnum
+  class RecordingSortType < Types::BaseEnum
     description 'The sort options'
 
     value 'DATE_DESC', 'Most recent recordings first'

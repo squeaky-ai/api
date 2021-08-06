@@ -6,6 +6,6 @@ module Types
 
     field :page_size, Integer, null: false
     field :total, Integer, null: false
-    field :sort, SortType, null: false
+    field :sort, RecordingSortType, null: false
   end
 end
