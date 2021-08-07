@@ -21,6 +21,10 @@ module Types
     # Fetch a list of recordings, refrain from fetching
     # events inside of here to prevent n+1
     field :recordings, RecordingsType, null: false, extensions: [RecordingsExtension]
+    # Fetch a single visitor
+    field :visitor, VisitorType, null: true, extensions: [VisitorExtension]
+    # Fetch a list of visitors, refrain from fetching
+    # anything deeper to prevent n+
     field :visitors, VisitorsType, null: false, extensions: [VisitorsExtension]
     field :analytics, AnalyticsType, null: false
     field :created_at, String, null: false

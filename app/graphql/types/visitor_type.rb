@@ -14,5 +14,6 @@ module Types
     field :device_type, String, null: true
     field :browser, String, null: true
     field :browser_string, String, null: true
+    field :page_view_count, Integer, null: true
   end
 end
