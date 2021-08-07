@@ -17,5 +17,7 @@ module Types
     field :page_view_count, Integer, null: true
     field :recordings, RecordingsType, null: false, extensions: [VisitorRecordingsExtension]
     field :pages, VisitorPagesType, null: false, extensions: [VisitorPagesExtension]
+    field :average_session_duration, Integer, null: false, extensions: [VisitorAverageSessionDurationExtension]
+    field :pages_per_session, Integer, null: false, extensions: [VisitorPagesPerSessionExtension]
   end
 end
