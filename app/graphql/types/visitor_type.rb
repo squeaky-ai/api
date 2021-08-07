@@ -15,5 +15,6 @@ module Types
     field :browser, String, null: true
     field :browser_string, String, null: true
     field :page_view_count, Integer, null: true
+    field :recordings, RecordingsType, null: false, extensions: [VisitorRecordingsExtension]
   end
 end
