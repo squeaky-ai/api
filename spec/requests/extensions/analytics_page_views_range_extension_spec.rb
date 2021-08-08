@@ -2,29 +2,32 @@
 
 require 'rails_helper'
 
-analytics_page_views_query = <<-GRAPHQL
+analytics_page_views_range_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
       analytics {
-        pageViews(fromDate: $from_date, toDate: $to_date)
+        pageViewsRange(fromDate: $from_date, toDate: $to_date) {
+          date
+          pageViewCount
+        }
       }
     }
   }
 GRAPHQL
 
-RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
+RSpec.describe Types::AnalyticsPageViewsRangeExtension, type: :request do
   context 'when there are no recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
-      graphql_request(analytics_page_views_query, variables, user)
+      graphql_request(analytics_page_views_range_query, variables, user)
     end
 
     it 'returns 0' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to eq 0
+      expect(response['pageViewsRange']).to eq []
     end
   end
 
@@ -39,12 +42,23 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
-      graphql_request(analytics_page_views_query, variables, user)
+      graphql_request(analytics_page_views_range_query, variables, user)
     end
 
     it 'returns the page views count' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to eq 3
+      expect(response['pageViewsRange']).to eq(
+        [
+          {
+            'date' => '2021-08-06T00:00:00Z',
+            'pageViewCount' => 2
+          },
+          {
+            'date' => '2021-08-07T00:00:00Z',
+            'pageViewCount' => 1
+          }
+        ]
+      )
     end
   end
 
@@ -60,12 +74,24 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
-      graphql_request(analytics_page_views_query, variables, user)
+      graphql_request(analytics_page_views_range_query, variables, user)
     end
 
-    it 'returns the page views counts' do
+    it 'returns the page views count' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to eq 3
+      expect(response['pageViewsRange']).to eq(
+        [
+          {
+            'date' => '2021-08-06T00:00:00Z',
+            'pageViewCount' => 2
+          },
+          {
+            'date' => '2021-08-07T00:00:00Z',
+            'pageViewCount' => 1
+          }
+        ]
+      )
     end
   end
 end
+  

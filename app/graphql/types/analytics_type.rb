@@ -6,11 +6,10 @@ module Types
 
     field :string, String, null: false
 
-    field :views_and_visitors_per_hour,
-          [AnalyticsViewsAndVisitorsPerHourType],
+    field :page_views_range,
+          [AnalyticsPageViewsRangeType],
           null: false,
-          extensions:
-          [AnalyticsViewsAndVisitorsPerHourExtension]
+          extensions: [AnalyticsPageViewsRangeExtension]
 
     field :visitors,
           Integer,
