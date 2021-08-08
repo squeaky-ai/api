@@ -18,6 +18,6 @@ module Types
     field :recordings, RecordingsType, null: false, extensions: [VisitorRecordingsExtension]
     field :pages, VisitorPagesType, null: false, extensions: [VisitorPagesExtension]
     field :average_session_duration, Integer, null: false, extensions: [VisitorAverageSessionDurationExtension]
-    field :pages_per_session, Integer, null: false, extensions: [VisitorPagesPerSessionExtension]
+    field :pages_per_session, Float, null: false, extensions: [VisitorPagesPerSessionExtension]
   end
 end
