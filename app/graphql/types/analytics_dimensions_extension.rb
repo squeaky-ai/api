@@ -22,9 +22,9 @@ module Types
 
     def map_results(result)
       {
-        max: result[0][0],
-        min: result[0][1],
-        avg: result[0][2]
+        max: result[0][0] || 0,
+        min: result[0][1] || 0,
+        avg: result[0][2] || 0
       }
     end
   end
