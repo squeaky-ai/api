@@ -5,8 +5,8 @@ require 'rails_helper'
 analytics_page_views_range_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
-      analytics {
-        pageViewsRange(fromDate: $from_date, toDate: $to_date) {
+      analytics(fromDate: $from_date, toDate: $to_date) {
+        pageViewsRange {
           date
           pageViewCount
         }

@@ -5,8 +5,8 @@ require 'rails_helper'
 analytics_dimensions_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
-      analytics {
-        dimensions(fromDate: $from_date, toDate: $to_date) {
+      analytics(fromDate: $from_date, toDate: $to_date) {
+        dimensions {
           min
           max
           avg

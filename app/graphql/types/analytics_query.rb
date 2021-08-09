@@ -2,12 +2,7 @@
 
 module Types
   # An abstract class to help with analytics extensions
-  class AnalyticsExtension < GraphQL::Schema::FieldExtension
-    def apply
-      field.argument(:from_date, String, required: true, description: 'The to start from')
-      field.argument(:to_date, String, required: true, description: 'The to end at')
-    end
-
+  class AnalyticsQuery < GraphQL::Schema::FieldExtension
     private
 
     def execute_sql(query, variables)

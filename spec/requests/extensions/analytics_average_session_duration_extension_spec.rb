@@ -5,8 +5,8 @@ require 'rails_helper'
 analytics_average_session_duration_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
-      analytics{
-        averageSessionDuration(fromDate: $from_date, toDate: $to_date)
+      analytics(fromDate: $from_date, toDate: $to_date) {
+        averageSessionDuration
       }
     }
   }

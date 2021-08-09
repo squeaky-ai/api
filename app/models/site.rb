@@ -69,9 +69,10 @@ class Site < ApplicationRecord
     "#{uri.scheme}://#{uri.host.downcase}"
   end
 
-  def analytics
-    {
-      site_id: id
-    }
+  def analytics(args)
+    # This is a pure hack to get around having an extension
+    # that only has extensions. The analytics extension does
+    # not resolve anything of it's own
+    { site_id: id, **args }
   end
 end

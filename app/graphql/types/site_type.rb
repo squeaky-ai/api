@@ -26,7 +26,12 @@ module Types
     # Fetch a list of visitors, refrain from fetching
     # anything deeper to prevent n+
     field :visitors, VisitorsType, null: false, extensions: [VisitorsExtension]
-    field :analytics, AnalyticsType, null: false
+    # Add some top level arguments for the analytics so that
+    # each individual extension does not need to implement it
+    field :analytics, AnalyticsType, null: false do
+      argument :from_date, String, required: true, description: 'The to start from'
+      argument :to_date, String, required: true, description: 'The to end at'
+    end
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
