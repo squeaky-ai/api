@@ -6,6 +6,11 @@ module Types
 
     field :string, String, null: false
 
+    field :recordings_count,
+          Integer,
+          null: false,
+          extensions: [AnalyticsRecordingsCountExtension]
+
     field :page_views_range,
           [AnalyticsPageViewsRangeType],
           null: false,
