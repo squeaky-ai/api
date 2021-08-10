@@ -28,6 +28,8 @@ module Types
       }
     end
 
+    private
+
     def pagination(arguments, recordings, size)
       {
         page_size: size,
@@ -35,8 +37,6 @@ module Types
         sort: arguments[:sort]
       }
     end
-
-    private
 
     def order_by(sort)
       orders = {

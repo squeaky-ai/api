@@ -4,8 +4,6 @@
 class Event < ApplicationRecord
   belongs_to :recording
 
-  default_scope { order('timestamp asc') }
-
   # Event types from rrweb
   DOM_LOADED_CONTENT = 0
   LOAD = 1
