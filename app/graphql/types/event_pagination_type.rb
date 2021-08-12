@@ -4,8 +4,9 @@ module Types
   class EventPaginationType < Types::BaseObject
     description 'Pagination for event objects'
 
-    field :page_size, Integer, null: false
-    field :page_count, Integer, null: false
-    field :total, Integer, null: false
+    field :per_page, Integer, null: false
+    field :item_count, Integer, null: false
+    field :current_page, Integer, null: false
+    field :total_pages, Integer, null: false
   end
 end

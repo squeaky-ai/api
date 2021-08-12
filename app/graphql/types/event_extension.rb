@@ -38,9 +38,10 @@ module Types
 
     def pagination(events, arguments)
       {
-        page_size: arguments[:size],
-        page_count: arguments[:page],
-        total: events.total_count
+        per_page: arguments[:size],
+        item_count: events.total_count,
+        current_page: arguments[:page],
+        total_pages: events.total_pages
       }
     end
   end

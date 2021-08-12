@@ -10,9 +10,10 @@ site_recording_events_query = <<-GRAPHQL
         events {
           items
           pagination {
-            pageSize
-            pageCount
-            total
+            perPage
+            itemCount
+            currentPage
+            totalPages
           }
         }
       }
@@ -42,9 +43,10 @@ RSpec.describe Types::EventExtension, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'pageSize' => 250,
-        'pageCount' => 1,
-        'total' => 0
+        'perPage' => 250,
+        'itemCount' => 0,
+        'currentPage' => 1,
+        'totalPages' => 0
       )
     end
   end
@@ -75,9 +77,10 @@ RSpec.describe Types::EventExtension, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'pageSize' => 250,
-        'pageCount' => 1,
-        'total' => 1
+        'perPage' => 250,
+        'itemCount' => 1,
+        'currentPage' => 1,
+        'totalPages' => 1
       )
     end
   end
