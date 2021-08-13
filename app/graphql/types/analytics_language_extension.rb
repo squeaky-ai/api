@@ -9,10 +9,10 @@ module Types
       to_date = object.object[:to_date]
 
       sql = <<-SQL
-        SELECT DISTINCT(locale), COUNT(*) locale_count
+        SELECT DISTINCT LOWER(locale), COUNT(*) locale_count
         FROM recordings
         WHERE site_id = ? AND created_at::date BETWEEN ? AND ?
-        GROUP BY locale
+        GROUP BY LOWER(locale)
         ORDER BY locale_count DESC
         LIMIT 6;
       SQL
