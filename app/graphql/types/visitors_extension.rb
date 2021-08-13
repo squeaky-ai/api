@@ -16,7 +16,7 @@ module Types
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
 
-      sql = <<-SQL
+      select_sql = <<-SQL
         viewer_id,
         count(*) recording_count,
         MIN(connected_at) first_viewed_at,
@@ -27,9 +27,14 @@ module Types
         MAX(useragent) useragent
       SQL
 
+      where_sql = <<-SQL
+        site_id = :site_id
+        AND (locale ILIKE :query OR useragent ILIKE :query)
+      SQL
+
       visitors = Recording
-                 .select(sql)
-                 .where('site_id = ?', object.object['id'])
+                 .select(select_sql)
+                 .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
                  .group(:viewer_id)
                  .order(order)
                  .page(arguments[:page])
