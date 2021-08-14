@@ -54,7 +54,7 @@ RSpec.describe Types::AnalyticsLanguageExtension, type: :request do
             'count' => 1
           },
           {
-            'name' => 'Swedish (Sweden)',
+            'name' => 'Swedish (SE)',
             'count' => 1
           }
         ]
@@ -86,7 +86,7 @@ RSpec.describe Types::AnalyticsLanguageExtension, type: :request do
             'count' => 1
           },
           {
-            'name' => 'Swedish (Sweden)',
+            'name' => 'Swedish (SE)',
             'count' => 1
           }
         ]
