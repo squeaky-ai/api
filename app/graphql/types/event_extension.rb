@@ -20,7 +20,7 @@ module Types
                .per(arguments[:size])
 
       {
-        items: events.map { |e| format_event(e) }.to_json,
+        items: events.map { |e| format_event(e).to_json },
         pagination: pagination(events, arguments)
       }
     end

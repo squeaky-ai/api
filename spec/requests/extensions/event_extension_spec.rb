@@ -37,7 +37,7 @@ RSpec.describe Types::EventExtension, type: :request do
 
     it 'returns the item with the events' do
       response = subject['data']['site']['recording']
-      expect(response['events']['items']).to eq '[]'
+      expect(response['events']['items']).to eq []
     end
 
     it 'returns the correct pagination' do
@@ -71,7 +71,7 @@ RSpec.describe Types::EventExtension, type: :request do
 
     it 'returns the item with the events' do
       response = subject['data']['site']['recording']
-      expect(response['events']['items']).to eq "[{\"id\":#{recording.events.first.id},\"data\":{\"href\":\"http://localhost/\",\"width\":0,\"height\":0},\"type\":4,\"timestamp\":1625389200000}]"
+      expect(response['events']['items']).to  eq ["{\"id\":#{recording.events.first.id},\"data\":{\"href\":\"http://localhost/\",\"width\":0,\"height\":0},\"type\":4,\"timestamp\":1625389200000}"]
     end
 
     it 'returns the correct pagination' do
