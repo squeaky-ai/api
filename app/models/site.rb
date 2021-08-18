@@ -62,6 +62,10 @@ class Site < ApplicationRecord
     update!(verified_at: Time.now)
   end
 
+  def unverify!
+    update!(verified_at: nil)
+  end
+
   def self.format_uri(url)
     uri = URI(url)
     return nil unless uri.scheme && uri.host

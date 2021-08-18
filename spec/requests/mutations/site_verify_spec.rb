@@ -49,7 +49,23 @@ RSpec.describe Mutations::SiteVerify, type: :request do
 
     before { allow(Net::HTTP).to receive(:get).and_return('') }
 
-    it 'returns the verifiedAt timestamp' do
+    it 'returns nil' do
+      expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
+    end
+  end
+
+  context 'when the tracking script was active, but now can not be found' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before { site.verify! }
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_verify_mutation, variables, user)
+    end
+
+    it 'returns nil' do
       expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
     end
   end

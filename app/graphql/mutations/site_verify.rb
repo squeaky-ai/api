@@ -21,7 +21,7 @@ module Mutations
     def resolve(**_args)
       # The user may want to validate more than once
       # so we store a timestamp rather than a boolean
-      @site.verify! if script_tag_exists?
+      script_tag_exists? ? @site.verify! : @site.unverify!
 
       @site
     end
@@ -33,6 +33,8 @@ module Mutations
       res = Net::HTTP.get(uri, { 'User-Agent': 'Squeaky.ai (verification check)' })
 
       res.include?(@site.uuid)
+    rescue StandardError
+      false
     end
   end
 end
