@@ -16,6 +16,7 @@ module Types
     field :checklist_dismissed_at, String, null: true
     field :days_since_last_recording, Integer, null: false, extensions: [LastRecordingExtension]
     field :team, [TeamType], null: false
+    field :notes, NotesType, null: true, extensions: [NotesExtension]
     # Fetch a single recording
     field :recording, RecordingType, null: true, extensions: [RecordingExtension]
     # Fetch a list of recordings, refrain from fetching

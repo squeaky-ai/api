@@ -110,13 +110,9 @@ RSpec.describe Types::RecordingsExtension, type: :request do
   context 'when paginating' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:cursor) { nil }
 
     before do
       create_recordings(site: site, count: 15)
-
-      variables = { site_id: site.id, size: 10, page: 1 }
-      graphql_request(site_recordings_query, variables, user)
     end
 
     subject do

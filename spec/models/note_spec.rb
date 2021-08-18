@@ -3,4 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Note, type: :model do
+  describe '#session_id' do
+    let(:site) { create_site }
+    let(:recording) { create_recording(site: site) }
+    
+    subject { described_class.new(recording: recording) }
+
+    it 'returns the session id' do
+      expect(subject.session_id).to eq recording.session_id
+    end
+  end
 end
