@@ -110,6 +110,34 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe '#authorized_url' do
+    context 'when the site is not authorized' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.authorized_url }
+
+      it 'returns nil' do
+        expect(subject).to eq nil
+      end
+    end
+
+    context 'when the site is authorized' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.authorized_url }
+
+      before { site.create_authorizer! }
+
+      after { site.delete_authorizer! }
+
+      it 'returns the url' do
+        expect(subject).to eq site.url
+      end
+    end
+  end
+
   describe '#create_authorizer!' do
     context 'when the authorizer does not exist' do
       let(:user) { create_user }

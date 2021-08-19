@@ -51,6 +51,10 @@ class Site < ApplicationRecord
     end
   end
 
+  def authorized_url
+    Redis.current.get("authorizer::#{uuid}")
+  end
+
   def create_authorizer!
     Redis.current.set("authorizer::#{uuid}", url)
   end
