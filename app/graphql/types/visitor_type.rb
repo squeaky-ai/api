@@ -4,7 +4,7 @@ module Types
   class VisitorType < Types::BaseObject
     description 'The visitor object'
 
-    field :viewer_id, String, null: false
+    field :visitor_id, String, null: false
     field :recording_count, Integer, null: false
     field :first_viewed_at, String, null: false
     field :last_activity_at, String, null: false

@@ -33,8 +33,8 @@ RSpec.describe Types::AnalyticsAverageSessionDurationExtension, type: :request d
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -53,9 +53,9 @@ RSpec.describe Types::AnalyticsAverageSessionDurationExtension, type: :request d
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: create_visitor)
     end
 
     subject do

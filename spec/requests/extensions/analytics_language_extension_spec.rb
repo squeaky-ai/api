@@ -36,8 +36,8 @@ RSpec.describe Types::AnalyticsLanguageExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), locale: 'en-gb' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), locale: 'sv-se' }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), locale: 'en-gb' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), locale: 'sv-se' }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -67,9 +67,9 @@ RSpec.describe Types::AnalyticsLanguageExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), locale: 'en-gb' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), locale: 'sv-se' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), locale: 'sv-se' }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), locale: 'en-gb' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), locale: 'sv-se' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), locale: 'sv-se' }, site: site, visitor: create_visitor)
     end
 
     subject do

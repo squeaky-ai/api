@@ -45,7 +45,7 @@ RSpec.describe Mutations::NoteUpdate, type: :request do
   context 'when the note does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
       variables = {
@@ -72,7 +72,7 @@ RSpec.describe Mutations::NoteUpdate, type: :request do
         let(:user) { create_user }
         let(:site) { create_site_and_team(user: create_user) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create_recording(site: site) }
+        let(:recording) { create_recording(site: site, visitor: create_visitor) }
         let(:body) { Faker::Lorem.sentence }
         let(:note) { create_note(recording: recording, user: user) }
   
@@ -105,7 +105,7 @@ RSpec.describe Mutations::NoteUpdate, type: :request do
         let(:user) { create_user }
         let(:site) { create_site_and_team(user: create_user) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create_recording(site: site) }
+        let(:recording) { create_recording(site: site, visitor: create_visitor) }
         let(:body) { Faker::Lorem.sentence }
         let(:note) { create_note(recording: recording, user: create_user) }
   
@@ -138,7 +138,7 @@ RSpec.describe Mutations::NoteUpdate, type: :request do
     context 'and the user is an admin' do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user, role: Team::ADMIN) }
-      let(:recording) { create_recording(site: site) }
+      let(:recording) { create_recording(site: site, visitor: create_visitor) }
       let(:note) { create_note(recording: recording, user: create_user) }
       let(:body) { Faker::Lorem.sentence }
 
@@ -167,7 +167,7 @@ RSpec.describe Mutations::NoteUpdate, type: :request do
     context 'and the user is the owner' do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user, role: Team::OWNER) }
-      let(:recording) { create_recording(site: site) }
+      let(:recording) { create_recording(site: site, visitor: create_visitor) }
       let(:note) { create_note(recording: recording, user: create_user) }
       let(:body) { Faker::Lorem.sentence }
 

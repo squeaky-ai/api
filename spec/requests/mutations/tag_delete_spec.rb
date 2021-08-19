@@ -36,7 +36,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
   context 'when the tag does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id, tag_id: Faker::Number.rand.to_s }
@@ -56,7 +56,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
   context 'when the tag exists' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create_tag(recording: recording) }
 
     before { tag }

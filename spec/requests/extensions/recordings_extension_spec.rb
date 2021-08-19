@@ -9,7 +9,7 @@ site_recordings_query = <<-GRAPHQL
         items {
           id
           siteId
-          viewerId
+          visitorId
           language
           duration
           pageViews
@@ -68,7 +68,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { create_recordings(site: site, count: 5) }
+    before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -97,8 +97,8 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     end
 
     before do
-      create_recordings(site: site, count: 5)
-      create_recording({ deleted: true }, site: site)
+      create_recordings(site: site, visitor: create_visitor, count: 5)
+      create_recording({ deleted: true }, site: site, visitor: create_visitor)
     end
 
     it 'returns the items' do
@@ -112,7 +112,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recordings(site: site, count: 15)
+      create_recordings(site: site, visitor: create_visitor, count: 15)
     end
 
     subject do
@@ -147,7 +147,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, count: 5) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
       it 'returns the items with the oldest first' do
         items = subject['data']['site']['recordings']['items']
@@ -176,7 +176,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, count: 5) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
       it 'returns the items with the newest first' do
         items = subject['data']['site']['recordings']['items']

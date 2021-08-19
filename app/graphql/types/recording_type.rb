@@ -7,7 +7,7 @@ module Types
     field :id, ID, null: false
     field :site_id, ID, null: false
     field :session_id, String, null: false
-    field :viewer_id, String, null: false
+    field :visitor_id, String, null: false
     field :viewed, Boolean, null: false
     field :bookmarked, Boolean, null: false
     field :language, String, null: false

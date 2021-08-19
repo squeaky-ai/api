@@ -4,15 +4,16 @@ require 'securerandom'
 
 module Fixtures
   class Recordings
-    def initialize(site)
+    def initialize(site, visitor)
       @site = site
+      @visitor = visitor
     end
 
     def create(args = {})
-      Recording.new(
+      Recording.create(
         site: @site,
+        visitor: @visitor,
         session_id: SecureRandom.uuid,
-        viewer_id: SecureRandom.uuid,
         locale: 'en-GB',
         useragent: Faker::Internet.user_agent,
         viewport_x: 1920,

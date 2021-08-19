@@ -33,9 +33,12 @@ RSpec.describe Types::AnalyticsVisitorsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), viewer_id: 'aaaaaaa' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 5), viewer_id: 'aaaaaaa' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), viewer_id: 'bbbbbbb' }, site: site)
+      visitor_1 = create_visitor
+      visitor_2 = create_visitor
+
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: visitor_1)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 5) }, site: site, visitor: visitor_1)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -43,7 +46,7 @@ RSpec.describe Types::AnalyticsVisitorsExtension, type: :request do
       graphql_request(analytics_visitors_query, variables, user)
     end
 
-    it 'returns the number of unique viewers' do
+    it 'returns the number of unique visitor' do
       response = subject['data']['site']['analytics']
       expect(response['visitors']).to eq 2
     end
@@ -54,10 +57,13 @@ RSpec.describe Types::AnalyticsVisitorsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), viewer_id: 'aaaaaaa' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 5), viewer_id: 'aaaaaaa' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), viewer_id: 'bbbbbbb' }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), viewer_id: 'bbbbbbb' }, site: site)
+      visitor_1 = create_visitor
+      visitor_2 = create_visitor
+
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: visitor_1)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 5) }, site: site, visitor: visitor_1)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: visitor_2)
+      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6) }, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -65,7 +71,7 @@ RSpec.describe Types::AnalyticsVisitorsExtension, type: :request do
       graphql_request(analytics_visitors_query, variables, user)
     end
 
-    it 'returns the number of unique viewers' do
+    it 'returns the number of unique visitor' do
       response = subject['data']['site']['analytics']
       expect(response['visitors']).to eq 2
     end

@@ -9,7 +9,7 @@ module Types
       to_date = object.object[:to_date]
 
       sql = <<-SQL
-        SELECT COUNT ( DISTINCT(viewer_id) )
+        SELECT COUNT ( DISTINCT(visitor_id) )
         FROM recordings
         WHERE site_id = ? AND created_at::date BETWEEN ? AND ?;
       SQL

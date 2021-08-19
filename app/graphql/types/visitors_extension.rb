@@ -17,7 +17,7 @@ module Types
       order = order_by(arguments[:sort])
 
       select_sql = <<-SQL
-        viewer_id,
+        visitor_id,
         count(*) recording_count,
         MIN(connected_at) first_viewed_at,
         MAX(connected_at) last_activity_at,
@@ -35,7 +35,7 @@ module Types
       visitors = Recording
                  .select(select_sql)
                  .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
-                 .group(:viewer_id)
+                 .group(:visitor_id)
                  .order(order)
                  .page(arguments[:page])
                  .per(arguments[:size])

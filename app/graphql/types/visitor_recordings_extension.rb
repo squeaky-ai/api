@@ -11,10 +11,10 @@ module Types
 
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
-      viewer_id = object.object[:viewer_id]
+      visitor_id = object.object[:visitor_id]
 
       recordings = Recording
-                   .where('viewer_id = ? AND deleted IS false', viewer_id)
+                   .where('visitor_id = ? AND deleted IS false', visitor_id)
                    .order(order)
                    .page(arguments[:page])
                    .per(arguments[:size])

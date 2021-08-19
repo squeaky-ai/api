@@ -33,7 +33,7 @@ RSpec.describe Mutations::RecordingViewed, type: :request do
   context 'when the recording does exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site )}
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }
@@ -53,7 +53,7 @@ RSpec.describe Mutations::RecordingViewed, type: :request do
   context 'when a superuser is viewing' do
     let(:user) { create_user(superuser: true) }
     let(:site) { create_site_and_team(user: create_user) }
-    let(:recording) { create_recording(site: site )}
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }

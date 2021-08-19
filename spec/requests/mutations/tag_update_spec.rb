@@ -37,7 +37,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
   context 'when the tag does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:name) { Faker::Book.title }
 
     subject do
@@ -58,7 +58,7 @@ RSpec.describe Mutations::TagUpdate, type: :request do
   context 'when the tag exists' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create_tag(recording: recording) }
     let(:name) { Faker::Book.title }
 

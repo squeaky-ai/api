@@ -46,22 +46,16 @@ module Helpers
     site
   end
 
-  def create_recording(args = {}, site:)
-    recording = Fixtures::Recordings.new(site).create(args)
-    recording.save!
-    recording
+  def create_recording(args = {}, site:, visitor:)
+    Fixtures::Recordings.new(site, visitor).create(args)
   end
 
-  def create_recordings(site:, count:)
-    recordings = Fixtures::Recordings.new(site).sample(count)
-    recordings.each { |r| r.save! }
-    recordings
+  def create_recordings(site:, visitor:, count:)
+    Fixtures::Recordings.new(site, visitor).sample(count)
   end
 
   def create_events(recording:, count:)
-    events = Fixtures::Events.new(recording).sample(count)
-    events.each { |e| e.save! }
-    events
+    Fixtures::Events.new(recording).sample(count)
   end
 
   def create_tag(name = nil, recording:)
@@ -75,6 +69,11 @@ module Helpers
       **args
     }
     Note.create(recording: recording, user: user, **default)
+  end
+
+  def create_visitor(args = {})
+    default = { visitor_id: SecureRandom.base36, **args }
+    Visitor.create(default)
   end
 
   def gzip(payload)
