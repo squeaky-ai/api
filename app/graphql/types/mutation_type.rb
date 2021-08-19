@@ -81,5 +81,10 @@ module Types
     field :recording_bookmarked,
           mutation: Mutations::RecordingBookmarked,
           description: 'Set a recordings bookmarked status'
+
+    # Feedback
+    field :feedback_create,
+          mutation: Mutations::FeedbackCreate,
+          description: 'Provide some feedback'
   end
 end
