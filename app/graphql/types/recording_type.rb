@@ -27,6 +27,6 @@ module Types
     field :events, EventsType, null: false, extensions: [EventExtension]
     field :previous_recording, RecordingType, null: true
     field :next_recording, RecordingType, null: true
-    field :visitor, VisitorDetailsType, null: false
+    field :visitor, VisitorType, null: false
   end
 end
