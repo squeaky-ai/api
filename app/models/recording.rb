@@ -11,11 +11,6 @@ class Recording < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
 
-  def starred
-    # TODO: this needs to go
-    visitor.starred
-  end
-
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
   end
