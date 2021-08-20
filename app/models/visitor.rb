@@ -1,62 +1,28 @@
 # frozen_string_literal: true
 
-# Visitors on sites
+# Visitors on sites. You're gonna have a bad time with this
+# as most of the attributes don't exist on the visitor model
+# but instead are inner-joined by the recordings
 class Visitor < ApplicationRecord
   has_many :recordings
 
-  def user_id
-    visitor_id
-  end
-
-  def recording_count
-    recordings.size
-  end
-
-  def first_viewed_at
-    recordings.map(&:connected_at).min
-  end
-
-  def last_activity_at
-    recordings.map(&:disconnected_at).max
-  end
-
   def language
-    recordings.first.language
+    Locale.get_language(locale)
   end
 
-  def viewport_x
-    recordings.first.viewport_x
-  end
-
-  def viewport_y
-    recordings.first.viewport_y
+  def user_agent
+    @user_agent ||= UserAgent.parse(useragent)
   end
 
   def device_type
-    recordings.first.device_type
+    user_agent.mobile? ? 'Mobile' : 'Computer'
   end
 
   def browser
-    recordings.first.browser
+    user_agent.browser
   end
 
   def browser_string
-    recordings.first.browser_string
-  end
-
-  def page_view_count
-    0
-  end
-
-  def pages
-    0
-  end
-
-  def average_session_duration
-    0
-  end
-
-  def pages_per_session
-    0
+    "#{browser} Version #{user_agent.version}"
   end
 end

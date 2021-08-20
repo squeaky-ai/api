@@ -4,7 +4,7 @@ module Types
   # Pages per session by a particular visitor
   class VisitorPagesPerSessionExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
-      visitor_id = object.object[:visitor_id]
+      visitor_id = object.object[:id]
 
       Recording
         .select('AVG( array_length(page_views, 1) ) pages_per_session')

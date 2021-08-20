@@ -11,7 +11,7 @@ module Types
 
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
-      visitor_id = object.object[:visitor_id]
+      visitor_id = object.object[:id]
 
       pages = Recording
               .select('p.page_view, count(*) page_view_count')

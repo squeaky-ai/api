@@ -4,7 +4,7 @@ module Types
   # Average session duration by a particular visitor
   class VisitorAverageSessionDurationExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
-      visitor_id = object.object[:visitor_id]
+      visitor_id = object.object[:id]
 
       Recording
         .select('AVG( (disconnected_at - connected_at) ) average_session_duration')
