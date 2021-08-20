@@ -7,7 +7,7 @@ visitors_query = <<-GRAPHQL
     site(siteId: $site_id) {
       visitors(page: $page, size: $size, query: $query, sort: $sort) {
         items {
-          visitorId
+          id
           recordingCount
           firstViewedAt
           lastActivityAt

@@ -8,7 +8,6 @@ site_recording_query = <<-GRAPHQL
       recording(recordingId: $recording_id) {
         id
         siteId
-        visitorId
         language
         duration
         pageViews
@@ -20,6 +19,10 @@ site_recording_query = <<-GRAPHQL
         browserString
         viewportX
         viewportY
+        visitor {
+          id
+          visitorId
+        }
         previousRecording {
           id
         }

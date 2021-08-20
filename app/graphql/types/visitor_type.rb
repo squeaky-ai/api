@@ -4,6 +4,7 @@ module Types
   class VisitorType < Types::BaseObject
     description 'The visitor object'
 
+    field :id, ID, null: false
     field :visitor_id, String, null: false
     field :recording_count, Integer, null: false
     field :first_viewed_at, String, null: false
@@ -15,6 +16,7 @@ module Types
     field :browser, String, null: true
     field :browser_string, String, null: true
     field :page_view_count, Integer, null: true
+    field :starred, Boolean, null: false
     field :recordings, RecordingsType, null: false, extensions: [VisitorRecordingsExtension]
     field :pages, VisitorPagesType, null: false, extensions: [VisitorPagesExtension]
     field :average_session_duration, Integer, null: false, extensions: [VisitorAverageSessionDurationExtension]

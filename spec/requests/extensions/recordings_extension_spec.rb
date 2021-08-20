@@ -9,7 +9,6 @@ site_recordings_query = <<-GRAPHQL
         items {
           id
           siteId
-          visitorId
           language
           duration
           pageViews
@@ -21,6 +20,10 @@ site_recordings_query = <<-GRAPHQL
           browserString
           viewportX
           viewportY
+          visitor {
+            id
+            visitorId
+          }
         }
         pagination {
           pageSize

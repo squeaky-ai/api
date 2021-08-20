@@ -40,6 +40,7 @@ en:
       site_in_use: 'This site is already registered'
       site_not_found: 'Site not found'
       recording_not_found: 'Recording not found'
+      visitor_not_found: 'Visitor not found'
   team:
     validation:
       forbidden: 'You lack the required permissions to do this'

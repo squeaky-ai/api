@@ -12,7 +12,7 @@ module Types
       visitor_id = arguments[:visitor_id]
 
       sql = <<-SQL
-        visitor_id,
+        recordings.visitor_id,
         count(*) recording_count,
         MIN(connected_at) first_viewed_at,
         MAX(connected_at) last_activity_at,
@@ -24,6 +24,7 @@ module Types
       SQL
 
       visitor = Recording
+                .includes(:visitor)
                 .select(sql)
                 .where('site_id = ? AND visitor_id = ?', site_id, visitor_id)
                 .group(:visitor_id)

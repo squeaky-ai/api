@@ -13,7 +13,7 @@ module Types
       recordind_id = arguments[:recording_id]
 
       Recording
-        .joins(:visitor)
+        .includes(:visitor)
         .find_by(site_id: site_id, id: recordind_id, deleted: false)
     end
   end

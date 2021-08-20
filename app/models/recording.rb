@@ -11,8 +11,9 @@ class Recording < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
 
-  def user_id
-    visitor.visitor_id
+  def starred
+    # TODO: this needs to go
+    visitor.starred
   end
 
   def user_agent
