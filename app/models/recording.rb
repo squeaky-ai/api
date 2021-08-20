@@ -11,6 +11,10 @@ class Recording < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
 
+  def user_id
+    visitor.visitor_id
+  end
+
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
   end

@@ -22,6 +22,7 @@ module Types
       SQL
 
       recordings = Recording
+                   .joins(:visitor)
                    .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
                    .order(order)
                    .page(arguments[:page])
