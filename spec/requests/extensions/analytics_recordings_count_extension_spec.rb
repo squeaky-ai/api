@@ -33,8 +33,8 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -53,9 +53,9 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6) }, site: site)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6) }, site: site, visitor: create_visitor)
     end
 
     subject do

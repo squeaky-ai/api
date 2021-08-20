@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 visitor_pages_query = <<-GRAPHQL
-  query($site_id: ID!, $viewer_id: ID!, $page: Int, $sort: VisitorPagesSort) {
+  query($site_id: ID!, $visitor_id: ID!, $page: Int, $sort: VisitorPagesSort) {
     site(siteId: $site_id) {
-      visitor(viewerId: $viewer_id) {
+      visitor(visitorId: $visitor_id) {
         pages(page: $page, size: 10, sort: $sort) {
           items {
             pageView
@@ -27,10 +27,9 @@ RSpec.describe Types::VisitorPagesExtension, type: :request do
   context 'when there are no recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:viewer_id) { 'aaaaaaa' }
 
     subject do
-      variables = { site_id: site.id, viewer_id: viewer_id }
+      variables = { site_id: site.id, visitor_id: 1 }
       graphql_request(visitor_pages_query, variables, user)
     end
 
@@ -43,16 +42,16 @@ RSpec.describe Types::VisitorPagesExtension, type: :request do
   context 'when there are some recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:viewer_id) { 'aaaaaaa' }
+    let(:visitor) { create_visitor }
 
     before do
-      create_recording({ viewer_id: viewer_id, page_views: ['/'] }, site: site)
-      create_recording({ viewer_id: viewer_id, page_views: ['/', '/test'] }, site: site)
-      create_recording({ viewer_id: 'bbbbbbb', page_views: ['/contact'] }, site: site)
+      create_recording({ page_views: ['/'] }, site: site, visitor: visitor)
+      create_recording({ page_views: ['/', '/test'] }, site: site, visitor: visitor)
+      create_recording({ page_views: ['/contact'] }, site: site, visitor: create_visitor)
     end
 
     subject do
-      variables = { site_id: site.id, viewer_id: viewer_id }
+      variables = { site_id: site.id, visitor_id: visitor.id }
       graphql_request(visitor_pages_query, variables, user)
     end
 

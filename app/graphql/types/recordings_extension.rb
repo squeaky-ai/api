@@ -18,10 +18,11 @@ module Types
         site_id = :site_id
         AND disconnected_at IS NOT NULL
         AND deleted IS false
-        AND (session_id ILIKE :query OR viewer_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)
+        AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)
       SQL
 
       recordings = Recording
+                   .includes(:visitor)
                    .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
                    .order(order)
                    .page(arguments[:page])

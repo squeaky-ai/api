@@ -37,7 +37,7 @@ RSpec.describe Mutations::TagCreate, type: :request do
   context 'when the recording exists' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:name) { Faker::Book.title }
 
     subject do
@@ -59,7 +59,7 @@ RSpec.describe Mutations::TagCreate, type: :request do
   context 'when a tag with that name exists already' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:name) { Faker::Book.title }
 
     before do

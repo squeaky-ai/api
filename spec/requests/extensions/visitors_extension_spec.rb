@@ -7,7 +7,7 @@ visitors_query = <<-GRAPHQL
     site(siteId: $site_id) {
       visitors(page: $page, size: $size, query: $query, sort: $sort) {
         items {
-          viewerId
+          id
           recordingCount
           firstViewedAt
           lastActivityAt
@@ -49,9 +49,12 @@ RSpec.describe Types::VisitorsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ viewer_id: 'aaaaaaa', connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site)
-      create_recording({ viewer_id: 'aaaaaaa', connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site)
-      create_recording({ viewer_id: 'bbbbbbb', connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site)
+      visitor_1 = create_visitor
+      visitor_2 = create_visitor
+  
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor_1)
+      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor_1)
+      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -59,7 +62,7 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       graphql_request(visitors_query, variables, user)
     end
 
-    it 'returns the viewers' do
+    it 'returns the visitors' do
       response = subject['data']['site']['visitors']
       expect(response['items'].size).to eq 2
     end

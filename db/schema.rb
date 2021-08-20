@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_01_184318) do
+ActiveRecord::Schema.define(version: 2021_08_19_200424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 2021_08_01_184318) do
 
   create_table "recordings", force: :cascade do |t|
     t.string "session_id", null: false
-    t.string "viewer_id", null: false
     t.boolean "viewed", default: false
     t.boolean "bookmarked", default: false
     t.string "locale", null: false
@@ -56,8 +55,10 @@ ActiveRecord::Schema.define(version: 2021_08_01_184318) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "deleted", default: false
+    t.bigint "visitor_id"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
+    t.index ["visitor_id"], name: "index_recordings_on_visitor_id"
   end
 
   create_table "sites", force: :cascade do |t|
@@ -131,6 +132,15 @@ ActiveRecord::Schema.define(version: 2021_08_01_184318) do
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "visitors", force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.boolean "starred", default: false
+    t.string "external_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
 end

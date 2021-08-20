@@ -4,20 +4,22 @@ module Types
   class VisitorType < Types::BaseObject
     description 'The visitor object'
 
-    field :viewer_id, String, null: false
-    field :recording_count, Integer, null: false
-    field :first_viewed_at, String, null: false
-    field :last_activity_at, String, null: false
-    field :language, String, null: false
-    field :viewport_x, Integer, null: false
-    field :viewport_y, Integer, null: false
+    field :id, ID, null: false
+    field :visitor_id, String, null: false
+    field :recording_count, Integer, null: true
+    field :first_viewed_at, String, null: true
+    field :last_activity_at, String, null: true
+    field :language, String, null: true
+    field :viewport_x, Integer, null: true
+    field :viewport_y, Integer, null: true
     field :device_type, String, null: true
     field :browser, String, null: true
     field :browser_string, String, null: true
     field :page_view_count, Integer, null: true
-    field :recordings, RecordingsType, null: false, extensions: [VisitorRecordingsExtension]
-    field :pages, VisitorPagesType, null: false, extensions: [VisitorPagesExtension]
-    field :average_session_duration, Integer, null: false, extensions: [VisitorAverageSessionDurationExtension]
-    field :pages_per_session, Float, null: false, extensions: [VisitorPagesPerSessionExtension]
+    field :starred, Boolean, null: false
+    field :recordings, RecordingsType, null: true, extensions: [VisitorRecordingsExtension]
+    field :pages, VisitorPagesType, null: true, extensions: [VisitorPagesExtension]
+    field :average_session_duration, Integer, null: true, extensions: [VisitorAverageSessionDurationExtension]
+    field :pages_per_session, Float, null: true, extensions: [VisitorPagesPerSessionExtension]
   end
 end

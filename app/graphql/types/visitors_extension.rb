@@ -17,14 +17,16 @@ module Types
       order = order_by(arguments[:sort])
 
       select_sql = <<-SQL
-        viewer_id,
-        count(*) recording_count,
-        MIN(connected_at) first_viewed_at,
-        MAX(connected_at) last_activity_at,
-        MAX(locale) locale,
-        ROUND(AVG(viewport_x), 0) viewport_x,
-        ROUND(AVG(viewport_y), 0) viewport_y,
-        MAX(useragent) useragent
+        visitors.id id,
+        visitors.visitor_id visitor_id,
+        visitors.starred starred,
+        count(recordings) recording_count,
+        MIN(recordings.connected_at) first_viewed_at,
+        MAX(recordings.disconnected_at) last_activity_at,
+        MAX(recordings.locale) locale,
+        MAX(recordings.viewport_x) viewport_x,
+        MAX(recordings.viewport_y) viewport_y,
+        MAX(recordings.useragent) useragent
       SQL
 
       where_sql = <<-SQL
@@ -32,10 +34,11 @@ module Types
         AND (locale ILIKE :query OR useragent ILIKE :query)
       SQL
 
-      visitors = Recording
+      visitors = Visitor
+                 .joins(:recordings)
                  .select(select_sql)
                  .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
-                 .group(:viewer_id)
+                 .group(%i[id visitor_id])
                  .order(order)
                  .page(arguments[:page])
                  .per(arguments[:size])

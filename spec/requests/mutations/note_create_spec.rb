@@ -48,7 +48,7 @@ RSpec.describe Mutations::NoteCreate, type: :request do
   context 'when the recording exists' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:body) { Faker::Book.title }
     let(:timestamp) { 3000 }
 

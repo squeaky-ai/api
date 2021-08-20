@@ -86,5 +86,10 @@ module Types
     field :feedback_create,
           mutation: Mutations::FeedbackCreate,
           description: 'Provide some feedback'
+
+    # Visitors
+    field :visitor_starred,
+          mutation: Mutations::VisitorStarred,
+          description: 'Set the starred state for a visitor'
   end
 end

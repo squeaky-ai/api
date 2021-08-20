@@ -11,13 +11,13 @@ module Types
 
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
-      viewer_id = object.object[:viewer_id]
+      visitor_id = object.object[:id]
 
       pages = Recording
               .select('p.page_view, count(*) page_view_count')
               .joins('cross join lateral unnest(r.page_views) p(page_view)')
               .from('recordings r')
-              .where('r.viewer_id = ?', viewer_id)
+              .where('r.visitor_id = ?', visitor_id)
               .group('p.page_view')
               .order(order)
               .page(arguments[:page])

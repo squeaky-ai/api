@@ -54,7 +54,7 @@ RSpec.describe Types::NotesExtension, type: :request do
   context 'when there are several notes' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
       variables = { site_id: site.id, size: 5, page: 1 }
@@ -84,7 +84,7 @@ RSpec.describe Types::NotesExtension, type: :request do
   context 'when paginating' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
-    let(:recording) { create_recording(site: site) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     before do
       5.times { create_note(recording: recording, user: user) }

@@ -27,7 +27,7 @@ RSpec.describe Types::EventExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     let(:recording) do
-      create_recording(site: site)
+      create_recording(site: site, visitor: create_visitor)
     end
 
     subject do
@@ -56,7 +56,7 @@ RSpec.describe Types::EventExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     let(:recording) do
-      rec = create_recording(site: site)
+      rec = create_recording(site: site, visitor: create_visitor)
 
       data = { href: "http://localhost/", width: 0, height: 0 }
       rec.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
