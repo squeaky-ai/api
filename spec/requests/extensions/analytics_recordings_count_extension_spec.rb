@@ -6,7 +6,10 @@ analytics_recordings_count_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        recordingsCount
+        recordingsCount {
+          total
+          new
+        }
       }
     }
   }
@@ -24,7 +27,7 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
 
     it 'returns 0' do
       response = subject['data']['site']['analytics']
-      expect(response['recordingsCount']).to eq 0
+      expect(response['recordingsCount']['total']).to eq 0
     end
   end
 
@@ -44,7 +47,7 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
 
     it 'returns the average number of views' do
       response = subject['data']['site']['analytics']
-      expect(response['recordingsCount']).to eq 2
+      expect(response['recordingsCount']['total']).to eq 2
     end
   end
 
@@ -65,7 +68,7 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
 
     it 'returns the average number of views' do
       response = subject['data']['site']['analytics']
-      expect(response['recordingsCount']).to eq 2
+      expect(response['recordingsCount']['total']).to eq 2
     end
   end
 end

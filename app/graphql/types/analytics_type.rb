@@ -7,7 +7,7 @@ module Types
     field :string, String, null: false
 
     field :recordings_count,
-          Integer,
+          AnalyticsRecordingsType,
           null: false,
           extensions: [AnalyticsRecordingsCountExtension]
 
@@ -16,10 +16,10 @@ module Types
           null: false,
           extensions: [AnalyticsPageViewsRangeExtension]
 
-    field :visitors,
-          Integer,
+    field :visitors_count,
+          AnalyticsVisitorsCountType,
           null: false,
-          extensions: [AnalyticsVisitorsExtension]
+          extensions: [AnalyticsVisitorsCountExtension]
 
     field :page_views,
           Integer,
