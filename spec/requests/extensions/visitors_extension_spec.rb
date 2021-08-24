@@ -76,4 +76,26 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       )
     end
   end
+
+  context 'when the recordings are deleted' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      visitor = create_visitor
+  
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true }, site: site, visitor: visitor)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(visitors_query, variables, user)
+    end
+
+    it 'returns the count that excludes deleted recordings' do
+      response = subject['data']['site']['visitors']
+      expect(response['items'][0]['recordingCount']).to eq 1
+    end
+  end
 end
