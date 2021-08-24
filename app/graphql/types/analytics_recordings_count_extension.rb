@@ -9,7 +9,8 @@ module Types
       to_date = object.object[:to_date]
 
       sql = <<-SQL
-        SELECT COUNT(recordings)
+        SELECT COUNT(recordings),
+               COUNT(CASE recordings.viewed WHEN TRUE THEN NULL ELSE 1 END)
         FROM recordings
         WHERE site_id = ? AND created_at::date BETWEEN ? AND ?;
       SQL
@@ -18,7 +19,7 @@ module Types
 
       {
         total: result[0].to_i,
-        new: 0 # TODO
+        new: result[1].to_i
       }
     end
   end

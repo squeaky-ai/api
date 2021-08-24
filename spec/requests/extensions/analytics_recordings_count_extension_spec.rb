@@ -25,9 +25,14 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
       graphql_request(analytics_recordings_count_query, variables, user)
     end
 
-    it 'returns 0' do
+    it 'returns the total number of recordings' do
       response = subject['data']['site']['analytics']
       expect(response['recordingsCount']['total']).to eq 0
+    end
+
+    it 'returns the number of new recordings' do
+      response = subject['data']['site']['analytics']
+      expect(response['recordingsCount']['new']).to eq 0
     end
   end
 
@@ -36,8 +41,8 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -45,9 +50,14 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
       graphql_request(analytics_recordings_count_query, variables, user)
     end
 
-    it 'returns the average number of views' do
+    it 'returns the total number of recordings' do
       response = subject['data']['site']['analytics']
       expect(response['recordingsCount']['total']).to eq 2
+    end
+
+    it 'returns the number of new recordings' do
+      response = subject['data']['site']['analytics']
+      expect(response['recordingsCount']['new']).to eq 2
     end
   end
 
@@ -56,9 +66,9 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 7, 6) }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -69,6 +79,36 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     it 'returns the average number of views' do
       response = subject['data']['site']['analytics']
       expect(response['recordingsCount']['total']).to eq 2
+    end
+
+    it 'returns the number of new recordings' do
+      response = subject['data']['site']['analytics']
+      expect(response['recordingsCount']['new']).to eq 2
+    end
+  end
+
+  context 'when some of the recordings have been viewed' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
+      create_recording({ created_at: Date.new(2021, 8, 6), viewed: true }, site: site, visitor: create_visitor)
+    end
+
+    subject do
+      variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
+      graphql_request(analytics_recordings_count_query, variables, user)
+    end
+
+    it 'returns the total number of recordings' do
+      response = subject['data']['site']['analytics']
+      expect(response['recordingsCount']['total']).to eq 2
+    end
+
+    it 'returns the number of new recordings' do
+      response = subject['data']['site']['analytics']
+      expect(response['recordingsCount']['new']).to eq 1
     end
   end
 end

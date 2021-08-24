@@ -25,9 +25,14 @@ RSpec.describe Types::AnalyticsVisitorsCountExtension, type: :request do
       graphql_request(analytics_visitors_query, variables, user)
     end
 
-    it 'returns 0' do
+    it 'returns the number of unique visitors' do
       response = subject['data']['site']['analytics']
       expect(response['visitorsCount']['total']).to eq 0
+    end
+
+    it 'returns the number of new visitors' do
+      response = subject['data']['site']['analytics']
+      expect(response['visitorsCount']['new']).to eq 0
     end
   end
 
@@ -49,9 +54,14 @@ RSpec.describe Types::AnalyticsVisitorsCountExtension, type: :request do
       graphql_request(analytics_visitors_query, variables, user)
     end
 
-    it 'returns the number of unique visitor' do
+    it 'returns the number of unique visitors' do
       response = subject['data']['site']['analytics']
       expect(response['visitorsCount']['total']).to eq 2
+    end
+
+    it 'returns the number of new visitors' do
+      response = subject['data']['site']['analytics']
+      expect(response['visitorsCount']['new']).to eq 2
     end
   end
 
@@ -77,6 +87,38 @@ RSpec.describe Types::AnalyticsVisitorsCountExtension, type: :request do
     it 'returns the number of unique visitor' do
       response = subject['data']['site']['analytics']
       expect(response['visitorsCount']['total']).to eq 2
+    end
+
+    it 'returns the number of new visitors' do
+      response = subject['data']['site']['analytics']
+      expect(response['visitorsCount']['new']).to eq 2
+    end
+  end
+
+  context 'when some of the recordings have been viewed' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      visitor = create_visitor
+
+      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: visitor)
+      create_recording({ created_at: Date.new(2021, 8, 5), viewed: true }, site: site, visitor: visitor)
+    end
+
+    subject do
+      variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
+      graphql_request(analytics_visitors_query, variables, user)
+    end
+
+    it 'returns the number of unique visitors' do
+      response = subject['data']['site']['analytics']
+      expect(response['visitorsCount']['total']).to eq 1
+    end
+
+    it 'returns the number of new visitors' do
+      response = subject['data']['site']['analytics']
+      expect(response['visitorsCount']['new']).to eq 1 # TODO: I don't think is right!
     end
   end
 end

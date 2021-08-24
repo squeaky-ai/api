@@ -9,7 +9,8 @@ module Types
       to_date = object.object[:to_date]
 
       sql = <<-SQL
-        SELECT COUNT(DISTINCT(visitors.visitor_id))
+        SELECT COUNT(DISTINCT(visitors.visitor_id)),
+               COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE visitors.visitor_id END)
         FROM visitors
         INNER JOIN recordings on recordings.visitor_id = visitors.id
         WHERE recordings.site_id = ? AND recordings.created_at::date BETWEEN ? AND ?;
@@ -19,7 +20,7 @@ module Types
 
       {
         total: result[0].to_i,
-        new: 0 # TODO
+        new: result[1].to_i
       }
     end
   end
