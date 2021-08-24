@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Types
-  class AnalyticsRecordingsType < Types::BaseObject
-    description 'The analytics recordings item'
+  class VisitorRecordingsCountType < Types::BaseObject
+    description 'The visitors recordings item'
 
     field :total, Integer, null: false
     field :new, Integer, null: false

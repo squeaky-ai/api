@@ -7,7 +7,7 @@ module Types
     field :string, String, null: false
 
     field :recordings_count,
-          AnalyticsRecordingsType,
+          AnalyticsRecordingsCountType,
           null: false,
           extensions: [AnalyticsRecordingsCountExtension]
 

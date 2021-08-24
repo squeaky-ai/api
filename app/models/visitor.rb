@@ -25,4 +25,18 @@ class Visitor < ApplicationRecord
   def browser_string
     "#{browser} Version #{user_agent.version}"
   end
+
+  def recordings_count
+    {
+      total: recording_count,
+      new: 0
+    }
+  end
+
+  def page_views_count
+    {
+      total: page_view_count,
+      unique: 0
+    }
+  end
 end

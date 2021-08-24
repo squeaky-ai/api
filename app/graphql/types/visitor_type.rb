@@ -7,7 +7,7 @@ module Types
     field :id, ID, null: false
     field :visitor_id, String, null: false
     field :viewed, Boolean, null: true
-    field :recording_count, Integer, null: true
+    field :recordings_count, VisitorRecordingsCountType, null: true
     field :first_viewed_at, String, null: true
     field :last_activity_at, String, null: true
     field :language, String, null: true
@@ -16,7 +16,7 @@ module Types
     field :device_type, String, null: true
     field :browser, String, null: true
     field :browser_string, String, null: true
-    field :page_view_count, Integer, null: true
+    field :page_views_count, VisitorPageViewsCountType, null: true
     field :starred, Boolean, null: false
     field :recordings, RecordingsType, null: true, extensions: [VisitorRecordingsExtension]
     field :pages, VisitorPagesType, null: true, extensions: [VisitorPagesExtension]
