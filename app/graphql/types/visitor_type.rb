@@ -6,6 +6,7 @@ module Types
 
     field :id, ID, null: false
     field :visitor_id, String, null: false
+    field :viewed, Boolean, null: true
     field :recording_count, Integer, null: true
     field :first_viewed_at, String, null: true
     field :last_activity_at, String, null: true
