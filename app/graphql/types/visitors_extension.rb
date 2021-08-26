@@ -20,6 +20,7 @@ module Types
         visitors.id id,
         visitors.visitor_id visitor_id,
         visitors.starred starred,
+        visitors.external_attributes external_attributes,
         COUNT(CASE recordings.deleted WHEN TRUE THEN NULL ELSE TRUE END) recording_count,
         COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) = 0 viewed,
         MIN(recordings.connected_at) first_viewed_at,

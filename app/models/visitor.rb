@@ -26,16 +26,22 @@ class Visitor < ApplicationRecord
     "#{browser} Version #{user_agent.version}"
   end
 
+  def attributes
+    return nil if external_attributes.empty?
+
+    external_attributes.to_json
+  end
+
   def recordings_count
     {
-      total: recording_count,
+      total: recording_count.to_i,
       new: 0
     }
   end
 
   def page_views_count
     {
-      total: page_view_count,
+      total: page_view_count.to_i,
       unique: 0
     }
   end

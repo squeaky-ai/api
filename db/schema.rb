@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 2021_08_25_082009) do
     t.boolean "starred", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "external_attributes", default: "{}", null: false
+    t.jsonb "external_attributes", default: {}, null: false
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 

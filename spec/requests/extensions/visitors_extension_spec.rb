@@ -8,7 +8,10 @@ visitors_query = <<-GRAPHQL
       visitors(page: $page, size: $size, query: $query, sort: $sort) {
         items {
           id
-          recordingCount
+          recordingsCount {
+            total
+            new
+          }
           firstViewedAt
           lastActivityAt
           language
@@ -17,6 +20,7 @@ visitors_query = <<-GRAPHQL
           deviceType
           browser
           browserString
+          attributes
         }
         pagination {
           pageSize
@@ -95,7 +99,48 @@ RSpec.describe Types::VisitorsExtension, type: :request do
 
     it 'returns the count that excludes deleted recordings' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['recordingCount']).to eq 1
+      expect(response['items'][0]['recordingsCount']['total']).to eq 1
+      expect(response['items'][0]['recordingsCount']['new']).to eq 0
+    end
+  end
+
+  context 'when there are no external attributes' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(visitors_query, variables, user)
+    end
+
+    it 'returns nil' do
+      response = subject['data']['site']['visitors']
+      expect(response['items'][0]['attributes']).to be nil
+    end
+  end
+
+  context 'when there are some external attributes' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
+
+    before do
+      visitor = create_visitor(external_attributes: external_attributes)
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(visitors_query, variables, user)
+    end
+
+    it 'returns the attributes' do
+      response = subject['data']['site']['visitors']
+      expect(response['items'][0]['attributes']).to eq external_attributes.to_json
     end
   end
 end

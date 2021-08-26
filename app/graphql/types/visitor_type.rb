@@ -18,6 +18,7 @@ module Types
     field :browser_string, String, null: true
     field :page_views_count, VisitorPageViewsCountType, null: true
     field :starred, Boolean, null: false
+    field :attributes, String, null: true
     field :recordings, RecordingsType, null: true, extensions: [VisitorRecordingsExtension]
     field :pages, VisitorPagesType, null: true, extensions: [VisitorPagesExtension]
     field :average_session_duration, Integer, null: true, extensions: [VisitorAverageSessionDurationExtension]
