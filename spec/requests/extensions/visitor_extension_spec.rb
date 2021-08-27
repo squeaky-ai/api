@@ -67,7 +67,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     it 'returns the recording count' do
       response = subject['data']['site']['visitor']
       expect(response['recordingsCount']['total']).to eq 1
-      expect(response['recordingsCount']['new']).to eq 0
+      expect(response['recordingsCount']['new']).to eq 1
     end
 
     it 'returns the page views count' do

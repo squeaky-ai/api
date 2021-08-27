@@ -22,7 +22,7 @@ module Types
         visitors.starred starred,
         visitors.external_attributes external_attributes,
         COUNT(CASE recordings.deleted WHEN TRUE THEN NULL ELSE TRUE END) recording_count,
-        COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) = 0 viewed,
+        COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) viewed_recording_count,
         MIN(recordings.connected_at) first_viewed_at,
         MAX(recordings.disconnected_at) last_activity_at,
         MAX(recordings.locale) locale,
@@ -33,7 +33,11 @@ module Types
 
       where_sql = <<-SQL
         site_id = :site_id
-        AND (locale ILIKE :query OR useragent ILIKE :query)
+        AND (
+          locale ILIKE :query OR
+          useragent ILIKE :query OR
+          external_attributes::TEXT ILIKE :query
+        )
       SQL
 
       visitors = Visitor

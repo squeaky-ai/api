@@ -2,7 +2,8 @@
 
 # Visitors on sites. You're gonna have a bad time with this
 # as most of the attributes don't exist on the visitor model
-# but instead are inner-joined by the recordings
+# but instead are inner-joined by the recordings. Don't actually
+# try and query this directly!
 class Visitor < ApplicationRecord
   has_many :recordings
 
@@ -32,10 +33,14 @@ class Visitor < ApplicationRecord
     external_attributes.to_json
   end
 
+  def viewed
+    viewed_recording_count.positive?
+  end
+
   def recordings_count
     {
       total: recording_count.to_i,
-      new: 0
+      new: (recording_count - viewed_recording_count).to_i
     }
   end
 

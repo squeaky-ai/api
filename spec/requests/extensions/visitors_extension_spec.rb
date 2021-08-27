@@ -100,7 +100,7 @@ RSpec.describe Types::VisitorsExtension, type: :request do
     it 'returns the count that excludes deleted recordings' do
       response = subject['data']['site']['visitors']
       expect(response['items'][0]['recordingsCount']['total']).to eq 1
-      expect(response['items'][0]['recordingsCount']['new']).to eq 0
+      expect(response['items'][0]['recordingsCount']['new']).to eq 1
     end
   end
 

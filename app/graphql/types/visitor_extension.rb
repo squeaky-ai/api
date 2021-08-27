@@ -17,7 +17,7 @@ module Types
         visitors.starred starred,
         visitors.external_attributes external_attributes,
         COUNT(CASE recordings.deleted WHEN TRUE THEN NULL ELSE TRUE END) recording_count,
-        COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) = 0 viewed,
+        COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) viewed_recording_count,
         MIN(recordings.connected_at) first_viewed_at,
         MAX(recordings.disconnected_at) last_activity_at,
         MAX(recordings.locale) locale,
