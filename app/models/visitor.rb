@@ -42,12 +42,22 @@ class Visitor < ApplicationRecord
       total: recording_count.to_i,
       new: (recording_count - viewed_recording_count).to_i
     }
+  rescue StandardError
+    {
+      total: 0,
+      new: 0
+    }
   end
 
   def page_views_count
     {
       total: page_view_count.to_i,
-      unique: 0
+      unique: unique_page_view_count.sum
+    }
+  rescue StandardError
+    {
+      total: 0,
+      new: 0
     }
   end
 end

@@ -24,7 +24,8 @@ module Types
         MAX(recordings.viewport_x) viewport_x,
         MAX(recordings.viewport_y) viewport_y,
         MAX(recordings.useragent) useragent,
-        SUM(array_length(recordings.page_views, 1)) page_view_count
+        SUM(array_length(recordings.page_views, 1)) page_view_count,
+        array_agg(array_length(array_unique(recordings.page_views), 1)) unique_page_view_count
       SQL
 
       visitor = Visitor

@@ -73,7 +73,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     it 'returns the page views count' do
       response = subject['data']['site']['visitor']
       expect(response['pageViewsCount']['total']).to eq 1
-      expect(response['pageViewsCount']['unique']).to eq 0
+      expect(response['pageViewsCount']['unique']).to eq 1
     end
   end
 
@@ -105,7 +105,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     it 'returns the page views count' do
       response = subject['data']['site']['visitor']
       expect(response['pageViewsCount']['total']).to eq 1
-      expect(response['pageViewsCount']['unique']).to eq 0
+      expect(response['pageViewsCount']['unique']).to eq 1
     end
   end
 
