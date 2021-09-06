@@ -15,11 +15,7 @@ module Types
     field :page_count, Integer, null: false
     field :start_page, String, null: false
     field :exit_page, String, null: false
-    field :device_type, String, null: true
-    field :browser, String, null: true
-    field :browser_string, String, null: true
-    field :viewport_x, Integer, null: true
-    field :viewport_y, Integer, null: true
+    field :device, DeviceType, null: false
     field :connected_at, String, null: true
     field :disconnected_at, String, null: true
     field :tags, [TagType, { null: true }], null: false

@@ -15,11 +15,13 @@ site_recordings_query = <<-GRAPHQL
           pageCount
           startPage
           exitPage
-          deviceType
-          browser
-          browserString
-          viewportX
-          viewportY
+          device {
+            browserName
+            browserDetails
+            viewportX
+            viewportY
+            deviceType
+          }
           visitor {
             id
             visitorId

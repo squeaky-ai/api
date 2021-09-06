@@ -11,20 +11,21 @@ class Visitor < ApplicationRecord
     Locale.get_language(locale)
   end
 
-  def user_agent
-    @user_agent ||= UserAgent.parse(useragent)
+  def devices
+    recording_data.map { |r| device(r) }
   end
 
-  def device_type
-    user_agent.mobile? ? 'Mobile' : 'Computer'
-  end
+  def device(recording_data)
+    viewport_x, viewport_y, useragent = recording_data.split('__')
+    user_agent = UserAgent.parse(useragent)
 
-  def browser
-    user_agent.browser
-  end
-
-  def browser_string
-    "#{browser} Version #{user_agent.version}"
+    {
+      browser_name: user_agent.browser,
+      browser_details: "#{user_agent.browser} Version #{user_agent.version}",
+      viewport_x: viewport_x,
+      viewport_y: viewport_y,
+      device_type: user_agent.mobile? ? 'Mobile' : 'Computer'
+    }
   end
 
   def attributes

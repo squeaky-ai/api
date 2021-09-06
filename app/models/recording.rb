@@ -15,16 +15,14 @@ class Recording < ApplicationRecord
     @user_agent ||= UserAgent.parse(useragent)
   end
 
-  def device_type
-    user_agent.mobile? ? 'Mobile' : 'Computer'
-  end
-
-  def browser
-    user_agent.browser
-  end
-
-  def browser_string
-    "#{browser} Version #{user_agent.version}"
+  def device
+    {
+      browser_name: user_agent.browser,
+      browser_details: "#{user_agent.browser} Version #{user_agent.version}",
+      viewport_x: viewport_x,
+      viewport_y: viewport_y,
+      device_type: user_agent.mobile? ? 'Mobile' : 'Computer'
+    }
   end
 
   def page_count

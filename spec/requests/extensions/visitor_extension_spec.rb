@@ -18,11 +18,13 @@ visitor_query = <<-GRAPHQL
         firstViewedAt
         lastActivityAt
         language
-        viewportX
-        viewportY
-        deviceType
-        browser
-        browserString
+        devices {
+          viewportX
+          viewportY
+          deviceType
+          browserName
+          browserDetails
+        }
         attributes
       }
     }

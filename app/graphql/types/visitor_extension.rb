@@ -21,9 +21,7 @@ module Types
         MIN(recordings.connected_at) first_viewed_at,
         MAX(recordings.disconnected_at) last_activity_at,
         MAX(recordings.locale) locale,
-        MAX(recordings.viewport_x) viewport_x,
-        MAX(recordings.viewport_y) viewport_y,
-        MAX(recordings.useragent) useragent,
+        array_agg(recordings.viewport_x || '__' || recordings.viewport_y || '__' || recordings.useragent) recording_data,
         SUM(array_length(recordings.page_views, 1)) page_view_count,
         array_agg(array_length(array_unique(recordings.page_views), 1)) unique_page_view_count
       SQL

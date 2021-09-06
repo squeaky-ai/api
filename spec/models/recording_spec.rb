@@ -7,9 +7,9 @@ require 'securerandom'
 RSpec.describe Recording, type: :model do
   let(:recording_fixture) do
     {
-      site_id: SecureRandom.uuid,
-      session_id: Faker::Lorem.word,
-      visitor_id: Faker::Lorem.word
+      site_id: rand(10000),
+      session_id: SecureRandom.base36,
+      visitor_id: SecureRandom.base36
     }
   end
 
@@ -76,16 +76,16 @@ RSpec.describe Recording, type: :model do
     end
   end
 
-  describe '#device_type' do
+  describe '#device' do
     context 'when the device is a computer' do
       subject do
         fixture = recording_fixture.dup
         fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
-        described_class.new(fixture).device_type
+        described_class.new(fixture).device
       end
 
       it 'returns the device type' do
-        expect(subject).to eq 'Computer'
+        expect(subject[:device_type]).to eq 'Computer'
       end
     end
 
@@ -93,36 +93,42 @@ RSpec.describe Recording, type: :model do
       subject do
         fixture = recording_fixture.dup
         fixture[:useragent] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1'
-        described_class.new(fixture).device_type
+        described_class.new(fixture).device
       end
 
       it 'returns the device type' do
-        expect(subject).to eq 'Mobile'
+        expect(subject[:device_type]).to eq 'Mobile'
       end
     end
-  end
 
-  describe '#browser' do
-    subject do
-      fixture = recording_fixture.dup
-      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
-      described_class.new(fixture).browser
+    context 'when the browser is set' do
+      subject do
+        fixture = recording_fixture.dup
+        fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        described_class.new(fixture).device
+      end
+  
+      it 'returns the browser' do
+        expect(subject[:browser_name]).to eq 'Safari'
+      end
+
+      it 'returns the browser details' do
+        expect(subject[:browser_details]).to eq 'Safari Version 14.1.1'
+      end
     end
 
-    it 'returns the browser' do
-      expect(subject).to eq 'Safari'
-    end
-  end
+    context 'when the viewport is set' do
+      subject do
+        fixture = recording_fixture.dup
+        fixture[:viewport_x] = 1920
+        fixture[:viewport_y] = 1080
+        described_class.new(fixture).device
+      end
 
-  describe '#browser_string' do
-    subject do
-      fixture = recording_fixture.dup
-      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
-      described_class.new(fixture).browser_string
-    end
-
-    it 'returns the browser string' do
-      expect(subject).to eq 'Safari Version 14.1.1'
+      it 'returns the viewport' do
+        expect(subject[:viewport_x]).to eq 1920
+        expect(subject[:viewport_y]).to eq 1080
+      end
     end
   end
 

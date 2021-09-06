@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'securerandom'
 
 site_recording_query = <<-GRAPHQL
   query($site_id: ID!, $recording_id: ID!) {
@@ -14,11 +15,13 @@ site_recording_query = <<-GRAPHQL
         pageCount
         startPage
         exitPage
-        deviceType
-        browser
-        browserString
-        viewportX
-        viewportY
+        device {
+          browserName
+          browserDetails
+          viewportX
+          viewportY
+          deviceType
+        }
         visitor {
           id
           visitorId
@@ -40,7 +43,7 @@ RSpec.describe Types::RecordingExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: Faker::Lorem.word }
+      variables = { site_id: site.id, recording_id: SecureRandom.base36 }
       graphql_request(site_recording_query, variables, user)
     end
 
