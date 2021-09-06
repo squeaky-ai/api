@@ -21,6 +21,7 @@ site_recordings_query = <<-GRAPHQL
             viewportX
             viewportY
             deviceType
+            useragent
           }
           visitor {
             id

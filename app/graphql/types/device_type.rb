@@ -9,5 +9,6 @@ module Types
     field :viewport_x, Int, null: false
     field :viewport_y, Int, null: false
     field :device_type, String, null: false
+    field :useragent, String, null: false
   end
 end
