@@ -21,7 +21,6 @@ module Mutations
       # and skip the confirmation steps
       Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site: site)
 
-      site.create_authorizer!
       site.reload
     end
 

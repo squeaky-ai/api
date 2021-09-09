@@ -65,11 +65,6 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
         subject
         expect(url).to start_with site.reload.url
       end
-
-      it 'sets the authorizer' do
-        subject
-        expect(site.reload.authorized_url).to eq site.url
-      end
     end
   end
 

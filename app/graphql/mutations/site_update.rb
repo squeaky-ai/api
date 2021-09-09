@@ -34,9 +34,6 @@ module Mutations
 
       raise GraphQL::ExecutionError, @site.errors.full_messages.first unless @site.valid?
 
-      # Best reset this just in case the url has changed!
-      @site.create_authorizer!
-
       @site
     end
 

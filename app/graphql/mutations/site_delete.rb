@@ -15,7 +15,6 @@ module Mutations
     end
 
     def resolve(**_args)
-      @site.delete_authorizer!
       # Send an email to everyone in the team besides the owner
       @site.team.each { |t| SiteMailer.destroyed(t.user.email, @site).deliver_now unless t.owner? }
       @site.destroy

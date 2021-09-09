@@ -52,18 +52,6 @@ class Site < ApplicationRecord
     end
   end
 
-  def authorized_url
-    Redis.current.get("authorizer::#{uuid}")
-  end
-
-  def create_authorizer!
-    Redis.current.set("authorizer::#{uuid}", url)
-  end
-
-  def delete_authorizer!
-    Redis.current.del("authorizer::#{uuid}")
-  end
-
   def verify!
     update!(verified_at: Time.now)
   end
