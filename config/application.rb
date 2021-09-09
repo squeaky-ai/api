@@ -42,7 +42,7 @@ module Squeaky
     config.eager_load_paths << Rails.root.join('lib')
 
     config.action_cable.mount_path = '/api/in'
-    config.action_cable.disable_request_forgery_protection
+    config.action_cable.disable_request_forgery_protection = true
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
