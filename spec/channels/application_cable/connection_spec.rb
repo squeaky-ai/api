@@ -6,7 +6,7 @@ require 'securerandom'
 RSpec.describe ApplicationCable::Connection, :type => :channel do
   describe 'when no params are provided' do
     it 'rejects the connection' do
-      expect { connect '/api/gateway' }.to have_rejected_connection
+      expect { connect '/api/in' }.to have_rejected_connection
     end
   end
 
@@ -14,7 +14,7 @@ RSpec.describe ApplicationCable::Connection, :type => :channel do
     let(:params) { "?site_id=#{SecureRandom.uuid}" }
 
     it 'rejects the connection' do
-      expect { connect "/api/gateway#{params}" }.to have_rejected_connection
+      expect { connect "/api/in#{params}" }.to have_rejected_connection
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe ApplicationCable::Connection, :type => :channel do
     let(:params) { "?site_id=#{SecureRandom.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
 
     it 'rejects the connection' do
-      expect { connect "/api/gateway#{params}" }.to have_rejected_connection
+      expect { connect "/api/in#{params}" }.to have_rejected_connection
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe ApplicationCable::Connection, :type => :channel do
     let(:params) { "?site_id=#{site.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
 
     it 'rejects the connection' do
-      expect { connect "/api/gateway#{params}" }.to have_rejected_connection
+      expect { connect "/api/in#{params}" }.to have_rejected_connection
     end
   end
 
@@ -41,7 +41,7 @@ RSpec.describe ApplicationCable::Connection, :type => :channel do
     let(:params) { "?site_id=#{site.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
 
     it 'successfully connects' do
-      expect(connect "/api/gateway#{params}", headers: { origin: origin }).not_to be nil
+      expect(connect "/api/in#{params}", headers: { origin: origin }).not_to be nil
     end
   end
 end
