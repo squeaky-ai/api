@@ -41,7 +41,7 @@ module Squeaky
 
     config.eager_load_paths << Rails.root.join('lib')
 
-    config.action_cable.mount_path = '/gateway'
+    config.action_cable.mount_path = '/api/gateway'
     config.action_cable.disable_request_forgery_protection
 
     config.middleware.use ActionDispatch::Cookies
