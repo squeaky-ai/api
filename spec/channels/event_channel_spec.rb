@@ -116,7 +116,7 @@ RSpec.describe EventChannel, :type => :channel do
       subscribe
       basic_events_fixture.each { |e| perform :event, **e }
 
-      perform :pageview, {'payload'=>{'data'=>'http://localhost:8080/test'}}
+      perform :pageview, {'payload'=>{'data'=>{'href'=>'http://localhost:8080/test'}}}
 
       recording = Redis.current.hgetall("recording::#{current_visitor[:site_id]}::#{current_visitor[:session_id]}")
 

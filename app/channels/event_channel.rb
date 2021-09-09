@@ -87,7 +87,7 @@ class EventChannel < ApplicationCable::Channel
 
   def store_page_view(data)
     key = redis_key('recording')
-    href = data['payload']['data']
+    href = data['payload']['data']['href']
 
     Redis.current.hset(key, 'page_views', append_page_view(href))
   end
