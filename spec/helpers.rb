@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'zlib'
-require 'base64'
 require 'securerandom'
 
 module Helpers
@@ -74,10 +72,5 @@ module Helpers
   def create_visitor(args = {})
     default = { visitor_id: SecureRandom.base36, **args }
     Visitor.create(default)
-  end
-
-  def gzip(payload)
-    x = Zlib::Deflate.new.deflate(payload.to_json, Zlib::FINISH)
-    Base64.encode64(x)
   end
 end

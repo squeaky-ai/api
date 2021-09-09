@@ -43,7 +43,7 @@ class EventChannel < ApplicationCable::Channel
     client = Aws::SQS::Client.new(region: 'eu-west-1')
 
     client.send_message(
-      queue_url: ENV.fetch('RECORDINGS_SAVE_QUEUE_URL'),
+      queue_url: ENV.fetch('RECORDINGS_SAVE_QUEUE_URL', 'QUEUE_MISSING'),
       message_body: current_visitor.to_json
     )
   end
