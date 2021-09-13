@@ -8,7 +8,6 @@ site_update_mutation = <<-GRAPHQL
       id
       name
       url
-      checklistDismissedAt
     }
   }
 GRAPHQL
@@ -85,24 +84,6 @@ RSpec.describe Mutations::SiteUpdate, type: :request do
     it 'updates the record' do
       subject
       expect(site.reload.name).to eq name
-    end
-  end
-
-  context 'when dismissing the checklist' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: user) }
-
-    subject do
-      variables = { site_id: site.id, dismiss_checklist: true }
-      graphql_request(site_update_mutation, variables, user)
-    end
-
-    it 'returns the updated site' do
-      expect(subject['data']['siteUpdate']['checklistDismissedAt']).not_to be_nil
-    end
-
-    it 'updates the record' do
-      expect { subject }.to change { Site.find(site.id).checklist_dismissed_at.nil? }.from(true).to(false)
     end
   end
 end

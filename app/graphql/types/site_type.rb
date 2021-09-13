@@ -7,13 +7,11 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
     field :url, String, null: false
-    field :avatar, String, null: true
     field :plan, Integer, null: false
     field :plan_name, String, null: false
     field :uuid, String, null: false
     field :owner_name, String, null: false
     field :verified_at, String, null: true
-    field :checklist_dismissed_at, String, null: true
     field :days_since_last_recording, Integer, null: false, extensions: [LastRecordingExtension]
     field :team, [TeamType], null: false
     field :notes, NotesType, null: true, extensions: [NotesExtension]

@@ -25,10 +25,6 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
     t.index ["recording_id"], name: "index_events_on_recording_id"
   end
 
-  create_table "migrations", force: :cascade do |t|
-    t.bigint "version", null: false
-  end
-
   create_table "notes", force: :cascade do |t|
     t.string "body"
     t.integer "timestamp"
@@ -55,6 +51,7 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
     t.boolean "viewed", default: false
     t.boolean "bookmarked", default: false
     t.string "locale", null: false
+    t.string "page_views", default: [], null: false, array: true
     t.string "useragent", null: false
     t.integer "viewport_x", null: false
     t.integer "viewport_y", null: false
