@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_29_195920) do
+ActiveRecord::Schema.define(version: 2021_09_12_181205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,12 +40,21 @@ ActiveRecord::Schema.define(version: 2021_08_29_195920) do
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "url", null: false
+    t.bigint "entered_at", null: false
+    t.bigint "exited_at", null: false
+    t.bigint "recording_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recording_id"], name: "index_pages_on_recording_id"
+  end
+
   create_table "recordings", force: :cascade do |t|
     t.string "session_id", null: false
     t.boolean "viewed", default: false
     t.boolean "bookmarked", default: false
     t.string "locale", null: false
-    t.string "page_views", default: [], null: false, array: true
     t.string "useragent", null: false
     t.integer "viewport_x", null: false
     t.integer "viewport_y", null: false
@@ -64,10 +73,8 @@ ActiveRecord::Schema.define(version: 2021_08_29_195920) do
   create_table "sites", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
-    t.string "avatar"
     t.string "uuid", null: false
     t.integer "plan", null: false
-    t.datetime "checklist_dismissed_at"
     t.datetime "verified_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

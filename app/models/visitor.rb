@@ -6,6 +6,7 @@
 # try and query this directly!
 class Visitor < ApplicationRecord
   has_many :recordings
+  has_many :pages, through: :recordings
 
   def language
     Locale.get_language(locale)
