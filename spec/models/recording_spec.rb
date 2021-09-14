@@ -30,7 +30,11 @@ RSpec.describe Recording, type: :model do
     
     subject do
       fixture = recording_fixture.dup
-      fixture[:page_views] = ['/', '/contact', '/test']
+      fixture.pages = [
+        Page.new(url: '/'),
+        Page.new(url: '/contact'),
+        Page.new(url: '/test')
+      ]
       described_class.new(fixture).page_count
     end
 

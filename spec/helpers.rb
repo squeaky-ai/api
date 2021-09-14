@@ -73,4 +73,9 @@ module Helpers
     default = { visitor_id: SecureRandom.base36, **args }
     Visitor.create(default)
   end
+
+  def create_page(args = {})
+    default = { url: '/', entered_at: 1631629334592, exited_at: 1631629343582, **args }
+    Page.create(default)
+  end
 end

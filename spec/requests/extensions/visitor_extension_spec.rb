@@ -53,7 +53,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     let(:visitor) { create_visitor }
 
     before do  
-      create_recording({ page_views: ['/'] }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/')] }, site: site, visitor: visitor)
     end
 
     subject do
@@ -85,7 +85,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     let(:visitor) { create_visitor }
 
     before do  
-      create_recording({ page_views: ['/'], deleted: true }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/')], deleted: true }, site: site, visitor: visitor)
     end
 
     subject do

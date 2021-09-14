@@ -36,8 +36,8 @@ RSpec.describe Types::AnalyticsPagesExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), page_views: ['/'] }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), page_views: ['/', '/test'] }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), pages: [create_page(url: '/'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -67,9 +67,9 @@ RSpec.describe Types::AnalyticsPagesExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), page_views: ['/'] }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), page_views: ['/', '/test'] }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), page_views: ['/contact'] }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), pages: [create_page(url: '/'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), pages: [create_page(url: '/contact')] }, site: site, visitor: create_visitor)
     end
 
     subject do
