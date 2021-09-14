@@ -22,7 +22,7 @@ module Types
       SQL
 
       recordings = Recording
-                   .includes(:visitor)
+                   .eager_load(:visitor, :pages)
                    .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
                    .order(order)
                    .page(arguments[:page])

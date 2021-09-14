@@ -13,7 +13,7 @@ module Types
       recordind_id = arguments[:recording_id]
 
       Recording
-        .includes(:visitor)
+        .eager_load(:visitor, :pages)
         .find_by(site_id: site_id, id: recordind_id, deleted: false)
     end
   end

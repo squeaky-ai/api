@@ -8,13 +8,16 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      sql = <<-SQL
-        SELECT AVG( array_length(page_views, 1) )
-        FROM recordings
-        WHERE site_id = ? AND created_at::date BETWEEN ? AND ?;
-      SQL
+      counts = Site
+               .find(site_id)
+               .recordings
+               .joins(:pages)
+               .where('pages.created_at::date BETWEEN ? AND ?', from_date, to_date)
+               .group(:id)
+               .count(:pages)
 
-      execute_sql(sql, [site_id, from_date, to_date])[0][0].to_f
+      values = counts.values
+      values.sum.fdiv(values.size)
     end
   end
 end
