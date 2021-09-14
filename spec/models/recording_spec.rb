@@ -30,11 +30,7 @@ RSpec.describe Recording, type: :model do
     
     subject do
       site = create_site
-      recording = create_recording({}, site: site, visitor: create_visitor)
-
-      create_page(url: '/', recording: recording)
-      create_page(url: '/contact', recording: recording)
-      create_page(url: '/test', recording: recording)
+      recording = create_recording({ pages: [create_page(url: '/'), create_page(url: '/contact'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
 
       recording.reload.page_count
     end

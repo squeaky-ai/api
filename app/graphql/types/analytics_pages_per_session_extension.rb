@@ -11,12 +11,15 @@ module Types
       counts = Site
                .find(site_id)
                .recordings
+               .where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
                .joins(:pages)
-               .where('pages.created_at::date BETWEEN ? AND ?', from_date, to_date)
                .group(:id)
                .count(:pages)
 
       values = counts.values
+
+      return 0 if values.empty?
+
       values.sum.fdiv(values.size)
     end
   end
