@@ -6,12 +6,14 @@ module Types
     def resolve(object:, **_rest)
       visitor_id = object.object[:id]
 
-      Recording
-        .select('AVG( array_length(page_views, 1) ) pages_per_session')
-        .where('visitor_id = ?', visitor_id)
-        .to_a
-        .first
-        .pages_per_session
+      counts = Recording
+               .where(visitor_id: visitor_id)
+               .joins(:pages)
+               .group(:id)
+               .count(:pages)
+
+      values = counts.values
+      values.sum.fdiv(values.size)
     end
   end
 end

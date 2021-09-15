@@ -28,15 +28,15 @@ class Recording < ApplicationRecord
   end
 
   def page_count
-    page_views.size || 0
+    pages.size
   end
 
   def start_page
-    page_views.first || '/'
+    pages.first.url
   end
 
   def exit_page
-    page_views.last || '/'
+    pages.last.url
   end
 
   def duration

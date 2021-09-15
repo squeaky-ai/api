@@ -2,25 +2,21 @@
 
 module Types
   # The total number of visitors
-  class AnalyticsVisitorsCountExtension < AnalyticsQuery
+  class AnalyticsVisitorsCountExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      sql = <<-SQL
-        SELECT COUNT(DISTINCT(visitors.visitor_id)),
-               COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE visitors.visitor_id END)
-        FROM visitors
-        INNER JOIN recordings on recordings.visitor_id = visitors.id
-        WHERE recordings.site_id = ? AND recordings.created_at::date BETWEEN ? AND ?;
-      SQL
-
-      result = execute_sql(sql, [site_id, from_date, to_date])[0]
+      results = Site
+                .find(site_id)
+                .recordings
+                .where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .select('COUNT(DISTINCT recordings.visitor_id) total_count, COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE recordings.visitor_id END) new_count')
 
       {
-        total: result[0].to_i,
-        new: result[1].to_i
+        total: results[0].total_count,
+        new: results[0].new_count
       }
     end
   end

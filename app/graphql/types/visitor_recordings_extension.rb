@@ -43,11 +43,10 @@ module Types
         'DATE_ASC' => 'connected_at ASC',
         'DURATION_DESC' => 'disconnected_at - connected_at DESC',
         'DURATION_ASC' => 'disconnected_at - connected_at ASC',
-        'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC',
-        'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC'
+        'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC', # TODO
+        'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC' # TODO
       }
 
-      # What even is Arel? Rails kicks off big time without it
       Arel.sql(orders[sort] || orders['DATE_DESC'])
     end
   end

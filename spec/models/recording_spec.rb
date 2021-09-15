@@ -29,9 +29,10 @@ RSpec.describe Recording, type: :model do
     let (:instance) { described_class.new(recording_fixture) }
     
     subject do
-      fixture = recording_fixture.dup
-      fixture[:page_views] = ['/', '/contact', '/test']
-      described_class.new(fixture).page_count
+      site = create_site
+      recording = create_recording({ pages: [create_page(url: '/'), create_page(url: '/contact'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
+
+      recording.reload.page_count
     end
 
     it 'returns the number of pages visited' do

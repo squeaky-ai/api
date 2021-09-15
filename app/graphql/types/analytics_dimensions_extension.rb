@@ -2,29 +2,22 @@
 
 module Types
   # The min, max and avg screen dimensions
-  class AnalyticsDimensionsExtension < AnalyticsQuery
+  class AnalyticsDimensionsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      sql = <<-SQL
-        SELECT MAX(viewport_x), MIN(viewport_x), AVG(viewport_x)
-        FROM recordings
-        WHERE site_id = ? AND created_at::date BETWEEN ? AND ?;
-      SQL
+      results = Site
+                .find(site_id)
+                .recordings
+                .where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .select('MAX(viewport_x) max_width, MIN(viewport_x) min_width, AVG(viewport_x) avg_width')
 
-      result = execute_sql(sql, [site_id, from_date, to_date])
-      map_results(result)
-    end
-
-    private
-
-    def map_results(result)
       {
-        max: result[0][0] || 0,
-        min: result[0][1] || 0,
-        avg: result[0][2] || 0
+        max: results[0].max_width || 0,
+        min: results[0].min_width || 0,
+        avg: results[0].avg_width || 0
       }
     end
   end

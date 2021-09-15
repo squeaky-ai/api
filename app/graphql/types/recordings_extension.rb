@@ -14,16 +14,11 @@ module Types
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
 
-      where_sql = <<-SQL
-        site_id = :site_id
-        AND disconnected_at IS NOT NULL
-        AND deleted IS false
-        AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)
-      SQL
-
-      recordings = Recording
-                   .includes(:visitor)
-                   .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
+      recordings = Site
+                   .find(object.object.id)
+                   .recordings
+                   .eager_load(:visitor, :pages)
+                   .where('deleted IS false AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)', { query: "%#{arguments[:query]}%" })
                    .order(order)
                    .page(arguments[:page])
                    .per(arguments[:size])
@@ -50,11 +45,10 @@ module Types
         'DATE_ASC' => 'connected_at ASC',
         'DURATION_DESC' => 'disconnected_at - connected_at DESC',
         'DURATION_ASC' => 'disconnected_at - connected_at ASC',
-        'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC',
-        'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC'
+        'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC', # TODO
+        'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC' # TODO
       }
 
-      # What even is Arel? Rails kicks off big time without it
       Arel.sql(orders[sort] || orders['DATE_DESC'])
     end
   end

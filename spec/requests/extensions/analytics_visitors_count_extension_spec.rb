@@ -118,7 +118,7 @@ RSpec.describe Types::AnalyticsVisitorsCountExtension, type: :request do
 
     it 'returns the number of new visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitorsCount']['new']).to eq 1 # TODO: I don't think is right!
+      expect(response['visitorsCount']['new']).to eq 1
     end
   end
 end
