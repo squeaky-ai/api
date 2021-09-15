@@ -2,32 +2,25 @@
 
 module Types
   # Analytics data
-  class AnalyticsLanguageExtension < AnalyticsQuery
+  class AnalyticsLanguageExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      sql = <<-SQL
-        SELECT DISTINCT LOWER(locale), COUNT(*) locale_count
-        FROM recordings
-        WHERE site_id = ? AND created_at::date BETWEEN ? AND ?
-        GROUP BY LOWER(locale)
-        ORDER BY locale_count DESC
-        LIMIT 6;
-      SQL
+      results = Site
+                .find(site_id)
+                .recordings
+                .where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .select('DISTINCT LOWER(locale) locale, COUNT(*) locale_count')
+                .group('LOWER(locale)')
+                .order('locale_count DESC')
+                .limit(6)
 
-      result = execute_sql(sql, [site_id, from_date, to_date])
-      map_results(result)
-    end
-
-    private
-
-    def map_results(result)
-      result.map do |r|
+      results.map do |result|
         {
-          name: Locale.get_language(r[0]),
-          count: r[1]
+          name: Locale.get_language(result.locale),
+          count: result.locale_count
         }
       end
     end

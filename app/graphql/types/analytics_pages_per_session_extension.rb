@@ -2,7 +2,7 @@
 
 module Types
   # The number of pages viewed per session
-  class AnalyticsPagesPerSessionExtension < AnalyticsQuery
+  class AnalyticsPagesPerSessionExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]

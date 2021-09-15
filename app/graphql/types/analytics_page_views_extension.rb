@@ -2,7 +2,7 @@
 
 module Types
   # The total number of page views
-  class AnalyticsPageViewsExtension < AnalyticsQuery
+  class AnalyticsPageViewsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]

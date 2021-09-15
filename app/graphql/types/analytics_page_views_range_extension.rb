@@ -2,7 +2,7 @@
 
 module Types
   # The data for the big graph
-  class AnalyticsPageViewsRangeExtension < AnalyticsQuery
+  class AnalyticsPageViewsRangeExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
@@ -17,12 +17,6 @@ module Types
                 .group(:created_at)
                 .order('recordings.created_at ASC')
 
-      map_results(results)
-    end
-
-    private
-
-    def map_results(results)
       results.map do |result|
         {
           date: result.created_at.iso8601,

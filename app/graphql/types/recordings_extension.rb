@@ -14,16 +14,11 @@ module Types
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
 
-      where_sql = <<-SQL
-        site_id = :site_id
-        AND disconnected_at IS NOT NULL
-        AND deleted IS false
-        AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)
-      SQL
-
-      recordings = Recording
+      recordings = Site
+                   .find(object.object.id)
+                   .recordings
                    .eager_load(:visitor, :pages)
-                   .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
+                   .where('deleted IS false AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)', { query: "%#{arguments[:query]}%" })
                    .order(order)
                    .page(arguments[:page])
                    .per(arguments[:size])
