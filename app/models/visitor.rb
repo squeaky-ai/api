@@ -41,10 +41,10 @@ class Visitor < ApplicationRecord
     }
   end
 
-  def pages_count
+  def page_views_count
     {
-      total: 0, # TODO
-      unique: 0 # TODO
+      total: pages.size,
+      unique: recordings.joins(:pages).select(:pages).uniq.count
     }
   end
 end

@@ -8,6 +8,8 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
+      # TODO
+
       sql = <<-SQL
         SELECT created_at, page_views
         FROM recordings
