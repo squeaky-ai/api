@@ -11,7 +11,7 @@ module Types
     field :first_viewed_at, String, null: true
     field :last_activity_at, String, null: true
     field :language, String, null: true
-    field :page_views_count, VisitorPageViewsCountType, null: true
+    field :page_views_count, VisitorPagesCountType, null: true
     field :starred, Boolean, null: false
     field :attributes, String, null: true
     field :devices, [DeviceType], null: false

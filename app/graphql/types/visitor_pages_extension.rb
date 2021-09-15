@@ -13,12 +13,11 @@ module Types
       order = order_by(arguments[:sort])
       visitor_id = object.object[:id]
 
-      pages = Recording
-              .select('p.page_view, count(*) page_view_count')
-              .joins('cross join lateral unnest(r.page_views) p(page_view)')
-              .from('recordings r')
-              .where('r.visitor_id = ?', visitor_id)
-              .group('p.page_view')
+      pages = Visitor
+              .find(visitor_id)
+              .pages
+              .select('url, count(*) count')
+              .group(:url)
               .order(order)
               .page(arguments[:page])
               .per(arguments[:size])
@@ -42,8 +41,8 @@ module Types
     def map_results(pages)
       pages.to_a.map do |page|
         {
-          page_view: page.page_view,
-          page_view_count: page.page_view_count,
+          page_view: page.url,
+          page_view_count: page.count,
           average_time_on_page: 0
         }
       end
@@ -51,8 +50,8 @@ module Types
 
     def order_by(sort)
       orders = {
-        'VIEWS_COUNT_DESC' => 'page_view_count DESC',
-        'VIEWS_COUNT_ASC' => 'page_view_count ASC'
+        'VIEWS_COUNT_DESC' => 'count DESC',
+        'VIEWS_COUNT_ASC' => 'count ASC'
       }
 
       Arel.sql(orders[sort] || orders['VIEWS_COUNT_DESC'])

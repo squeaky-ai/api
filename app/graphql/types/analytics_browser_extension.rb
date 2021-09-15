@@ -8,6 +8,16 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
+      results = Site
+                  .find(site_id)
+                  .recordings
+                  .where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
+                  .select('useragent, count(*) count')
+                  .group(:useragent)
+                  .order('count DESC')
+
+      puts '@@@', results
+
       sql = <<-SQL
         SELECT DISTINCT(useragent), count(*)
         FROM recordings

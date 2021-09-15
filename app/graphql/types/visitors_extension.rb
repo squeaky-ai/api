@@ -16,36 +16,15 @@ module Types
     def resolve(object:, arguments:, **_rest)
       order = order_by(arguments[:sort])
 
-      select_sql = <<-SQL
-        visitors.id id,
-        visitors.visitor_id visitor_id,
-        visitors.starred starred,
-        visitors.external_attributes external_attributes,
-        COUNT(CASE recordings.deleted WHEN TRUE THEN NULL ELSE TRUE END) recording_count,
-        COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) viewed_recording_count,
-        MIN(recordings.connected_at) first_viewed_at,
-        MAX(recordings.disconnected_at) last_activity_at,
-        MAX(recordings.locale) locale,
-        array_agg(recordings.viewport_x || '__' || recordings.viewport_y || '__' || recordings.useragent) recording_data
-      SQL
-
-      where_sql = <<-SQL
-        site_id = :site_id
-        AND (
-          locale ILIKE :query OR
-          useragent ILIKE :query OR
-          external_attributes::TEXT ILIKE :query
-        )
-      SQL
-
-      visitors = Visitor
-                 .joins(:recordings)
-                 .select(select_sql)
-                 .where(where_sql, { site_id: object.object['id'], query: "%#{arguments[:query]}%" })
-                 .group(%i[id visitor_id])
-                 .order(order)
+      visitors = Site
+                 .find(object.object.id)
+                 .visitors
+                 .eager_load(:recordings, :pages)
+                 # .order(order)
                  .page(arguments[:page])
                  .per(arguments[:size])
+
+      # TODO: search and order
 
       {
         items: visitors,

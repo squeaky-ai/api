@@ -9,25 +9,11 @@ class Visitor < ApplicationRecord
   has_many :pages, through: :recordings
 
   def language
-    Locale.get_language(locale)
+    Locale.get_language(recordings.first.locale)
   end
 
   def devices
-    recording_data.map { |r| device(r) }
-  end
-
-  def device(recording_data)
-    viewport_x, viewport_y, useragent = recording_data.split('__')
-    user_agent = UserAgent.parse(useragent)
-
-    {
-      browser_name: user_agent.browser,
-      browser_details: "#{user_agent.browser} Version #{user_agent.version}",
-      viewport_x: viewport_x,
-      viewport_y: viewport_y,
-      device_type: user_agent.mobile? ? 'Mobile' : 'Computer',
-      useragent: useragent
-    }
+    recordings.map(&:device)
   end
 
   def attributes
@@ -37,30 +23,28 @@ class Visitor < ApplicationRecord
   end
 
   def viewed
-    viewed_recording_count.positive?
+    recordings.where(viewed: true).size.positive?
+  end
+
+  def first_viewed_at
+    recordings.order(created_at: :desc).first.created_at
+  end
+
+  def last_activity_at
+    recordings.order(created_at: :desc).last.created_at
   end
 
   def recordings_count
     {
-      total: recording_count.to_i,
-      new: (recording_count - viewed_recording_count).to_i
-    }
-  rescue StandardError
-    {
-      total: 0,
-      new: 0
+      total: recordings.where(deleted: false).size,
+      new: recordings.where(deleted: false, viewed: false).size
     }
   end
 
-  def page_views_count
+  def pages_count
     {
-      total: page_view_count.to_i,
-      unique: unique_page_view_count.sum
-    }
-  rescue StandardError
-    {
-      total: 0,
-      new: 0
+      total: 0, # TODO
+      unique: 0 # TODO
     }
   end
 end

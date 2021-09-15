@@ -79,7 +79,7 @@ RSpec.describe Types::VisitorExtension, type: :request do
     end
   end
 
-  context 'when the visitior has recordigns but they were soft deleted' do
+  context 'when the visitior has recordings but they were soft deleted' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
