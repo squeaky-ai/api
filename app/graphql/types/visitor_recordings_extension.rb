@@ -47,7 +47,6 @@ module Types
         'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC' # TODO
       }
 
-      # What even is Arel? Rails kicks off big time without it
       Arel.sql(orders[sort] || orders['DATE_DESC'])
     end
   end

@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-# Visitors on sites. You're gonna have a bad time with this
-# as most of the attributes don't exist on the visitor model
-# but instead are inner-joined by the recordings. Don't actually
-# try and query this directly!
+# Visitors on sites that have recordings
 class Visitor < ApplicationRecord
   has_many :recordings
   has_many :pages, through: :recordings
