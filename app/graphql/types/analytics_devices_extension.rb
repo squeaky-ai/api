@@ -2,7 +2,7 @@
 
 module Types
   # The ratio of desktop to mobile
-  class AnalyticsDevicesExtension < AnalyticsQuery
+  class AnalyticsDevicesExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]

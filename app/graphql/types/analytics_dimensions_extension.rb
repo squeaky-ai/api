@@ -2,7 +2,7 @@
 
 module Types
   # The min, max and avg screen dimensions
-  class AnalyticsDimensionsExtension < AnalyticsQuery
+  class AnalyticsDimensionsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
