@@ -94,7 +94,7 @@ class RecordingSaveJob < ApplicationJob
       path = page['path']
       timestamp = page['timestamp']
 
-      next if prev&.url == path
+      next if prev[:url] == path
 
       prev.exited_at = timestamp if prev
 
