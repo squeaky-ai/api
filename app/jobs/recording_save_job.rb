@@ -96,7 +96,7 @@ class RecordingSaveJob < ApplicationJob
 
       next if prev && prev[:url] == path
 
-      prev.exited_at = timestamp if prev
+      prev[:exited_at] = timestamp if prev
 
       page_views.push(
         url: path,
