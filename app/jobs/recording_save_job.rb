@@ -5,9 +5,9 @@
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  def perform(args)
-    @args = args
-    @site = Site.find_by(uuid: args['site_id'])
+  def perform(*args)
+    @args = JSON.parse(args[0])
+    @site = Site.find_by(uuid: @args['site_id'])
 
     ActiveRecord::Base.transaction do
       visitor = persist_visitor!
@@ -18,6 +18,8 @@ class RecordingSaveJob < ApplicationJob
 
       clean_up
     end
+
+    Rails.logger.info 'Recording saved'
   end
 
   private

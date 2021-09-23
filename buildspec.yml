@@ -18,4 +18,5 @@ phases:
   post_build:
     commands:
       - aws ecs update-service --cluster squeaky --service api --force-new-deployment
-      - aws ecs wait services-stable --cluster squeaky --services api
+      - aws ecs update-service --cluster squeaky --service api_worker --force-new-deployment
+      - aws ecs wait services-stable --cluster squeaky --services api api_worker

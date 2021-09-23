@@ -27,7 +27,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_base_events
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'stores the recording' do
       subject
@@ -82,7 +82,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_base_events
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'updates the existing recording' do
       subject
@@ -115,7 +115,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_page_view
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'does not store the recording' do
       expect { subject }.to raise_error('Recording has no events')
@@ -142,7 +142,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_base_events
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'stores the attributes with the visitor' do
       subject
@@ -173,7 +173,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_event(timestamp: now + 1000)
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'stores the recording as soft deleted' do
       subject
@@ -204,7 +204,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_event(timestamp: now + 5000)
     end
 
-    subject { described_class.perform_now(event) }
+    subject { described_class.perform_now(event.to_json) }
 
     it 'stores the recording as soft deleted' do
       subject
