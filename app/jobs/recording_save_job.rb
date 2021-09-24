@@ -158,6 +158,6 @@ class RecordingSaveJob < ApplicationJob
 
   def clean_up
     keys = %w[events recording pageviews]
-    keys.each { |k| Redis.current.del(k) }
+    keys.each { |k| Redis.current.del(redis_key(k)) }
   end
 end
