@@ -41,9 +41,14 @@ module Squeaky
 
     config.eager_load_paths << Rails.root.join('lib')
 
-    config.active_job.queue_adapter = :amazon_sqs
+    config.active_job.queue_adapter = :amazon_sqs_async
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
+
+    Aws::Rails::SqsActiveJob.configure do |config|
+      config.logger = ActiveSupport::Logger.new($stdout)
+      config.max_messages = 1
+    end
   end
 end

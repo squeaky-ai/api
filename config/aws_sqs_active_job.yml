@@ -1,2 +1,2 @@
 queues:
-  default: <%= ENV.fetch("RECORDINGS_SAVE_QUEUE_URL") %>
+  default: <%= ENV.fetch("RECORDINGS_SAVE_QUEUE_URL", "QUEUE_NOT_SET") %>
