@@ -67,8 +67,6 @@ class Recording < ApplicationRecord
       site_id: site.id,
       viewed: viewed,
       bookmarked: bookmarked,
-      user_id: visitor.visitor_id,
-      visitor_id: visitor_id,
       session_id: session_id,
       locale: locale,
       language: language,
@@ -80,7 +78,11 @@ class Recording < ApplicationRecord
       page_views: pages.all.map(&:url),
       start_page: start_page,
       exit_page: exit_page,
-      device: device
+      device: device,
+      visitor: {
+        id: visitor.id,
+        visitor_id: visitor.visitor_id
+      }
     }
   end
 end

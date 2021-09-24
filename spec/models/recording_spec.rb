@@ -246,7 +246,6 @@ RSpec.describe Recording, type: :model do
       expect(subject).to eq(
         id: recording.id,
         site_id: site.id,
-        visitor_id: visitor.id,
         session_id: recording.session_id,
         viewed: false,
         bookmarked: false,
@@ -254,9 +253,12 @@ RSpec.describe Recording, type: :model do
         language: 'English (GB)', 
         duration: 1000000,
         date_time: '2021-09-24T11:00:00Z',
-        pages: ['/'],
+        connected_at: recording.connected_at,
+        disconnected_at: recording.disconnected_at,
+        page_count: 1,
+        page_views: ['/'],
         start_page: '/',
-        exit_page: '/', 
+        exit_page: '/',
         device: {
           browser_name: 'Safari', 
           browser_details: 'Safari Version 14.1.1',
@@ -264,6 +266,10 @@ RSpec.describe Recording, type: :model do
           viewport_y: 1080,
           device_type: 'Computer',
           useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        },
+        visitor: {
+          id: visitor.id,
+          visitor_id: visitor.visitor_id
         }
       )
     end
