@@ -48,7 +48,7 @@ module Squeaky
 
     Aws::Rails::SqsActiveJob.configure do |config|
       config.logger = ActiveSupport::Logger.new($stdout)
-      config.max_messages = 1
+      config.max_messages = 5
     end
   end
 end
