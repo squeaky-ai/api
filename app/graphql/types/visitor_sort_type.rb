@@ -4,11 +4,11 @@ module Types
   class VisitorSortType < Types::BaseEnum
     description 'The sort options'
 
-    value 'recordings_count__desc', 'Most amount of recordings first'
-    value 'recordings_count__asc', 'Least amount of recordings first'
-    value 'first_viewed_at__desc', 'Most recently viewed'
-    value 'first_viewed_at__asc', 'Least recently viewed'
-    value 'last_activity_at__desc', 'Most recently active'
-    value 'last_activity_at__asc', 'Least recently active'
+    value 'RECORDINGS_COUNT_DESC', 'Most amount of recordings first'
+    value 'RECORDING_COUNT_ASC', 'Least amount of recordings first'
+    value 'FIRST_VIEWED_AT_DESC', 'Most recently viewed'
+    value 'FIRST_VIEWED_AT_ASC', 'Least recently viewed'
+    value 'LAST_ACTIVITY_AT_DESC', 'Most recently active'
+    value 'LAST_ACTIVITY_AT_ASC', 'Least recently active'
   end
 end

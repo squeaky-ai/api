@@ -4,11 +4,11 @@ module Types
   class RecordingSortType < Types::BaseEnum
     description 'The sort options'
 
-    value 'connected_at__desc', 'Most recent recordings first'
-    value 'connected_at__asc', 'Oldest recordings first'
-    value 'duration__desc', 'Longest recordings first'
-    value 'duration__asc', 'Shortest recordings first'
-    value 'page_count__desc', 'Most page views first'
-    value 'page_count__asc', 'Least page views first'
+    value 'DATE_DESC', 'Most recent recordings first'
+    value 'DATE_ASC', 'Oldest recordings first'
+    value 'DURATION_DESC', 'Longest recordings first'
+    value 'DURATION_ASC', 'Shortest recordings first'
+    value 'PAGE_SIZE_DESC', 'Most page views first'
+    value 'PAGE_SIZE_ASC', 'Least page views first'
   end
 end

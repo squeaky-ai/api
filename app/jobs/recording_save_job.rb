@@ -15,6 +15,7 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
+      index_to_elasticsearch!(recording)
 
       clean_up
     end
@@ -23,6 +24,21 @@ class RecordingSaveJob < ApplicationJob
   end
 
   private
+
+  def index_to_elasticsearch!(recording)
+    # Upsert the entire recording hash using the recording id
+    # so we can easilly reference later if we come to upsert
+    # again
+    SearchClient.update(
+      index: Recording::INDEX,
+      id: recording.id.to_s,
+      retry_on_conflict: 3,
+      body: {
+        doc: recording.to_h,
+        doc_as_upsert: true
+      }
+    )
+  end
 
   def persist_visitor!
     if external_attributes['id']

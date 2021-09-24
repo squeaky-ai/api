@@ -46,19 +46,4 @@ class Visitor < ApplicationRecord
       unique: recordings.joins(:pages).select(:pages).uniq.count
     }
   end
-
-  def to_h
-    {
-      id: id,
-      viewed: viewed,
-      starred: starred,
-      visitor_id: visitor_id,
-      devices: devices,
-      attributes: external_attributes,
-      recordings_count: recordings.size,
-      first_viewed_at: first_viewed_at,
-      last_activity_at: last_activity_at,
-      language: language
-    }
-  end
 end
