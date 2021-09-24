@@ -13,9 +13,8 @@ module Fixtures
       start_at = Time.now.to_i * 1000
       exit_at = (Time.now.to_i + 1000) * 1000
 
-      Recording.create(
+      recording = Recording.create(
         site: @site,
-        visitor: @visitor,
         session_id: SecureRandom.uuid,
         locale: 'en-GB',
         useragent: Faker::Internet.user_agent,
@@ -26,6 +25,11 @@ module Fixtures
         pages: [Page.new(url: '/', entered_at: start_at, exited_at: exit_at)],
         **args
       )
+
+      @visitor.recordings << recording
+      @visitor.save
+      
+      recording
     end
 
     def sample(count)

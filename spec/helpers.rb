@@ -71,7 +71,7 @@ module Helpers
 
   def create_visitor(args = {})
     default = { visitor_id: SecureRandom.base36, **args }
-    Visitor.create(default)
+    Visitor.create!(default)
   end
 
   def create_page(args = {})

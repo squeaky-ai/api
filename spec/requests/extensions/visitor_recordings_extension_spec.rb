@@ -73,7 +73,7 @@ RSpec.describe Types::VisitorRecordingsExtension, type: :request do
       response = subject['data']['site']['visitor']['recordings']
       expect(response['pagination']).to eq(
         'pageSize' => 10,
-        'sort' => 'DATE_DESC',
+        'sort' => 'connected_at__asc',
         'total' => 2
       )
     end

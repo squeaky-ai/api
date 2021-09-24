@@ -6,7 +6,9 @@ module Types
 
     field :id, ID, null: false
     field :site_id, ID, null: false
+    field :user_id, String, null: false
     field :session_id, String, null: false
+    field :visitor_id, String, null: false
     field :viewed, Boolean, null: false
     field :bookmarked, Boolean, null: false
     field :language, String, null: false
@@ -23,6 +25,6 @@ module Types
     field :events, EventsType, null: false, extensions: [EventExtension]
     field :previous_recording, RecordingType, null: true
     field :next_recording, RecordingType, null: true
-    field :visitor, VisitorType, null: false
+    field :visitor, VisitorType, null: false, extensions: [VisitorExtension]
   end
 end

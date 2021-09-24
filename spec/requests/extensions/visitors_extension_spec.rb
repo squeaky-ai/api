@@ -78,7 +78,7 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       expect(response['pagination']).to eq(
         'pageSize' => 15,
         'total' => 2,
-        'sort' => 'RECORDINGS_COUNT_DESC'
+        'sort' => 'recordings_count__desc'
       )
     end
   end

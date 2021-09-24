@@ -1,0 +1,14 @@
+production:
+  url: <%= ENV.fetch("ELASTICSEARCH_URL") { '' } %>
+  recordings_index: recordings
+  visitors_index: visitors
+
+development:
+  url: http://localhost:9200
+  recordings_index: recordings_development
+  visitors_index: visitors_development
+
+test:
+  url: http://localhost:9200
+  recordings_index: recordings_test
+  visitors_index: visitors_test

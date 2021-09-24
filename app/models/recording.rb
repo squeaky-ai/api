@@ -12,6 +12,8 @@ class Recording < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
 
+  INDEX = Rails.configuration.elasticsearch['recordings_index']
+
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
   end
@@ -57,5 +59,28 @@ class Recording < ApplicationRecord
     recordings = site.recordings.order('connected_at DESC')
     index = recordings.index(self)
     index >= recordings.size ? nil : recordings[index + 1]
+  end
+
+  def to_h
+    {
+      id: id,
+      site_id: site.id,
+      viewed: viewed,
+      bookmarked: bookmarked,
+      user_id: visitor.visitor_id,
+      visitor_id: visitor_id,
+      session_id: session_id,
+      locale: locale,
+      language: language,
+      duration: duration,
+      date_time: created_at.iso8601,
+      connected_at: connected_at,
+      disconnected_at: disconnected_at,
+      page_count: pages.all.size,
+      page_views: pages.all.map(&:url),
+      start_page: start_page,
+      exit_page: exit_page,
+      device: device
+    }
   end
 end

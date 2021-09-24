@@ -59,7 +59,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 15,
           'total' => 0,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__asc'
         }
       )
     end
@@ -87,7 +87,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 15,
           'total' => 5,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__asc'
         }
       )
     end
@@ -137,7 +137,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 10,
           'total' => 15,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__asc'
         }
       )
     end
@@ -149,7 +149,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { site_id: site.id, size: 5, page: 1, sort: 'DATE_DESC' }
+        variables = { site_id: site.id, size: 5, page: 1, sort: 'connected_at__asc' }
         graphql_request(site_recordings_query, variables, user)
       end
 
@@ -167,7 +167,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
           {
             'pageSize' => 5,
             'total' => 5,
-            'sort' => 'DATE_DESC'
+            'sort' => 'connected_at__asc'
           }
         )
       end

@@ -5,6 +5,8 @@ class Visitor < ApplicationRecord
   has_many :recordings
   has_many :pages, through: :recordings
 
+  INDEX = Rails.configuration.elasticsearch['visitors_index']
+
   def language
     Locale.get_language(recordings.first.locale)
   end
@@ -42,6 +44,21 @@ class Visitor < ApplicationRecord
     {
       total: pages.size,
       unique: recordings.joins(:pages).select(:pages).uniq.count
+    }
+  end
+
+  def to_h
+    {
+      id: id,
+      viewed: viewed,
+      starred: starred,
+      visitor_id: visitor_id,
+      devices: devices,
+      attributes: external_attributes,
+      recordings_count: recordings.size,
+      first_viewed_at: first_viewed_at,
+      last_activity_at: last_activity_at,
+      language: language
     }
   end
 end
