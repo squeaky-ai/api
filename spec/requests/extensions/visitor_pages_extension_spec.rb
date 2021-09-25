@@ -64,7 +64,7 @@ RSpec.describe Types::VisitorPagesExtension, type: :request do
       response = subject['data']['site']['visitor']['pages']
       expect(response['pagination']).to eq(
         'pageSize' => 10,
-        'sort' => 'VIEWS_COUNT_DESC',
+        'sort' => 'views_count__desc',
         'total' => 2
       )
     end

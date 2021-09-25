@@ -6,7 +6,7 @@ module Types
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
       field.argument(:size, Integer, required: false, default_value: 10, description: 'The page size')
-      field.argument(:sort, VisitorPagesSortType, required: false, default_value: 'VIEWS_COUNT_DESC', description: 'The sort order')
+      field.argument(:sort, VisitorPagesSortType, required: false, default_value: 'views_count__desc', description: 'The sort order')
     end
 
     def resolve(object:, arguments:, **_rest)
@@ -50,11 +50,11 @@ module Types
 
     def order_by(sort)
       orders = {
-        'VIEWS_COUNT_DESC' => 'count DESC',
-        'VIEWS_COUNT_ASC' => 'count ASC'
+        'views_count__desc' => 'count DESC',
+        'views_count__asc' => 'count ASC'
       }
 
-      Arel.sql(orders[sort] || orders['VIEWS_COUNT_DESC'])
+      Arel.sql(orders[sort] || orders['views_count__desc'])
     end
   end
 end

@@ -10,49 +10,79 @@ module Types
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
       field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
       field.argument(:query, String, required: false, default_value: '', description: 'The search query')
-      field.argument(:sort, VisitorSortType, required: false, default_value: 'RECORDINGS_COUNT_DESC', description: 'The sort order')
+      field.argument(:sort, VisitorSortType, required: false, default_value: 'last_activity_at__desc', description: 'The sort order')
     end
 
     def resolve(object:, arguments:, **_rest)
-      order = order_by(arguments[:sort])
-
-      visitors = Site
-                 .find(object.object.id)
-                 .visitors
-                 .eager_load(:recordings, :pages)
-                 # .order(order)
-                 .page(arguments[:page])
-                 .per(arguments[:size])
-
-      # TODO: search and order
+      search = search(arguments, object.object.id)
+      results = SearchClient.search(index: Visitor::INDEX, body: search)
 
       {
-        items: visitors,
-        pagination: pagination(arguments, visitors, arguments[:size])
+        items: items(results),
+        pagination: pagination(arguments, results, arguments[:size])
       }
     end
 
     private
 
-    def pagination(arguments, visitors, size)
-      {
-        page_size: size,
-        total: visitors.total_count,
-        sort: arguments[:sort]
+    def search(arguments, site_id)
+      params = {
+        from: arguments[:page] * arguments[:size],
+        size: arguments[:size],
+        sort: sort(arguments),
+        query: {
+          bool: {
+            must: [
+              { term: { site_id: { value: site_id } } }
+            ]
+          }
+        }
       }
+
+      unless arguments[:query].empty?
+        params[:query][:bool][:filter] = [
+          { query_string: { query: "*#{arguments[:query]}*" } }
+        ]
+      end
+
+      params
     end
 
-    def order_by(sort)
-      orders = {
-        'RECORDINGS_COUNT_DESC' => 'recording_count DESC',
-        'RECORDINGS_COUNT_ASC' => 'recording_count ASC',
-        'FIRST_VIEWED_AT_DESC' => 'first_viewed_at DESC',
-        'FIRST_VIEWED_AT_ASC' => 'first_viewed_at ASC',
-        'LAST_ACTIVITY_AT_DESC' => 'last_activity_at DESC',
-        'LAST_ACTIVITY_AT_ASC' => 'last_activity_at ASC'
+    def sort(arguments)
+      parts = arguments[:sort].split('__')
+      sort = {}
+
+      sort[parts.first] = {
+        unmapped_type: 'date_nanos',
+        order: parts.last
       }
 
-      Arel.sql(orders[sort] || orders['RECORDINGS_COUNT_DESC'])
+      sort
+    end
+
+    def items(results)
+      visitors = results['hits']['hits'].map { |r| r['_source'] }
+      ids = visitors.map { |r| r['id'] }
+      meta = Visitor.select('id, starred').find(ids)
+
+      # The stateful stuff like the starred status is not stored
+      # in ElasticSearch and must be fetched from the database
+      enrich_items(visitors, meta)
+    end
+
+    def enrich_items(visitors, meta)
+      visitors.map do |r|
+        match = meta.find { |m| m.id == r['id'] }
+        r.merge(starred: match.starred)
+      end
+    end
+
+    def pagination(arguments, results, size)
+      {
+        page_size: size,
+        total: results['hits']['total']['value'],
+        sort: arguments[:sort]
+      }
     end
   end
 end
