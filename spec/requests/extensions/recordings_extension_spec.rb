@@ -44,7 +44,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 1 }
+      variables = { site_id: site.id, size: 15, page: 0 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -59,7 +59,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 15,
           'total' => 0,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__desc'
         }
       )
     end
@@ -70,11 +70,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 1 }
+      variables = { site_id: site.id, size: 15, page: 0 }
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { create_recordings(site: site, visitor: create_visitor, count: 5) }
+    before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -87,7 +87,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 15,
           'total' => 5,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__desc'
         }
       )
     end
@@ -98,12 +98,12 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 1 }
+      variables = { site_id: site.id, size: 15, page: 0 }
       graphql_request(site_recordings_query, variables, user)
     end
 
     before do
-      create_recordings(site: site, visitor: create_visitor, count: 5)
+      create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true)
       create_recording({ deleted: true }, site: site, visitor: create_visitor)
     end
 
@@ -118,11 +118,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recordings(site: site, visitor: create_visitor, count: 15)
+      create_recordings(site: site, visitor: create_visitor, count: 15, in_es: true)
     end
 
     subject do
-      variables = { site_id: site.id, size: 10, page: 2 }
+      variables = { site_id: site.id, size: 10, page: 1 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -137,7 +137,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
         {
           'pageSize' => 10,
           'total' => 15,
-          'sort' => 'DATE_DESC'
+          'sort' => 'connected_at__desc'
         }
       )
     end
@@ -149,11 +149,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { site_id: site.id, size: 5, page: 1, sort: 'DATE_DESC' }
+        variables = { site_id: site.id, size: 5, page: 0, sort: 'connected_at__desc' }
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
 
       it 'returns the items with the oldest first' do
         items = subject['data']['site']['recordings']['items']
@@ -167,7 +167,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
           {
             'pageSize' => 5,
             'total' => 5,
-            'sort' => 'DATE_DESC'
+            'sort' => 'connected_at__desc'
           }
         )
       end
@@ -178,11 +178,11 @@ RSpec.describe Types::RecordingsExtension, type: :request do
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { site_id: site.id, size: 5, page: 1, sort: 'DATE_ASC' }
+        variables = { site_id: site.id, size: 5, page: 0, sort: 'connected_at__asc' }
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
 
       it 'returns the items with the newest first' do
         items = subject['data']['site']['recordings']['items']
@@ -196,7 +196,7 @@ RSpec.describe Types::RecordingsExtension, type: :request do
           {
             'pageSize' => 5,
             'total' => 5,
-            'sort' => 'DATE_ASC'
+            'sort' => 'connected_at__asc'
           }
         )
       end

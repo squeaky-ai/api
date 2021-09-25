@@ -44,12 +44,38 @@ module Helpers
     site
   end
 
-  def create_recording(args = {}, site:, visitor:)
-    Fixtures::Recordings.new(site, visitor).create(args)
+  def create_recording(args = {}, site:, visitor:, in_es: false)
+    recording = Fixtures::Recordings.new(site, visitor).create(args)
+
+    if in_es && !recording.deleted
+      SearchClient.bulk(
+        refresh: 'wait_for',
+        body: [
+          {
+            index: { _id: recording.id, _index: Recording::INDEX, data: recording.to_h }
+          }
+        ]
+      )
+    end
+
+    recording
   end
 
-  def create_recordings(site:, visitor:, count:)
-    Fixtures::Recordings.new(site, visitor).sample(count)
+  def create_recordings(site:, visitor:, count:, in_es: false)
+    recordings = Fixtures::Recordings.new(site, visitor).sample(count)
+
+    if in_es
+      SearchClient.bulk(
+        refresh: 'wait_for',
+        body: recordings.reject(&:deleted).map do |r|
+          {
+            index: { _id: r.id, _index: Recording::INDEX, data: r.to_h }
+          }
+        end
+      )
+    end
+
+    recordings
   end
 
   def create_events(recording:, count:)

@@ -2,54 +2,87 @@
 
 module Types
   # The 'recordings' field on the site is handled here as
-  # we only want to load the data if it is requested
+  #  we only want to load the data if it is requested. The
+  # source of truth is in the database, but this is grabbed
+  # from elasticsearch
   class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
       field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
       field.argument(:query, String, required: false, default_value: '', description: 'The search query')
-      field.argument(:sort, RecordingSortType, required: false, default_value: 'DATE_DESC', description: 'The sort order')
+      field.argument(:sort, RecordingSortType, required: false, default_value: 'connected_at__desc', description: 'The sort order')
     end
 
     def resolve(object:, arguments:, **_rest)
-      order = order_by(arguments[:sort])
-
-      recordings = Site
-                   .find(object.object.id)
-                   .recordings
-                   .eager_load(:visitor, :pages)
-                   .where('deleted IS false AND (session_id ILIKE :query OR locale ILIKE :query OR useragent ILIKE :query)', { query: "%#{arguments[:query]}%" })
-                   .order(order)
-                   .page(arguments[:page])
-                   .per(arguments[:size])
+      search = search(arguments, object.object.id)
+      results = SearchClient.search(index: Recording::INDEX, body: search)
 
       {
-        items: recordings,
-        pagination: pagination(arguments, recordings, arguments[:size])
+        items: items(results),
+        pagination: pagination(arguments, results, arguments[:size])
       }
     end
 
     private
 
-    def pagination(arguments, recordings, size)
-      {
-        page_size: size,
-        total: recordings.total_count,
-        sort: arguments[:sort]
+    def search(arguments, site_id)
+      params = {
+        from: arguments[:page] * arguments[:size],
+        size: arguments[:size],
+        sort: sort(arguments),
+        query: {
+          bool: {
+            must: [
+              { term: { site_id: { value: site_id } } }
+            ]
+          }
+        }
       }
+
+      unless arguments[:query].empty?
+        params[:query][:bool][:filter] = [
+          { query_string: { query: "*#{arguments[:query]}*" } }
+        ]
+      end
+
+      params
     end
 
-    def order_by(sort)
-      orders = {
-        'DATE_DESC' => 'connected_at DESC',
-        'DATE_ASC' => 'connected_at ASC',
-        'DURATION_DESC' => 'disconnected_at - connected_at DESC',
-        'DURATION_ASC' => 'disconnected_at - connected_at ASC',
-        'PAGE_SIZE_DESC' => 'array_length(page_views, 1) DESC', # TODO
-        'PAGE_SIZE_ASC' => 'array_length(page_views, 1) ASC' # TODO
+    def sort(arguments)
+      parts = arguments[:sort].split('__')
+      sort = {}
+
+      sort[parts.first] = {
+        unmapped_type: 'date_nanos',
+        order: parts.last
       }
 
-      Arel.sql(orders[sort] || orders['DATE_DESC'])
+      sort
+    end
+
+    def items(results)
+      recordings = results['hits']['hits'].map { |r| r['_source'] }
+      ids = recordings.map { |r| r['id'] }
+      meta = Recording.select('id, viewed, bookmarked').find(ids)
+
+      # The stateful stuff like viewed and bookmarked status is not
+      # stored in ElasticSearch and must be fetched from the database
+      enrich_items(recordings, meta)
+    end
+
+    def enrich_items(recordings, meta)
+      recordings.map do |r|
+        match = meta.find { |m| m.id == r['id'] }
+        r.merge(viewed: match.viewed, bookmarked: match.bookmarked)
+      end
+    end
+
+    def pagination(arguments, results, size)
+      {
+        page_size: size,
+        total: results['hits']['total']['value'],
+        sort: arguments[:sort]
+      }
     end
   end
 end
