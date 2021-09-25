@@ -247,8 +247,6 @@ RSpec.describe Recording, type: :model do
         id: recording.id,
         site_id: site.id,
         session_id: recording.session_id,
-        viewed: false,
-        bookmarked: false,
         locale: 'en-GB', 
         language: 'English (GB)', 
         duration: 1000000,

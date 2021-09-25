@@ -65,8 +65,6 @@ class Recording < ApplicationRecord
     {
       id: id,
       site_id: site.id,
-      viewed: viewed,
-      bookmarked: bookmarked,
       session_id: session_id,
       locale: locale,
       language: language,

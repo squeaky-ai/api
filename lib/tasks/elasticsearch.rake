@@ -44,15 +44,20 @@ namespace :elasticsearch do
   task import_recordings: :environment do
     Rails.logger.info('Importing recordings')
 
-    Recording.all.each_slice(100).with_index do |slice, i|
-      Rails.logger.info("Bulk inserting batch #{i} of recordings")
+    total = Recording.count
+    count = (total / 250.0).ceil
+
+    count.times do |i|
+      Rails.logger.info("Bulk inserting page #{i} of #{count} for recordings")
+
+      batch = Recording.page(i).per(250).where(deleted: false)
 
       SearchClient.bulk(
-        body: slice.map do |recording|
+        body: batch.map do |recording|
           {
             index: {
               _index: Recording::INDEX,
-              _id: recording.id.to_s,
+              _id: recording.id,
               data: recording.to_h
             }
           }
@@ -64,15 +69,20 @@ namespace :elasticsearch do
   task import_visitors: :environment do
     Rails.logger.info('Importing visitors')
 
-    Visitor.all.each_slice(100).with_index do |slice, i|
-      Rails.logger.info("Bulk inserting batch #{i} of visitors")
+    total = Visitor.count
+    count = (total / 250.0).ceil
+
+    count.times do |i|
+      Rails.logger.info("Bulk inserting page #{i} of #{count} for visitors")
+
+      batch = Visitor.page(i).per(250)
 
       SearchClient.bulk(
-        body: slice.map do |visitor|
+        body: batch.map do |visitor|
           {
             index: {
               _index: Visitor::INDEX,
-              _id: visitor.id.to_s,
+              _id: visitor.id,
               data: visitor.to_h
             }
           }

@@ -15,7 +15,7 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
-      index_to_elasticsearch!(recording)
+      index_to_elasticsearch!(recording, visitor)
 
       clean_up
     end
@@ -25,18 +25,26 @@ class RecordingSaveJob < ApplicationJob
 
   private
 
-  def index_to_elasticsearch!(recording)
-    # Upsert the entire recording hash using the recording id
-    # so we can easilly reference later if we come to upsert
-    # again
-    SearchClient.update(
-      index: Recording::INDEX,
-      id: recording.id.to_s,
-      retry_on_conflict: 3,
-      body: {
-        doc: recording.to_h,
-        doc_as_upsert: true
-      }
+  def index_to_elasticsearch!(recording, visitor)
+    return if recording.deleted
+
+    SearchClient.bulk(
+      body: [
+        {
+          index: {
+            _index: Recording::INDEX,
+            _id: recording.id,
+            data: recording.to_h
+          }
+        },
+        {
+          index: {
+            _index: Visitor::INDEX,
+            _id: visitor.id,
+            data: visitor.to_h
+          }
+        }
+      ]
     )
   end
 
@@ -139,7 +147,7 @@ class RecordingSaveJob < ApplicationJob
 
     # Recordings without any user interaction are also not worth
     # watching, and is likely a bot
-    return true unless redis_events.any? { |event| event['type'] == 3 && event['data']['source'] }
+    return true unless redis_events.any? { |event| event['type'] == 3 && !event['data']['source'].nil? }
 
     false
   end
