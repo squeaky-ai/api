@@ -147,7 +147,7 @@ class RecordingSaveJob < ApplicationJob
 
     # Recordings without any user interaction are also not worth
     # watching, and is likely a bot
-    return true unless redis_events.any? { |event| event['type'] == 3 && !event['data']['source'].nil? }
+    return true unless redis_events.any? { |event| event['type'] == 3 && event['data']['source'] }
 
     false
   end
