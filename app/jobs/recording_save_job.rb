@@ -142,6 +142,8 @@ class RecordingSaveJob < ApplicationJob
     # I guess this is possible
     raise StandardError.new('Recording has no events') if redis_events.size.zero?
 
+    raise StandardError.new('Recording has no page views') if redis_pageviews.size.zero?
+
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
     return true if (redis_events.last['timestamp'] - redis_events.first['timestamp']) < 3000
