@@ -50,7 +50,7 @@ namespace :elasticsearch do
     count.times do |i|
       Rails.logger.info("Bulk inserting page #{i} of #{count} for recordings")
 
-      batch = Recording.page(i).per(250).where(deleted: false)
+      batch = Recording.eager_load(:visitor).page(i).per(250).where(deleted: false)
 
       SearchClient.bulk(
         body: batch.map do |recording|
@@ -75,7 +75,7 @@ namespace :elasticsearch do
     count.times do |i|
       Rails.logger.info("Bulk inserting page #{i} of #{count} for visitors")
 
-      batch = Visitor.page(i).per(250)
+      batch = Visitor.eager_load(:recordings).page(i).per(250)
 
       SearchClient.bulk(
         body: batch.map do |visitor|

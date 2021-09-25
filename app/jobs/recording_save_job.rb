@@ -15,7 +15,7 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
-      index_to_elasticsearch!(recording, visitor)
+      # index_to_elasticsearch!(recording, visitor)
 
       clean_up
     end
