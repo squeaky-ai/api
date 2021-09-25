@@ -230,4 +230,46 @@ RSpec.describe Recording, type: :model do
       end
     end
   end
+
+  describe '#to_h' do
+    let(:now) { Time.new(2021, 9, 24, 12, 0, 0) }
+    let(:site) { create_site }
+    let(:fixture) { recording_fixture.dup.merge(site_id: site.id, created_at: now, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15') }
+    let(:visitor) { create_visitor }
+    let(:recording) { create_recording(fixture, site: site, visitor: visitor) }
+
+    before { recording }
+
+    subject { recording.to_h }
+
+    it 'returns the hashed version' do
+      expect(subject).to eq(
+        id: recording.id,
+        site_id: site.id,
+        session_id: recording.session_id,
+        locale: 'en-GB', 
+        language: 'English (GB)', 
+        duration: 1000000,
+        date_time: '2021-09-24T11:00:00Z',
+        connected_at: recording.connected_at,
+        disconnected_at: recording.disconnected_at,
+        page_count: 1,
+        page_views: ['/'],
+        start_page: '/',
+        exit_page: '/',
+        device: {
+          browser_name: 'Safari', 
+          browser_details: 'Safari Version 14.1.1',
+          viewport_x: 1920, 
+          viewport_y: 1080,
+          device_type: 'Computer',
+          useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        },
+        visitor: {
+          id: visitor.id,
+          visitor_id: visitor.visitor_id
+        }
+      )
+    end
+  end
 end

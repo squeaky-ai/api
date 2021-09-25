@@ -15,6 +15,7 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
+      # index_to_elasticsearch!(recording, visitor)
 
       clean_up
     end
@@ -23,6 +24,29 @@ class RecordingSaveJob < ApplicationJob
   end
 
   private
+
+  def index_to_elasticsearch!(recording, visitor)
+    return if recording.deleted
+
+    SearchClient.bulk(
+      body: [
+        {
+          index: {
+            _index: Recording::INDEX,
+            _id: recording.id,
+            data: recording.to_h
+          }
+        },
+        {
+          index: {
+            _index: Visitor::INDEX,
+            _id: visitor.id,
+            data: visitor.to_h
+          }
+        }
+      ]
+    )
+  end
 
   def persist_visitor!
     if external_attributes['id']

@@ -25,6 +25,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_recording
       fixture.create_page_view
       fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -56,6 +58,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
       expect(site.reload.recordings.first.events.size).to eq 34
     end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
+    end
   end
 
   context 'when a recording already exists' do
@@ -80,6 +87,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_recording
       fixture.create_page_view
       fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -93,6 +102,11 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'does not create a new recording' do
       expect { subject }.not_to change { site.recordings.size }
+    end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
     end
   end
 
@@ -140,6 +154,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       fixture.create_recording(identify: { id: 1, email: 'foo@bar.com' }.to_json)
       fixture.create_page_view
       fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -148,6 +164,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
 
       expect(site.reload.visitors.first.external_attributes).to eq('id' => '1', 'email' => 'foo@bar.com')
+    end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
     end
   end
 
@@ -171,6 +192,8 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       fixture.create_event(timestamp: now)
       fixture.create_event(timestamp: now + 1000)
+
+      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -179,6 +202,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
 
       expect(site.reload.recordings.first.deleted).to eq true
+    end
+
+    it 'does not index to elasticsearch' do
+      subject
+      expect(SearchClient).not_to have_received(:bulk)
     end
   end
 
@@ -202,6 +230,8 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       fixture.create_event(timestamp: now)
       fixture.create_event(timestamp: now + 5000)
+
+      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -210,6 +240,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
 
       expect(site.reload.recordings.first.deleted).to eq true
+    end
+
+    it 'does not index to elasticsearch' do
+      subject
+      expect(SearchClient).not_to have_received(:bulk)
     end
   end
 end
