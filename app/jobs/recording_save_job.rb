@@ -15,9 +15,10 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
-      # index_to_elasticsearch!(recording, visitor)
 
       clean_up
+
+      index_to_elasticsearch!(recording, visitor)
     end
 
     Rails.logger.info 'Recording saved'
