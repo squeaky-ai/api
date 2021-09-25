@@ -41,6 +41,36 @@ namespace :elasticsearch do
     end
   end
 
+  task delete_recordings: :environment do
+    Rails.logger.info('Deleting recordings')
+
+    if SearchClient.indices.exists(index: Recording::INDEX)
+      SearchClient.delete_by_query(
+        index: Recording::INDEX,
+        body: {
+          query: { match_all: {} }
+        }
+      )
+    else
+      Rails.logger.warn('Recordings index does not exists')
+    end
+  end
+
+  task delete_visitors: :environment do
+    Rails.logger.info('Deleting visitors')
+
+    if SearchClient.indices.exists(index: Visitor::INDEX)
+      SearchClient.delete_by_query(
+        index: Visitor::INDEX,
+        body: {
+          query: { match_all: {} }
+        }
+      )
+    else
+      Rails.logger.warn('Visitor index does not exists')
+    end
+  end
+
   task import_recordings: :environment do
     Rails.logger.info('Importing recordings')
 
