@@ -132,7 +132,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     subject { described_class.perform_now(event.to_json) }
 
     it 'does not store the recording' do
-      expect { subject }.to raise_error('Recording has no events')
+      expect { subject }.not_to change { site.recordings.size }
     end
   end
 

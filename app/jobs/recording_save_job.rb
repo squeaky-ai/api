@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class InvalidRecording < StandardError
+end
+
 # Pick up messages from SQS and save the recordings
 # that are temporarily stored in Redis
 class RecordingSaveJob < ApplicationJob
@@ -22,6 +25,12 @@ class RecordingSaveJob < ApplicationJob
     end
 
     Rails.logger.info 'Recording saved'
+  rescue InvalidRecording
+    Rails.logger.warn 'Recording was invalid, ignoring'
+    clean_up
+    nil
+  rescue StandardError => e
+    Rails.logger.error 'Failed to save recording', e
   end
 
   private
@@ -140,9 +149,10 @@ class RecordingSaveJob < ApplicationJob
 
   def soft_delete?
     # I guess this is possible
-    raise StandardError.new('Recording has no events') if redis_events.size.zero?
+    raise InvalidRecording, 'Recording has no events' if redis_events.size.zero?
 
-    raise StandardError.new('Recording has no page views') if redis_pageviews.size.zero?
+    # Probably a bot that bounced before the meta event could fire
+    raise InvalidRecording, 'Recording has no page views' if redis_pageviews.size.zero?
 
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
