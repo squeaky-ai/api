@@ -63,7 +63,12 @@ module Types
     def items(results)
       visitors = results['hits']['hits'].map { |r| r['_source'] }
       ids = visitors.map { |r| r['id'] }
-      meta = Visitor.select('id, starred').find(ids)
+
+      meta = Visitor
+             .left_joins(:recordings)
+             .select('visitors.id, visitors.starred, COUNT(recordings) count')
+             .group('visitors.id')
+             .find(ids)
 
       # The stateful stuff like the starred status is not stored
       # in ElasticSearch and must be fetched from the database
@@ -71,9 +76,9 @@ module Types
     end
 
     def enrich_items(visitors, meta)
-      visitors.map do |r|
-        match = meta.find { |m| m.id == r['id'] }
-        r.merge(starred: match.starred)
+      visitors.map do |v|
+        match = meta.find { |m| m.id == v['id'] }
+        v.merge('starred' => match.starred, 'recordings_count' => { 'total' => match.count })
       end
     end
 

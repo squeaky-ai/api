@@ -73,7 +73,7 @@ module Types
     def enrich_items(recordings, meta)
       recordings.map do |r|
         match = meta.find { |m| m.id == r['id'] }
-        r.merge(viewed: match.viewed, bookmarked: match.bookmarked)
+        r.merge('viewed' => match.viewed, 'bookmarked' => match.bookmarked)
       end
     end
 
