@@ -20,6 +20,8 @@ module Types
     # Fetch a list of recordings, refrain from fetching
     # events inside of here to prevent n+1
     field :recordings, RecordingsType, null: false, extensions: [RecordingsExtension]
+    # Fetch the latest recording
+    field :recording_latest, RecordingType, null: true, extensions: [RecordingLatestExtension]
     # Fetch a single visitor
     field :visitor, VisitorType, null: true, extensions: [VisitorExtension]
     # Fetch a list of visitors, refrain from fetching
