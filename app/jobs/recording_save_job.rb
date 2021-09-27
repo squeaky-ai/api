@@ -8,7 +8,7 @@ end
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  def perform(*args, **_rest)
+  def perform(*args, **_kwargs)
     @args = JSON.parse(args[0])
     @site = Site.find_by(uuid: @args['site_id'])
 
@@ -25,12 +25,12 @@ class RecordingSaveJob < ApplicationJob
     end
 
     Rails.logger.info 'Recording saved'
-  rescue InvalidRecording
-    Rails.logger.warn 'Recording was invalid, ignoring'
-    clean_up
-    nil
-  rescue StandardError => e
-    Rails.logger.error 'Failed to save recording', e
+  # rescue InvalidRecording
+  #   Rails.logger.warn 'Recording was invalid, ignoring'
+  #   clean_up
+  #   nil
+  # rescue StandardError => e
+  #   Rails.logger.error 'Failed to save recording', e
   end
 
   private
