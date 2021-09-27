@@ -8,7 +8,7 @@ end
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(*args, **_rest)
     @args = JSON.parse(args[0])
     @site = Site.find_by(uuid: @args['site_id'])
 
