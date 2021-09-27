@@ -12,6 +12,8 @@ class RecordingSaveJob < ApplicationJob
     @args = JSON.parse(args[0])
     @site = Site.find_by(uuid: @args['site_id'])
 
+    validate!
+
     ActiveRecord::Base.transaction do
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
@@ -25,12 +27,10 @@ class RecordingSaveJob < ApplicationJob
     end
 
     Rails.logger.info 'Recording saved'
-  # rescue InvalidRecording
-  #   Rails.logger.warn 'Recording was invalid, ignoring'
-  #   clean_up
-  #   nil
-  # rescue StandardError => e
-  #   Rails.logger.error 'Failed to save recording', e
+  rescue InvalidRecording
+    Rails.logger.warn 'Recording was invalid, ignoring'
+    clean_up
+    nil
   end
 
   private
@@ -147,13 +147,15 @@ class RecordingSaveJob < ApplicationJob
     Page.insert_all!(page_views)
   end
 
-  def soft_delete?
+  def validate!
     # I guess this is possible
     raise InvalidRecording, 'Recording has no events' if redis_events.size.zero?
 
     # Probably a bot that bounced before the meta event could fire
     raise InvalidRecording, 'Recording has no page views' if redis_pageviews.size.zero?
+  end
 
+  def soft_delete?
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
     return true if (redis_events.last['timestamp'] - redis_events.first['timestamp']) < 3000
