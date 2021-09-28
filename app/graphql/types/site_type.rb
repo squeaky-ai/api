@@ -17,6 +17,7 @@ module Types
     field :notes, NotesType, null: true, extensions: [NotesExtension]
     field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
     field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]
+    field :browsers, [String, { null: true }], null: false, extensions: [BrowsersExtension]
     # Fetch a single recording
     field :recording, RecordingType, null: true, extensions: [RecordingExtension]
     # Fetch a list of recordings, refrain from fetching
