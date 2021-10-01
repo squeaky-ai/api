@@ -13,7 +13,7 @@ class RecordingsQuery
 
   def build
     # site_id is absolutely needed!
-    @params[:bool][:must] = { term: { site_id: { value: @site_id } } }
+    @params[:bool][:must] = [{ term: { site_id: { value: @site_id } } }]
     # Filter on the rest of the results if one is provided
     @params[:bool][:filter] = [{ query_string: { query: "*#{@search}*" } }] unless @search.empty?
 
@@ -66,11 +66,19 @@ class RecordingsQuery
   end
 
   def filter_by_viewport(value)
-    puts '@@ viewport', value
+    filter_viewports(value, :min_width, :max_width, 'viewport_x')
+    filter_viewports(value, :min_height, :max_height, 'viewport_y')
   end
 
   def filter_by_languages(value)
     filter = { terms: { 'language.keyword': value } }
     @params[:bool][:must].push(filter) unless value.empty?
+  end
+
+  def filter_viewports(value, min, max, key)
+    filter = { range: { "device.#{key}" => {} } }
+    filter[:range]["device.#{key}"][:gte] = value[min] if value[min]
+    filter[:range]["device.#{key}"][:lte] = value[max] if value[max]
+    @params[:bool][:must].push(filter)
   end
 end
