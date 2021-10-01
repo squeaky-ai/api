@@ -46,6 +46,42 @@ module Types
         ]
       end
 
+      filters = arguments[:filters]&.to_h
+
+      if filters
+        # TODO: date
+
+        # TODO: status
+
+        # TODO: duration
+
+        unless filters[:start_url].nil?
+          params[:query][:bool][:must].push(term: { 'start_page.keyword': filters[:start_url] })
+        end
+
+        unless filters[:exit_url].nil?
+          params[:query][:bool][:must].push(term: { 'exit_page.keyword': filters[:exit_url] })
+        end
+
+        # TODO: visited pages
+
+        # TODO: unvisted pages
+
+        unless filters[:devices].empty?
+          params[:query][:bool][:must].push(terms: { 'device.device_type.keyword': filters[:devices] })
+        end
+
+        unless filters[:browsers].empty?
+          params[:query][:bool][:must].push(terms: { 'device.browser_name.keyword': filters[:browsers] })
+        end
+
+        # TODO: Viewport
+
+        unless filters[:languages].empty?
+          params[:query][:bool][:must].push(terms: { 'language.keyword': filters[:languages] })
+        end
+      end
+
       params
     end
 
