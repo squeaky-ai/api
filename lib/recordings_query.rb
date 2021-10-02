@@ -28,18 +28,31 @@ class RecordingsQuery
   private
 
   def filter_by_date(value)
-    puts '@@ date', value
+    if value[:date_range_type] == 'Between'
+      return filter_ranges(:date_time, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
+    end
+
+    if value[:date_range_type] == 'From' && value[:date_from_type] == 'Before'
+      return filter_ranges(:date_time, nil, format_date(value[:from_date]))
+    end
+
+    if value[:date_range_type] == 'From' && value[:date_from_type] == 'After'
+      return filter_ranges(:date_time, format_date(value[:from_date]), nil)
+    end
   end
 
   def filter_by_duration(value)
-    is_from_only = value[:duration_range_type] == 'From'
+    if value[:duration_range_type] == 'Between'
+      return filter_ranges(:duration, value[:between_from_duration], value[:between_to_duration])
+    end
 
-    from = is_from_only ? value[:from_duration] : value[:between_from_duration]
-    to = is_from_only ? nil : value[:between_to_duration]
+    if value[:duration_range_type] == 'From' && value[:duration_from_type] == 'GreaterThan'
+      return filter_ranges(:duration, value[:from_duration], nil)
+    end
 
-    return if from.nil? && to.nil?
-
-    filter_durations(from, to)
+    if value[:duration_range_type] == 'From' && value[:duration_from_type] == 'LessThan'
+      return filter_ranges(:duration, nil, value[:from_duration])
+    end
   end
 
   def filter_by_start_url(value)
@@ -89,10 +102,15 @@ class RecordingsQuery
     @params[:bool][:must].push(filter)
   end
 
-  def filter_durations(from, to)
-    filter = { range: { duration: {} } }
-    filter[:range][:duration][:gte] = from if from
-    filter[:range][:duration][:lte] = to if to
+  def filter_ranges(key, from, to)
+    filter = { range: {} }
+    filter[:range][key] = {}
+    filter[:range][key][:gte] = from if from
+    filter[:range][key][:lte] = to if to
     @params[:bool][:must].push(filter)
+  end
+
+  def format_date(string)
+    string.split('/').reverse.join('-')
   end
 end
