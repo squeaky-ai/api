@@ -32,7 +32,14 @@ class RecordingsQuery
   end
 
   def filter_by_duration(value)
-    puts '@@ duration', value
+    is_from_only = value[:duration_range_type] == 'From'
+
+    from = is_from_only ? value[:from_duration] : value[:between_from_duration]
+    to = is_from_only ? nil : value[:between_to_duration]
+
+    return if from.nil? && to.nil?
+
+    filter_durations(from, to)
   end
 
   def filter_by_start_url(value)
@@ -79,6 +86,13 @@ class RecordingsQuery
     filter = { range: { "device.#{key}" => {} } }
     filter[:range]["device.#{key}"][:gte] = value[min] if value[min]
     filter[:range]["device.#{key}"][:lte] = value[max] if value[max]
+    @params[:bool][:must].push(filter)
+  end
+
+  def filter_durations(from, to)
+    filter = { range: { duration: {} } }
+    filter[:range][:duration][:gte] = from if from
+    filter[:range][:duration][:lte] = to if to
     @params[:bool][:must].push(filter)
   end
 end
