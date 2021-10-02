@@ -27,6 +27,17 @@ class RecordingsQuery
 
   private
 
+  def filter_by_status(value)
+    return if value.nil?
+
+    viewed_recording_ids = Site.find(@site_id).recordings.select(:id).where(viewed: true).map(&:id)
+    filter = { terms: { id: viewed_recording_ids } }
+
+    filter_type = value == 'New' ? :must_not : :must
+
+    @params[:bool][filter_type].push(filter) unless value.empty?
+  end
+
   def filter_by_date(value)
     if value[:date_range_type] == 'Between'
       return filter_ranges(:date_time, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
