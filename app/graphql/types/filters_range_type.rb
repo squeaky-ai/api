@@ -4,7 +4,9 @@ module Types
   class FiltersRangeType < Types::BaseEnum
     description 'The range options'
 
-    value 'From', 'Show recordings are longer than this time'
-    value 'Between', 'Show recordings that fit within this time'
+    value 'From', 'Show results are longer than this time'
+    value 'Between', 'Show results that fit within this time'
+    value 'GreaterThan', 'Show results that are greater than this time'
+    value 'LessThan', 'Show results that are less than this time'
   end
 end
