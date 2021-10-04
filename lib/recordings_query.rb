@@ -39,29 +39,29 @@ class RecordingsQuery
   end
 
   def filter_by_date(value)
-    if value[:date_range_type] == 'Between'
+    if value[:range_type] == 'Between'
       return filter_ranges(:date_time, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
     end
 
-    if value[:date_range_type] == 'From' && value[:date_from_type] == 'Before'
+    if value[:range_type] == 'From' && value[:from_type] == 'Before'
       return filter_ranges(:date_time, nil, format_date(value[:from_date]))
     end
 
-    if value[:date_range_type] == 'From' && value[:date_from_type] == 'After'
+    if value[:range_type] == 'From' && value[:from_type] == 'After'
       return filter_ranges(:date_time, format_date(value[:from_date]), nil)
     end
   end
 
   def filter_by_duration(value)
-    if value[:duration_range_type] == 'Between'
+    if value[:range_type] == 'Between'
       return filter_ranges(:duration, value[:between_from_duration], value[:between_to_duration])
     end
 
-    if value[:duration_range_type] == 'From' && value[:duration_from_type] == 'GreaterThan'
+    if value[:range_type] == 'From' && value[:from_type] == 'GreaterThan'
       return filter_ranges(:duration, value[:from_duration], nil)
     end
 
-    if value[:duration_range_type] == 'From' && value[:duration_from_type] == 'LessThan'
+    if value[:range_type] == 'From' && value[:from_type] == 'LessThan'
       return filter_ranges(:duration, nil, value[:from_duration])
     end
   end

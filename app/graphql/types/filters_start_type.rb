@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class RecordingsFiltersStartType < Types::BaseEnum
+  class FiltersStartType < Types::BaseEnum
     description 'The start options'
 
     value 'Before', 'Show recordings that start before this time'

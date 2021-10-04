@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class RecordingsFiltersRangeType < Types::BaseEnum
+  class FiltersRangeType < Types::BaseEnum
     description 'The range options'
 
     value 'From', 'Show recordings are longer than this time'

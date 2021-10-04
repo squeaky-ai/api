@@ -11,6 +11,7 @@ module Types
       field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
       field.argument(:query, String, required: false, default_value: '', description: 'The search query')
       field.argument(:sort, VisitorSortType, required: false, default_value: 'last_activity_at__desc', description: 'The sort order')
+      field.argument(:filters, VisitorsFiltersType, required: false, default_value: nil, description: 'Filter results')
     end
 
     def resolve(object:, arguments:, **_rest)

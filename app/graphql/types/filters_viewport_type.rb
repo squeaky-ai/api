@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Types
-  class RecordingsFiltersViewportType < BaseInputObject
-    description 'The recording filters viewport object'
+  class FiltersViewportType < BaseInputObject
+    description 'The filters viewport object'
 
     argument :min_width, Integer, required: false
     argument :max_width, Integer, required: false

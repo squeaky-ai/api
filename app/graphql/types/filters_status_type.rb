@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class RecordingsFiltersStatusType < Types::BaseEnum
+  class FiltersStatusType < Types::BaseEnum
     description 'The status options'
 
     value 'New', 'Show only new recordings'

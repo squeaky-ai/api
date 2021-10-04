@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class RecordingsFiltersSizeType < Types::BaseEnum
+  class FiltersSizeType < Types::BaseEnum
     description 'The size options'
 
     value 'GreaterThan', 'Show recordings that have a duration longer than'

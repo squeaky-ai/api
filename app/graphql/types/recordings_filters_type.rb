@@ -11,9 +11,9 @@ module Types
     argument :exit_url, String, required: false
     argument :visited_pages, [String], required: true
     argument :unvisited_pages, [String], required: true
-    argument :status, RecordingsFiltersStatusType, required: false
-    argument :date, RecordingsFiltersDateType, required: true
-    argument :duration, RecordingsFiltersDurationType, required: true
-    argument :viewport, RecordingsFiltersViewportType, required: true
+    argument :status, FiltersStatusType, required: false
+    argument :date, FiltersDateType, required: true
+    argument :duration, FiltersDurationType, required: true
+    argument :viewport, FiltersViewportType, required: true
   end
 end
