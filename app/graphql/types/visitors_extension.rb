@@ -27,26 +27,12 @@ module Types
     private
 
     def search(arguments, site_id)
-      params = {
+      {
         from: arguments[:page] * arguments[:size],
         size: arguments[:size],
         sort: sort(arguments),
-        query: {
-          bool: {
-            must: [
-              { term: { site_id: { value: site_id } } }
-            ]
-          }
-        }
+        query: VisitorsQuery.new(site_id, arguments[:query], arguments[:filters].to_h).build
       }
-
-      unless arguments[:query].empty?
-        params[:query][:bool][:filter] = [
-          { query_string: { query: "*#{arguments[:query]}*" } }
-        ]
-      end
-
-      params
     end
 
     def sort(arguments)
