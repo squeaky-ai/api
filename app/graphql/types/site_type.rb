@@ -18,6 +18,8 @@ module Types
     field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
     field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]
     field :browsers, [String, { null: true }], null: false, extensions: [BrowsersExtension]
+    # Fetch the data for heatmaps
+    field :heatmaps, HeatmapsType, null: false, extensions: [HeatmapsExtension]
     # Fetch a single recording
     field :recording, RecordingType, null: true, extensions: [RecordingExtension]
     # Fetch a list of recordings, refrain from fetching
