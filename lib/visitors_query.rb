@@ -27,6 +27,36 @@ class VisitorsQuery
 
   private
 
+  def site
+    @site ||= Site.find(@site_id)
+  end
+
+  def filter_by_status(value)
+    return if value.nil?
+
+    viewed_ids = site.recordings.select(:visitor_id).where(viewed: true).map(&:visitor_id)
+    filter = { terms: { id: viewed_ids } }
+
+    filter_type = value == 'New' ? :must : :must_not
+
+    @params[:bool][filter_type].push(filter) unless value.empty?
+  end
+
+  def filter_by_recordings(value)
+    return if value[:count].nil?
+
+    counts = site
+             .visitors
+             .select('visitors.id, COUNT(recordings) count')
+             .group('visitors.id')
+
+    valid = counts.filter do |c|
+      value[:range_type] == 'GreaterThan' ? c.count > value[:count] : c.count < value[:count]
+    end
+
+    @params[:bool][:must].push(terms: { id: valid.map(&:id) }) unless value.empty?
+  end
+
   def filter_by_first_visited(value)
     if value[:range_type] == 'Between'
       return filter_ranges(:first_viewed_at, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
