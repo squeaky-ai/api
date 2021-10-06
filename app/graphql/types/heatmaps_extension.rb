@@ -44,6 +44,8 @@ module Types
       # Get a list of all the click events that happened during those recordings
       events = click_events(pages.map(&:recording_id).uniq)
 
+      puts '@@', pages, events
+
       extract_events_in_range(events, pages)
     end
 
