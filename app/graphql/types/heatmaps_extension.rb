@@ -17,7 +17,7 @@ module Types
 
       {
         **device_counts,
-        items: items
+        items: items.compact
       }
     end
 
