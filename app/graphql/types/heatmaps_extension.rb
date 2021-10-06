@@ -44,8 +44,6 @@ module Types
       # Get a list of all the click events that happened during those recordings
       events = click_events(pages.map(&:recording_id).uniq)
 
-      puts '@@', pages, events
-
       extract_events_in_range(events, pages)
     end
 
@@ -65,7 +63,7 @@ module Types
         # the from-to timestamps so the event timestamp must fall within it
         match = pages.find { |p| p.recording_id == event.recording_id && event.timestamp.between?(p.entered_at, p.exited_at) }
 
-        return nil unless match
+        next unless match
 
         { x: event.data['x'], y: event.data['y'], id: event.data['id'] }
       end
