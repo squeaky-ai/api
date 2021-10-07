@@ -8,32 +8,37 @@ end
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  def perform(*args, **_kwargs)
-    @args = JSON.parse(args[0])
+  before_perform do |job|
+    @args = parse_arguments(job.arguments)
     @site = Site.find_by(uuid: @args['site_id'])
 
     validate!
+  end
 
+  after_perform { clean_up }
+
+  rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
+
+  rescue_from(StandardError) { Rails.logger.error 'Recording failed to save' }
+
+  def perform(*_args, **_kwargs)
     ActiveRecord::Base.transaction do
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
 
       persist_events!(recording)
       persist_pageviews!(recording)
-
-      clean_up
-
       index_to_elasticsearch!(recording, visitor)
     end
 
     Rails.logger.info 'Recording saved'
-  rescue InvalidRecording
-    Rails.logger.warn 'Recording was invalid, ignoring'
-    clean_up
-    nil
   end
 
   private
+
+  def parse_arguments(arguments)
+    JSON.parse(arguments[0])
+  end
 
   def index_to_elasticsearch!(recording, visitor)
     return if recording.deleted
