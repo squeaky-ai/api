@@ -60,6 +60,9 @@ module Types
     field :tag_delete,
           mutation: Mutations::TagDelete,
           description: 'Delete a tag'
+    field :tags_delete,
+          mutation: Mutations::TagsDelete,
+          description: 'Delete multiple tags'
     field :tag_update,
           mutation: Mutations::TagUpdate,
           description: 'Update the name of an existing tag'
