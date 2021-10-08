@@ -37,8 +37,8 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), viewport_x: 1920 }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), viewport_x: 2560 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, viewport_x: 1920 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewport_x: 2560 }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -57,9 +57,9 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), viewport_x: 1920 }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), viewport_x: 2560 }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), viewport_x: 3840 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, viewport_x: 1920 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewport_x: 2560 }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, viewport_x: 3840 }, site: site, visitor: create_visitor)
     end
 
     subject do

@@ -30,11 +30,13 @@ class Visitor < ApplicationRecord
   end
 
   def first_viewed_at
-    recordings.order(created_at: :desc).first.created_at
+    first_event = recordings.order(created_at: :desc).first
+    Time.at(first_event.disconnected_at / 1000).utc.iso8601
   end
 
   def last_activity_at
-    recordings.order(created_at: :desc).last.created_at
+    first_event = recordings.order(created_at: :desc).last
+    Time.at(first_event.disconnected_at / 1000).utc.iso8601
   end
 
   def recordings_count
@@ -57,8 +59,8 @@ class Visitor < ApplicationRecord
       site_id: recordings.first.site_id,
       visitor_id: visitor_id,
       attributes: external_attributes,
-      first_viewed_at: first_viewed_at.iso8601,
-      last_activity_at: last_activity_at.iso8601,
+      first_viewed_at: first_viewed_at,
+      last_activity_at: last_activity_at,
       locale: locale,
       language: language,
       devices: devices

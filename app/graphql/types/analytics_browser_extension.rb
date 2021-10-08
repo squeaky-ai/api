@@ -11,7 +11,7 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
                 .select('useragent, count(*) count')
                 .group(:useragent)
                 .order('count DESC')

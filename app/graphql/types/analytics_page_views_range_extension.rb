@@ -12,14 +12,14 @@ module Types
                 .find(site_id)
                 .recordings
                 .joins(:pages)
-                .select('recordings.created_at, count(pages) count')
-                .where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
-                .group(:created_at)
-                .order('recordings.created_at ASC')
+                .select('recordings.disconnected_at, count(pages) count')
+                .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+                .group(:disconnected_at)
+                .order('recordings.disconnected_at ASC')
 
       results.map do |result|
         {
-          date: result.created_at.iso8601,
+          date: Time.at(result.disconnected_at / 1000).utc.iso8601,
           page_view_count: result.count
         }
       end

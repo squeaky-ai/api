@@ -70,7 +70,7 @@ class Recording < ApplicationRecord
       locale: locale,
       language: language,
       duration: duration,
-      date_time: created_at.iso8601,
+      date_time: Time.at(disconnected_at / 1000).utc.iso8601,
       connected_at: connected_at,
       disconnected_at: disconnected_at,
       page_count: pages.all.size,

@@ -11,7 +11,7 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
                 .select('MAX(viewport_x) max_width, MIN(viewport_x) min_width, AVG(viewport_x) avg_width')
 
       {

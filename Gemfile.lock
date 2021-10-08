@@ -136,6 +136,8 @@ GEM
     globalid (0.5.2)
       activesupport (>= 5.0)
     graphql (1.12.16)
+    graphql_playground-rails (2.1.0)
+      rails (>= 5.1.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
@@ -270,6 +272,7 @@ DEPENDENCIES
   elasticsearch (~> 7.4)
   faker
   graphql
+  graphql_playground-rails
   kaminari
   listen (~> 3.3)
   pg (~> 1.1)

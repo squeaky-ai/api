@@ -41,8 +41,8 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
-      create_recording({ created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -66,9 +66,9 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
-      create_recording({ created_at: Date.new(2021, 8, 6) }, site: site, visitor: create_visitor)
-      create_recording({ created_at: Date.new(2021, 7, 6) }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000 }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -92,8 +92,8 @@ RSpec.describe Types::AnalyticsRecordingsCountExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ created_at: Date.new(2021, 8, 7) }, site: site, visitor: create_visitor)
-      create_recording({ created_at: Date.new(2021, 8, 6), viewed: true }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewed: true }, site: site, visitor: create_visitor)
     end
 
     subject do

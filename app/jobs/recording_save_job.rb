@@ -19,7 +19,7 @@ class RecordingSaveJob < ApplicationJob
 
   rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
 
-  rescue_from(StandardError) { Rails.logger.error 'Recording failed to save' }
+  # rescue_from(StandardError) { |e| Rails.logger.error 'Recording failed to save' }
 
   def perform(*_args, **_kwargs)
     ActiveRecord::Base.transaction do

@@ -47,8 +47,8 @@ RSpec.describe Types::AnalyticsDevicesExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -78,9 +78,9 @@ RSpec.describe Types::AnalyticsDevicesExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 7), useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 8, 6), useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
-      create_recording({ deleted: true, created_at: Date.new(2021, 7, 6), useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
+      create_recording({ deleted: true, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"' }, site: site, visitor: create_visitor)
     end
 
     subject do

@@ -11,7 +11,7 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
                 .select('COUNT(recordings) total_count, COUNT(CASE recordings.viewed WHEN TRUE THEN NULL ELSE 1 END) new_count')
 
       {

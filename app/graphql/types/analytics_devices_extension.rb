@@ -11,7 +11,7 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
                 .select(:useragent)
 
       groups = results.partition { |r| UserAgent.parse(r.useragent).mobile? }
