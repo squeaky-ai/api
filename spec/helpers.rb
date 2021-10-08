@@ -82,8 +82,11 @@ module Helpers
     Fixtures::Events.new(recording).sample(count)
   end
 
-  def create_tag(name = nil, recording:)
-    Tag.create(recording: recording, name: name || Faker::Book.title)
+  def create_tag(name = nil, site:, recording:)
+    tag = Tag.create(name: name || Faker::Book.title, site_id: site.id)
+    recording.tags << tag
+    recording.save
+    tag
   end
 
   def create_note(args = {}, recording:, user:)

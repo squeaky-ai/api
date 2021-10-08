@@ -20,7 +20,10 @@ module Mutations
 
       raise Errors::RecordingNotFound unless recording
 
-      Tag.create(recording: recording, name: name) unless recording.tags.find_by(name: name)
+      tag = @site.tags.find_or_create_by(name: name)
+
+      recording.tags << tag unless recording.tags.include?(tag)
+      recording.save
 
       @site
     end

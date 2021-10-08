@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_12_181205) do
+ActiveRecord::Schema.define(version: 2021_10_08_104627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recording_id"], name: "index_events_on_recording_id"
+  end
+
+  create_table "migrations", force: :cascade do |t|
+    t.bigint "version", null: false
   end
 
   create_table "notes", force: :cascade do |t|
@@ -51,7 +55,6 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
     t.boolean "viewed", default: false
     t.boolean "bookmarked", default: false
     t.string "locale", null: false
-    t.string "page_views", default: [], null: false, array: true
     t.string "useragent", null: false
     t.integer "viewport_x", null: false
     t.integer "viewport_y", null: false
@@ -62,9 +65,15 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "deleted", default: false
     t.bigint "visitor_id"
+    t.string "page_views", default: [], null: false, array: true
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"
+  end
+
+  create_table "recordings_tags", id: false, force: :cascade do |t|
+    t.bigint "recording_id", null: false
+    t.bigint "tag_id", null: false
   end
 
   create_table "sites", force: :cascade do |t|
@@ -81,10 +90,10 @@ ActiveRecord::Schema.define(version: 2021_09_12_181205) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "recording_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["recording_id"], name: "index_tags_on_recording_id"
+    t.bigint "site_id"
+    t.index ["site_id"], name: "index_tags_on_site_id"
   end
 
   create_table "teams", force: :cascade do |t|

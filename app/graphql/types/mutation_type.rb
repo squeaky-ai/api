@@ -57,12 +57,15 @@ module Types
     field :tag_create,
           mutation: Mutations::TagCreate,
           description: 'Create a new tag against a recording'
+    field :tag_delete,
+          mutation: Mutations::TagDelete,
+          description: 'Delete a tag'
     field :tag_update,
           mutation: Mutations::TagUpdate,
           description: 'Update the name of an existing tag'
-    field :tag_delete,
-          mutation: Mutations::TagDelete,
-          description: 'Delete the tag'
+    field :tag_remove,
+          mutation: Mutations::TagRemove,
+          description: 'Remove a tag from a recording'
     field :note_create,
           mutation: Mutations::NoteCreate,
           description: 'Create a new note against a recording'

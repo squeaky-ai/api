@@ -7,10 +7,11 @@ class Recording < ApplicationRecord
   belongs_to :site
   belongs_to :visitor
 
-  has_many :tags, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
+
+  has_and_belongs_to_many :tags
 
   INDEX = Rails.configuration.elasticsearch['recordings_index']
 

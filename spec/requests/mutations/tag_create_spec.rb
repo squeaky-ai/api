@@ -63,7 +63,7 @@ RSpec.describe Mutations::TagCreate, type: :request do
     let(:name) { Faker::Book.title }
 
     before do
-      recording.tags << Tag.new(name: name)
+      recording.tags << Tag.new(name: name, site_id: site.id)
       recording.save
     end
 

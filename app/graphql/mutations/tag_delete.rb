@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an existing tag
+  # Remove a tag from a recording
   class TagDelete < SiteMutation
     null false
 
     argument :site_id, ID, required: true
-    argument :recording_id, ID, required: true
     argument :tag_id, ID, required: true
 
     type Types::SiteType
@@ -15,12 +14,8 @@ module Mutations
       [Team::OWNER, Team::ADMIN, Team::MEMBER]
     end
 
-    def resolve(recording_id:, tag_id:, **_rest)
-      recording = @site.recordings.find_by(id: recording_id)
-
-      raise Errors::RecordingNotFound unless recording
-
-      recording.tags.find_by_id(tag_id)&.destroy
+    def resolve(tag_id:, **_rest)
+      @site.tags.find_by_id(tag_id)&.destroy
 
       @site
     end

@@ -18,7 +18,7 @@ class Site < ApplicationRecord
   has_many :notes, through: :recordings
   has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
-  has_many :tags, through: :recordings
+  has_many :tags
 
   # The plural sounds weird
   alias_attribute :team, :teams

@@ -2,5 +2,5 @@
 
 # A list of tags that can be added to a recording
 class Tag < ApplicationRecord
-  belongs_to :recording
+  has_and_belongs_to_many :recordings
 end
