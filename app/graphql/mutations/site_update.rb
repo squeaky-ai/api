@@ -10,7 +10,6 @@ module Mutations
     argument :site_id, ID, required: true
     argument :name, String, required: false
     argument :url, String, required: false
-    argument :dismiss_checklist, Boolean, required: false
 
     type Types::SiteType
 
@@ -18,7 +17,7 @@ module Mutations
       [Team::OWNER, Team::ADMIN]
     end
 
-    def resolve(name: nil, url: nil, dismiss_checklist: nil, **_rest)
+    def resolve(name: nil, url: nil, **_rest)
       update = {}
       update[:name] = name if name
 

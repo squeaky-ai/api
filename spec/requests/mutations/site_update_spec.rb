@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $name: String, $url: String, $dismiss_checklist: Boolean) {
-    siteUpdate(input: { siteId: $site_id, name: $name, url: $url, dismissChecklist: $dismiss_checklist }) {
+  mutation($site_id: ID!, $name: String, $url: String) {
+    siteUpdate(input: { siteId: $site_id, name: $name, url: $url }) {
       id
       name
       url
