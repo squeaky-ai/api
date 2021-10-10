@@ -17,9 +17,9 @@ class RecordingSaveJob < ApplicationJob
 
   after_perform { clean_up }
 
-  rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
-
   rescue_from(StandardError) { Rails.logger.error 'Recording failed to save' }
+
+  rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
 
   def perform(*_args, **_kwargs)
     ActiveRecord::Base.transaction do
@@ -154,7 +154,10 @@ class RecordingSaveJob < ApplicationJob
 
   def validate!
     # I guess this is possible
-    raise InvalidRecording, 'Recording has no events' if redis_events.size.zero?
+    if redis_events.size.zero?
+      Rails.logger.warn "Recording had no events: #{redis_recording.to_json} - #{@args.to_json}"
+      raise InvalidRecording, 'Recording has no events'
+    end
 
     # Probably a bot that bounced before the meta event could fire
     raise InvalidRecording, 'Recording has no page views' if redis_pageviews.size.zero?

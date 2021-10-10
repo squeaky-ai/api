@@ -54,6 +54,7 @@ module Types
       meta = Visitor
              .left_joins(:recordings)
              .select('visitors.id, visitors.starred, COUNT(recordings) count')
+             .where('recordings.deleted = false')
              .group('visitors.id')
              .find(ids)
 
@@ -65,7 +66,13 @@ module Types
     def enrich_items(visitors, meta)
       visitors.map do |v|
         match = meta.find { |m| m.id == v['id'] }
-        v.merge('starred' => match.starred, 'recordings_count' => { 'total' => match.count })
+        v.merge(
+          'starred' => match.starred,
+          'recordings_count' => { 'total' => match.count, 'new' => 0 },
+          # The front end is expecting the attributes as a JSON string
+          # because we can't type the unknown
+          'attributes' => v['attributes'].to_json
+        )
       end
     end
 

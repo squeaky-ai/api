@@ -107,4 +107,15 @@ module Helpers
     default = { url: '/', entered_at: 1631629334592, exited_at: 1631629343582, **args }
     Page.create(default)
   end
+
+  def index_visitors_in_es(visitors)
+    SearchClient.bulk(
+      refresh: 'wait_for',
+      body: visitors.map do |v|
+        {
+          index: { _id: v.id, _index: Visitor::INDEX, data: v.to_h }
+        }
+      end
+    )
+  end
 end

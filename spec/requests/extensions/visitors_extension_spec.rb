@@ -61,6 +61,8 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor_1)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor_1)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: visitor_2)
+
+      index_visitors_in_es([visitor_1, visitor_2])
     end
 
     subject do
@@ -78,7 +80,7 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       expect(response['pagination']).to eq(
         'pageSize' => 15,
         'total' => 2,
-        'sort' => 'views_count__desc'
+        'sort' => 'last_activity_at__desc'
       )
     end
   end
@@ -92,6 +94,8 @@ RSpec.describe Types::VisitorsExtension, type: :request do
   
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true }, site: site, visitor: visitor)
+
+      index_visitors_in_es([visitor])
     end
 
     subject do
@@ -102,7 +106,6 @@ RSpec.describe Types::VisitorsExtension, type: :request do
     it 'returns the count that excludes deleted recordings' do
       response = subject['data']['site']['visitors']
       expect(response['items'][0]['recordingsCount']['total']).to eq 1
-      expect(response['items'][0]['recordingsCount']['new']).to eq 1
     end
   end
 
@@ -111,7 +114,11 @@ RSpec.describe Types::VisitorsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
+      visitor = create_visitor
+
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+
+      index_visitors_in_es([visitor])
     end
 
     subject do
@@ -119,9 +126,9 @@ RSpec.describe Types::VisitorsExtension, type: :request do
       graphql_request(visitors_query, variables, user)
     end
 
-    it 'returns nil' do
+    it 'returns an empty hash as a string' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['attributes']).to be nil
+      expect(response['items'][0]['attributes']).to eq '{}'
     end
   end
 
@@ -132,7 +139,10 @@ RSpec.describe Types::VisitorsExtension, type: :request do
 
     before do
       visitor = create_visitor(external_attributes: external_attributes)
+
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+
+      index_visitors_in_es([visitor])
     end
 
     subject do
