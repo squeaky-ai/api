@@ -64,20 +64,9 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_visitor!
-    if external_attributes['id']
-      visitor = Visitor
-                .joins(:recordings)
-                .where("visitors.external_attributes->>'id' = ? AND recordings.site_id = ?", external_attributes['id'], @site.id)
-                .first
-
-      return visitor if visitor
-    end
-
-    visitor = Visitor.find_or_create_by(visitor_id: @args['visitor_id'])
-
+    visitor = find_or_create_visitor
     visitor.external_attributes = external_attributes
     visitor.save!
-
     visitor
   end
 
@@ -182,6 +171,20 @@ class RecordingSaveJob < ApplicationJob
       memo[key] = value.to_s
       memo
     end
+  end
+
+  def find_or_create_visitor
+    if external_attributes['id']
+      visitor = Site
+                .find(@site.id)
+                .visitors
+                .where("visitors.external_attributes->>'id' = ?", external_attributes['id'])
+                .first
+
+      return visitor if visitor
+    end
+
+    Visitor.find_or_create_by(visitor_id: @args['visitor_id'])
   end
 
   def redis_key(prefix)

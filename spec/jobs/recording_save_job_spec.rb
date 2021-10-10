@@ -172,6 +172,50 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
   end
 
+  context 'when the visitor already exists but has updated attributes' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    let(:visitor) { create_visitor(visitor_id: event['visitor_id'], external_attributes: { id: 1, email: 'bar@baz.com' }) }
+    let(:recording) { create_recording({ session_id: event['session_id'] }, visitor: visitor, site: site) }
+
+    before do
+      recording
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording(identify: { id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'stores the attributes with the visitor' do
+      subject
+
+      expect(site.reload.visitors.first.external_attributes).to eq('id' => '1', 'email' => 'foo@bar.com')
+    end
+
+    it 'updates the existing users attributes' do
+      expect { subject }.to change { visitor.reload.external_attributes['email'] }.from('bar@baz.com').to('foo@bar.com')
+    end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
+    end
+  end
+
   context 'when the duration is less than 3 seconds' do
     let(:now) { Time.now.to_i * 1000 }
     let(:site) { create_site }
