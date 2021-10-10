@@ -151,7 +151,8 @@ RSpec.describe RecordingSaveJob, type: :job do
     before do
       fixture = Fixtures::RedisEvents.new(event, now)
 
-      fixture.create_recording(identify: { id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
       fixture.create_page_view
       fixture.create_base_events
 
@@ -191,7 +192,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       recording
       fixture = Fixtures::RedisEvents.new(event, now)
 
-      fixture.create_recording(identify: { id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
       fixture.create_page_view
       fixture.create_base_events
 

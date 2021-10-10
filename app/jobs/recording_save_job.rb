@@ -165,9 +165,7 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def external_attributes
-    identify = redis_recording['identify']
-
-    JSON.parse(identify || '{}').reduce({}) do |memo, (key, value)|
+    JSON.parse(redis_identify || '{}').reduce({}) do |memo, (key, value)|
       memo[key] = value.to_s
       memo
     end
@@ -191,6 +189,11 @@ class RecordingSaveJob < ApplicationJob
     "#{prefix}::#{@args['site_id']}::#{@args['session_id']}"
   end
 
+  def redis_identify
+    key = redis_key('identify')
+    @redis_identify ||= Redis.current.get(key)
+  end
+
   def redis_events
     key = redis_key('events')
     @redis_events ||= Redis.current.lrange(key, 0, -1).map { |i| JSON.parse(i) }.sort_by { |e| e['timestamp'] }
@@ -207,7 +210,7 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def clean_up
-    keys = %w[events recording pageviews]
+    keys = %w[events recording pageviews identify]
     keys.each { |k| Redis.current.del(redis_key(k)) }
   end
 end

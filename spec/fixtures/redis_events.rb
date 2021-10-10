@@ -39,12 +39,18 @@ module Fixtures
 
       item = {
         'type' =>'0',
-       'data' => {},
+        'data' => {},
         'timestamp' => @timestamp,
         **args
       }
 
       Redis.current.lpush(key, item.to_json)
+    end
+
+    def create_identify(args = {})
+      key = redis_key('identify')
+      
+      Redis.current.set(key, args)
     end
 
     def create_base_events
