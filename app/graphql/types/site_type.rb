@@ -18,6 +18,7 @@ module Types
     field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
     field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]
     field :browsers, [String, { null: true }], null: false, extensions: [BrowsersExtension]
+    field :ip_blacklist, [IpBlacklistType, { null: true }], null: false
     field :tags, [TagType, { null: true }], null: false
     # Fetch the data for heatmaps
     field :heatmaps, HeatmapsType, null: false, extensions: [HeatmapsExtension]

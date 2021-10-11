@@ -26,6 +26,12 @@ module Types
     field :site_delete,
           mutation: Mutations::SiteDelete,
           description: 'Delete the site, team and any recording data'
+    field :ip_blacklist_create,
+          mutation: Mutations::SiteIpBlacklistCreate,
+          description: 'Create a new entry in the ip blacklist'
+    field :ip_blacklist_delete,
+          mutation: Mutations::SiteIpBlacklistDelete,
+          description: 'Delete an entry from the ip blacklist'
 
     # Team
     field :team_invite,
