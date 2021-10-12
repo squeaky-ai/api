@@ -30,12 +30,12 @@ class Visitor < ApplicationRecord
   end
 
   def first_viewed_at
-    first_event = recordings.order(created_at: :desc).first
-    Time.at(first_event.disconnected_at / 1000).utc.iso8601
+    first_event = recordings.order(connected_at: :desc).first
+    Time.at(first_event.connected_at / 1000).utc.iso8601
   end
 
   def last_activity_at
-    first_event = recordings.order(created_at: :desc).last
+    first_event = recordings.order(disconnected_at: :asc).first
     Time.at(first_event.disconnected_at / 1000).utc.iso8601
   end
 
