@@ -32,6 +32,12 @@ module Types
     field :ip_blacklist_delete,
           mutation: Mutations::SiteIpBlacklistDelete,
           description: 'Delete an entry from the ip blacklist'
+    field :domain_blacklist_create,
+          mutation: Mutations::SiteDomainBlacklistCreate,
+          description: 'Create a new entry in the domain blacklist'
+    field :domain_blacklist_delete,
+          mutation: Mutations::SiteDomainBlacklistDelete,
+          description: 'Delete an entry from the domain blacklist'
 
     # Team
     field :team_invite,

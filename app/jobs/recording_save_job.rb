@@ -3,6 +3,9 @@
 class InvalidRecording < StandardError
 end
 
+class BlacklistedRecording < StandardError
+end
+
 # Pick up messages from SQS and save the recordings
 # that are temporarily stored in Redis
 class RecordingSaveJob < ApplicationJob
@@ -20,6 +23,8 @@ class RecordingSaveJob < ApplicationJob
   rescue_from(StandardError) { Rails.logger.error 'Recording failed to save' }
 
   rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
+
+  rescue_from(BlacklistedRecording) { Rails.logger.info 'Recording was blacklisted, ignoring' }
 
   def perform(*_args, **_kwargs)
     ActiveRecord::Base.transaction do
@@ -150,6 +155,10 @@ class RecordingSaveJob < ApplicationJob
 
     # Probably a bot that bounced before the meta event could fire
     raise InvalidRecording, 'Recording has no page views' if redis_pageviews.size.zero?
+
+    # Users can configure a domain or an email where any recordings
+    # will not be saved
+    raise BlacklistedRecording, 'Visitors linked email is blacklisted' if blacklisted_visitor?
   end
 
   def soft_delete?
@@ -183,6 +192,19 @@ class RecordingSaveJob < ApplicationJob
     end
 
     Visitor.find_or_create_by(visitor_id: @args['visitor_id'])
+  end
+
+  def blacklisted_visitor?
+    email = external_attributes['email']
+
+    return false unless email
+
+    @site.domain_blacklist.each do |blacklist|
+      return true if blacklist['type'] == 'domain' && email.end_with?(blacklist['value'])
+      return true if blacklist['type'] == 'email' && email == blacklist['value']
+    end
+
+    false
   end
 
   def redis_key(prefix)

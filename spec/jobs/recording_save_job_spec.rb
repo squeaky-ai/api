@@ -293,4 +293,156 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(SearchClient).not_to have_received(:bulk)
     end
   end
+
+  context 'when the linked email matches a blacklisted domain' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.domain_blacklist << { type: 'domain', value: 'bar.com' }
+      site.save
+
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'does not save the recording' do
+      expect { subject }.not_to change { site.reload.recordings.size }
+    end
+
+    it 'does not index to elasticsearch' do
+      subject
+      expect(SearchClient).not_to have_received(:bulk)
+    end
+  end
+
+  context 'when the linked email does not match a blacklisted domain' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.domain_blacklist << { type: 'domain', value: 'teapot.com' }
+      site.save
+
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'saves the recording' do
+      expect { subject }.to change { site.reload.recordings.size }.from(0).to(1)
+    end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
+    end
+  end
+
+  context 'when the linked email matches a blacklisted email' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.domain_blacklist << { type: 'email', value: 'foo@bar.com' }
+      site.save
+
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'does not save the recording' do
+      expect { subject }.not_to change { site.reload.recordings.size }
+    end
+
+    it 'does not index to elasticsearch' do
+      subject
+      expect(SearchClient).not_to have_received(:bulk)
+    end
+  end
+
+  context 'when the linked email does not match a blacklisted domain' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.domain_blacklist << { type: 'email', value: 'foo@teapot.com' }
+      site.save
+
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording
+      fixture.create_identify({ id: 1, email: 'foo@bar.com' }.to_json)
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'saves the recording' do
+      expect { subject }.to change { site.reload.recordings.size }.from(0).to(1)
+    end
+
+    it 'indexes to elasticsearch' do
+      subject
+      expect(SearchClient).to have_received(:bulk)
+    end
+  end
 end
