@@ -2,8 +2,8 @@
 
 # Visitors on sites that have recordings
 class Visitor < ApplicationRecord
-  has_many :pages, through: :recordings
   has_many :recordings, dependent: :destroy
+  has_many :pages, through: :recordings
 
   INDEX = Rails.configuration.elasticsearch['visitors_index']
 
