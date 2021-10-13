@@ -15,7 +15,7 @@ site_ip_blacklist_create_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::SiteIpBlacklistCreate, type: :request do
-  context 'when creating a brand new tag' do
+  context 'when adding a new ip' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 

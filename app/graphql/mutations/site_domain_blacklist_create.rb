@@ -17,9 +17,28 @@ module Mutations
 
     def resolve(type:, value:, **_rest)
       @site.domain_blacklist << { type: type, value: value }
+
+      if type == 'domain'
+        delete_visitors_by_domain(value)
+      else
+        delete_visitors_by_email(value)
+      end
+
       @site.save
 
       @site
+    end
+
+    private
+
+    def delete_visitors_by_domain(domain)
+      ids = @site.visitors.where("external_attributes->>'email' LIKE ?", "%@#{domain}").select(:id)
+      Visitor.destroy(ids.map(&:id))
+    end
+
+    def delete_visitors_by_email(email)
+      ids = @site.visitors.where("external_attributes->>'email' = ?", email).select(:id)
+      Visitor.destroy(ids.map(&:id))
     end
   end
 end

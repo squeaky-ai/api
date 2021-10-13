@@ -15,12 +15,12 @@ site_domain_blacklist_create_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::SiteDomainBlacklistCreate, type: :request do
-  context 'when creating a brand new tag' do
+  context 'when creating a new domain' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, type: 'domain', value: '@squeaky.ai' }
+      variables = { site_id: site.id, type: 'domain', value: 'squeaky.ai' }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Mutations::SiteDomainBlacklistCreate, type: :request do
         [
           {
             'type' => 'domain',
-            'value' => '@squeaky.ai'
+            'value' => 'squeaky.ai'
           }
         ]  
       )
@@ -37,6 +37,91 @@ RSpec.describe Mutations::SiteDomainBlacklistCreate, type: :request do
 
     it 'updates the record' do
       expect { subject }.to change { site.reload.domain_blacklist.size }.from(0).to(1)
+    end
+  end
+
+  context 'when creating a new email' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    subject do
+      variables = { site_id: site.id, type: 'email', value: 'john@squeaky.ai' }
+      graphql_request(site_domain_blacklist_create_mutation, variables, user)
+    end
+
+    it 'returns the updated site' do
+      expect(subject['data']['domainBlacklistCreate']['domainBlacklist']).to eq(
+        [
+          {
+            'type' => 'email',
+            'value' => 'john@squeaky.ai'
+          }
+        ]  
+      )
+    end
+
+    it 'updates the record' do
+      expect { subject }.to change { site.reload.domain_blacklist.size }.from(0).to(1)
+    end
+  end
+
+  context 'when some visitors exist and some have matching domains' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'ray@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'john@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'robby@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'asd@asdas.ai' }))
+    end
+
+    subject do
+      variables = { site_id: site.id, type: 'domain', value: 'squeaky.ai' }
+      graphql_request(site_domain_blacklist_create_mutation, variables, user)
+    end
+
+    it 'updates the record' do
+      expect { subject }.to change { site.reload.domain_blacklist.size }.from(0).to(1)
+    end
+
+    it 'deletes recordings that match the attributes' do
+      expect { subject }.to change { site.reload.recordings.size }.from(5).to(1)
+    end
+
+    it 'deletes visitors that match the attributes' do
+      expect { subject }.to change { site.reload.visitors.size }.from(5).to(1)
+    end
+  end
+  
+  context 'when some visitors exist and some have matching emails' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    before do
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'ray@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'john@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'robby@squeaky.ai' }))
+      create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'asd@asdas.ai' }))
+    end
+
+    subject do
+      variables = { site_id: site.id, type: 'email', value: 'john@squeaky.ai' }
+      graphql_request(site_domain_blacklist_create_mutation, variables, user)
+    end
+
+    it 'updates the record' do
+      expect { subject }.to change { site.reload.domain_blacklist.size }.from(0).to(1)
+    end
+
+    it 'deletes recordings that match the attributes' do
+      expect { subject }.to change { site.reload.recordings.size }.from(5).to(4)
+    end
+
+    it 'deletes visitors that match the attributes' do
+      expect { subject }.to change { site.reload.visitors.size }.from(5).to(4)
     end
   end
 end
