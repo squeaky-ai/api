@@ -23,6 +23,8 @@ class Site < ApplicationRecord
   # The plural sounds weird
   alias_attribute :team, :teams
 
+  default_scope { order(name: :asc) }
+
   ESSENTIALS = 0
   PREMIUM = 1
   UNLIMITED = 2
