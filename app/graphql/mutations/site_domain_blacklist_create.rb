@@ -32,13 +32,48 @@ module Mutations
     private
 
     def delete_visitors_by_domain(domain)
-      ids = @site.visitors.where("external_attributes->>'email' LIKE ?", "%@#{domain}").select(:id)
-      Visitor.destroy(ids.map(&:id))
+      visitors = @site.visitors.where("external_attributes->>'email' LIKE ?", "%@#{domain}")
+
+      visitor_ids = visitors.map(&:id)
+      recording_ids = visitors.map { |v| v.recordings.map(&:id) }.flatten
+
+      Visitor.destroy(visitor_ids)
+      delete_visitors_from_elasticsearch(visitor_ids, recording_ids)
     end
 
     def delete_visitors_by_email(email)
-      ids = @site.visitors.where("external_attributes->>'email' = ?", email).select(:id)
-      Visitor.destroy(ids.map(&:id))
+      visitors = @site.visitors.where("external_attributes->>'email' = ?", email)
+
+      visitor_ids = visitors.map(&:id)
+      recording_ids = visitors.map { |v| v.recordings.map(&:id) }.flatten
+
+      Visitor.destroy(visitor_ids)
+      delete_visitors_from_elasticsearch(visitor_ids, recording_ids)
+    end
+
+    def delete_visitors_from_elasticsearch(visitor_ids, recording_ids)
+      return if visitor_ids.empty? && recording_ids.empty?
+
+      SearchClient.bulk(
+        body: [
+          *visitor_ids.map do |id|
+            {
+              delete: {
+                _index: Visitor::INDEX,
+                _id: id
+              }
+            }
+          end,
+          *recording_ids.map do |id|
+            {
+              delete: {
+                _index: Recording::INDEX,
+                _id: id
+              }
+            }
+          end
+        ]
+      )
     end
   end
 end
