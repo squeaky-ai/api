@@ -30,56 +30,21 @@ module Types
       {
         from: arguments[:page] * arguments[:size],
         size: arguments[:size],
-        sort: sort(arguments, site_id),
+        sort: sort(arguments),
         query: VisitorsQuery.new(site_id, arguments[:query], arguments[:filters].to_h).build
       }
     end
 
-    def sort(arguments, site_id)
+    def sort(arguments)
       parts = arguments[:sort].split('__')
       sort = {}
 
-      if parts.first == 'recordings_count'
-        sort = sort_by_recording_count(parts.last, site_id)
-      else
-        sort[parts.first] = {
-          unmapped_type: 'date_nanos',
-          order: parts.last
-        }
-      end
+      sort[parts.first] = {
+        unmapped_type: 'date_nanos',
+        order: parts.last
+      }
 
       sort
-    end
-
-    def sort_by_recording_count(direction, site_id)
-      # Get a list of all the visitor ids in either ascending
-      # or descending order based on the amount of recordings
-      # they've made
-      recordings = Recording
-                   .select('visitor_id, COUNT(visitor_id) recordings_count')
-                   .where('site_id = ?', site_id)
-                   .group('visitor_id')
-                   .order("recordings_count #{direction}")
-
-      # Run a custom sort based on the exact order of the ids
-      {
-        _script: {
-          type: 'number',
-          script: {
-            params: {
-              scoring: recordings.map { |r| { id: r.id, score: r.recordings_count } }
-            },
-            source: <<-PAINLESS
-              for (int i = 0; i < params.scoring.length; i++) {
-                if (doc['id'].value == params.scoring[i].id) {
-                  return params.scoring[i].score;
-                }
-              }
-              return 0;
-            PAINLESS
-          }
-        }
-      }
     end
 
     def items(results)
