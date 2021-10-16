@@ -66,16 +66,17 @@ module Types
         _script: {
           type: 'number',
           script: {
-            lang: 'painless',
             params: {
-              ids: recordings.map(&:id)
+              scoring: recordings.map { |r| { id: r.id, score: r.recordings_count } }
             },
-            source: <<-TEXT
-              int idsCount = params.ids.size();
-              def id = doc['id'].value;
-              int foundIdx = params.ids.indexOf(id);
-              return foundIdx > -1 ? foundIdx: idsCount + 1;
-            TEXT
+            source: <<-PAINLESS
+              for (int i = 0; i < params.scoring.length; i++) {
+                if (doc['id'].value == params.scoring[i].id) {
+                  return params.scoring[i].score;
+                }
+              }
+              return 0;
+            PAINLESS
           }
         }
       }
