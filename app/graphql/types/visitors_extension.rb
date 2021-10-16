@@ -52,35 +52,34 @@ module Types
     end
 
     def sort_by_recording_count(direction, site_id)
-      {}
       # Get a list of all the visitor ids in either ascending
       # or descending order based on the amount of recordings
       # they've made
-      # recordings = Recording
-      #              .select('visitor_id, COUNT(visitor_id) recordings_count')
-      #              .where('site_id = ?', site_id)
-      #              .group('visitor_id')
-      #              .order("recordings_count #{direction}")
+      recordings = Recording
+                   .select('visitor_id, COUNT(visitor_id) recordings_count')
+                   .where('site_id = ?', site_id)
+                   .group('visitor_id')
+                   .order("recordings_count #{direction}")
 
-      # # Run a custom sort based on the exact order of the ids
-      # {
-      #   _script: {
-      #     type: 'number',
-      #     script: {
-      #       params: {
-      #         scoring: recordings.map { |r| { id: r.id, score: r.recordings_count } }
-      #       },
-      #       source: <<-PAINLESS
-      #         for (int i = 0; i < params.scoring.length; i++) {
-      #           if (doc['id'].value == params.scoring[i].id) {
-      #             return params.scoring[i].score;
-      #           }
-      #         }
-      #         return 0;
-      #       PAINLESS
-      #     }
-      #   }
-      # }
+      # Run a custom sort based on the exact order of the ids
+      {
+        _script: {
+          type: 'number',
+          script: {
+            params: {
+              scoring: recordings.map { |r| { id: r.id, score: r.recordings_count } }
+            },
+            source: <<-PAINLESS
+              for (int i = 0; i < params.scoring.length; i++) {
+                if (doc['id'].value == params.scoring[i].id) {
+                  return params.scoring[i].score;
+                }
+              }
+              return 0;
+            PAINLESS
+          }
+        }
+      }
     end
 
     def items(results)
