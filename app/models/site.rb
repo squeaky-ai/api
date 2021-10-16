@@ -56,6 +56,10 @@ class Site < ApplicationRecord
     end
   end
 
+  def recordings_count
+    recordings.where(deleted: false).count
+  end
+
   def verify!
     update!(verified_at: Time.now)
   end

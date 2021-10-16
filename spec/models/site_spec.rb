@@ -152,4 +152,34 @@ RSpec.describe Site, type: :model do
       end
     end
   end
+
+  describe '#recordings_count' do
+    context 'when there are no recordings' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.recordings_count }
+
+      it 'returns 0' do
+        expect(subject).to eq 0
+      end
+    end
+
+    context 'when there are some recordings' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        create_recording(site: site, visitor: create_visitor)
+        create_recording(site: site, visitor: create_visitor)
+        create_recording({ deleted: true }, site: site, visitor: create_visitor)
+      end
+
+      subject { site.recordings_count }
+
+      it 'returns the number of un-deleted recordings' do
+        expect(subject).to eq 2
+      end
+    end
+  end
 end

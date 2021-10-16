@@ -21,6 +21,7 @@ module Types
     field :ip_blacklist, [IpBlacklistType, { null: true }], null: false
     field :domain_blacklist, [DomainBlacklistType, { null: true }], null: false
     field :active_visitor_count, Integer, null: false
+    field :recordings_count, Integer, null: false
     field :tags, [TagType, { null: true }], null: false
     # Fetch the data for heatmaps
     field :heatmaps, HeatmapsType, null: false, extensions: [HeatmapsExtension]
