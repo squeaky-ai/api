@@ -6,7 +6,7 @@ module Types
   class NotesExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
-      field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
+      field.argument(:size, Integer, required: false, default_value: 25, description: 'The page size')
     end
 
     def resolve(object:, arguments:, **_rest)

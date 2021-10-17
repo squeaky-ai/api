@@ -8,7 +8,7 @@ module Types
   class RecordingsExtension < GraphQL::Schema::FieldExtension
     def apply
       field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
-      field.argument(:size, Integer, required: false, default_value: 15, description: 'The page size')
+      field.argument(:size, Integer, required: false, default_value: 25, description: 'The page size')
       field.argument(:query, String, required: false, default_value: '', description: 'The search query')
       field.argument(:sort, RecordingSortType, required: false, default_value: 'connected_at__desc', description: 'Sort order')
       field.argument(:filters, RecordingsFiltersType, required: false, default_value: nil, description: 'Filter results')

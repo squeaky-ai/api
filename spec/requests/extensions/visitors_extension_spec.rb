@@ -78,7 +78,7 @@ RSpec.describe Types::VisitorsExtension, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['visitors']
       expect(response['pagination']).to eq(
-        'pageSize' => 15,
+        'pageSize' => 25,
         'total' => 2,
         'sort' => 'last_activity_at__desc'
       )
