@@ -99,6 +99,12 @@ module Types
     field :recording_bookmarked,
           mutation: Mutations::RecordingBookmarked,
           description: 'Set a recordings bookmarked status'
+    field :recordings_delete,
+          mutation: Mutations::RecordingsDelete,
+          description: 'Bulk delete recordings'
+    field :recordings_viewed,
+          mutation: Mutations::RecordingsViewed,
+          description: 'Bulk view/unview recordings'
 
     # Feedback
     field :feedback_create,
