@@ -48,6 +48,7 @@ class VisitorsQuery
     counts = site
              .visitors
              .select('visitors.id, COUNT(recordings) rec_count')
+             .where('recordings.deleted = false')
              .group('visitors.id')
 
     valid = counts.filter do |c|
