@@ -47,11 +47,11 @@ class VisitorsQuery
 
     counts = site
              .visitors
-             .select('visitors.id, COUNT(recordings) count')
+             .select('visitors.id, COUNT(recordings) rec_count')
              .group('visitors.id')
 
     valid = counts.filter do |c|
-      value[:range_type] == 'GreaterThan' ? c.count > value[:count] : c.count < value[:count]
+      value[:range_type] == 'GreaterThan' ? c.rec_count > value[:count] : c.rec_count < value[:count]
     end
 
     @params[:bool][:must].push(terms: { id: valid.map(&:id) }) unless value.empty?
