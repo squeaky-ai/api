@@ -42,6 +42,10 @@ class Recording < ApplicationRecord
     pages.last.url
   end
 
+  def page_views
+    pages.map(&:url)
+  end
+
   def duration
     (disconnected_at || 0) - (connected_at || 0)
   end
