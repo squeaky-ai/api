@@ -51,13 +51,13 @@ class Recording < ApplicationRecord
   end
 
   def previous_recording
-    recordings = site.recordings.order('connected_at DESC')
+    recordings = site.recordings.where(deleted: false).order('connected_at DESC')
     index = recordings.index(self)
     index.zero? ? nil : recordings[index - 1]
   end
 
   def next_recording
-    recordings = site.recordings.order('connected_at DESC')
+    recordings = site.recordings.where(deleted: false).order('connected_at DESC')
     index = recordings.index(self)
     index >= recordings.size ? nil : recordings[index + 1]
   end
