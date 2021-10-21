@@ -5,7 +5,8 @@
 ### Requirements
 - Ruby 3.0.0
 - Postgres 12.x
-- Or, Docker and docker-compose
+- Redis 5.x
+- ElasticSearch 7.x
 
 In order to send mail through the API, you will need AWS credentials located at ~/.aws, @lemonjs can create you some if you need them.
 
@@ -14,24 +15,27 @@ In order to send mail through the API, you will need AWS credentials located at 
 $ git clone git@github.com:squeaky-ai/api.git
 $ cd api
 
-# Start bare metal
 $ bundle install
 $ rails server
-
-# Or, start with docker
-$ docker-compose build
-$ docker-compose up
 ```
 
 ### Create the database and run migrations
 ```shell
-# If using docker, first run:
-# $ docker-compose exec server sh
-
 $ rails db:create
 $ rails db:migrate
 ```
 
+### Running the tests
+```shell
+$ rspec
+```
+
+### Importing recordings
+In production a message is dropped onto SQS, which is picked up by a worker. In development the queue adapter is `:inline` to make things easier to work with. To create a recording you can run the gateway and the script locally, and use the examples directory to fake a session. Afterwards, run the following command to pick up the redis data and pass it to the job:
+```shell
+$ rake recordings:import_from_local
+```
+
 ### Usage
-- [Playground](http://localhost:4000/) (disabled in production)
-- [GraphQL endpoint](http://localhost:4000/api/graphql)
+- [Playground](http://localhost:4000/api/playground/) (disabled in production)
+- [GraphQL Endpoint](http://localhost:4000/api/graphql)
