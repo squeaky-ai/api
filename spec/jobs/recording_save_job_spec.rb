@@ -40,6 +40,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.viewport_x).to eq 1920
       expect(recording.viewport_y).to eq 1080
       expect(recording.session_id).to eq event['session_id']
+      expect(recording.referrer).to eq nil
       expect(recording.connected_at).to eq now
       expect(recording.disconnected_at).to eq now + 6834
     end
@@ -443,6 +444,38 @@ RSpec.describe RecordingSaveJob, type: :job do
     it 'indexes to elasticsearch' do
       subject
       expect(SearchClient).to have_received(:bulk)
+    end
+  end
+
+  context 'when a referrer exists with the recording' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording(referrer: 'http://google.com')
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'stores the referrer with the recording' do
+      subject
+      recording = site.reload.recordings.first
+
+      expect(recording.referrer).to eq 'http://google.com'
     end
   end
 end

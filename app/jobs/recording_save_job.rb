@@ -87,6 +87,7 @@ class RecordingSaveJob < ApplicationJob
       recording.useragent = redis_recording['useragent']
       recording.viewport_x = redis_recording['width']
       recording.viewport_y = redis_recording['height']
+      recording.referrer = redis_recording['referrer']
       recording.connected_at = redis_events.first['timestamp']
     end
 
