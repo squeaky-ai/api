@@ -34,9 +34,9 @@ RSpec.describe Types::VisitorAverageSessionDurationExtension, type: :request do
     let(:visitor) { create_visitor }
 
     before do
-      create_recording({ deleted: true, connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
-      create_recording({ deleted: true, connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor)
-      create_recording({ deleted: true, connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: create_visitor)
+      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor)
+      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: create_visitor)
     end
 
     subject do
