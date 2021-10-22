@@ -7,7 +7,7 @@ module Types
       visitor_id = object.object[:id]
 
       Recording
-        .select('AVG( (disconnected_at - connected_at) ) average_session_duration')
+        .select('STDDEV_SAMP(disconnected_at - connected_at) average_session_duration')
         .where('visitor_id = ?', visitor_id)
         .to_a
         .first
