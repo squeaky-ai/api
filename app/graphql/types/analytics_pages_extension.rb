@@ -11,11 +11,17 @@ module Types
       pages = Site
               .find(site_id)
               .pages
+              .select('url, count(url) page_count, AVG(exited_at - entered_at) page_avg')
               .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
               .group(:url)
-              .count
 
-      pages.map { |k, v| { path: k, count: v } }
+      pages.map do |page|
+        {
+          path: page.url,
+          count: page.page_count,
+          avg: page.page_avg.negative? ? 0 : page.page_avg # TODO something is not right here!
+        }
+      end
     end
   end
 end

@@ -11,11 +11,6 @@ module Types
           null: false,
           extensions: [AnalyticsRecordingsCountExtension]
 
-    field :page_views_range,
-          [AnalyticsPageViewsRangeType],
-          null: false,
-          extensions: [AnalyticsPageViewsRangeExtension]
-
     field :visitors_count,
           AnalyticsVisitorsCountType,
           null: false,
@@ -75,5 +70,10 @@ module Types
           [AnalyticsPageViewsType, { null: true }],
           null: false,
           extensions: [AnalyticsPageViewsExtension]
+
+    field :average_sessions_per_visitor,
+          Float,
+          null: false,
+          extensions: [AnalyticsVisitorSessionsExtension]
   end
 end

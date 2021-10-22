@@ -6,5 +6,6 @@ module Types
 
     field :path, String, null: false
     field :count, Integer, null: false
+    field :avg, Integer, null: false
   end
 end
