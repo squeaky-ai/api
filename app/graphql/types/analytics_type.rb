@@ -21,10 +21,10 @@ module Types
           null: false,
           extensions: [AnalyticsVisitorsCountExtension]
 
-    field :page_views,
+    field :page_view_count,
           Integer,
           null: false,
-          extensions: [AnalyticsPageViewsExtension]
+          extensions: [AnalyticsPageViewCountExtension]
 
     field :average_session_duration,
           Integer,
@@ -60,5 +60,20 @@ module Types
           AnalyticsDimensionsType,
           null: false,
           extensions: [AnalyticsDimensionsExtension]
+
+    field :referrers,
+          [AnalyticsReferrerType, { null: true }],
+          null: false,
+          extensions: [AnalyticsReferrersExtension]
+
+    field :visitors,
+          [AnalyticsVisitorType, { null: true }],
+          null: false,
+          extensions: [AnalyticsVisitorsExtension]
+
+    field :page_views,
+          [AnalyticsPageViewsType, { null: true }],
+          null: false,
+          extensions: [AnalyticsPageViewsExtension]
   end
 end
