@@ -11,8 +11,11 @@ module Types
       Site
         .find(site_id)
         .recordings
+        .select('STDDEV_SAMP(disconnected_at - connected_at) average_session_duration')
         .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-        .average('disconnected_at - connected_at') || 0
+        .to_a
+        .first
+        .average_session_duration
     end
   end
 end
