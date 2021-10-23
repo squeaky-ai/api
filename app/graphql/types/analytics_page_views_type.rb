@@ -4,7 +4,8 @@ module Types
   class AnalyticsPageViewsType < Types::BaseObject
     description 'The analytics page views item'
 
-    field :unique, Boolean, null: true
+    field :total, Integer, null: false
+    field :unique, Integer, null: false
     field :timestamp, GraphQL::Types::BigInt, null: false
   end
 end

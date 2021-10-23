@@ -7,6 +7,7 @@ analytics_page_views_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         pageViews {
+          total
           unique
           timestamp
         }
@@ -38,9 +39,9 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
     before do
       visitor = create_visitor
 
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
       create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000)] }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000)] }, site: site, visitor: visitor)
     end
 
     subject do
@@ -52,15 +53,18 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
       response = subject['data']['site']['analytics']
       expect(response['pageViews']).to match_array([
         {
-          'unique' => false,
+          'total' => 2,
+          'unique' => 2,
           'timestamp' => '1628290800000'
         },
         {
-          'unique' => false,
+          'total' => 1,
+          'unique' => 1,
           'timestamp' => '1628204400000'
         },
         {
-          'unique' => true,
+          'total' => 2,
+          'unique' => 0,
           'timestamp' => '1628118000000'
         }
       ])
@@ -74,8 +78,8 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
     before do
       visitor = create_visitor
 
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000)] }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
+      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000), create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000)] }, site: site, visitor: visitor)
       create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000)] }, site: site, visitor: visitor)
       create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000)] }, site: site, visitor: visitor)
     end
@@ -89,15 +93,18 @@ RSpec.describe Types::AnalyticsPageViewsExtension, type: :request do
       response = subject['data']['site']['analytics']
       expect(response['pageViews']).to match_array([
         {
-          'unique' => false,
+          'total' => 2,
+          'unique' => 2,
           'timestamp' => '1628290800000'
         },
         {
-          'unique' => false,
+          'total' => 3,
+          'unique' => 1,
           'timestamp' => '1628204400000'
         },
         {
-          'unique' => false,
+          'total' => 1,
+          'unique' => 1,
           'timestamp' => '1628118000000'
         }
       ])
