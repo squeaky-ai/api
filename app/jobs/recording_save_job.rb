@@ -208,6 +208,10 @@ class RecordingSaveJob < ApplicationJob
     false
   end
 
+  def parse_and_sort_events(events)
+    events.map { |i| JSON.parse(i) }.sort_by { |e| e['timestamp'] }
+  end
+
   def redis_key(prefix)
     "#{prefix}::#{@args['site_id']}::#{@args['session_id']}"
   end
@@ -219,7 +223,7 @@ class RecordingSaveJob < ApplicationJob
 
   def redis_events
     key = redis_key('events')
-    @redis_events ||= Redis.current.lrange(key, 0, -1).map { |i| JSON.parse(i) }.sort_by { |e| e['timestamp'] }
+    @redis_events ||= parse_and_sort_events(Redis.current.lrange(key, 0, -1))
   end
 
   def redis_recording
@@ -229,7 +233,7 @@ class RecordingSaveJob < ApplicationJob
 
   def redis_pageviews
     key = redis_key('pageviews')
-    @redis_pageviews ||= Redis.current.lrange(key, 0, -1).map { |i| JSON.parse(i) }
+    @redis_pageviews ||= parse_and_sort_events(Redis.current.lrange(key, 0, -1))
   end
 
   def clean_up
