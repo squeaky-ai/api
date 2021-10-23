@@ -21,10 +21,10 @@ module Types
           null: false,
           extensions: [AnalyticsPageViewCountExtension]
 
-    field :average_session_duration,
-          Integer,
+    field :session_durations,
+          [AnalyticsSessionDurationsType, { null: true }],
           null: false,
-          extensions: [AnalyticsAverageSessionDurationExtension]
+          extensions: [AnalyticsSessionDurationsExtension]
 
     field :pages_per_session,
           Float,
