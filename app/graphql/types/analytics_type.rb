@@ -22,7 +22,7 @@ module Types
           extensions: [AnalyticsPageViewCountExtension]
 
     field :session_durations,
-          [AnalyticsSessionDurationsType, { null: true }],
+          AnalyticsSessionDurationsType,
           null: false,
           extensions: [AnalyticsSessionDurationsExtension]
 

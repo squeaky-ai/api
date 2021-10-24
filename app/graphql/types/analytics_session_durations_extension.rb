@@ -8,18 +8,38 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      results = Site
-                .find(site_id)
-                .recordings
-                .select('disconnected_at, disconnected_at - connected_at dur')
-                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+      current_average = get_average_duration(site_id, from_date, to_date)
+      trend_date_range = offset_dates_by_period(from_date, to_date)
+      previous_average = get_average_duration(site_id, *trend_date_range)
 
-      results.map do |r|
-        {
-          timestamp: r.disconnected_at,
-          duration: r.dur
-        }
-      end
+      {
+        average: current_average,
+        trend: current_average - previous_average
+      }
+    end
+
+    private
+
+    def get_average_duration(site_id, from_date, to_date)
+      Site
+        .find(site_id)
+        .recordings
+        .select('disconnected_at, disconnected_at - connected_at dur')
+        .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+        .average('disconnected_at - connected_at') || 0
+    end
+
+    def parse_date(date)
+      Date.strptime(date, '%Y-%m-%d')
+    end
+
+    def offset_dates_by_period(from_date, to_date)
+      from = parse_date(from_date)
+      to = parse_date(to_date)
+
+      diff = to - from
+
+      [from - diff, to - diff]
     end
   end
 end
