@@ -4,7 +4,7 @@ module Types
   class AnalyticsSessionDurationsType < Types::BaseObject
     description 'The analytics session duration item'
 
-    field :duration, Integer, null: false
+    field :duration, GraphQL::Types::BigInt, null: false
     field :timestamp, GraphQL::Types::BigInt, null: false
   end
 end

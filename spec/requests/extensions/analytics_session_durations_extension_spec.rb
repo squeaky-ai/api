@@ -48,8 +48,8 @@ RSpec.describe Types::AnalyticsSessionDurationsExtension, type: :request do
     it 'returns the average session time' do
       response = subject['data']['site']['analytics']
       expect(response['sessionDurations']).to match_array([
-        { 'duration' => 1000, 'timestamp' => '1628405639578' },
-        { 'duration' => 2000, 'timestamp' => '1628405638578' }
+        { 'duration' => '1000', 'timestamp' => '1628405639578' },
+        { 'duration' => '2000', 'timestamp' => '1628405638578' }
       ])
     end
   end
@@ -72,8 +72,8 @@ RSpec.describe Types::AnalyticsSessionDurationsExtension, type: :request do
     it 'returns the average session time' do
       response = subject['data']['site']['analytics']
       expect(response['sessionDurations']).to match_array([
-        { 'duration' => 1000, 'timestamp' => '1628405639578' },
-        { 'duration' => 2000, 'timestamp' => '1628405638578' }
+        { 'duration' => '1000', 'timestamp' => '1628405639578' },
+        { 'duration' => '2000', 'timestamp' => '1628405638578' }
       ])
     end
   end
