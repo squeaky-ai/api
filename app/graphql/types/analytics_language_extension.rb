@@ -15,7 +15,6 @@ module Types
                 .select('DISTINCT LOWER(locale) locale, COUNT(*) locale_count')
                 .group('LOWER(locale)')
                 .order('locale_count DESC')
-                .limit(6)
 
       results.map do |result|
         {
