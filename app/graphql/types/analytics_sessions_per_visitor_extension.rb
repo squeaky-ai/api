@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 module Types
-  # How long people spend on site
-  class AnalyticsSessionDurationsExtension < GraphQL::Schema::FieldExtension
+  # The average number of sessions per visitor
+  class AnalyticsSessionsPerVisitorExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      current_average = get_average_duration(site_id, from_date, to_date)
+      current_average = get_average_count(site_id, from_date, to_date)
       trend_date_range = offset_dates_by_period(from_date, to_date)
-      previous_average = get_average_duration(site_id, *trend_date_range)
+      previous_average = get_average_count(site_id, *trend_date_range)
 
       {
         average: current_average,
@@ -20,13 +20,20 @@ module Types
 
     private
 
-    def get_average_duration(site_id, from_date, to_date)
-      Site
-        .find(site_id)
-        .recordings
-        .select('disconnected_at, disconnected_at - connected_at dur')
-        .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-        .average('disconnected_at - connected_at') || 0
+    def get_average_count(site_id, from_date, to_date)
+      counts = Site
+               .find(site_id)
+               .recordings
+               .select('visitor_id')
+               .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+               .group(:visitor_id)
+               .count(:visitor_id)
+
+      values = counts.values
+
+      return 0 if values.empty?
+
+      values.sum.fdiv(values.size)
     end
 
     def parse_date(date)

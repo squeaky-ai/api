@@ -71,9 +71,9 @@ module Types
           null: false,
           extensions: [AnalyticsPageViewsExtension]
 
-    field :average_sessions_per_visitor,
-          Float,
+    field :sessions_per_visitor,
+          AnalyticsSessionsPerVisitorType,
           null: false,
-          extensions: [AnalyticsVisitorSessionsExtension]
+          extensions: [AnalyticsSessionsPerVisitorExtension]
   end
 end
