@@ -39,7 +39,7 @@ module Types
 
       # Same day is pointless because you're comparing it against
       # itself, so always do at least one day
-      diff = (to - from) || 1
+      diff = (to - from).days < 1.day ? 1.day : (to - from)
 
       [from - diff, to - diff]
     end
