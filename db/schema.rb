@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_21_105728) do
+ActiveRecord::Schema.define(version: 2021_10_25_131114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,8 @@ ActiveRecord::Schema.define(version: 2021_10_21_105728) do
     t.boolean "deleted", default: false
     t.bigint "visitor_id"
     t.string "referrer"
+    t.integer "device_x", default: -1, null: false
+    t.integer "device_y", default: -1, null: false
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"

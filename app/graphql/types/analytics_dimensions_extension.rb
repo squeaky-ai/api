@@ -11,10 +11,10 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select('viewport_x')
+                .where('device_x > 0 AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+                .select('device_x')
 
-      results.map(&:viewport_x)
+      results.map(&:device_x)
     end
   end
 end

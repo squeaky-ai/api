@@ -33,8 +33,8 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, viewport_x: 1920 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewport_x: 2560 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, device_x: 1920 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, device_x: 2560 }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -53,9 +53,9 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, viewport_x: 1920 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewport_x: 2560 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000, viewport_x: 3840 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, device_x: 1920 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, device_x: 2560 }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000, device_x: 3840 }, site: site, visitor: create_visitor)
     end
 
     subject do

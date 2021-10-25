@@ -85,8 +85,10 @@ class RecordingSaveJob < ApplicationJob
       recording.deleted = soft_delete?
       recording.locale = redis_recording['locale']
       recording.useragent = redis_recording['useragent']
-      recording.viewport_x = redis_recording['width']
-      recording.viewport_y = redis_recording['height']
+      recording.viewport_x = redis_recording['viewport_x']
+      recording.viewport_y = redis_recording['viewport_y']
+      recording.device_x = redis_recording['device_x']
+      recording.device_y = redis_recording['device_y']
       recording.referrer = redis_recording['referrer']
       recording.connected_at = redis_events.first['timestamp']
     end

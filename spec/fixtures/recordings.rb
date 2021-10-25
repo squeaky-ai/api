@@ -20,6 +20,8 @@ module Fixtures
         useragent: Faker::Internet.user_agent,
         viewport_x: 1920,
         viewport_y: 1080,
+        device_x: 1920,
+        device_y: 1080,
         connected_at: start_at,
         disconnected_at: exit_at,
         pages: [Page.new(url: '/', entered_at: start_at, exited_at: exit_at)],

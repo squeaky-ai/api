@@ -13,8 +13,10 @@ module Fixtures
 
       item = {
         locale: 'en-GB',
-        width: '1920',
-        height: '1080',
+        viewport_x: '1920',
+        viewport_y: '1080',
+        device_x: '1920',
+        device_y: '1080',
         useragent: 'Firefox',
         **args
       }
