@@ -25,6 +25,8 @@ class Recording < ApplicationRecord
       browser_details: "#{user_agent.browser} Version #{user_agent.version}",
       viewport_x: viewport_x,
       viewport_y: viewport_y,
+      device_x: device_x,
+      device_y: device_y,
       device_type: user_agent.mobile? ? 'Mobile' : 'Computer',
       useragent: useragent
     }

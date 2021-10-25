@@ -96,9 +96,9 @@ class RecordingsQuery
     @params[:bool][:must].push(filter) unless value.empty?
   end
 
-  def filter_by_viewport(value)
-    filter_viewports(value, :min_width, :max_width, 'viewport_x')
-    filter_viewports(value, :min_height, :max_height, 'viewport_y')
+  def filter_by_device_size(value)
+    filter_device_size(value, :min_width, :max_width, 'device_x')
+    filter_device_size(value, :min_height, :max_height, 'device_y')
   end
 
   def filter_by_languages(value)
@@ -106,7 +106,7 @@ class RecordingsQuery
     @params[:bool][:must].push(filter) unless value.empty?
   end
 
-  def filter_viewports(value, min, max, key)
+  def filter_device_size(value, min, max, key)
     filter = { range: { "device.#{key}" => {} } }
     filter[:range]["device.#{key}"][:gte] = value[min] if value[min]
     filter[:range]["device.#{key}"][:lte] = value[max] if value[max]

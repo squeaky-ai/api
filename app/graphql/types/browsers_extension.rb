@@ -7,7 +7,7 @@ module Types
       browsers = Site
                  .find(object.object['id'])
                  .recordings
-                 .select(:useragent, :viewport_x, :viewport_y)
+                 .select(:useragent, :viewport_x, :viewport_y, :device_x, :device_y)
 
       browsers.map { |b| b.device[:browser_name] }.uniq
     end

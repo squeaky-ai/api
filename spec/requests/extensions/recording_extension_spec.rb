@@ -20,6 +20,8 @@ site_recording_query = <<-GRAPHQL
           browserDetails
           viewportX
           viewportY
+          deviceX
+          deviceY
           deviceType
           useragent
         }

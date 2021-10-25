@@ -18,6 +18,8 @@ visitors_query = <<-GRAPHQL
           devices {
             viewportX
             viewportY
+            deviceX
+            deviceY
             deviceType
             browserName
             browserDetails

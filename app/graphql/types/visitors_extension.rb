@@ -56,7 +56,7 @@ module Types
              .select('visitors.id, visitors.starred, COUNT(recordings) count')
              .where('recordings.deleted = false')
              .group('visitors.id')
-             .find(ids)
+             .where(id: ids)
 
       # The stateful stuff like the starred status is not stored
       # in ElasticSearch and must be fetched from the database
@@ -67,8 +67,8 @@ module Types
       visitors.map do |v|
         match = meta.find { |m| m.id == v['id'] }
         v.merge(
-          'starred' => match.starred,
-          'recordings_count' => { 'total' => match.count, 'new' => 0 },
+          'starred' => match&.starred || false,
+          'recordings_count' => { 'total' => match&.count || false, 'new' => 0 },
           # The front end is expecting the attributes as a JSON string
           # because we can't type the unknown
           'attributes' => v['attributes'].to_json

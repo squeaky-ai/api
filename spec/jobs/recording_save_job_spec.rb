@@ -39,6 +39,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.useragent).to eq 'Firefox'
       expect(recording.viewport_x).to eq 1920
       expect(recording.viewport_y).to eq 1080
+      expect(recording.device_x).to eq 1920
+      expect(recording.device_y).to eq 1080
       expect(recording.session_id).to eq event['session_id']
       expect(recording.referrer).to eq nil
       expect(recording.connected_at).to eq now
