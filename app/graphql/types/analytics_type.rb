@@ -27,7 +27,7 @@ module Types
           extensions: [AnalyticsSessionDurationsExtension]
 
     field :pages_per_session,
-          Float,
+          AnalyticsPagesPerSessionType,
           null: false,
           extensions: [AnalyticsPagesPerSessionExtension]
 
