@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  # The min, max and avg screen dimensions
+  # The dimensions
   class AnalyticsDimensionsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]
@@ -12,13 +12,9 @@ module Types
                 .find(site_id)
                 .recordings
                 .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select('MAX(viewport_x) max_width, MIN(viewport_x) min_width, AVG(viewport_x) avg_width')
+                .select('viewport_x')
 
-      {
-        max: results[0].max_width || 0,
-        min: results[0].min_width || 0,
-        avg: results[0].avg_width || 0
-      }
+      results.map(&:viewport_x)
     end
   end
 end

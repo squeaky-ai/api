@@ -52,7 +52,7 @@ module Types
           extensions: [AnalyticsDevicesExtension]
 
     field :dimensions,
-          AnalyticsDimensionsType,
+          [Integer, { null: true }],
           null: false,
           extensions: [AnalyticsDimensionsExtension]
 

@@ -6,11 +6,7 @@ analytics_dimensions_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        dimensions {
-          min
-          max
-          avg
-        }
+        dimensions
       }
     }
   }
@@ -28,7 +24,7 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
 
     it 'returns 0 for all the stats' do
       response = subject['data']['site']['analytics']
-      expect(response['dimensions']).to eq('min' => 0, 'max' => 0, 'avg' => 0)
+      expect(response['dimensions']).to eq([])
     end
   end
 
@@ -48,7 +44,7 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
 
     it 'returns the dimensions stats' do
       response = subject['data']['site']['analytics']
-      expect(response['dimensions']).to eq('min' => 1920, 'max' => 2560, 'avg' => 2240)
+      expect(response['dimensions']).to match_array([1920, 2560])
     end
   end
 
@@ -69,7 +65,7 @@ RSpec.describe Types::AnalyticsDimensionsExtension, type: :request do
 
     it 'returns the dimensions stats' do
       response = subject['data']['site']['analytics']
-      expect(response['dimensions']).to eq('min' => 1920, 'max' => 2560, 'avg' => 2240)
+      expect(response['dimensions']).to match_array([1920, 2560])
     end
   end
 end
