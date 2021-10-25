@@ -20,7 +20,7 @@ module Mutations
     # Regular users can only modify sites that exist and they
     # have permission to modifiy
     def authorize_normal_user(args)
-      @site = @user.sites.find_by(id: args[:site_id].to_i)
+      @site = @user.sites.find_by(id: args[:site_id])
       raise Errors::SiteNotFound unless @site
 
       team = @site.team.find_by(user_id: @user.id)
@@ -30,7 +30,7 @@ module Mutations
     # Superusers can see anything so long as it exists, and it's
     # up to the individual resolvers to let them modify things
     def authorize_superuser(args)
-      @site = Site.find_by(id: args[:site_id].to_i)
+      @site = Site.find_by(id: args[:site_id])
       raise Errors::SiteNotFound unless @site
     end
   end

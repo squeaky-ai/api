@@ -34,11 +34,11 @@ module Types
       raise Errors::Unauthorized unless context[:current_user]
 
       # Super users don't play by the rules
-      return Site.includes(%i[teams users]).find_by(id: site_id.to_i) if context[:current_user].superuser?
+      return Site.includes(%i[teams users]).find_by(id: site_id) if context[:current_user].superuser?
 
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
-      context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id.to_i, team: team)
+      context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team: team)
     rescue ActiveRecord::RecordNotFound
       nil
     end
