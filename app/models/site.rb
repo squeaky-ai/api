@@ -42,7 +42,7 @@ class Site < ApplicationRecord
   end
 
   def member(id)
-    team.find { |t| t.id == id }
+    team.find { |t| t.id == id.to_i }
   end
 
   def plan_name

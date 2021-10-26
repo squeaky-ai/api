@@ -10,7 +10,7 @@ module Types
     field :viewed, Boolean, null: false
     field :bookmarked, Boolean, null: false
     field :language, String, null: false
-    field :duration, Integer, null: false
+    field :duration, GraphQL::Types::BigInt, null: false
     field :page_views, [String, { null: true }], null: false
     field :page_count, Integer, null: false
     field :start_page, String, null: false
