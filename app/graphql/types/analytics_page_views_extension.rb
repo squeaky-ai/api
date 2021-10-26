@@ -8,20 +8,40 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      site = Site.find(site_id)
+      search = {
+        query: {
+          bool: {
+            must: [
+              {
+                term: {
+                  site_id: {
+                    value: site_id
+                  }
+                }
+              },
+              {
+                range: {
+                  date_time: {
+                    gte: from_date,
+                    lte: to_date
+                  }
+                }
+              }
+            ]
+          }
+        },
+        fields: %w[page_views date_time],
+        _source: false
+      }
 
-      page_views = site
-                   .pages
-                   .select('array_agg(pages.url) urls, max(pages.exited_at) exited_at')
-                   .where('to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                   .group(:recording_id)
+      results = SearchClient.search(index: Recording::INDEX, body: search)
 
-      page_views.map do |page_view|
-        urls = page_view.urls || []
+      results['hits']['hits'].map do |hit|
+        urls = hit['fields']['page_views'] || []
         {
           total: urls.size,
           unique: urls.tally.values.select { |x| x == 1 }.size,
-          timestamp: page_view.exited_at
+          timestamp: hit['fields']['date_time'][0]
         }
       end
     end
