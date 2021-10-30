@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-class InvalidRecording < StandardError
-end
-
 class BlacklistedRecording < StandardError
 end
 
@@ -20,11 +17,7 @@ class RecordingSaveJob < ApplicationJob
 
   after_perform { clean_up }
 
-  rescue_from(StandardError) { Rails.logger.error 'Recording failed to save' }
-
-  rescue_from(InvalidRecording) { Rails.logger.warn 'Recording was invalid, ignoring' }
-
-  rescue_from(BlacklistedRecording) { Rails.logger.info 'Recording was blacklisted, ignoring' }
+  rescue_from(BlacklistedRecording) { Rails.logger.info 'Recording was blacklisted' }
 
   def perform(*_args, **_kwargs)
     ActiveRecord::Base.transaction do
@@ -150,15 +143,6 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def validate!
-    # I guess this is possible
-    if redis_events.size.zero?
-      Rails.logger.warn "Recording had no events: #{redis_recording.to_json} - #{@args.to_json}"
-      raise InvalidRecording, 'Recording has no events'
-    end
-
-    # Probably a bot that bounced before the meta event could fire
-    raise InvalidRecording, 'Recording has no page views' if redis_pageviews.size.zero?
-
     # Users can configure a domain or an email where any recordings
     # will not be saved
     raise BlacklistedRecording, 'Visitors linked email is blacklisted' if blacklisted_visitor?
@@ -215,7 +199,7 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def redis_key(prefix)
-    "#{prefix}::#{@args['site_id']}::#{@args['session_id']}"
+    "#{prefix}::#{@args['site_id']}::#{@args['visitor_id']}::#{@args['session_id']}"
   end
 
   def redis_identify

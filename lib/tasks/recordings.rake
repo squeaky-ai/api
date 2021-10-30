@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 namespace :recordings do
   task import_from_local: :environment do
     Rails.logger.info('Importing recordings')
@@ -13,8 +11,8 @@ namespace :recordings do
 
       event = {
         site_id: parts[1],
-        session_id: parts[2],
-        visitor_id: SecureRandom.base36
+        visitor_id: parts[2],
+        session_id: parts[3]
       }
 
       RecordingSaveJob.perform_now(event.to_json)

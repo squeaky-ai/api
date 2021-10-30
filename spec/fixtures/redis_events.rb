@@ -5,6 +5,7 @@ module Fixtures
     def initialize(event, timestamp = Time.now.to_i * 1000)
       @site_id = event['site_id']
       @session_id = event['session_id']
+      @visitor_id = event['visitor_id']
       @timestamp = timestamp
     end
 
@@ -101,7 +102,7 @@ module Fixtures
     private
 
     def redis_key(prefix)
-      "#{prefix}::#{@site_id}::#{@session_id}"
+      "#{prefix}::#{@site_id}::#{@visitor_id}::#{@session_id}"
     end
   end
 end

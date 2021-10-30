@@ -134,8 +134,8 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     subject { described_class.perform_now(event.to_json) }
 
-    it 'does not store the recording' do
-      expect { subject }.not_to change { site.recordings.size }
+    it 'craps out' do
+      expect { subject }.to raise_error(StandardError)
     end
   end
 
