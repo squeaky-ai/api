@@ -8,5 +8,7 @@ Metrics/BlockLength:
   IgnoredMethods: ['namespace']
 Metrics/MethodLength:
   CountAsOne: ['hash', 'array', 'heredoc']
+Metrics/ClassLength:
+  Max: 200
 Layout/LineLength:
   Max: 140
