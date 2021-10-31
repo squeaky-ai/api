@@ -92,7 +92,9 @@ class Site < ApplicationRecord
   end
 
   def recording_count_exceeded?
-    count = recordings.where('created_at > ? AND created_at < ?', Time.now.beginning_of_month, Time.now.end_of_month).count
+    count = recordings
+            .where('deleted = false AND created_at > ? AND created_at < ?', Time.now.beginning_of_month, Time.now.end_of_month)
+            .count
     count >= Plan.new(plan).max_monthly_recordings
   end
 end

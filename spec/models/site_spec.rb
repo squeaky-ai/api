@@ -310,5 +310,22 @@ RSpec.describe Site, type: :model do
         expect(subject).to be false
       end
     end
+
+    context 'when there are more recordings but they are soft deleted' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
+        create_recording({ deleted: true }, site: site, visitor: create_visitor)
+        create_recording({ deleted: true }, site: site, visitor: create_visitor)
+      end
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
   end
 end
