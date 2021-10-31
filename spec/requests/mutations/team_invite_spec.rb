@@ -26,7 +26,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
     let(:site) { create_site_and_team(user: user) }
     let(:email) { Faker::Internet.email }
 
-    before { site }
+    before do
+      site
+      allow_any_instance_of(Plan).to receive(:max_team_members).and_return(2)
+    end
 
     subject do
       variables = { site_id: site.id, email: email, role: Team::ADMIN }
@@ -63,6 +66,7 @@ RSpec.describe Mutations::TeamInvite, type: :request do
 
       before do
         create_team(user: invited_user, site: site, role: Team::ADMIN)
+        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(3)
       end
 
       it 'returns an error' do
@@ -83,7 +87,10 @@ RSpec.describe Mutations::TeamInvite, type: :request do
       let(:site) { create_site_and_team(user: user) }
       let(:invited_user) { create_user }
 
-      before { site }
+      before do
+        site
+        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(2)
+      end
 
       subject do
         stub = double
@@ -111,6 +118,25 @@ RSpec.describe Mutations::TeamInvite, type: :request do
         subject
         expect(AuthMailer).to have_received(:invitation_instructions)
       end
+    end
+  end
+
+  context 'when the site has exceeded the limit' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:email) { Faker::Internet.email }
+
+    before do
+      allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
+    end
+
+    subject do
+      variables = { site_id: site.id, email: email, role: Team::ADMIN }
+      graphql_request(team_invite_mutation, variables, user)
+    end
+
+    it 'returns an error' do
+      expect(subject['errors'][0]['message']).to eq 'Team size exceeded'
     end
   end
 end

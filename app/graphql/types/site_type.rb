@@ -14,6 +14,7 @@ module Types
     field :verified_at, String, null: true
     field :days_since_last_recording, Integer, null: false, extensions: [LastRecordingExtension]
     field :team, [TeamType], null: false
+    field :team_size_exceeded, Boolean, null: false
     field :notes, NotesType, null: true, extensions: [NotesExtension]
     field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
     field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]

@@ -49,6 +49,7 @@ en:
       team_exists: 'Team member already exists'
       invite_invalid: 'Team invite is invalid'
       invite_expired: 'Team invite has expired'
+      size_exceeded: 'Team size exceeded'
   auth:
     validation:
       token_invalid: 'Token is incorrect or has expired'

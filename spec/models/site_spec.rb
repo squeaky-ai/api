@@ -183,7 +183,7 @@ RSpec.describe Site, type: :model do
     end
   end
 
-  describe '#team_member_count_exceeded?' do
+  describe '#team_size_exceeded?' do
     context 'when the count is less' do
       let(:user) { create_user }
       let(:site) { create_site_and_team(user: user) }
@@ -192,7 +192,7 @@ RSpec.describe Site, type: :model do
         allow_any_instance_of(Plan).to receive(:max_team_members).and_return(2)
       end
 
-      subject { site.team_member_count_exceeded? }
+      subject { site.team_size_exceeded? }
 
       it 'returns false' do
         expect(subject).to be false
@@ -207,7 +207,7 @@ RSpec.describe Site, type: :model do
         allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
       end
 
-      subject { site.team_member_count_exceeded? }
+      subject { site.team_size_exceeded? }
 
       it 'returns true' do
         expect(subject).to be true
@@ -223,7 +223,7 @@ RSpec.describe Site, type: :model do
         create_team(user: create_user, site: site, role: Team::MEMBER)
       end
 
-      subject { site.team_member_count_exceeded? }
+      subject { site.team_size_exceeded? }
 
       it 'returns true' do
         expect(subject).to be true

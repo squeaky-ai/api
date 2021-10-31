@@ -21,6 +21,7 @@ module Mutations
 
     def resolve(email:, role:, **_rest)
       raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
+      raise Errors::TeamSizeExceeded if @site.team_size_exceeded?
 
       user = User.find_by(email: email)
 
