@@ -480,4 +480,35 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.referrer).to eq 'http://google.com'
     end
   end
+
+  context 'when the site has exceeded their quota' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      create_recording(visitor: create_visitor, site: site)
+
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_recording(referrer: 'http://google.com')
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'does not save the recording' do
+      expect { subject }.not_to change { site.reload.recordings.size }
+    end
+  end
 end

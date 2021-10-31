@@ -135,15 +135,13 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def valid?
-    # Users can configure a domain or an email where any recordings
-    # will not be saved
     return false if blacklisted_visitor?
 
-    # Not a lot that can be done here!
     return false unless @session.events? && @session.pageviews?
 
-    # There's nothing useful at all in this recording
     return false if @session.duration.zero?
+
+    return false if @site.recording_count_exceeded?
 
     true
   end
@@ -162,8 +160,7 @@ class RecordingSaveJob < ApplicationJob
 
   def find_or_create_visitor
     if @session.external_attributes['id']
-      visitor = Site
-                .find(@site.id)
+      visitor = @site
                 .visitors
                 .where("visitors.external_attributes->>'id' = ?", @session.external_attributes['id'])
                 .first

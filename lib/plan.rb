@@ -6,6 +6,7 @@ class Plan
 
   def initialize(plan)
     @config = PLANS["plan_#{plan}"]
+    raise StandardError, 'Plan number is invalid' unless @config
   end
 
   def max_team_members
