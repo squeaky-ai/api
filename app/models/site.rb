@@ -86,4 +86,13 @@ class Site < ApplicationRecord
     count = Redis.current.get("active_user_count::#{uuid}").to_i
     count.negative? ? 0 : count
   end
+
+  def team_member_count_exceeded?
+    team.size >= Plan.new(plan).max_team_members
+  end
+
+  def recording_count_exceeded?
+    count = recordings.where('created_at > ? AND created_at < ?', Time.now.beginning_of_month, Time.now.end_of_month).count
+    count >= Plan.new(plan).max_monthly_recordings
+  end
 end

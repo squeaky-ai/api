@@ -1,0 +1,14 @@
+plan_0:
+  max_team_members: 1
+  max_monthly_recordings: 300
+  monthly_price: 0
+
+plan_1:
+  max_team_members: 10
+  max_monthly_recordings: 1000
+  monthly_price: 50
+
+plan_2:
+  max_team_members: -1
+  max_monthly_recordings: 5000
+  monthly_price: 150

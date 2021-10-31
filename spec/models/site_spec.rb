@@ -182,4 +182,133 @@ RSpec.describe Site, type: :model do
       end
     end
   end
+
+  describe '#team_member_count_exceeded?' do
+    context 'when the count is less' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(2)
+      end
+
+      subject { site.team_member_count_exceeded? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
+    context 'when the count is equal' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
+      end
+
+      subject { site.team_member_count_exceeded? }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when the count is greater' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
+        create_team(user: create_user, site: site, role: Team::MEMBER)
+      end
+
+      subject { site.team_member_count_exceeded? }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+  end
+
+  describe '#recording_count_exceeded?' do
+    context 'when there are no recordings' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
+    context 'when there are less recordings than the limit' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(2)
+        create_recording(site: site, visitor: create_visitor)
+      end
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
+    context 'when there are equal recordings than the limit' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
+        create_recording(site: site, visitor: create_visitor)
+      end
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when there are more recordings than the limit' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
+        create_recording(site: site, visitor: create_visitor)
+        create_recording(site: site, visitor: create_visitor)
+      end
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when there are more recordings but they are from a different month' do
+      let(:user) { create_user }
+      let(:site) { create_site_and_team(user: user) }
+
+      before do
+        last_month = Time.now - 1.month
+
+        allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
+        create_recording({ created_at: last_month }, site: site, visitor: create_visitor)
+        create_recording({ created_at: last_month }, site: site, visitor: create_visitor)
+      end
+
+      subject { site.recording_count_exceeded? }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+  end
 end
