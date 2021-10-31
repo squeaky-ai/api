@@ -140,7 +140,7 @@ class RecordingSaveJob < ApplicationJob
     return false if blacklisted_visitor?
 
     # Not a lot that can be done here!
-    return false unless @session.events? || @session.pageviews?
+    return false unless @session.events? && @session.pageviews?
 
     # There's nothing useful at all in this recording
     return false if @session.duration.zero?
