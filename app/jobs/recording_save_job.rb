@@ -65,15 +65,13 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    # Warning: this is prone to race conditions
-    recording = Recording.find_or_create_by(session_id: @args[:session_id])
-
-    if recording.new_record?
-      recording.assign_attributes(
+    recording = @site.recordings.create_or_find_by(session_id: @args[:session_id]) do |rec|
+      rec.assign_attributes(
         visitor_id: visitor.id,
         site_id: @site.id,
         deleted: soft_delete?,
         connected_at: @session.connected_at,
+        disconnected_at: @session.disconnected_at,
         **@session.recording
       )
     end
@@ -168,7 +166,7 @@ class RecordingSaveJob < ApplicationJob
       return visitor if visitor
     end
 
-    Visitor.find_or_create_by(visitor_id: @args[:visitor_id])
+    Visitor.create_or_find_by(visitor_id: @args[:visitor_id])
   end
 
   def blacklisted_visitor?

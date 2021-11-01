@@ -51,7 +51,7 @@ module Types
     def items(results)
       recordings = results['hits']['hits'].map { |r| r['_source'] }
       ids = recordings.map { |r| r['id'] }
-      meta = Recording.select('id, viewed, bookmarked').find(ids)
+      meta = Recording.select('id, viewed, bookmarked').where(id: ids)
 
       # The stateful stuff like viewed and bookmarked status is not
       # stored in ElasticSearch and must be fetched from the database
@@ -61,7 +61,7 @@ module Types
     def enrich_items(recordings, meta)
       recordings.map do |r|
         match = meta.find { |m| m.id == r['id'] }
-        r.merge(viewed: match.viewed, bookmarked: match.bookmarked)
+        r.merge(viewed: match&.viewed || false, bookmarked: match&.bookmarked || false)
       end
     end
 
