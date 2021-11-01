@@ -29,7 +29,7 @@ module Types
       results = Site
                 .find(site_id)
                 .recordings
-                .where('created_at > ? AND created_at < ?', arguments[:from_date], arguments[:to_date])
+                .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', arguments[:from_date], arguments[:to_date])
                 .select(:useragent)
                 .uniq
 
@@ -81,7 +81,7 @@ module Types
         .find(site_id)
         .pages
         .where(
-          'url = ? AND recordings.created_at > ? AND recordings.created_at < ?',
+          'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
           arguments[:page],
           arguments[:from_date],
           arguments[:to_date]

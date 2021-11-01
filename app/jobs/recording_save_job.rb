@@ -7,7 +7,7 @@ class RecordingSaveJob < ApplicationJob
 
   before_perform do |job|
     @args = parse_arguments(job.arguments)
-    @site = Site.find_by(uuid: @args[:site_id])
+    @site = Site.find_by!(uuid: @args[:site_id])
     @session = Session.new(@args)
   end
 
