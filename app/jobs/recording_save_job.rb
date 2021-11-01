@@ -65,18 +65,18 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    recording = Recording.find_or_create_by(site_id: @site.id, session_id: @args[:session_id]) do |rec|
-      rec.visitor_id = visitor.id
-      rec.deleted = soft_delete?
-      rec.locale = @session.locale
-      rec.device_x = @session.device_x
-      rec.device_y = @session.device_y
-      rec.referrer = @session.referrer
-      rec.useragent = @session.useragent
-      rec.viewport_x = @session.viewport_x
-      rec.viewport_y = @session.viewport_y
-      rec.connected_at = @session.connected_at
-      rec.disconnected_at = @session.disconnected_at
+    recording = Recording.find_or_create_by!(site_id: @site.id, session_id: @args[:session_id]) do |r|
+      r.visitor_id = visitor.id
+      r.deleted = soft_delete?
+      r.locale = @session.locale
+      r.device_x = @session.device_x
+      r.device_y = @session.device_y
+      r.referrer = @session.referrer
+      r.useragent = @session.useragent
+      r.viewport_x = @session.viewport_x
+      r.viewport_y = @session.viewport_y
+      r.connected_at = @session.connected_at
+      r.disconnected_at = @session.disconnected_at
     end
 
     recording.update(disconnected_at: @session.disconnected_at)

@@ -19,7 +19,7 @@ module Types
         {
           path: page.url,
           count: page.page_count,
-          avg: page.page_avg.negative? ? 0 : page.page_avg # TODO something is not right here!
+          avg: page.page_avg.negative? ? 0 : page.page_avg
         }
       end
     end
