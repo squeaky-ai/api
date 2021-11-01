@@ -7,13 +7,15 @@ module Types
       field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop', description: 'The type of device to show')
       field.argument(:type, HeatmapsTypeType, required: true, default_value: 'Click', description: 'The type of heatmap to show')
       field.argument(:page, String, required: true, description: 'The page to show results for')
+      field.argument(:from_date, String, required: true, description: 'The to start from')
+      field.argument(:to_date, String, required: true, description: 'The to end at')
     end
 
     def resolve(object:, arguments:, **_rest)
       site_id = object.object[:id]
 
-      device_counts = devices(site_id)
-      items = arguments[:type] == 'Click' ? clicks(site_id, arguments[:page]) : scrolls(site_id, arguments[:page])
+      device_counts = devices(site_id, arguments)
+      items = arguments[:type] == 'Click' ? clicks(site_id, arguments) : scrolls(site_id, arguments)
 
       {
         **device_counts,
@@ -23,10 +25,11 @@ module Types
 
     private
 
-    def devices(site_id)
+    def devices(site_id, arguments)
       results = Site
                 .find(site_id)
                 .recordings
+                .where('created_at > ? AND created_at < ?', arguments[:from_date], arguments[:to_date])
                 .select(:useragent)
                 .uniq
 
@@ -38,18 +41,22 @@ module Types
       }
     end
 
-    def clicks(site_id, page)
+    def clicks(site_id, arguments)
       # Get a list of all recording ids that contain pages
-      pages = Site.find(site_id).pages.where(url: page)
+      # within the date range
+      pages = pages_within_date_range(site_id, arguments)
+
       # Get a list of all the click events that happened during those recordings
       events = click_events(pages.map(&:recording_id).uniq)
 
       extract_events_in_range(events, pages)
     end
 
-    def scrolls(site_id, page)
+    def scrolls(site_id, arguments)
       # Get a list of all recording ids that contain pages
-      pages = Site.find(site_id).pages.where(url: page)
+      # within the date range
+      pages = pages_within_date_range(site_id, arguments)
+
       # Get a list of all the click events that happened during those recordings
       events = scroll_events(pages.map(&:recording_id).uniq)
 
@@ -67,6 +74,18 @@ module Types
 
         { x: event.data['x'], y: event.data['y'], selector: event.data['selector'] }
       end
+    end
+
+    def pages_within_date_range(site_id, arguments)
+      Site
+        .find(site_id)
+        .pages
+        .where(
+          'url = ? AND recordings.created_at > ? AND recordings.created_at < ?',
+          arguments[:page],
+          arguments[:from_date],
+          arguments[:to_date]
+        )
     end
 
     def click_events(recording_ids)
