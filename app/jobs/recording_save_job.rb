@@ -65,7 +65,10 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    puts 'SESSION_ARGS:', @session.recording.to_json
+    if @session.recording.empty?
+      puts 'EMPTY_RECORDING', @session.recording.json, @args.to_json, @site.recordings.where(session_id: @args[:session_id]).to_json
+    end
+
     recording = @site.recordings.create_or_find_by!(session_id: @args[:session_id]) do |rec|
       rec.assign_attributes(
         visitor_id: visitor.id,
