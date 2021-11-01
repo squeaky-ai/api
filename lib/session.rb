@@ -7,19 +7,9 @@ class Session
     @args = args
   end
 
-  def identify
-    key = redis_key('identify')
-    @identify ||= Redis.current.get(key)
-  end
-
   def events
     key = redis_key('events')
     @events ||= parse_and_sort_events(Redis.current.lrange(key, 0, -1))
-  end
-
-  def recording
-    key = redis_key('recording')
-    @recording ||= Redis.current.hgetall(key)
   end
 
   def pageviews
@@ -34,6 +24,34 @@ class Session
   def clean_up!
     keys = %w[events recording pageviews identify]
     keys.each { |k| Redis.current.del(redis_key(k)) }
+  end
+
+  def locale
+    recording['locale']
+  end
+
+  def useragent
+    recording['useragent']
+  end
+
+  def viewport_x
+    recording['viewport_x'].to_i
+  end
+
+  def viewport_y
+    recording['viewport_y'].to_i
+  end
+
+  def device_x
+    recording['device_x'].to_i
+  end
+
+  def device_y
+    recording['device_y'].to_i
+  end
+
+  def referrer
+    recording['referrer']
   end
 
   def connected_at
@@ -65,6 +83,16 @@ class Session
   end
 
   private
+
+  def identify
+    key = redis_key('identify')
+    @identify ||= Redis.current.get(key)
+  end
+
+  def recording
+    key = redis_key('recording')
+    @recording ||= Redis.current.hgetall(key)
+  end
 
   def redis_key(prefix)
     "#{prefix}::#{@args[:site_id]}::#{@args[:visitor_id]}::#{@args[:session_id]}"

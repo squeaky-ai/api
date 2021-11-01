@@ -65,24 +65,21 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    if @session.recording.empty?
-      puts 'EMPTY_RECORDING', @session.recording.to_json, @args.to_json, @site.recordings.where(session_id: @args[:session_id]).to_json
+    recording = Recording.find_or_create_by(site_id: @site.id, session_id: @args[:session_id]) do |rec|
+      rec.visitor_id = visitor.id
+      rec.deleted = soft_delete?
+      rec.locale = @session.locale
+      rec.device_x = @session.device_x
+      rec.device_y = @session.device_y
+      rec.referrer = @session.referrer
+      rec.useragent = @session.useragent
+      rec.viewport_x = @session.viewport_x
+      rec.viewport_y = @session.viewport_y
+      rec.connected_at = @session.connected_at
+      rec.disconnected_at = @session.disconnected_at
     end
 
-    recording = @site.recordings.create_or_find_by!(session_id: @args[:session_id]) do |rec|
-      rec.assign_attributes(
-        visitor_id: visitor.id,
-        site_id: @site.id,
-        deleted: soft_delete?,
-        connected_at: @session.connected_at,
-        disconnected_at: @session.disconnected_at,
-        **@session.recording
-      )
-    end
-
-    recording.disconnected_at = @session.disconnected_at
-
-    recording.save!
+    recording.update(disconnected_at: @session.disconnected_at)
     recording
   end
 

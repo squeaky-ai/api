@@ -113,6 +113,45 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
   end
 
+  context 'when the recording exists but there are only events in redis' do
+    let(:now) { Time.now.to_i * 1000 }
+    let(:site) { create_site }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    let(:visitor) { create_visitor(visitor_id: event['visitor_id']) }
+    let(:recording) { create_recording({ session_id: event['session_id'] }, visitor: visitor, site: site) }
+
+    before do
+      recording
+      fixture = Fixtures::RedisEvents.new(event, now)
+
+      fixture.create_page_view
+      fixture.create_base_events
+
+      allow(SearchClient).to receive(:bulk)
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'updates the existing recording' do
+      subject
+
+      expect(site.recordings.first.connected_at).to eq recording.connected_at
+      expect(site.recordings.first.disconnected_at).to eq(now + 6834)
+    end
+
+    it 'does not create a new recording' do
+      expect { subject }.not_to change { site.recordings.size }
+    end
+  end
+
   context 'when the recording has no events' do
     let(:now) { Time.now.to_i * 1000 }
     let(:site) { create_site }
