@@ -74,20 +74,18 @@ module Types
         recording_id IN (?)
         AND (data->>'source')::integer = 2
         AND (data->>'type')::integer = 2
-        AND created_at > ? AND created_at < ?
       SQL
 
-      Event.where(where, recording_ids, Time.now.beginning_of_month, Time.now.end_of_month)
+      Event.where(where, recording_ids)
     end
 
     def scroll_events(recording_ids)
       where = <<-SQL
         recording_id IN (?)
         AND (data->>'source')::integer = 3
-        AND created_at > ? AND created_at < ?
       SQL
 
-      Event.where(where, recording_ids, Time.now.beginning_of_month, Time.now.end_of_month)
+      Event.where(where, recording_ids)
     end
   end
 end
