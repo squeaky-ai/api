@@ -89,22 +89,13 @@ module Types
     end
 
     def click_events(recording_ids)
-      where = <<-SQL
-        recording_id IN (?)
-        AND (data->>'source')::integer = 2
-        AND (data->>'type')::integer = 2
-      SQL
-
-      Event.where(where, recording_ids)
+      events = Event.where('recording_id IN (?) AND event_type = 3', recording_ids)
+      events.filter { |e| e['data']['source'] == 2 && e['data']['type'] == 2 }
     end
 
     def scroll_events(recording_ids)
-      where = <<-SQL
-        recording_id IN (?)
-        AND (data->>'source')::integer = 3
-      SQL
-
-      Event.where(where, recording_ids)
+      events = Event.where('recording_id IN (?) AND event_type = 3', recording_ids)
+      events.filter { |e| e['data']['source'] == 3 }
     end
   end
 end
