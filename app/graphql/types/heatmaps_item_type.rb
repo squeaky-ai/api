@@ -6,6 +6,6 @@ module Types
 
     field :x, Integer, null: false
     field :y, Integer, null: false
-    field :id, Integer, null: false
+    field :selector, String, null: true
   end
 end

@@ -65,7 +65,7 @@ module Types
 
         next unless match
 
-        { x: event.data['x'], y: event.data['y'], id: event.data['id'] }
+        { x: event.data['x'], y: event.data['y'], selector: event.data['selector'] }
       end
     end
 
@@ -74,18 +74,20 @@ module Types
         recording_id IN (?)
         AND (data->>'source')::integer = 2
         AND (data->>'type')::integer = 2
+        AND created_at > ? AND created_at < ?
       SQL
 
-      Event.where(where, recording_ids)
+      Event.where(where, recording_ids, Time.now.beginning_of_month, Time.now.end_of_month)
     end
 
     def scroll_events(recording_ids)
       where = <<-SQL
         recording_id IN (?)
         AND (data->>'source')::integer = 3
+        AND created_at > ? AND created_at < ?
       SQL
 
-      Event.where(where, recording_ids)
+      Event.where(where, recording_ids, Time.now.beginning_of_month, Time.now.end_of_month)
     end
   end
 end
