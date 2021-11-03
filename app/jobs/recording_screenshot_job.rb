@@ -6,7 +6,7 @@ require 'securerandom'
 # for all the pages in a recording if they don't
 # already exist
 class RecordingScreenshotJob < ApplicationJob
-  queue_as :recordings_screenshot
+  queue_as :default
 
   REFRESH_DURATION = 1.week.freeze
 

@@ -1,3 +1,2 @@
 queues:
-  recordings_save: <%= ENV.fetch("RECORDINGS_SAVE_QUEUE_URL", "QUEUE_NOT_SET") %>
-  recordings_screenshot: <%= ENV.fetch("RECORDINGS_SCREENSHOT_QUEUE_URL", "QUEUE_NOT_SET") %>
+  default: <%= ENV.fetch("RECORDINGS_SAVE_QUEUE_URL", "QUEUE_NOT_SET") %>
