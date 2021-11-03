@@ -6,7 +6,7 @@ require 'securerandom'
 # for all the pages in a recording if they don't
 # already exist
 class RecordingScreenshotJob < ApplicationJob
-  queue_as :default
+  queue_as :recordings_screenshot
 
   REFRESH_DURATION = 1.week.freeze
 
@@ -55,6 +55,9 @@ class RecordingScreenshotJob < ApplicationJob
 
   def capture_screenshot(path)
     @browser.go_to(@site.url + path)
+
+    raise StandardError, "Status was #{@browser.network.status}" if @browser.network.status != 200
+
     @browser.mouse.scroll_to(0, 10_000)
     @browser.network.wait_for_idle
     @browser.screenshot(full: true, format: 'jpeg', encoding: :binary)

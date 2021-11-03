@@ -3,7 +3,7 @@
 # Pick up messages from SQS and save the recordings
 # that are temporarily stored in Redis
 class RecordingSaveJob < ApplicationJob
-  queue_as :default
+  queue_as :recordings_save
 
   before_perform do |job|
     @args = parse_arguments(job.arguments)
