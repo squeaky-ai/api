@@ -24,6 +24,18 @@ class RecordingScreenshotJob < ApplicationJob
 
     # Spin up the browser once and reuse it
     @browser = Ferrum::Browser.new(browser_options: { 'no-sandbox': nil })
+
+    @browser.network.intercept
+
+    # Disable all websocket connections as they will hang
+    @browser.on(:request) do |request|
+      if request.resource_type == 'WebSocket'
+        request.abort
+      else
+        request.continue
+      end
+    end
+
     capture_screenshots(paths)
     @browser&.quit
   end
