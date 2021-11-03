@@ -23,7 +23,7 @@ class RecordingScreenshotJob < ApplicationJob
     paths = @recording.pages.map(&:url)
 
     # Spin up the browser once and reuse it
-    @browser = Ferrum::Browser.new
+    @browser = Ferrum::Browser.new(browser_options: { 'no-sandbox': nil })
     capture_screenshots(paths)
     @browser&.quit
   end
