@@ -19,6 +19,7 @@ class Site < ApplicationRecord
   has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
   has_many :tags
+  has_many :screenshots
 
   # The plural sounds weird
   alias_attribute :team, :teams

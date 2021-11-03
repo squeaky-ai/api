@@ -19,11 +19,22 @@ module Types
 
       {
         **device_counts,
+        screenshot_url: screenshot_url(site_id, arguments),
         items: items.compact
       }
     end
 
     private
+
+    def screenshot_url(site_id, arguments)
+      Screenshot.find_by(
+        'site_id = ? AND url = ? AND created_at <= ? AND created_at >= ?',
+        site_id,
+        arguments[:page],
+        arguments[:from_date],
+        arguments[:to_date]
+      )
+    end
 
     def devices(site_id, arguments)
       results = Site
