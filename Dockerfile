@@ -2,7 +2,7 @@ FROM ruby:3.0.0-alpine
 
 WORKDIR /app
 
-RUN apk --update add build-base ruby-dev postgresql-dev tzdata
+RUN apk --update add build-base ruby-dev postgresql-dev tzdata chromium
 
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
