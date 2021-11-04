@@ -17,7 +17,7 @@ module Types
       pages = pages_within_date_range(site_id, arguments)
 
       device_counts = devices(site_id, arguments)
-      items = arguments[:type] == 'Click' ? clicks(pages) : scrolls(pages)
+      items = arguments[:type] == 'Click' ? click_events(site_id, arguments) : scroll_events(site_id, arguments)
 
       {
         **device_counts,
@@ -51,33 +51,6 @@ module Types
       }
     end
 
-    def clicks(pages)
-      # Get a list of all the click events that happened during those recordings
-      events = click_events(pages.map(&:recording_id).uniq)
-
-      extract_events_in_range(events, pages)
-    end
-
-    def scrolls(pages)
-      # Get a list of all the click events that happened during those recordings
-      events = scroll_events(pages.map(&:recording_id).uniq)
-
-      extract_events_in_range(events, pages)
-    end
-
-    def extract_events_in_range(events, pages)
-      events.map do |event|
-        # The events are from the entire recording id, we only want events that
-        # happened during a particular point in that recording. The page view has
-        # the from-to timestamps so the event timestamp must fall within it
-        match = pages.find { |p| p.recording_id == event.recording_id && event.timestamp.between?(p.entered_at, p.exited_at) }
-
-        next unless match
-
-        { x: event.data['x'], y: event.data['y'], selector: event.data['selector'] }
-      end
-    end
-
     def pages_within_date_range(site_id, arguments)
       Site
         .find(site_id)
@@ -90,14 +63,60 @@ module Types
         )
     end
 
-    def click_events(recording_ids)
-      events = Event.where('recording_id IN (?) AND event_type = 3', recording_ids)
-      events.filter { |e| e['data']['source'] == 2 && e['data']['type'] == 2 }
+    def click_events(site_id, arguments)
+      sql = <<-SQL
+        SELECT
+          events.data
+        FROM
+          pages
+        LEFT JOIN
+          recordings ON recordings.id = pages.recording_id
+        LEFT JOIN
+          events ON events.recording_id = recordings.id
+        WHERE
+          recordings.site_id = ? AND
+          to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+          pages.url = ? AND
+          events.timestamp >= pages.entered_at AND
+          events.timestamp <= pages.exited_at AND
+          events.event_type = 3 AND
+          (events.data->>'source')::integer = 2 AND
+          (events.data->>'type')::integer = 2
+      SQL
+
+      events = execute_sql(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
+      events.map { |e| JSON.parse(e[0]) }
     end
 
-    def scroll_events(recording_ids)
-      events = Event.where('recording_id IN (?) AND event_type = 3', recording_ids)
-      events.filter { |e| e['data']['source'] == 3 }
+    def scroll_events(site_id, arguments)
+      sql = <<-SQL
+        SELECT
+          MAX((events.data->>'y')::float)
+        FROM
+          pages
+        LEFT JOIN
+          recordings ON recordings.id = pages.recording_id
+        LEFT JOIN
+          events ON events.recording_id = recordings.id
+        WHERE
+          recordings.site_id = ? AND
+          to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+          pages.url = ? AND
+          events.timestamp >= pages.entered_at AND
+          events.timestamp <= pages.exited_at AND
+          events.event_type = 3 AND
+          (events.data->>'source')::integer = 3
+        GROUP BY
+          pages.id;
+      SQL
+
+      events = execute_sql(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
+      events.map { |e| { y: e[0] } }
+    end
+
+    def execute_sql(query, variables)
+      sql = ActiveRecord::Base.sanitize_sql_array([query, *variables])
+      ActiveRecord::Base.connection.execute(sql).values
     end
   end
 end
