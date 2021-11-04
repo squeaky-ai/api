@@ -53,6 +53,7 @@ module Types
         LEFT JOIN
           recordings ON recordings.id = pages.recording_id
         WHERE
+          deleted = false AND
           recordings.site_id = ? AND
           pages.url = ? AND
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
