@@ -14,26 +14,17 @@ module Types
     def resolve(object:, arguments:, **_rest)
       site_id = object.object[:id]
 
-      pages = pages_within_date_range(site_id, arguments)
-
       device_counts = devices(site_id, arguments)
       items = arguments[:type] == 'Click' ? click_events(site_id, arguments) : scroll_events(site_id, arguments)
 
       {
         **device_counts,
-        recording_id: recording_id(pages),
-        items: items.compact
+        items: items.compact,
+        recording_id: suitable_recording(site_id, arguments)
       }
     end
 
     private
-
-    def recording_id(pages)
-      # TODO: I think this can be optimised to return the shortest
-      # recording or the one with the least events to make it quicker
-      # on the front end
-      pages.first&.recording_id
-    end
 
     def devices(site_id, arguments)
       results = Site
@@ -51,16 +42,26 @@ module Types
       }
     end
 
-    def pages_within_date_range(site_id, arguments)
-      Site
-        .find(site_id)
-        .pages
-        .where(
-          'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-          arguments[:page],
-          arguments[:from_date],
-          arguments[:to_date]
-        )
+    def suitable_recording(site_id, arguments)
+      # TODO: I think this query should try and pull back the smallest
+      # recording possible by joining the events and checking the count
+      sql = <<-SQL
+        SELECT
+          recording_id
+        FROM
+          pages
+        LEFT JOIN
+          recordings ON recordings.id = pages.recording_id
+        WHERE
+          recordings.site_id = ? AND
+          pages.url = ? AND
+          to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+        LIMIT
+          1;
+      SQL
+
+      pages = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
+      pages[0][0] if pages[0]
     end
 
     def click_events(site_id, arguments)
