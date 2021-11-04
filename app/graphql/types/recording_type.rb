@@ -11,6 +11,7 @@ module Types
     field :bookmarked, Boolean, null: false
     field :language, String, null: false
     field :duration, GraphQL::Types::BigInt, null: false
+    field :pages, [PageType, { null: true }], null: false
     field :page_views, [String, { null: true }], null: false
     field :page_count, Integer, null: false
     field :start_page, String, null: false

@@ -14,20 +14,21 @@ module Types
     def resolve(object:, arguments:, **_rest)
       site_id = object.object[:id]
 
+      pages = pages_within_date_range(site_id, arguments)
+
       device_counts = devices(site_id, arguments)
-      items = arguments[:type] == 'Click' ? clicks(site_id, arguments) : scrolls(site_id, arguments)
+      items = arguments[:type] == 'Click' ? clicks(pages) : scrolls(pages)
 
       {
         **device_counts,
-        recording_id: recording_id(site_id, arguments),
+        recording_id: recording_id(pages),
         items: items.compact
       }
     end
 
     private
 
-    def recording_id(site_id, arguments)
-      pages = pages_within_date_range(site_id, arguments)
+    def recording_id(pages)
       # TODO: I think this can be optimised to return the shortest
       # recording or the one with the least events to make it quicker
       # on the front end
@@ -50,22 +51,14 @@ module Types
       }
     end
 
-    def clicks(site_id, arguments)
-      # Get a list of all recording ids that contain pages
-      # within the date range
-      pages = pages_within_date_range(site_id, arguments)
-
+    def clicks(pages)
       # Get a list of all the click events that happened during those recordings
       events = click_events(pages.map(&:recording_id).uniq)
 
       extract_events_in_range(events, pages)
     end
 
-    def scrolls(site_id, arguments)
-      # Get a list of all recording ids that contain pages
-      # within the date range
-      pages = pages_within_date_range(site_id, arguments)
-
+    def scrolls(pages)
       # Get a list of all the click events that happened during those recordings
       events = scroll_events(pages.map(&:recording_id).uniq)
 
@@ -86,15 +79,15 @@ module Types
     end
 
     def pages_within_date_range(site_id, arguments)
-      @pages_within_date_range ||= Site
-                                   .find(site_id)
-                                   .pages
-                                   .where(
-                                     'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                                     arguments[:page],
-                                     arguments[:from_date],
-                                     arguments[:to_date]
-                                   )
+      Site
+        .find(site_id)
+        .pages
+        .where(
+          'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+          arguments[:page],
+          arguments[:from_date],
+          arguments[:to_date]
+        )
     end
 
     def click_events(recording_ids)
