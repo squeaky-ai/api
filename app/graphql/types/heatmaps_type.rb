@@ -6,7 +6,7 @@ module Types
 
     field :desktop_count, Integer, null: false
     field :mobile_count, Integer, null: false
-    field :screenshot_url, String, null: true
+    field :recording_id, String, null: true
     field :items, [HeatmapsItemType, { null: true }], null: false
   end
 end

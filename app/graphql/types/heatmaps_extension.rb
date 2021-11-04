@@ -19,21 +19,19 @@ module Types
 
       {
         **device_counts,
-        screenshot_url: screenshot_url(site_id, arguments),
+        recording_id: recording_id(site_id, arguments),
         items: items.compact
       }
     end
 
     private
 
-    def screenshot_url(site_id, arguments)
-      Screenshot.find_by(
-        'site_id = ? AND url = ? AND created_at <= ? AND created_at >= ?',
-        site_id,
-        arguments[:page],
-        arguments[:from_date],
-        arguments[:to_date]
-      )
+    def recording_id(site_id, arguments)
+      pages = pages_within_date_range(site_id, arguments)
+      # TODO: I think this can be optimised to return the shortest
+      # recording or the one with the least events to make it quicker
+      # on the front end
+      pages.first&.recording_id
     end
 
     def devices(site_id, arguments)
@@ -88,15 +86,15 @@ module Types
     end
 
     def pages_within_date_range(site_id, arguments)
-      Site
-        .find(site_id)
-        .pages
-        .where(
-          'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-          arguments[:page],
-          arguments[:from_date],
-          arguments[:to_date]
-        )
+      @pages_within_date_range ||= Site
+                                   .find(site_id)
+                                   .pages
+                                   .where(
+                                     'url = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                                     arguments[:page],
+                                     arguments[:from_date],
+                                     arguments[:to_date]
+                                   )
     end
 
     def click_events(recording_ids)

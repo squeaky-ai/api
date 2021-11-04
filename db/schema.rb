@@ -78,15 +78,6 @@ ActiveRecord::Schema.define(version: 2021_11_03_130246) do
     t.bigint "tag_id", null: false
   end
 
-  create_table "screenshots", force: :cascade do |t|
-    t.string "url"
-    t.string "image_url"
-    t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["site_id"], name: "index_screenshots_on_site_id"
-  end
-
   create_table "sites", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
