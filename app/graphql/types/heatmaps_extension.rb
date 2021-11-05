@@ -3,6 +3,8 @@
 module Types
   # Return the data requied for heatmaps
   class HeatmapsExtension < GraphQL::Schema::FieldExtension
+    MOBILE_BREAKPOINT = 360
+
     def apply
       field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop', description: 'The type of device to show')
       field.argument(:type, HeatmapsTypeType, required: true, default_value: 'Click', description: 'The type of heatmap to show')
@@ -77,6 +79,7 @@ module Types
           events ON events.recording_id = recordings.id
         WHERE
           recordings.site_id = ? AND
+          recordings.viewport_x #{arguments[:device] == 'Desktop' ? '>' : '<='} #{MOBILE_BREAKPOINT} AND
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
           pages.url = ? AND
           events.timestamp >= pages.entered_at AND
@@ -102,6 +105,7 @@ module Types
           events ON events.recording_id = recordings.id
         WHERE
           recordings.site_id = ? AND
+          recordings.viewport_x #{arguments[:device] == 'Desktop' ? '>' : '<='} #{MOBILE_BREAKPOINT} AND
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
           pages.url = ? AND
           events.timestamp >= pages.entered_at AND
