@@ -5,6 +5,7 @@ module Types
     description 'The heatmaps device options'
 
     value 'Desktop', 'Show desktop'
+    value 'Tablet', 'Show tablet'
     value 'Mobile', 'Show mobile'
   end
 end

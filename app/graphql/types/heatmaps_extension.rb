@@ -3,7 +3,8 @@
 module Types
   # Return the data requied for heatmaps
   class HeatmapsExtension < GraphQL::Schema::FieldExtension
-    MOBILE_BREAKPOINT = 420
+    MOBILE_BREAKPOINT = 380
+    TABLET_BREAKPOINT = 800
 
     def apply
       field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop', description: 'The type of device to show')
@@ -44,12 +45,7 @@ module Types
 
       viewports = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
 
-      groups = viewports.partition { |v| v[0] <= MOBILE_BREAKPOINT }
-
-      {
-        mobile_count: groups[0].size,
-        desktop_count: groups[1].size
-      }
+      group_viewports(viewports.flatten)
     end
 
     def suitable_recording(site_id, arguments)
@@ -87,7 +83,7 @@ module Types
           events ON events.recording_id = recordings.id
         WHERE
           recordings.site_id = ? AND
-          recordings.viewport_x #{arguments[:device] == 'Desktop' ? '>' : '<='} #{MOBILE_BREAKPOINT} AND
+          recordings.viewport_x #{device_expression(arguments)} AND
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
           pages.url = ? AND
           events.timestamp >= pages.entered_at AND
@@ -113,7 +109,7 @@ module Types
           events ON events.recording_id = recordings.id
         WHERE
           recordings.site_id = ? AND
-          recordings.viewport_x #{arguments[:device] == 'Desktop' ? '>' : '<='} #{MOBILE_BREAKPOINT} AND
+          recordings.viewport_x #{device_expression(arguments)} AND
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
           pages.url = ? AND
           events.timestamp >= pages.entered_at AND
@@ -126,6 +122,33 @@ module Types
 
       events = execute_sql(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
       events.map { |e| { y: e[0] } }
+    end
+
+    def device_expression(arguments)
+      case arguments[:device]
+      when 'Mobile'
+        "<= #{MOBILE_BREAKPOINT}"
+      when 'Tablet'
+        "BETWEEN #{MOBILE_BREAKPOINT} AND #{TABLET_BREAKPOINT}"
+      when 'Desktop'
+        "> #{TABLET_BREAKPOINT}"
+      end
+    end
+
+    def group_viewports(viewports)
+      out = { mobile_count: 0, tablet_count: 0, desktop_count: 0 }
+
+      viewports.each do |v|
+        if v <= MOBILE_BREAKPOINT
+          out[:mobile_count] += 1
+        elsif v > MOBILE_BREAKPOINT && v <= TABLET_BREAKPOINT
+          out[:tablet_count] += 1
+        else
+          out[:desktop_count] += 1
+        end
+      end
+
+      out
     end
 
     def execute_sql(query, variables)
