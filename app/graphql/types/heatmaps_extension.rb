@@ -3,7 +3,7 @@
 module Types
   # Return the data requied for heatmaps
   class HeatmapsExtension < GraphQL::Schema::FieldExtension
-    MOBILE_BREAKPOINT = 360
+    MOBILE_BREAKPOINT = 420
 
     def apply
       field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop', description: 'The type of device to show')
@@ -29,14 +29,23 @@ module Types
     private
 
     def devices(site_id, arguments)
-      results = Site
-                .find(site_id)
-                .recordings
-                .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', arguments[:from_date], arguments[:to_date])
-                .select(:useragent)
-                .uniq
+      sql = <<-SQL
+        SELECT
+          recordings.viewport_x
+        FROM
+          pages
+        LEFT JOIN
+          recordings ON recordings.id = pages.recording_id
+        WHERE
+          deleted = false AND
+          recordings.site_id = ? AND
+          pages.url = ?
+          AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+      SQL
 
-      groups = results.partition { |r| UserAgent.parse(r.useragent).mobile? }
+      viewports = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
+
+      groups = viewports.partition { |v| v[0].size > MOBILE_BREAKPOINT }
 
       {
         mobile_count: groups[0].size,
