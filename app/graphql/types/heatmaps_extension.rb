@@ -37,7 +37,6 @@ module Types
         LEFT JOIN
           recordings ON recordings.id = pages.recording_id
         WHERE
-          deleted = false AND
           recordings.site_id = ? AND
           pages.url = ?
           AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -45,7 +44,7 @@ module Types
 
       viewports = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
 
-      groups = viewports.partition { |v| v[0].size > MOBILE_BREAKPOINT }
+      groups = viewports.partition { |v| v[0] <= MOBILE_BREAKPOINT }
 
       {
         mobile_count: groups[0].size,
