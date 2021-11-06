@@ -133,7 +133,7 @@ class CompletedRecordingsJob < ApplicationJob
   def valid?
     return false if blacklisted_visitor?
 
-    return false unless @session.events? && @session.pageviews?
+    return false unless @session.events? && @session.pageviews? && @session.recording?
 
     return false if @session.duration.zero?
 

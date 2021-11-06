@@ -73,6 +73,11 @@ class Session
     !pageviews.empty?
   end
 
+  def recording?
+    keys = %w[locale viewport_x viewport_x device_x device_y useragent]
+    keys.all? { |k| !@recording[k].nil? }
+  end
+
   def interaction?
     events.any? { |event| event['type'] == 3 && event['data']['source'] }
   end
