@@ -5,7 +5,6 @@
 ### Requirements
 - Ruby 3.0.0
 - Postgres 12.x
-- Redis 5.x
 - ElasticSearch 7.x
 
 In order to send mail through the API, you will need AWS credentials located at ~/.aws, @lemonjs can create you some if you need them.
