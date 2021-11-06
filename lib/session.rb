@@ -83,8 +83,11 @@ class Session
     client = Aws::S3::Client.new
     response = client.get_object(bucket: bucket, key: key)
 
-    events = JSON
-             .parse("[#{response.body.read.gsub('}{', '},{')}]")
+    events = response
+             .body
+             .read
+             .split(',')
+             .map { |b| JSON.parse(Zlib::Inflate.inflate(Base64.decode64(b))) }
              .sort_by { |e| e['value']['timestamp'] }
 
     extract_and_set_visitor_details(events)
