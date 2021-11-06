@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-# Pick up messages from SQS and save the recordings
-# that are temporarily stored in Redis
-class RecordingSaveJob < ApplicationJob
+# Pick up completed recording events from the queue and store
+# them in the database
+class CompletedRecordingsJob < ApplicationJob
   queue_as :default
 
   before_perform do |job|
-    @args = parse_arguments(job.arguments)
-    @site = Site.find_by!(uuid: @args[:site_id])
-    @session = Session.new(@args)
+    message = JSON.parse(job.arguments[0], symbolize_names: true)
+
+    @session = Session.new(message[:bucket], message[:key])
+    @site = Site.find_by!(uuid: @session.site_id)
   end
 
   def perform(*_args, **_kwargs)
@@ -21,18 +22,12 @@ class RecordingSaveJob < ApplicationJob
       persist_events!(recording)
       persist_pageviews!(recording)
       index_to_elasticsearch!(recording, visitor)
-
-      @session.clean_up!
     end
 
     Rails.logger.info 'Recording saved'
   end
 
   private
-
-  def parse_arguments(arguments)
-    JSON.parse(arguments[0], symbolize_names: true)
-  end
 
   def index_to_elasticsearch!(recording, visitor)
     return if recording.deleted
@@ -65,7 +60,7 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    recording = @site.recordings.find_or_create_by(session_id: @args[:session_id])
+    recording = @site.recordings.find_or_create_by(session_id: @session.session_id)
 
     if recording.new_record?
       recording.visitor_id = visitor.id
@@ -169,7 +164,7 @@ class RecordingSaveJob < ApplicationJob
       return visitor if visitor
     end
 
-    Visitor.create_or_find_by(visitor_id: @args[:visitor_id])
+    Visitor.create_or_find_by(visitor_id: @session.visitor_id)
   end
 
   def blacklisted_visitor?

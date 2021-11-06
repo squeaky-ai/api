@@ -31,9 +31,10 @@ $ rspec
 ```
 
 ### Importing recordings
-In production a message is dropped onto SQS, which is picked up by a worker. In development the queue adapter is `:inline` to make things easier to work with. To create a recording you can run the gateway and the script locally, and use the examples directory to fake a session. Afterwards, run the following command to pick up the redis data and pass it to the job:
+Go to S3 and find a recording you want in the `events.squeaky.ai` bucket, and invoke the job:
 ```shell
-$ rake recordings:import_from_local
+$ rails c
+irb> CompletedRecordingsJob.perform_now({ bucket: 'events.squeaky.ai', key: '<key>' }.to_json)
 ```
 
 ### Usage

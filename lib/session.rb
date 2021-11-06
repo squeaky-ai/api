@@ -1,29 +1,24 @@
 # frozen_string_literal: true
 
-# A wrapper around the raw session data that is stored
-# in Redis
+require 'uri'
+
+# Format the S3 Kinesis dump into something useful
 class Session
-  def initialize(args)
-    @args = args
-  end
+  attr_reader :recording,
+              :pageviews,
+              :external_attributes,
+              :events,
+              :site_id,
+              :visitor_id,
+              :session_id
 
-  def events
-    key = redis_key('events')
-    @events ||= parse_and_sort_events(Redis.current.lrange(key, 0, -1))
-  end
+  def initialize(bucket, key)
+    @events = []
+    @pageviews = []
+    @recording = {}
+    @external_attributes = {}
 
-  def pageviews
-    key = redis_key('pageviews')
-    @pageviews ||= parse_and_sort_events(Redis.current.lrange(key, 0, -1))
-  end
-
-  def external_attributes
-    JSON.parse(identify || '{}').transform_values(&:to_s)
-  end
-
-  def clean_up!
-    keys = %w[events recording pageviews identify]
-    keys.each { |k| Redis.current.del(redis_key(k)) }
+    fetch_and_process_events(bucket, key)
   end
 
   def locale
@@ -84,21 +79,39 @@ class Session
 
   private
 
-  def identify
-    key = redis_key('identify')
-    @identify ||= Redis.current.get(key)
+  def fetch_and_process_events(bucket, key)
+    client = Aws::S3::Client.new
+    response = client.get_object(bucket: bucket, key: key)
+
+    events = JSON
+             .parse("[#{response.body.read.gsub('}{', '},{')}]")
+             .sort_by { |e| e['value']['timestamp'] }
+
+    extract_and_set_visitor_details(events)
+    extract_and_set_events(events)
   end
 
-  def recording
-    key = redis_key('recording')
-    @recording ||= Redis.current.hgetall(key)
+  def extract_and_set_visitor_details(events)
+    parts = events.find { |e| !e['visitor'].nil? }['visitor'].split('::')
+
+    @site_id = parts[0]
+    @visitor_id = parts[1]
+    @session_id = parts[2]
   end
 
-  def redis_key(prefix)
-    "#{prefix}::#{@args[:site_id]}::#{@args[:visitor_id]}::#{@args[:session_id]}"
-  end
-
-  def parse_and_sort_events(events)
-    events.map { |i| JSON.parse(i) }.sort_by { |e| e['timestamp'] }
+  def extract_and_set_events(events)
+    events.each do |event|
+      case event['key']
+      when 'recording'
+        @recording = event['value']['data']
+      when 'identify'
+        @external_attributes = event['value']['data'].transform_values(&:to_s)
+      when 'pageview'
+        uri = URI(event['value']['data']['href'])
+        @pageviews.push('path' => uri.path, 'timestamp' => event['value']['timestamp'])
+      when 'event'
+        @events.push(event['value'])
+      end
+    end
   end
 end

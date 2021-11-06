@@ -110,49 +110,6 @@ RSpec.describe Site, type: :model do
     end
   end
 
-  describe '#active_visitor_count' do    
-    context 'when there is nothing in redis' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      subject { site.active_visitor_count }
-
-      it 'returns 0' do
-        expect(subject).to eq 0
-      end
-    end
-
-    context 'when there is a negative number in redis' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      before do
-        Redis.current.decrby("active_user_count::#{site.uuid}", 5)
-      end
-
-      subject { site.active_visitor_count }
-
-      it 'returns 0' do
-        expect(subject).to eq 0
-      end
-    end
-
-    context 'when there is something in redis' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: user) }
-
-      before do
-        Redis.current.incrby("active_user_count::#{site.uuid}", 5)
-      end
-
-      subject { site.active_visitor_count }
-
-      it 'returns 5' do
-        expect(subject).to eq 5
-      end
-    end
-  end
-
   describe '#recordings_count' do
     context 'when there are no recordings' do
       let(:user) { create_user }

@@ -83,11 +83,6 @@ class Site < ApplicationRecord
     { site_id: id, **args }
   end
 
-  def active_visitor_count
-    count = Redis.current.get("active_user_count::#{uuid}").to_i
-    count.negative? ? 0 : count
-  end
-
   def team_size_exceeded?
     team.size >= Plan.new(plan).max_team_members
   end
