@@ -46,7 +46,7 @@ class Session
   end
 
   def referrer
-    recording['referrer']
+    recording['referrer'].presence
   end
 
   def connected_at
@@ -111,7 +111,7 @@ class Session
     events.each do |event|
       case event['key']
       when 'recording'
-        @recording = event['value']['data']
+        @recording.merge(event['value']['data']) { |_k, old, new| old || new }
       when 'identify'
         @external_attributes = event['value']['data'].transform_values(&:to_s)
       when 'pageview'
