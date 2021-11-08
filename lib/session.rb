@@ -111,7 +111,7 @@ class Session
     events.each do |event|
       case event['key']
       when 'recording'
-        @recording.merge(event['value']['data']) { |_k, old, new| old || new }
+        event['value']['data'].each { |k, v| @recording[k] = v unless @recording[k] }
       when 'identify'
         @external_attributes = event['value']['data'].transform_values(&:to_s)
       when 'pageview'
