@@ -8,20 +8,22 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      results = Site
-                .find(site_id)
-                .recordings
-                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select('useragent, count(*) count')
-                .group(:useragent)
-                .order('count DESC')
+      sql = <<-SQL
+        SELECT DISTINCT(useragent) useragent, count(*) useragent_count
+        FROM recordings
+        WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+        GROUP BY useragent
+        ORDER BY useragent_count
+      SQL
+
+      results = Sql.execute(sql, [site_id, from_date, to_date])
 
       out = {}
 
       results.each do |result|
-        browser = UserAgent.parse(result.useragent).browser
+        browser = UserAgent.parse(result['useragent']).browser
         out[browser] ||= 0
-        out[browser] += result.count
+        out[browser] += result['useragent_count']
       end
 
       out.map { |k, v| { name: k, count: v } }

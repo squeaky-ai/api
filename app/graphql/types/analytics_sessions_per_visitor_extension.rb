@@ -21,15 +21,16 @@ module Types
     private
 
     def get_average_count(site_id, from_date, to_date)
-      counts = Site
-               .find(site_id)
-               .recordings
-               .select('visitor_id')
-               .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-               .group(:visitor_id)
-               .count(:visitor_id)
+      sql = <<-SQL
+        SELECT visitor_id, COUNT(visitor_id)
+        FROM recordings
+        WHERE site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+        GROUP BY visitor_id
+      SQL
 
-      values = counts.values
+      results = Sql.execute(sql, [site_id, from_date, to_date])
+
+      values = results.map { |c| c['count'] }
 
       return 0 if values.empty?
 

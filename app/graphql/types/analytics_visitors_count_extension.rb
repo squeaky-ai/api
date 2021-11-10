@@ -8,15 +8,17 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      results = Site
-                .find(site_id)
-                .recordings
-                .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select('COUNT(DISTINCT recordings.visitor_id) total_count, COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE recordings.visitor_id END) new_count')
+      sql = <<-SQL
+        SELECT COUNT(DISTINCT recordings.visitor_id) total_count, COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE recordings.visitor_id END) new_count
+        FROM recordings
+        WHERE site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+      SQL
+
+      results = Sql.execute(sql, [site_id, from_date, to_date])
 
       {
-        total: results[0].total_count,
-        new: results[0].new_count
+        total: results.first['total_count'],
+        new: results.first['new_count']
       }
     end
   end

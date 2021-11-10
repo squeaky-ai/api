@@ -21,12 +21,14 @@ module Types
     private
 
     def get_average_duration(site_id, from_date, to_date)
-      Site
-        .find(site_id)
-        .recordings
-        .select('disconnected_at, disconnected_at - connected_at dur')
-        .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-        .average('disconnected_at - connected_at') || 0
+      sql = <<-SQL
+        SELECT AVG(disconnected_at - connected_at) as duration
+        FROM recordings
+        WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?;
+      SQL
+
+      result = Sql.execute(sql, [site_id, from_date, to_date])
+      result.first['duration'] || 0
     end
 
     def parse_date(date)

@@ -43,7 +43,7 @@ module Types
           AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       SQL
 
-      viewports = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
+      viewports = Sql.execute(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
 
       group_viewports(viewports.flatten)
     end
@@ -67,7 +67,7 @@ module Types
           1;
       SQL
 
-      pages = execute_sql(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
+      pages = Sql.execute(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
       pages[0][0] if pages[0]
     end
 
@@ -93,7 +93,7 @@ module Types
           (events.data->>'type')::integer = 2
       SQL
 
-      events = execute_sql(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
+      events = Sql.execute(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
       events.map { |e| JSON.parse(e[0]) }
     end
 
@@ -120,7 +120,7 @@ module Types
           pages.id;
       SQL
 
-      events = execute_sql(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
+      events = Sql.execute(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
       events.map { |e| { y: e[0] } }
     end
 
@@ -149,11 +149,6 @@ module Types
       end
 
       out
-    end
-
-    def execute_sql(query, variables)
-      sql = ActiveRecord::Base.sanitize_sql_array([query, *variables])
-      ActiveRecord::Base.connection.execute(sql).values
     end
   end
 end

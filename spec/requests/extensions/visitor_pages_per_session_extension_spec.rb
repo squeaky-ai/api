@@ -46,7 +46,7 @@ RSpec.describe Types::VisitorPagesPerSessionExtension, type: :request do
 
     it 'returns the number of pages per session for this visitor' do
       response = subject['data']['site']['visitor']
-      expect(response['pagesPerSession']).to eq 1.5
+      expect(response['pagesPerSession']).to eq 1.33
     end
   end
 end

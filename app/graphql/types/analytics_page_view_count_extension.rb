@@ -8,11 +8,16 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      Site
-        .find(site_id)
-        .pages
-        .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-        .count
+      sql = <<-SQL
+        SELECT COUNT(pages.id) pages_count
+        FROM pages
+        LEFT JOIN recordings ON recordings.id = pages.recording_id
+        WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+      SQL
+
+      results = Sql.execute(sql, [site_id, from_date, to_date])
+
+      results.first['pages_count']
     end
   end
 end

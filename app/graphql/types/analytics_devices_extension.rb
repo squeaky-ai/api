@@ -8,13 +8,15 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      results = Site
-                .find(site_id)
-                .recordings
-                .where('to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select(:useragent)
+      sql = <<-SQL
+        SELECT useragent
+        FROM recordings
+        WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+      SQL
 
-      groups = results.partition { |r| UserAgent.parse(r.useragent).mobile? }
+      results = Sql.execute(sql, [site_id, from_date, to_date])
+
+      groups = results.partition { |r| UserAgent.parse(r['useragent']).mobile? }
 
       [
         {

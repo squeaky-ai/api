@@ -8,13 +8,15 @@ module Types
       from_date = object.object[:from_date]
       to_date = object.object[:to_date]
 
-      results = Site
-                .find(site_id)
-                .recordings
-                .where('device_x > 0 AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-                .select('device_x')
+      sql = <<-SQL
+        SELECT device_x
+        FROM recordings
+        WHERE device_x > 0 AND site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+      SQL
 
-      results.map(&:device_x)
+      results = Sql.execute(sql, [site_id, from_date, to_date])
+
+      results.map { |r| r['device_x'] }
     end
   end
 end
