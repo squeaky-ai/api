@@ -45,7 +45,7 @@ module Types
 
       viewports = Sql.execute(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
 
-      group_viewports(viewports.flatten)
+      group_viewports(viewports.map { |v| v['viewport_x'] })
     end
 
     def suitable_recording(site_id, arguments)
@@ -68,7 +68,7 @@ module Types
       SQL
 
       pages = Sql.execute(sql, [site_id, arguments[:page], arguments[:from_date], arguments[:to_date]])
-      pages[0][0] if pages[0]
+      pages.first&.[]('recording_id')
     end
 
     def click_events(site_id, arguments)
@@ -94,7 +94,7 @@ module Types
       SQL
 
       events = Sql.execute(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
-      events.map { |e| JSON.parse(e[0]) }
+      events.map { |e| JSON.parse(e['data']) }
     end
 
     def scroll_events(site_id, arguments)
@@ -121,7 +121,7 @@ module Types
       SQL
 
       events = Sql.execute(sql, [site_id, arguments[:from_date], arguments[:to_date], arguments[:page]])
-      events.map { |e| { y: e[0] } }
+      events.map { |e| { y: e['max'] } }
     end
 
     def device_expression(arguments)

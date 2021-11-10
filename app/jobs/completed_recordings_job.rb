@@ -62,9 +62,6 @@ class CompletedRecordingsJob < ApplicationJob
   def persist_recording!(visitor)
     recording = @site.recordings.find_or_create_by(session_id: @session.session_id)
 
-    # TODO: Remove
-    Rails.logger.warn @session.to_h unless @session.locale
-
     if recording.new_record?
       recording.visitor_id = visitor.id
       recording.deleted = soft_delete?
