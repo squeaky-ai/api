@@ -2,7 +2,7 @@
 
 require 'uri'
 
-# Format the S3 Kinesis dump into something useful
+# Format the Redis list into something useful
 class Session
   attr_reader :recording,
               :pageviews,
@@ -12,13 +12,17 @@ class Session
               :visitor_id,
               :session_id
 
-  def initialize(bucket, key)
+  def initialize(message)
     @events = []
     @pageviews = []
     @recording = {}
     @external_attributes = {}
 
-    fetch_and_process_events(bucket, key)
+    @site_id = message[:site_id]
+    @visitor_id = message[:visitor_id]
+    @session_id = message[:session_id]
+
+    fetch_and_process_events
   end
 
   def locale
@@ -84,27 +88,16 @@ class Session
 
   private
 
-  def fetch_and_process_events(bucket, key)
-    client = Aws::S3::Client.new
-    response = client.get_object(bucket: bucket, key: key)
+  def fetch_and_process_events
+    key = "events::#{@site_id}::#{@visitor_id}::#{@session_id}"
 
-    events = response
-             .body
-             .read
-             .split(',')
-             .map { |b| JSON.parse(Zlib::Inflate.inflate(Base64.decode64(b))) }
+    events = Redis
+             .current
+             .lrange(key, 0, -1)
+             .map { |e| JSON.parse(e) }
              .sort_by { |e| e['value']['timestamp'] }
 
-    extract_and_set_visitor_details(events)
     extract_and_set_events(events)
-  end
-
-  def extract_and_set_visitor_details(events)
-    parts = events.find { |e| !e['visitor'].nil? }['visitor'].split('::')
-
-    @site_id = parts[0]
-    @visitor_id = parts[1]
-    @session_id = parts[2]
   end
 
   def extract_and_set_events(events)

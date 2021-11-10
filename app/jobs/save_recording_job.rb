@@ -8,7 +8,7 @@ class SaveRecordingJob < ApplicationJob
   before_perform do |job|
     message = JSON.parse(job.arguments[0], symbolize_names: true)
 
-    @session = Session.new(message[:bucket], message[:key])
+    @session = Session.new(message)
     @site = Site.find_by!(uuid: @session.site_id)
   end
 

@@ -6,7 +6,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.0'
 
 gem 'aws-sdk-rails', '~> 3'
-gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-sqs', '~> 1'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
@@ -18,6 +17,7 @@ gem 'kaminari'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.1'
+gem 'redis'
 gem 'useragent'
 
 group :development, :test do
