@@ -2,7 +2,7 @@
 
 # Pick up completed recording events from the queue and store
 # them in the database
-class CompletedRecordingsJob < ApplicationJob
+class SaveRecordingJob < ApplicationJob
   queue_as :default
 
   before_perform do |job|

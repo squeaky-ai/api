@@ -21,17 +21,6 @@ class Session
     fetch_and_process_events(bucket, key)
   end
 
-  def to_h
-    {
-      site_id: @site_id,
-      visitor_id: @visitor_id,
-      session_id: @session_id,
-      recording: @recording,
-      page_views_count: @pageviews.size,
-      events_count: @events.size
-    }
-  end
-
   def locale
     recording['locale']
   end
