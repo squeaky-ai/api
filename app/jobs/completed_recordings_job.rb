@@ -62,6 +62,11 @@ class CompletedRecordingsJob < ApplicationJob
   def persist_recording!(visitor)
     recording = @site.recordings.find_or_create_by(session_id: @session.session_id)
 
+    if !recording && !@session.recording?
+      Rails.logger.warn @session.to_h
+      raise StandardError, 'Not sure what to do with this'
+    end
+
     if recording.new_record?
       recording.visitor_id = visitor.id
       recording.deleted = soft_delete?
@@ -127,13 +132,13 @@ class CompletedRecordingsJob < ApplicationJob
 
     page_views.last[:exited_at] = recording.disconnected_at
 
-    Page.insert_all!(page_views)
+    Page.insert_all!(page_views) if page_views.size
   end
 
   def valid?
     return false if blacklisted_visitor?
 
-    return false unless @session.events? && @session.pageviews? && @session.recording?
+    return false unless @session.events?
 
     return false if @session.duration.zero?
 
