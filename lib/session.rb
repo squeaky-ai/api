@@ -106,7 +106,7 @@ class Session
       when 'recording'
         event['value']['data'].each { |k, v| @recording[k] = v unless @recording[k] }
       when 'identify'
-        @external_attributes = event['value']['data'].transform_values(&:to_s)
+        event['value']['data'].each { |k, v| @external_attributes[k] = v.to_s unless @external_attributes[k] }
       when 'pageview'
         uri = URI(event['value']['data']['href'])
         @pageviews.push('path' => uri.path, 'timestamp' => event['value']['timestamp'])

@@ -172,6 +172,8 @@ class RecordingSaveJob < ApplicationJob
 
     return false unless email
 
+    Rails.logger.info "#{email} in -> #{@site.domain_blacklist.to_json}"
+
     @site.domain_blacklist.each do |blacklist|
       return true if blacklist['type'] == 'domain' && email.end_with?(blacklist['value'])
       return true if blacklist['type'] == 'email' && email == blacklist['value']
