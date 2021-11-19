@@ -20,6 +20,8 @@ class Site < ApplicationRecord
   has_many :pages, through: :recordings
   has_many :tags
 
+  has_one :feedback
+
   # The plural sounds weird
   alias_attribute :team, :teams
   alias_attribute :team_size_exceeded, :team_size_exceeded?

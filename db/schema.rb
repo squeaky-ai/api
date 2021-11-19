@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_03_130246) do
+ActiveRecord::Schema.define(version: 2021_11_19_090230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,24 @@ ActiveRecord::Schema.define(version: 2021_11_03_130246) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recording_id"], name: "index_events_on_recording_id"
+  end
+
+  create_table "feedback", force: :cascade do |t|
+    t.boolean "nps_enabled", default: false, null: false
+    t.string "nps_accent_color"
+    t.string "nps_schedule"
+    t.string "nps_phrase"
+    t.boolean "nps_follow_up_enabled"
+    t.boolean "nps_contact_consent_enabled"
+    t.string "nps_layout"
+    t.boolean "sentiment_enabled", default: false, null: false
+    t.string "sentiment_accent_color"
+    t.string "sentiment_excluded_pages", default: [], null: false, array: true
+    t.string "sentiment_layout"
+    t.bigint "site_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["site_id"], name: "index_feedback_on_site_id"
   end
 
   create_table "migrations", force: :cascade do |t|
@@ -76,6 +94,15 @@ ActiveRecord::Schema.define(version: 2021_11_03_130246) do
   create_table "recordings_tags", id: false, force: :cascade do |t|
     t.bigint "recording_id", null: false
     t.bigint "tag_id", null: false
+  end
+
+  create_table "screenshots", force: :cascade do |t|
+    t.string "url"
+    t.string "image_url"
+    t.bigint "site_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["site_id"], name: "index_screenshots_on_site_id"
   end
 
   create_table "sites", force: :cascade do |t|

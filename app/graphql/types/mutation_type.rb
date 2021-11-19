@@ -38,6 +38,9 @@ module Types
     field :domain_blacklist_delete,
           mutation: Mutations::SiteDomainBlacklistDelete,
           description: 'Delete an entry from the domain blacklist'
+    field :feedback_update,
+          mutation: Mutations::FeedbackUpdate,
+          description: 'Update/upsert the site feedback settings'
 
     # Team
     field :team_invite,
