@@ -19,6 +19,7 @@ class Site < ApplicationRecord
   has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
   has_many :nps, through: :recordings
+  has_many :sentiments, through: :recordings
   has_many :tags
 
   has_one :feedback
