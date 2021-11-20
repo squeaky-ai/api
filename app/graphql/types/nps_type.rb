@@ -8,5 +8,15 @@ module Types
           NpsResponseType,
           null: false,
           extensions: [NpsResponseExtension]
+
+    field :groups,
+          NpsGroupsType,
+          null: false,
+          extensions: [NpsGroupsExtension]
+
+    field :stats,
+          NpsStatsType,
+          null: false,
+          extensions: [NpsStatsExtension]
   end
 end
