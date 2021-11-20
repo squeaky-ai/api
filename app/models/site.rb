@@ -18,6 +18,7 @@ class Site < ApplicationRecord
   has_many :notes, through: :recordings
   has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
+  has_many :nps, through: :recordings
   has_many :tags
 
   has_one :feedback
@@ -82,6 +83,13 @@ class Site < ApplicationRecord
     # This is a pure hack to get around having an extension
     # that only has extensions. The analytics extension does
     # not resolve anything of it's own
+    { site_id: id, **args }
+  end
+
+  def nps(args)
+    # This is a pure hack to get around having an extension
+    # that only has extensions. The nps extension does not 
+    # resolve anything of it's own
     { site_id: id, **args }
   end
 

@@ -11,6 +11,8 @@ class Recording < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
 
+  has_one :nps
+
   has_and_belongs_to_many :tags
 
   INDEX = Rails.configuration.elasticsearch['recordings_index']

@@ -44,6 +44,11 @@ module Types
       argument :from_date, String, required: true, description: 'The to start from'
       argument :to_date, String, required: true, description: 'The to end at'
     end
+    # Top level nps object that contains all the sub extensions
+    field :nps, NpsType, null: false do
+      argument :from_date, String, required: true, description: 'The to start from'
+      argument :to_date, String, required: true, description: 'The to end at'
+    end
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
