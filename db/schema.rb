@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_20_093554) do
+ActiveRecord::Schema.define(version: 2021_11_20_212425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2021_11_20_093554) do
 
   create_table "nps", force: :cascade do |t|
     t.integer "score", null: false
-    t.string "comment", null: false
+    t.string "comment"
     t.boolean "contact", default: false, null: false
     t.bigint "recording_id"
     t.datetime "created_at", precision: 6, null: false
@@ -113,6 +113,15 @@ ActiveRecord::Schema.define(version: 2021_11_20_093554) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["site_id"], name: "index_screenshots_on_site_id"
+  end
+
+  create_table "sentiments", force: :cascade do |t|
+    t.integer "score", null: false
+    t.string "comment"
+    t.bigint "recording_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recording_id"], name: "index_sentiments_on_recording_id"
   end
 
   create_table "sites", force: :cascade do |t|

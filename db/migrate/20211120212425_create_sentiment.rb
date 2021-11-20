@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-class CreateNps < ActiveRecord::Migration[6.1]
+class CreateSentiment < ActiveRecord::Migration[6.1]
   def change
-    create_table :nps do |t|
+    create_table :sentiments do |t|
       t.integer :score, null: false
       t.string :comment
-      t.boolean :contact, null: false, default: false
 
       t.belongs_to :recording
 
