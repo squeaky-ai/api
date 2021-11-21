@@ -18,5 +18,10 @@ module Types
           NpsStatsType,
           null: false,
           extensions: [NpsStatsExtension]
+
+    field :ratings,
+          [NpsRatingType, { null: true }],
+          null: false,
+          extensions: [NpsRatingsExtension]
   end
 end
