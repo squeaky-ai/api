@@ -23,5 +23,10 @@ module Types
           [NpsRatingType, { null: true }],
           null: false,
           extensions: [NpsRatingsExtension]
+
+    field :replies,
+          NpsRepliesType,
+          null: false,
+          extensions: [NpsRepliesExtension]
   end
 end
