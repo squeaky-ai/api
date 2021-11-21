@@ -89,8 +89,15 @@ class Site < ApplicationRecord
 
   def nps(args)
     # This is a pure hack to get around having an extension
-    # that only has extensions. The nps extension does not 
+    # that only has extensions. The nps extension does not
     # resolve anything of it's own
+    { site_id: id, **args }
+  end
+
+  def sentiment(args)
+    # This is a pure hack to get around having an extension
+    # that only has extensions. The sentiment extension does
+    # not resolve anything of it's own
     { site_id: id, **args }
   end
 

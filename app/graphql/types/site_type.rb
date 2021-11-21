@@ -49,6 +49,10 @@ module Types
       argument :from_date, String, required: true, description: 'The to start from'
       argument :to_date, String, required: true, description: 'The to end at'
     end
+    field :sentiment, SentimentType, null: false do
+      argument :from_date, String, required: true, description: 'The to start from'
+      argument :to_date, String, required: true, description: 'The to end at'
+    end
     field :created_at, String, null: false
     field :updated_at, String, null: true
   end
