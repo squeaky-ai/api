@@ -8,5 +8,10 @@ module Types
           SentimentResponseType,
           null: false,
           extensions: [SentimentResponseExtension]
+
+    field :replies,
+          SentimentRepliesType,
+          null: false,
+          extensions: [SentimentRepliesExtension]
   end
 end
