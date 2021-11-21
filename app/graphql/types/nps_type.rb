@@ -28,5 +28,10 @@ module Types
           NpsRepliesType,
           null: false,
           extensions: [NpsRepliesExtension]
+
+    field :scores,
+          NpsScoresType,
+          null: false,
+          extensions: [NpsScoresExtension]
   end
 end
