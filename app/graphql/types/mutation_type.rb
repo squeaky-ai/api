@@ -113,6 +113,12 @@ module Types
     field :feedback_create,
           mutation: Mutations::FeedbackCreate,
           description: 'Provide some feedback'
+    field :nps_delete,
+          mutation: Mutations::NpsDelete,
+          description: 'Delete an nps response'
+    field :sentiment_delete,
+          mutation: Mutations::SentimentDelete,
+          description: 'Delete a sentiment response'
 
     # Visitors
     field :visitor_starred,
