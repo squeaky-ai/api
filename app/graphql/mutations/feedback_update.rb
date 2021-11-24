@@ -26,8 +26,6 @@ module Mutations
     end
 
     def resolve(**args)
-      puts '@@@', args
-
       feedback = @site.feedback || Feedback.create(site_id: @site.id)
 
       feedback.assign_attributes(args.except(:site_id))

@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+module Types
+  module Analytics
+    class Analytics < Types::BaseObject
+      field :recordings_count, resolver: Resolvers::Analytics::RecordingsCount
+      field :visitors_count, resolver: Resolvers::Analytics::VisitorsCount
+      field :page_view_count, resolver: Resolvers::Analytics::PageViewCount
+      field :session_durations, rsolver: Resolvers::Analytics::SessionDurations
+      field :pages_per_session, resolver: Resolvers::Analytics::PagesPerSession
+      field :pages, resolver: Resolvers::Analytics::Pages
+      field :browsers, resolver: Resolvers::Analytics::Browser
+      field :languages, resolver: Resolvers::Analytics::Language
+      field :devices, resolver: Resolvers::Analytics::Devices
+      field :dimensions, resolver: Resolvers::Analytics::Dimensions
+      field :referrers, resolver: Resolvers::Analytics::Referrers
+      field :visitors, resolver: Resolvers::Analytics::Visitors
+      field :page_views, resolver: Resolvers::Analytics::PageViews
+      field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
+    end
+  end
+end

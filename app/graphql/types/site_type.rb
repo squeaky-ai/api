@@ -12,10 +12,10 @@ module Types
     field :uuid, String, null: false
     field :owner_name, String, null: false
     field :verified_at, String, null: true
-    field :days_since_last_recording, Integer, null: false, extensions: [LastRecordingExtension]
     field :team, [TeamType], null: false
     field :team_size_exceeded, Boolean, null: false
-    field :notes, NotesType, null: true, extensions: [NotesExtension]
+    field :days_since_last_recording, resolver: Resolvers::LastRecording
+    field :notes, NotesType, resolver: Resolvers::Notes
     field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
     field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]
     field :browsers, [String, { null: true }], null: false, extensions: [BrowsersExtension]
