@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-sentiment_ratings_query = <<-GRAPHQL
+sentiment_replies_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
       sentiment(fromDate: $from_date, toDate: $to_date) {
-        ratings {
-          score
-          trend
+        replies {
+          total
           responses {
             score
-            timestamp
           }
         }
       }
@@ -19,21 +17,20 @@ sentiment_ratings_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
+RSpec.describe Resolvers::Feedback::SentimentReplies, type: :request do
   context 'when there is no data' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
-      graphql_request(sentiment_ratings_query, variables, user)
+      graphql_request(sentiment_replies_query, variables, user)
     end
 
     it 'returns an empty array' do
       response = subject['data']['site']['sentiment']
-      expect(response['ratings']).to eq(
-        'score' => 0.0,
-        'trend' => 0.0,
+      expect(response['replies']).to eq(
+        'total' => 0,
         'responses' => []
       )
     end
@@ -52,22 +49,19 @@ RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
-      graphql_request(sentiment_ratings_query, variables, user)
+      graphql_request(sentiment_replies_query, variables, user)
     end
 
     it 'returns the data' do
       response = subject['data']['site']['sentiment']
-      expect(response['ratings']).to eq(
-        'score' => 4.0,
-        'trend' => 4.0,
+      expect(response['replies']).to eq(
+        'total' => 2,
         'responses' => [
           {
-            'score' => 5,
-            'timestamp' => '2021-08-02T23:00:00Z'
+            'score' => 5
           },
           {
-            'score' => 3,
-            'timestamp' => '2021-08-02T23:00:00Z'
+            'score' => 3
           }
         ]
       )
