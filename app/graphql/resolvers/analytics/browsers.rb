@@ -6,6 +6,20 @@ module Resolvers
       type Types::Analytics::Browsers, null: false
 
       def resolve
+        out = {}
+
+        useragents.each do |result|
+          browser = UserAgent.parse(result['useragent']).browser
+          out[browser] ||= 0
+          out[browser] += result['useragent_count']
+        end
+
+        out.map { |k, v| { name: k, count: v } }
+      end
+
+      private
+
+      def useragents
         sql = <<-SQL
           SELECT DISTINCT(useragent) useragent, count(*) useragent_count
           FROM recordings
@@ -14,17 +28,7 @@ module Resolvers
           ORDER BY useragent_count
         SQL
 
-        results = Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
-
-        out = {}
-
-        results.each do |result|
-          browser = UserAgent.parse(result['useragent']).browser
-          out[browser] ||= 0
-          out[browser] += result['useragent_count']
-        end
-
-        out.map { |k, v| { name: k, count: v } }
+        Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
       end
     end
   end
