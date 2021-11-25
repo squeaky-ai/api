@@ -3,8 +3,8 @@
 module Types
   module Nps
     class Response < Types::BaseObject
-      field :items, [NpsResponseItemType, { null: true }], null: false
-      field :pagination, NpsResponsePaginationType, null: false
+      field :items, [Types::Nps::ResponseItem, { null: true }], null: false
+      field :pagination, Types::Nps::ResponsePagination, null: false
     end
   end
 end

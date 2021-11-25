@@ -10,10 +10,10 @@ module Types
       argument :exit_url, String, required: false
       argument :visited_pages, [String], required: true
       argument :unvisited_pages, [String], required: true
-      argument :status, FiltersStatusType, required: false
-      argument :date, FiltersDateType, required: true
-      argument :duration, FiltersDurationType, required: true
-      argument :viewport, FiltersViewportType, required: true
+      argument :status, Types::Common::FiltersStatus, required: false
+      argument :date, Types::Common::FiltersDate, required: true
+      argument :duration, Types::Common::FiltersDuration, required: true
+      argument :viewport, Types::Common::FiltersViewport, required: true
     end
   end
 end

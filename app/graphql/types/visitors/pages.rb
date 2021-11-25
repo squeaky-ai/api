@@ -3,8 +3,8 @@
 module Types
   module Visitors
     class Pages < Types::BaseObject
-      field :items, [VisitorPageType, { null: true }], null: false
-      field :pagination, VisitorPagePaginationType, null: false
+      field :items, [Types::Visitors::Page, { null: true }], null: false
+      field :pagination, Types::Visitors::PagePagination, null: false
     end
   end
 end

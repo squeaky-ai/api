@@ -10,20 +10,20 @@ module Types
       field :bookmarked, Boolean, null: false
       field :language, String, null: false
       field :duration, GraphQL::Types::BigInt, null: false
-      field :pages, [PageType, { null: true }], null: false
+      field :pages, [Types::Pages::Page, { null: true }], null: false
       field :page_views, [String, { null: true }], null: false
       field :page_count, Integer, null: false
       field :start_page, String, null: false
       field :exit_page, String, null: false
-      field :device, DeviceType, null: false
+      field :device, Types::Recordings::Device, null: false
       field :connected_at, String, null: true
       field :disconnected_at, String, null: true
-      field :tags, [TagType, { null: true }], null: false
-      field :notes, [NoteType, { null: true }], null: false
-      field :events, EventsType, null: false, extensions: [EventExtension]
-      field :previous_recording, RecordingType, null: true
-      field :next_recording, RecordingType, null: true
-      field :visitor, VisitorType, null: false
+      field :tags, [Types::Tags::Tag, { null: true }], null: false
+      field :notes, [Types::Notes::Note, { null: true }], null: false
+      field :events, Types::Recordings::Events, null: false, extensions: [EventExtension]
+      field :previous_recording, Types::Recordings::Recording, null: true
+      field :next_recording, Types::Recordings::Recording, null: true
+      field :visitor, Types::Visitors::Visitor, null: false
     end
   end
 end

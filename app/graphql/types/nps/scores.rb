@@ -5,7 +5,7 @@ module Types
     class Scores < Types::BaseObject
       field :trend, Integer, null: false
       field :score, Integer, null: false
-      field :responses, [NpsScoreType, { null: true }], null: false
+      field :responses, [Types::Nps::Score, { null: true }], null: false
     end
   end
 end

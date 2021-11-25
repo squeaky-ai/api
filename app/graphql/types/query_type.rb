@@ -8,21 +8,17 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :user, UserType, null: true do
+    field :user, Types::Users::User, null: true do
       description "Get the user from the session.\nIt will return null if there is no session"
     end
 
-    field :site, SiteType, null: true do
-      description 'Get a single site'
+    field :site, Types::Sites::Site, null: true do
       argument :site_id, ID, required: true
     end
 
-    field :sites, [SiteType, { null: true }], null: false do
-      description "Get a list of sites for the user.\nWarning: Loading the recordings here is n+1 and expensive!"
-    end
+    field :sites, [Types::Sites::Site, { null: true }], null: false
 
-    field :user_invitation, UserInvitationType, null: true do
-      description 'Get the user from the invite token'
+    field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
 

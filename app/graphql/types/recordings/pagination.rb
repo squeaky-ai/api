@@ -5,7 +5,7 @@ module Types
     class Pagination < Types::BaseObject
       field :page_size, Integer, null: false
       field :total, Integer, null: false
-      field :sort, RecordingSortType, null: false
+      field :sort, Types::Recordings::Sort, null: false
     end
   end
 end

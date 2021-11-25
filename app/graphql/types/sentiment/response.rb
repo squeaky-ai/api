@@ -3,8 +3,8 @@
 module Types
   module Sentiment
     class Response < Types::BaseObject
-      field :items, [SentimentResponseItemType, { null: true }], null: false
-      field :pagination, SentimentResponsePaginationType, null: false
+      field :items, [Types::Sentiment::ResponseItem, { null: true }], null: false
+      field :pagination, Types::Sentiment::ResponsePagination, null: false
     end
   end
 end
