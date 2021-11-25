@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  module Recordings
+  module Feedback
     class Update < SiteMutation
       null false
 
@@ -18,7 +18,7 @@ module Mutations
       argument :sentiment_excluded_pages, [String], required: false
       argument :sentiment_layout, String, required: false
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]

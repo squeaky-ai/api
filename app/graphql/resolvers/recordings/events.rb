@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Types
+module Resolvers
   module Recordings
     class Events < Resolvers::Base
       type Types::Recordings::Events, null: false

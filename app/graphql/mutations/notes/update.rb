@@ -11,7 +11,7 @@ module Mutations
       argument :body, String, required: false
       argument :timestamp, Integer, required: false
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]

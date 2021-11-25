@@ -8,8 +8,8 @@ module Resolvers
       MOBILE_BREAKPOINT = 380
       TABLET_BREAKPOINT = 800
 
-      argument :device, HeatmapsDeviceType, required: true, default_value: 'Desktop'
-      argument :type, HeatmapsTypeType, required: true, default_value: 'Click'
+      argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
+      argument :type, Types::Heatmaps::Type, required: true, default_value: 'Click'
       argument :page, String, required: true
       argument :from_date, String, required: true
       argument :to_date, String, required: true

@@ -3,7 +3,7 @@
 module Types
   module Sites
     class DomainBlacklist < Types::BaseObject
-      field :type, Types::Site::DomainBlacklistType, null: false
+      field :type, Types::Sites::DomainBlacklistTarget, null: false
       field :value, String, null: false
     end
   end

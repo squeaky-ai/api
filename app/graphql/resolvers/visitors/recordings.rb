@@ -3,7 +3,7 @@
 module Resolvers
   module Visitors
     class Recordings < Resolvers::Base
-      type Types::Visitors::Recordings, null: false
+      type Types::Recordings::Recordings, null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  module Recordings
+  module Feedback
     class Create < UserMutation
       null false
 
@@ -9,7 +9,7 @@ module Mutations
       argument :subject, String, required: true
       argument :message, String, required: true
 
-      type Types::GenericSuccessType
+      type Types::Common::GenericSuccess
 
       def resolve(type:, subject:, message:, **_rest)
         FeedbackMailer.feedback(@user, type, subject, message).deliver_now

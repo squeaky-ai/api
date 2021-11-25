@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class PageViewCount < Resolvers::Base
-      type Types::Analytics::PageViewCount, null: false
+      type Integer, null: false
 
       def resolve
         sql = <<-SQL

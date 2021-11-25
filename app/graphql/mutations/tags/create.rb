@@ -9,7 +9,7 @@ module Mutations
       argument :recording_id, ID, required: true
       argument :name, String, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]

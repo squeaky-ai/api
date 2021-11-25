@@ -9,7 +9,7 @@ module Mutations
       argument :recording_ids, [String], required: true
       argument :viewed, Boolean, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]

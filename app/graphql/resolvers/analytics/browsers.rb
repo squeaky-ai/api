@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Browsers < Resolvers::Base
-      type Types::Analytics::Browsers, null: false
+      type [Types::Analytics::Browser, { null: true }], null: false
 
       def resolve
         out = {}

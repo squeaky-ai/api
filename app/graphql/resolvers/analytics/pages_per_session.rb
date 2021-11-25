@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class PagesPerSession < Resolvers::Base
-      type Types::AnalyticsPagesPerSession, null: false
+      type Types::Analytics::PagesPerSession, null: false
 
       def resolve
         current_average = get_average_count(object.site_id, object.from_date, object.to_date)

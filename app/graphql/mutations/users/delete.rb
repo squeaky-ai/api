@@ -5,7 +5,7 @@ module Mutations
     class Delete < UserMutation
       null true
 
-      type Types::UserType
+      type Types::Users::User
 
       def resolve
         # Save this as the user will be nil

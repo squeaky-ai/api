@@ -9,7 +9,7 @@ module Mutations
       argument :last_name, String, required: false
       argument :email, String, required: false
 
-      type Types::UserType
+      type Types::Users::User
 
       def resolve(**args)
         should_send_email = send_email?

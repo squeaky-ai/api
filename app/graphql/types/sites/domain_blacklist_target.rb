@@ -2,7 +2,7 @@
 
 module Types
   module Sites
-    class DomainBlacklistType < Types::BaseEnum
+    class DomainBlacklistTarget < Types::BaseEnum
       value 'domain', 'Blacklist a whole domain'
       value 'email', 'Blacklist an individual email'
     end

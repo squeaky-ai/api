@@ -8,7 +8,7 @@ module Mutations
       argument :name, String, required: true
       argument :url, String, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def resolve(name:, url:)
         site = Site.create(name: name, url: uri(url), plan: Site::ESSENTIALS)

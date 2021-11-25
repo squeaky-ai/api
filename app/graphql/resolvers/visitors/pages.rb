@@ -5,9 +5,9 @@ module Resolvers
     class Pages < Resolvers::Base
       type Types::Visitors::Pages, null: false
 
-      field.argument :page, Integer, required: false, default_value: 0
-      field.argument :size, Integer, required: false, default_value: 10
-      field.argument :sort, Types::Visitors::PagesSort, required: false, default_value: 'views_count__desc'
+      argument :page, Integer, required: false, default_value: 0
+      argument :size, Integer, required: false, default_value: 10
+      argument :sort, Types::Visitors::PagesSort, required: false, default_value: 'views_count__desc'
 
       def resolve(page:, size:, sort:)
         order = order_by(sort)

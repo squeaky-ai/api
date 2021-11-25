@@ -8,7 +8,7 @@ module Mutations
       argument :token, String, required: true
       argument :password, String, required: false
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def resolve(token:, password: nil)
         user = User.find_by_invitation_token(token, true)

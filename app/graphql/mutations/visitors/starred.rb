@@ -9,7 +9,7 @@ module Mutations
       argument :visitor_id, ID, required: true
       argument :starred, Boolean, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]

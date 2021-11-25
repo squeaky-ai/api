@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Dimensions < Resolvers::Base
-      type Types::Analytics::Dimensions, null: false
+      type [Integer, { null: true }], null: false
 
       def resolve
         sql = <<-SQL

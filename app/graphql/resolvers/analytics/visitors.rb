@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Visitors < Resolvers::Base
-      type Types::Analytics::Visitors, null: false
+      type [Types::Analytics::Visitor, { null: true }], null: false
 
       def resolve
         recordings = recordings(object.site_id, object.from_date, object.to_date)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Resolvers
-  module Sentiment
+  module Pages
     class Pages < Resolvers::Base
       type [String, { null: true }], null: false
 

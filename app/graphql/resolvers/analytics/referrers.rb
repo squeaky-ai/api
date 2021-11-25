@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Referrers < Resolvers::Base
-      type Types::Analytics::Referrers, null: false
+      type [Types::Analytics::Referrer, { null: true }], null: false
 
       def resolve
         referrers.each_with_object([]) do |val, memo|

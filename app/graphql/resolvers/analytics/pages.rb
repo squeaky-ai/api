@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Pages < Resolvers::Base
-      type Types::Analytics::Pages, null: false
+      type [Types::Analytics::Page, { null: true }], null: false
 
       def resolve
         sql = <<-SQL

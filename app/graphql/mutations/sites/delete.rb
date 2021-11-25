@@ -7,7 +7,7 @@ module Mutations
 
       argument :site_id, ID, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER]

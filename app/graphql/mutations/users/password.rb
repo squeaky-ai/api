@@ -9,7 +9,7 @@ module Mutations
       argument :password_confirmation, String, required: true
       argument :current_password, String, required: true
 
-      type Types::UserType
+      type Types::Users::User
 
       def resolve(**args)
         @user.update_with_password(args)

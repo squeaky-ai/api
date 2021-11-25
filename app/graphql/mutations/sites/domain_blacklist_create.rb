@@ -9,7 +9,7 @@ module Mutations
       argument :type, String, required: true
       argument :value, String, required: true
 
-      type Types::SiteType
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]

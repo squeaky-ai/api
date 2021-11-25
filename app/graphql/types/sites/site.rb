@@ -11,7 +11,7 @@ module Types
       field :uuid, String, null: false
       field :owner_name, String, null: false
       field :verified_at, String, null: true
-      field :team, [Types::Site::Team], null: false
+      field :team, [Types::Sites::Team], null: false
       field :team_size_exceeded, Boolean, null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
@@ -23,7 +23,7 @@ module Types
       field :recordings_count, Integer, null: false
       field :feedback, Types::Feedback::Feedback, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
-      field :heatmaps, resolvers: Resolvers::Heatmaps::Heatmaps
+      field :heatmaps, resolver: Resolvers::Heatmaps::Heatmaps
       field :recording, resolver: Resolvers::Recordings::Recording
       field :recordings, resolver: Resolvers::Recordings::Recordings
       field :recording_latest, resolver: Resolvers::Recordings::Latest

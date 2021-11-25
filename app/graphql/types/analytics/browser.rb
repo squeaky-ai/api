@@ -2,7 +2,7 @@
 
 module Types
   module Analytics
-    class Browsers < Types::BaseObject
+    class Browser < Types::BaseObject
       field :name, String, null: false
       field :count, Integer, null: false
     end

@@ -2,7 +2,7 @@
 
 module Types
   module Heatmaps
-    class HeatmapsType < Types::BaseObject
+    class Heatmaps < Types::BaseObject
       field :desktop_count, Integer, null: false
       field :tablet_count, Integer, null: false
       field :mobile_count, Integer, null: false
