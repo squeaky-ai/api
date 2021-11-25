@@ -78,27 +78,6 @@ class Site < ApplicationRecord
     "#{uri.scheme}://#{uri.host.downcase}"
   end
 
-  def analytics(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The analytics extension does
-    # not resolve anything of it's own
-    { site_id: id, **args }
-  end
-
-  def nps(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The nps extension does not
-    # resolve anything of it's own
-    { site_id: id, **args }
-  end
-
-  def sentiment(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The sentiment extension does
-    # not resolve anything of it's own
-    { site_id: id, **args }
-  end
-
   def team_size_exceeded?
     team.size >= Plan.new(plan).max_team_members
   end

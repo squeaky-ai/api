@@ -19,7 +19,9 @@ module Mutations
       def resolve(nps_id:, **_rest)
         nps = @site.nps.find_by(id: nps_id)
 
-        nps&.destroy
+        raise Errors::NpsNotFound unless nps
+
+        nps.destroy
 
         @site
       end

@@ -20,5 +20,7 @@ module Types
       field :page_views, resolver: Resolvers::Analytics::PageViews
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
     end
+
+    
   end
 end

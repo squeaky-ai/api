@@ -11,6 +11,7 @@ class Recording < ApplicationRecord
   has_many :pages, dependent: :destroy
 
   has_one :nps
+  has_one :sentiment
 
   has_and_belongs_to_many :tags
 

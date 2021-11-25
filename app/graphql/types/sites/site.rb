@@ -45,6 +45,18 @@ module Types
       end
       field :created_at, String, null: false
       field :updated_at, String, null: true
+
+      def analytics(args)
+        { site_id: object.id, **args }
+      end
+
+      def nps(args)
+        { site_id: object.id, **args }
+      end
+
+      def sentiment(args)
+        { site_id: object.id, **args }
+      end
     end
   end
 end
