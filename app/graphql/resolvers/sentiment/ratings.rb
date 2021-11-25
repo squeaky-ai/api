@@ -6,9 +6,9 @@ module Resolvers
       type Types::Sentiment::Ratings, null: false
 
       def resolve
-        current_results = get_results(object.site_id, object.from_date, object.to_date)
-        trend_date_range = offset_dates_by_period(object.from_date, object.to_date)
-        previous_results = get_results(object.site_id, *trend_date_range)
+        current_results = get_results(object[:site_id], object[:from_date], object[:to_date])
+        trend_date_range = offset_dates_by_period(object[:from_date], object[:to_date])
+        previous_results = get_results(object[:site_id], *trend_date_range)
 
         {
           score: avg_score(current_results),

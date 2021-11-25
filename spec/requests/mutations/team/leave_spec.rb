@@ -10,7 +10,7 @@ team_leave_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Mutations::Team::Leave, type: :request do
+RSpec.describe Mutations::Teams::Leave, type: :request do
   context 'when the user is the owner' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

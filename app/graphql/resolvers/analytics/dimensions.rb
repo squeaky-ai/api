@@ -12,7 +12,7 @@ module Resolvers
           WHERE device_x > 0 AND site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
-        results = Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
+        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
 
         results.map { |r| r['device_x'] }
       end

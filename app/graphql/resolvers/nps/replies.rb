@@ -6,10 +6,10 @@ module Resolvers
       type Types::Nps::Replies, null: false
 
       def resolve
-        responses = get_replies(object.site_id, object.from_date, object.to_date)
+        responses = get_replies(object[:site_id], object[:from_date], object[:to_date])
 
         {
-          trend: get_trend(object.site_id, object.from_date, object.to_date, responses),
+          trend: get_trend(object[:site_id], object[:from_date], object[:to_date], responses),
           responses: responses
         }
       end

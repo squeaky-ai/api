@@ -27,7 +27,7 @@ module Resolvers
           GROUP BY recordings.id
         SQL
 
-        Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
+        Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
       end
     end
   end

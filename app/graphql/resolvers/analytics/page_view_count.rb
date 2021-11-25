@@ -13,7 +13,7 @@ module Resolvers
           WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
-        results = Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
+        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
 
         results.first['pages_count']
       end

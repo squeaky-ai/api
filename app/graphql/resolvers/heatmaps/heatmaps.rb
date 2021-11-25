@@ -15,7 +15,7 @@ module Resolvers
       argument :to_date, String, required: true
 
       def resolve(device:, type:, page:, from_date:, to_date:)
-        device_counts = devices(object.site_id, page, from_date, to_date)
+        device_counts = devices(object[:site_id], page, from_date, to_date)
         items = type == 'Click' ? click_events(site_id, from_date, to_date, page, device) : scroll_events(site_id, from_date, to_date, page, device)
 
         {

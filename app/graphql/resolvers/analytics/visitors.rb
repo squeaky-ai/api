@@ -6,8 +6,8 @@ module Resolvers
       type [Types::Analytics::Visitor, { null: true }], null: false
 
       def resolve
-        recordings = recordings(object.site_id, object.from_date, object.to_date)
-        visitor_counts = visitors(object.site_id, recordings.map { |r| r['visitor_id'] }.uniq)
+        recordings = recordings(object[:site_id], object[:from_date], object[:to_date])
+        visitor_counts = visitors(object[:site_id], recordings.map { |r| r['visitor_id'] }.uniq)
 
         recordings.map do |recording|
           {

@@ -13,7 +13,7 @@ module Resolvers
           WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?
         SQL
 
-        results = Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
+        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
 
         out = {
           promoters: 0,

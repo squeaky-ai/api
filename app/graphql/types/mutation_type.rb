@@ -17,14 +17,14 @@ module Types
     field :domain_blacklist_delete, mutation: Mutations::Sites::DomainBlacklistDelete
     field :feedback_update, mutation: Mutations::Feedback::Update
     # Team
-    field :team_invite, mutation: Mutations::Team::Invite
-    field :team_delete, mutation: Mutations::Team::Delete
-    field :team_leave, mutation: Mutations::Team::Leave
-    field :team_invite_cancel, mutation: Mutations::Team::InviteCancel
-    field :team_invite_resend, mutation: Mutations::Team::InviteResend
-    field :team_invite_accept, mutation: Mutations::Team::InviteAccept
-    field :team_update, mutation: Mutations::Team::Update
-    field :team_transfer, mutation: Mutations::Team::Transfer
+    field :team_invite, mutation: Mutations::Teams::Invite
+    field :team_delete, mutation: Mutations::Teams::Delete
+    field :team_leave, mutation: Mutations::Teams::Leave
+    field :team_invite_cancel, mutation: Mutations::Teams::InviteCancel
+    field :team_invite_resend, mutation: Mutations::Teams::InviteResend
+    field :team_invite_accept, mutation: Mutations::Teams::InviteAccept
+    field :team_update, mutation: Mutations::Teams::Update
+    field :team_transfer, mutation: Mutations::Teams::Transfer
     # Recordings
     field :tag_create, mutation: Mutations::Tags::Create
     field :tag_delete, mutation: Mutations::Tags::Delete

@@ -7,7 +7,7 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
-      argument :sort, Types::Visitors::Sort, required: false, default_value: 'connected_at__desc'
+      argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
 
       def resolve(page:, size:, sort:)
         search = search(arguments, object.id)

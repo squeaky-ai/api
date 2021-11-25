@@ -12,7 +12,7 @@ team_delete_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Mutations::Team::Delete, type: :request do
+RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member is the owner' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: create_user) }

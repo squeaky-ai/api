@@ -20,7 +20,7 @@ team_invite_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Mutations::Team::Invite, type: :request do
+RSpec.describe Mutations::Teams::Invite, type: :request do
   context 'when the invited user does not have an account' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

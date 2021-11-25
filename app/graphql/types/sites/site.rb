@@ -13,7 +13,7 @@ module Types
       field :uuid, String, null: false
       field :owner_name, String, null: false
       field :verified_at, String, null: true
-      field :team, [Types::Sites::Team], null: false
+      field :team, [Types::Teams::Team], null: false
       field :team_size_exceeded, Boolean, null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes

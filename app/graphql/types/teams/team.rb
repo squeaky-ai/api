@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  module Sites
+  module Teams
     class Team < Types::BaseObject
       graphql_name 'Team'
 

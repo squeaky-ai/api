@@ -6,10 +6,10 @@ module Resolvers
       type Types::Nps::Scores, null: false
 
       def resolve
-        responses = get_scores(object.site_id, object.from_date, object.to_date)
+        responses = get_scores(object[:site_id], object[:from_date], object[:to_date])
 
         {
-          trend: get_trend(object.site_id, object.from_date, object.to_date, responses),
+          trend: get_trend(object[:site_id], object[:from_date], object[:to_date], responses),
           score: nps_score(responses),
           responses: responses
         }

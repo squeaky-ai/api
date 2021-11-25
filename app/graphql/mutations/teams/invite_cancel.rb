@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  module Team
+  module Teams
     class InviteCancel < SiteMutation
       null false
 

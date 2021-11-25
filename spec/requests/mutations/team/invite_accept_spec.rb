@@ -21,7 +21,7 @@ team_invite_accept_mutation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Mutations::Team::InviteAccept, type: :request do
+RSpec.describe Mutations::Teams::InviteAccept, type: :request do
   context 'when the token is not valid' do
     let(:token) { 'sdfdsfdsfdsf' }
 

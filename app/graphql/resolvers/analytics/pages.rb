@@ -14,7 +14,9 @@ module Resolvers
           GROUP BY pages.url
         SQL
 
-        results = Sql.execute(sql, [object.site_id, object.from_date, object.to_date])
+        puts '@@@', object
+
+        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
 
         results.map do |page|
           {
