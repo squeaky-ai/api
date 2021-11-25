@@ -3,6 +3,8 @@
 module Types
   module Sentiment
     class Response < Types::BaseObject
+      graphql_name 'SentimentResponse'
+
       field :items, [Types::Sentiment::ResponseItem, { null: true }], null: false
       field :pagination, Types::Sentiment::ResponsePagination, null: false
     end

@@ -3,6 +3,8 @@
 module Types
   module Notes
     class Note < Types::BaseObject
+      graphql_name 'Note'
+
       field :id, ID, null: false
       field :body, String, null: false
       field :timestamp, Integer, null: true

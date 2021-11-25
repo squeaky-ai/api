@@ -3,6 +3,8 @@
 module Types
   module Recordings
     class Filters < BaseInputObject
+      graphql_name 'RecordingsFilters'
+
       argument :browsers, [String], required: true
       argument :devices, [String], required: true
       argument :languages, [String], required: true

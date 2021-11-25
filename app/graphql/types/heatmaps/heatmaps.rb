@@ -3,6 +3,8 @@
 module Types
   module Heatmaps
     class Heatmaps < Types::BaseObject
+      graphql_name 'Heatmaps'
+
       field :desktop_count, Integer, null: false
       field :tablet_count, Integer, null: false
       field :mobile_count, Integer, null: false

@@ -3,6 +3,8 @@
 module Types
   module Sites
     class Team < Types::BaseObject
+      graphql_name 'Team'
+
       field :id, ID, null: false
       field :status, Integer, null: false
       field :role, Integer, null: false

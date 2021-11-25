@@ -3,6 +3,8 @@
 module Types
   module Nps
     class ResponsePagination < Types::BaseObject
+      graphql_name 'NpsResponsePagination'
+
       field :page_size, Integer, null: false
       field :total, Integer, null: false
       field :sort, Types::Nps::ResponseSort, null: false

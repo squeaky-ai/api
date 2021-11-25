@@ -3,6 +3,8 @@
 module Types
   module Recordings
     class Recording < Types::BaseObject
+      graphql_name 'Recording'
+
       field :id, ID, null: false
       field :site_id, ID, null: false
       field :session_id, String, null: false

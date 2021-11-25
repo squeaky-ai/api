@@ -3,6 +3,8 @@
 module Types
   module Visitors
     class Visitor < Types::BaseObject
+      graphql_name 'Visitor'
+
       field :id, ID, null: false
       field :visitor_id, String, null: false
       field :viewed, Boolean, null: true

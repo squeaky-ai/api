@@ -3,6 +3,8 @@
 module Types
   module Sites
     class Site < Types::BaseObject
+      graphql_name 'Site'
+
       field :id, ID, null: false
       field :name, String, null: false
       field :url, String, null: false

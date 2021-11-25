@@ -3,6 +3,8 @@
 module Types
   module Analytics
     class Devices < Types::BaseObject
+      graphql_name 'AnalyticsDevice'
+
       field :type, String, null: false
       field :count, Integer, null: false
     end

@@ -3,6 +3,8 @@
 module Types
   module Feedback
     class Feedback < Types::BaseObject
+      graphql_name 'Feedback'
+
       field :nps_enabled, Boolean, null: false
       field :nps_accent_color, String, null: true
       field :nps_schedule, String, null: true

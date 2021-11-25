@@ -3,7 +3,7 @@
 module Resolvers
   module Visitors
     class Visitors < Resolvers::Base
-      type Types::Visitors, null: false
+      type Types::Visitors::Visitors, null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25

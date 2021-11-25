@@ -3,6 +3,8 @@
 module Types
   module Visitors
     class Filters < BaseInputObject
+      graphql_name 'VisitorsFilters'
+
       argument :status, Types::Common::FiltersStatus, required: false
       argument :recordings, Types::Common::FiltersRecordings, required: true
       argument :first_visited, Types::Common::FiltersDate, required: true

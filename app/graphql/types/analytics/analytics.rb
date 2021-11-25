@@ -3,6 +3,8 @@
 module Types
   module Analytics
     class Analytics < Types::BaseObject
+      graphql_name 'Analytics'
+
       field :recordings_count, resolver: Resolvers::Analytics::RecordingsCount
       field :visitors_count, resolver: Resolvers::Analytics::VisitorsCount
       field :page_view_count, resolver: Resolvers::Analytics::PageViewCount

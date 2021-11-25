@@ -3,6 +3,8 @@
 module Types
   module Sentiment
     class ResponseItem < Types::BaseObject
+      graphql_name 'SentimentResponseItem'
+
       field :id, ID, null: false
       field :score, Integer, null: false
       field :comment, String, null: true

@@ -3,6 +3,8 @@
 module Types
   module Nps
     class Scores < Types::BaseObject
+      graphql_name 'NpsScores'
+
       field :trend, Integer, null: false
       field :score, Integer, null: false
       field :responses, [Types::Nps::Score, { null: true }], null: false
