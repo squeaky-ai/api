@@ -3,6 +3,8 @@
 module Resolvers
   module Heatmaps
     class Heatmaps < Resolvers::Base
+      type Types::Heatmaps::Heatmaps, null: false
+
       MOBILE_BREAKPOINT = 380
       TABLET_BREAKPOINT = 800
 

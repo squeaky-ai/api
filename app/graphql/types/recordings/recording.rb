@@ -20,7 +20,7 @@ module Types
       field :disconnected_at, String, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
       field :notes, [Types::Notes::Note, { null: true }], null: false
-      field :events, Types::Recordings::Events, null: false, extensions: [EventExtension]
+      field :events, resolvers: Resolvers::Recordings::Events
       field :previous_recording, Types::Recordings::Recording, null: true
       field :next_recording, Types::Recordings::Recording, null: true
       field :visitor, Types::Visitors::Visitor, null: false

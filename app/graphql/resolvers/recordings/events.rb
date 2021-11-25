@@ -3,6 +3,8 @@
 module Types
   module Recordings
     class Events < Resolvers::Base
+      type Types::Recordings::Events, null: false
+
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 250
 

@@ -3,6 +3,8 @@
 module Resolvers
   module Nps
     class Scores < Resolvers::Base
+      type Types::Nps::Scores, null: false
+
       def resolve
         responses = get_scores(object.site_id, object.from_date, object.to_date)
 

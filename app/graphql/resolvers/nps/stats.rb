@@ -3,6 +3,8 @@
 module Resolvers
   module Nps
     class Stats < Resolvers::Base
+      type Types::Nps::Stats, null: false
+
       def resolve
         {
           displays: displays_count(object.site_id, object.from_date, object.to_date),

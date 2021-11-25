@@ -14,10 +14,10 @@ module Types
       field :starred, Boolean, null: false
       field :attributes, String, null: true
       field :devices, [Types::Recordings::Device], null: false
-      field :recordings, RecordingsType, null: true, extensions: [VisitorRecordingsExtension]
-      field :pages, VisitorPagesType, null: true, extensions: [VisitorPagesExtension]
-      field :average_session_duration, Integer, null: true, extensions: [VisitorAverageSessionDurationExtension]
-      field :pages_per_session, Float, null: true, extensions: [VisitorPagesPerSessionExtension]
+      field :recordings, resolver: Resolvers::Visitors::Recordings
+      field :pages, resolver: Resolvers::Visitors::Pages
+      field :average_session_duration, resolver: Resolvers::Visitors::AverageSessionDuration
+      field :pages_per_session, resolver: Resolvers::Visitors::PagesPerSession
     end
   end
 end

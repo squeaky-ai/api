@@ -3,11 +3,11 @@
 module Resolvers
   module Visitors
     class Recordings < Resolvers::Base
-      type Types::Recordings, null: false
+      type Types::Visitors::Recordings, null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
-      argument :sort, RecordingSortType, required: false, default_value: 'connected_at__desc'
+      argument :sort, Types::Visitors::Sort, required: false, default_value: 'connected_at__desc'
 
       def resolve(page:, size:, sort:)
         search = search(arguments, object.id)

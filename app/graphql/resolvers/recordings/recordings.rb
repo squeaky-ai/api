@@ -2,12 +2,14 @@
 
 module Resolvers
   module Recordings
-    class RecordingsExtension < Resolvers::Base
+    class Recordings < Resolvers::Base
+      type Types::Recordings::Recordings, null: false
+
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
       argument :query, String, required: false, default_value: ''
-      argument :sort, RecordingSortType, required: false, default_value: 'connected_at__desc'
-      argument :filters, RecordingsFiltersType, required: false, default_value: nil
+      argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
+      argument :filters, Types::Recordings::Filters, required: false, default_value: nil
 
       def resolve(page, size, query, sort, filters)
         body = {

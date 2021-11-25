@@ -3,11 +3,13 @@
 module Resolvers
   module Sites
     class Languages < Resolvers::Base
+      type [String, { null: true }], null: false
+
       def resolve
         languges = Site
-                  .find(object.id)
-                  .recordings
-                  .select(:locale)
+                   .find(object.id)
+                   .recordings
+                   .select(:locale)
 
         languges.map(&:language).uniq
       end

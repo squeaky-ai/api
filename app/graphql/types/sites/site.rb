@@ -13,42 +13,31 @@ module Types
       field :verified_at, String, null: true
       field :team, [Types::Site::Team], null: false
       field :team_size_exceeded, Boolean, null: false
-      field :days_since_last_recording, resolver: Resolvers::LastRecording
-      field :notes, Types::Notes::Notes, resolver: Resolvers::Notes
-      field :pages, [String, { null: true }], null: false, extensions: [PagesExtension]
-      field :languages, [String, { null: true }], null: false, extensions: [LanguagesExtension]
-      field :browsers, [String, { null: true }], null: false, extensions: [BrowsersExtension]
+      field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
+      field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
+      field :pages, resolver: Resolvers::Pages::Pages
+      field :languages, resolver: Resolvers::Sites::Languages
+      field :browsers, resolver: Resolvers::Sites::Browsers
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
       field :domain_blacklist, [Types::Sites::DomainBlacklist, { null: true }], null: false
       field :recordings_count, Integer, null: false
       field :feedback, Types::Feedback::Feedback, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
-      # Fetch the data for heatmaps
-      field :heatmaps, HeatmapsType, null: false, extensions: [HeatmapsExtension]
-      # Fetch a single recording
-      field :recording, RecordingType, null: true, extensions: [RecordingExtension]
-      # Fetch a list of recordings, refrain from fetching
-      # events inside of here to prevent n+1
-      field :recordings, RecordingsType, null: false, extensions: [RecordingsExtension]
-      # Fetch the latest recording
-      field :recording_latest, RecordingType, null: true, extensions: [RecordingLatestExtension]
-      # Fetch a single visitor
-      field :visitor, VisitorType, null: true, extensions: [VisitorExtension]
-      # Fetch a list of visitors, refrain from fetching
-      # anything deeper to prevent n+
-      field :visitors, VisitorsType, null: false, extensions: [VisitorsExtension]
-      # Add some top level arguments for the analytics so that
-      # each individual extension does not need to implement it
-      field :analytics, AnalyticsType, null: false do
+      field :heatmaps, resolvers: Resolvers::Heatmaps::Heatmaps
+      field :recording, resolver: Resolvers::Recordings::Recording
+      field :recordings, resolver: Resolvers::Recordings::Recordings
+      field :recording_latest, resolver: Resolvers::Recordings::Latest
+      field :visitor, resolver: Resolvers::Visitors::Visitor
+      field :visitors, resolver: Resolvers::Visitors::Visitors
+      field :analytics, Types::Analytics::Analytics, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end
-      # Top level nps object that contains all the sub extensions
-      field :nps, NpsType, null: false do
+      field :nps, Types::Nps::Nps, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end
-      field :sentiment, SentimentType, null: false do
+      field :sentiment, Types::Sentiment::Sentiment, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end

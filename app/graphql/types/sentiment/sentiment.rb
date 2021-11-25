@@ -3,20 +3,9 @@
 module Types
   module Sentiment
     class Sentiment < Types::BaseObject
-      field :responses,
-            SentimentResponseType,
-            null: false,
-            extensions: [SentimentResponseExtension]
-
-      field :replies,
-            SentimentRepliesType,
-            null: false,
-            extensions: [SentimentRepliesExtension]
-
-      field :ratings,
-            SentimentRatingsType,
-            null: false,
-            extensions: [SentimentRatingsExtension]
+      field :responses, resolver: Resolvers::Sentiment::Response
+      field :replies, resolver: Resolvers::Sentiment::Replies
+      field :ratings, resolver: Resolvers::Sentiment::Ratings
     end
   end
 end

@@ -3,7 +3,7 @@
 module Resolvers
   module Notes
     class Notes < Resolvers::Base
-      type NotesType, null: false
+      type Types::Notes::Notes, null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25

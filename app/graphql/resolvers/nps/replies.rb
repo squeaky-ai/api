@@ -3,6 +3,8 @@
 module Resolvers
   module Nps
     class Replies < Resolvers::Base
+      type Types::Nps::Replies, null: false
+
       def resolve
         responses = get_replies(object.site_id, object.from_date, object.to_date)
 

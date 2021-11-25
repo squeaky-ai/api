@@ -2,7 +2,9 @@
 
 module Resolvers
   module Recordings
-    class RecordingLatestExtension < Resolvers::Base
+    class Latest < Resolvers::Base
+      type Types::Recordings::Recording, null: true
+
       def resolve
         Recording
           .eager_load(:visitor, :pages)

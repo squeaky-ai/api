@@ -3,9 +3,11 @@
 module Resolvers
   module Nps
     class Response < Resolvers::Base
+      type Types::Nps::Response, null: false
+
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
-      argument :sort, NpsResponseSortType, required: false, default_value: 'timestamp__desc'
+      argument :sort, Types::Nps::Response, required: false, default_value: 'timestamp__desc'
 
       def resolve(page:, size:, sort:)
         results = Nps

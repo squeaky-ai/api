@@ -3,6 +3,8 @@
 module Resolvers
   module Sites
     class Browsers < Resolvers::Base
+      type [String, { null: true }], null: false
+
       def resolve
         browsers = Site
                    .find(object.id)

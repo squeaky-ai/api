@@ -3,6 +3,8 @@
 module Resolvers
   module Sentiment
     class Replies < Resolvers::Base
+      type Types::Sentiment::Replies, null: false
+
       def resolve
         results = Sentiment
                   .joins(:recording)

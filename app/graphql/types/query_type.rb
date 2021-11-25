@@ -5,9 +5,7 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :user, Types::Users::User, null: true do
-      description "Get the user from the session.\nIt will return null if there is no session"
-    end
+    field :user, Types::Users::User, null: true
 
     field :site, Types::Sites::Site, null: true do
       argument :site_id, ID, required: true

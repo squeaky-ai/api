@@ -3,6 +3,8 @@
 module Resolvers
   module Sentiment
     class Pages < Resolvers::Base
+      type [String, { null: true }], null: false
+
       def resolve
         pages = Site
                 .find(object)

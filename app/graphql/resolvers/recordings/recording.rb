@@ -2,7 +2,9 @@
 
 module Resolvers
   module Recordings
-    class RecordingExtension < Resolvers::Base
+    class Recording < Resolvers::Base
+      type Types::Recordings::Recording, null: true
+
       argument :recording_id, GraphQL::Types::ID, required: true
 
       def resolve(recording_id:)

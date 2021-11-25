@@ -3,6 +3,8 @@
 module Resolvers
   module Nps
     class Groups < Resolvers::Base
+      type Types::Nps::Groups, null: false
+
       def resolve
         sql = <<-SQL
           SELECT nps.score

@@ -3,6 +3,8 @@
 module Resolvers
   module Nps
     class Ratings < Resolvers::Base
+      type [Types::Nps::Rating, { null: true }], null: false
+
       def resolve
         Nps
           .joins(:recording)

@@ -3,9 +3,11 @@
 module Resolvers
   module Sentiment
     class Response < Resolvers::Base
+      type Types::Sentiment::Response, null: false
+
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
-      argument :sort, SentimentResponseSortType, required: false, default_value: 'timestamp__desc'
+      argument :sort, Types::Sentiment::ResponseSort, required: false, default_value: 'timestamp__desc'
 
       def resolve(page:, size:, sort:)
         results = Sentiment
