@@ -35,11 +35,11 @@ module Types
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end
-      field :nps, Types::Nps::Nps, null: false do
+      field :nps, Types::Feedback::Nps, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end
-      field :sentiment, Types::Sentiment::Sentiment, null: false do
+      field :sentiment, Types::Feedback::Sentiment, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true
       end

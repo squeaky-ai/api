@@ -30,8 +30,6 @@ module Types
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team: team)
-    rescue ActiveRecord::RecordNotFound
-      nil
     end
 
     def sites

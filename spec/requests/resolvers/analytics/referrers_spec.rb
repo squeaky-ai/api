@@ -37,6 +37,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
 
     before do
       create_recording({ referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create_recording({ referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
       create_recording({ referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
     end
 
@@ -54,7 +55,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
         },
         {
           'name' => 'http://google.com',
-          'count' => 1
+          'count' => 2
         }
       ])
     end

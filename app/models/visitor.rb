@@ -6,6 +6,8 @@ class Visitor < ApplicationRecord
 
   INDEX = Rails.configuration.elasticsearch['visitors_index']
 
+  alias_attribute :viewed, :viewed?
+
   def locale
     recordings.first.locale
   end
@@ -24,7 +26,7 @@ class Visitor < ApplicationRecord
     external_attributes.to_json
   end
 
-  def viewed
+  def viewed?
     recordings.where(viewed: true).size.positive?
   end
 

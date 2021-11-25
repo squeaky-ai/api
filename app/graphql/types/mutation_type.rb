@@ -41,8 +41,8 @@ module Types
     field :recordings_viewed, mutation: Mutations::Recordings::ViewedBulk
     # Feedback
     field :feedback_create, mutation: Mutations::Feedback::Create
-    field :nps_delete, mutation: Mutations::Nps::Delete
-    field :sentiment_delete, mutation: Mutations::Sentiment::Delete
+    field :nps_delete, mutation: Mutations::Feedback::NpsDelete
+    field :sentiment_delete, mutation: Mutations::Feedback::SentimentDelete
     # Visitors
     field :visitor_starred, mutation: Mutations::Visitors::Starred
   end
