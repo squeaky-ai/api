@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update the sites name or url. If the url changes then
-  # it will need to be reverified. Any ActiveRecord errors
-  # are raised as GraphQL errors
   class SiteUpdate < SiteMutation
     null false
 

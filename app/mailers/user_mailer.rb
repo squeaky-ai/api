@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Mailers for users that are not covered by Devise
 class UserMailer < ApplicationMailer
   def updated(user)
     @user = user

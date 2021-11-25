@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Bulk delete recordings
   class RecordingsDelete < SiteMutation
     null false
 

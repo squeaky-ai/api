@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Invite a team member to join a site by sending a jwt to their
-  # email. The front end will need to send this confirm. If the
-  # user being invited does not exist we create them a ghost
-  # profile. We should consider a cron to clean up these users so
-  # that we don't store users' emails
   class TeamInvite < SiteMutation
     null false
 

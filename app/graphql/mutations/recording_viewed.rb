@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Mark a recording as viewed
   class RecordingViewed < SiteMutation
     null false
 

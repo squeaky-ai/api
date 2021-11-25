@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The total number of recordings
     class RecordingsCount < Resolvers::Base
       type Types::Analytics::RecordingsCount, null: false
 

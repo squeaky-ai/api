@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Submit feedback
   class FeedbackCreate < UserMutation
     null false
 

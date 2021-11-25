@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
-# The controller responsible for handling all the GraphQL requests.
-# Every request will attempt to fetch the user from devise although it
-# is the responsibility of the Query/Mutation to ensure the user is
-# properly authorized
 class GraphqlController < ApplicationController
-  # If accessing from outside this domain, nullify the session
-  # This allows for outside API access while preventing CSRF attacks,
-  # but you'll have to authenticate your user separately
-  # protect_from_forgery with: :null_session
   def execute
     variables = prepare_variables(params[:variables])
 
@@ -26,7 +18,6 @@ class GraphqlController < ApplicationController
 
   private
 
-  # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param
     when Hash

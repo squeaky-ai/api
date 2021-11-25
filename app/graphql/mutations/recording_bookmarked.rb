@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Set the recordings bookmarked status
   class RecordingBookmarked < SiteMutation
     null false
 

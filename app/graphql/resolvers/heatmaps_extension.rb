@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 module Types
-  # Return the data requied for heatmaps
   class HeatmapsExtension < GraphQL::Schema::FieldExtension
     MOBILE_BREAKPOINT = 380
     TABLET_BREAKPOINT = 800
 
     def apply
-      field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop', description: 'The type of device to show')
-      field.argument(:type, HeatmapsTypeType, required: true, default_value: 'Click', description: 'The type of heatmap to show')
-      field.argument(:page, String, required: true, description: 'The page to show results for')
-      field.argument(:from_date, String, required: true, description: 'The to start from')
-      field.argument(:to_date, String, required: true, description: 'The to end at')
+      field.argument(:device, HeatmapsDeviceType, required: true, default_value: 'Desktop')
+      field.argument(:type, HeatmapsTypeType, required: true, default_value: 'Click')
+      field.argument(:page, String, required: true)
+      field.argument(:from_date, String, required: true)
+      field.argument(:to_date, String, required: true)
     end
 
     def resolve(object:, arguments:, **_rest)

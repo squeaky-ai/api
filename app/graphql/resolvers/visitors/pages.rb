@@ -2,7 +2,6 @@
 
 module Resolvers
   module Visitors
-    # Pages by a particular visitor
     class Pages < Resolvers::Base
       type Types::Visitor::Pages, null: false
 

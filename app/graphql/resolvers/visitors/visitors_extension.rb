@@ -2,23 +2,24 @@
 
 module Resolvers
   module Visitors
-    # Get a list of visitors
     class Visitors < Resolvers::Base
       type Types::Visitors, null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
       argument :query, String, required: false, default_value: ''
-      argument :sort, VisitorSortType, required: false, default_value: 'last_activity_at__desc'
-      argument :filters, VisitorsFiltersType, required: false, default_value: nil
+      argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
+      argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
       def resolve(page:, size:, query:, sort:, filters:)
-        results = SearchClient.search(index: Visitor::INDEX, body: {
+        body = {
           from: page * size,
           size: size,
           sort: order(sort),
           query: VisitorsQuery.new(site_id, query, filters.to_h).build
-        })
+        }
+
+        results = SearchClient.search(index: Visitor::INDEX, body: body)
 
         {
           items: items(results),

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Types
-  # The counts stats
   class NpsStatsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]

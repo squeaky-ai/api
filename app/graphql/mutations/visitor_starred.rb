@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Set the visitor starred status
   class VisitorStarred < SiteMutation
     null false
 

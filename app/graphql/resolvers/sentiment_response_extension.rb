@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 module Types
-  # The paginated sentiment response items
   class SentimentResponseExtension < GraphQL::Schema::FieldExtension
     def apply
-      field.argument(:page, Integer, required: false, default_value: 0, description: 'The page of results to get')
-      field.argument(:size, Integer, required: false, default_value: 10, description: 'The page size')
-      field.argument(:sort, SentimentResponseSortType, required: false, default_value: 'timestamp__desc', description: 'Sort order')
+      field.argument(:page, Integer, required: false, default_value: 0)
+      field.argument(:size, Integer, required: false, default_value: 10)
+      field.argument(:sort, SentimentResponseSortType, required: false, default_value: 'timestamp__desc')
     end
 
     def resolve(object:, arguments:, **_rest)

@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The total number of page views
     class PageViewCount < Resolvers::Base
       type Types::Analytics::PageViewCount, null: false
 

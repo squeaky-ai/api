@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update the feedback and create the record if one
-  # does not exist
   class FeedbackUpdate < SiteMutation
     null false
 

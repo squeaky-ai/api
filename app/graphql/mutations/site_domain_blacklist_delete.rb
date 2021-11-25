@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an existing domain blacklist entry
   class SiteDomainBlacklistDelete < SiteMutation
     null false
 

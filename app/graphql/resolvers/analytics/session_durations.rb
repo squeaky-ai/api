@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # How long people spend on site
     class SessionDurations < Resolvers::Base
       type Types::Analytics::SessionDurations, null: false
 

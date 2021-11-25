@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update a users details.
   class UserUpdate < UserMutation
     null false
 

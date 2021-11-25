@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Create a new note against a recording
   class NoteCreate < SiteMutation
     null false
 

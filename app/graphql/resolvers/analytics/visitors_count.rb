@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The total number of visitors
     class VisitorsCount < Resolvers::Base
       type Types::Analytics::VisitorsCount, null: false
 

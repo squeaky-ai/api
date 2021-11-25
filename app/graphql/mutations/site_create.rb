@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Create a new site and set the current_user as the
-  # owner. The uri must be valid and also unique. Any
-  # ActiveRecord errors will be raised as GraphQL errors
   class SiteCreate < UserMutation
     null false
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Types
-  # The sentiment replies items
   class SentimentRatingsExtension < GraphQL::Schema::FieldExtension
     def resolve(object:, **_rest)
       site_id = object.object[:site_id]

@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Admins can delete users, but not other admins or the owner,
-  # if leaving a site then the team_leave mutation should be
-  # used instead
   class TeamDelete < SiteMutation
     null false
 

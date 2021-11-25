@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Anyone but the owner can leave a site. If the
-  # owner wants to leave, they must first transfer
-  # ownership to someone else
   class TeamLeave < SiteMutation
     null true
 

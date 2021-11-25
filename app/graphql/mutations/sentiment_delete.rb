@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an sentiment response
   class SentimentDelete < SiteMutation
     null false
 

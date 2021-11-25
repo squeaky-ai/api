@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The average number of sessions per visitor
     class SessionsPerVisitor < Resolvers::Base
       type Types::Analytics::SessionsPerVisitor, null: false
 

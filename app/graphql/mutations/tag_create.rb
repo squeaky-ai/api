@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Create a new tag against a recording
   class TagCreate < SiteMutation
     null false
 

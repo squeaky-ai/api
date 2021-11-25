@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Remove a tag from a recording
   class TagDelete < SiteMutation
     null false
 

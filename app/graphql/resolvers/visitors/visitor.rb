@@ -2,7 +2,6 @@
 
 module Resolvers
   module Visitors
-    # Get a single visitor by their visitor_id
     class Visitor < Resolvers::Base
       type Integer, null: false
 

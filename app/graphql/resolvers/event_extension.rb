@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
 module Types
-  # Events need to be stringified as they can't realistically
-  # be typed in the schema. You also can't load them all in one
-  # go so they need to be streamed in
   class EventExtension < GraphQL::Schema::FieldExtension
     def apply
-      field.argument(:page, Integer, required: false, default_value: 1, description: 'The page of results to get')
-      field.argument(:size, Integer, required: false, default_value: 250, description: 'The page size')
+      field.argument(:page, Integer, required: false, default_value: 1)
+      field.argument(:size, Integer, required: false, default_value: 250)
     end
 
     def resolve(object:, arguments:, **_rest)

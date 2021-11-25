@@ -3,8 +3,6 @@
 require 'uri'
 require 'securerandom'
 
-# The main site model. The only unique constraint is the
-# url as we can't have people having multiple sites
 class Site < ApplicationRecord
   validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 

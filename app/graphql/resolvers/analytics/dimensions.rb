@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The ratio of desktop to mobile
     class Dimensions < Resolvers::Base
       type Types::Analytics::Dimensions, null: false
 

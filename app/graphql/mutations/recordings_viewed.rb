@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Bulk view/unview recordings
   class RecordingsViewed < SiteMutation
     null false
 

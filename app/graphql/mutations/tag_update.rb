@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update an existing tags name
   class TagUpdate < SiteMutation
     null false
 

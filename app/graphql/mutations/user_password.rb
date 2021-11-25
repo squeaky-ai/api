@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update the users password
   class UserPassword < UserMutation
     null false
 

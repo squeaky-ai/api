@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Transfer the ownership of the site to another team member,
-  # the current owner will be downgraded to an admin. We send
-  # the new owner an email
   class TeamTransfer < SiteMutation
     null false
 

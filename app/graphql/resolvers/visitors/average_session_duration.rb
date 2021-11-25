@@ -2,7 +2,6 @@
 
 module Resolvers
   module Visitors
-    # Average session duration by a particular visitor
     class AverageSessionDuration < Resolvers::Base
       type Integer, null: false
 

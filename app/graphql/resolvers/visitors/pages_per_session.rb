@@ -2,7 +2,6 @@
 
 module Resolvers
   module Visitors
-    # Pages per session by a particular visitor
     class PagesPerSession < Resolvers::Base
       type Integer, null: false
 

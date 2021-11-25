@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Resolvers
-  # The 'notes' field on the site is handled here as
-  # we only want to load the data if it is requested
   class Notes < Resolvers::Base
     type NotesType, null: false
 

@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The list of the most viewed pages
     class Pages < Resolvers::Base
       type Types::Analytics::Pages, null: false
 

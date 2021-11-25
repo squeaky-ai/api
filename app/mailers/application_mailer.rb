@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Base class for all mailers
 class ApplicationMailer < ActionMailer::Base
   default from: 'Squeaky.ai <hello@squeaky.ai>'
   layout 'mailer'

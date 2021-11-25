@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The number of pages viewed per session
     class PagesPerSession < Resolvers::Base
       type Types::AnalyticsPagesPerSession, null: false
 

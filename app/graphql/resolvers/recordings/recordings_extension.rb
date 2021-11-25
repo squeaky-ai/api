@@ -1,40 +1,31 @@
 # frozen_string_literal: true
 
 module Resolvers
-  module Visitors
-    class Recordings < Resolvers::Base
-      type Types::Recordings, null: false
-
+  module Recordings
+    class RecordingsExtension < Resolvers::Base
       argument :page, Integer, required: false, default_value: 0
-      argument :size, Integer, required: false, default_value: 10
+      argument :size, Integer, required: false, default_value: 25
+      argument :query, String, required: false, default_value: ''
       argument :sort, RecordingSortType, required: false, default_value: 'connected_at__desc'
+      argument :filters, RecordingsFiltersType, required: false, default_value: nil
 
-      def resolve(page:, size:, sort:)
-        search = search(arguments, object.id)
-        results = SearchClient.search(index: Recording::INDEX, body: search)
+      def resolve(page, size, query, sort, filters)
+        body = {
+          from: page * size,
+          size: size,
+          sort: order(sort),
+          query: RecordingsQuery.new(site.id, query, filters.to_h).build
+        }
+
+        results = SearchClient.search(index: Recording::INDEX, body: body)
 
         {
-          items: items(page, size, sort),
+          items: items(results),
           pagination: pagination(size, sort, results)
         }
       end
 
       private
-
-      def search(page, size, sort, visitor_id)
-        {
-          from: page * size,
-          size: size,
-          sort: order(sort),
-          query: {
-            bool: {
-              must: [
-                { term: { 'visitor.id': { value: visitor_id } } }
-              ]
-            }
-          }
-        }
-      end
 
       def order(sort)
         parts = sort.split('__')
@@ -61,7 +52,7 @@ module Resolvers
       def enrich_items(recordings, meta)
         recordings.map do |r|
           match = meta.find { |m| m.id == r['id'] }
-          r.merge(viewed: match&.viewed || false, bookmarked: match&.bookmarked || false)
+          r.merge('viewed' => match&.viewed || false, 'bookmarked' => match&.bookmarked || false)
         end
       end
 

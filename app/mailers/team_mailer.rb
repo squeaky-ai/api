@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# All of the mailers around teams
 class TeamMailer < ApplicationMailer
   # When someone is invited to join a site
   def invite(email, site, user, token)

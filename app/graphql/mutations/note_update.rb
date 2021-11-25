@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Update an existing note
   class NoteUpdate < SiteMutation
     null false
 

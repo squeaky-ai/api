@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete the site and clean up any data that we have
-  # stored. This action can only be done by the owner
   class SiteDelete < SiteMutation
     null true
 

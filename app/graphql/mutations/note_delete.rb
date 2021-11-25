@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an existing note
   class NoteDelete < SiteMutation
     null false
 

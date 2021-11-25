@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete tags
   class TagsDelete < SiteMutation
     null false
 

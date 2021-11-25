@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # Languages used in recordings
     class Languages < Resolvers::Base
       type [Types::Analytics::Language, { null: true }], null: false
 

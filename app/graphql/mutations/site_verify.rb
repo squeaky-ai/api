@@ -4,9 +4,6 @@ require 'uri'
 require 'net/http'
 
 module Mutations
-  # Verify that the site's uuid exists somewhere on the sites
-  # url. We may need stricter checks if people put the tracking
-  # code in the wrong place
   class SiteVerify < SiteMutation
     null false
 

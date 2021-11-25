@@ -40,17 +40,17 @@ module Types
       # Add some top level arguments for the analytics so that
       # each individual extension does not need to implement it
       field :analytics, AnalyticsType, null: false do
-        argument :from_date, String, required: true, description: 'The to start from'
-        argument :to_date, String, required: true, description: 'The to end at'
+        argument :from_date, String, required: true
+        argument :to_date, String, required: true
       end
       # Top level nps object that contains all the sub extensions
       field :nps, NpsType, null: false do
-        argument :from_date, String, required: true, description: 'The to start from'
-        argument :to_date, String, required: true, description: 'The to end at'
+        argument :from_date, String, required: true
+        argument :to_date, String, required: true
       end
       field :sentiment, SentimentType, null: false do
-        argument :from_date, String, required: true, description: 'The to start from'
-        argument :to_date, String, required: true, description: 'The to end at'
+        argument :from_date, String, required: true
+        argument :to_date, String, required: true
       end
       field :created_at, String, null: false
       field :updated_at, String, null: true

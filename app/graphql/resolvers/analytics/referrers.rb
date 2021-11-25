@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The list of the most referrers
     class Referrers < Resolvers::Base
       type Types::Analytics::Referrers, null: false
 

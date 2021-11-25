@@ -3,9 +3,6 @@
 require 'date'
 
 module Resolvers
-  # Query the database using the last events timestamp
-  # so we know long it's been since they last received
-  # a recording
   class LastRecording < Resolvers::Base
     type Integer, null: false
 

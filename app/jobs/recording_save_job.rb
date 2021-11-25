@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Pick up completed recording events from the queue and store
-# them in the database
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 

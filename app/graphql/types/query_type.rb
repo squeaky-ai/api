@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 module Types
-  # All of the queries available to the client, note
-  # that any authentication is done on a per query
-  # level
   class QueryType < Types::BaseObject
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField

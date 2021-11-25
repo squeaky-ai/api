@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Validate the invite token and accept the users
-  # invite. This action can be done without auth as there
-  # is a good chance that the user does not have a squeaky
-  # account yet
   class TeamInviteAccept < Mutations::BaseMutation
     null false
 

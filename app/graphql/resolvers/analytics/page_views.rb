@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The list of visitors in a date range
     class PageViews < Resolvers::Base
       type Types::Analytics::PageViews, null: false
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Top level schema class for GraphQL
 class SqueakySchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
@@ -9,8 +8,6 @@ class SqueakySchema < GraphQL::Schema
   def self.resolve_type(_abstract_type, _obj, _ctx)
     raise(GraphQL::RequiredImplementationMissingError)
   end
-
-  # Relay-style Object Identification:
 
   # Return a string UUID for `object`
   def self.id_from_object(object, type_definition, query_ctx); end

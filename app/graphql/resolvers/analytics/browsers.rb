@@ -2,7 +2,6 @@
 
 module Resolvers
   module Analytics
-    # The list of the most popular browsers and their counts
     class Browsers < Resolvers::Base
       type Types::Analytics::Browsers, null: false
 

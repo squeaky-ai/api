@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Resend the invitation email to the user, only if they
-  # are pending
   class TeamInviteResend < SiteMutation
     null false
 

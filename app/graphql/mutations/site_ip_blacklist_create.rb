@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Create a new ip blacklist entry
   class SiteIpBlacklistCreate < SiteMutation
     null false
 

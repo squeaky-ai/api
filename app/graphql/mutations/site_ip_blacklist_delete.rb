@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an existing ip blacklist entry
   class SiteIpBlacklistDelete < SiteMutation
     null false
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete an nps response
   class NpsDelete < SiteMutation
     null false
 

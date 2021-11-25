@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Mutations
-  # Delete a recording and all of it's events
   class RecordingDelete < SiteMutation
     null false
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Visitors on sites that have recordings
 class Visitor < ApplicationRecord
   has_many :recordings, dependent: :destroy
   has_many :pages, through: :recordings
