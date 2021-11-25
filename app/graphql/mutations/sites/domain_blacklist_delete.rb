@@ -5,7 +5,7 @@ module Mutations
     class DomainBlacklistDelete < SiteMutation
       null false
 
-      graphql_name 'SitesDomainBlacklistDeleteInput'
+      graphql_name 'SitesDomainBlacklistDelete'
 
       argument :site_id, ID, required: true
       argument :value, String, required: true

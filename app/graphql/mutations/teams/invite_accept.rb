@@ -5,7 +5,7 @@ module Mutations
     class InviteAccept < Mutations::BaseMutation
       null false
 
-      graphql_name 'TeamInviteAcceptInput'
+      graphql_name 'TeamInviteAccept'
 
       argument :token, String, required: true
       argument :password, String, required: false

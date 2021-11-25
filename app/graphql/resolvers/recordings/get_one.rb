@@ -2,7 +2,7 @@
 
 module Resolvers
   module Recordings
-    class Recording < Resolvers::Base
+    class GetOne < Resolvers::Base
       type Types::Recordings::Recording, null: true
 
       argument :recording_id, GraphQL::Types::ID, required: true

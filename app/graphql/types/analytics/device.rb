@@ -2,7 +2,7 @@
 
 module Types
   module Analytics
-    class Devices < Types::BaseObject
+    class Device < Types::BaseObject
       graphql_name 'AnalyticsDevice'
 
       field :type, String, null: false

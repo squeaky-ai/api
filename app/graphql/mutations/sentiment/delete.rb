@@ -5,7 +5,7 @@ module Mutations
     class Delete < SiteMutation
       null false
 
-      graphql_name 'SentimentDeleteInput'
+      graphql_name 'SentimentDelete'
 
       argument :site_id, ID, required: true
       argument :sentiment_id, ID, required: true

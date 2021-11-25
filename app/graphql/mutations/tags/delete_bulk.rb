@@ -5,7 +5,7 @@ module Mutations
     class DeleteBulk < SiteMutation
       null false
 
-      graphql_name 'TagsDeleteBulkInput'
+      graphql_name 'TagsDeleteBulk'
 
       argument :site_id, ID, required: true
       argument :tag_ids, [ID], required: true

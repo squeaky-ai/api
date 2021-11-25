@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Devices < Resolvers::Base
-      type Types::Analytics::Devices, null: false
+      type [Types::Analytics::Device, { null: false }], null: false
 
       def resolve
         sql = <<-SQL

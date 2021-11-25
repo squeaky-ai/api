@@ -5,7 +5,7 @@ module Mutations
     class Update < UserMutation
       null false
 
-      graphql_name 'UsersUpdateInput'
+      graphql_name 'UsersUpdate'
 
       argument :first_name, String, required: false
       argument :last_name, String, required: false

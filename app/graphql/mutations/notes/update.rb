@@ -5,7 +5,7 @@ module Mutations
     class Update < SiteMutation
       null false
 
-      graphql_name 'NotesUpdateInput'
+      graphql_name 'NotesUpdate'
 
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true

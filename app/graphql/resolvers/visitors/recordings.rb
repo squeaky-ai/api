@@ -10,31 +10,28 @@ module Resolvers
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
 
       def resolve(page:, size:, sort:)
-        search = search(arguments, object.id)
-        results = SearchClient.search(index: Recording::INDEX, body: search)
-
-        {
-          items: items(page, size, sort),
-          pagination: pagination(size, sort, results)
-        }
-      end
-
-      private
-
-      def search(page, size, sort, visitor_id)
-        {
+        body = {
           from: page * size,
           size: size,
           sort: order(sort),
           query: {
             bool: {
               must: [
-                { term: { 'visitor.id': { value: visitor_id } } }
+                { term: { 'visitor.id': { value: object.id } } }
               ]
             }
           }
         }
+
+        results = SearchClient.search(index: Recording::INDEX, body: body)
+
+        {
+          items: items(results),
+          pagination: pagination(size, sort, results)
+        }
       end
+
+      private
 
       def order(sort)
         parts = sort.split('__')

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 visitor_recordings_query = <<-GRAPHQL
-  query($site_id: ID!, $visitor_id: ID!, $page: Int, $sort: RecordingSort) {
+  query($site_id: ID!, $visitor_id: ID!, $page: Int, $sort: RecordingsSort) {
     site(siteId: $site_id) {
       visitor(visitorId: $visitor_id) {
         recordings(page: $page, size: 10, sort: $sort) {

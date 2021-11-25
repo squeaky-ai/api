@@ -5,7 +5,7 @@ module Mutations
     class ViewedBulk < SiteMutation
       null false
 
-      graphql_name 'RecordingsViewedBulkInput'
+      graphql_name 'RecordingsViewedBulk'
 
       argument :site_id, ID, required: true
       argument :recording_ids, [String], required: true

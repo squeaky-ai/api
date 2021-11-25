@@ -2,8 +2,8 @@
 
 module Resolvers
   module Visitors
-    class Visitor < Resolvers::Base
-      type Integer, null: false
+    class GetOne < Resolvers::Base
+      type Types::Visitors::Visitor, null: true
 
       argument :visitor_id, GraphQL::Types::ID, required: true
 

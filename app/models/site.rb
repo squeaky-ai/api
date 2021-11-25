@@ -109,4 +109,8 @@ class Site < ApplicationRecord
             .count
     count >= Plan.new(plan).max_monthly_recordings
   end
+
+  def page_urls
+    pages.select(:url).all.map(&:url).uniq
+  end
 end

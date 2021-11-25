@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 visitor_pages_query = <<-GRAPHQL
-  query($site_id: ID!, $visitor_id: ID!, $page: Int, $sort: VisitorPagesSort) {
+  query($site_id: ID!, $visitor_id: ID!, $page: Int, $sort: VisitorsPagesSort) {
     site(siteId: $site_id) {
       visitor(visitorId: $visitor_id) {
         pages(page: $page, size: 10, sort: $sort) {

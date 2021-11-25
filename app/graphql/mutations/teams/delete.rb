@@ -5,7 +5,7 @@ module Mutations
     class Delete < SiteMutation
       null false
 
-      graphql_name 'TeamDeleteInput'
+      graphql_name 'TeamDelete'
 
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true

@@ -5,7 +5,7 @@ module Mutations
     class Delete < SiteMutation
       null false
 
-      graphql_name 'NotesDeleteInput'
+      graphql_name 'NotesDelete'
 
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true

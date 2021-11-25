@@ -3,10 +3,10 @@
 module Resolvers
   module Analytics
     class PageViews < Resolvers::Base
-      type Types::Analytics::PageViews, null: false
+      type [Types::Analytics::PageViews, { null: true }], null: false
 
       def resolve
-        page_views.map do |page_view|
+        pageviews.map do |page_view|
           urls = page_view['urls'].sub('{', '').sub('}', '').split(',')
           {
             total: urls.size,

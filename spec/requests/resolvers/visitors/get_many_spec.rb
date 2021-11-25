@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 visitors_query = <<-GRAPHQL
-  query($site_id: ID!, $page: Int, $size: Int, $query: String, $sort: VisitorSort) {
+  query($site_id: ID!, $page: Int, $size: Int, $query: String, $sort: VisitorsSort) {
     site(siteId: $site_id) {
       visitors(page: $page, size: $size, query: $query, sort: $sort) {
         items {
@@ -36,7 +36,7 @@ visitors_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Visitors::Visitors, type: :request do
+RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   context 'when there are no recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

@@ -5,7 +5,7 @@ module Mutations
     class Create < UserMutation
       null false
 
-      graphql_name 'FeedbackCreateInput'
+      graphql_name 'FeedbackCreate'
 
       argument :type, ID, required: true
       argument :subject, String, required: true

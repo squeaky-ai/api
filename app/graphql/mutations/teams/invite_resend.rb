@@ -5,7 +5,7 @@ module Mutations
     class InviteResend < SiteMutation
       null false
 
-      graphql_name 'TeamInviteResendInput'
+      graphql_name 'TeamInviteResend'
 
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true

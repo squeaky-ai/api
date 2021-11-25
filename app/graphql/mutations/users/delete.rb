@@ -5,7 +5,7 @@ module Mutations
     class Delete < UserMutation
       null true
 
-      graphql_name 'UsersDeleteInput'
+      graphql_name 'UsersDelete'
 
       type Types::Users::User
 

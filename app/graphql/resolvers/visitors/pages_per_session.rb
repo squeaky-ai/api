@@ -3,7 +3,7 @@
 module Resolvers
   module Visitors
     class PagesPerSession < Resolvers::Base
-      type Integer, null: false
+      type Float, null: false
 
       def resolve
         sql = <<-SQL

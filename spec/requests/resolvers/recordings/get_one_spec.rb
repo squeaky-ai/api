@@ -40,7 +40,7 @@ site_recording_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Recordings::Recording, type: :request do
+RSpec.describe Resolvers::Recordings::GetOne, type: :request do
   context 'when the recording does not exist' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

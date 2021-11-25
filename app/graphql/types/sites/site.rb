@@ -17,7 +17,7 @@ module Types
       field :team_size_exceeded, Boolean, null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
-      field :pages, resolver: Resolvers::Pages::Pages
+      field :page_urls, [String, { null: true }], null: false
       field :languages, resolver: Resolvers::Sites::Languages
       field :browsers, resolver: Resolvers::Sites::Browsers
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
@@ -26,11 +26,11 @@ module Types
       field :feedback, Types::Feedback::Feedback, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
       field :heatmaps, resolver: Resolvers::Heatmaps::Heatmaps
-      field :recording, resolver: Resolvers::Recordings::Recording
-      field :recordings, resolver: Resolvers::Recordings::Recordings
+      field :recording, resolver: Resolvers::Recordings::GetOne
+      field :recordings, resolver: Resolvers::Recordings::GetMany
       field :recording_latest, resolver: Resolvers::Recordings::Latest
-      field :visitor, resolver: Resolvers::Visitors::Visitor
-      field :visitors, resolver: Resolvers::Visitors::Visitors
+      field :visitor, resolver: Resolvers::Visitors::GetOne
+      field :visitors, resolver: Resolvers::Visitors::GetMany
       field :analytics, Types::Analytics::Analytics, null: false do
         argument :from_date, String, required: true
         argument :to_date, String, required: true

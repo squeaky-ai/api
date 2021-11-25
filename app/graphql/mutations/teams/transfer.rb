@@ -5,7 +5,7 @@ module Mutations
     class Transfer < SiteMutation
       null false
 
-      graphql_name 'TeamTransferInput'
+      graphql_name 'TeamTransfer'
 
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true

@@ -2,7 +2,7 @@
 
 module Resolvers
   module Visitors
-    class Visitors < Resolvers::Base
+    class GetMany < Resolvers::Base
       type Types::Visitors::Visitors, null: false
 
       argument :page, Integer, required: false, default_value: 0
@@ -16,7 +16,7 @@ module Resolvers
           from: page * size,
           size: size,
           sort: order(sort),
-          query: VisitorsQuery.new(site_id, query, filters.to_h).build
+          query: VisitorsQuery.new(object.id, query, filters.to_h).build
         }
 
         results = SearchClient.search(index: Visitor::INDEX, body: body)

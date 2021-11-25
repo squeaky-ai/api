@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingSort) {
+  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingsSort) {
     site(siteId: $site_id) {
       recordings(size: $size, page: $page, sort: $sort) {
         items {
@@ -40,7 +40,7 @@ site_recordings_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Recordings::Recordings, type: :request do
+RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   context 'when there are no recordings' do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }

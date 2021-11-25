@@ -5,7 +5,7 @@ module Mutations
     class Create < SiteMutation
       null false
 
-      graphql_name 'NotesCreateInput'
+      graphql_name 'NotesCreate'
 
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true

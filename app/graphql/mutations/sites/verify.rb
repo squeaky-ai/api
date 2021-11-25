@@ -8,7 +8,7 @@ module Mutations
     class Verify < SiteMutation
       null false
 
-      graphql_name 'SitesVerifyInput'
+      graphql_name 'SitesVerify'
 
       argument :site_id, ID, required: true
 

@@ -2,7 +2,7 @@
 
 module Resolvers
   module Recordings
-    class Recordings < Resolvers::Base
+    class GetMany < Resolvers::Base
       type Types::Recordings::Recordings, null: false
 
       argument :page, Integer, required: false, default_value: 0
@@ -11,12 +11,12 @@ module Resolvers
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
       argument :filters, Types::Recordings::Filters, required: false, default_value: nil
 
-      def resolve(page, size, query, sort, filters)
+      def resolve(page:, size:, query:, sort:, filters:)
         body = {
           from: page * size,
           size: size,
           sort: order(sort),
-          query: RecordingsQuery.new(site.id, query, filters.to_h).build
+          query: RecordingsQuery.new(object.id, query, filters.to_h).build
         }
 
         results = SearchClient.search(index: Recording::INDEX, body: body)

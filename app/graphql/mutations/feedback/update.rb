@@ -5,7 +5,7 @@ module Mutations
     class Update < SiteMutation
       null false
 
-      graphql_name 'FeedbackUpdateInput'
+      graphql_name 'FeedbackUpdate'
 
       argument :site_id, ID, required: true
       argument :nps_enabled, Boolean, required: false

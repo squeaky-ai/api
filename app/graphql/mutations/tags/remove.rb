@@ -5,7 +5,7 @@ module Mutations
     class Remove < SiteMutation
       null false
 
-      graphql_name 'TagsRemoveInput'
+      graphql_name 'TagsRemove'
 
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true

@@ -5,7 +5,7 @@ module Mutations
     class Update < SiteMutation
       null false
 
-      graphql_name 'TagsUpdateInput'
+      graphql_name 'TagsUpdate'
 
       argument :site_id, ID, required: true
       argument :tag_id, ID, required: true
