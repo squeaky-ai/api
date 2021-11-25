@@ -5,6 +5,8 @@ module Mutations
     class Bookmarked < SiteMutation
       null false
 
+      graphql_name 'RecordingsBookmarkedInput'
+
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true
       argument :bookmarked, Boolean, required: true

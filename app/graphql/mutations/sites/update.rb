@@ -5,6 +5,8 @@ module Mutations
     class Update < SiteMutation
       null false
 
+      graphql_name 'SiteUpdateInput'
+
       argument :site_id, ID, required: true
       argument :name, String, required: false
       argument :url, String, required: false

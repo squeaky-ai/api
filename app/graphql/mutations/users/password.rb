@@ -5,6 +5,8 @@ module Mutations
     class Password < UserMutation
       null false
 
+      graphql_name 'UsersPasswordInput'
+
       argument :password, String, required: true
       argument :password_confirmation, String, required: true
       argument :current_password, String, required: true

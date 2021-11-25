@@ -5,6 +5,8 @@ module Mutations
     class Invite < SiteMutation
       null false
 
+      graphql_name 'TeamInviteInput'
+
       argument :site_id, ID, required: true
       argument :email, String, required: true
       argument :role, Integer, required: true

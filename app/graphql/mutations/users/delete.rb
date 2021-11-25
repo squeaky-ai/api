@@ -5,6 +5,8 @@ module Mutations
     class Delete < UserMutation
       null true
 
+      graphql_name 'UsersDeleteInput'
+
       type Types::Users::User
 
       def resolve

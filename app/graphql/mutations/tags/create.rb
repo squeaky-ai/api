@@ -5,6 +5,8 @@ module Mutations
     class Create < SiteMutation
       null false
 
+      graphql_name 'TagsCreateInput'
+
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true
       argument :name, String, required: true

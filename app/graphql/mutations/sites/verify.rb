@@ -8,6 +8,8 @@ module Mutations
     class Verify < SiteMutation
       null false
 
+      graphql_name 'SitesVerifyInput'
+
       argument :site_id, ID, required: true
 
       type Types::Sites::Site

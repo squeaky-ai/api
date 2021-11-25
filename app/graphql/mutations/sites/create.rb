@@ -5,6 +5,8 @@ module Mutations
     class Create < UserMutation
       null false
 
+      graphql_name 'SitesCreateInput'
+
       argument :name, String, required: true
       argument :url, String, required: true
 

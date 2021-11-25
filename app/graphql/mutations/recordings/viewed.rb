@@ -5,6 +5,8 @@ module Mutations
     class Viewed < SiteMutation
       null false
 
+      graphql_name 'RecordingsViewedInput'
+
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true
 

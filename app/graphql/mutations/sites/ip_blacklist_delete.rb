@@ -5,6 +5,8 @@ module Mutations
     class IpBlacklistDelete < SiteMutation
       null false
 
+      graphql_name 'SitesIpBlacklistDeleteInput'
+
       argument :site_id, ID, required: true
       argument :value, String, required: true
 

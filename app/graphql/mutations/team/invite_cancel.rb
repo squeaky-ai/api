@@ -5,6 +5,8 @@ module Mutations
     class InviteCancel < SiteMutation
       null false
 
+      graphql_name 'TeamInviteCancelInput'
+
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true
 

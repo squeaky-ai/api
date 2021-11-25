@@ -5,6 +5,8 @@ module Mutations
     class Starred < SiteMutation
       null false
 
+      graphql_name 'VisitorsStarredInput'
+
       argument :site_id, ID, required: true
       argument :visitor_id, ID, required: true
       argument :starred, Boolean, required: true

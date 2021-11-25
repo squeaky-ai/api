@@ -5,6 +5,8 @@ module Mutations
     class DomainBlacklistCreate < SiteMutation
       null false
 
+      graphql_name 'SitesDomainBlacklistCreateInput'
+
       argument :site_id, ID, required: true
       argument :type, String, required: true
       argument :value, String, required: true

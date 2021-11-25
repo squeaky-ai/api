@@ -5,6 +5,8 @@ module Mutations
     class Leave < SiteMutation
       null true
 
+      graphql_name 'TeamLeaveInput'
+
       argument :site_id, ID, required: true
 
       type Types::Sites::Site
