@@ -30,10 +30,10 @@ $ rspec
 ```
 
 ### Importing recordings
-Go to S3 and find a recording you want in the `events.squeaky.ai` bucket, and invoke the job:
+Create a local recording and import it from Redis:
 ```shell
 $ rails c
-irb> CompletedRecordingsJob.perform_now({ bucket: 'events.squeaky.ai', key: '<key>' }.to_json)
+irb> CompletedRecordingsJob.perform_now({ site_id: '<site_uuid'>, visitor_id: '<visitor_id'>, session_id: '<session_id>' }.to_json)
 ```
 
 ### Usage
