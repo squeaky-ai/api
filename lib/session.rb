@@ -104,15 +104,31 @@ class Session
     events.each do |event|
       case event['key']
       when 'recording'
-        event['value']['data'].each { |k, v| @recording[k] = v unless @recording[k] }
+        handle_recording_event(event)
       when 'identify'
-        event['value']['data'].each { |k, v| @external_attributes[k] = v.to_s unless @external_attributes[k] }
+        handle_identify_event(event)
       when 'pageview'
-        uri = URI(event['value']['data']['href'])
-        @pageviews.push('path' => uri.path, 'timestamp' => event['value']['timestamp'])
+        handle_pageview_event(event)
       when 'event'
-        @events.push(event['value'])
+        handle_event(event)
       end
     end
+  end
+
+  def handle_recording_event(event)
+    event['value']['data'].each { |k, v| @recording[k] = v unless @recording[k] }
+  end
+
+  def handle_identify_event(event)
+    event['value']['data'].each { |k, v| @external_attributes[k] = v.to_s unless @external_attributes[k] }
+  end
+
+  def handle_pageview_event(event)
+    uri = URI(event['value']['data']['href'])
+    @pageviews.push('path' => uri.path, 'timestamp' => event['value']['timestamp'])
+  end
+
+  def handle_event(event)
+    @events.push(event['value'])
   end
 end
