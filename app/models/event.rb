@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# All of the events that come from the websocket
 class Event < ApplicationRecord
   belongs_to :recording
 

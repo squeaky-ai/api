@@ -3,8 +3,6 @@
 require 'uri'
 require 'securerandom'
 
-# The main site model. The only unique constraint is the
-# url as we can't have people having multiple sites
 class Site < ApplicationRecord
   validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 
@@ -80,27 +78,6 @@ class Site < ApplicationRecord
     "#{uri.scheme}://#{uri.host.downcase}"
   end
 
-  def analytics(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The analytics extension does
-    # not resolve anything of it's own
-    { site_id: id, **args }
-  end
-
-  def nps(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The nps extension does not
-    # resolve anything of it's own
-    { site_id: id, **args }
-  end
-
-  def sentiment(args)
-    # This is a pure hack to get around having an extension
-    # that only has extensions. The sentiment extension does
-    # not resolve anything of it's own
-    { site_id: id, **args }
-  end
-
   def team_size_exceeded?
     team.size >= Plan.new(plan).max_team_members
   end
@@ -110,5 +87,9 @@ class Site < ApplicationRecord
             .where('deleted = false AND created_at > ? AND created_at < ?', Time.now.beginning_of_month, Time.now.end_of_month)
             .count
     count >= Plan.new(plan).max_monthly_recordings
+  end
+
+  def page_urls
+    pages.select(:url).all.map(&:url).uniq
   end
 end

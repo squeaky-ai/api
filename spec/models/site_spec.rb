@@ -285,4 +285,22 @@ RSpec.describe Site, type: :model do
       end
     end
   end
+
+  describe '#page_urls' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+
+    before do
+      create_page(url: '/' , recording: recording)
+      create_page(url: '/foo', recording: recording)
+      create_page(url: '/foo', recording: recording)
+    end
+
+    subject { site.page_urls }
+
+    it 'returns a list of page urls' do
+      expect(subject).to eq(['/', '/foo'])
+    end
+  end
 end

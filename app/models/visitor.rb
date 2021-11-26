@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-# Visitors on sites that have recordings
 class Visitor < ApplicationRecord
   has_many :recordings, dependent: :destroy
   has_many :pages, through: :recordings
 
   INDEX = Rails.configuration.elasticsearch['visitors_index']
+
+  alias_attribute :viewed, :viewed?
 
   def locale
     recordings.first.locale
@@ -25,7 +26,7 @@ class Visitor < ApplicationRecord
     external_attributes.to_json
   end
 
-  def viewed
+  def viewed?
     recordings.where(viewed: true).size.positive?
   end
 

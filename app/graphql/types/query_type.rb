@@ -1,33 +1,32 @@
 # frozen_string_literal: true
 
 module Types
-  # All of the queries available to the client, note
-  # that any authentication is done on a per query
-  # level
   class QueryType < Types::BaseObject
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :user, UserType, null: true do
-      description "Get the user from the session.\nIt will return null if there is no session"
+    field :user, Types::Users::User, null: true
+
+    field :user_exists, Boolean, null: false do
+      argument :email, String, required: true
     end
 
-    field :site, SiteType, null: true do
-      description 'Get a single site'
+    field :site, Types::Sites::Site, null: true do
       argument :site_id, ID, required: true
     end
 
-    field :sites, [SiteType, { null: true }], null: false do
-      description "Get a list of sites for the user.\nWarning: Loading the recordings here is n+1 and expensive!"
-    end
+    field :sites, [Types::Sites::Site, { null: true }], null: false
 
-    field :user_invitation, UserInvitationType, null: true do
-      description 'Get the user from the invite token'
+    field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
 
     def user
       context[:current_user]
+    end
+
+    def user_exists(email:)
+      User.exists?(email: email)
     end
 
     def site(site_id:)
@@ -39,8 +38,6 @@ module Types
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team: team)
-    rescue ActiveRecord::RecordNotFound
-      nil
     end
 
     def sites

@@ -9,9 +9,7 @@ Rails.application.routes.draw do
     devise_for :users, only: []
 
     # Enable the GraphQL playground
-    mount GraphqlPlayground::Rails::Engine,
-          at: 'playground',
-          graphql_path: 'graphql'
+    mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
 
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
@@ -34,9 +32,6 @@ Rails.application.routes.draw do
         # GET /api/auth/confirm
         # query: { "confirmation_token": string }
         get 'confirm', to: 'auth/confirmations#show'
-        # GET /api/auth/email_exists
-        # query: { "email": string }
-        get 'email_exists', to: 'auth/registrations#email_exists'
         # POST /api/auth/reset_password
         # body: { "email": string }
         post 'reset_password', to: 'auth/passwords#create'

@@ -12,10 +12,18 @@ RSpec.describe Plan do
   context 'when the plan is valid' do
     plan = described_class.new(0)
 
+    before do
+      plan.instance_variable_set(:@config, {
+        'max_team_members' => 1,
+        'max_monthly_recordings' => 300,
+        'monthly_price' => 0
+      })
+    end
+
     it 'responds to the expected methods' do
-      expect(plan).to respond_to(:max_team_members)
-      expect(plan).to respond_to(:max_monthly_recordings)
-      expect(plan).to respond_to(:monthly_price)
+      expect(plan.max_team_members).to eq 1
+      expect(plan.max_monthly_recordings).to eq 300
+      expect(plan.monthly_price).to eq 0
     end
   end
 end

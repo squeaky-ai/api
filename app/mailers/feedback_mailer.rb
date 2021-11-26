@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Mailers that sends user feedback to us
 class FeedbackMailer < ApplicationMailer
   def feedback(user, type, subject, message)
     @user = user

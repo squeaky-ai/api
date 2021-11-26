@@ -2,7 +2,6 @@
 
 require 'uri'
 
-# Permanent storage for recordings
 class Recording < ApplicationRecord
   belongs_to :site
   belongs_to :visitor
@@ -12,6 +11,7 @@ class Recording < ApplicationRecord
   has_many :pages, dependent: :destroy
 
   has_one :nps
+  has_one :sentiment
 
   has_and_belongs_to_many :tags
 

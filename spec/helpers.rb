@@ -118,4 +118,14 @@ module Helpers
       end
     )
   end
+
+  def create_sentiment(args = {}, recording:)
+    default = { score: 5, comment: nil, **args }
+    Sentiment.create(recording: recording, **default)
+  end
+
+  def create_nps(args = {}, recording:)
+    default = { score: 5, comment: nil, **args }
+    Nps.create(recording: recording, **default)
+  end
 end
