@@ -15,19 +15,19 @@ module Resolvers
       argument :to_date, String, required: true
 
       def resolve(device:, type:, page:, from_date:, to_date:)
-        device_counts = devices(object[:site_id], page, from_date, to_date)
-        items = type == 'Click' ? click_events(site_id, from_date, to_date, page, device) : scroll_events(site_id, from_date, to_date, page, device)
+        device_counts = devices(page, from_date, to_date)
+        items = type == 'Click' ? click_events(from_date, to_date, page, device) : scroll_events(from_date, to_date, page, device)
 
         {
           **device_counts,
           items: items.compact,
-          recording_id: suitable_recording(site_id, page, from_date, to_date)
+          recording_id: suitable_recording(page, from_date, to_date)
         }
       end
 
       private
 
-      def devices(site_id, page, from_date, to_date)
+      def devices(page, from_date, to_date)
         sql = <<-SQL
           SELECT
             recordings.viewport_x
@@ -41,12 +41,12 @@ module Resolvers
             AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
-        viewports = Sql.execute(sql, [site_id, page, from_date, to_date])
+        viewports = Sql.execute(sql, [object.id, page, from_date, to_date])
 
         group_viewports(viewports.map { |v| v['viewport_x'] })
       end
 
-      def suitable_recording(site_id, page, from_date, to_date)
+      def suitable_recording(page, from_date, to_date)
         # TODO: I think this query should try and pull back the smallest
         # recording possible by joining the events and checking the count
         sql = <<-SQL
@@ -65,11 +65,11 @@ module Resolvers
             1;
         SQL
 
-        pages = Sql.execute(sql, [site_id, page, from_date, to_date])
+        pages = Sql.execute(sql, [object.id, page, from_date, to_date])
         pages.first&.[]('recording_id')
       end
 
-      def click_events(site_id, from_date, to_date, page, device)
+      def click_events(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
             events.data
@@ -91,11 +91,11 @@ module Resolvers
             (events.data->>'type')::integer = 2
         SQL
 
-        events = Sql.execute(sql, [site_id, from_date, to_date, page])
+        events = Sql.execute(sql, [object.id, from_date, to_date, page])
         events.map { |e| JSON.parse(e['data']) }
       end
 
-      def scroll_events(site_id, from_date, to_date, page, device)
+      def scroll_events(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
             MAX((events.data->>'y')::float)
@@ -118,7 +118,7 @@ module Resolvers
             pages.id;
         SQL
 
-        events = Sql.execute(sql, [site_id, from_date, to_date, page])
+        events = Sql.execute(sql, [object.id, from_date, to_date, page])
         events.map { |e| { y: e['max'] } }
       end
 
