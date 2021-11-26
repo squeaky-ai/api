@@ -39,6 +39,8 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
       create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb' }, site: site, visitor: create_visitor)
       create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb' }, site: site, visitor: create_visitor)
       create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'sv-se' }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'zz-zz' }, site: site, visitor: create_visitor)
+      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'xx-aa' }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -57,6 +59,10 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
           {
             'name' => 'Swedish (SE)',
             'count' => 1
+          },
+          {
+            'name' => 'Unknown',
+            'count' => 2
           }
         ]
       )

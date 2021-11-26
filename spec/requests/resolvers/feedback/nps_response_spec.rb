@@ -60,7 +60,7 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
     let(:visitor) { create_visitor }
 
     before do
-      create_nps({ score: 5, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create_nps({ score: 5, created_at: Time.new(2021, 8, 4) }, recording: create_recording(site: site, visitor: visitor))
       create_nps({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
       create_nps({ score: 3, created_at: Time.new(2020, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
     end
@@ -78,6 +78,40 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
         'total' => 2,
         'sort' => 'timestamp__desc'
       )
+    end
+
+    it 'returns in descending order' do
+      response = subject['data']['site']['nps']
+      items = response['responses']['items'].map { |i| i['timestamp'] }
+      expect(items).to eq(['2021-08-03T23:00:00Z', '2021-08-02T23:00:00Z'])
+    end
+  end
+
+  context 'when requesting in ascending order' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+    let(:visitor) { create_visitor }
+
+    before do
+      create_nps({ score: 5, created_at: Time.new(2021, 8, 4) }, recording: create_recording(site: site, visitor: visitor))
+      create_nps({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create_nps({ score: 3, created_at: Time.new(2020, 8, 2) }, recording: create_recording(site: site, visitor: visitor))
+    end
+
+    subject do
+      variables = { 
+        site_id: site.id, 
+        from_date: '2021-08-01', 
+        to_date: '2021-08-08',
+        sort: 'timestamp__asc'
+      }
+      graphql_request(nps_response_query, variables, user)
+    end
+
+    it 'returns in ascending order' do
+      response = subject['data']['site']['nps']
+      items = response['responses']['items'].map { |i| i['timestamp'] }
+      expect(items).to eq(['2021-08-02T23:00:00Z', '2021-08-03T23:00:00Z'])
     end
   end
 end

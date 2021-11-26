@@ -34,7 +34,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     end
 
     it 'returns the verifiedAt timestamp' do
-      expect(subject['data']['siteVerify']['verifiedAt']).not_to be nil
+      expect(subject['data']['siteVerify']['verifiedAt']).not_to be_nil
     end
   end
 
@@ -63,6 +63,24 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     subject do
       variables = { site_id: site.id }
       graphql_request(site_verify_mutation, variables, user)
+    end
+
+    it 'returns nil' do
+      expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
+    end
+  end
+
+  context 'when the http request fails' do
+    let(:user) { create_user }
+    let(:site) { create_site_and_team(user: user) }
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_verify_mutation, variables, user)
+    end
+
+    before do
+      allow(Net::HTTP).to receive(:get).and_raise(StandardError)
     end
 
     it 'returns nil' do
