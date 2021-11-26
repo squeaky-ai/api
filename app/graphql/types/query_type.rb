@@ -7,6 +7,10 @@ module Types
 
     field :user, Types::Users::User, null: true
 
+    field :user_exists, Boolean, null: false do
+      argument :email, String, required: true
+    end
+
     field :site, Types::Sites::Site, null: true do
       argument :site_id, ID, required: true
     end
@@ -19,6 +23,10 @@ module Types
 
     def user
       context[:current_user]
+    end
+
+    def user_exists(email:)
+      User.exists?(email: email)
     end
 
     def site(site_id:)
