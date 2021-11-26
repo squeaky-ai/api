@@ -9,9 +9,7 @@ Rails.application.routes.draw do
     devise_for :users, only: []
 
     # Enable the GraphQL playground
-    mount GraphqlPlayground::Rails::Engine,
-          at: 'playground',
-          graphql_path: 'graphql'
+    mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
 
     # Custom devise routes that are more suited to the front end
     scope 'auth' do

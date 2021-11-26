@@ -6,18 +6,22 @@ module Resolvers
       type Types::Feedback::SentimentRatings, null: false
 
       def resolve
-        current_results = get_results(object[:site_id], object[:from_date], object[:to_date])
+        current_results = get_results(object[:from_date], object[:to_date])
         trend_date_range = offset_dates_by_period(object[:from_date], object[:to_date])
-        previous_results = get_results(object[:site_id], *trend_date_range)
+        previous_results = get_results(*trend_date_range)
 
+        format_results(current_results, previous_results)
+      end
+
+      private
+
+      def format_results(current_results, previous_results)
         {
           score: avg_score(current_results),
           trend: avg_score(current_results) - avg_score(previous_results),
           responses: map_results(current_results)
         }
       end
-
-      private
 
       def parse_date(date)
         Date.strptime(date, '%Y-%m-%d')
@@ -34,10 +38,14 @@ module Resolvers
         [from - diff, to - diff]
       end
 
-      def get_results(site_id, from_date, to_date)
+      def get_results(from_date, to_date)
         Sentiment
           .joins(:recording)
-          .where('recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ?', site_id, from_date, to_date)
+          .where(
+            'recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ?',
+            object[:site_id],
+            from_date, to_date
+          )
           .select('sentiments.score, sentiments.created_at')
       end
 

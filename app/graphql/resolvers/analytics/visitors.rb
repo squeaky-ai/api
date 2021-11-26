@@ -9,6 +9,12 @@ module Resolvers
         recordings = recordings(object[:site_id], object[:from_date], object[:to_date])
         visitor_counts = visitors(object[:site_id], recordings.map { |r| r['visitor_id'] }.uniq)
 
+        map_response(visitor_counts, recordings)
+      end
+
+      private
+
+      def map_response(visitor_counts, recordings)
         recordings.map do |recording|
           {
             new: visitor_counts.find { |v| v['visitor_id'] == recording['visitor_id'] }['recordings_count'] == 1,
@@ -16,8 +22,6 @@ module Resolvers
           }
         end
       end
-
-      private
 
       def recordings(site_id, from_date, to_date)
         sql = <<-SQL

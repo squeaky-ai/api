@@ -12,7 +12,12 @@ module Resolvers
       def resolve(page:, size:, sort:)
         results = Sentiment
                   .joins(recording: :visitor)
-                  .where('recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ?', object[:site_id], object[:from_date], object[:to_date])
+                  .where(
+                    'recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ?',
+                    object[:site_id],
+                    object[:from_date],
+                    object[:to_date]
+                  )
                   .select('sentiments.*, recordings.session_id, visitors.id visitor_id, visitors.visitor_id visitor_visitor_id')
                   .order(sort_by(sort))
                   .page(page)
