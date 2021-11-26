@@ -27,7 +27,7 @@ module Mutations
       end
 
       def resolve(**args)
-        feedback = @site.feedback || Feedback.create(site_id: @site.id)
+        feedback = @site.feedback || ::Feedback.create(site_id: @site.id)
 
         feedback.assign_attributes(args.except(:site_id))
         feedback.save

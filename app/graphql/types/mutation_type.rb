@@ -15,7 +15,6 @@ module Types
     field :ip_blacklist_delete, mutation: Mutations::Sites::IpBlacklistDelete
     field :domain_blacklist_create, mutation: Mutations::Sites::DomainBlacklistCreate
     field :domain_blacklist_delete, mutation: Mutations::Sites::DomainBlacklistDelete
-    field :feedback_update, mutation: Mutations::Feedback::Update
     # Team
     field :team_invite, mutation: Mutations::Teams::Invite
     field :team_delete, mutation: Mutations::Teams::Delete
@@ -41,6 +40,7 @@ module Types
     field :recordings_viewed, mutation: Mutations::Recordings::ViewedBulk
     # Feedback
     field :feedback_create, mutation: Mutations::Feedback::Create
+    field :feedback_update, mutation: Mutations::Feedback::Update
     field :nps_delete, mutation: Mutations::Feedback::NpsDelete
     field :sentiment_delete, mutation: Mutations::Feedback::SentimentDelete
     # Visitors

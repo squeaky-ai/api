@@ -43,6 +43,7 @@ RSpec.describe Resolvers::Feedback::NpsGroups, type: :request do
 
     before do
       create_nps({ score: 9, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create_nps({ score: 7, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
       create_nps({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
       create_nps({ score: 3, created_at: Time.new(2020, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
     end
@@ -56,7 +57,7 @@ RSpec.describe Resolvers::Feedback::NpsGroups, type: :request do
       response = subject['data']['site']['nps']
       expect(response['groups']).to eq(
         'promoters' => 1,
-        'passives' => 0,
+        'passives' => 1,
         'detractors' => 1
       )
     end
