@@ -47,7 +47,12 @@ module Resolvers
 
         meta = Visitor
                .left_joins(:recordings)
-               .select('visitors.id, visitors.starred, COUNT(recordings) count')
+               .select(
+                 'visitors.id,
+                  visitors.starred,
+                  COUNT(recordings) count,
+                  COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) recordings_viewed'
+               )
                .where('recordings.deleted = false')
                .group('visitors.id')
                .where(id: ids)
@@ -63,6 +68,7 @@ module Resolvers
           v.merge(
             'starred' => match&.starred || false,
             'recordings_count' => { 'total' => match&.count || 0, 'new' => 0 },
+            'viewed' => match.recordings_viewed&.positive?,
             # The front end is expecting the attributes as a JSON string
             # because we can't type the unknown
             'attributes' => v['attributes'].to_json

@@ -37,7 +37,7 @@ class VisitorsQuery
     viewed_ids = site.recordings.select(:visitor_id).where(viewed: true).map(&:visitor_id)
     filter = { terms: { id: viewed_ids } }
 
-    filter_type = value == 'New' ? :must : :must_not
+    filter_type = value == 'New' ? :must_not : :must
 
     @params[:bool][filter_type].push(filter) unless value.empty?
   end
