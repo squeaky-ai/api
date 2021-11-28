@@ -39,31 +39,23 @@ class RecordingsQuery
   end
 
   def filter_by_date(value)
-    if value[:range_type] == 'Between'
-      return filter_ranges(:date_time, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
-    end
+    return unless value[:range_type]
 
-    if value[:range_type] == 'From' && value[:from_type] == 'Before'
-      return filter_ranges(:date_time, nil, format_date(value[:from_date]))
-    end
+    return filter_by_between_dates(value) if value[:range_type] == 'Between'
 
-    if value[:range_type] == 'From' && value[:from_type] == 'After'
-      return filter_ranges(:date_time, format_date(value[:from_date]), nil)
-    end
+    return filter_by_before_dates(value) if value[:from_type] == 'Before'
+
+    return filter_by_after_dates(value) if value[:from_type] == 'After'
   end
 
   def filter_by_duration(value)
-    if value[:range_type] == 'Between'
-      return filter_ranges(:duration, value[:between_from_duration], value[:between_to_duration])
-    end
+    return unless value[:range_type]
 
-    if value[:range_type] == 'From' && value[:from_type] == 'GreaterThan'
-      return filter_ranges(:duration, value[:from_duration], nil)
-    end
+    return filter_by_between_durations(value) if value[:range_type] == 'Between'
 
-    if value[:range_type] == 'From' && value[:from_type] == 'LessThan'
-      return filter_ranges(:duration, nil, value[:from_duration])
-    end
+    return filter_by_greater_than_duration(value) if value[:from_type] == 'GreaterThan'
+
+    return filter_by_less_than_duration(value) if value[:from_type] == 'LessThan'
   end
 
   def filter_by_start_url(value)
@@ -96,7 +88,7 @@ class RecordingsQuery
     @params[:bool][:must].push(filter) unless value.empty?
   end
 
-  def filter_by_device_size(value)
+  def filter_by_viewport(value)
     filter_device_size(value, :min_width, :max_width, 'device_x')
     filter_device_size(value, :min_height, :max_height, 'device_y')
   end
@@ -119,6 +111,30 @@ class RecordingsQuery
     filter[:range][key][:gte] = from if from
     filter[:range][key][:lte] = to if to
     @params[:bool][:must].push(filter)
+  end
+
+  def filter_by_between_dates(value)
+    filter_ranges(:date_time, format_date(value[:between_from_date]), format_date(value[:between_to_date]))
+  end
+
+  def filter_by_before_dates(value)
+    filter_ranges(:date_time, nil, format_date(value[:from_date]))
+  end
+
+  def filter_by_after_dates(value)
+    filter_ranges(:date_time, format_date(value[:from_date]), nil)
+  end
+
+  def filter_by_between_durations(value)
+    filter_ranges(:duration, value[:between_from_duration], value[:between_to_duration])
+  end
+
+  def filter_by_greater_than_duration(value)
+    filter_ranges(:duration, value[:from_duration], nil)
+  end
+
+  def filter_by_less_than_duration(value)
+    filter_ranges(:duration, nil, value[:from_duration])
   end
 
   def format_date(string)
