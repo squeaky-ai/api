@@ -19,6 +19,7 @@ class RecordingSaveJob < ApplicationJob
 
       persist_events!(recording)
       persist_pageviews!(recording)
+      persist_sentiments!(recording)
       index_to_elasticsearch!(recording, visitor)
     end
 
@@ -126,6 +127,16 @@ class RecordingSaveJob < ApplicationJob
     page_views.last[:exited_at] = recording.disconnected_at
 
     Page.insert_all!(page_views) if page_views.size
+  end
+
+  def persist_sentiments!(recording)
+    @session.sentiments.each do |e|
+      Sentiment.create(
+        score: e[:score],
+        comment: e[:comment],
+        recording: recording
+      )
+    end
   end
 
   def valid?

@@ -6,6 +6,7 @@ require 'uri'
 class Session
   attr_reader :recording,
               :pageviews,
+              :sentiments,
               :external_attributes,
               :events,
               :site_id,
@@ -16,6 +17,7 @@ class Session
     @events = []
     @pageviews = []
     @recording = {}
+    @sentiments = []
     @external_attributes = {}
 
     @site_id = message[:site_id]
@@ -111,6 +113,8 @@ class Session
         handle_pageview_event(event)
       when 'event'
         handle_event(event)
+      when 'sentiment'
+        handle_sentiment(event)
       end
     end
   end
@@ -130,5 +134,11 @@ class Session
 
   def handle_event(event)
     @events.push(event['value'])
+  end
+
+  def handle_sentiment(event)
+    score = event['value']['data']['score']
+    comment = event['value']['data']['comment']
+    @sentiments.push(score: score, comment: comment)
   end
 end

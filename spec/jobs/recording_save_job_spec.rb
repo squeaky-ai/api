@@ -56,6 +56,13 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(site.reload.recordings.first.events.size).to eq 82
     end
 
+    it 'stores the sentiments' do
+      subject
+      sentiment = site.reload.sentiments.first
+      expect(sentiment.score).to eq 2
+      expect(sentiment.comment).to eq 'Hello'
+    end
+
     it 'indexes to elasticsearch' do
       subject
       expect(SearchClient).to have_received(:bulk)
