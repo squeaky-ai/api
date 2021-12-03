@@ -20,6 +20,7 @@ class RecordingSaveJob < ApplicationJob
       persist_events!(recording)
       persist_pageviews!(recording)
       persist_sentiments!(recording)
+      persist_nps!(recording)
       index_to_elasticsearch!(recording, visitor)
     end
 
@@ -137,6 +138,20 @@ class RecordingSaveJob < ApplicationJob
         recording: recording
       )
     end
+  end
+
+  def persist_nps!(recording)
+    nps = @session.nps
+
+    return unless nps
+
+    Nps.create(
+      score: nps[:score],
+      comment: nps[:comment],
+      contact: nps[:contact],
+      email: nps[:email],
+      recording: recording
+    )
   end
 
   def valid?

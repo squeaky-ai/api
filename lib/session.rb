@@ -7,6 +7,7 @@ class Session
   attr_reader :recording,
               :pageviews,
               :sentiments,
+              :nps,
               :external_attributes,
               :events,
               :site_id,
@@ -18,6 +19,7 @@ class Session
     @pageviews = []
     @recording = {}
     @sentiments = []
+    @nps = nil
     @external_attributes = {}
 
     @site_id = message[:site_id]
@@ -115,6 +117,8 @@ class Session
         handle_event(event)
       when 'sentiment'
         handle_sentiment(event)
+      when 'nps'
+        handle_nps(event)
       end
     end
   end
@@ -140,5 +144,16 @@ class Session
     score = event['value']['data']['score']
     comment = event['value']['data']['comment']
     @sentiments.push(score: score, comment: comment)
+  end
+
+  def handle_nps(event)
+    data = event['value']['data']
+
+    @nps = {
+      score: data['score'],
+      comment: data['comment'].presence,
+      contact: data['contact'],
+      email: data['email'].presence
+    }
   end
 end

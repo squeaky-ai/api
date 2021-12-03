@@ -63,6 +63,15 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(sentiment.comment).to eq 'Hello'
     end
 
+    it 'stores the nps' do
+      subject
+      nps = site.reload.nps.first
+      expect(nps.score).to eq 9
+      expect(nps.comment).to eq 'Hello'
+      expect(nps.contact).to eq true
+      expect(nps.email).to eq 'bobby@gmail.com'
+    end
+
     it 'indexes to elasticsearch' do
       subject
       expect(SearchClient).to have_received(:bulk)
