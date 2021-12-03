@@ -33,7 +33,7 @@ $ rspec
 Create a local recording and import it from Redis:
 ```shell
 $ rails c
-irb> CompletedRecordingsJob.perform_now({ site_id: '<site_uuid'>, visitor_id: '<visitor_id'>, session_id: '<session_id>' }.to_json)
+irb> RecordingSaveJob.perform_now({ site_id: '<site_uuid>', visitor_id: '<visitor_id>', session_id: '<session_id>' }.to_json)
 ```
 
 ### Usage
