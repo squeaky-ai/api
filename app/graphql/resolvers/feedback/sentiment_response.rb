@@ -18,7 +18,17 @@ module Resolvers
                     object[:from_date],
                     object[:to_date]
                   )
-                  .select('sentiments.*, recordings.session_id, visitors.id visitor_id, visitors.visitor_id visitor_visitor_id')
+                  .select('
+                    sentiments.*,
+                    recordings.session_id,
+                    recordings.viewport_x,
+                    recordings.viewport_y,
+                    recordings.device_x,
+                    recordings.device_y,
+                    recordings.useragent,
+                    visitors.id visitor_id,
+                    visitors.visitor_id visitor_visitor_id
+                  ')
                   .order(sort_by(sort))
                   .page(page)
                   .per(size)
@@ -46,6 +56,8 @@ module Resolvers
 
       def map_results(results)
         results.map do |r|
+          useragent = UserAgent.parse(r.useragent)
+
           {
             id: r.id,
             score: r.score,
@@ -56,6 +68,16 @@ module Resolvers
             visitor: {
               id: r.visitor_id,
               visitor_id: r.visitor_visitor_id
+            },
+            device: {
+              browser_name: useragent.browser,
+              browser_details: "#{useragent.browser} Version #{useragent.version}",
+              viewport_x: r.viewport_x,
+              viewport_y: r.viewport_y,
+              device_x: r.device_x,
+              device_y: r.device_y,
+              device_type: useragent.mobile? ? 'Mobile' : 'Computer',
+              useragent: r.useragent
             }
           }
         end
