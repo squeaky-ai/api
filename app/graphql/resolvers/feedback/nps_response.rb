@@ -52,6 +52,7 @@ module Resolvers
             contact: r.contact,
             comment: r.comment,
             session_id: r.session_id,
+            email: r.email,
             recording_id: r.recording_id,
             timestamp: r.created_at.utc.iso8601,
             visitor: {
