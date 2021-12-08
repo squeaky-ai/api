@@ -49,6 +49,7 @@ module Resolvers
       def suitable_recording(page, from_date, to_date)
         # TODO: I think this query should try and pull back the smallest
         # recording possible by joining the events and checking the count
+        # instead of using the duration
         sql = <<-SQL
           SELECT
             recording_id
@@ -61,6 +62,8 @@ module Resolvers
             recordings.site_id = ? AND
             pages.url = ? AND
             to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+          ORDER BY
+            (recordings.disconnected_at - recordings.connected_at) ASC
           LIMIT
             1;
         SQL
