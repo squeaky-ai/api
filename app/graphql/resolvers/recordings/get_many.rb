@@ -44,7 +44,19 @@ module Resolvers
       def items(results)
         recordings = results['hits']['hits'].map { |r| r['_source'] }
         ids = recordings.map { |r| r['id'] }
-        meta = Recording.select('id, viewed, bookmarked').where(id: ids)
+
+        query = <<-SQL
+          SELECT
+            recordings.id,
+            recordings.viewed,
+            recordings.bookmarked,
+            visitors.starred
+          FROM recordings
+          INNER JOIN visitors ON visitors.id = recordings.visitor_id
+          WHERE recordings.id IN (?)
+        SQL
+
+        meta = Sql.execute(query, [ids])
 
         # The stateful stuff like viewed and bookmarked status is not
         # stored in ElasticSearch and must be fetched from the database
@@ -53,8 +65,14 @@ module Resolvers
 
       def enrich_items(recordings, meta)
         recordings.map do |r|
-          match = meta.find { |m| m.id == r['id'] }
-          r.merge('viewed' => match&.viewed || false, 'bookmarked' => match&.bookmarked || false)
+          match = meta.find { |m| m['id'] == r['id'] }
+
+          return r unless match
+
+          r['viewed'] = match['viewed']
+          r['bookmarked'] = match['bookmarked']
+          r['visitor']['starred'] = match['starred']
+          r
         end
       end
 
