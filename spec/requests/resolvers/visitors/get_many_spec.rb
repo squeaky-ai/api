@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 visitors_query = <<-GRAPHQL
-  query($site_id: ID!, $page: Int, $size: Int, $query: String, $sort: VisitorsSort) {
+  query($site_id: ID!, $page: Int, $size: Int, $sort: VisitorsSort) {
     site(siteId: $site_id) {
-      visitors(page: $page, size: $size, query: $query, sort: $sort) {
+      visitors(page: $page, size: $size, sort: $sort) {
         items {
           id
           recordingsCount {

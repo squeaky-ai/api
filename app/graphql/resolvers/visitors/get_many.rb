@@ -7,16 +7,15 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
-      argument :query, String, required: false, default_value: ''
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
-      def resolve(page:, size:, query:, sort:, filters:)
+      def resolve(page:, size:, sort:, filters:)
         body = {
           from: page * size,
           size: size,
           sort: order(sort),
-          query: VisitorsQuery.new(object.id, query, filters.to_h).build
+          query: VisitorsQuery.new(object.id, filters.to_h).build
         }
 
         results = SearchClient.search(index: Visitor::INDEX, body: body)

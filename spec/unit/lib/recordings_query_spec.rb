@@ -29,37 +29,6 @@ RSpec.describe RecordingsQuery do
     end
   end
 
-  context 'when a search is provided' do
-    let(:site_id) { 'site_id' }
-    let(:search) { 'hello' }
-
-    let(:filters) do
-      {}
-    end
-
-    let(:instance) { described_class.new(site_id, search, filters) }
-
-    it 'returns the expected params' do
-      output = instance.build
-
-      expect(output).to eq(
-        bool: {
-          filter: [
-            {
-              query_string: { query: "*#{search}*" }
-            }
-          ],
-          must: [
-            {
-              term: { site_id: { value: site_id } }
-            }
-          ],
-          must_not: []
-        }  
-      )
-    end
-  end
-
   context 'when a browser filter is applied' do
     let(:site_id) { 'site_id' }
     let(:search) { '' }

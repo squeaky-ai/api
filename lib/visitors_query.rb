@@ -3,8 +3,7 @@
 # Build the elasticsearch query object based on the
 # site_id and filters that come from GraphQL
 class VisitorsQuery
-  def initialize(site_id, search, filters)
-    @search = search
+  def initialize(site_id, filters)
     @filters = filters
     @site_id = site_id
 
@@ -14,8 +13,6 @@ class VisitorsQuery
   def build
     # site_id is absolutely needed!
     @params[:bool][:must] = [{ term: { site_id: { value: @site_id } } }]
-    # Filter on the rest of the results if one is provided
-    @params[:bool][:filter] = [{ query_string: { query: "*#{@search}*" } }] unless @search.empty?
 
     @filters.each do |k, v|
       method = "filter_by_#{k}"
