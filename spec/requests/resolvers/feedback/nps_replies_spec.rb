@@ -9,6 +9,7 @@ nps_replies_query = <<-GRAPHQL
         replies {
           trend
           responses {
+            score
             timestamp
           }
         }
@@ -58,9 +59,11 @@ RSpec.describe Resolvers::Feedback::NpsReplies, type: :request do
         'trend' => 2,
         'responses' => [
           {
+            'score' => 9,
             'timestamp' => '2021-08-02T23:00:00Z'
           },
           {
+            'score' => 3,
             'timestamp' => '2021-08-02T23:00:00Z'
           }
         ]

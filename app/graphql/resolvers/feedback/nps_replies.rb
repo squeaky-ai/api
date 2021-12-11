@@ -18,7 +18,7 @@ module Resolvers
 
       def get_replies(site_id, from_date, to_date)
         sql = <<-SQL
-          SELECT nps.created_at
+          SELECT nps.score, nps.created_at
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id
           WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?
@@ -26,7 +26,12 @@ module Resolvers
 
         results = Sql.execute(sql, [site_id, from_date, to_date])
 
-        results.map { |r| { timestamp: r['created_at'].utc.iso8601 } }
+        results.map do |r|
+          {
+            score: r['score'],
+            timestamp: r['created_at'].utc.iso8601
+          }
+        end
       end
 
       def get_trend(site_id, from_date, to_date, current_responses)

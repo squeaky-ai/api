@@ -5,6 +5,7 @@ module Types
     class NpsReply < Types::BaseObject
       graphql_name 'FeedbackNpsReply'
 
+      field :score, Integer, null: false
       field :timestamp, String, null: false
     end
   end
