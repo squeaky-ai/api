@@ -9,7 +9,7 @@ module Resolvers
 
       def resolve(recording_id:)
         Recording
-          .eager_load(:visitor, :pages)
+          .includes(:visitor, :pages)
           .find_by(site_id: object.id, id: recording_id, deleted: false)
       end
     end
