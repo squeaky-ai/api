@@ -66,7 +66,11 @@ module Resolvers
           match = meta.find { |m| m.id == v['id'] }
 
           unless match
-            Rails.logger.warn "Visitor #{v['id']} does not exist in the database"
+            # If a visitor exists and has recordings but they are all
+            # soft deleted, then the query to get the meta will fail
+            # because of the WHERE deleted = false. This is normal and
+            # expected as we don't want deleted recordings to have an
+            # impact on teh recordings_count or viewed counts
             next v
           end
 

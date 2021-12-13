@@ -67,7 +67,9 @@ module Resolvers
           match = meta.find { |m| m['id'] == r['id'] }
 
           unless match
-            Rails.logger.warn "Recording #{r['id']} does not exist in the database"
+            # Unlike the visitors query this should not happen, we should
+            # definitely detele this if they come up
+            Rails.logger.error "Recording #{r['id']} does not exist in the database"
             next r
           end
 
