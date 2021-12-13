@@ -65,7 +65,7 @@ module Resolvers
         visitors.map do |v|
           match = meta.find { |m| m.id == v['id'] }
 
-          unless v
+          unless match
             Rails.logger.warn "Visitor #{v['id']} does not exist in the database"
             next v
           end
