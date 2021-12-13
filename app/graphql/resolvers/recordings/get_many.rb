@@ -66,7 +66,10 @@ module Resolvers
         recordings.map do |r|
           match = meta.find { |m| m['id'] == r['id'] }
 
-          next r unless match
+          unless match
+            Rails.logger.warn "Recording #{r['id']} does not exist in the database"
+            next r
+          end
 
           r['viewed'] = match['viewed']
           r['bookmarked'] = match['bookmarked']

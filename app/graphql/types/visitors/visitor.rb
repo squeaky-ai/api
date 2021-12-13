@@ -13,7 +13,7 @@ module Types
       field :last_activity_at, String, null: true
       field :language, String, null: true
       field :page_views_count, Types::Visitors::PagesCount, null: true
-      field :starred, Boolean, null: false
+      field :starred, Boolean, null: true
       field :attributes, String, null: true
       field :devices, [Types::Recordings::Device], null: false
       field :recordings, resolver: Resolvers::Visitors::Recordings

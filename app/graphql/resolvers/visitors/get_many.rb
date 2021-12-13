@@ -65,13 +65,15 @@ module Resolvers
         visitors.map do |v|
           match = meta.find { |m| m.id == v['id'] }
 
-          next v unless match
+          unless v
+            Rails.logger.warn "Visitor #{v['id']} does not exist in the database"
+            next v
+          end
 
           v['starred'] = match.starred
-          v['recordings_count'] = { 'total' => match&.count || 0, 'new' => 0 }
+          v['recordings_count'] = { 'total' => match.count || 0, 'new' => 0 }
           v['viewed'] = match.recordings_viewed.positive?
           v['attributes'] = v['attributes'].to_json
-
           v
         end
       end
