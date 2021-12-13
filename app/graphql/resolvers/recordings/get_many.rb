@@ -66,7 +66,7 @@ module Resolvers
         recordings.map do |r|
           match = meta.find { |m| m['id'] == r['id'] }
 
-          return r unless match
+          next r unless match
 
           r['viewed'] = match['viewed']
           r['bookmarked'] = match['bookmarked']
