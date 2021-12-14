@@ -35,19 +35,19 @@ class Recording < ApplicationRecord
   end
 
   def page_count
-    pages.size
+    ordered_pages.size
   end
 
   def start_page
-    pages.first.url
+    ordered_pages.first.url
   end
 
   def exit_page
-    pages.last.url
+    ordered_pages.last.url
   end
 
   def page_views
-    pages.map(&:url)
+    ordered_pages.map(&:url)
   end
 
   def duration
@@ -81,8 +81,8 @@ class Recording < ApplicationRecord
       date_time: Time.at(disconnected_at / 1000).utc.iso8601,
       connected_at: connected_at,
       disconnected_at: disconnected_at,
-      page_count: pages.all.size,
-      page_views: pages.all.map(&:url),
+      page_count: page_count,
+      page_views: page_views,
       start_page: start_page,
       exit_page: exit_page,
       device: device,
@@ -91,5 +91,11 @@ class Recording < ApplicationRecord
         visitor_id: visitor.visitor_id
       }
     }
+  end
+
+  private
+
+  def ordered_pages
+    @ordered_pages ||= pages.order(entered_at: :asc)
   end
 end
