@@ -11,83 +11,98 @@ module Resolvers
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
       def resolve(page:, size:, sort:, filters:)
-        body = {
-          from: page * size,
-          size: size,
-          sort: order(sort),
-          query: VisitorsQuery.new(object.id, filters.to_h).build
-        }
+        visitors = Site
+                   .find(object.id)
+                   .visitors
+                   .includes(:recordings)
+                   .order(order(sort))
+                   .page(page)
+                   .per(size)
+                   .group(:id)
 
-        results = SearchClient.search(index: Visitor::INDEX, body: body)
+        visitors = filter(visitors, filters)
 
         {
-          items: items(results),
-          pagination: pagination(size, sort, results)
+          items: visitors,
+          pagination: {
+            page_size: size,
+            total: visitors.total_count,
+            sort: sort
+          }
         }
       end
 
       private
 
       def order(sort)
-        parts = sort.split('__')
-        order = {}
-
-        order[parts.first] = {
-          unmapped_type: 'date_nanos',
-          order: parts.last
+        sorts = {
+          'first_viewed_at__asc' => 'MIN(connected_at) ASC',
+          'first_viewed_at__desc' => 'MIN(connected_at) DESC',
+          'last_activity_at__asc' => 'MAX(disconnected_at) ASC',
+          'last_activity_at__desc' => 'MAX(disconnected_at) DESC'
         }
-
-        order
+        sorts[sort]
       end
 
-      def items(results)
-        visitors = results['hits']['hits'].map { |r| r['_source'] }
-        ids = visitors.map { |r| r['id'] }
+      def filter(visitors, filters)
+        visitors = filter_by_status(visitors, filters)
+        visitors = filter_by_recordings(visitors, filters)
+        visitors = filter_by_language(visitors, filters)
+        visitors = filter_by_first_visited(visitors, filters)
+        visitors = filter_by_last_activity(visitors, filters)
 
-        meta = Visitor
-               .left_joins(:recordings)
-               .select(
-                 'visitors.id,
-                  visitors.starred,
-                  COUNT(recordings) count,
-                  COUNT(CASE recordings.viewed WHEN TRUE THEN 1 ELSE NULL END) recordings_viewed'
-               )
-               .where('recordings.deleted = false')
-               .group('visitors.id')
-               .where(id: ids)
-
-        # The stateful stuff like the starred status is not stored
-        # in ElasticSearch and must be fetched from the database
-        enrich_items(visitors, meta)
+        visitors
       end
 
-      def enrich_items(visitors, meta)
-        visitors.map do |v|
-          match = meta.find { |m| m.id == v['id'] }
+      # Adds a filter that lets users show only visitors
+      # who have had at least one of their recordings viewed
+      def filter_by_status(visitors, filters)
+        return visitors unless filters.status
 
-          unless match
-            # If a visitor exists and has recordings but they are all
-            # soft deleted, then the query to get the meta will fail
-            # because of the WHERE deleted = false. This is normal and
-            # expected as we don't want deleted recordings to have an
-            # impact on teh recordings_count or viewed counts
-            next v
-          end
-
-          v['starred'] = match.starred
-          v['recordings_count'] = { 'total' => match.count || 0, 'new' => 0 }
-          v['viewed'] = match.recordings_viewed.positive?
-          v['attributes'] = v['attributes'].to_json
-          v
-        end
+        visitors.where('recordings.viewed = ?', filters.status == 'Viewed')
       end
 
-      def pagination(size, sort, results)
-        {
-          page_size: size,
-          total: results['hits']['total']['value'],
-          sort: sort
-        }
+      # Adds a filter that lets users show only visitors
+      # who have more than or less than a given amount of
+      # recordings
+      def filter_by_recordings(visitors, filters)
+        return visitors unless filters.recordings[:count]
+
+        range_type = filters.recordings[:range_type] == 'GreaterThan' ? '>' : '<'
+
+        visitors.having("COUNT(recordings.id) #{range_type}  ?", filters.recordings[:count])
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who first visited a website within a given time
+      # frame
+      def filter_by_first_visited(visitors, filters)
+        return visitors unless filters.first_visited[:range_type]
+
+        # TODO
+
+        visitors
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who last interacted a website within a given time
+      # frame
+      def filter_by_last_activity(visitors, filters)
+        return visitors unless filters.last_activity[:range_type]
+
+        # TODO
+
+        visitors
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who have recordings in givin languages
+      def filter_by_language(visitors, filters)
+        return visitors unless filters.languages.any?
+
+        locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
+
+        visitors.where('LOWER(recordings.locale) IN (?)', locales)
       end
     end
   end

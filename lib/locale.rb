@@ -12,4 +12,11 @@ class Locale
     key = locale.downcase.sub('-', '_')
     LOCALES[key] || DEFAULT
   end
+
+  def self.get_locale(language = '')
+    return DEFAULT if language.nil? || language.empty?
+
+    result = LOCALES.find { |_k, v| v == language }.first
+    (result || DEFAULT).sub('_', '-')
+  end
 end
