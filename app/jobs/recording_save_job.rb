@@ -93,12 +93,12 @@ class RecordingSaveJob < ApplicationJob
       page_views.push(Page.new(url: path, entered_at: timestamp, exited_at: timestamp))
     end
 
+    return unless page_views.any?
+
     page_views.last.exited_at = recording.disconnected_at
 
     recording.pages << page_views
     recording.save
-
-    # Page.insert_all!(page_views) if page_views.size
   end
 
   def persist_sentiments!(recording)
