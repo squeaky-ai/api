@@ -59,7 +59,7 @@ module Resolvers
       def filter_by_status(visitors, filters)
         return visitors unless filters.status
 
-        visitors.where('recordings.viewed = ?', filters.status == 'Viewed')
+        visitors.having('EVERY(recordings.viewed) = ?', filters.status == 'Viewed')
       end
 
       # Adds a filter that lets users show only visitors
@@ -70,7 +70,7 @@ module Resolvers
 
         range_type = filters.recordings[:range_type] == 'GreaterThan' ? '>' : '<'
 
-        visitors.having("COUNT(recordings.id) #{range_type}  ?", filters.recordings[:count])
+        visitors.having("COUNT(recordings) #{range_type} ?", filters.recordings[:count])
       end
 
       # Adds a filter that lets users show only visitors
