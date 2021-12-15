@@ -7,7 +7,7 @@ visitor_query = <<-GRAPHQL
     site(siteId: $site_id) {
       visitor(visitorId: $visitor_id) {
         id
-        recordingsCount {
+        recordingCount {
           total
           new
         }
@@ -70,8 +70,8 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
 
     it 'returns the recording count' do
       response = subject['data']['site']['visitor']
-      expect(response['recordingsCount']['total']).to eq 1
-      expect(response['recordingsCount']['new']).to eq 1
+      expect(response['recordingCount']['total']).to eq 1
+      expect(response['recordingCount']['new']).to eq 1
     end
 
     it 'returns the page views count' do
@@ -87,7 +87,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create_visitor }
 
     before do  
-      create_recording({ pages: [create_page(url: '/')], deleted: true }, site: site, visitor: visitor)
+      create_recording({ deleted: true }, site: site, visitor: visitor)
     end
 
     subject do
@@ -102,14 +102,14 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
 
     it 'returns the recording count' do
       response = subject['data']['site']['visitor']
-      expect(response['recordingsCount']['total']).to eq 0
-      expect(response['recordingsCount']['new']).to eq 0
+      expect(response['recordingCount']['total']).to eq 0
+      expect(response['recordingCount']['new']).to eq 0
     end
 
     it 'returns the page views count' do
       response = subject['data']['site']['visitor']
-      expect(response['pageViewsCount']['total']).to eq 1
-      expect(response['pageViewsCount']['unique']).to eq 1
+      expect(response['pageViewsCount']['total']).to eq 0
+      expect(response['pageViewsCount']['unique']).to eq 0
     end
   end
 

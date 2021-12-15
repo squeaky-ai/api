@@ -8,7 +8,7 @@ visitors_query = <<-GRAPHQL
       visitors(page: $page, size: $size, sort: $sort) {
         items {
           id
-          recordingsCount {
+          recordingCount {
             total
             new
           }
@@ -103,7 +103,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
     it 'returns the count that excludes deleted recordings' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['recordingsCount']['total']).to eq 1
+      expect(response['items'][0]['recordingCount']['total']).to eq 1
     end
   end
 

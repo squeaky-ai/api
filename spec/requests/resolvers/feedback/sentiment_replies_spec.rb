@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Feedback::SentimentReplies, type: :request do
 
     it 'returns the data' do
       response = subject['data']['site']['sentiment']
-      expect(response['replies']).to eq(
+      expect(response['replies']).to match_array(
         'total' => 2,
         'responses' => [
           {

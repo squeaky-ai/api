@@ -43,8 +43,6 @@ module Squeaky
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
 
-    config.elasticsearch = config_for(:elasticsearch)
-
     Aws::Rails::SqsActiveJob.configure do |config|
       config.logger = ActiveSupport::Logger.new($stdout)
       config.max_messages = 5

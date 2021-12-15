@@ -23,18 +23,6 @@ module Mutations
 
         recordings.update_all(deleted: true)
 
-        SearchClient.bulk(
-          refresh: 'wait_for',
-          body: recordings.map do |recording|
-            {
-              delete: {
-                _index: Recording::INDEX,
-                _id: recording.id
-              }
-            }
-          end
-        )
-
         @site
       end
     end

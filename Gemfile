@@ -10,7 +10,6 @@ gem 'aws-sdk-sqs', '~> 1'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
 gem 'devise_invitable', '~> 2.0.0'
-gem 'elasticsearch', '~> 7.4'
 gem 'graphql'
 gem 'graphql_playground-rails'
 gem 'kaminari'

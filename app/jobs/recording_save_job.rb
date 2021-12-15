@@ -21,29 +21,12 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
-      index_to_elasticsearch!(recording, visitor)
     end
 
     Rails.logger.info 'Recording saved'
   end
 
   private
-
-  def index_to_elasticsearch!(recording, visitor)
-    return if recording.deleted
-
-    SearchClient.bulk(
-      body: [
-        {
-          index: {
-            _index: Recording::INDEX,
-            _id: recording.id,
-            data: recording.to_h
-          }
-        }
-      ]
-    )
-  end
 
   def persist_visitor!
     visitor = find_or_create_visitor
@@ -96,7 +79,6 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_pageviews!(recording)
-    now = Time.now
     page_views = []
 
     @session.pageviews.each do |page|
@@ -108,19 +90,15 @@ class RecordingSaveJob < ApplicationJob
 
       prev[:exited_at] = timestamp if prev
 
-      page_views.push(
-        url: path,
-        entered_at: timestamp,
-        exited_at: timestamp,
-        recording_id: recording.id,
-        created_at: now,
-        updated_at: now
-      )
+      page_views.push(Page.new(url: path, entered_at: timestamp, exited_at: timestamp))
     end
 
-    page_views.last[:exited_at] = recording.disconnected_at
+    page_views.last.exited_at = recording.disconnected_at
 
-    Page.insert_all!(page_views) if page_views.size
+    recording.pages << page_views
+    recording.save
+
+    # Page.insert_all!(page_views) if page_views.size
   end
 
   def persist_sentiments!(recording)

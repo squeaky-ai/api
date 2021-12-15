@@ -39,10 +39,10 @@ class Visitor < ApplicationRecord
   end
 
   def visible_recordings
-    recordings.reject(&:deleted)
+    @visible_recordings ||= recordings.reject(&:deleted)
   end
 
-  def recordings_count
+  def recording_count
     {
       total: visible_recordings.size,
       new: visible_recordings.reject(&:viewed).size
@@ -51,22 +51,8 @@ class Visitor < ApplicationRecord
 
   def page_views_count
     {
-      total: pages.size,
-      unique: recordings.joins(:pages).select(:pages).uniq.count
-    }
-  end
-
-  def to_h
-    {
-      id: id,
-      site_id: recordings.first.site_id,
-      visitor_id: visitor_id,
-      attributes: external_attributes,
-      first_viewed_at: first_viewed_at,
-      last_activity_at: last_activity_at,
-      locale: locale,
-      language: language,
-      devices: devices
+      total: visible_recordings.size,
+      unique: visible_recordings.map(&:pages).uniq.size
     }
   end
 end

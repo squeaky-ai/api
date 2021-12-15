@@ -47,9 +47,6 @@ module Resolvers
       end
 
       def suitable_recording(page, from_date, to_date)
-        # TODO: I think this query should try and pull back the smallest
-        # recording possible by joining the events and checking the count
-        # instead of using the duration
         sql = <<-SQL
           SELECT
             recording_id

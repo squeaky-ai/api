@@ -46,7 +46,7 @@ RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
 
     before do
       create_sentiment({ score: 5, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
-      create_sentiment({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create_sentiment({ score: 3, created_at: Time.new(2021, 8, 4) }, recording: create_recording(site: site, visitor: visitor))
       create_sentiment({ score: 3, created_at: Time.new(2020, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
 
     it 'returns the data' do
       response = subject['data']['site']['sentiment']
-      expect(response['ratings']).to eq(
+      expect(response['ratings']).to match_array(
         'score' => 4.0,
         'trend' => 4.0,
         'responses' => [
@@ -67,7 +67,7 @@ RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
           },
           {
             'score' => 3,
-            'timestamp' => '2021-08-02T23:00:00Z'
+            'timestamp' => '2021-08-03T23:00:00Z'
           }
         ]
       )
