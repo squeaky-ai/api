@@ -15,6 +15,7 @@ module Resolvers
                    .find(object.id)
                    .visitors
                    .includes(:recordings)
+                   .where('recordings.deleted = false')
                    .order(order(sort))
 
         # Apply all the filters
