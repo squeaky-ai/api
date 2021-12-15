@@ -27,23 +27,27 @@ class Visitor < ApplicationRecord
   end
 
   def viewed?
-    recordings.where(viewed: true).size.positive?
+    recordings.filter(&:viewed).size.positive?
   end
 
   def first_viewed_at
-    first_event = recordings.order(connected_at: :desc).first
+    first_event = recordings.min_by(&:connected_at)
     Time.at(first_event.connected_at / 1000).utc.iso8601
   end
 
   def last_activity_at
-    first_event = recordings.order(disconnected_at: :asc).first
-    Time.at(first_event.disconnected_at / 1000).utc.iso8601
+    last_event = recordings.max_by(&:disconnected_at)
+    Time.at(last_event.disconnected_at / 1000).utc.iso8601
+  end
+
+  def visible_recordings
+    recordings.reject(&:deleted)
   end
 
   def recordings_count
     {
-      total: recordings.where(deleted: false).size,
-      new: recordings.where(deleted: false, viewed: false).size
+      total: visible_recordings.size,
+      new: visible_recordings.reject(&:viewed).size
     }
   end
 
