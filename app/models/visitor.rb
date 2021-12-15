@@ -25,7 +25,7 @@ class Visitor < ApplicationRecord
   end
 
   def viewed?
-    recordings.filter(&:viewed).size.positive?
+    visible_recordings.filter(&:viewed).size.positive?
   end
 
   def first_viewed_at
