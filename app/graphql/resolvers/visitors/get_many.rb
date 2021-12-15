@@ -15,11 +15,12 @@ module Resolvers
                    .find(object.id)
                    .visitors
                    .includes(:recordings)
-                   .where(where(filters))
                    .order(order(sort))
                    .page(page)
                    .per(size)
                    .group(:id)
+
+        visitors = filter(visitors, filters)
 
         {
           items: visitors,
@@ -43,19 +44,65 @@ module Resolvers
         sorts[sort]
       end
 
-      def where(filters)
-        query = <<-SQL
-          LOWER(recordings.locale) IN (?)
-        SQL
+      def filter(visitors, filters)
+        visitors = filter_by_status(visitors, filters)
+        visitors = filter_by_recordings(visitors, filters)
+        visitors = filter_by_language(visitors, filters)
+        visitors = filter_by_first_visited(visitors, filters)
+        visitors = filter_by_last_activity(visitors, filters)
 
-        # puts '@@@', filters.to_h
+        visitors
+      end
 
-        # if filters.languages.any?
-        #   out[:recordings] ||= {}
-        #   out[:recordings][:locale] = filters.languages.map { |l| Locale.get_locale(l) }
-        # end
+      # Adds a filter that lets users show only visitors
+      # who have had at least one of their recordings viewed
+      def filter_by_status(visitors, filters)
+        return visitors unless filters.status
 
-        [query, 'en-gb']
+        visitors.where('recordings.viewed = ?', filters.status == 'Viewed')
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who have more than or less than a given amount of
+      # recordings
+      def filter_by_recordings(visitors, filters)
+        return visitors unless filters.recordings[:count]
+
+        range_type = filters.recordings[:range_type] == 'GreaterThan' ? '>' : '<'
+
+        visitors.having("COUNT(recordings.id) #{range_type}  ?", filters.recordings[:count])
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who first visited a website within a given time
+      # frame
+      def filter_by_first_visited(visitors, filters)
+        return visitors unless filters.first_visited[:range_type]
+
+        # TODO
+
+        visitors
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who last interacted a website within a given time
+      # frame
+      def filter_by_last_activity(visitors, filters)
+        return visitors unless filters.last_activity[:range_type]
+
+        # TODO
+
+        visitors
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who have recordings in givin languages
+      def filter_by_language(visitors, filters)
+        return visitors unless filters.languages.any?
+
+        locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
+
+        visitors.where('LOWER(recordings.locale) IN (?)', locales)
       end
     end
   end
