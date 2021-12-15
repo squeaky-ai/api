@@ -35,9 +35,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor, in_es: true) }
-    let(:recording_2) { create_recording(site: site, visitor: create_visitor, in_es: true) }
-    let(:recording_3) { create_recording(site: site, visitor: create_visitor, in_es: true) }
+    let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor) }
+    let(:recording_2) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording_3) { create_recording(site: site, visitor: create_visitor) }
 
     before do 
       recording_1
@@ -68,9 +68,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create_user }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor, in_es: true) }
-    let(:recording_2) { create_recording(site: site, visitor: create_visitor, in_es: true) }
-    let(:recording_3) { create_recording({ viewed: true }, site: site, visitor: create_visitor, in_es: true) }
+    let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor) }
+    let(:recording_2) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording_3) { create_recording({ viewed: true }, site: site, visitor: create_visitor) }
 
     before do 
       recording_1

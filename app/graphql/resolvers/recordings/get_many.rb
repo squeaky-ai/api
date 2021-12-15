@@ -37,14 +37,13 @@ module Resolvers
       private
 
       def order(sort)
-        # TODO
         sorts = {
           'connected_at__asc' => 'connected_at ASC',
           'connected_at__desc' => 'connected_at DESC',
           'duration__asc' => Arel.sql('(disconnected_at - connected_at) ASC'),
           'duration__desc' => Arel.sql('(disconnected_at - connected_at) DESC'),
-          'page_count__asc' => '',
-          'page_count__desc' => ''
+          'page_count__asc' => 'pages_count ASC',
+          'page_count__desc' => 'pages_count DESC'
         }
         sorts[sort]
       end
@@ -153,31 +152,38 @@ module Resolvers
         recordings.where('disconnected_at - connected_at < ?', from_duration)
       end
 
-      def filter_by_start_url(recordings, filters)
+      def filter_by_start_url(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_exit_url(recordings, filters)
+      def filter_by_exit_url(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_visited_pages(recordings, filters)
+      def filter_by_visited_pages(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_unvisited_pages(recordings, filters)
+      def filter_by_unvisited_pages(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_device(recordings, filters)
+      def filter_by_device(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_browser(recordings, filters)
+      def filter_by_browser(recordings, _filters)
+        # TODO
         recordings
       end
 
-      def filter_by_viewport(recordings, filters)
+      def filter_by_viewport(recordings, _filters)
+        # TODO
         recordings
       end
 

@@ -63,7 +63,7 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['languages']
-      expect(response).to eq ['English (GB)', 'Swedish (SE)']
+      expect(response).to match_array ['English (GB)', 'Swedish (SE)']
     end
   end
 end

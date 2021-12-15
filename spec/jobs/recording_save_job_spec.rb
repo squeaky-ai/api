@@ -38,13 +38,14 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.session_id).to eq event['session_id']
       expect(recording.connected_at).to eq 1637177342265
       expect(recording.disconnected_at).to eq 1637177353431
+      expect(recording.pages_count).to eq 1
     end
 
     it 'stores the page' do
       subject
       pages = site.reload.recordings.first.pages
 
-      expect(pages.size).to eq 1 
+      expect(pages.size).to eq 1
       expect(pages[0].url).to eq '/examples/static/'
       expect(pages[0].entered_at).to eq 1637177342265
       expect(pages[0].exited_at).to eq 1637177353431

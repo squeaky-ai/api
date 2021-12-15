@@ -76,7 +76,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
+    before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -105,7 +105,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     end
 
     before do
-      create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true)
+      create_recordings(site: site, visitor: create_visitor, count: 5)
       create_recording({ deleted: true }, site: site, visitor: create_visitor)
     end
 
@@ -120,11 +120,11 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recordings(site: site, visitor: create_visitor, count: 15, in_es: true)
+      create_recordings(site: site, visitor: create_visitor, count: 15)
     end
 
     subject do
-      variables = { site_id: site.id, size: 10, page: 1 }
+      variables = { site_id: site.id, size: 10, page: 2 }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -155,7 +155,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
       it 'returns the items with the oldest first' do
         items = subject['data']['site']['recordings']['items']
@@ -184,7 +184,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { create_recordings(site: site, visitor: create_visitor, count: 5, in_es: true) }
+      before { create_recordings(site: site, visitor: create_visitor, count: 5) }
 
       it 'returns the items with the newest first' do
         items = subject['data']['site']['recordings']['items']

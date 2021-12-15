@@ -4,7 +4,7 @@ require 'uri'
 
 class Recording < ApplicationRecord
   belongs_to :site
-  belongs_to :visitor
+  belongs_to :visitor, counter_cache: true
 
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy

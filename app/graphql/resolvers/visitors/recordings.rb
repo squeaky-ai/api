@@ -30,14 +30,13 @@ module Resolvers
       private
 
       def order(sort)
-        # TODO
         sorts = {
           'connected_at__asc' => 'connected_at ASC',
           'connected_at__desc' => 'connected_at DESC',
           'duration__asc' => Arel.sql('(disconnected_at - connected_at) ASC'),
           'duration__desc' => Arel.sql('(disconnected_at - connected_at) DESC'),
-          'page_count__asc' => '',
-          'page_count__desc' => ''
+          'page_count__asc' => 'pages_count ASC',
+          'page_count__desc' => 'pages_count DESC'
         }
         sorts[sort]
       end

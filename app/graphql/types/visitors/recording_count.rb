@@ -2,8 +2,8 @@
 
 module Types
   module Visitors
-    class RecordingsCount < Types::BaseObject
-      graphql_name 'VisitorsRecordingsCount'
+    class RecordingCount < Types::BaseObject
+      graphql_name 'VisitorsRecordingCount'
 
       field :total, Integer, null: false
       field :new, Integer, null: false

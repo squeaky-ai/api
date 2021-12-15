@@ -79,7 +79,6 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_pageviews!(recording)
-    now = Time.now
     page_views = []
 
     @session.pageviews.each do |page|
@@ -91,19 +90,15 @@ class RecordingSaveJob < ApplicationJob
 
       prev[:exited_at] = timestamp if prev
 
-      page_views.push(
-        url: path,
-        entered_at: timestamp,
-        exited_at: timestamp,
-        recording_id: recording.id,
-        created_at: now,
-        updated_at: now
-      )
+      page_views.push(Page.new(url: path, entered_at: timestamp, exited_at: timestamp))
     end
 
-    page_views.last[:exited_at] = recording.disconnected_at
+    page_views.last.exited_at = recording.disconnected_at
 
-    Page.insert_all!(page_views) if page_views.size
+    recording.pages << page_views
+    recording.save
+
+    # Page.insert_all!(page_views) if page_views.size
   end
 
   def persist_sentiments!(recording)

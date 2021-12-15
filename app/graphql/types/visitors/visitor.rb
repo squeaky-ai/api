@@ -8,7 +8,7 @@ module Types
       field :id, ID, null: false
       field :visitor_id, String, null: false
       field :viewed, Boolean, null: true
-      field :recordings_count, Types::Visitors::RecordingsCount, null: true
+      field :recording_count, Types::Visitors::RecordingCount, null: true
       field :first_viewed_at, String, null: true
       field :last_activity_at, String, null: true
       field :language, String, null: true

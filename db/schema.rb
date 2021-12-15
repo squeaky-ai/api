@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_03_160605) do
+ActiveRecord::Schema.define(version: 2021_12_15_145345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_160605) do
     t.string "referrer"
     t.integer "device_x", default: -1, null: false
     t.integer "device_y", default: -1, null: false
+    t.integer "pages_count"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"
@@ -204,6 +205,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_160605) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "external_attributes", default: {}, null: false
+    t.integer "recordings_count"
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
