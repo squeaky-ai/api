@@ -172,14 +172,20 @@ module Resolvers
         recordings
       end
 
-      def filter_by_device(recordings, _filters)
-        # TODO
-        recordings
+      # Add a filter that lets users show only recordings
+      # that were on certain devices
+      def filter_by_device(recordings, filters)
+        return recordings unless filters.devices.any?
+
+        recordings.where('device_type IN (?)', filters.devices)
       end
 
-      def filter_by_browser(recordings, _filters)
-        # TODO
-        recordings
+      # Add a filter that lets users show only recordings
+      # that used certain browsers
+      def filter_by_browser(recordings, filters)
+        return recordings unless filters.browsers.any?
+
+        recordings.where('browser IN (?)', filters.browsers)
       end
 
       def filter_by_viewport(recordings, _filters)
