@@ -16,11 +16,12 @@ module Resolvers
                    .visitors
                    .includes(:recordings)
                    .order(order(sort))
-                   .page(page)
-                   .per(size)
-                   .group(:id)
 
+        # Apply all the filters
         visitors = filter(visitors, filters)
+
+        # Paginate the results
+        visitors = visitors.page(page).per(size).group(:id)
 
         {
           items: visitors,
@@ -45,6 +46,8 @@ module Resolvers
       end
 
       def filter(visitors, filters)
+        return visitors unless filters
+
         visitors = filter_by_status(visitors, filters)
         visitors = filter_by_recordings(visitors, filters)
         visitors = filter_by_language(visitors, filters)
@@ -59,7 +62,7 @@ module Resolvers
       def filter_by_status(visitors, filters)
         return visitors unless filters.status
 
-        visitors.having('EVERY(recordings.viewed) = ?', filters.status == 'Viewed')
+        visitors.where('recordings.viewed = ?', filters.status == 'Viewed')
       end
 
       # Adds a filter that lets users show only visitors

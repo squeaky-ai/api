@@ -108,17 +108,6 @@ module Helpers
     Page.create(default)
   end
 
-  def index_visitors_in_es(visitors)
-    SearchClient.bulk(
-      refresh: 'wait_for',
-      body: visitors.map do |v|
-        {
-          index: { _id: v.id, _index: Visitor::INDEX, data: v.to_h }
-        }
-      end
-    )
-  end
-
   def create_sentiment(args = {}, recording:)
     default = { score: 5, comment: nil, **args }
     Sentiment.create(recording: recording, **default)

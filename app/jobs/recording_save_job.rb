@@ -40,13 +40,6 @@ class RecordingSaveJob < ApplicationJob
             _id: recording.id,
             data: recording.to_h
           }
-        },
-        {
-          index: {
-            _index: Visitor::INDEX,
-            _id: visitor.id,
-            data: visitor.to_h
-          }
         }
       ]
     )

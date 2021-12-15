@@ -63,8 +63,6 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor_1)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor_1)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: visitor_2)
-
-      index_visitors_in_es([visitor_1, visitor_2])
     end
 
     subject do
@@ -96,8 +94,6 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
       create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true }, site: site, visitor: visitor)
-
-      index_visitors_in_es([visitor])
     end
 
     subject do
@@ -119,8 +115,6 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       visitor = create_visitor
 
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
-
-      index_visitors_in_es([visitor])
     end
 
     subject do
@@ -128,9 +122,9 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       graphql_request(visitors_query, variables, user)
     end
 
-    it 'returns an empty hash as a string' do
+    it 'returns nil' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['attributes']).to eq '{}'
+      expect(response['items'][0]['attributes']).to eq nil
     end
   end
 
@@ -143,8 +137,6 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       visitor = create_visitor(external_attributes: external_attributes)
 
       create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
-
-      index_visitors_in_es([visitor])
     end
 
     subject do

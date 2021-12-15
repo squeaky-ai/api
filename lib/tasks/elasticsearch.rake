@@ -11,16 +11,6 @@ namespace :elasticsearch do
     end
   end
 
-  task create_visitors_index: :environment do
-    Rails.logger.info('Creating visitors index')
-
-    if SearchClient.indices.exists(index: Visitor::INDEX)
-      Rails.logger.warn('Visitors index already exists')
-    else
-      SearchClient.indices.create(index: Visitor::INDEX)
-    end
-  end
-
   task delete_recordings_index: :environment do
     Rails.logger.info('Deleting recordings index')
 
@@ -28,16 +18,6 @@ namespace :elasticsearch do
       SearchClient.indices.delete(index: Recording::INDEX)
     else
       Rails.logger.warn('Recordings index does not exists')
-    end
-  end
-
-  task delete_visitors_index: :environment do
-    Rails.logger.info('Deleting visitors index')
-
-    if SearchClient.indices.exists(index: Visitor::INDEX)
-      SearchClient.indices.delete(index: Visitor::INDEX)
-    else
-      Rails.logger.warn('Visitors index does not exists')
     end
   end
 
@@ -53,21 +33,6 @@ namespace :elasticsearch do
       )
     else
       Rails.logger.warn('Recordings index does not exists')
-    end
-  end
-
-  task delete_visitors: :environment do
-    Rails.logger.info('Deleting visitors')
-
-    if SearchClient.indices.exists(index: Visitor::INDEX)
-      SearchClient.delete_by_query(
-        index: Visitor::INDEX,
-        body: {
-          query: { match_all: {} }
-        }
-      )
-    else
-      Rails.logger.warn('Visitor index does not exists')
     end
   end
 
@@ -89,31 +54,6 @@ namespace :elasticsearch do
               _index: Recording::INDEX,
               _id: recording.id,
               data: recording.to_h
-            }
-          }
-        end
-      )
-    end
-  end
-
-  task import_visitors: :environment do
-    Rails.logger.info('Importing visitors')
-
-    total = Visitor.count
-    count = (total / 250.0).ceil
-
-    count.times do |i|
-      Rails.logger.info("Bulk inserting page #{i} of #{count} for visitors")
-
-      batch = Visitor.eager_load(:recordings).page(i).per(250)
-
-      SearchClient.bulk(
-        body: batch.map do |visitor|
-          {
-            index: {
-              _index: Visitor::INDEX,
-              _id: visitor.id,
-              data: visitor.to_h
             }
           }
         end

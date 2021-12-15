@@ -57,24 +57,14 @@ module Mutations
         return if visitor_ids.empty? && recording_ids.empty?
 
         SearchClient.bulk(
-          body: [
-            *visitor_ids.map do |id|
-              {
-                delete: {
-                  _index: Visitor::INDEX,
-                  _id: id
-                }
+          body: recording_ids.map do |id|
+            {
+              delete: {
+                _index: Recording::INDEX,
+                _id: id
               }
-            end,
-            *recording_ids.map do |id|
-              {
-                delete: {
-                  _index: Recording::INDEX,
-                  _id: id
-                }
-              }
-            end
-          ]
+            }
+          end
         )
       end
     end
