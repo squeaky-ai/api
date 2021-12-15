@@ -63,7 +63,7 @@ module Resolvers
       def filter_by_status(visitors, filters)
         return visitors unless filters.status
 
-        visitors.where('recordings.viewed = ?', filters.status == 'Viewed')
+        visitors.having('EVERY(recordings.viewed) = ?', filters.status == 'Viewed')
       end
 
       # Adds a filter that lets users show only visitors
