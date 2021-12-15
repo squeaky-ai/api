@@ -21,7 +21,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
@@ -71,11 +70,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(nps.contact).to eq true
       expect(nps.email).to eq 'bobby@gmail.com'
     end
-
-    it 'indexes to elasticsearch' do
-      subject
-      expect(SearchClient).to have_received(:bulk)
-    end
   end
 
   context 'when the email domain is blacklisted' do
@@ -96,18 +90,12 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
 
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
-    end
-
-    it 'does not index to elasticsearch' do
-      subject
-      expect(SearchClient).not_to have_received(:bulk)
     end
   end
 
@@ -129,18 +117,12 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow(SearchClient).to receive(:bulk)
     end
 
     subject { described_class.perform_now(event.to_json) }
 
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
-    end
-
-    it 'does not index to elasticsearch' do
-      subject
-      expect(SearchClient).not_to have_received(:bulk)
     end
   end
 end

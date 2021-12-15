@@ -21,29 +21,12 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
-      index_to_elasticsearch!(recording, visitor)
     end
 
     Rails.logger.info 'Recording saved'
   end
 
   private
-
-  def index_to_elasticsearch!(recording, visitor)
-    return if recording.deleted
-
-    SearchClient.bulk(
-      body: [
-        {
-          index: {
-            _index: Recording::INDEX,
-            _id: recording.id,
-            data: recording.to_h
-          }
-        }
-      ]
-    )
-  end
 
   def persist_visitor!
     visitor = find_or_create_visitor

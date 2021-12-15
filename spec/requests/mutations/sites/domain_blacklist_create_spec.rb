@@ -70,8 +70,6 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      allow(SearchClient).to receive(:bulk)
-
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'ray@squeaky.ai' }))
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'john@squeaky.ai' }))
@@ -95,11 +93,6 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     it 'deletes visitors that match the attributes' do
       expect { subject }.to change { site.reload.visitors.size }.from(5).to(1)
     end
-
-    it 'should delete the items from ES' do
-      subject
-      expect(SearchClient).to have_received(:bulk)
-    end
   end
   
   context 'when some visitors exist and some have matching emails' do
@@ -107,8 +100,6 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      allow(SearchClient).to receive(:bulk)
-
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'ray@squeaky.ai' }))
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'john@squeaky.ai' }))
@@ -131,11 +122,6 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
     it 'deletes visitors that match the attributes' do
       expect { subject }.to change { site.reload.visitors.size }.from(5).to(4)
-    end
-
-    it 'should delete the items from ES' do
-      subject
-      expect(SearchClient).to have_received(:bulk)
     end
   end
 end

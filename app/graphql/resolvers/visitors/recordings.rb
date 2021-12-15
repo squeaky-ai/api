@@ -10,64 +10,36 @@ module Resolvers
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
 
       def resolve(page:, size:, sort:)
-        body = {
-          from: page * size,
-          size: size,
-          sort: order(sort),
-          query: {
-            bool: {
-              must: [
-                { term: { 'visitor.id': { value: object.id } } }
-              ]
-            }
-          }
-        }
+        recordings = Recording
+                     .where('deleted = false AND visitor_id = ?', object.id)
+                     .includes(:pages, :visitor)
+                     .order(order(sort))
 
-        results = SearchClient.search(index: Recording::INDEX, body: body)
+        recordings = recordings.page(page).per(size)
 
         {
-          items: items(results),
-          pagination: pagination(size, sort, results)
+          items: recordings,
+          pagination: {
+            page_size: size,
+            total: recordings.total_count,
+            sort: sort
+          }
         }
       end
 
       private
 
       def order(sort)
-        parts = sort.split('__')
-        order = {}
-
-        order[parts.first] = {
-          unmapped_type: 'date_nanos',
-          order: parts.last
+        # TODO
+        sorts = {
+          'connected_at__asc' => 'connected_at ASC',
+          'connected_at__desc' => 'connected_at DESC',
+          'duration__asc' => Arel.sql('(disconnected_at - connected_at) ASC'),
+          'duration__desc' => Arel.sql('(disconnected_at - connected_at) DESC'),
+          'page_count__asc' => '',
+          'page_count__desc' => ''
         }
-
-        order
-      end
-
-      def items(results)
-        recordings = results['hits']['hits'].map { |r| r['_source'] }
-        ids = recordings.map { |r| r['id'] }
-        meta = Recording.select('id, viewed, bookmarked').where(id: ids)
-
-        # The stateful stuff like viewed and bookmarked status is not
-        # stored in ElasticSearch and must be fetched from the database
-        enrich_items(recordings, meta)
-      end
-
-      def enrich_items(recordings, meta)
-        recordings.map do |r|
-          match = meta.find { |m| m.id == r['id'] }
-          r.merge(viewed: match&.viewed || false, bookmarked: match&.bookmarked || false)
-        end
-      end
-
-      def pagination(size, sort, results)
-        {
-          page_size: size,
-          total: results['hits']['total']['value'],
-          sort: sort
-        }
+        sorts[sort]
       end
     end
   end

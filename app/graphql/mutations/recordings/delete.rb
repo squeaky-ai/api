@@ -23,8 +23,6 @@ module Mutations
 
         recording.update!(deleted: true)
 
-        SearchClient.delete(index: Recording::INDEX, id: recording.id)
-
         @site
       end
     end
