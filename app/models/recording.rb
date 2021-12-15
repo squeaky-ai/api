@@ -21,13 +21,13 @@ class Recording < ApplicationRecord
 
   def device
     {
-      browser_name: user_agent.browser,
-      browser_details: "#{user_agent.browser} Version #{user_agent.version}",
+      browser_name: browser,
+      browser_details: "#{browser} Version #{user_agent.version}",
       viewport_x: viewport_x,
       viewport_y: viewport_y,
       device_x: device_x,
       device_y: device_y,
-      device_type: user_agent.mobile? ? 'Mobile' : 'Computer',
+      device_type: device_type,
       useragent: useragent
     }
   end

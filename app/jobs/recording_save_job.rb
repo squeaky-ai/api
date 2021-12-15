@@ -43,6 +43,8 @@ class RecordingSaveJob < ApplicationJob
       recording.deleted = soft_delete?
       recording.locale = @session.locale
       recording.device_x = @session.device_x
+      recording.browser = @session.browser
+      recording.device_type = @session.device_type
       recording.device_y = @session.device_y
       recording.referrer = @session.referrer
       recording.useragent = @session.useragent

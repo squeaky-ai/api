@@ -37,6 +37,14 @@ class Session
     recording['useragent']
   end
 
+  def browser
+    UserAgent.parse(useragent).browser
+  end
+
+  def device_type
+    UserAgent.parse(useragent).mobile? ? 'Mobile' : 'Computer'
+  end
+
   def viewport_x
     recording['viewport_x'].to_i
   end

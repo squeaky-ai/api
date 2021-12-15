@@ -81,7 +81,7 @@ RSpec.describe Recording, type: :model do
     context 'when the device is a computer' do
       subject do
         fixture = recording_fixture.dup
-        fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        fixture[:device_type] = 'Computer'
         described_class.new(fixture).device
       end
 
@@ -93,7 +93,7 @@ RSpec.describe Recording, type: :model do
     context 'when the devise is a mobile' do
       subject do
         fixture = recording_fixture.dup
-        fixture[:useragent] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1'
+        fixture[:device_type] = 'Mobile'
         described_class.new(fixture).device
       end
 
@@ -106,6 +106,7 @@ RSpec.describe Recording, type: :model do
       subject do
         fixture = recording_fixture.dup
         fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        fixture[:browser] = 'Safari'
         described_class.new(fixture).device
       end
   

@@ -18,6 +18,8 @@ module Fixtures
         session_id: SecureRandom.uuid,
         locale: 'en-GB',
         useragent: Faker::Internet.user_agent,
+        browser: 'Firefox',
+        device_type: 'Desktop',
         viewport_x: 1920,
         viewport_y: 1080,
         device_x: 1920,

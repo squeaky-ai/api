@@ -6,12 +6,15 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve
-        browsers = Site
-                   .find(object.id)
-                   .recordings
-                   .select(:useragent, :viewport_x, :viewport_y, :device_x, :device_y)
+        sql = <<-SQL
+          SELECT DISTINCT(browser) browser
+          FROM recordings
+          WHERE site_id = ?
+        SQL
 
-        browsers.map { |b| b.device[:browser_name] }.uniq
+        results = Sql.execute(sql, object.id)
+
+        results.map { |r| r['browser'] }
       end
     end
   end

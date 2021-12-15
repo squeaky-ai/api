@@ -31,8 +31,8 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:93.0) Gecko/20100101 Firefox/93.0' }, site: site, visitor: create_visitor)
-      create_recording({ useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15' }, site: site, visitor: create_visitor)
+      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
+      create_recording({ browser: 'Safari' }, site: site, visitor: create_visitor)
     end
 
     subject do
@@ -51,9 +51,9 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:site) { create_site_and_team(user: user) }
 
     before do
-      create_recording({ useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:93.0) Gecko/20100101 Firefox/93.0' }, site: site, visitor: create_visitor)
-      create_recording({ useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:93.0) Gecko/20100101 Firefox/93.0' }, site: site, visitor: create_visitor)
-      create_recording({ useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15' }, site: site, visitor: create_visitor)
+      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
+      create_recording({ browser: 'Safari' }, site: site, visitor: create_visitor)
+      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
     end
 
     subject do
