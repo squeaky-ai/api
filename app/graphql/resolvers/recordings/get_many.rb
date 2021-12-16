@@ -14,7 +14,8 @@ module Resolvers
         recordings = Site
                      .find(object.id)
                      .recordings
-                     .includes(:pages, :visitor)
+                     .joins(:pages, :visitor)
+                     .preload(:pages, :visitor)
                      .where('deleted = false')
                      .order(order(sort))
 
@@ -152,23 +153,65 @@ module Resolvers
         recordings.where('disconnected_at - connected_at < ?', from_duration)
       end
 
-      def filter_by_start_url(recordings, _filters)
-        # TODO
+      def filter_by_start_url(recordings, filters)
+        return recordings unless filters.start_url
+
+        sql = <<-SQL
+          ? IN (
+            SELECT url
+            FROM pages
+            WHERE pages.recording_id = recordings.id
+            ORDER BY entered_at ASC
+            LIMIT 1
+          )
+        SQL
+
+        recordings.where(sql, filters.start_url)
+      end
+
+      def filter_by_exit_url(recordings, filters)
+        return recordings unless filters.exit_url
+
+        sql = <<-SQL
+          ? IN (
+            SELECT url
+            FROM pages
+            WHERE pages.recording_id = recordings.id
+            ORDER BY exited_at DESC
+            LIMIT 1
+          )
+        SQL
+
+        recordings.where(sql, filters.exit_url)
+      end
+
+      def filter_by_visited_pages(recordings, filters)
+        return recordings unless filters.visited_pages.any?
+
+        sql = <<-SQL
+          ? IN (
+            SELECT url
+            FROM pages
+            WHERE pages.recording_id = recordings.id
+          )
+        SQL
+
+        filters.visited_pages.each { |page| recordings = recordings.where(sql, page) }
         recordings
       end
 
-      def filter_by_exit_url(recordings, _filters)
-        # TODO
-        recordings
-      end
+      def filter_by_unvisited_pages(recordings, filters)
+        return recordings unless filters.unvisited_pages.any?
 
-      def filter_by_visited_pages(recordings, _filters)
-        # TODO
-        recordings
-      end
+        sql = <<-SQL
+          ? NOT IN (
+            SELECT url
+            FROM pages
+            WHERE pages.recording_id = recordings.id
+          )
+        SQL
 
-      def filter_by_unvisited_pages(recordings, _filters)
-        # TODO
+        filters.unvisited_pages.each { |page| recordings = recordings.where(sql, page) }
         recordings
       end
 
