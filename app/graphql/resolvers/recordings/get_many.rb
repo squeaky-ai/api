@@ -153,6 +153,8 @@ module Resolvers
         recordings.where('disconnected_at - connected_at < ?', from_duration)
       end
 
+      # Allow filtering of recordings that have a particular
+      # start url
       def filter_by_start_url(recordings, filters)
         return recordings unless filters.start_url
 
@@ -169,6 +171,8 @@ module Resolvers
         recordings.where(sql, filters.start_url)
       end
 
+      # Allow filtering of recordings that have a particular
+      # exit url
       def filter_by_exit_url(recordings, filters)
         return recordings unless filters.exit_url
 
@@ -185,6 +189,8 @@ module Resolvers
         recordings.where(sql, filters.exit_url)
       end
 
+      # Allow filtering of recordings that include certain
+      # pages
       def filter_by_visited_pages(recordings, filters)
         return recordings unless filters.visited_pages.any?
 
@@ -200,6 +206,8 @@ module Resolvers
         recordings
       end
 
+      # Allow filtering of recordings that exclude certain
+      # pages
       def filter_by_unvisited_pages(recordings, filters)
         return recordings unless filters.unvisited_pages.any?
 
@@ -231,8 +239,18 @@ module Resolvers
         recordings.where('browser IN (?)', filters.browsers)
       end
 
-      def filter_by_viewport(recordings, _filters)
-        # TODO
+      # Allow filtering of recordings that have certain
+      # dimensions
+      def filter_by_viewport(recordings, filters)
+        viewport = filters.viewport
+
+        return recordings unless viewport.values.any?
+
+        recordings = recordings.where('viewport_x > ?', viewport[:min_width]) if viewport[:min_width]
+        recordings = recordings.where('viewport_x < ?', viewport[:max_width]) if viewport[:max_width]
+        recordings = recordings.where('viewport_y > ?', viewport[:min_height]) if viewport[:min_height]
+        recordings = recordings.where('viewport_y < ?', viewport[:max_height]) if viewport[:max_height]
+
         recordings
       end
 
