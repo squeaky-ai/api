@@ -41,7 +41,9 @@ module Resolvers
           'first_viewed_at__asc' => 'MIN(connected_at) ASC',
           'first_viewed_at__desc' => 'MIN(connected_at) DESC',
           'last_activity_at__asc' => 'MAX(disconnected_at) ASC',
-          'last_activity_at__desc' => 'MAX(disconnected_at) DESC'
+          'last_activity_at__desc' => 'MAX(disconnected_at) DESC',
+          'recordings__asc' => 'recordings_count ASC',
+          'recordings__desc' => 'recordings_count DESC'
         }
         sorts[sort]
       end
@@ -74,7 +76,7 @@ module Resolvers
 
         range_type = filters.recordings[:range_type] == 'GreaterThan' ? '>' : '<'
 
-        visitors.having("COUNT(recordings) #{range_type} ?", filters.recordings[:count])
+        visitors.having("recordings_count #{range_type} ?", filters.recordings[:count])
       end
 
       # Adds a filter that lets users show only visitors
