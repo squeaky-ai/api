@@ -21,7 +21,7 @@ module Resolvers
         {
           **device_counts,
           items: items.compact,
-          recording_id: suitable_recording(page, from_date, to_date)
+          recording_id: suitable_recording(page, device, from_date, to_date)
         }
       end
 
@@ -46,7 +46,7 @@ module Resolvers
         group_viewports(viewports.map { |v| v['viewport_x'] })
       end
 
-      def suitable_recording(page, from_date, to_date)
+      def suitable_recording(page, device, from_date, to_date)
         sql = <<-SQL
           SELECT
             recording_id
@@ -58,6 +58,7 @@ module Resolvers
             deleted = false AND
             recordings.site_id = ? AND
             pages.url = ? AND
+            recordings.viewport_x #{device_expression(device)} AND
             to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           ORDER BY
             (recordings.disconnected_at - recordings.connected_at) ASC
