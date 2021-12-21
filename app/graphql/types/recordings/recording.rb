@@ -17,6 +17,7 @@ module Types
       field :page_count, Integer, null: false
       field :start_page, String, null: false
       field :exit_page, String, null: false
+      field :referrer, String, null: true
       field :device, Types::Recordings::Device, null: false
       field :connected_at, String, null: true
       field :disconnected_at, String, null: true
