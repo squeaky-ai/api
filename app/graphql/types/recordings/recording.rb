@@ -27,6 +27,8 @@ module Types
       field :previous_recording, Types::Recordings::Recording, null: true
       field :next_recording, Types::Recordings::Recording, null: true
       field :visitor, Types::Visitors::Visitor, null: false
+      field :nps, Types::Feedback::NpsResponseItem, null: true
+      field :sentiment, Types::Feedback::SentimentResponseItem, null: true
     end
   end
 end
