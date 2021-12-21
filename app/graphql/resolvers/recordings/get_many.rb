@@ -14,6 +14,7 @@ module Resolvers
         recordings = Site
                      .find(object.id)
                      .recordings
+                     .includes(:nps, :sentiment)
                      .joins(:pages, :visitor)
                      .preload(:pages, :visitor)
                      .where('deleted = false')
