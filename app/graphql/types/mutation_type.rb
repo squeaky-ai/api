@@ -45,5 +45,6 @@ module Types
     field :sentiment_delete, mutation: Mutations::Feedback::SentimentDelete
     # Visitors
     field :visitor_starred, mutation: Mutations::Visitors::Starred
+    field :visitor_delete, mutation: Mutations::Visitors::Delete
   end
 end
