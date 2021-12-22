@@ -88,7 +88,7 @@ module Resolvers
         from_date = format_date(filters.date[:between_from_date])
         to_date = format_date(filters.date[:between_to_date])
 
-        recordings.where('created_at::date BETWEEN ? AND ?', from_date, to_date)
+        recordings.where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
       end
 
       # Allow filtering of recordings where it was created
@@ -96,7 +96,7 @@ module Resolvers
       def filter_by_before_date(recordings, filters)
         from_date = format_date(filters.date[:from_date])
 
-        recordings.where('created_at::date < ?', from_date)
+        recordings.where('recordings.created_at::date < ?', from_date)
       end
 
       # Allow filtering of recordings where it was created
@@ -104,7 +104,7 @@ module Resolvers
       def filter_by_after_date(recordings, filters)
         from_date = format_date(filters.date[:from_date])
 
-        recordings.where('created_at::date > ?', from_date)
+        recordings.where('recordings.created_at::date > ?', from_date)
       end
 
       # Adds a filter that lets users show only recordings
@@ -112,7 +112,7 @@ module Resolvers
       def filter_by_status(recordings, filters)
         return recordings unless filters.status
 
-        recordings.where('viewed = ?', filters.status == 'Viewed')
+        recordings.where('recordings.viewed = ?', filters.status == 'Viewed')
       end
 
       # Add a filter that lets users show only recordings
@@ -135,7 +135,7 @@ module Resolvers
         from_duration = filters.duration[:between_from_duration]
         to_duration = filters.duration[:between_to_duration]
 
-        recordings.where('disconnected_at - connected_at BETWEEN ? AND ?', from_duration, to_duration)
+        recordings.where('recordings.disconnected_at - recordings.connected_at BETWEEN ? AND ?', from_duration, to_duration)
       end
 
       # Allow filtering of recordings where it's duration
@@ -143,7 +143,7 @@ module Resolvers
       def filter_by_greater_than_duration(recordings, filters)
         from_duration = filters.duration[:from_duration]
 
-        recordings.where('disconnected_at - connected_at > ?', from_duration)
+        recordings.where('recordings.disconnected_at - recordings.connected_at > ?', from_duration)
       end
 
       # Allow filtering of recordings where it's duration
@@ -151,7 +151,7 @@ module Resolvers
       def filter_by_less_than_duration(recordings, filters)
         from_duration = filters.duration[:from_duration]
 
-        recordings.where('disconnected_at - connected_at < ?', from_duration)
+        recordings.where('recordings.disconnected_at - recordings.connected_at < ?', from_duration)
       end
 
       # Allow filtering of recordings that have a particular
@@ -164,7 +164,7 @@ module Resolvers
             SELECT url
             FROM pages
             WHERE pages.recording_id = recordings.id
-            ORDER BY entered_at ASC
+            ORDER BY pages.entered_at ASC
             LIMIT 1
           )
         SQL
@@ -182,7 +182,7 @@ module Resolvers
             SELECT url
             FROM pages
             WHERE pages.recording_id = recordings.id
-            ORDER BY exited_at DESC
+            ORDER BY pages.exited_at DESC
             LIMIT 1
           )
         SQL
@@ -229,7 +229,7 @@ module Resolvers
       def filter_by_device(recordings, filters)
         return recordings unless filters.devices.any?
 
-        recordings.where('device_type IN (?)', filters.devices)
+        recordings.where('recordings.device_type IN (?)', filters.devices)
       end
 
       # Add a filter that lets users show only recordings
@@ -237,7 +237,7 @@ module Resolvers
       def filter_by_browser(recordings, filters)
         return recordings unless filters.browsers.any?
 
-        recordings.where('browser IN (?)', filters.browsers)
+        recordings.where('recordings.browser IN (?)', filters.browsers)
       end
 
       # Allow filtering of recordings that have certain
@@ -247,10 +247,10 @@ module Resolvers
 
         return recordings unless viewport.values.any?
 
-        recordings = recordings.where('viewport_x > ?', viewport[:min_width]) if viewport[:min_width]
-        recordings = recordings.where('viewport_x < ?', viewport[:max_width]) if viewport[:max_width]
-        recordings = recordings.where('viewport_y > ?', viewport[:min_height]) if viewport[:min_height]
-        recordings = recordings.where('viewport_y < ?', viewport[:max_height]) if viewport[:max_height]
+        recordings = recordings.where('recordings.viewport_x > ?', viewport[:min_width]) if viewport[:min_width]
+        recordings = recordings.where('recordings.viewport_x < ?', viewport[:max_width]) if viewport[:max_width]
+        recordings = recordings.where('recordings.viewport_y > ?', viewport[:min_height]) if viewport[:min_height]
+        recordings = recordings.where('recordings.viewport_y < ?', viewport[:max_height]) if viewport[:max_height]
 
         recordings
       end
