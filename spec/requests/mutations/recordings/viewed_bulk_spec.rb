@@ -18,7 +18,7 @@ GRAPHQL
 RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
   context 'when none of the recordings exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       today = Time.now.strftime('%Y-%m-%d')
@@ -41,7 +41,7 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
 
   context 'when some of the recordings exist and they are marked as viewed' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor) }
     let(:recording_2) { create_recording(site: site, visitor: create_visitor) }
@@ -83,7 +83,7 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
 
   context 'when some of the recordings exist and they are marked as not viewed' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording_1) { create_recording({ viewed: true }, site: site, visitor: create_visitor) }
     let(:recording_2) { create_recording(site: site, visitor: create_visitor) }

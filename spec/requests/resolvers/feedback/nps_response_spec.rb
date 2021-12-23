@@ -34,7 +34,7 @@ GRAPHQL
 RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
   context 'when there is no data' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
@@ -56,7 +56,7 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
 
   context 'when there is some data' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create_visitor }
 
     before do
@@ -89,7 +89,7 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
 
   context 'when requesting in ascending order' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create_visitor }
 
     before do

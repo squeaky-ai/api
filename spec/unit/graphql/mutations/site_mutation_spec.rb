@@ -50,7 +50,7 @@ RSpec.describe Mutations::SiteMutation do
       context 'and the user is a member' do
         context 'and the permitted roles includes members' do
           let(:user) { create(:user) }
-          let(:site) { create_site_and_team(user: create(:user)) }
+          let(:site) { create(:site_with_team) }
 
           before { create_team(user: user, site: site, role: Team::MEMBER) }
 
@@ -69,7 +69,7 @@ RSpec.describe Mutations::SiteMutation do
 
         context 'and the permitted roles does not include members' do
           let(:user) { create(:user) }
-          let(:site) { create_site_and_team(user: create(:user)) }
+          let(:site) { create(:site_with_team) }
 
           before { create_team(user: user, site: site, role: Team::MEMBER) }
 
@@ -88,7 +88,7 @@ RSpec.describe Mutations::SiteMutation do
       context 'and the user is an admin' do
         context 'and the permitted roles includes admins' do
           let(:user) { create(:user) }
-          let(:site) { create_site_and_team(user: create(:user)) }
+          let(:site) { create(:site_with_team) }
 
           before { create_team(user: user, site: site, role: Team::ADMIN) }
 
@@ -107,7 +107,7 @@ RSpec.describe Mutations::SiteMutation do
 
         context 'and the permitted roles does not include admins' do
           let(:user) { create(:user) }
-          let(:site) { create_site_and_team(user: create(:user)) }
+          let(:site) { create(:site_with_team) }
 
           before { create_team(user: user, site: site, role: Team::ADMIN) }
 
@@ -125,7 +125,7 @@ RSpec.describe Mutations::SiteMutation do
 
       context 'and the user is the owner' do
         let(:user) { create(:user) }
-        let(:site) { create_site_and_team(user: create(:user)) }
+        let(:site) { create(:site_with_team) }
 
         before { create_team(user: user, site: site, role: Team::OWNER) }
 
@@ -144,7 +144,7 @@ RSpec.describe Mutations::SiteMutation do
 
       context 'and the user is not a member' do
         let(:user) { create(:user) }
-        let(:site) { create_site_and_team(user: create(:user)) }
+        let(:site) { create(:site_with_team) }
 
         subject do
           context = { current_user: user }
@@ -159,7 +159,7 @@ RSpec.describe Mutations::SiteMutation do
 
       context 'and the user is a superuser' do
         let(:user) { create(:user, superuser: true) }
-        let(:site) { create_site_and_team(user: create(:user)) }
+        let(:site) { create(:site_with_team) }
 
         subject do
           context = { current_user: user }

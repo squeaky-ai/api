@@ -18,7 +18,7 @@ GRAPHQL
 RSpec.describe Mutations::Visitors::Starred, type: :request do
   context 'when the recording does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, visitor_id: SecureRandom.base36, starred: false }
@@ -34,7 +34,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
   context 'when the visitor does exist' do
     context 'and it is starred' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create_visitor }
       
       before { create_recording(site: site, visitor: visitor) }
@@ -56,7 +56,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
 
     context 'and it is unstarred' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create_visitor(starred: true) }
       
       before { create_recording(site: site, visitor: visitor) }

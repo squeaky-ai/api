@@ -25,7 +25,7 @@ GRAPHQL
 RSpec.describe Mutations::Notes::Create, type: :request do
   context 'when the recording does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:body) { 'Pimp my Ride' }
     let(:timestamp) { 2342342 }
 
@@ -47,7 +47,7 @@ RSpec.describe Mutations::Notes::Create, type: :request do
 
   context 'when the recording exists' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:body) { 'Beans on Toast' }
     let(:timestamp) { 3000 }

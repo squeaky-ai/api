@@ -15,7 +15,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member is the owner' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
     subject do
@@ -43,7 +43,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
 
   context 'when the team member is themselves' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
     subject do
@@ -71,7 +71,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
 
   context 'when an admin tries to remove another admin' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:team1) { create_team(user: user, site: site, role: Team::ADMIN) }
     let(:team2) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
 
@@ -107,7 +107,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
 
   context 'when the team member can be deleted' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER) }
 
     subject do

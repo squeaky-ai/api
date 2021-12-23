@@ -43,7 +43,7 @@ GRAPHQL
 RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   context 'when there are no recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       today = Time.now.strftime('%Y-%m-%d')
@@ -77,7 +77,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
   context 'when there are several recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       today = Time.now.strftime('%Y-%m-%d')
@@ -114,7 +114,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
   context 'when a recording is soft deleted' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       today = Time.now.strftime('%Y-%m-%d')
@@ -143,7 +143,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
   context 'when paginating' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       create_recordings(site: site, visitor: create_visitor, count: 15)
@@ -183,7 +183,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   context 'when sorting results' do
     context 'when sorting by descending' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         today = Time.now.strftime('%Y-%m-%d')
@@ -222,7 +222,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
     context 'when sorting by ascending' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         today = Time.now.strftime('%Y-%m-%d')

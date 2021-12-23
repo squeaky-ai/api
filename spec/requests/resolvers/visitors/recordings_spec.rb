@@ -34,7 +34,7 @@ GRAPHQL
 RSpec.describe Resolvers::Visitors::Recordings, type: :request do
   context 'when there are no recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, visitor_id: 1 }
@@ -49,7 +49,7 @@ RSpec.describe Resolvers::Visitors::Recordings, type: :request do
 
   context 'when there are some recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create_visitor }
 
     before do

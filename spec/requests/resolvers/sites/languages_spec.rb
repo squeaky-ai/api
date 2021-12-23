@@ -13,7 +13,7 @@ GRAPHQL
 RSpec.describe Resolvers::Sites::Languages, type: :request do
   context 'when there are no languages' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -28,7 +28,7 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
 
   context 'when there are some languages' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       create_recording({ locale: 'en-GB' }, site: site, visitor: create_visitor)
@@ -48,7 +48,7 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
 
   context 'when there are some duplicate languages' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       create_recording({ locale: 'en-GB' }, site: site, visitor: create_visitor)

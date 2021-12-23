@@ -27,13 +27,14 @@ RSpec.describe 'QueryUserInvitation', type: :request do
 
   context 'when there is a user invitation' do
     let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
 
     subject do
       user.invite_to_team!
       graphql_request(user_invitation, { token: user.raw_invitation_token }, nil)
     end
 
-    before { create_site_and_team(user: user, status: Team::PENDING) }
+    before { create(:team, user: user, site: site, status: Team::PENDING) }
 
     it 'returns the email and pending status' do
       expect(subject['data']['userInvitation']).to eq(

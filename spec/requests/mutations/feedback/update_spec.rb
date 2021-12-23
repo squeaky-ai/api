@@ -25,7 +25,7 @@ GRAPHQL
 RSpec.describe Mutations::Feedback::Update, type: :request do
   context 'when there is nothing in the database' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = {
@@ -70,7 +70,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
 
   context 'when there is something in the database' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       Feedback.create(

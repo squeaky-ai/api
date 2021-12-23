@@ -14,7 +14,7 @@ GRAPHQL
 RSpec.describe Mutations::Feedback::NpsDelete, type: :request do
   context 'when the feedback does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = {
@@ -32,7 +32,7 @@ RSpec.describe Mutations::Feedback::NpsDelete, type: :request do
 
   context 'when the feedback does exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:nps) { create_nps(recording: recording) }
 

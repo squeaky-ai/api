@@ -17,7 +17,7 @@ RSpec.describe Mutations::Sites::Update, type: :request do
     context 'when a site with this url already exists' do
       let(:url) { 'https://google.com' }
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         variables = { site_id: site.id, url: url }
@@ -34,7 +34,7 @@ RSpec.describe Mutations::Sites::Update, type: :request do
     context 'when the url is invalid' do
       let(:url) { 'fdsdfgdfgdfgdfg' }
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         variables = { site_id: site.id, url: url }
@@ -49,7 +49,7 @@ RSpec.describe Mutations::Sites::Update, type: :request do
     context 'when the url is valid' do
       let(:url) { 'https://thedoors.com' }
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         variables = { site_id: site.id, url: url }
@@ -70,7 +70,7 @@ RSpec.describe Mutations::Sites::Update, type: :request do
   context 'when updating the name' do
     let(:name) { 'Sausage' }
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, name: name }

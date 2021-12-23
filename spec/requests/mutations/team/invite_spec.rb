@@ -23,7 +23,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Invite, type: :request do
   context 'when the invited user does not have an account' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:email) { 'paulmccartney@msn.com' }
 
     before do
@@ -57,7 +57,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
   context 'when the user alredy has an account' do
     context 'and they are already a member' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
       let(:invited_user) { create(:user) }
 
       subject do
@@ -84,7 +84,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
 
     context 'and they are not a member' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
       let(:invited_user) { create(:user) }
 
       before do
@@ -123,7 +123,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
 
   context 'when the site has exceeded the limit' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:email) { 'raymanzarek@yahoo.com' }
 
     before do

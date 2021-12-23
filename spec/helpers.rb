@@ -16,13 +16,6 @@ module Helpers
     Team.create(user: user, site: site, role: role, status: status)
   end
 
-  def create_site_and_team(user:, role: Team::OWNER, status: Team::ACCEPTED)
-    site = create(:site)
-    site.team << create_team(user: user, site: site, role: role, status: status)
-    site.save
-    site
-  end
-
   def create_recording(args = {}, site:, visitor:)
     Fixtures::Recordings.new(site, visitor).create(args)
   end

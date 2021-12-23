@@ -28,7 +28,7 @@ GRAPHQL
 RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when there are no notes' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, size: 5, page: 1 }
@@ -53,7 +53,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
 
   context 'when there are several notes' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
@@ -83,7 +83,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
 
   context 'when paginating' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     before do

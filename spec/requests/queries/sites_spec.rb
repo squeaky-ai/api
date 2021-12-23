@@ -50,7 +50,7 @@ RSpec.describe 'QuerySites', type: :request do
 
   context 'when the user is a member of a site' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before { site }
 
@@ -88,7 +88,7 @@ RSpec.describe 'QuerySites', type: :request do
 
   context 'when the user has a pending invite' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
 
     before do
       create_team(user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
@@ -103,7 +103,7 @@ RSpec.describe 'QuerySites', type: :request do
 
   context 'when the user is a superuser' do
     let(:user) { create(:user, superuser: true) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
 
     before { site }
 

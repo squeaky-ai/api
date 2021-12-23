@@ -19,7 +19,7 @@ GRAPHQL
 RSpec.describe Resolvers::Analytics::PageViews, type: :request do
   context 'when there are no recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
@@ -34,7 +34,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
   context 'when there are some recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create_visitor
@@ -73,7 +73,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
   context 'when some of the recordings are out of the date range' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create_visitor

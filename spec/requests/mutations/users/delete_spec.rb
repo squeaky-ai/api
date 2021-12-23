@@ -42,8 +42,8 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     let(:user) { create(:user) }
 
     before do
-      create_site_and_team(user: user)
-      create_site_and_team(user: user)
+      create(:site_with_team, owner: user)
+      create(:site_with_team, owner: user)
     end
 
     subject do
@@ -58,7 +58,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
 
   describe 'when the user is a member of a site' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
 
     before { create_team(user: user, site: site, role: Team::MEMBER) }
 

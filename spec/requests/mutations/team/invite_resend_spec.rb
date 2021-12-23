@@ -23,7 +23,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::InviteResend, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team_id) { 234 }
 
     before { site }
@@ -46,7 +46,7 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
 
   context 'when the team member exists but is not pending' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team_member) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     before do
@@ -78,7 +78,7 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
 
   context 'when the team member exist and is pending' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team_member) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::PENDING) }
 
     before do

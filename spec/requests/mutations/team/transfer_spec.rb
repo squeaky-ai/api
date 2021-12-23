@@ -23,7 +23,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Transfer, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, team_id: 4234 }
@@ -38,7 +38,7 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
 
   context 'when the user is not the owner of the site' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
     subject do

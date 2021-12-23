@@ -24,7 +24,7 @@ GRAPHQL
 RSpec.describe Resolvers::Recordings::Events, type: :request do
   context 'when there no events' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording) do
       create_recording(site: site, visitor: create_visitor)
@@ -53,7 +53,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
 
   context 'when there are some events' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording) do
       rec = create_recording(site: site, visitor: create_visitor)

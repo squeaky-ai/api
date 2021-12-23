@@ -39,7 +39,7 @@ GRAPHQL
 RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   context 'when there are no recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
   context 'when there are some recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor_1 = create_visitor
@@ -87,7 +87,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
   context 'when the recordings are deleted' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create_visitor
@@ -109,7 +109,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
   context 'when there are no external attributes' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create_visitor
@@ -130,7 +130,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
   context 'when there are some external attributes' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 
     before do

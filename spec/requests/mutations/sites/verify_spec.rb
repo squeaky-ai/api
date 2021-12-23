@@ -14,7 +14,7 @@ GRAPHQL
 RSpec.describe Mutations::Sites::Verify, type: :request do
   context 'when the tracking script can be found' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -40,7 +40,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
 
   context 'when the tracking script can not be found' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -56,7 +56,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
 
   context 'when the tracking script was active, but now can not be found' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before { site.verify! }
 
@@ -72,7 +72,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
 
   context 'when the http request fails' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }

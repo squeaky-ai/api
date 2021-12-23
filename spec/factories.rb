@@ -11,12 +11,31 @@ FactoryBot.define do
     confirmed_at { Time.now }
   end
 
+  factory :team do
+    role { Team::OWNER }
+    status { Team::ACCEPTED }
+
+    user { association :user }
+    site { association :site }
+  end
+
   factory :site do
     name { 'Morrison Hotel' }
     url { "https://#{SecureRandom.base36}.com" }
     plan { Site::ESSENTIALS }
     uuid { SecureRandom.uuid }
     verified_at { Time.now }
+
+    transient do
+      team_count { 1 }
+      owner { create(:user) }
+    end
+
+    factory :site_with_team do
+      after(:create) do |site, evaluator|
+        create_list(:team, evaluator.team_count, site: site, user: evaluator.owner)
+      end      
+    end
   end
 
   factory :recording do

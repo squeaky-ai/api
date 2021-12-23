@@ -17,7 +17,7 @@ GRAPHQL
 RSpec.describe Mutations::Recordings::Viewed, type: :request do
   context 'when the recording does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, recording_id: 234234 }
@@ -32,7 +32,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
   context 'when the recording does exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
@@ -52,7 +52,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
   context 'when a superuser is viewing' do
     let(:user) { create(:user, superuser: true) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do

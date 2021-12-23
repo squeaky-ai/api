@@ -23,7 +23,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when the team member does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, team_id: 4324, role: Team::ADMIN }
@@ -38,7 +38,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
 
   context 'when the role is not valid' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
 
   context 'when trying to modify the owner of the site' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       graphql_request(team_update_mutation, { site_id: site.id, team_id: site.team[0].id, role: Team::ADMIN }, user)
@@ -68,7 +68,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
 
   context 'when the user is made an admin' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
@@ -96,7 +96,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
 
   context 'when the user is made a member' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:team) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
@@ -123,7 +123,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   end
 
   context 'when an admin promotes a member' do
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
 
     let(:team1) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
     let(:team2) { create_team(user: create(:user), site: site, role: Team::MEMBER) }
@@ -152,7 +152,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   end
 
   context 'when an admin tries to downgrade another admin' do
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
 
     let(:team1) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
     let(:team2) { create_team(user: create(:user), site: site, role: Team::ADMIN) }

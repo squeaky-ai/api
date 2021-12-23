@@ -17,7 +17,7 @@ GRAPHQL
 RSpec.describe Mutations::Sites::DomainBlacklistDelete, type: :request do
   context 'when deleting a tag that does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, value: '@squeaky.ai' }
@@ -35,7 +35,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistDelete, type: :request do
 
   context 'when deleting a tag that does exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       site.domain_blacklist << { type: 'domain', value: '@squeaky.ai' }

@@ -18,7 +18,7 @@ GRAPHQL
 RSpec.describe Mutations::Tags::Update, type: :request do
   context 'when the tag does not exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:name) { 'Teapot' }
 
@@ -39,7 +39,7 @@ RSpec.describe Mutations::Tags::Update, type: :request do
 
   context 'when the tag exists' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create(:tag, site_id: site.id) }
     let(:name) { 'Saucepan' }

@@ -17,7 +17,7 @@ GRAPHQL
 RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
   context 'when none of the recordings exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       today = Time.now.strftime('%Y-%m-%d')
@@ -44,7 +44,7 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
 
   context 'when some of the recordings exist' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording_1) { create_recording(site: site, visitor: create_visitor) }
     let(:recording_2) { create_recording(site: site, visitor: create_visitor) }

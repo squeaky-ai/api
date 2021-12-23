@@ -13,7 +13,7 @@ GRAPHQL
 RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
   context 'when there have been no recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -29,7 +29,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
   context 'when there is a recording' do
     context 'when the recording is from today' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         variables = { site_id: site.id }
@@ -49,7 +49,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
 
     context 'when the recording is from the past' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: user) }
+      let(:site) { create(:site_with_team, owner: user) }
 
       subject do
         variables = { site_id: site.id }
@@ -70,7 +70,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
 
   context 'when there are several recordings' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }

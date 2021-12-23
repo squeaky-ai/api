@@ -35,7 +35,7 @@ RSpec.describe User, type: :model do
     context 'when the user is the owner' do
       subject { create(:user) }
 
-      let(:site) { create_site_and_team(user: subject, role: Team::OWNER) }
+      let(:site) { create(:site_with_team, owner: subject) }
 
       it 'returns true' do
         expect(subject.owner_for?(site)).to be true
@@ -44,7 +44,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is not the owner' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: create(:user), role: Team::OWNER) }
+      let(:site) { create(:site_with_team) }
       let(:team) { create_team(user: subject, site: site, role: Team::ADMIN) }
 
       subject { user }
@@ -68,7 +68,9 @@ RSpec.describe User, type: :model do
 
     context 'when the user is a member' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: subject, role: Team::MEMBER) }
+      let(:site) { create(:site_with_team) }
+
+      before { create(:team, user: subject, site: site, role: Team::MEMBER) }
 
       subject { user }
 
@@ -79,7 +81,9 @@ RSpec.describe User, type: :model do
 
     context 'when the user is an admin' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: subject, role: Team::ADMIN) }
+      let(:site) { create(:site_with_team) }
+
+      before { create(:team, user: subject, site: site, role: Team::ADMIN) }
 
       subject { user }
 
@@ -90,7 +94,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is the owner' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: subject, role: Team::OWNER) }
+      let(:site) { create(:site_with_team) }
 
       subject { user }
 
@@ -114,7 +118,7 @@ RSpec.describe User, type: :model do
 
     context 'when the user is a member of the team' do
       let(:user) { create(:user) }
-      let(:site) { create_site_and_team(user: subject) }
+      let(:site) { create(:site_with_team, owner: subject) }
 
       subject { user }
 
@@ -148,8 +152,9 @@ RSpec.describe User, type: :model do
 
     context 'when the user has a pending invitation' do
       let(:user) { create(:user) }
+      let(:site) { create(:site_with_team) }
 
-      before { create_site_and_team(user: user, status: Team::PENDING) }
+      before { create(:team, site: site, user: user, status: Team::PENDING) }
 
       it 'returns true' do
         expect(user.pending_team_invitation?).to be true
@@ -183,8 +188,9 @@ RSpec.describe User, type: :model do
 
     context 'when the user has an invitation and pending invites' do
       let(:user) { create(:user) }
+      let(:site) { create(:site_with_team) }
 
-      before { create_site_and_team(user: user, status: Team::PENDING) }
+      before { create(:team, site: site, user: user, status: Team::PENDING) }
 
       subject do
         user.invite_to_team!

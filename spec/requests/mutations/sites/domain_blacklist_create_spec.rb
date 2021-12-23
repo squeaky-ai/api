@@ -17,7 +17,7 @@ GRAPHQL
 RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   context 'when creating a new domain' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, type: 'domain', value: 'squeaky.ai' }
@@ -42,7 +42,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
   context 'when creating a new email' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id, type: 'email', value: 'john@squeaky.ai' }
@@ -67,7 +67,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
   context 'when some visitors exist and some have matching domains' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))
@@ -97,7 +97,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   
   context 'when some visitors exist and some have matching emails' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     before do
       create_recording(site: site, visitor: create_visitor(external_attributes: { email: 'jim@squeaky.ai' }))

@@ -13,7 +13,7 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Leave, type: :request do
   context 'when the user is the owner' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: user) }
+    let(:site) { create(:site_with_team, owner: user) }
 
     subject do
       variables = { site_id: site.id }
@@ -31,7 +31,7 @@ RSpec.describe Mutations::Teams::Leave, type: :request do
 
   context 'when the user is not the owner' do
     let(:user) { create(:user) }
-    let(:site) { create_site_and_team(user: create(:user)) }
+    let(:site) { create(:site_with_team) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
     subject do
