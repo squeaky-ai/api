@@ -34,7 +34,7 @@ RSpec.describe Mutations::Feedback::NpsDelete, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:nps) { create_nps(recording: recording) }
+    let(:nps) { create(:nps, recording: recording) }
 
     before { nps }
 

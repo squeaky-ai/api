@@ -36,9 +36,9 @@ RSpec.describe Resolvers::Feedback::NpsRatings, type: :request do
     let(:visitor) { create_visitor }
 
     before do
-      create_nps({ score: 9, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
-      create_nps({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
-      create_nps({ score: 3, created_at: Time.new(2020, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create(:nps, score: 9, created_at: Time.new(2021, 8, 3), recording: create_recording(site: site, visitor: visitor))
+      create(:nps, score: 3, created_at: Time.new(2021, 8, 3), recording: create_recording(site: site, visitor: visitor))
+      create(:nps, score: 3, created_at: Time.new(2020, 8, 3), recording: create_recording(site: site, visitor: visitor))
     end
 
     subject do

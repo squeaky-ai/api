@@ -42,9 +42,9 @@ RSpec.describe Resolvers::Feedback::SentimentReplies, type: :request do
     let(:visitor) { create_visitor }
 
     before do
-      create_sentiment({ score: 5, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
-      create_sentiment({ score: 3, created_at: Time.new(2021, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
-      create_sentiment({ score: 3, created_at: Time.new(2020, 8, 3) }, recording: create_recording(site: site, visitor: visitor))
+      create(:sentiment, score: 5, created_at: Time.new(2021, 8, 3), recording: create_recording(site: site, visitor: visitor))
+      create(:sentiment, score: 3, created_at: Time.new(2021, 8, 3), recording: create_recording(site: site, visitor: visitor))
+      create(:sentiment, score: 3, created_at: Time.new(2020, 8, 3), recording: create_recording(site: site, visitor: visitor))
     end
 
     subject do
