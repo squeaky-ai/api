@@ -39,17 +39,17 @@ RSpec.describe 'QuerySite', type: :request do
   end
 
   context 'when the site does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     it 'returns nil' do
-      response = graphql_request(site_query, { site_id: Faker::Number.number }, user)
+      response = graphql_request(site_query, { site_id: 12938912 }, user)
 
       expect(response['data']['site']).to be_nil
     end
   end
 
   context 'when the site does exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     it 'returns the site' do
@@ -83,8 +83,8 @@ RSpec.describe 'QuerySite', type: :request do
   end
 
   context 'when the user is in a pending state' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     before do
       create_team(user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
@@ -98,8 +98,8 @@ RSpec.describe 'QuerySite', type: :request do
   end
 
   context 'when the user is not authorized' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     it 'does not return the site' do
       response = graphql_request(site_query, { site_id: site.id }, user)
@@ -109,8 +109,8 @@ RSpec.describe 'QuerySite', type: :request do
   end
 
   context 'when the user is not authorized but they are a superuser' do
-    let(:user) { create_user(superuser: true) }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user, superuser: true) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     it 'returns the site' do
       response = graphql_request(site_query, { site_id: site.id }, user)

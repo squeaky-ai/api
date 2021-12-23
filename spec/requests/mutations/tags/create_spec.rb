@@ -19,9 +19,9 @@ GRAPHQL
 
 RSpec.describe Mutations::Tags::Create, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
-    let(:name) { Faker::Book.title }
+    let(:name) { 'Anteater' }
 
     subject do
       variables = { site_id: site.id, recording_id: SecureRandom.uuid, name: name }
@@ -35,10 +35,10 @@ RSpec.describe Mutations::Tags::Create, type: :request do
   end
 
   context 'when the recording exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:name) { Faker::Book.title }
+    let(:name) { 'Carpet' }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id, name: name }
@@ -57,10 +57,10 @@ RSpec.describe Mutations::Tags::Create, type: :request do
   end
 
   context 'when a tag with that name exists already' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:name) { Faker::Book.title }
+    let(:name) { 'Plant' }
 
     before do
       recording.tags << Tag.new(name: name, site_id: site.id)

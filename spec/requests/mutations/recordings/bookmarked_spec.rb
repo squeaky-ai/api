@@ -16,11 +16,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: Faker::Number.number(digits: 5), bookmarked: false }
+      variables = { site_id: site.id, recording_id: 234234, bookmarked: false }
       graphql_request(recording_bookmarked_mutation, variables, user)
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
 
   context 'when the recording does exist' do
     context 'and it is bookmarked' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
       let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
@@ -52,7 +52,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     end
 
     context 'and it is unbookmarked' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
       let(:recording) { create_recording({ bookmarked: true }, site: site, visitor: create_visitor)}
 

@@ -12,8 +12,8 @@ GRAPHQL
 
 RSpec.describe Mutations::Sites::Delete, type: :request do
   context 'when the user is not the owner' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
     let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
 
     subject do
@@ -38,7 +38,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
   end
 
   context 'when the user is the owner' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -47,9 +47,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     before do
-      create_team(user: create_user, site: site, role: Team::MEMBER)
-      create_team(user: create_user, site: site, role: Team::MEMBER)
-      create_team(user: create_user, site: site, role: Team::MEMBER)
+      create_team(user: create(:user), site: site, role: Team::MEMBER)
+      create_team(user: create(:user), site: site, role: Team::MEMBER)
+      create_team(user: create(:user), site: site, role: Team::MEMBER)
 
       site.reload
     end
@@ -69,11 +69,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
   end
 
   context 'when there are other members in the team' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
-    let(:team_user1) { create_user }
-    let(:team_user2) { create_user }
+    let(:team_user1) { create(:user) }
+    let(:team_user2) { create(:user) }
 
     before do
       stub = double

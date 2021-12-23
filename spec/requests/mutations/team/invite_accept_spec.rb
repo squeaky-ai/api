@@ -26,7 +26,7 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     let(:token) { 'sdfdsfdsfdsf' }
 
     subject do
-      variables = { token: token, password: Faker::Lorem.sentence }
+      variables = { token: token, password: 'dfgdfgdfg' }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     let(:user) { invite_user } # The team won't exist
 
     subject do
-      variables = { token: user.raw_invitation_token, password: Faker::Lorem.sentence }
+      variables = { token: user.raw_invitation_token, password: 'sdfsfdsf' }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -53,14 +53,14 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
 
   context 'when the token is valid' do
     context 'when it is a new user' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
       let(:team) { create_team(user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
       before { team }
 
       subject do
-        variables = { token: team.user.raw_invitation_token, password: Faker::Lorem.sentence }
+        variables = { token: team.user.raw_invitation_token, password: 'sdfsdfsdf' }
         graphql_request(team_invite_accept_mutation, variables, nil)
       end
 
@@ -78,9 +78,9 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     end
 
     context 'when it is an existing user' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
-      let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
+      let(:team) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::PENDING) }
 
       before { team }
 

@@ -13,7 +13,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user has filled out their name' do
-      subject { create_user }
+      subject { create(:user) }
 
       it 'returns the full name' do
         expect(subject.full_name).to eq "#{subject.first_name} #{subject.last_name}"
@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is the owner' do
-      subject { create_user }
+      subject { create(:user) }
 
       let(:site) { create_site_and_team(user: subject, role: Team::OWNER) }
 
@@ -43,8 +43,8 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is not the owner' do
-      let(:user) { create_user }
-      let(:site) { create_site_and_team(user: create_user, role: Team::OWNER) }
+      let(:user) { create(:user) }
+      let(:site) { create_site_and_team(user: create(:user), role: Team::OWNER) }
       let(:team) { create_team(user: subject, site: site, role: Team::ADMIN) }
 
       subject { user }
@@ -67,7 +67,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is a member' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: subject, role: Team::MEMBER) }
 
       subject { user }
@@ -78,7 +78,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is an admin' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: subject, role: Team::ADMIN) }
 
       subject { user }
@@ -89,7 +89,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is the owner' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: subject, role: Team::OWNER) }
 
       subject { user }
@@ -102,7 +102,7 @@ RSpec.describe User, type: :model do
 
   describe '#member_of?' do
     context 'when the user is not a member of the team' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site }
 
       subject { user }
@@ -113,7 +113,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user is a member of the team' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: subject) }
 
       subject { user }
@@ -125,7 +125,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#invite_to_team!' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     subject { user.invite_to_team! }
 
@@ -139,7 +139,7 @@ RSpec.describe User, type: :model do
 
   describe '#pending_team_invitation?' do
     context 'when the user has no pending invitations' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       it 'returns false' do
         expect(user.pending_team_invitation?).to be false
@@ -147,7 +147,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user has a pending invitation' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       before { create_site_and_team(user: user, status: Team::PENDING) }
 
@@ -159,7 +159,7 @@ RSpec.describe User, type: :model do
 
   describe '.find_team_invitation' do
     context 'when the token does not match a user' do
-      let(:token) { Faker::Lorem.sentence }
+      let(:token) { 'dfgdgdfgdfgd' }
 
       subject { User.find_team_invitation(token) }
 
@@ -169,7 +169,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user has an invitation token but no pending invites' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       subject do
         user.invite_to_team!
@@ -182,7 +182,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the user has an invitation and pending invites' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       before { create_site_and_team(user: user, status: Team::PENDING) }
 

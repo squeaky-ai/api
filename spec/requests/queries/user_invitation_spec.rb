@@ -14,7 +14,7 @@ GRAPHQL
 RSpec.describe 'QueryUserInvitation', type: :request do
   context 'when there is no user invitation' do
     subject do
-      graphql_request(user_invitation, { token: Faker::Lorem.sentence }, nil)
+      graphql_request(user_invitation, { token: 'sdfsdfsdfsdfsdf' }, nil)
     end
 
     it 'returns no email and pending status' do
@@ -26,7 +26,7 @@ RSpec.describe 'QueryUserInvitation', type: :request do
   end
 
   context 'when there is a user invitation' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     subject do
       user.invite_to_team!
@@ -46,7 +46,7 @@ RSpec.describe 'QueryUserInvitation', type: :request do
   end
 
   context 'when there is a user invitation but it has been revoked' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     subject do
       user.invite_to_team!

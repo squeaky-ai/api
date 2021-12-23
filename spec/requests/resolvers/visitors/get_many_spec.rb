@@ -38,7 +38,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   context 'when there are no recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -53,7 +53,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   end
 
   context 'when there are some recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -86,7 +86,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   end
 
   context 'when the recordings are deleted' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -108,7 +108,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   end
 
   context 'when there are no external attributes' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -129,7 +129,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
   end
 
   context 'when there are some external attributes' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 

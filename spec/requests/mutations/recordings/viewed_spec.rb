@@ -16,11 +16,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Recordings::Viewed, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: Faker::Number.number(digits: 5) }
+      variables = { site_id: site.id, recording_id: 234234 }
       graphql_request(recording_viewed_mutation, variables, user)
     end
 
@@ -31,7 +31,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
   end
 
   context 'when the recording does exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
@@ -51,8 +51,8 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
   end
 
   context 'when a superuser is viewing' do
-    let(:user) { create_user(superuser: true) }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user, superuser: true) }
+    let(:site) { create_site_and_team(user: create(:user)) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do

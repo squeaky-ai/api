@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FeedbackMailer, type: :mailer do
   describe 'feedback' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:type) { 'feedback' }
     let(:subject) { 'Hello!' }
     let(:message) { 'Hello again!' }

@@ -36,7 +36,7 @@ RSpec.describe Site, type: :model do
   end
 
   describe '#owner_name' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject { site.owner_name }
@@ -52,9 +52,9 @@ RSpec.describe Site, type: :model do
     subject { site.admins }
 
     before do
-      create_team(user: create_user, site: site, role: Team::MEMBER)
-      create_team(user: create_user, site: site, role: Team::ADMIN)
-      create_team(user: create_user, site: site, role: Team::OWNER)
+      create_team(user: create(:user), site: site, role: Team::MEMBER)
+      create_team(user: create(:user), site: site, role: Team::ADMIN)
+      create_team(user: create(:user), site: site, role: Team::OWNER)
     end
 
     it 'returns only the team members that are admins' do
@@ -64,7 +64,7 @@ RSpec.describe Site, type: :model do
   end
 
   describe '#owner' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site }
     let(:team) { create_team(user: user, site: site, role: Team::OWNER) }
 
@@ -79,9 +79,9 @@ RSpec.describe Site, type: :model do
 
   describe '#member' do
     context 'when a member exists' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
-      let(:team) { create_team(user: create_user, site: site, role: Team::ADMIN) }
+      let(:team) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
 
       subject { site.member(team.id) }
 
@@ -91,7 +91,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when a member does not exist' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject { site.member(423) }
@@ -112,7 +112,7 @@ RSpec.describe Site, type: :model do
 
   describe '#recordings_count' do
     context 'when there are no recordings' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject { site.recordings_count }
@@ -123,7 +123,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are some recordings' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -142,7 +142,7 @@ RSpec.describe Site, type: :model do
 
   describe '#team_size_exceeded?' do
     context 'when the count is less' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -157,7 +157,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when the count is equal' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -172,12 +172,12 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when the count is greater' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
         allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
-        create_team(user: create_user, site: site, role: Team::MEMBER)
+        create_team(user: create(:user), site: site, role: Team::MEMBER)
       end
 
       subject { site.team_size_exceeded? }
@@ -190,7 +190,7 @@ RSpec.describe Site, type: :model do
 
   describe '#recording_count_exceeded?' do
     context 'when there are no recordings' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject { site.recording_count_exceeded? }
@@ -201,7 +201,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are less recordings than the limit' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -217,7 +217,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are equal recordings than the limit' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -233,7 +233,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are more recordings than the limit' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -250,7 +250,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are more recordings but they are from a different month' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -269,7 +269,7 @@ RSpec.describe Site, type: :model do
     end
 
     context 'when there are more recordings but they are soft deleted' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       before do
@@ -287,7 +287,7 @@ RSpec.describe Site, type: :model do
   end
 
   describe '#page_urls' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 

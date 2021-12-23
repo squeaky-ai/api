@@ -17,13 +17,13 @@ GRAPHQL
 
 RSpec.describe Mutations::Tags::Update, type: :request do
   context 'when the tag does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:name) { Faker::Book.title }
+    let(:name) { 'Teapot' }
 
     subject do
-      variables = { site_id: site.id, tag_id: Faker::Number.rand.to_s, name: name }
+      variables = { site_id: site.id, tag_id: 345345345, name: name }
       graphql_request(tag_update_mutation, variables, user)
     end
 
@@ -38,11 +38,11 @@ RSpec.describe Mutations::Tags::Update, type: :request do
   end
 
   context 'when the tag exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create_tag(recording: recording, site: site) }
-    let(:name) { Faker::Book.title }
+    let(:name) { 'Saucepan' }
 
     subject do
       variables = { site_id: site.id, tag_id: tag.id.to_s, name: name }

@@ -16,7 +16,7 @@ GRAPHQL
 
 RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   context 'when creating a new domain' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -41,7 +41,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   end
 
   context 'when creating a new email' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -66,7 +66,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   end
 
   context 'when some visitors exist and some have matching domains' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -96,7 +96,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
   end
   
   context 'when some visitors exist and some have matching emails' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do

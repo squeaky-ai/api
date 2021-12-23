@@ -14,10 +14,10 @@ user_update_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Users::Update, type: :request do
-  let(:user) { create_user }
-  let(:first_name) { Faker::Name.first_name }
-  let(:last_name) { Faker::Name.last_name }
-  let(:email) { Faker::Internet.email }
+  let(:user) { create(:user) }
+  let(:first_name) { 'Jim' }
+  let(:last_name) { 'Morrison' }
+  let(:email) { 'thelizardking@gmail.com' }
 
   before do
     stub = double
@@ -54,9 +54,9 @@ RSpec.describe Mutations::Users::Update, type: :request do
 
   describe 'when the user is updating their details for the first time' do
     # A new user won't have a first or last name
-    let(:user) { create_user(first_name: nil, last_name: nil) }
-    let(:first_name) { Faker::Name.first_name }
-    let(:last_name) { Faker::Name.last_name }
+    let(:user) { create(:user, first_name: nil, last_name: nil) }
+    let(:first_name) { 'Bob' }
+    let(:last_name) { 'Dylan' }
 
     before do
       stub = double

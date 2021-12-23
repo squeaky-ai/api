@@ -23,7 +23,7 @@ RSpec.describe 'QueryUser', type: :request do
   end
 
   context 'when there is a current_user' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     it 'returns the user' do
       response = graphql_request(user_query, {}, user)

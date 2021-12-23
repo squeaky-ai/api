@@ -22,7 +22,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Heatmaps::Heatmaps, type: :request do
   context 'when there is no data for this page' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do

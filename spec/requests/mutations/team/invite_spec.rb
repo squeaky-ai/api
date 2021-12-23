@@ -22,9 +22,9 @@ GRAPHQL
 
 RSpec.describe Mutations::Teams::Invite, type: :request do
   context 'when the invited user does not have an account' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
-    let(:email) { Faker::Internet.email }
+    let(:email) { 'paulmccartney@msn.com' }
 
     before do
       site
@@ -56,9 +56,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
 
   context 'when the user alredy has an account' do
     context 'and they are already a member' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
-      let(:invited_user) { create_user }
+      let(:invited_user) { create(:user) }
 
       subject do
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
@@ -83,9 +83,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
     end
 
     context 'and they are not a member' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
-      let(:invited_user) { create_user }
+      let(:invited_user) { create(:user) }
 
       before do
         site
@@ -122,9 +122,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
   end
 
   context 'when the site has exceeded the limit' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
-    let(:email) { Faker::Internet.email }
+    let(:email) { 'raymanzarek@yahoo.com' }
 
     before do
       allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)

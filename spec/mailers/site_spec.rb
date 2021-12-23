@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe SiteMailer, type: :mailer do
   describe 'destroyed' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
     let(:mail) { described_class.destroyed(user.email, site) }
 
     it 'renders the headers' do

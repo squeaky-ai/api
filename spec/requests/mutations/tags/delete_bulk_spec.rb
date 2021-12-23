@@ -17,11 +17,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
   context 'when none of the tags exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, tag_ids: [Faker::Number.rand.to_s] }
+      variables = { site_id: site.id, tag_ids: [234234] }
       graphql_request(tags_delete_mutation, variables, user)
     end
 
@@ -32,14 +32,14 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
   end
 
   context 'when one of the tags exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
     before { tag }
 
     subject do
-      variables = { site_id: site.id, tag_ids: [tag.id, Faker::Number.rand.to_s] }
+      variables = { site_id: site.id, tag_ids: [tag.id, 23423423] }
       graphql_request(tags_delete_mutation, variables, user)
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
   end
 
   context 'when multiple tags exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:tag_1) { Tag.create(name: 'Foo', site_id: site.id) }
     let(:tag_2) { Tag.create(name: 'Bar', site_id: site.id) }

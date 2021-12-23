@@ -29,11 +29,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Sites::Create, type: :request do
   context 'when a site with this url already exists' do
-    let(:url) { Faker::Internet.url }
-    let(:user) { create_user }
+    let(:url) { 'https://google.com' }
+    let(:user) { create(:user) }
 
     subject do
-      variables = { url: url, name: Faker::Company.name }
+      variables = { url: url, name: 'Cowbell' }
       graphql_request(site_create_mutation, variables, user)
     end
 
@@ -47,10 +47,10 @@ RSpec.describe Mutations::Sites::Create, type: :request do
   context 'when a site with this url does not exist' do
     context 'when the url is invalid' do
       let(:url) { 'sdfsjkldfjsdklfsd' }
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       subject do
-        variables = { url: url, name: Faker::Company.name }
+        variables = { url: url, name: 'Arctic Monkeys' }
         graphql_request(site_create_mutation, variables, user)
       end
 
@@ -60,9 +60,9 @@ RSpec.describe Mutations::Sites::Create, type: :request do
     end
 
     context 'when the url is valid' do
-      let(:url) { Faker::Internet.url }
-      let(:name) { Faker::Company.name }
-      let(:user) { create_user }
+      let(:url) { 'https://thedoors.com' }
+      let(:name) { 'The Doors' }
+      let(:user) { create(:user) }
 
       subject do
         variables = { url: url, name: name }

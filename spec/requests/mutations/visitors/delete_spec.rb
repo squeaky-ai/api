@@ -18,7 +18,7 @@ GRAPHQL
 
 RSpec.describe Mutations::Visitors::Delete, type: :request do
   context 'when the visitor does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -33,7 +33,7 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
   end
 
   context 'when the visitor exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 

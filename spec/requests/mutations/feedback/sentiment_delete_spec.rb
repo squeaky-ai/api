@@ -13,7 +13,7 @@ GRAPHQL
 
 RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
   context 'when the feedback does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -31,7 +31,7 @@ RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
   end
 
   context 'when the feedback does exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:sentiment) { create_sentiment(recording: recording) }

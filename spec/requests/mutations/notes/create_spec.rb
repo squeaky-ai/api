@@ -24,10 +24,10 @@ GRAPHQL
 
 RSpec.describe Mutations::Notes::Create, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
-    let(:body) { Faker::Book.title }
-    let(:timestamp) { Faker::Number.number(digits: 5) }
+    let(:body) { 'Pimp my Ride' }
+    let(:timestamp) { 2342342 }
 
     subject do
       variables = {
@@ -46,10 +46,10 @@ RSpec.describe Mutations::Notes::Create, type: :request do
   end
 
   context 'when the recording exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:body) { Faker::Book.title }
+    let(:body) { 'Beans on Toast' }
     let(:timestamp) { 3000 }
 
     subject do

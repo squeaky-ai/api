@@ -11,7 +11,7 @@ feedback_create_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Feedback::Create, type: :request do
-  let(:user) { create_user }
+  let(:user) { create(:user) }
   let(:type) { 'bug' }
   let(:title) { 'Hello!' }
   let(:message) { 'Hello again!' }

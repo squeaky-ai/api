@@ -17,7 +17,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
   context 'when there are no recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -37,7 +37,7 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
   end
 
   context 'when there are some recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -62,7 +62,7 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
   end
 
   context 'when some of the recordings are out of the date range' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -88,7 +88,7 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
   end
 
   context 'when some of the recordings have been viewed' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do

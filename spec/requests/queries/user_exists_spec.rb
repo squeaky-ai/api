@@ -22,9 +22,7 @@ RSpec.describe 'QueryUserExists', type: :request do
   context 'when the user does exist' do
     let(:email) { 'jimmy@gmail.com' }
 
-    before do
-      create_user(email: email)
-    end
+    before { create(:user, email: email) }
 
     it 'returns true' do
       response = graphql_request(user_exists_query, { email: email }, nil)

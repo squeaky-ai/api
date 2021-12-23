@@ -12,9 +12,9 @@ GRAPHQL
 
 RSpec.describe Mutations::Users::Update, type: :request do
   context 'when the current password is incorrect' do
-    let(:old_password) { Faker::Lorem.sentence }
-    let(:new_password) { Faker::Lorem.sentence }
-    let(:user) { create_user }
+    let(:old_password) { 'oldpassword' }
+    let(:new_password) { 'newpassword' }
+    let(:user) { create(:user) }
 
     before { user }
 
@@ -37,9 +37,9 @@ RSpec.describe Mutations::Users::Update, type: :request do
   end
 
   context 'when the current password is correct' do
-    let(:old_password) { Faker::Lorem.sentence }
-    let(:new_password) { Faker::Lorem.sentence }
-    let(:user) { create_user(password: old_password) }
+    let(:old_password) { 'oldpassword' }
+    let(:new_password) { 'newpassword' }
+    let(:user) { create(:user, password: old_password) }
 
     before { user }
 

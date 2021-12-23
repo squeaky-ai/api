@@ -15,7 +15,7 @@ RSpec.describe Auth::SessionsController, type: :controller do
     end
 
     context 'when the user is logged in' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
 
       it 'returns the serialized user' do
         sign_in user

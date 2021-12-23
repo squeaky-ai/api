@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 recordings_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_ids: [String!]!) {
+  mutation($site_id: ID!, $recording_ids: [String!]!, $from_date: String!, $to_date: String!) {
     recordingsDelete(input: { siteId: $site_id, recordingIds: $recording_ids }) {
-      recordings {
+      recordings(fromDate: $from_date, toDate: $to_date) {
         items {
           id
         }
@@ -16,11 +16,19 @@ GRAPHQL
 
 RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
   context 'when none of the recordings exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_ids: ['23423423423'] }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id, 
+        recording_ids: ['23423423423'], 
+        from_date: today, 
+        to_date: today 
+      }
+
       graphql_request(recordings_delete_mutation, variables, user)
     end
 
@@ -35,7 +43,7 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
   end
 
   context 'when some of the recordings exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     let(:recording_1) { create_recording(site: site, visitor: create_visitor) }
@@ -49,7 +57,15 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'] }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id, 
+        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
+        from_date: today, 
+        to_date: today 
+      }
+
       graphql_request(recordings_delete_mutation, variables, user)
     end
 

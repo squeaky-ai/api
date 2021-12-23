@@ -24,7 +24,7 @@ GRAPHQL
 
 RSpec.describe Mutations::Notes::Update, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -43,7 +43,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
   end
 
   context 'when the note does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
@@ -69,11 +69,11 @@ RSpec.describe Mutations::Notes::Update, type: :request do
   context 'when the note exists' do
     context 'and the user is a member' do
       context 'and they are deleting their own note' do
-        let(:user) { create_user }
-        let(:site) { create_site_and_team(user: create_user) }
+        let(:user) { create(:user) }
+        let(:site) { create_site_and_team(user: create(:user)) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
-        let(:body) { Faker::Lorem.sentence }
+        let(:body) { 'Toad' }
         let(:note) { create_note(recording: recording, user: user) }
   
         before do
@@ -102,12 +102,12 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       end
 
       context 'and they are deleting someone elses note' do
-        let(:user) { create_user }
-        let(:site) { create_site_and_team(user: create_user) }
+        let(:user) { create(:user) }
+        let(:site) { create_site_and_team(user: create(:user)) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
-        let(:body) { Faker::Lorem.sentence }
-        let(:note) { create_note(recording: recording, user: create_user) }
+        let(:body) { 'Princess Peach' }
+        let(:note) { create_note(recording: recording, user: create(:user)) }
   
         before do
           note
@@ -136,11 +136,11 @@ RSpec.describe Mutations::Notes::Update, type: :request do
     end
 
     context 'and the user is an admin' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user, role: Team::ADMIN) }
       let(:recording) { create_recording(site: site, visitor: create_visitor) }
-      let(:note) { create_note(recording: recording, user: create_user) }
-      let(:body) { Faker::Lorem.sentence }
+      let(:note) { create_note(recording: recording, user: create(:user)) }
+      let(:body) { 'Bowser' }
 
       before { note }
 
@@ -165,11 +165,11 @@ RSpec.describe Mutations::Notes::Update, type: :request do
     end
 
     context 'and the user is the owner' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user, role: Team::OWNER) }
       let(:recording) { create_recording(site: site, visitor: create_visitor) }
-      let(:note) { create_note(recording: recording, user: create_user) }
-      let(:body) { Faker::Lorem.sentence }
+      let(:note) { create_note(recording: recording, user: create(:user)) }
+      let(:body) { 'Kooper Trooper' }
 
       before { note }
 

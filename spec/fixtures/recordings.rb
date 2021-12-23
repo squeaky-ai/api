@@ -17,7 +17,7 @@ module Fixtures
         site: @site,
         session_id: SecureRandom.uuid,
         locale: 'en-GB',
-        useragent: Faker::Internet.user_agent,
+        useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0',
         browser: 'Firefox',
         device_type: 'Desktop',
         viewport_x: 1920,

@@ -36,7 +36,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Recordings::Latest, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -51,7 +51,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
   end
 
   context 'when the recording does exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     
     before { create_recording(site: site, visitor: create_visitor) }
@@ -68,7 +68,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
   end
 
   context 'when the recording is soft deleted' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     
     before { create_recording({ deleted: true }, site: site, visitor: create_visitor) }

@@ -14,11 +14,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Recordings::Delete, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: Faker::Number.number(digits: 5) }
+      variables = { site_id: site.id, recording_id: 4564564 }
       graphql_request(recording_delete_mutation, variables, user)
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
   end
 
   context 'when the recording does exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 

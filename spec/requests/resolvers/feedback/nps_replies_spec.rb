@@ -20,7 +20,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Feedback::NpsReplies, type: :request do
   context 'when there is no data' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -38,7 +38,7 @@ RSpec.describe Resolvers::Feedback::NpsReplies, type: :request do
   end
 
   context 'when there is some data' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
 

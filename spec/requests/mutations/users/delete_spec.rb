@@ -11,7 +11,7 @@ user_delete_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Users::Delete, type: :request do
-  let(:user) { create_user }
+  let(:user) { create(:user) }
 
   before do
     stub = double
@@ -39,7 +39,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
   end
 
   describe 'when the user is the owner of some sites' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     before do
       create_site_and_team(user: user)
@@ -57,8 +57,8 @@ RSpec.describe Mutations::Users::Delete, type: :request do
   end
 
   describe 'when the user is a member of a site' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     before { create_team(user: user, site: site, role: Team::MEMBER) }
 

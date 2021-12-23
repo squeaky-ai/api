@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingsSort) {
+  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingsSort, $from_date: String!, $to_date: String!) {
     site(siteId: $site_id) {
-      recordings(size: $size, page: $page, sort: $sort) {
+      recordings(size: $size, page: $page, sort: $sort, fromDate: $from_date, toDate: $to_date) {
         items {
           id
           siteId
@@ -42,11 +42,19 @@ GRAPHQL
 
 RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   context 'when there are no recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 0 }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id,
+        size: 15, 
+        page: 0, 
+        from_date: today, 
+        to_date: today 
+      }
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -68,11 +76,20 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   end
 
   context 'when there are several recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 0 }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id, 
+        size: 15, 
+        page: 0, 
+        from_date: today, 
+        to_date: today
+      }
+
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -96,11 +113,20 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   end
 
   context 'when a recording is soft deleted' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, size: 15, page: 0 }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id, 
+        size: 15,
+        page: 0, 
+        from_date: today, 
+        to_date: today
+      }
+
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -116,7 +142,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
   end
 
   context 'when paginating' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before do
@@ -124,7 +150,16 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, size: 10, page: 2 }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = { 
+        site_id: site.id, 
+        size: 10, 
+        page: 2, 
+        from_date: today, 
+        to_date: today
+      }
+
       graphql_request(site_recordings_query, variables, user)
     end
 
@@ -147,11 +182,21 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
   context 'when sorting results' do
     context 'when sorting by descending' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { site_id: site.id, size: 5, page: 0, sort: 'connected_at__desc' }
+        today = Time.now.strftime('%Y-%m-%d')
+
+        variables = { 
+          site_id: site.id, 
+          size: 5, 
+          page: 0, 
+          sort: 'connected_at__desc', 
+          from_date: today, 
+          to_date: today
+        }
+  
         graphql_request(site_recordings_query, variables, user)
       end
 
@@ -176,11 +221,21 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     end
 
     context 'when sorting by ascending' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject do
-        variables = { site_id: site.id, size: 5, page: 0, sort: 'connected_at__asc' }
+        today = Time.now.strftime('%Y-%m-%d')
+
+        variables = { 
+          site_id: site.id, 
+          size: 5, 
+          page: 0, 
+          sort: 'connected_at__asc', 
+          from_date: today, 
+          to_date: today
+        }
+
         graphql_request(site_recordings_query, variables, user)
       end
 

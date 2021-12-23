@@ -35,7 +35,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   context 'when the visitor does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -50,7 +50,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   end
 
   context 'when there is a visitor with a recording' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
 
@@ -82,7 +82,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   end
 
   context 'when the visitior has recordings but they were soft deleted' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
 
@@ -114,7 +114,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   end
 
   context 'when there are no external attributes' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
 
@@ -134,7 +134,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   end
 
   context 'when there are some external attributes' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
     let(:visitor) { create_visitor(external_attributes: external_attributes) }

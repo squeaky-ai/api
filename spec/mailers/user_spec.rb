@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe UserMailer, type: :mailer do
   describe 'updated' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:mail) { described_class.updated(user) }
 
     it 'renders the headers' do
@@ -15,7 +15,7 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe 'destroyed' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:mail) { described_class.destroyed(user.email) }
 
     it 'renders the headers' do

@@ -17,11 +17,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Tags::Delete, type: :request do
   context 'when the tag does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, tag_id: Faker::Number.rand.to_s }
+      variables = { site_id: site.id, tag_id: 23423423 }
       graphql_request(tag_delete_mutation, variables, user)
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
   end
 
   context 'when the tag exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
   end
 
   context 'when a tag exists and is joined to a recording' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create_tag(recording: recording, site: site) }

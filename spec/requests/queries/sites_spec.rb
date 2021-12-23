@@ -39,7 +39,7 @@ RSpec.describe 'QuerySites', type: :request do
   end
 
   context 'when the user is not a member of any sites' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
 
     it 'returns an empty array' do
       response = graphql_request(sites_query, {}, user)
@@ -49,7 +49,7 @@ RSpec.describe 'QuerySites', type: :request do
   end
 
   context 'when the user is a member of a site' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     before { site }
@@ -87,8 +87,8 @@ RSpec.describe 'QuerySites', type: :request do
   end
 
   context 'when the user has a pending invite' do
-    let(:user) { create_user }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     before do
       create_team(user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
@@ -102,8 +102,8 @@ RSpec.describe 'QuerySites', type: :request do
   end
 
   context 'when the user is a superuser' do
-    let(:user) { create_user(superuser: true) }
-    let(:site) { create_site_and_team(user: create_user) }
+    let(:user) { create(:user, superuser: true) }
+    let(:site) { create_site_and_team(user: create(:user)) }
 
     before { site }
 

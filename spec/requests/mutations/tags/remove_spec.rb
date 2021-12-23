@@ -19,11 +19,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Tags::Remove, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: SecureRandom.uuid, tag_id: Faker::Number.rand.to_s }
+      variables = { site_id: site.id, recording_id: SecureRandom.uuid, tag_id: 345345 }
       graphql_request(tag_remove_mutation, variables, user)
     end
 
@@ -34,12 +34,12 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
   end
 
   context 'when the tag does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id, tag_id: Faker::Number.rand.to_s }
+      variables = { site_id: site.id, recording_id: recording.id, tag_id: 23423423 }
       graphql_request(tag_remove_mutation, variables, user)
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
   end
 
   context 'when the tag exists' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
     let(:tag) { create_tag(recording: recording, site: site) }

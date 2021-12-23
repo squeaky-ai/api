@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'securerandom'
 
 visitor_starred_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $visitor_id: ID!, $starred: Boolean!) {
@@ -16,11 +17,11 @@ GRAPHQL
 
 RSpec.describe Mutations::Visitors::Starred, type: :request do
   context 'when the recording does not exist' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
-      variables = { site_id: site.id, visitor_id: Faker::Number.number(digits: 5), starred: false }
+      variables = { site_id: site.id, visitor_id: SecureRandom.base36, starred: false }
       graphql_request(visitor_starred_mutation, variables, user)
     end
 
@@ -32,7 +33,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
 
   context 'when the visitor does exist' do
     context 'and it is starred' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
       let(:visitor) { create_visitor }
       
@@ -54,7 +55,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
     end
 
     context 'and it is unstarred' do
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
       let(:visitor) { create_visitor(starred: true) }
       

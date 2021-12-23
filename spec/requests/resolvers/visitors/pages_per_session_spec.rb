@@ -14,7 +14,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Visitors::PagesPerSession, type: :request do
   context 'when there are no recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
@@ -29,7 +29,7 @@ RSpec.describe Resolvers::Visitors::PagesPerSession, type: :request do
   end
 
   context 'when there are some recordings' do
-    let(:user) { create_user }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:visitor) { create_visitor }
 

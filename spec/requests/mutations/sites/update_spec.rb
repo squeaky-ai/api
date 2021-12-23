@@ -15,8 +15,8 @@ GRAPHQL
 RSpec.describe Mutations::Sites::Update, type: :request do
   context 'when updating the url' do
     context 'when a site with this url already exists' do
-      let(:url) { Faker::Internet.url }
-      let(:user) { create_user }
+      let(:url) { 'https://google.com' }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject do
@@ -33,7 +33,7 @@ RSpec.describe Mutations::Sites::Update, type: :request do
 
     context 'when the url is invalid' do
       let(:url) { 'fdsdfgdfgdfgdfg' }
-      let(:user) { create_user }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject do
@@ -47,8 +47,8 @@ RSpec.describe Mutations::Sites::Update, type: :request do
     end
 
     context 'when the url is valid' do
-      let(:url) { Faker::Internet.url }
-      let(:user) { create_user }
+      let(:url) { 'https://thedoors.com' }
+      let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user) }
 
       subject do
@@ -68,8 +68,8 @@ RSpec.describe Mutations::Sites::Update, type: :request do
   end
 
   context 'when updating the name' do
-    let(:name) { Faker::Company.name }
-    let(:user) { create_user }
+    let(:name) { 'Sausage' }
+    let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
 
     subject do
