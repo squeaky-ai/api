@@ -256,7 +256,7 @@ module Resolvers
         if has_none
           recordings.where('recordings.referrer IS NULL OR recordings.referrer IN (?)', filters.referrers)
         else
-          recordings.where('recordings.referrer IN (?)', referrers)
+          recordings.where('recordings.referrer IN (?)', filters.referrers)
         end
       end
 
