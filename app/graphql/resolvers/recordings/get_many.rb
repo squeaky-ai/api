@@ -251,7 +251,13 @@ module Resolvers
       def filter_by_referrers(recordings, filters)
         return recordings unless filters.referrers.any?
 
-        recordings.where('recordings.referrer IN (?)', referrers)
+        has_none = filters.referrers.any? { |r| r == 'none' }
+
+        if has_none
+          recordings.where('recordings.referrer IS NULL OR recordings.referrer IN (?)', filters.referrers)
+        else
+          recordings.where('recordings.referrer IN (?)', referrers)
+        end
       end
 
       # Adds a filter that lets users show only recordings
@@ -264,7 +270,8 @@ module Resolvers
 
       # Adds a filter that lets users show only recordings
       # that contain certain tags
-      def filter_by_tags(recordings, filters)
+      def filter_by_tags(recordings, _filters)
+        # TODO
         recordings
       end
     end
