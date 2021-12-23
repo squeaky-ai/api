@@ -6,7 +6,7 @@ RSpec.describe TeamMailer, type: :mailer do
   describe 'invite' do
     let(:token) { '__fake_jwt__' }
     let(:email) { 'meanmrmustard.com' }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:user) { create(:user) }
 
     let(:mail) { described_class.invite(email, site, user, token) }
@@ -35,7 +35,7 @@ RSpec.describe TeamMailer, type: :mailer do
   describe 'member_left' do
     let(:email) { 'zacdelarocca@ratm.com' }
     let(:user) { create(:user) }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:mail) { described_class.member_left(email, site, user) }
 
     it 'renders the headers' do
@@ -57,7 +57,7 @@ RSpec.describe TeamMailer, type: :mailer do
 
   describe 'member_removed' do
     let(:email) { 'tommorello@ratm.com' }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:mail) { described_class.member_removed(email, site) }
 
     it 'renders the headers' do
@@ -74,7 +74,7 @@ RSpec.describe TeamMailer, type: :mailer do
 
   describe 'became_admin' do
     let(:email) { 'timcommerford@ratm.com' }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:user) { create(:user) }
     let(:mail) { described_class.became_admin(email, site, user) }
 
@@ -97,7 +97,7 @@ RSpec.describe TeamMailer, type: :mailer do
 
   describe 'became_owner' do
     let(:email) { 'bradwilk@ratm.com' }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:user) { create(:user) }
     let(:mail) { described_class.became_owner(email, site, user) }
 

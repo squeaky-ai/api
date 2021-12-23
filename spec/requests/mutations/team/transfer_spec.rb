@@ -53,7 +53,7 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
   end
 
   context 'when the user is the owner of the site' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     let(:old_owner) { create(:user) }
     let(:old_owner_team) { create_team(user: old_owner, site: site, role: Team::OWNER) }

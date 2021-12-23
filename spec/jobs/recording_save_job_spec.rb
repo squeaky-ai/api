@@ -7,7 +7,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
 
   context 'when the recording is new' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     let(:event) do
       {
@@ -74,7 +74,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email domain is blacklisted' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     let(:event) do
       {
@@ -101,7 +101,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email address is blacklisted' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     let(:event) do
       {

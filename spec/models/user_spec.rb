@@ -103,7 +103,7 @@ RSpec.describe User, type: :model do
   describe '#member_of?' do
     context 'when the user is not a member of the team' do
       let(:user) { create(:user) }
-      let(:site) { create_site }
+      let(:site) { create(:site) }
 
       subject { user }
 

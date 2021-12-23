@@ -41,8 +41,13 @@ RSpec.describe Mutations::Tags::Update, type: :request do
     let(:user) { create(:user) }
     let(:site) { create_site_and_team(user: user) }
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
-    let(:tag) { create_tag(recording: recording, site: site) }
+    let(:tag) { create(:tag, site_id: site.id) }
     let(:name) { 'Saucepan' }
+
+    before do
+      recording.tags << tag
+      recording.save
+    end
 
     subject do
       variables = { site_id: site.id, tag_id: tag.id.to_s, name: name }

@@ -37,7 +37,7 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
   end
 
   context 'when the token is valid, but has been cancelled' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:user) { invite_user } # The team won't exist
 
     subject do

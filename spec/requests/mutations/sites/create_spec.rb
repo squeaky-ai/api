@@ -37,7 +37,7 @@ RSpec.describe Mutations::Sites::Create, type: :request do
       graphql_request(site_create_mutation, variables, user)
     end
 
-    before { create_site(url: Site.format_uri(url)) }
+    before { create(:site, url: Site.format_uri(url)) }
 
     it 'raises an error' do
       expect(subject['errors'][0]['message']).to eq 'Url This site is already registered'

@@ -12,21 +12,12 @@ module Helpers
     User.invite!(email: email || 'geeza@gmail.com') { |u| u.skip_invitation = true }
   end
 
-  def create_site(args = {})
-    default = {
-      name: 'Teapot',
-      url: 'https://teapot.com',
-      plan: Site::ESSENTIALS
-    }
-    Site.create({ **default, **args })
-  end
-
   def create_team(user:, site:, role:, status: Team::ACCEPTED)
     Team.create(user: user, site: site, role: role, status: status)
   end
 
   def create_site_and_team(user:, role: Team::OWNER, status: Team::ACCEPTED)
-    site = create_site
+    site = create(:site)
     site.team << create_team(user: user, site: site, role: role, status: status)
     site.save
     site
@@ -42,22 +33,6 @@ module Helpers
 
   def create_events(recording:, count:)
     Fixtures::Events.new(recording).sample(count)
-  end
-
-  def create_tag(name = nil, site:, recording:)
-    tag = Tag.create(name: name || 'Oh no', site_id: site.id)
-    recording.tags << tag
-    recording.save
-    tag
-  end
-
-  def create_note(args = {}, recording:, user:)
-    default = {
-      body: 'Ahhhhh',
-      timestamp: 23423,
-      **args
-    }
-    Note.create(recording: recording, user: user, **default)
   end
 
   def create_visitor(args = {})

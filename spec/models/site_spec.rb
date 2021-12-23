@@ -47,7 +47,7 @@ RSpec.describe Site, type: :model do
   end
 
   describe '#admins' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     subject { site.admins }
 
@@ -65,7 +65,7 @@ RSpec.describe Site, type: :model do
 
   describe '#owner' do
     let(:user) { create(:user) }
-    let(:site) { create_site }
+    let(:site) { create(:site) }
     let(:team) { create_team(user: user, site: site, role: Team::OWNER) }
 
     subject { site.owner }
@@ -104,9 +104,9 @@ RSpec.describe Site, type: :model do
 
   describe '#plan_name' do
     it 'returns the correct plan' do
-      expect(create_site(plan: Site::ESSENTIALS).plan_name).to eq 'Essentials'
-      expect(create_site(plan: Site::PREMIUM).plan_name).to eq 'Premium'
-      expect(create_site(plan: Site::UNLIMITED).plan_name).to eq 'Unlimited'
+      expect(create(:site, plan: Site::ESSENTIALS).plan_name).to eq 'Essentials'
+      expect(create(:site, plan: Site::PREMIUM).plan_name).to eq 'Premium'
+      expect(create(:site, plan: Site::UNLIMITED).plan_name).to eq 'Unlimited'
     end
   end
 

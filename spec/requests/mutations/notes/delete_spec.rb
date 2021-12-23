@@ -73,7 +73,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
         let(:site) { create_site_and_team(user: create(:user)) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
-        let(:note) { create_note(recording: recording, user: user) }
+        let(:note) { create(:note, recording_id: recording.id, user: user) }
   
         before do
           note
@@ -104,7 +104,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
         let(:site) { create_site_and_team(user: create(:user)) }
         let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
-        let(:note) { create_note(recording: recording, user: create(:user)) }
+        let(:note) { create(:note, recording_id: recording.id) }
   
         before do
           note
@@ -135,7 +135,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user, role: Team::ADMIN) }
       let(:recording) { create_recording(site: site, visitor: create_visitor) }
-      let(:note) { create_note(recording: recording, user: create(:user)) }
+      let(:note) { create(:note, recording_id: recording.id) }
 
       before { note }
 
@@ -162,7 +162,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       let(:user) { create(:user) }
       let(:site) { create_site_and_team(user: user, role: Team::OWNER) }
       let(:recording) { create_recording(site: site, visitor: create_visitor) }
-      let(:note) { create_note(recording: recording, user: create(:user)) }
+      let(:note) { create(:note, recording_id: recording.id) }
 
       before { note }
 

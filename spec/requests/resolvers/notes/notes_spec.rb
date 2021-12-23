@@ -62,7 +62,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
     end
 
     before do
-      5.times { create_note(recording: recording, user: user) }
+      5.times { create(:note, recording_id: recording.id, user: user) }
     end
 
     it 'returns the items' do
@@ -87,7 +87,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
     let(:recording) { create_recording(site: site, visitor: create_visitor) }
 
     before do
-      5.times { create_note(recording: recording, user: user) }
+      5.times { create(:note, recording_id: recording.id, user: user) }
     end
 
     subject do

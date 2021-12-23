@@ -29,7 +29,7 @@ GRAPHQL
 
 RSpec.describe 'QuerySites', type: :request do
   context 'when there is no current_user' do
-    let(:site) { create_site }
+    let(:site) { create(:site) }
 
     it 'raises an error' do
       response = graphql_request(sites_query, {}, nil)
@@ -67,7 +67,7 @@ RSpec.describe 'QuerySites', type: :request do
             'plan' => site.plan,
             'planName' => site.plan_name,
             'uuid' => site.uuid,
-            'verifiedAt' => nil,
+            'verifiedAt' => site.verified_at.to_s,
             'team' => [
               {
                 'id' => site.team[0].id.to_s,

@@ -7,7 +7,7 @@ require 'securerandom'
 RSpec.describe Visitor, type: :model do
   describe '#viewed?' do
     context 'when no sessions have been viewed including this visitor' do
-      let(:site) { create_site }
+      let(:site) { create(:site) }
       let(:visitor) { create_visitor }
       
       before do
@@ -22,7 +22,7 @@ RSpec.describe Visitor, type: :model do
     end
 
     context 'when sessions have been viewed including this visitor' do
-      let(:site) { create_site }
+      let(:site) { create(:site) }
       let(:visitor) { create_visitor }
 
       before do
