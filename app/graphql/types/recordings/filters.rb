@@ -12,6 +12,10 @@ module Types
       argument :exit_url, String, required: false
       argument :visited_pages, [String], required: true
       argument :unvisited_pages, [String], required: true
+      argument :bookmarked, Boolean, required: false
+      argument :referrers, [String], required: true
+      argument :starred, Boolean, required: false
+      argument :tags, [Integer], required: true
       argument :status, Types::Common::FiltersStatus, required: false
       argument :duration, Types::Common::FiltersDuration, required: true
       argument :viewport, Types::Common::FiltersViewport, required: true

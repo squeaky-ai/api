@@ -54,16 +54,27 @@ module Resolvers
 
       def filter(recordings, filters)
         if filters
-          recordings = filter_by_status(recordings, filters)
-          recordings = filter_by_duration(recordings, filters)
-          recordings = filter_by_start_url(recordings, filters)
-          recordings = filter_by_exit_url(recordings, filters)
-          recordings = filter_by_visited_pages(recordings, filters)
-          recordings = filter_by_unvisited_pages(recordings, filters)
-          recordings = filter_by_device(recordings, filters)
-          recordings = filter_by_browser(recordings, filters)
-          recordings = filter_by_viewport(recordings, filters)
-          recordings = filter_by_language(recordings, filters)
+          filter_options = %w[
+            status
+            duration
+            start_url
+            exit_url
+            visited_pages
+            unvisited_pages
+            device
+            browser
+            viewport
+            language
+            bookmarked
+            referrers
+            starred
+            tag
+          ]
+
+          filter_options.each do |option|
+            method = "filter_by_#{option}"
+            recordings = send(method, recordings, filters) if respond_to?(method, true)
+          end
         end
 
         recordings
@@ -225,6 +236,36 @@ module Resolvers
         locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
 
         recordings.where('LOWER(recordings.locale) IN (?)', locales)
+      end
+
+      # Add a filter that lets users show only recordings
+      # that have been bookmarked
+      def filter_by_bookmarked(recordings, filters)
+        return recordings if filters.bookmarked.nil?
+
+        recordings.where('recordings.bookmarked = ?', filters.bookmarked)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that were from one of the referrers
+      def filter_by_referrers(recordings, filters)
+        return recordings unless filters.referrers.any?
+
+        recordings.where('recordings.referrer IN (?)', referrers)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # where the visitor has been starred
+      def filter_by_starred(recordings, filters)
+        return recordings if filters.starred.nil?
+
+        recordings.where('visitors.starred = ? ', filters.starred)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that contain certain tags
+      def filter_by_tags(recordings, filters)
+        recordings
       end
     end
   end
