@@ -51,8 +51,12 @@ FactoryBot.define do
     connected_at { Time.now.to_i * 1000 }
     disconnected_at { (Time.now.to_i + 1000) * 1000 }
 
-    after(:create) do |recording|
-      create_list(:page, 1, recording: recording)
+    transient do
+      page_urls { ['/'] }
+    end
+
+    after(:create) do |recording, evaluator|
+      evaluator.page_urls.each { |url| create(:page, url: url, recording: recording) }
     end
 
     site { association :site }

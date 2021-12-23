@@ -33,8 +33,8 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
     end
 
     subject do
@@ -53,9 +53,9 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/'), create_page(url: '/test')] }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000, pages: [create_page(url: '/contact')] }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
+      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site, page_urls: ['/contact'])
     end
 
     subject do

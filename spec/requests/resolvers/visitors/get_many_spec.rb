@@ -57,8 +57,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create_visitor
-      visitor_2 = create_visitor
+      visitor_1 = create(:visitor)
+      visitor_2 = create(:visitor)
   
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor_1)
       create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site, visitor: visitor_1)
@@ -90,7 +90,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
   
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
       create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true, site: site, visitor: visitor)
@@ -112,7 +112,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
 
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end
@@ -134,7 +134,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 
     before do
-      visitor = create_visitor(external_attributes: external_attributes)
+      visitor = create(:visitor, external_attributes: external_attributes)
 
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end

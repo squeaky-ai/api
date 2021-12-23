@@ -36,9 +36,9 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
     end
 
     subject do
@@ -66,9 +66,9 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 7, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
+      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site)
     end
 
     subject do

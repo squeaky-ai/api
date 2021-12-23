@@ -8,7 +8,7 @@ RSpec.describe Visitor, type: :model do
   describe '#viewed?' do
     context 'when no sessions have been viewed including this visitor' do
       let(:site) { create(:site) }
-      let(:visitor) { create_visitor }
+      let(:visitor) { create(:visitor) }
       
       before do
         create(:recording, site: site)
@@ -23,7 +23,7 @@ RSpec.describe Visitor, type: :model do
 
     context 'when sessions have been viewed including this visitor' do
       let(:site) { create(:site) }
-      let(:visitor) { create_visitor }
+      let(:visitor) { create(:visitor) }
 
       before do
         create(:recording, viewed: true, site: site, visitor: visitor)

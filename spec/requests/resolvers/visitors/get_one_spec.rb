@@ -52,10 +52,10 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   context 'when there is a visitor with a recording' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do  
-      create_recording({ pages: [create_page(url: '/')] }, site: site, visitor: visitor)
+      create(:recording, site: site, visitor: visitor)
     end
 
     subject do
@@ -84,7 +84,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   context 'when the visitior has recordings but they were soft deleted' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do  
       create(:recording, deleted: true, site: site, visitor: visitor)
@@ -116,7 +116,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
   context 'when there are no external attributes' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do
       create(:recording, site: site, visitor: visitor)
@@ -137,7 +137,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
-    let(:visitor) { create_visitor(external_attributes: external_attributes) }
+    let(:visitor) { create(:visitor, external_attributes: external_attributes) }
 
     before do
       create(:recording, site: site, visitor: visitor)

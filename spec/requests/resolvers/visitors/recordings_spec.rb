@@ -50,13 +50,13 @@ RSpec.describe Resolvers::Visitors::Recordings, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do
-      create_recording({ pages: [create_page(url: '/')] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/'), create_page(url: '/test')] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/contact')], deleted: true }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/contact')] }, site: site, visitor: create_visitor)
+      create(:recording, site: site, page_urls: ['/'], visitor: visitor)
+      create(:recording, site: site, page_urls: ['/', '/contact'], visitor: visitor)
+      create(:recording, site: site, page_urls: ['/contact'], deleted: true, visitor: visitor)
+      create(:recording, site: site, page_urls: ['/contact'])
     end
 
     subject do

@@ -37,7 +37,7 @@ RSpec.describe Resolvers::Feedback::NpsStats, type: :request do
   context 'when there is some data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do
       create(:nps, score: 5, created_at: Time.new(2021, 8, 3), recording: create(:recording, created_at: Time.new(2021, 8, 3), site: site, visitor: visitor))

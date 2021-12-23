@@ -35,7 +35,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
     context 'and it is starred' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:visitor) { create_visitor }
+      let(:visitor) { create(:visitor) }
       
       before { create(:recording, site: site, visitor: visitor) }
 
@@ -57,7 +57,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
     context 'and it is unstarred' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:visitor) { create_visitor(starred: true) }
+      let(:visitor) { create(:visitor, starred: true) }
       
       before { create(:recording, site: site, visitor: visitor) }
 

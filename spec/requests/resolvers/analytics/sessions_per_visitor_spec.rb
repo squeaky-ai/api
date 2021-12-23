@@ -36,11 +36,11 @@ RSpec.describe Resolvers::Analytics::SessionsPerVisitor, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
 
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 8).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 8).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
     end
 
     subject do
@@ -57,15 +57,14 @@ RSpec.describe Resolvers::Analytics::SessionsPerVisitor, type: :request do
   context 'when there are some recordings from the previous range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor)
-
-      create_recording({ connected_at: 1627800838578, disconnected_at: 1627800839578 }, site: site, visitor: visitor)
-      create_recording({ connected_at: 1627800836578, disconnected_at: 1627800837578 }, site: site, visitor: visitor)
-      create_recording({ connected_at: 1627800836578, disconnected_at: 1627800837578 }, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site, visitor: visitor)
+      create(:recording, connected_at: 1627800838578, disconnected_at: 1627800839578, site: site, visitor: visitor)
+      create(:recording, connected_at: 1627800836578, disconnected_at: 1627800837578, site: site, visitor: visitor)
+      create(:recording, connected_at: 1627800836578, disconnected_at: 1627800837578, site: site, visitor: visitor)
     end
 
     subject do
@@ -84,12 +83,12 @@ RSpec.describe Resolvers::Analytics::SessionsPerVisitor, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
 
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 8).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000, pages: [create_page(url: '/')] }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 8).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site)
     end
 
     subject do

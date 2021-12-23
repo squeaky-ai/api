@@ -42,7 +42,7 @@ RSpec.describe Resolvers::Feedback::SentimentRatings, type: :request do
   context 'when there is some data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create_visitor }
+    let(:visitor) { create(:visitor) }
 
     before do
       create(:sentiment, score: 5, created_at: Time.new(2021, 8, 3), recording: create(:recording, site: site, visitor: visitor))
