@@ -12,10 +12,6 @@ module Helpers
     User.invite!(email: email || 'geeza@gmail.com') { |u| u.skip_invitation = true }
   end
 
-  def create_team(user:, site:, role:, status: Team::ACCEPTED)
-    Team.create(user: user, site: site, role: role, status: status)
-  end
-
   def create_recording(args = {}, site:, visitor:)
     Fixtures::Recordings.new(site, visitor).create(args)
   end

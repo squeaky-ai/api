@@ -52,9 +52,9 @@ RSpec.describe Site, type: :model do
     subject { site.admins }
 
     before do
-      create_team(user: create(:user), site: site, role: Team::MEMBER)
-      create_team(user: create(:user), site: site, role: Team::ADMIN)
-      create_team(user: create(:user), site: site, role: Team::OWNER)
+      create(:team, site: site, role: Team::MEMBER)
+      create(:team, site: site, role: Team::ADMIN)
+      create(:team, site: site, role: Team::OWNER)
     end
 
     it 'returns only the team members that are admins' do
@@ -66,7 +66,7 @@ RSpec.describe Site, type: :model do
   describe '#owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site) }
-    let(:team) { create_team(user: user, site: site, role: Team::OWNER) }
+    let(:team) { create(:team, user: user, site: site, role: Team::OWNER) }
 
     subject { site.owner }
 
@@ -81,7 +81,7 @@ RSpec.describe Site, type: :model do
     context 'when a member exists' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:team) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
+      let(:team) { create(:team, site: site, role: Team::ADMIN) }
 
       subject { site.member(team.id) }
 
@@ -177,7 +177,7 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
-        create_team(user: create(:user), site: site, role: Team::MEMBER)
+        create(:team, site: site, role: Team::MEMBER)
       end
 
       subject { site.team_size_exceeded? }

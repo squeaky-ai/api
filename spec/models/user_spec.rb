@@ -45,7 +45,7 @@ RSpec.describe User, type: :model do
     context 'when the user is not the owner' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team) }
-      let(:team) { create_team(user: subject, site: site, role: Team::ADMIN) }
+      let(:team) { create(:team, user: subject, site: site, role: Team::ADMIN) }
 
       subject { user }
 

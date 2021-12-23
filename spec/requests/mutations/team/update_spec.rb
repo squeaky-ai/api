@@ -39,7 +39,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when the role is not valid' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id, role: 5 }
@@ -69,7 +69,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when the user is made an admin' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id, role: Team::ADMIN }
@@ -97,7 +97,7 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when the user is made a member' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id, role: Team::MEMBER }
@@ -125,8 +125,8 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when an admin promotes a member' do
     let(:site) { create(:site_with_team) }
 
-    let(:team1) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
-    let(:team2) { create_team(user: create(:user), site: site, role: Team::MEMBER) }
+    let(:team1) { create(:team, site: site, role: Team::ADMIN) }
+    let(:team2) { create(:team, site: site, role: Team::MEMBER) }
 
     before do
       stub = double
@@ -154,8 +154,8 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when an admin tries to downgrade another admin' do
     let(:site) { create(:site_with_team) }
 
-    let(:team1) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
-    let(:team2) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
+    let(:team1) { create(:team, site: site, role: Team::ADMIN) }
+    let(:team2) { create(:team, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id, team_id: team2.id, role: Team::MEMBER }

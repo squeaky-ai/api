@@ -14,7 +14,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
   context 'when the user is not the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id }
@@ -47,9 +47,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     before do
-      create_team(user: create(:user), site: site, role: Team::MEMBER)
-      create_team(user: create(:user), site: site, role: Team::MEMBER)
-      create_team(user: create(:user), site: site, role: Team::MEMBER)
+      create(:team, site: site, role: Team::MEMBER)
+      create(:team, site: site, role: Team::MEMBER)
+      create(:team, site: site, role: Team::MEMBER)
 
       site.reload
     end
@@ -80,8 +80,8 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       allow(stub).to receive(:deliver_now)
       allow(SiteMailer).to receive(:destroyed).and_return(stub)
 
-      create_team(user: team_user1, site: site, role: Team::ADMIN)
-      create_team(user: team_user2, site: site, role: Team::MEMBER)
+      create(:team, user: team_user1, site: site, role: Team::ADMIN)
+      create(:team, user: team_user2, site: site, role: Team::MEMBER)
     end
 
     subject do

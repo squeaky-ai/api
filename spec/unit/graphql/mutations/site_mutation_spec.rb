@@ -52,7 +52,7 @@ RSpec.describe Mutations::SiteMutation do
           let(:user) { create(:user) }
           let(:site) { create(:site_with_team) }
 
-          before { create_team(user: user, site: site, role: Team::MEMBER) }
+          before { create(:team, user: user, site: site, role: Team::MEMBER) }
 
           subject do
             context = { current_user: user }
@@ -71,7 +71,7 @@ RSpec.describe Mutations::SiteMutation do
           let(:user) { create(:user) }
           let(:site) { create(:site_with_team) }
 
-          before { create_team(user: user, site: site, role: Team::MEMBER) }
+          before { create(:team, user: user, site: site, role: Team::MEMBER) }
 
           subject do
             context = { current_user: user }
@@ -90,7 +90,7 @@ RSpec.describe Mutations::SiteMutation do
           let(:user) { create(:user) }
           let(:site) { create(:site_with_team) }
 
-          before { create_team(user: user, site: site, role: Team::ADMIN) }
+          before { create(:team, user: user, site: site, role: Team::ADMIN) }
 
           subject do
             context = { current_user: user }
@@ -109,7 +109,7 @@ RSpec.describe Mutations::SiteMutation do
           let(:user) { create(:user) }
           let(:site) { create(:site_with_team) }
 
-          before { create_team(user: user, site: site, role: Team::ADMIN) }
+          before { create(:team, user: user, site: site, role: Team::ADMIN) }
 
           subject do
             context = { current_user: user }
@@ -127,7 +127,7 @@ RSpec.describe Mutations::SiteMutation do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
 
-        before { create_team(user: user, site: site, role: Team::OWNER) }
+        before { create(:team, user: user, site: site, role: Team::OWNER) }
 
         subject do
           context = { current_user: user }

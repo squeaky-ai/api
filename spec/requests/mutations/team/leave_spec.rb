@@ -32,7 +32,7 @@ RSpec.describe Mutations::Teams::Leave, type: :request do
   context 'when the user is not the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id }

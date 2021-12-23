@@ -65,7 +65,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       end
 
       before do
-        create_team(user: invited_user, site: site, role: Team::ADMIN)
+        create(:team, user: invited_user, site: site, role: Team::ADMIN)
         allow_any_instance_of(Plan).to receive(:max_team_members).and_return(3)
       end
 

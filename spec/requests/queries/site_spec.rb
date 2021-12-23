@@ -87,7 +87,7 @@ RSpec.describe 'QuerySite', type: :request do
     let(:site) { create(:site_with_team) }
 
     before do
-      create_team(user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
+      create(:team, user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
     end
 
     it 'does not return the site' do

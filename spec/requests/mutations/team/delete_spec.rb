@@ -16,7 +16,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member is the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id, team_id: site.owner.id }
@@ -44,7 +44,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member is themselves' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id }
@@ -72,8 +72,8 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when an admin tries to remove another admin' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team1) { create_team(user: user, site: site, role: Team::ADMIN) }
-    let(:team2) { create_team(user: create(:user), site: site, role: Team::ADMIN) }
+    let(:team1) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let(:team2) { create(:team, site: site, role: Team::ADMIN) }
 
     before do
       site
@@ -108,7 +108,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member can be deleted' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create_team(user: create(:user), site: site, role: Team::MEMBER) }
+    let(:team) { create(:team, site: site, role: Team::MEMBER) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id }

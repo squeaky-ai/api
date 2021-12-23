@@ -60,7 +60,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
 
-    before { create_team(user: user, site: site, role: Team::MEMBER) }
+    before { create(:team, user: user, site: site, role: Team::MEMBER) }
 
     subject do
       variables = {}

@@ -45,7 +45,7 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
   context 'when the team member exist but is not pending' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team_member) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
       variables = { site_id: site.id, team_id: team_member.id }
@@ -68,7 +68,7 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
   context 'when the team member exist and is pending' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team_member) { create_team(user: create(:user), site: site, role: Team::ADMIN, status: Team::PENDING) }
+    let(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
     subject do
       variables = { site_id: site.id, team_id: team_member.id }

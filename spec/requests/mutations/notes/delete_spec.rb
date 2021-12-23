@@ -71,7 +71,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       context 'and they are deleting their own note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
+        let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
         let(:note) { create(:note, recording_id: recording.id, user: user) }
   
@@ -102,7 +102,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       context 'and they are deleting someone elses note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let(:team) { create_team(site: site, user: user, role: Team::MEMBER) }
+        let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create_recording(site: site, visitor: create_visitor) }
         let(:note) { create(:note, recording_id: recording.id) }
   

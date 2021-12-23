@@ -39,7 +39,7 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
   context 'when the user is not the owner of the site' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create_team(user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { site_id: site.id, team_id: team.id }
@@ -56,10 +56,10 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:site) { create(:site) }
 
     let(:old_owner) { create(:user) }
-    let(:old_owner_team) { create_team(user: old_owner, site: site, role: Team::OWNER) }
+    let(:old_owner_team) { create(:team, user: old_owner, site: site, role: Team::OWNER) }
 
     let(:new_owner) { create(:user) }
-    let(:new_owner_team) { create_team(user: new_owner, site: site, role: Team::ADMIN) }
+    let(:new_owner_team) { create(:team, user: new_owner, site: site, role: Team::ADMIN) }
 
     subject do
       graphql_request(team_transfer_mutation, { site_id: site.id, team_id: new_owner_team.id }, old_owner_team.user)
