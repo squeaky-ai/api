@@ -13,7 +13,6 @@ module Types
       argument :visited_pages, [String], required: true
       argument :unvisited_pages, [String], required: true
       argument :status, Types::Common::FiltersStatus, required: false
-      argument :date, Types::Common::FiltersDate, required: true
       argument :duration, Types::Common::FiltersDuration, required: true
       argument :viewport, Types::Common::FiltersViewport, required: true
     end

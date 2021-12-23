@@ -9,15 +9,17 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 25
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
       argument :filters, Types::Recordings::Filters, required: false, default_value: nil
+      argument :from_date, String, required: true
+      argument :to_date, String, required: true
 
-      def resolve(page:, size:, sort:, filters:)
+      def resolve(page:, size:, sort:, filters:, from_date:, to_date:)
         recordings = Site
                      .find(object.id)
                      .recordings
                      .includes(:nps, :sentiment)
                      .joins(:pages, :visitor)
                      .preload(:pages, :visitor)
-                     .where('deleted = false')
+                     .where('deleted = false AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
                      .order(order(sort))
 
         # Apply all the filters
@@ -52,7 +54,6 @@ module Resolvers
 
       def filter(recordings, filters)
         if filters
-          recordings = filter_by_date(recordings, filters)
           recordings = filter_by_status(recordings, filters)
           recordings = filter_by_duration(recordings, filters)
           recordings = filter_by_start_url(recordings, filters)
@@ -66,45 +67,6 @@ module Resolvers
         end
 
         recordings
-      end
-
-      # Add a filter that lets users show only recordings
-      # that happened within a date range
-      def filter_by_date(recordings, filters)
-        return recordings unless filters.date[:range_type]
-
-        return filter_by_between_date(recordings, filters) if filters.date[:range_type] == 'Between'
-
-        return filter_by_before_date(recordings, filters) if filters.date[:from_type] == 'Before'
-
-        return filter_by_after_date(recordings, filters) if filters.date[:from_type] == 'After'
-
-        recordings
-      end
-
-      # Allow filtering of recordings where it was created
-      # between given dates
-      def filter_by_between_date(recordings, filters)
-        from_date = format_date(filters.date[:between_from_date])
-        to_date = format_date(filters.date[:between_to_date])
-
-        recordings.where('recordings.created_at::date BETWEEN ? AND ?', from_date, to_date)
-      end
-
-      # Allow filtering of recordings where it was created
-      # before a date
-      def filter_by_before_date(recordings, filters)
-        from_date = format_date(filters.date[:from_date])
-
-        recordings.where('recordings.created_at::date < ?', from_date)
-      end
-
-      # Allow filtering of recordings where it was created
-      # after a date
-      def filter_by_after_date(recordings, filters)
-        from_date = format_date(filters.date[:from_date])
-
-        recordings.where('recordings.created_at::date > ?', from_date)
       end
 
       # Adds a filter that lets users show only recordings
@@ -263,10 +225,6 @@ module Resolvers
         locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
 
         recordings.where('LOWER(recordings.locale) IN (?)', locales)
-      end
-
-      def format_date(string)
-        string.split('/').reverse.join('-')
       end
     end
   end
