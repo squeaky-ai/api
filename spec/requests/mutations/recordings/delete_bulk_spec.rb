@@ -46,9 +46,9 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:recording_1) { create_recording(site: site, visitor: create_visitor) }
-    let(:recording_2) { create_recording(site: site, visitor: create_visitor) }
-    let(:recording_3) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording_1) { create(:recording, site: site) }
+    let(:recording_2) { create(:recording, site: site) }
+    let(:recording_3) { create(:recording, site: site) }
 
     before do 
       recording_1

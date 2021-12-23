@@ -31,7 +31,7 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
   context 'when the recording does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }

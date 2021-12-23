@@ -41,8 +41,8 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
     end
 
     subject do
@@ -66,9 +66,9 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000 }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site)
     end
 
     subject do
@@ -92,8 +92,8 @@ RSpec.describe Resolvers::Analytics::RecordingsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: create_visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewed: true }, site: site, visitor: create_visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, viewed: true, site: site)
     end
 
     subject do

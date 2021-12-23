@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     
-    before { create_recording(site: site, visitor: create_visitor) }
+    before { create(:recording, site: site) }
 
     subject do
       variables = { site_id: site.id }
@@ -71,7 +71,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     
-    before { create_recording({ deleted: true }, site: site, visitor: create_visitor) }
+    before { create(:recording, deleted: true, site: site) }
 
     subject do
       variables = { site_id: site.id }

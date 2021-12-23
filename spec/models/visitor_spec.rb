@@ -11,7 +11,7 @@ RSpec.describe Visitor, type: :model do
       let(:visitor) { create_visitor }
       
       before do
-        create_recording(site: site, visitor: visitor)
+        create(:recording, site: site)
       end
 
       subject { visitor.reload.viewed? }
@@ -26,7 +26,7 @@ RSpec.describe Visitor, type: :model do
       let(:visitor) { create_visitor }
 
       before do
-        create_recording({ viewed: true }, site: site, visitor: visitor)
+        create(:recording, viewed: true, site: site, visitor: visitor)
       end
 
       subject { visitor.reload.viewed? }

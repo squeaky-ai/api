@@ -38,7 +38,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
 
       before do
         timestamp = Time.now.to_i * 1000
-        recording = create_recording({ disconnected_at: timestamp }, site: site, visitor: create_visitor)
+        recording = create(:recording, disconnected_at: timestamp, site: site)
       end
 
       it 'returns the number of days' do
@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
 
       before do
         timestamp = (Time.now - 5.days).to_i * 1000
-        recording = create_recording({ disconnected_at: timestamp }, site: site, visitor: create_visitor)
+        recording = create(:recording, disconnected_at: timestamp, site: site)
       end
 
       it 'returns the number of days' do
@@ -80,7 +80,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
     before do
       3.times do |i|
         timestamp = (Time.now - (i + 1).days).to_i * 1000
-        recording = create_recording({ disconnected_at: timestamp }, site: site, visitor: create_visitor)
+        recording = create(:recording, disconnected_at: timestamp, site: site)
       end
     end
 

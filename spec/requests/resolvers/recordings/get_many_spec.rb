@@ -132,7 +132,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
     before do
       create_recordings(site: site, visitor: create_visitor, count: 5)
-      create_recording({ deleted: true }, site: site, visitor: create_visitor)
+      create(:recording, deleted: true, site: site)
     end
 
     it 'returns the items' do

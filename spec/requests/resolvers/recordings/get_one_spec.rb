@@ -59,7 +59,7 @@ RSpec.describe Resolvers::Recordings::GetOne, type: :request do
   context 'when the recording does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }
@@ -75,7 +75,7 @@ RSpec.describe Resolvers::Recordings::GetOne, type: :request do
   context 'when the recording is soft deleted' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording({ deleted: true }, site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, deleted: true, site: site) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }

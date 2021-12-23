@@ -45,7 +45,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
   context 'when the note does not exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     subject do
       variables = {
@@ -72,7 +72,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
         let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create_recording(site: site, visitor: create_visitor) }
+        let(:recording) { create(:recording, site: site) }
         let(:body) { 'Toad' }
         let(:note) { create(:note, recording_id: recording.id, user: user) }
   
@@ -105,7 +105,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
         let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create_recording(site: site, visitor: create_visitor) }
+        let(:recording) { create(:recording, site: site) }
         let(:body) { 'Princess Peach' }
         let(:note) { create(:note, recording_id: recording.id) }
   
@@ -138,7 +138,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
     context 'and the user is an admin' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team) }
-      let(:recording) { create_recording(site: site, visitor: create_visitor) }
+      let(:recording) { create(:recording, site: site) }
       let(:note) { create(:note, recording_id: recording.id) }
       let(:body) { 'Bowser' }
       
@@ -170,7 +170,7 @@ RSpec.describe Mutations::Notes::Update, type: :request do
     context 'and the user is the owner' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create_recording(site: site, visitor: create_visitor) }
+      let(:recording) { create(:recording, site: site) }
       let(:note) { create(:note, recording_id: recording.id) }
       let(:body) { 'Kooper Trooper' }
 

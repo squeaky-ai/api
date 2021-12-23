@@ -31,8 +31,8 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
-      create_recording({ browser: 'Safari' }, site: site, visitor: create_visitor)
+      create(:recording, browser: 'Firefox', site: site)
+      create(:recording, browser: 'Safari', site: site)
     end
 
     subject do
@@ -51,9 +51,9 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
-      create_recording({ browser: 'Safari' }, site: site, visitor: create_visitor)
-      create_recording({ browser: 'Firefox' }, site: site, visitor: create_visitor)
+      create(:recording, browser: 'Firefox', site: site)
+      create(:recording, browser: 'Safari', site: site)
+      create(:recording, browser: 'Firefox', site: site)
     end
 
     subject do

@@ -44,9 +44,9 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
       visitor_1 = create_visitor
       visitor_2 = create_visitor
 
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: visitor_1)
-      create_recording({ disconnected_at: Time.new(2021, 8, 5).to_i * 1000 }, site: site, visitor: visitor_1)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: visitor_2)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -73,10 +73,10 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
       visitor_1 = create_visitor
       visitor_2 = create_visitor
 
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: visitor_1)
-      create_recording({ disconnected_at: Time.new(2021, 8, 5).to_i * 1000 }, site: site, visitor: visitor_1)
-      create_recording({ disconnected_at: Time.new(2021, 8, 6).to_i * 1000 }, site: site, visitor: visitor_2)
-      create_recording({ disconnected_at: Time.new(2021, 7, 6).to_i * 1000 }, site: site, visitor: visitor_2)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor_2)
+      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -102,8 +102,8 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     before do
       visitor = create_visitor
 
-      create_recording({ disconnected_at: Time.new(2021, 8, 7).to_i * 1000 }, site: site, visitor: visitor)
-      create_recording({ disconnected_at: Time.new(2021, 8, 5).to_i * 1000, viewed: true }, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, viewed: true, site: site, visitor: visitor)
     end
 
     subject do

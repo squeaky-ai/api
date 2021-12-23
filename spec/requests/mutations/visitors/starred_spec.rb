@@ -37,7 +37,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create_visitor }
       
-      before { create_recording(site: site, visitor: visitor) }
+      before { create(:recording, site: site, visitor: visitor) }
 
       subject do
         variables = { site_id: site.id, visitor_id: visitor.id, starred: true }
@@ -59,7 +59,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create_visitor(starred: true) }
       
-      before { create_recording(site: site, visitor: visitor) }
+      before { create(:recording, site: site, visitor: visitor) }
 
       subject do
         variables = { site_id: site.id, visitor_id: visitor.id, starred: false }

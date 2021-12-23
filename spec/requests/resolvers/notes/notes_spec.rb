@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when there are several notes' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     subject do
       variables = { site_id: site.id, size: 5, page: 1 }
@@ -84,7 +84,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when paginating' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     before do
       5.times { create(:note, recording_id: recording.id, user: user) }

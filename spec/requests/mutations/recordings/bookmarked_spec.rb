@@ -34,7 +34,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     context 'and it is bookmarked' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create_recording(site: site, visitor: create_visitor) }
+      let(:recording) { create(:recording, site: site) }
 
       subject do
         variables = { site_id: site.id, recording_id: recording.id, bookmarked: true }
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     context 'and it is unbookmarked' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create_recording({ bookmarked: true }, site: site, visitor: create_visitor)}
+      let(:recording) { create(:recording, bookmarked: true, site: site) }
 
       subject do
         variables = { site_id: site.id, recording_id: recording.id, bookmarked: false }

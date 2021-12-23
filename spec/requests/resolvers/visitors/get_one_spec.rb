@@ -87,7 +87,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create_visitor }
 
     before do  
-      create_recording({ deleted: true }, site: site, visitor: visitor)
+      create(:recording, deleted: true, site: site, visitor: visitor)
     end
 
     subject do
@@ -119,7 +119,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create_visitor }
 
     before do
-      create_recording(site: site, visitor: visitor)
+      create(:recording, site: site, visitor: visitor)
     end
 
     subject do
@@ -140,7 +140,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create_visitor(external_attributes: external_attributes) }
 
     before do
-      create_recording(site: site, visitor: visitor)
+      create(:recording, site: site, visitor: visitor)
     end
 
     subject do

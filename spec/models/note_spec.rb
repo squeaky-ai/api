@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Note, type: :model do
   describe '#session_id' do
     let(:site) { create(:site) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
     
     subject { described_class.new(recording: recording) }
 

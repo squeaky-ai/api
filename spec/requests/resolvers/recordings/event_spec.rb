@@ -27,7 +27,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording) do
-      create_recording(site: site, visitor: create_visitor)
+      create(:recording, site: site)
     end
 
     subject do
@@ -56,7 +56,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     let(:recording) do
-      rec = create_recording(site: site, visitor: create_visitor)
+      rec = create(:recording, site: site)
 
       data = { href: "http://localhost/", width: 0, height: 0 }
       rec.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)

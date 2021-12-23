@@ -36,8 +36,8 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: create_visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
     end
 
     subject do
@@ -56,11 +56,11 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: create_visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
 
-      create_recording({ connected_at: 1627800838578, disconnected_at: 1627800839578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1627800836578, disconnected_at: 1627800837578 }, site: site, visitor: create_visitor)
+      create(:recording, connected_at: 1627800838578, disconnected_at: 1627800839578, site: site)
+      create(:recording, connected_at: 1627800836578, disconnected_at: 1627800837578, site: site)
     end
 
     subject do
@@ -79,9 +79,9 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: create_visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1728405640578 }, site: site, visitor: create_visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1728405640578, site: site)
     end
 
     subject do

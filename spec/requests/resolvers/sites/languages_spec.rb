@@ -31,8 +31,8 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ locale: 'en-GB' }, site: site, visitor: create_visitor)
-      create_recording({ locale: 'sv-SE' }, site: site, visitor: create_visitor)
+      create(:recording, locale: 'en-GB', site: site)
+      create(:recording, locale: 'sv-SE', site: site)
     end
 
     subject do
@@ -51,9 +51,9 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create_recording({ locale: 'en-GB' }, site: site, visitor: create_visitor)
-      create_recording({ locale: 'en-GB' }, site: site, visitor: create_visitor)
-      create_recording({ locale: 'sv-SE' }, site: site, visitor: create_visitor)
+      create(:recording, locale: 'en-GB', site: site)
+      create(:recording, locale: 'en-GB', site: site)
+      create(:recording, locale: 'sv-SE', site: site)
     end
 
     subject do

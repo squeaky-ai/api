@@ -60,9 +60,9 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       visitor_1 = create_visitor
       visitor_2 = create_visitor
   
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor_1)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578 }, site: site, visitor: visitor_1)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405640578 }, site: site, visitor: visitor_2)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor_1)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site, visitor: visitor_1)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405640578, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -92,8 +92,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     before do
       visitor = create_visitor
   
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
-      create_recording({ connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true }, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true, site: site, visitor: visitor)
     end
 
     subject do
@@ -114,7 +114,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     before do
       visitor = create_visitor
 
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end
 
     subject do
@@ -136,7 +136,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     before do
       visitor = create_visitor(external_attributes: external_attributes)
 
-      create_recording({ connected_at: 1628405638578, disconnected_at: 1628405639578 }, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end
 
     subject do

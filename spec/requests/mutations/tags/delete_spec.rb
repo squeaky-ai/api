@@ -56,7 +56,7 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
   context 'when a tag exists and is joined to a recording' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
     let(:tag) { create(:tag, site_id: site.id) }
 
     before do

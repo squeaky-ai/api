@@ -127,9 +127,9 @@ RSpec.describe Site, type: :model do
       let(:site) { create(:site_with_team, owner: user) }
 
       before do
-        create_recording(site: site, visitor: create_visitor)
-        create_recording(site: site, visitor: create_visitor)
-        create_recording({ deleted: true }, site: site, visitor: create_visitor)
+        create(:recording, site: site)
+        create(:recording, site: site)
+        create(:recording, deleted: true, site: site)
       end
 
       subject { site.recordings_count }
@@ -206,7 +206,7 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(2)
-        create_recording(site: site, visitor: create_visitor)
+        create(:recording, site: site)
       end
 
       subject { site.recording_count_exceeded? }
@@ -222,7 +222,7 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
-        create_recording(site: site, visitor: create_visitor)
+        create(:recording, site: site)
       end
 
       subject { site.recording_count_exceeded? }
@@ -238,8 +238,8 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
-        create_recording(site: site, visitor: create_visitor)
-        create_recording(site: site, visitor: create_visitor)
+        create(:recording, site: site)
+        create(:recording, site: site)
       end
 
       subject { site.recording_count_exceeded? }
@@ -257,8 +257,8 @@ RSpec.describe Site, type: :model do
         last_month = Time.now - 1.month
 
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
-        create_recording({ created_at: last_month }, site: site, visitor: create_visitor)
-        create_recording({ created_at: last_month }, site: site, visitor: create_visitor)
+        create(:recording, created_at: last_month, site: site)
+        create(:recording, created_at: last_month, site: site)
       end
 
       subject { site.recording_count_exceeded? }
@@ -274,8 +274,8 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
-        create_recording({ deleted: true }, site: site, visitor: create_visitor)
-        create_recording({ deleted: true }, site: site, visitor: create_visitor)
+        create(:recording, deleted: true, site: site)
+        create(:recording, deleted: true, site: site)
       end
 
       subject { site.recording_count_exceeded? }
@@ -289,7 +289,7 @@ RSpec.describe Site, type: :model do
   describe '#page_urls' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create_recording(site: site, visitor: create_visitor) }
+    let(:recording) { create(:recording, site: site) }
 
     before do
       create_page(url: '/' , recording: recording)
