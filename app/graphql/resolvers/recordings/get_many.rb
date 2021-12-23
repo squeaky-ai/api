@@ -68,7 +68,7 @@ module Resolvers
             bookmarked
             referrers
             starred
-            tag
+            tags
           ]
 
           filter_options.each do |option|
@@ -270,9 +270,12 @@ module Resolvers
 
       # Adds a filter that lets users show only recordings
       # that contain certain tags
-      def filter_by_tags(recordings, _filters)
-        # TODO
+      def filter_by_tags(recordings, filters)
+        return recordings unless filters.tags.any?
+
         recordings
+          .joins(:tags)
+          .where('tags.id IN (?)', filters.tags)
       end
     end
   end
