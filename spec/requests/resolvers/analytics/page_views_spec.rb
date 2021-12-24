@@ -37,11 +37,18 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
 
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000)] }, site: site, visitor: visitor)
+      recording_1 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
+
+      recording_2 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
+
+      recording_3 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
     end
 
     subject do
@@ -76,12 +83,22 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create_visitor
+      visitor = create(:visitor)
 
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000), create_page(url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000), create_page(url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000)] }, site: site, visitor: visitor)
-      create_recording({ pages: [create_page(url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000)] }, site: site, visitor: visitor)
+      recording_1 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
+
+      recording_2 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
+
+      recording_3 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
+
+      recording_4 = create(:recording, site: site, visitor: visitor)
+      create(:page, url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000, recording: recording_4)
     end
 
     subject do

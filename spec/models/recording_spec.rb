@@ -161,7 +161,7 @@ RSpec.describe Recording, type: :model do
   describe '#previous_recording' do
     context 'when there is only one recording' do
       let(:site) { create(:site) }
-      let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 1) }
+      let(:recordings) { 1.times.map { create(:recording, site: site) } }
 
       subject { recordings[0].previous_recording }
 
@@ -173,7 +173,7 @@ RSpec.describe Recording, type: :model do
     context 'when there is more than one recording' do
       context 'when this recording is the first' do
         let(:site) { create(:site) }
-        let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 3) }
+        let(:recordings) { 3.times.map { create(:recording, site: site) } }
 
         subject { recordings.first.previous_recording }
 
@@ -184,7 +184,7 @@ RSpec.describe Recording, type: :model do
 
       context 'when this recording not the first' do
         let(:site) { create(:site) }
-        let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 3) }
+        let(:recordings) { 3.times.map { create(:recording, site: site) } }
 
         subject { recordings[1].previous_recording }
 
@@ -198,7 +198,7 @@ RSpec.describe Recording, type: :model do
   describe '#next_recording' do
     context 'when there is only one recording' do
       let(:site) { create(:site) }
-      let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 1) }
+      let(:recordings) { 1.times.map { create(:recording, site: site) } }
 
       subject { recordings.first.next_recording }
 
@@ -210,7 +210,7 @@ RSpec.describe Recording, type: :model do
     context 'when there is more than one recording' do
       context 'when this recording is the last' do
         let(:site) { create(:site) }
-        let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 3) }
+        let(:recordings) { 3.times.map { create(:recording, site: site) } }
 
         subject { recordings.last.next_recording }
 
@@ -221,7 +221,7 @@ RSpec.describe Recording, type: :model do
 
       context 'when this recording not the last' do
         let(:site) { create(:site) }
-        let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 3) }
+        let(:recordings) { 3.times.map { create(:recording, site: site) } }
 
         subject { recordings[1].next_recording }
 

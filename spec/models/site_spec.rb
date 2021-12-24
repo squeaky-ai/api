@@ -292,9 +292,9 @@ RSpec.describe Site, type: :model do
     let(:recording) { create(:recording, site: site) }
 
     before do
-      create_page(url: '/' , recording: recording)
-      create_page(url: '/foo', recording: recording)
-      create_page(url: '/foo', recording: recording)
+      create(:page, url: '/' , recording: recording)
+      create(:page, url: '/foo', recording: recording)
+      create(:page, url: '/foo', recording: recording)
     end
 
     subject { site.page_urls }

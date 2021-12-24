@@ -91,7 +91,7 @@ RSpec.describe Resolvers::Recordings::GetOne, type: :request do
   context 'when selecting the next and previous recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recordings) { create_recordings(site: site, visitor: create_visitor, count: 3) }
+    let(:recordings) { 3.times.map { create(:recording, site: site) } }
 
     subject do
       variables = { site_id: site.id, recording_id: recordings[1].id }
