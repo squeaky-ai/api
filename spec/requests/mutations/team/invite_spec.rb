@@ -5,16 +5,14 @@ require 'rails_helper'
 team_invite_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $email: String!, $role: Int!) {
     teamInvite(input: { siteId: $site_id, email: $email, role: $role }) {
-      team {
+      id
+      role
+      status
+      user {
         id
-        role
-        status
-        user {
-          id
-          firstName
-          lastName
-          email
-        }
+        firstName
+        lastName
+        email
       }
     }
   }
@@ -36,10 +34,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       graphql_request(team_invite_mutation, variables, user)
     end
 
-    it 'returns the invited user' do
-      team = subject['data']['teamInvite']['team']
-      invited_team_member = team.find { |t| t['user']['email'] == email }
-      expect(invited_team_member).not_to be nil
+    it 'returns the team' do
+      team = subject['data']['teamInvite']
+      expect(team).not_to be nil
     end
 
     it 'creates them an account' do
@@ -100,10 +97,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
         graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
       end
 
-      it 'returns the added team member' do
-        team = subject['data']['teamInvite']['team']
-        invited_team_member = team.find { |t| t['user']['email'] == invited_user.email }
-        expect(invited_team_member).not_to be nil
+      it 'returns the team' do
+        team = subject['data']['teamInvite']
+        expect(team).not_to be nil
       end
 
       it 'adds them to the team' do

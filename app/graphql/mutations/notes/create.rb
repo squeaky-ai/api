@@ -12,7 +12,7 @@ module Mutations
       argument :body, String, required: true
       argument :timestamp, Integer, required: false
 
-      type Types::Sites::Site
+      type Types::Notes::Note
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
@@ -24,8 +24,6 @@ module Mutations
         raise Errors::RecordingNotFound unless recording
 
         Note.create(recording: recording, user: @user, body: body, timestamp: timestamp)
-
-        @site
       end
     end
   end

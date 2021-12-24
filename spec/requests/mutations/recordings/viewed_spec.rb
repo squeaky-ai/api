@@ -6,10 +6,7 @@ recording_viewed_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!) {
     recordingViewed(input: { siteId: $site_id, recordingId: $recording_id }) {
       id
-      recording(recordingId: $recording_id) {
-        id
-        viewed
-      }
+      viewed
     }
   }
 GRAPHQL
@@ -41,7 +38,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     end
 
     it 'marks the site as recorded' do
-      response = subject['data']['recordingViewed']['recording']
+      response = subject['data']['recordingViewed']
       expect(response['viewed']).to be true
     end
 
@@ -61,7 +58,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     end
 
     it 'does not mark the site as recorded' do
-      response = subject['data']['recordingViewed']['recording']
+      response = subject['data']['recordingViewed']
       expect(response['viewed']).to be false
     end
 

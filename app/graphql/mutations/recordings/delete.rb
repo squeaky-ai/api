@@ -3,14 +3,14 @@
 module Mutations
   module Recordings
     class Delete < SiteMutation
-      null false
+      null true
 
       graphql_name 'RecordingsDelete'
 
       argument :site_id, ID, required: true
       argument :recording_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Recordings::Recording
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -23,7 +23,7 @@ module Mutations
 
         recording.update!(deleted: true)
 
-        @site
+        nil
       end
     end
   end

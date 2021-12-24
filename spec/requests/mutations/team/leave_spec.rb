@@ -20,8 +20,8 @@ RSpec.describe Mutations::Teams::Leave, type: :request do
       graphql_request(team_leave_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      expect(subject['data']['teamLeave']['id']).to eq site.id.to_s
+    it 'returns the unmodified team' do
+      expect(subject['data']['teamLeave']).not_to be_nil
     end
 
     it 'does not delete the user' do

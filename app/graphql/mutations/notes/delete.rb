@@ -3,7 +3,7 @@
 module Mutations
   module Notes
     class Delete < SiteMutation
-      null false
+      null true
 
       graphql_name 'NotesDelete'
 
@@ -11,7 +11,7 @@ module Mutations
       argument :recording_id, ID, required: true
       argument :note_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Notes::Note
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
@@ -23,9 +23,13 @@ module Mutations
         raise Errors::RecordingNotFound unless recording
 
         note = recording.notes.find_by_id(note_id)
-        note.destroy if note && can_delete?(note)
 
-        @site
+        if note && can_delete?(note)
+          note.destroy
+          nil
+        else
+          note
+        end
       end
 
       private

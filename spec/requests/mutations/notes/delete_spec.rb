@@ -7,17 +7,6 @@ note_delete_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $note_id: ID!) {
     noteDelete(input: { siteId: $site_id, recordingId: $recording_id, noteId: $note_id }) {
       id
-      recording(recordingId: $recording_id) {
-        notes {
-          id
-          body
-          timestamp
-          user {
-            firstName
-            lastName
-          }
-        }
-      }
     }
   }
 GRAPHQL
@@ -56,9 +45,9 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       graphql_request(note_delete_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      notes = subject['data']['noteDelete']['recording']['notes']
-      expect(notes.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['noteDelete']
+      expect(response).to eq nil
     end
 
     it 'does not delete anything' do
@@ -89,9 +78,9 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
           graphql_request(note_delete_mutation, variables, user)
         end
   
-        it 'returns the modified site' do
-          notes = subject['data']['noteDelete']['recording']['notes']
-          expect(notes.size).to eq 0
+        it 'returns nil' do
+          response = subject['data']['noteDelete']
+          expect(response).to eq nil
         end
   
         it 'deletes the note' do
@@ -120,9 +109,9 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
           graphql_request(note_delete_mutation, variables, user)
         end
   
-        it 'returns the unmodified site' do
-          notes = subject['data']['noteDelete']['recording']['notes']
-          expect(notes.size).to eq 1
+        it 'returns the unmodified note' do
+          response = subject['data']['noteDelete']
+          expect(response).not_to eq nil
         end
   
         it 'does not delete the note' do
@@ -151,9 +140,9 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
         graphql_request(note_delete_mutation, variables, user)
       end
 
-      it 'returns the modified site' do
-        notes = subject['data']['noteDelete']['recording']['notes']
-        expect(notes.size).to eq 0
+      it 'returns nil' do
+        response = subject['data']['noteDelete']
+        expect(response).to eq nil
       end
 
       it 'deletes the note' do
@@ -178,9 +167,9 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
         graphql_request(note_delete_mutation, variables, user)
       end
 
-      it 'returns the modified site' do
-        notes = subject['data']['noteDelete']['recording']['notes']
-        expect(notes.size).to eq 0
+      it 'returns nil' do
+        response = subject['data']['noteDelete']
+        expect(response).to eq nil
       end
 
       it 'deletes the note' do

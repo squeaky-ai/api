@@ -9,7 +9,7 @@ module Mutations
 
       argument :site_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -18,7 +18,7 @@ module Mutations
       def resolve(**_rest)
         team = @site.team.find { |t| t.user.id == @user.id }
 
-        return @site if team.owner?
+        return team if team.owner?
 
         TeamMailer.member_left(@site.owner.user.email, @site, team.user).deliver_now
         team.destroy

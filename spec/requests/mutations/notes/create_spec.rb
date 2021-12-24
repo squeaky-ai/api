@@ -7,16 +7,11 @@ note_create_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $body: String!, $timestamp: Int) {
     noteCreate(input: { siteId: $site_id, recordingId: $recording_id, body: $body, timestamp: $timestamp }) {
       id
-      recording(recordingId: $recording_id) {
-        notes {
-          id
-          body
-          timestamp
-          user {
-            firstName
-            lastName
-          }
-        }
+      body
+      timestamp
+      user {
+        firstName
+        lastName
       }
     }
   }
@@ -63,11 +58,10 @@ RSpec.describe Mutations::Notes::Create, type: :request do
     end
 
     it 'returns the updated site' do
-      notes = subject['data']['noteCreate']['recording']['notes']
-      expect(notes.size).to eq 1
-      expect(notes[0]['body']).to eq body
-      expect(notes[0]['timestamp']).to eq 3000
-      expect(notes[0]['user']['firstName']).to eq user.first_name
+      notes = subject['data']['noteCreate']
+      expect(notes['body']).to eq body
+      expect(notes['timestamp']).to eq 3000
+      expect(notes['user']['firstName']).to eq user.first_name
     end
 
     it 'creates the record' do

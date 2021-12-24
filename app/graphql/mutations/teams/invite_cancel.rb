@@ -3,14 +3,14 @@
 module Mutations
   module Teams
     class InviteCancel < SiteMutation
-      null false
+      null true
 
       graphql_name 'TeamInviteCancel'
 
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -18,9 +18,13 @@ module Mutations
 
       def resolve(team_id:, **_rest)
         member = @site.member(team_id)
-        member.destroy if member&.pending?
 
-        @site.reload
+        if member&.pending?
+          member.destroy
+          nil
+        else
+          member
+        end
       end
     end
   end

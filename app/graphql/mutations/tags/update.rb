@@ -3,7 +3,7 @@
 module Mutations
   module Tags
     class Update < SiteMutation
-      null false
+      null true
 
       graphql_name 'TagsUpdate'
 
@@ -11,16 +11,18 @@ module Mutations
       argument :tag_id, ID, required: true
       argument :name, String, required: true
 
-      type Types::Sites::Site
+      type Types::Tags::Tag
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
       def resolve(tag_id:, name:, **_rest)
-        @site.tags.find_by_id(tag_id)&.update(name: name)
+        tag = @site.tags.find_by_id(tag_id)
 
-        @site
+        tag&.update(name: name)
+
+        tag
       end
     end
   end

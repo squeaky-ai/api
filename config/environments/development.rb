@@ -36,7 +36,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = :inline
   # config.active_job.queue_name_prefix = "server_development"
 
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.delivery_method = :test
 
   config.action_mailer.default_url_options = { protocol: 'http', host: 'localhost', port: 3000 }
 

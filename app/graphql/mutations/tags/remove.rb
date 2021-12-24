@@ -3,7 +3,7 @@
 module Mutations
   module Tags
     class Remove < SiteMutation
-      null false
+      null true
 
       graphql_name 'TagsRemove'
 
@@ -11,7 +11,7 @@ module Mutations
       argument :recording_id, ID, required: true
       argument :tag_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Tags::Tag
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
@@ -25,7 +25,7 @@ module Mutations
 
         recording.tags.delete(tag) if tag
 
-        @site
+        nil
       end
     end
   end

@@ -7,10 +7,7 @@ tag_delete_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $tag_id: ID!) {
     tagDelete(input: { siteId: $site_id, tagId: $tag_id }) {
       id
-      tags {
-        id
-        name
-      }
+      name
     }
   }
 GRAPHQL
@@ -25,9 +22,9 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
       graphql_request(tag_delete_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      tags = subject['data']['tagDelete']['tags']
-      expect(tags.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['tagDelete']
+      expect(response).to eq nil
     end
   end
 
@@ -43,9 +40,9 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
       graphql_request(tag_delete_mutation, variables, user)
     end
 
-    it 'returns the updated site' do
-      tags = subject['data']['tagDelete']['tags']
-      expect(tags.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['tagDelete']
+      expect(response).to eq nil
     end
 
     it 'deletes the tag' do

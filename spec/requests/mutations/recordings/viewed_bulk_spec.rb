@@ -3,14 +3,10 @@
 require 'rails_helper'
 
 recordings_viewed_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_ids: [String!]!, $viewed: Boolean!, $from_date: String!, $to_date: String!) {
+  mutation($site_id: ID!, $recording_ids: [String!]!, $viewed: Boolean!) {
     recordingsViewed(input: { siteId: $site_id, recordingIds: $recording_ids, viewed: $viewed }) {
-      recordings(fromDate: $from_date, toDate: $to_date) {
-        items {
-          id
-          viewed
-        }
-      }
+      id
+      viewed
     }
   }
 GRAPHQL
@@ -21,21 +17,17 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
-
       variables = { 
         site_id: site.id, 
         recording_ids: ['23423423423'], 
-        viewed: true, 
-        from_date: today, 
-        to_date: today 
+        viewed: true
       }
       graphql_request(recordings_viewed_mutation, variables, user)
     end
 
     it 'returns the site' do
-      response = subject['data']['recordingsViewed']['recordings']
-      expect(response['items']).to eq []
+      response = subject['data']['recordingsViewed']
+      expect(response).to eq []
     end
   end
 
@@ -54,22 +46,18 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     end
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
-
       variables = { 
         site_id: site.id, 
         recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
-        viewed: true,
-        from_date: today, 
-        to_date: today 
+        viewed: true
       }
 
       graphql_request(recordings_viewed_mutation, variables, user)
     end
 
     it 'returns the site' do
-      response = subject['data']['recordingsViewed']['recordings']
-      expect(response['items']).to match_array([
+      response = subject['data']['recordingsViewed']
+      expect(response).to match_array([
         { 'id' => recording_1.id.to_s, 'viewed' => true },
         { 'id' => recording_2.id.to_s, 'viewed' => true },
         { 'id' => recording_3.id.to_s, 'viewed' => false }
@@ -96,22 +84,18 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     end
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
-
       variables = { 
         site_id: site.id, 
         recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
-        viewed: false,
-        from_date: today, 
-        to_date: today 
+        viewed: false
       }
 
       graphql_request(recordings_viewed_mutation, variables, user)
     end
 
     it 'returns the site' do
-      response = subject['data']['recordingsViewed']['recordings']
-      expect(response['items']).to match_array([
+      response = subject['data']['recordingsViewed']
+      expect(response).to match_array([
         { 'id' => recording_1.id.to_s, 'viewed' => false },
         { 'id' => recording_2.id.to_s, 'viewed' => false },
         { 'id' => recording_3.id.to_s, 'viewed' => true }

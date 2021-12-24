@@ -5,9 +5,7 @@ require 'rails_helper'
 team_delete_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $team_id: ID!) {
     teamDelete(input: { siteId: $site_id, teamId: $team_id }) {
-      team {
-        id
-      }
+      id
     }
   }
 GRAPHQL
@@ -26,14 +24,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     before { team }
 
     it 'returns the unmodified team' do
-      expect(subject['data']['teamDelete']['team']).to eq [
-        {
-          'id' => site.owner.id.to_s
-        },
-        {
-          'id' => team.id.to_s
-        }
-      ]
+      expect(subject['data']['teamDelete']).to eq('id' => site.owner.id.to_s)
     end
 
     it 'does not remove the team member' do
@@ -54,14 +45,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     before { team }
 
     it 'returns the unmodified team' do
-      expect(subject['data']['teamDelete']['team']).to eq [
-        {
-          'id' => site.owner.id.to_s
-        },
-        {
-          'id' => team.id.to_s
-        }
-      ]
+      expect(subject['data']['teamDelete']).to eq('id' => team.id.to_s)
     end
 
     it 'does not remove the team member' do
@@ -87,17 +71,7 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     end
 
     it 'returns the unmodified team' do
-      expect(subject['data']['teamDelete']['team']).to eq [
-        {
-          'id' => site.owner.id.to_s
-        },
-        {
-          'id' => team1.id.to_s
-        },
-        {
-          'id' => team2.id.to_s
-        }
-      ]
+      expect(subject['data']['teamDelete']).to eq('id' => team2.id.to_s)
     end
 
     it 'does not remove the team member' do
@@ -122,12 +96,8 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
       allow(TeamMailer).to receive(:member_removed).and_return(stub)
     end
 
-    it 'returns the updated team' do
-      expect(subject['data']['teamDelete']['team']).to eq [
-        {
-          'id' => site.owner.id.to_s
-        }
-      ]
+    it 'returns nil' do
+      expect(subject['data']['teamDelete']).to eq nil
     end
 
     it 'does removes the team member' do

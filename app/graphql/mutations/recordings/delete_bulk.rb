@@ -10,7 +10,7 @@ module Mutations
       argument :site_id, ID, required: true
       argument :recording_ids, [String], required: true
 
-      type Types::Sites::Site
+      type [Types::Recordings::Recording]
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -19,11 +19,11 @@ module Mutations
       def resolve(recording_ids:, **_rest)
         recordings = @site.recordings.where(id: recording_ids)
 
-        return @site if recordings.size.zero?
+        return [] if recordings.size.zero?
 
         recordings.update_all(deleted: true)
 
-        @site
+        []
       end
     end
   end

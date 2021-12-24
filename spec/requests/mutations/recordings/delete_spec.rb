@@ -5,9 +5,7 @@ require 'rails_helper'
 recording_delete_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!) {
     recordingDelete(input: { siteId: $site_id, recordingId: $recording_id }) {
-      recording(recordingId: $recording_id) {
-        id
-      }
+      id
     }
   }
 GRAPHQL
@@ -38,9 +36,9 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
       graphql_request(recording_delete_mutation, variables, user)
     end
 
-    it 'returns null for the site' do
-      response = subject['data']['recordingDelete']['recording']
-      expect(response).to be nil
+    it 'returns nil' do
+      response = subject['data']['recordingDelete']
+      expect(response).to eq nil
     end
 
     it 'soft deletes the recording' do
