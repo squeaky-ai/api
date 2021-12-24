@@ -3,7 +3,7 @@
 module Mutations
   module Tags
     class Update < SiteMutation
-      null false
+      null true
 
       graphql_name 'TagsUpdate'
 

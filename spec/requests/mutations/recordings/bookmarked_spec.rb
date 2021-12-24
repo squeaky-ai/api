@@ -6,10 +6,7 @@ recording_bookmarked_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $bookmarked: Boolean!) {
     recordingBookmarked(input: { siteId: $site_id, recordingId: $recording_id, bookmarked: $bookmarked }) {
       id
-      recording(recordingId: $recording_id) {
-        id
-        bookmarked
-      }
+      bookmarked
     }
   }
 GRAPHQL
@@ -42,7 +39,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       end
 
       it 'marks the site as bookmarked' do
-        response = subject['data']['recordingBookmarked']['recording']
+        response = subject['data']['recordingBookmarked']
         expect(response['bookmarked']).to be true
       end
 
@@ -62,7 +59,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       end
 
       it 'marks the site as unbookmarked' do
-        response = subject['data']['recordingBookmarked']['recording']
+        response = subject['data']['recordingBookmarked']
         expect(response['bookmarked']).to be false
       end
 

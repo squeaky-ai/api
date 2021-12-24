@@ -6,16 +6,13 @@ team_invite_accept_mutation = <<-GRAPHQL
   mutation($token: String!, $password: String) {
     teamInviteAccept(input: { token: $token, password: $password }) {
       id
-      team {
+      role
+      status
+      user {
         id
-        role
-        status
-        user {
-          id
-          firstName
-          lastName
-          email
-        }
+        firstName
+        lastName
+        email
       }
     }
   }

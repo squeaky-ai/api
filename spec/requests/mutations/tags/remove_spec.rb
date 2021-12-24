@@ -7,12 +7,7 @@ tag_remove_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $tag_id: ID!) {
     tagRemove(input: { siteId: $site_id, recordingId: $recording_id, tagId: $tag_id }) {
       id
-      recording(recordingId: $recording_id) {
-        tags {
-          id
-          name
-        }
-      }
+      name
     }
   }
 GRAPHQL
@@ -43,9 +38,9 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
       graphql_request(tag_remove_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      tags = subject['data']['tagRemove']['recording']['tags']
-      expect(tags.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['tagRemove']
+      expect(response).to eq nil
     end
 
     it 'does not remove anything' do
@@ -69,9 +64,9 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
       graphql_request(tag_remove_mutation, variables, user)
     end
 
-    it 'returns the updated site' do
-      tags = subject['data']['tagRemove']['recording']['tags']
-      expect(tags.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['tagRemove']
+      expect(response).to eq nil
     end
 
     it 'removes the tag from the recording' do

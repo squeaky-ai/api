@@ -18,7 +18,7 @@ module Mutations
       def resolve(**_rest)
         team = @site.team.find { |t| t.user.id == @user.id }
 
-        return @site if team.owner?
+        return team if team.owner?
 
         TeamMailer.member_left(@site.owner.user.email, @site, team.user).deliver_now
         team.destroy

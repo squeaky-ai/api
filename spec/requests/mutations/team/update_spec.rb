@@ -5,16 +5,14 @@ require 'rails_helper'
 team_update_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $team_id: ID!, $role: Int!) {
     teamUpdate(input: { siteId: $site_id, teamId: $team_id, role: $role }) {
-      team {
+      id
+      role
+      status
+      user {
         id
-        role
-        status
-        user {
-          id
-          firstName
-          lastName
-          email
-        }
+        firstName
+        lastName
+        email
       }
     }
   }
@@ -82,10 +80,9 @@ RSpec.describe Mutations::Teams::Update, type: :request do
       allow(TeamMailer).to receive(:became_admin).and_return(stub)
     end
 
-    it 'returns the updated user' do
-      response = subject['data']['teamUpdate']
-      team_member = response['team'].find { |t| t['id'] == team.id.to_s }
-      expect(team_member['role']).to eq 1
+    it 'returns the updated team' do
+      team = subject['data']['teamUpdate']
+      expect(team['role']).to eq 1
     end
 
     it 'sends an email' do
@@ -111,9 +108,8 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     end
 
     it 'returns the updated user' do
-      response = subject['data']['teamUpdate']
-      team_member = response['team'].find { |t| t['id'] == team.id.to_s }
-      expect(team_member['role']).to eq 0
+      team = subject['data']['teamUpdate']
+      expect(team['role']).to eq 0
     end
 
     it 'does not send an email' do
@@ -140,9 +136,8 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     end
 
     it 'returns the updated user' do
-      response = subject['data']['teamUpdate']
-      team_member = response['team'].find { |t| t['id'] == team2.id.to_s }
-      expect(team_member['role']).to eq 1
+      team = subject['data']['teamUpdate']
+      expect(team['role']).to eq 1
     end
 
     it 'sends an email' do

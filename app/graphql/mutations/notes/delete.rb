@@ -23,9 +23,13 @@ module Mutations
         raise Errors::RecordingNotFound unless recording
 
         note = recording.notes.find_by_id(note_id)
-        note.destroy if note && can_delete?(note)
 
-        note
+        if note && can_delete?(note)
+          note.destroy
+          nil
+        else
+          note
+        end
       end
 
       private

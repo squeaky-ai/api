@@ -18,9 +18,13 @@ module Mutations
 
       def resolve(team_id:, **_rest)
         member = @site.member(team_id)
-        member.destroy if member&.pending?
 
-        member
+        if member&.pending?
+          member.destroy
+          nil
+        else
+          member
+        end
       end
     end
   end

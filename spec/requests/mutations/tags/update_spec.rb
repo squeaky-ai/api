@@ -7,10 +7,7 @@ tag_update_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $tag_id: ID!, $name: String!) {
     tagUpdate(input: { siteId: $site_id, tagId: $tag_id, name: $name }) {
       id
-      tags {
-        id
-        name
-      }
+      name
     }
   }
 GRAPHQL
@@ -27,9 +24,9 @@ RSpec.describe Mutations::Tags::Update, type: :request do
       graphql_request(tag_update_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      tags = subject['data']['tagUpdate']['tags']
-      expect(tags.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['tagUpdate']
+      expect(response).to eq nil
     end
 
     it 'does not upsert a tag' do
@@ -54,10 +51,9 @@ RSpec.describe Mutations::Tags::Update, type: :request do
       graphql_request(tag_update_mutation, variables, user)
     end
 
-    it 'returns the updated site' do
-      tags = subject['data']['tagUpdate']['tags']
-      expect(tags.size).to eq 1
-      expect(tags[0]['name']).to eq name
+    it 'returns the updated tag' do
+      tags = subject['data']['tagUpdate']
+      expect(tags['name']).to eq name
     end
 
     it 'updates the record' do

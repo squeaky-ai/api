@@ -20,10 +20,10 @@ module Mutations
       def resolve(recording_ids:, viewed:, **_rest)
         recordings = @site.recordings.where(id: recording_ids)
 
-        return @site if recordings.size.zero?
+        return [] if recordings.size.zero?
 
         recordings.update_all(viewed: viewed)
-        recordings
+        @site.recordings.reload
       end
     end
   end

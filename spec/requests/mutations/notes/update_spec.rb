@@ -7,16 +7,11 @@ note_update_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $note_id: ID!, $body: String, $timestamp: Int) {
     noteUpdate(input: { siteId: $site_id, recordingId: $recording_id, noteId: $note_id, body: $body, timestamp: $timestamp }) {
       id
-      recording(recordingId: $recording_id) {
-        notes {
-          id
-          body
-          timestamp
-          user {
-            firstName
-            lastName
-          }
-        }
+      body
+      timestamp
+      user {
+        firstName
+        lastName
       }
     }
   }
@@ -56,9 +51,9 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       graphql_request(note_update_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      notes = subject['data']['noteUpdate']['recording']['notes']
-      expect(notes.size).to eq 0
+    it 'returns nil' do
+      response = subject['data']['noteUpdate']
+      expect(response).to eq nil
     end
 
     it 'does not delete anything' do
@@ -91,9 +86,9 @@ RSpec.describe Mutations::Notes::Update, type: :request do
           graphql_request(note_update_mutation, variables, user)
         end
   
-        it 'returns the modified site' do
-          notes = subject['data']['noteUpdate']['recording']['notes']
-          expect(notes[0]['body']).to eq body
+        it 'returns the note' do
+          response = subject['data']['noteUpdate']
+          expect(response['body']).to eq body
         end
   
         it 'updates the note' do
@@ -124,9 +119,9 @@ RSpec.describe Mutations::Notes::Update, type: :request do
           graphql_request(note_update_mutation, variables, user)
         end
   
-        it 'returns the unmodified site' do
-          notes = subject['data']['noteUpdate']['recording']['notes']
-          expect(notes[0]['body']).to eq note.body
+        it 'returns the unmodified note' do
+          response = subject['data']['noteUpdate']
+          expect(response['body']).to eq note.body
         end
   
         it 'does not update the note' do
@@ -157,9 +152,9 @@ RSpec.describe Mutations::Notes::Update, type: :request do
         graphql_request(note_update_mutation, variables, user)
       end
 
-      it 'returns the modified site' do
-        notes = subject['data']['noteUpdate']['recording']['notes']
-        expect(notes[0]['body']).to eq body
+      it 'returns the modified note' do
+        response = subject['data']['noteUpdate']
+        expect(response['body']).to eq body
       end
 
       it 'updates the note' do
@@ -186,9 +181,9 @@ RSpec.describe Mutations::Notes::Update, type: :request do
         graphql_request(note_update_mutation, variables, user)
       end
 
-      it 'returns the modified site' do
-        notes = subject['data']['noteUpdate']['recording']['notes']
-        expect(notes[0]['body']).to eq body
+      it 'returns the modified note' do
+        response = subject['data']['noteUpdate']
+        expect(response['body']).to eq body
       end
 
       it 'updates the note' do

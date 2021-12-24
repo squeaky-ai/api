@@ -3,7 +3,7 @@
 module Mutations
   module Teams
     class InviteResend < SiteMutation
-      null false
+      null true
 
       graphql_name 'TeamInviteResend'
 

@@ -7,12 +7,7 @@ tag_create_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $recording_id: ID!, $name: String!) {
     tagCreate(input: { siteId: $site_id, recordingId: $recording_id, name: $name }) {
       id
-      recording(recordingId: $recording_id) {
-        tags {
-          id
-          name
-        }
-      }
+      name
     }
   }
 GRAPHQL
@@ -45,10 +40,9 @@ RSpec.describe Mutations::Tags::Create, type: :request do
       graphql_request(tag_create_mutation, variables, user)
     end
 
-    it 'returns the updated site' do
-      tags = subject['data']['tagCreate']['recording']['tags']
-      expect(tags.size).to eq 1
-      expect(tags[0]['name']).to eq name
+    it 'returns the created tag' do
+      tags = subject['data']['tagCreate']
+      expect(tags['name']).to eq name
     end
 
     it 'creates the record' do
@@ -72,10 +66,9 @@ RSpec.describe Mutations::Tags::Create, type: :request do
       graphql_request(tag_create_mutation, variables, user)
     end
 
-    it 'returns the unmodified site' do
-      tags = subject['data']['tagCreate']['recording']['tags']
-      expect(tags.size).to eq 1
-      expect(tags[0]['name']).to eq name
+    it 'returns the existing tag' do
+      tags = subject['data']['tagCreate']
+      expect(tags['name']).to eq name
     end
 
     it 'does note create the record' do

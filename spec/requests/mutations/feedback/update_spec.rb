@@ -5,19 +5,17 @@ require 'rails_helper'
 feedback_update_mutation = <<-GRAPHQL
   mutation($input: FeedbackUpdateInput!) {
     feedbackUpdate(input: $input) {
-      feedback {
-        npsEnabled
-        npsAccentColor
-        npsSchedule
-        npsPhrase
-        npsFollowUpEnabled
-        npsContactConsentEnabled
-        npsLayout
-        sentimentEnabled
-        sentimentAccentColor
-        sentimentExcludedPages
-        sentimentLayout
-      }
+      npsEnabled
+      npsAccentColor
+      npsSchedule
+      npsPhrase
+      npsFollowUpEnabled
+      npsContactConsentEnabled
+      npsLayout
+      sentimentEnabled
+      sentimentAccentColor
+      sentimentExcludedPages
+      sentimentLayout
     }
   }
 GRAPHQL
@@ -48,7 +46,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
     end
 
     it 'returns the data' do
-      expect(subject['data']['feedbackUpdate']['feedback']).to eq(
+      expect(subject['data']['feedbackUpdate']).to eq(
         'npsEnabled' => true,
         'npsAccentColor' => '#000',
         'npsSchedule' => '1_week',
@@ -102,7 +100,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
     end
 
     it 'returns the data' do
-      expect(subject['data']['feedbackUpdate']['feedback']).to eq(
+      expect(subject['data']['feedbackUpdate']).to eq(
         'npsEnabled' => false,
         'npsAccentColor' => '#000',
         'npsSchedule' => '1_week',

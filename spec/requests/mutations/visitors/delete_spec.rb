@@ -7,11 +7,6 @@ visitor_delete_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $visitor_id: ID!) {
     visitorDelete(input: { siteId: $site_id, visitorId: $visitor_id }) {
       id
-      visitors {
-        items {
-          id
-        }
-      }
     }
   }
 GRAPHQL
@@ -45,8 +40,8 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     end
 
     it 'returns without the visitor' do
-      response = subject['data']['visitorDelete']['visitors']
-      expect(response['items']).to eq([])
+      response = subject['data']['visitorDelete']
+      expect(response).to eq nil
     end
 
     it 'deletes the visitor' do

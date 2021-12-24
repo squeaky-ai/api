@@ -3,13 +3,9 @@
 require 'rails_helper'
 
 recordings_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_ids: [String!]!, $from_date: String!, $to_date: String!) {
+  mutation($site_id: ID!, $recording_ids: [String!]!) {
     recordingsDelete(input: { siteId: $site_id, recordingIds: $recording_ids }) {
-      recordings(fromDate: $from_date, toDate: $to_date) {
-        items {
-          id
-        }
-      }
+      id
     }
   }
 GRAPHQL
@@ -20,21 +16,17 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
-
       variables = { 
         site_id: site.id, 
-        recording_ids: ['23423423423'], 
-        from_date: today, 
-        to_date: today 
+        recording_ids: ['23423423423']
       }
 
       graphql_request(recordings_delete_mutation, variables, user)
     end
 
-    it 'returns the site' do
-      response = subject['data']['recordingsDelete']['recordings']
-      expect(response['items']).to eq []
+    it 'returns an empty array' do
+      response = subject['data']['recordingsDelete']
+      expect(response).to eq []
     end
 
     it 'does not update the recordings count' do
@@ -57,24 +49,20 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     end
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
-
       variables = { 
         site_id: site.id, 
-        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
-        from_date: today, 
-        to_date: today 
+        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131']
       }
 
       graphql_request(recordings_delete_mutation, variables, user)
     end
 
-    it 'returns the site' do
-      response = subject['data']['recordingsDelete']['recordings']
-      expect(response['items']).to eq [{ 'id' => recording_3.id.to_s }]
+    it 'returns an empty array' do
+      response = subject['data']['recordingsDelete']
+      expect(response).to eq []
     end
 
-    it 'soft deletes the recording' do
+    it 'soft deletes the recordings' do
       expect { subject }.to change { site.recordings.reload.where(deleted: false).size }.from(3).to(1)
     end
   end

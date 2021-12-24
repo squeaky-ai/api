@@ -5,16 +5,14 @@ require 'rails_helper'
 team_invite_cancel_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $team_id: ID!) {
     teamInviteCancel(input: { siteId: $site_id, teamId: $team_id }) {
-      team {
+      id
+      role
+      status
+      user {
         id
-        role
-        status
-        user {
-          id
-          firstName
-          lastName
-          email
-        }
+        firstName
+        lastName
+        email
       }
     }
   }
@@ -31,10 +29,9 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
       graphql_request(team_invite_cancel_mutation, variables, user)
     end
 
-    it 'returns the site and team without the team id' do
-      team = subject['data']['teamInviteCancel']['team']
-      invited_team_member = team.find { |t| t['id'].to_i == team_id }
-      expect(invited_team_member).to be_nil
+    it 'returns nil' do
+      team = subject['data']['teamInviteCancel']
+      expect(team).to be_nil
     end
 
     it 'does not change the team count' do
@@ -54,10 +51,9 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
 
     before { team_member } # Otherwise subject will be responsible for creating the team
 
-    it 'returns the site with the existing team' do
-      team = subject['data']['teamInviteCancel']['team']
-      member = team.find { |t| t['id'].to_i == team_member.id }
-      expect(member).not_to be nil
+    it 'returns the team' do
+      team = subject['data']['teamInviteCancel']
+      expect(team).not_to be nil
     end
 
     it 'does not change the team count' do
@@ -77,10 +73,9 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
 
     before { team_member }
 
-    it 'returns the site without the team member' do
-      team = subject['data']['teamInviteCancel']['team']
-      member = team.find { |t| t['id'].to_i == team_member.id }
-      expect(member).to be nil
+    it 'returns nil' do
+      team = subject['data']['teamInviteCancel']
+      expect(team).to be nil
     end
 
     it 'does changes the team count' do

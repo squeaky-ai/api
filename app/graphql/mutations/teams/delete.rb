@@ -3,7 +3,7 @@
 module Mutations
   module Teams
     class Delete < SiteMutation
-      null false
+      null true
 
       graphql_name 'TeamDelete'
 
@@ -19,14 +19,14 @@ module Mutations
       def resolve(team_id:, **_rest)
         team = @site.member(team_id)
 
-        return @site if team.owner?
-        return @site if team.user.id == @user.id
-        return @site if team.admin? && @user.admin_for?(@site)
+        return team if team.owner?
+        return team if team.user.id == @user.id
+        return team if team.admin? && @user.admin_for?(@site)
 
         team.delete
         TeamMailer.member_removed(team.user.email, @site).deliver_now
 
-        team
+        nil
       end
     end
   end

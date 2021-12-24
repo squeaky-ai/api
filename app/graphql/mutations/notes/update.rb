@@ -3,7 +3,7 @@
 module Mutations
   module Notes
     class Update < SiteMutation
-      null false
+      null true
 
       graphql_name 'NotesUpdate'
 
@@ -26,7 +26,7 @@ module Mutations
 
         note = recording.notes.find_by_id(note_id)
 
-        return @site unless can_update?(note)
+        return note unless can_update?(note)
 
         note.body = body if body
         note.timestamp = timestamp if timestamp

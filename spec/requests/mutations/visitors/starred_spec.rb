@@ -7,10 +7,7 @@ visitor_starred_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $visitor_id: ID!, $starred: Boolean!) {
     visitorStarred(input: { siteId: $site_id, visitorId: $visitor_id, starred: $starred }) {
       id
-      visitor(visitorId: $visitor_id) {
-        id
-        starred
-      }
+      starred
     }
   }
 GRAPHQL
@@ -45,7 +42,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       end
 
       it 'marks the visitor as starred' do
-        response = subject['data']['visitorStarred']['visitor']
+        response = subject['data']['visitorStarred']
         expect(response['starred']).to be true
       end
 
@@ -67,7 +64,7 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       end
 
       it 'marks the visitor as unstarred' do
-        response = subject['data']['visitorStarred']['visitor']
+        response = subject['data']['visitorStarred']
         expect(response['starred']).to be false
       end
 
