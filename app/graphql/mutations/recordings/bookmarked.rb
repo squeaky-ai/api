@@ -11,7 +11,7 @@ module Mutations
       argument :recording_id, ID, required: true
       argument :bookmarked, Boolean, required: true
 
-      type Types::Sites::Site
+      type Types::Recordings::Recording
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -24,7 +24,7 @@ module Mutations
 
         recording.update(bookmarked: bookmarked)
 
-        @site
+        recording
       end
     end
   end

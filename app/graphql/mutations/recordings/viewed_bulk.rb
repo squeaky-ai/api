@@ -11,7 +11,7 @@ module Mutations
       argument :recording_ids, [String], required: true
       argument :viewed, Boolean, required: true
 
-      type Types::Sites::Site
+      type [Types::Recordings::Recording]
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -23,8 +23,7 @@ module Mutations
         return @site if recordings.size.zero?
 
         recordings.update_all(viewed: viewed)
-
-        @site
+        recordings
       end
     end
   end

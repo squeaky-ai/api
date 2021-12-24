@@ -3,14 +3,14 @@
 module Mutations
   module Feedback
     class NpsDelete < SiteMutation
-      null false
+      null true
 
       graphql_name 'NpsDelete'
 
       argument :site_id, ID, required: true
       argument :nps_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Feedback::NpsResponseItem
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -23,7 +23,7 @@ module Mutations
 
         nps.destroy
 
-        @site
+        nil
       end
     end
   end

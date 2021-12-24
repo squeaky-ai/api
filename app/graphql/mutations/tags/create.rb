@@ -11,7 +11,7 @@ module Mutations
       argument :recording_id, ID, required: true
       argument :name, String, required: true
 
-      type Types::Sites::Site
+      type Types::Tags::Tag
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
@@ -27,7 +27,7 @@ module Mutations
         recording.tags << tag unless recording.tags.include?(tag)
         recording.save
 
-        @site
+        tag
       end
     end
   end

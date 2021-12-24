@@ -39,7 +39,6 @@ module Types
     field :recordings_delete, mutation: Mutations::Recordings::DeleteBulk
     field :recordings_viewed, mutation: Mutations::Recordings::ViewedBulk
     # Feedback
-    field :feedback_create, mutation: Mutations::Feedback::Create
     field :feedback_update, mutation: Mutations::Feedback::Update
     field :nps_delete, mutation: Mutations::Feedback::NpsDelete
     field :sentiment_delete, mutation: Mutations::Feedback::SentimentDelete

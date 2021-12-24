@@ -3,14 +3,14 @@
 module Mutations
   module Visitors
     class Delete < SiteMutation
-      null false
+      null true
 
       graphql_name 'VisitorsDelete'
 
       argument :site_id, ID, required: true
       argument :visitor_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Visitors::Visitor
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -23,7 +23,7 @@ module Mutations
 
         visitor.destroy!
 
-        @site
+        nil
       end
     end
   end

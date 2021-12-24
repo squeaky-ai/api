@@ -10,7 +10,7 @@ module Mutations
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -20,7 +20,7 @@ module Mutations
         member = @site.member(team_id)
         member.user.invite!(@user, { site_name: @site.name }) if member&.pending?
 
-        @site
+        member
       end
     end
   end

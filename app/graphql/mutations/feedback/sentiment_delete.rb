@@ -3,14 +3,14 @@
 module Mutations
   module Feedback
     class SentimentDelete < SiteMutation
-      null false
+      null true
 
       graphql_name 'SentimentDelete'
 
       argument :site_id, ID, required: true
       argument :sentiment_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Feedback::SentimentResponseItem
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -23,7 +23,7 @@ module Mutations
 
         sentiment.destroy
 
-        @site
+        nil
       end
     end
   end

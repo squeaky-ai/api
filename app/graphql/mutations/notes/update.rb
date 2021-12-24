@@ -13,7 +13,7 @@ module Mutations
       argument :body, String, required: false
       argument :timestamp, Integer, required: false
 
-      type Types::Sites::Site
+      type Types::Notes::Note
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
@@ -32,7 +32,7 @@ module Mutations
         note.timestamp = timestamp if timestamp
         note.save!
 
-        @site
+        note
       end
 
       private

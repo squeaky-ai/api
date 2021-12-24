@@ -10,7 +10,7 @@ module Mutations
       argument :token, String, required: true
       argument :password, String, required: false
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def resolve(token:, password: nil)
         user = User.find_by_invitation_token(token, true)
@@ -32,7 +32,7 @@ module Mutations
 
         team.update(status: Team::ACCEPTED)
 
-        team.site.reload
+        team
       end
     end
   end

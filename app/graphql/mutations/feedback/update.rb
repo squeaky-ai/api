@@ -20,7 +20,7 @@ module Mutations
       argument :sentiment_excluded_pages, [String], required: false
       argument :sentiment_layout, String, required: false
 
-      type Types::Sites::Site
+      type Types::Feedback::Feedback
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -45,7 +45,7 @@ module Mutations
         feedback.assign_attributes(args.except(:site_id))
         feedback.save
 
-        @site.reload
+        feedback
       end
     end
   end

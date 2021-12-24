@@ -11,7 +11,7 @@ module Mutations
       argument :team_id, ID, required: true
       argument :role, Integer, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -33,7 +33,7 @@ module Mutations
 
         TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 
-        @site
+        team
       end
     end
   end

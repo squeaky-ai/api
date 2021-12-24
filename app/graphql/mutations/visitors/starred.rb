@@ -11,7 +11,7 @@ module Mutations
       argument :visitor_id, ID, required: true
       argument :starred, Boolean, required: true
 
-      type Types::Sites::Site
+      type Types::Visitors::Visitor
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -24,7 +24,7 @@ module Mutations
 
         visitor.update(starred: starred)
 
-        @site
+        visitor
       end
     end
   end

@@ -11,7 +11,7 @@ module Mutations
       argument :email, String, required: true
       argument :role, Integer, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -28,8 +28,6 @@ module Mutations
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 
         Team.create(status: Team::PENDING, role: role, user: user, site: @site)
-
-        @site.reload
       end
 
       private

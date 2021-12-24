@@ -10,7 +10,7 @@ module Mutations
       argument :site_id, ID, required: true
       argument :team_id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Teams::Team
 
       def permitted_roles
         [Team::OWNER, Team::ADMIN]
@@ -26,7 +26,7 @@ module Mutations
         team.delete
         TeamMailer.member_removed(team.user.email, @site).deliver_now
 
-        @site.reload
+        team
       end
     end
   end
