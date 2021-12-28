@@ -40,7 +40,7 @@ class RecordingSaveJob < ApplicationJob
 
     if recording.new_record?
       recording.visitor_id = visitor.id
-      recording.deleted = soft_delete?
+      recording.status = recording_status
       recording.locale = @session.locale
       recording.device_x = @session.device_x
       recording.browser = @session.browser
@@ -134,21 +134,23 @@ class RecordingSaveJob < ApplicationJob
 
     return false if @session.duration.zero?
 
-    return false if @site.recording_count_exceeded?
-
     true
   end
 
-  def soft_delete?
+  def recording_status
+    # Users can unlock these recordings if they upgrade their
+    # plan
+    return Recording::LOCKED if @site.recording_count_exceeded?
+
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
-    return true if @session.duration < 3000
+    return Recording::DELETED if @session.duration < 3000
 
     # Recordings without any user interaction are also not worth
     # watching, and is likely a bot
-    return true unless @session.interaction?
+    return Recording::DELETED unless @session.interaction?
 
-    false
+    Recording::ACTIVE
   end
 
   def find_or_create_visitor

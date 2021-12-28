@@ -129,7 +129,7 @@ RSpec.describe Site, type: :model do
       before do
         create(:recording, site: site)
         create(:recording, site: site)
-        create(:recording, deleted: true, site: site)
+        create(:recording, status: Recording::DELETED, site: site)
       end
 
       subject { site.recordings_count }
@@ -226,8 +226,8 @@ RSpec.describe Site, type: :model do
 
       before do
         allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(1)
-        create(:recording, deleted: true, site: site)
-        create(:recording, deleted: true, site: site)
+        create(:recording, status: Recording::DELETED, site: site)
+        create(:recording, status: Recording::DELETED, site: site)
       end
 
       subject { site.recording_count_exceeded? }

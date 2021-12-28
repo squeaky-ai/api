@@ -132,7 +132,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
     before do
       5.times.map { create(:recording, site: site) }
-      create(:recording, deleted: true, site: site)
+      create(:recording, status: Recording::DELETED, site: site)
     end
 
     it 'returns the items' do

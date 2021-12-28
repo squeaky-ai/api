@@ -39,7 +39,7 @@ class Visitor < ApplicationRecord
   end
 
   def visible_recordings
-    @visible_recordings ||= recordings.reject(&:deleted)
+    @visible_recordings ||= recordings.reject(&:deleted?)
   end
 
   def recording_count

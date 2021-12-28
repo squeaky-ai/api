@@ -63,7 +63,7 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     end
 
     it 'soft deletes the recordings' do
-      expect { subject }.to change { site.recordings.reload.where(deleted: false).size }.from(3).to(1)
+      expect { subject }.to change { site.recordings.reload.where(status: Recording::ACTIVE).size }.from(3).to(1)
     end
   end
 end

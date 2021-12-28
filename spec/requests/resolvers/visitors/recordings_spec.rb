@@ -55,7 +55,7 @@ RSpec.describe Resolvers::Visitors::Recordings, type: :request do
     before do
       create(:recording, site: site, page_urls: ['/'], visitor: visitor)
       create(:recording, site: site, page_urls: ['/', '/contact'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/contact'], deleted: true, visitor: visitor)
+      create(:recording, site: site, page_urls: ['/contact'], status: Recording::DELETED, visitor: visitor)
       create(:recording, site: site, page_urls: ['/contact'])
     end
 

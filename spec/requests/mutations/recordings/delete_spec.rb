@@ -42,7 +42,7 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
     end
 
     it 'soft deletes the recording' do
-      expect { subject }.to change { Recording.find_by(id: recording.id).deleted }.from(false).to(true)
+      expect { subject }.to change { Recording.find_by(id: recording.id).deleted? }.from(false).to(true)
     end
   end
 end

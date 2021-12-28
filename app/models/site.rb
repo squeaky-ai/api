@@ -59,7 +59,7 @@ class Site < ApplicationRecord
   end
 
   def recordings_count
-    recordings.where(deleted: false).count
+    recordings.where(status: Recording::ACTIVE).count
   end
 
   def verify!
@@ -79,7 +79,7 @@ class Site < ApplicationRecord
 
   def recording_count_exceeded?
     count = recordings
-            .where('deleted = false AND created_at > ? AND created_at < ?', Time.now.beginning_of_month, Time.now.end_of_month)
+            .where('status = ? AND created_at > ? AND created_at < ?', Recording::ACTIVE, Time.now.beginning_of_month, Time.now.end_of_month)
             .count
     count >= Plan.new(plan).max_monthly_recordings
   end

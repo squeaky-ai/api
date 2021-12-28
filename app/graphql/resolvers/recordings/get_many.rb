@@ -19,7 +19,12 @@ module Resolvers
                      .includes(:nps, :sentiment)
                      .joins(:pages, :visitor)
                      .preload(:pages, :visitor)
-                     .where('deleted = false AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+                     .where(
+                       'status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                       Recording::ACTIVE,
+                       from_date,
+                       to_date
+                     )
                      .order(order(sort))
 
         # Apply all the filters

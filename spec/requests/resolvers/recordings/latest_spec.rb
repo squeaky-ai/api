@@ -71,7 +71,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     
-    before { create(:recording, deleted: true, site: site) }
+    before { create(:recording, status: Recording::DELETED, site: site) }
 
     subject do
       variables = { site_id: site.id }

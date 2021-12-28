@@ -93,7 +93,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
       visitor = create(:visitor)
   
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, deleted: true, site: site, visitor: visitor)
+      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, status: Recording::DELETED, site: site, visitor: visitor)
     end
 
     subject do

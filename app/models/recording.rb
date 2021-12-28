@@ -15,6 +15,10 @@ class Recording < ApplicationRecord
 
   has_and_belongs_to_many :tags
 
+  ACTIVE = 0
+  LOCKED = 1
+  DELETED = 2
+
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
   end
@@ -57,15 +61,19 @@ class Recording < ApplicationRecord
   end
 
   def previous_recording
-    recordings = site.recordings.where(deleted: false).order('connected_at DESC')
+    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at DESC')
     index = recordings.index(self)
     index.zero? ? nil : recordings[index - 1]
   end
 
   def next_recording
-    recordings = site.recordings.where(deleted: false).order('connected_at DESC')
+    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at DESC')
     index = recordings.index(self)
     index >= recordings.size ? nil : recordings[index + 1]
+  end
+
+  def deleted?
+    status == Recording::DELETED
   end
 
   private

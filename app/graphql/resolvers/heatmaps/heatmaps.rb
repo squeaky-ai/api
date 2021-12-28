@@ -55,7 +55,7 @@ module Resolvers
           LEFT JOIN
             recordings ON recordings.id = pages.recording_id
           WHERE
-            deleted = false AND
+            status = ? AND
             recordings.site_id = ? AND
             pages.url = ? AND
             recordings.viewport_x #{device_expression(device)} AND
@@ -66,7 +66,7 @@ module Resolvers
             1;
         SQL
 
-        pages = Sql.execute(sql, [object.id, page, from_date, to_date])
+        pages = Sql.execute(sql, [Recording::ACTIVE, object.id, page, from_date, to_date])
         pages.first&.[]('recording_id')
       end
 

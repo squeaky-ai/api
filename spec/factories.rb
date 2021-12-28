@@ -48,6 +48,7 @@ FactoryBot.define do
     viewport_y { 1080 }
     device_x { 1920 }
     device_y { 1080 }
+    status { Recording::ACTIVE }
     connected_at { Time.now.to_i * 1000 }
     disconnected_at { (Time.now.to_i + 1000) * 1000 }
 

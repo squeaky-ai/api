@@ -21,7 +21,7 @@ module Mutations
 
         return [] if recordings.size.zero?
 
-        recordings.update_all(deleted: true)
+        recordings.update_all(status: Recording::DELETED)
 
         []
       end

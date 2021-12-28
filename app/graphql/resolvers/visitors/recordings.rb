@@ -11,7 +11,7 @@ module Resolvers
 
       def resolve(page:, size:, sort:)
         recordings = Recording
-                     .where('deleted = false AND visitor_id = ?', object.id)
+                     .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
                      .includes(:pages, :visitor)
                      .order(order(sort))
 

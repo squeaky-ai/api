@@ -8,7 +8,7 @@ module Resolvers
       def resolve
         Recording
           .eager_load(:visitor, :pages)
-          .where(site_id: object.id, deleted: false)
+          .where(site_id: object.id, status: Recording::ACTIVE)
           .order('disconnected_at DESC')
           .first
       end

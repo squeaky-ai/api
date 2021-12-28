@@ -87,7 +87,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create(:visitor) }
 
     before do  
-      create(:recording, deleted: true, site: site, visitor: visitor)
+      create(:recording, status: Recording::DELETED, site: site, visitor: visitor)
     end
 
     subject do

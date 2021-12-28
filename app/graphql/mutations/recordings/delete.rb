@@ -21,7 +21,7 @@ module Mutations
 
         raise Errors::RecordingNotFound unless recording
 
-        recording.update!(deleted: true)
+        recording.update!(status: Recording::DELETED)
 
         nil
       end
