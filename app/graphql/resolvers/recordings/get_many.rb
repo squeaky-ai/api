@@ -20,7 +20,7 @@ module Resolvers
                      .joins(:pages, :visitor)
                      .preload(:pages, :visitor)
                      .where(
-                       'status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                       'recordings.status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
                        Recording::ACTIVE,
                        from_date,
                        to_date
