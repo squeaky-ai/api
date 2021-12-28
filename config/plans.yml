@@ -1,11 +1,19 @@
 plan_0:
-  max_monthly_recordings: 300
+  max_monthly_recordings: 500
   monthly_price: 0
 
 plan_1:
-  max_monthly_recordings: 1000
+  max_monthly_recordings: 5000
   monthly_price: 50
 
 plan_2:
-  max_monthly_recordings: 5000
+  max_monthly_recordings: 25000
   monthly_price: 150
+
+plan_3:
+  max_monthly_recordings: 50000
+  monthly_price: 250
+
+plan_4:
+  max_monthly_recordings: 100000
+  monthly_price: 500
