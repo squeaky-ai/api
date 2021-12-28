@@ -73,7 +73,7 @@ class Recording < ApplicationRecord
   end
 
   def deleted?
-    status == Recording::DELETED
+    status != Recording::ACTIVE
   end
 
   private
