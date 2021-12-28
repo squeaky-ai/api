@@ -42,9 +42,11 @@ module Resolvers
         Sentiment
           .joins(:recording)
           .where(
-            'recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ?',
+            'recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ? AND recordings.status IN (?)',
             object[:site_id],
-            from_date, to_date
+            from_date,
+            to_date,
+            [Recording::ACTIVE, Recording::DELETED]
           )
           .select('sentiments.score, sentiments.created_at')
       end

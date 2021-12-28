@@ -37,11 +37,20 @@ module Resolvers
             recordings ON recordings.id = pages.recording_id
           WHERE
             recordings.site_id = ? AND
-            pages.url = ?
-            AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+            recordings.status IN (?) AND
+            pages.url = ? AND
+            to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
-        viewports = Sql.execute(sql, [object.id, page, from_date, to_date])
+        variables = [
+          object.id,
+          [Recording::ACTIVE, Recording::DELETED],
+          page,
+          from_date,
+          to_date
+        ]
+
+        viewports = Sql.execute(sql, variables)
 
         group_viewports(viewports.map { |v| v['viewport_x'] })
       end
@@ -55,8 +64,8 @@ module Resolvers
           LEFT JOIN
             recordings ON recordings.id = pages.recording_id
           WHERE
-            status = ? AND
             recordings.site_id = ? AND
+            recordings.status IN (?) AND
             pages.url = ? AND
             recordings.viewport_x #{device_expression(device)} AND
             to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -66,7 +75,15 @@ module Resolvers
             1;
         SQL
 
-        pages = Sql.execute(sql, [Recording::ACTIVE, object.id, page, from_date, to_date])
+        variables = [
+          object.id,
+          [Recording::ACTIVE, Recording::DELETED],
+          page,
+          from_date,
+          to_date
+        ]
+
+        pages = Sql.execute(sql, variables)
         pages.first&.[]('recording_id')
       end
 
@@ -82,6 +99,7 @@ module Resolvers
             events ON events.recording_id = recordings.id
           WHERE
             recordings.site_id = ? AND
+            recordings.status IN (?) AND
             recordings.viewport_x #{device_expression(device)} AND
             to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
             pages.url = ? AND
@@ -92,7 +110,15 @@ module Resolvers
             (events.data->>'type')::integer = 2
         SQL
 
-        events = Sql.execute(sql, [object.id, from_date, to_date, page])
+        variables = [
+          object.id,
+          [Recording::ACTIVE, Recording::DELETED],
+          from_date,
+          to_date,
+          page
+        ]
+
+        events = Sql.execute(sql, variables)
         events.map { |e| JSON.parse(e['data']) }
       end
 
@@ -108,6 +134,7 @@ module Resolvers
             events ON events.recording_id = recordings.id
           WHERE
             recordings.site_id = ? AND
+            recordings.status IN (?) AND
             recordings.viewport_x #{device_expression(device)} AND
             to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
             pages.url = ? AND
@@ -119,7 +146,15 @@ module Resolvers
             pages.id;
         SQL
 
-        events = Sql.execute(sql, [object.id, from_date, to_date, page])
+        variables = [
+          object.id,
+          [Recording::ACTIVE, Recording::DELETED],
+          from_date,
+          to_date,
+          page
+        ]
+
+        events = Sql.execute(sql, variables)
         events.map { |e| { y: e['max'] } }
       end
 

@@ -18,10 +18,17 @@ module Resolvers
         sql = <<-SQL
           SELECT COUNT(id)
           FROM recordings
-          WHERE site_id = ? AND created_at::date >= ? AND created_at::date <= ?
+          WHERE recordings.site_id = ? AND recordings.created_at::date >= ? AND recordings.created_at::date <= ? AND recordings.status IN (?)
         SQL
 
-        results = Sql.execute(sql, [site_id, from_date, to_date])
+        variables = [
+          site_id,
+          from_date,
+          to_date,
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        results = Sql.execute(sql, variables)
         results.first['count']
       end
 
@@ -30,10 +37,17 @@ module Resolvers
           SELECT COUNT(nps.id)
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id
-          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?
+          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)
         SQL
 
-        results = Sql.execute(sql, [site_id, from_date, to_date])
+        variables = [
+          site_id,
+          from_date,
+          to_date,
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        results = Sql.execute(sql, variables)
         results.first['count']
       end
     end

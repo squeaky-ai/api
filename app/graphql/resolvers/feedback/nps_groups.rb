@@ -10,10 +10,17 @@ module Resolvers
           SELECT nps.score
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id
-          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?
+          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)
         SQL
 
-        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
+        variables = [
+          object[:site_id],
+          object[:from_date],
+          object[:to_date],
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        results = Sql.execute(sql, variables)
 
         out = {
           promoters: 0,
