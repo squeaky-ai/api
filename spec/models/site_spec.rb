@@ -140,54 +140,6 @@ RSpec.describe Site, type: :model do
     end
   end
 
-  describe '#team_size_exceeded?' do
-    context 'when the count is less' do
-      let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
-
-      before do
-        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(2)
-      end
-
-      subject { site.team_size_exceeded? }
-
-      it 'returns false' do
-        expect(subject).to be false
-      end
-    end
-
-    context 'when the count is equal' do
-      let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
-
-      before do
-        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
-      end
-
-      subject { site.team_size_exceeded? }
-
-      it 'returns true' do
-        expect(subject).to be true
-      end
-    end
-
-    context 'when the count is greater' do
-      let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
-
-      before do
-        allow_any_instance_of(Plan).to receive(:max_team_members).and_return(1)
-        create(:team, site: site, role: Team::MEMBER)
-      end
-
-      subject { site.team_size_exceeded? }
-
-      it 'returns true' do
-        expect(subject).to be true
-      end
-    end
-  end
-
   describe '#recording_count_exceeded?' do
     context 'when there are no recordings' do
       let(:user) { create(:user) }

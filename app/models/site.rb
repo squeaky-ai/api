@@ -24,7 +24,6 @@ class Site < ApplicationRecord
 
   # The plural sounds weird
   alias_attribute :team, :teams
-  alias_attribute :team_size_exceeded, :team_size_exceeded?
 
   default_scope { order(name: :asc) }
 
@@ -76,10 +75,6 @@ class Site < ApplicationRecord
     return nil unless uri.scheme && uri.host
 
     "#{uri.scheme}://#{uri.host.downcase}"
-  end
-
-  def team_size_exceeded?
-    team.size >= Plan.new(plan).max_team_members
   end
 
   def recording_count_exceeded?

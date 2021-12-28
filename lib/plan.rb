@@ -9,10 +9,6 @@ class Plan
     raise StandardError, 'Plan number is invalid' unless @config
   end
 
-  def max_team_members
-    @config['max_team_members']
-  end
-
   def max_monthly_recordings
     @config['max_monthly_recordings']
   end
