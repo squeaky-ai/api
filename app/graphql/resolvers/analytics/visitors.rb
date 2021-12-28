@@ -27,10 +27,17 @@ module Resolvers
         sql = <<-SQL
           SELECT visitor_id, disconnected_at
           FROM recordings
-          WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
         SQL
 
-        Sql.execute(sql, [site_id, from_date, to_date])
+        variables = [
+          site_id,
+          from_date,
+          to_date,
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        Sql.execute(sql, variables)
       end
 
       def visitors(site_id, visitor_ids)

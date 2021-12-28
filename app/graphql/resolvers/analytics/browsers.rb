@@ -23,12 +23,19 @@ module Resolvers
         sql = <<-SQL
           SELECT DISTINCT(useragent) useragent, count(*) useragent_count
           FROM recordings
-          WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+          WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
           GROUP BY useragent
           ORDER BY useragent_count
         SQL
 
-        Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
+        variables = [
+          object[:site_id],
+          object[:from_date],
+          object[:to_date],
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        Sql.execute(sql, variables)
       end
     end
   end

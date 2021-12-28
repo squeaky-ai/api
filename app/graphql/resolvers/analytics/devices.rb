@@ -9,10 +9,17 @@ module Resolvers
         sql = <<-SQL
           SELECT useragent
           FROM recordings
-          WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
         SQL
 
-        results = Sql.execute(sql, [object[:site_id], object[:from_date], object[:to_date]])
+        variables = [
+          object[:site_id],
+          object[:from_date],
+          object[:to_date],
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        results = Sql.execute(sql, variables)
 
         groups = results.partition { |r| UserAgent.parse(r['useragent']).mobile? }
 

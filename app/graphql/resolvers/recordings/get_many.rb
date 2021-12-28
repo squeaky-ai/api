@@ -20,10 +20,9 @@ module Resolvers
                      .joins(:pages, :visitor)
                      .preload(:pages, :visitor)
                      .where(
-                       'recordings.status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                       Recording::ACTIVE,
-                       from_date,
-                       to_date
+                       'recordings.status = ? AND
+                       to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                       Recording::ACTIVE, from_date, to_date
                      )
                      .order(order(sort))
 
