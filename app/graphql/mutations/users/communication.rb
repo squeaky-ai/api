@@ -14,7 +14,7 @@ module Mutations
       argument :marketing_and_special_offers_email, Boolean, required: false
       argument :knowledge_sharing_email, Boolean, required: false
 
-      type Types::Users::Communication
+      type Types::Users::User
 
       def resolve(**args)
         communication = @user.communication || ::Communication.create(
@@ -30,7 +30,7 @@ module Mutations
         communication.assign_attributes(args)
         communication.save
 
-        communication
+        @user.reload
       end
     end
   end
