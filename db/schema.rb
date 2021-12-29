@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_160243) do
+ActiveRecord::Schema.define(version: 2021_12_29_162230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "communications", force: :cascade do |t|
+    t.boolean "onboarding_email", null: false
+    t.boolean "weekly_review_email", null: false
+    t.boolean "monthly_review_email", null: false
+    t.boolean "product_updates_email", null: false
+    t.boolean "marketing_and_special_offers_email", null: false
+    t.boolean "knowledge_sharing_email", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_communications_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.integer "event_type", null: false

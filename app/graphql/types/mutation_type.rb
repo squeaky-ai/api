@@ -6,6 +6,7 @@ module Types
     field :user_update, mutation: Mutations::Users::Update
     field :user_delete, mutation: Mutations::Users::Delete
     field :user_password, mutation: Mutations::Users::Password
+    field :user_communication, mutation: Mutations::Users::Communication
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update

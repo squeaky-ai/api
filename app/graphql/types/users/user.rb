@@ -11,6 +11,7 @@ module Types
       field :full_name, String, null: true
       field :email, String, null: false
       field :superuser, Boolean, null: false
+      field :communication, Types::Users::Communication, null: true
       field :created_at, String, null: false
       field :updated_at, String, null: true
     end
