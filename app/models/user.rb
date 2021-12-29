@@ -16,7 +16,7 @@ class User < ApplicationRecord
   has_many :teams, dependent: :destroy
   has_many :sites, through: :teams
 
-  has_one :communication
+  has_one :communication, dependent: :destroy
 
   def full_name
     return nil unless first_name && last_name
