@@ -10,7 +10,7 @@ module Resolvers
       def resolve(recording_id:)
         Recording
           .includes(:visitor, :pages)
-          .find_by(site_id: object.id, id: recording_id, status: Recording::ACTIVE)
+          .find_by(site_id: object.id, id: recording_id, status: [Recording::ACTIVE, Recording::DELETED])
       end
     end
   end
