@@ -5,12 +5,15 @@ require 'rails_helper'
 communication_update_mutation = <<-GRAPHQL
   mutation ($input: UsersCommunicationInput!) {
     userCommunication(input: $input) {
-      knowledgeSharingEmail
-      marketingAndSpecialOffersEmail
-      monthlyReviewEmail
-      onboardingEmail
-      productUpdatesEmail
-      weeklyReviewEmail
+      id 
+      communication {
+        knowledgeSharingEmail
+        marketingAndSpecialOffersEmail
+        monthlyReviewEmail
+        onboardingEmail
+        productUpdatesEmail
+        weeklyReviewEmail
+      }
     }
   }
 GRAPHQL
@@ -34,7 +37,7 @@ RSpec.describe Mutations::Users::Communication, type: :request do
     end
 
     it 'returns the data' do
-      expect(subject['data']['userCommunication']).to eq(
+      expect(subject['data']['userCommunication']['communication']).to eq(
         'onboardingEmail' => true,
         'weeklyReviewEmail' => true,
         'monthlyReviewEmail' => true,
@@ -76,7 +79,7 @@ RSpec.describe Mutations::Users::Communication, type: :request do
     end
 
     it 'returns the data' do
-      expect(subject['data']['userCommunication']).to eq(
+      expect(subject['data']['userCommunication']['communication']).to eq(
         'onboardingEmail' => true,
         'weeklyReviewEmail' => true,
         'monthlyReviewEmail' => true,
