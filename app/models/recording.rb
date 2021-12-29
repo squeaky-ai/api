@@ -62,7 +62,7 @@ class Recording < ApplicationRecord
 
   def previous_recording
     recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at DESC')
-    index = recordings.index(self)
+    index = recordings.index(self) || 0
     index.zero? ? nil : recordings[index - 1]
   end
 

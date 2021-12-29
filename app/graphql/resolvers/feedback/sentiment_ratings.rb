@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve
         current_results = get_results(object[:from_date], object[:to_date])
-        trend_date_range = offset_dates_by_period(object[:from_date], object[:to_date])
+        trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
         previous_results = get_results(*trend_date_range)
 
         format_results(current_results, previous_results)
@@ -21,21 +21,6 @@ module Resolvers
           trend: avg_score(current_results) - avg_score(previous_results),
           responses: map_results(current_results)
         }
-      end
-
-      def parse_date(date)
-        Date.strptime(date, '%Y-%m-%d')
-      end
-
-      def offset_dates_by_period(from_date, to_date)
-        from = parse_date(from_date)
-        to = parse_date(to_date)
-
-        # Same day is pointless because you're comparing it against
-        # itself, so always do at least one day
-        diff = (to - from).days < 1.day ? 1.day : (to - from)
-
-        [from - diff, to - diff]
       end
 
       def get_results(from_date, to_date)
