@@ -10,14 +10,6 @@ module Resolvers
         trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
         previous_average = get_average_duration(object[:site_id], *trend_date_range)
 
-        puts({
-          msg: 'average duration',
-          current_average: current_average,
-          previous_average: previous_average,
-          current_date_range: [object[:from_date], object[:to_date]],
-          trend_date_range: trend_date_range
-        }.to_json)
-
         {
           average: current_average,
           trend: current_average - previous_average
