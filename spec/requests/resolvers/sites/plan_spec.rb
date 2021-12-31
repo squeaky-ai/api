@@ -11,6 +11,7 @@ site_plan_query = <<-GRAPHQL
         exceeded
         recordingsLimit
         recordingsLocked
+        visitorsLocked
       }
     }
   }
@@ -33,7 +34,8 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
         'name' => 'Essentials',
         'exceeded' => false,
         'recordingsLimit' => 500,
-        'recordingsLocked' => 0
+        'recordingsLocked' => 0,
+        'visitorsLocked' => 0
       )
     end
   end
@@ -56,7 +58,8 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
         'name' => 'Essentials',
         'exceeded' => true,
         'recordingsLimit' => 500,
-        'recordingsLocked' => 50
+        'recordingsLocked' => 50,
+        'visitorsLocked' => 0
       )
     end
   end

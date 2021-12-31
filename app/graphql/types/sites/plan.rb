@@ -10,6 +10,7 @@ module Types
       field :exceeded, Boolean, null: false
       field :recordings_limit, Integer, null: false
       field :recordings_locked, Integer, null: false
+      field :visitors_locked, Integer, null: false
     end
   end
 end

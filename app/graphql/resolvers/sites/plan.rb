@@ -14,7 +14,8 @@ module Resolvers
           name: object.plan_name,
           exceeded: recordings_locked.positive?,
           recordings_limit: recordings_limit,
-          recordings_locked: recordings_locked
+          recordings_locked: recordings_locked,
+          visitors_locked: visitors_locked_count
         }
       end
 
@@ -24,6 +25,19 @@ module Resolvers
         object.recordings
               .where(
                 'status = ? AND created_at > ? AND created_at < ?',
+                Recording::LOCKED,
+                Time.now.beginning_of_month,
+                Time.now.end_of_month
+              )
+              .count
+      end
+
+      def visitors_locked_count
+        object.visitors
+              .joins(:recordings)
+              .preload(:recordings)
+              .where(
+                'recordings.status = ? AND visitors.created_at > ? AND visitors.created_at < ?',
                 Recording::LOCKED,
                 Time.now.beginning_of_month,
                 Time.now.end_of_month
