@@ -13,7 +13,7 @@ require 'action_mailer/railtie'
 # require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
-# require 'action_cable/engine'
+require 'action_cable/engine'
 require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -39,6 +39,9 @@ module Squeaky
     config.api_only = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.action_cable.mount_path = '/api/in'
+    config.action_cable.disable_request_forgery_protection = true
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
