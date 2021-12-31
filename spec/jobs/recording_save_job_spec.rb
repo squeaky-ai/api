@@ -153,4 +153,29 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.status).to eq Recording::LOCKED
     end
   end
+
+  context 'when the site was not verified' do
+    let(:site) { create(:site) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.update(verified_at: nil)
+      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+
+      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+    end
+
+    subject { described_class.perform_now(event.to_json) }
+
+    it 'verifies it' do
+      expect { subject }.to change { site.reload.verified_at.nil? }.from(true).to(false)
+    end
+  end
 end

@@ -21,12 +21,21 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
+
+      set_site_as_verified!
     end
 
     Rails.logger.info 'Recording saved'
   end
 
   private
+
+  def set_site_as_verified!
+    return if @site.verified_at
+
+    Rails.logger.info "Site #{@site.id} was automatically verified"
+    @site.verify!
+  end
 
   def persist_visitor!
     visitor = find_or_create_visitor
