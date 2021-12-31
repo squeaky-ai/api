@@ -9,8 +9,10 @@ site_create_mutation = <<-GRAPHQL
       name
       url
       ownerName
-      plan
-      planName
+      plan {
+        type
+        name
+      }
       uuid
       verifiedAt
       team {

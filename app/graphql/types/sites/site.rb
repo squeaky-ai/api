@@ -8,8 +8,7 @@ module Types
       field :id, ID, null: false
       field :name, String, null: false
       field :url, String, null: false
-      field :plan, Integer, null: false
-      field :plan_name, String, null: false
+      field :plan, Types::Sites::Plan, resolver: Resolvers::Sites::Plan
       field :uuid, String, null: false
       field :owner_name, String, null: false
       field :verified_at, String, null: true
