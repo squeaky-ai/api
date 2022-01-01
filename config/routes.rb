@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     # Enable the GraphQL playground
     mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
 
+    resources :feedback, only: %i[index]
+
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do
