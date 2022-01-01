@@ -22,6 +22,7 @@ module Types
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
       field :domain_blacklist, [Types::Sites::DomainBlacklist, { null: true }], null: false
       field :recordings_count, Integer, null: false
+      field :active_user_count, Integer, null: false
       field :feedback, Types::Feedback::Feedback, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
       field :heatmaps, resolver: Resolvers::Heatmaps::Heatmaps

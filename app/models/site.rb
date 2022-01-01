@@ -87,4 +87,9 @@ class Site < ApplicationRecord
   def page_urls
     pages.select(:url).all.map(&:url).uniq
   end
+
+  def active_user_count
+    count = Redis.current.get("active_user_count::#{uuid}")
+    count.to_i
+  end
 end

@@ -255,4 +255,32 @@ RSpec.describe Site, type: :model do
       expect(subject).to eq(['/', '/foo'])
     end
   end
+
+  describe '#active_user_count' do
+    context 'when there is nothing in Redis' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user) }
+  
+      subject { site.active_user_count }
+
+      it 'returns 0' do
+        expect(subject).to eq(0)
+      end
+    end
+
+    context 'when there is something in Redis' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user) }
+      
+      before do
+        allow(Redis.current).to receive(:get).with("active_user_count::#{site.uuid}").and_return(5)
+      end
+  
+      subject { site.active_user_count }
+
+      it 'returns the count' do
+        expect(subject).to eq(5)
+      end
+    end
+  end
 end
