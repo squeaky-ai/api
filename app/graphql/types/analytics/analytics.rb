@@ -17,6 +17,7 @@ module Types
       field :dimensions, resolver: Resolvers::Analytics::Dimensions
       field :referrers, resolver: Resolvers::Analytics::Referrers
       field :visitors, resolver: Resolvers::Analytics::Visitors
+      field :visits_at, resolver: Resolvers::Analytics::VisitsAt
       field :page_views, resolver: Resolvers::Analytics::PageViews
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
     end
