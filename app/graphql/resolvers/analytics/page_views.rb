@@ -20,7 +20,7 @@ module Resolvers
 
       def pageviews
         sql = <<-SQL
-          SELECT array_agg(pages.url) urls, max(pages.exited_at) exited_at
+          SELECT array_agg(pages.url) urls, to_timestamp(max(pages.exited_at) / 1000)::date  exited_at
           FROM pages
           INNER JOIN recordings ON recordings.id = pages.recording_id
           WHERE recordings.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)

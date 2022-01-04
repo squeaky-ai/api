@@ -173,7 +173,12 @@ RSpec.describe Recording, type: :model do
     context 'when there is more than one recording' do
       context 'when this recording is the first' do
         let(:site) { create(:site) }
-        let(:recordings) { 3.times.map { create(:recording, site: site) } }
+        
+        let(:recordings) do
+          3.times.each_with_index.map do |i| 
+            create(:recording, site: site, connected_at: Time.new(2021, 8, i + 1).to_i * 1000)
+          end
+        end
 
         subject { recordings.first.previous_recording }
 
@@ -184,7 +189,12 @@ RSpec.describe Recording, type: :model do
 
       context 'when this recording not the first' do
         let(:site) { create(:site) }
-        let(:recordings) { 3.times.map { create(:recording, site: site) } }
+        
+        let(:recordings) do
+          3.times.each_with_index.map do |i| 
+            create(:recording, site: site, connected_at: Time.new(2021, 8, i + 1).to_i * 1000)
+          end
+        end
 
         subject { recordings[1].previous_recording }
 
@@ -210,7 +220,12 @@ RSpec.describe Recording, type: :model do
     context 'when there is more than one recording' do
       context 'when this recording is the last' do
         let(:site) { create(:site) }
-        let(:recordings) { 3.times.map { create(:recording, site: site) } }
+
+        let(:recordings) do
+          3.times.each_with_index.map do |i| 
+            create(:recording, site: site, connected_at: Time.new(2021, 8, i + 1).to_i * 1000)
+          end
+        end
 
         subject { recordings.last.next_recording }
 
@@ -221,7 +236,12 @@ RSpec.describe Recording, type: :model do
 
       context 'when this recording not the last' do
         let(:site) { create(:site) }
-        let(:recordings) { 3.times.map { create(:recording, site: site) } }
+        
+        let(:recordings) do
+          3.times.each_with_index.map do |i|
+            create(:recording, site: site, connected_at: Time.new(2021, 8, i + 1).to_i * 1000)
+          end
+        end
 
         subject { recordings[1].next_recording }
 

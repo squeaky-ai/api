@@ -11,7 +11,7 @@ module Types
       field :plan, Types::Sites::Plan, resolver: Resolvers::Sites::Plan
       field :uuid, String, null: false
       field :owner_name, String, null: false
-      field :verified_at, String, null: true
+      field :verified_at, GraphQL::Types::ISO8601DateTime, null: true
       field :team, [Types::Teams::Team], null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
@@ -32,19 +32,19 @@ module Types
       field :visitor, resolver: Resolvers::Visitors::GetOne
       field :visitors, resolver: Resolvers::Visitors::GetMany
       field :analytics, Types::Analytics::Analytics, null: false do
-        argument :from_date, String, required: true
-        argument :to_date, String, required: true
+        argument :from_date, GraphQL::Types::ISO8601Date, required: true
+        argument :to_date, GraphQL::Types::ISO8601Date, required: true
       end
       field :nps, Types::Feedback::Nps, null: false do
-        argument :from_date, String, required: true
-        argument :to_date, String, required: true
+        argument :from_date, GraphQL::Types::ISO8601Date, required: true
+        argument :to_date, GraphQL::Types::ISO8601Date, required: true
       end
       field :sentiment, Types::Feedback::Sentiment, null: false do
-        argument :from_date, String, required: true
-        argument :to_date, String, required: true
+        argument :from_date, GraphQL::Types::ISO8601Date, required: true
+        argument :to_date, GraphQL::Types::ISO8601Date, required: true
       end
-      field :created_at, String, null: false
-      field :updated_at, String, null: true
+      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
       def analytics(args)
         { site_id: object.id, **args }

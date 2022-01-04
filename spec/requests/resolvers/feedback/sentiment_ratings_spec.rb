@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 sentiment_ratings_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       sentiment(fromDate: $from_date, toDate: $to_date) {
         ratings {

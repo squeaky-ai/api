@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 analytics_page_views_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         pageViews {
@@ -62,17 +62,17 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         {
           'total' => 2,
           'unique' => 2,
-          'timestamp' => '1628290800000'
+          'timestamp' => '2021-08-06T00:00:00+01:00'
         },
         {
           'total' => 1,
           'unique' => 1,
-          'timestamp' => '1628204400000'
+          'timestamp' => '2021-08-05T00:00:00+01:00'
         },
         {
           'total' => 2,
           'unique' => 0,
-          'timestamp' => '1628118000000'
+          'timestamp' => '2021-08-04T00:00:00+01:00'
         }
       ])
     end
@@ -112,17 +112,17 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         {
           'total' => 2,
           'unique' => 2,
-          'timestamp' => '1628290800000'
+          'timestamp' => '2021-08-06T00:00:00+01:00'
         },
         {
           'total' => 3,
           'unique' => 1,
-          'timestamp' => '1628204400000'
+          'timestamp' => '2021-08-05T00:00:00+01:00'
         },
         {
           'total' => 1,
           'unique' => 1,
-          'timestamp' => '1628118000000'
+          'timestamp' => '2021-08-04T00:00:00+01:00'
         }
       ])
     end

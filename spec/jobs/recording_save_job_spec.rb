@@ -36,8 +36,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.device_x).to eq 3840
       expect(recording.device_y).to eq 1600
       expect(recording.session_id).to eq event['session_id']
-      expect(recording.connected_at).to eq 1637177342265
-      expect(recording.disconnected_at).to eq 1637177353431
+      expect(recording.connected_at).to eq Time.at(1637177342265 / 1000).utc
+      expect(recording.disconnected_at).to eq Time.at(1637177353431 / 1000).utc
       expect(recording.pages_count).to eq 1
     end
 

@@ -7,9 +7,9 @@ module Types
 
       argument :range_type, Types::Common::FiltersRange, required: false
       argument :from_type, Types::Common::FiltersStart, required: false
-      argument :from_date, String, required: false
-      argument :between_from_date, String, required: false
-      argument :between_to_date, String, required: false
+      argument :from_date, GraphQL::Types::ISO8601Date, required: false
+      argument :between_from_date, GraphQL::Types::ISO8601Date, required: false
+      argument :between_to_date, GraphQL::Types::ISO8601Date, required: false
     end
   end
 end

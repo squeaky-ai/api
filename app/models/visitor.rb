@@ -30,12 +30,12 @@ class Visitor < ApplicationRecord
 
   def first_viewed_at
     first_event = recordings.min_by(&:connected_at)
-    Time.at(first_event.connected_at / 1000).utc.iso8601
+    first_event.connected_at
   end
 
   def last_activity_at
     last_event = recordings.max_by(&:disconnected_at)
-    Time.at(last_event.disconnected_at / 1000).utc.iso8601
+    last_event.disconnected_at
   end
 
   def visible_recordings

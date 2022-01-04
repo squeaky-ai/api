@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 analytics_visitors_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         visitors {
@@ -53,15 +53,15 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']).to match_array([
         {
           'new' => false,
-          'timestamp' => '1628290800000'
+          'timestamp' => '2021-08-06T00:00:00+01:00'
         },
         {
           'new' => false,
-          'timestamp' => '1628204400000'
+          'timestamp' => '2021-08-05T00:00:00+01:00'
         },
         {
           'new' => true,
-          'timestamp' => '1628118000000'
+          'timestamp' => '2021-08-04T00:00:00+01:00'
         }
       ])
     end
@@ -90,15 +90,15 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']).to match_array([
         {
           'new' => false,
-          'timestamp' => '1628290800000'
+          'timestamp' => '2021-08-06T00:00:00+01:00'
         },
         {
           'new' => false,
-          'timestamp' => '1628204400000'
+          'timestamp' => '2021-08-05T00:00:00+01:00'
         },
         {
           'new' => true,
-          'timestamp' => '1628118000000'
+          'timestamp' => '2021-08-04T00:00:00+01:00'
         }
       ])
     end

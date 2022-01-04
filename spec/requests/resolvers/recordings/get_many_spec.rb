@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 site_recordings_query = <<-GRAPHQL
-  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingsSort, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $size: Int, $page: Int, $sort: RecordingsSort, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       recordings(size: $size, page: $page, sort: $sort, fromDate: $from_date, toDate: $to_date) {
         items {

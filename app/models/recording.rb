@@ -53,22 +53,30 @@ class Recording < ApplicationRecord
   end
 
   def duration
-    (disconnected_at || 0) - (connected_at || 0)
+    (self[:disconnected_at] || 0) - (self[:connected_at] || 0)
   end
 
   def language
     Locale.get_language(locale)
   end
 
+  def connected_at
+    Time.at(self[:connected_at] / 1000).utc
+  end
+
+  def disconnected_at
+    Time.at(self[:disconnected_at] / 1000).utc
+  end
+
   def previous_recording
-    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at DESC')
+    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
     index = recordings.index(self) || 0
     index.zero? ? nil : recordings[index - 1]
   end
 
   def next_recording
-    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at DESC')
-    index = recordings.index(self)
+    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
+    index = recordings.index(self) || recordings.size
     index >= recordings.size ? nil : recordings[index + 1]
   end
 
