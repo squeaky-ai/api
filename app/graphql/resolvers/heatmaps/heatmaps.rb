@@ -11,8 +11,8 @@ module Resolvers
       argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
       argument :type, Types::Heatmaps::Type, required: true, default_value: 'Click'
       argument :page, String, required: true
-      argument :from_date, String, required: true
-      argument :to_date, String, required: true
+      argument :from_date, GraphQL::Types::ISO8601Date, required: true
+      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve(device:, type:, page:, from_date:, to_date:)
         device_counts = devices(page, from_date, to_date)

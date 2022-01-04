@@ -6,7 +6,7 @@ module Types
       graphql_name 'FeedbackNpsScore'
 
       field :score, Integer, null: false
-      field :timestamp, String, null: false
+      field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
     end
   end
 end

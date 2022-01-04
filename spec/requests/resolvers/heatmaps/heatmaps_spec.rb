@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 heatmaps_query = <<-GRAPHQL
-  query($site_id: ID!, $device: HeatmapsDevice!, $type: HeatmapsType!, $page: String!, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $device: HeatmapsDevice!, $type: HeatmapsType!, $page: String!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       heatmaps(device: $device, type: $type, page: $page, fromDate: $from_date, toDate: $to_date) {
         desktopCount

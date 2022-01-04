@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 sentiment_response_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!, $page: Int, $size: Int, $sort: FeedbackSentimentResponseSort) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!, $page: Int, $size: Int, $sort: FeedbackSentimentResponseSort) {
     site(siteId: $site_id) {
       sentiment(fromDate: $from_date, toDate: $to_date) {
         responses(page: $page, size: $size, sort: $sort) {

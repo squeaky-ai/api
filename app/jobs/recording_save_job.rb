@@ -106,7 +106,7 @@ class RecordingSaveJob < ApplicationJob
 
     return unless page_views.any?
 
-    page_views.last.exited_at = recording.disconnected_at
+    page_views.last.exited_at = recording[:disconnected_at]
 
     recording.pages << page_views
     recording.save

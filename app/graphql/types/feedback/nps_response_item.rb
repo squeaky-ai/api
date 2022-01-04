@@ -14,7 +14,7 @@ module Types
       field :device, Types::Recordings::Device, null: false
       field :session_id, String, null: false
       field :recording_id, String, null: false
-      field :timestamp, String, null: false
+      field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
     end
   end
 end

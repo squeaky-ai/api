@@ -9,8 +9,8 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 25
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
       argument :filters, Types::Recordings::Filters, required: false, default_value: nil
-      argument :from_date, String, required: true
-      argument :to_date, String, required: true
+      argument :from_date, GraphQL::Types::ISO8601Date, required: true
+      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve(page:, size:, sort:, filters:, from_date:, to_date:)
         recordings = Site

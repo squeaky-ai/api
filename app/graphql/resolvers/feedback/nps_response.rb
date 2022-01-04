@@ -67,7 +67,7 @@ module Resolvers
             session_id: r.session_id,
             email: r.email,
             recording_id: r.recording_id,
-            timestamp: r.created_at.utc.iso8601,
+            timestamp: r.created_at.utc,
             visitor: {
               id: r.visitor_id,
               visitor_id: r.visitor_visitor_id

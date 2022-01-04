@@ -48,7 +48,7 @@ module Resolvers
         results.map do |r|
           {
             score: r.score,
-            timestamp: r.created_at.utc.iso8601
+            timestamp: r.created_at.utc
           }
         end
       end

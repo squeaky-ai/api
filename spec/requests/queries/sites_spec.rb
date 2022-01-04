@@ -71,7 +71,7 @@ RSpec.describe 'QuerySites', type: :request do
               'name' => site.plan_name
             },
             'uuid' => site.uuid,
-            'verifiedAt' => site.verified_at.to_s,
+            'verifiedAt' => site.verified_at.iso8601,
             'team' => [
               {
                 'id' => site.team[0].id.to_s,

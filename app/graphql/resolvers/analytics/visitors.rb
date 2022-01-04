@@ -25,7 +25,7 @@ module Resolvers
 
       def recordings(site_id, from_date, to_date)
         sql = <<-SQL
-          SELECT visitor_id, disconnected_at
+          SELECT visitor_id, to_timestamp(disconnected_at / 1000) disconnected_at
           FROM recordings
           WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
         SQL

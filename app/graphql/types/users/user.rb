@@ -12,8 +12,8 @@ module Types
       field :email, String, null: false
       field :superuser, Boolean, null: false
       field :communication, Types::Users::Communication, null: true
-      field :created_at, String, null: false
-      field :updated_at, String, null: true
+      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
     end
   end
 end

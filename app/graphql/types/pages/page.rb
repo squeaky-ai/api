@@ -7,8 +7,8 @@ module Types
 
       field :id, ID, null: false
       field :url, String, null: false
-      field :entered_at, GraphQL::Types::BigInt, null: false
-      field :exited_at, GraphQL::Types::BigInt, null: false
+      field :entered_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :exited_at, GraphQL::Types::ISO8601DateTime, null: false
     end
   end
 end

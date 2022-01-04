@@ -9,8 +9,8 @@ module Types
       field :visitor_id, String, null: false
       field :viewed, Boolean, null: true
       field :recording_count, Types::Visitors::RecordingCount, null: true
-      field :first_viewed_at, String, null: true
-      field :last_activity_at, String, null: true
+      field :first_viewed_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :last_activity_at, GraphQL::Types::ISO8601DateTime, null: true
       field :language, String, null: true
       field :page_views_count, Types::Visitors::PagesCount, null: true
       field :starred, Boolean, null: true

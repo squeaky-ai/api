@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 analytics_visits_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         visitsAt
@@ -47,7 +47,7 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
 
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitsAt']).to match_array(['1628290800000', '1628204400000', '1628118000000'])
+      expect(response['visitsAt']).to match_array(['2021-08-04T23:00:00+00:00', '2021-08-05T23:00:00+00:00', '2021-08-06T23:00:00+00:00'])
     end
   end
 end

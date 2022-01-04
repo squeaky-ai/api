@@ -19,8 +19,8 @@ module Types
       field :exit_page, String, null: false
       field :referrer, String, null: true
       field :device, Types::Recordings::Device, null: false
-      field :connected_at, String, null: true
-      field :disconnected_at, String, null: true
+      field :connected_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :disconnected_at, GraphQL::Types::ISO8601DateTime, null: true
       field :tags, [Types::Tags::Tag, { null: true }], null: false
       field :notes, [Types::Notes::Note, { null: true }], null: false
       field :events, resolver: Resolvers::Recordings::Events

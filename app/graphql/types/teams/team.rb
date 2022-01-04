@@ -10,8 +10,8 @@ module Types
       field :role, Integer, null: false
       field :role_name, String, null: false
       field :user, Types::Users::User, null: false
-      field :created_at, String, null: false
-      field :updated_at, String, null: true
+      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
     end
   end
 end

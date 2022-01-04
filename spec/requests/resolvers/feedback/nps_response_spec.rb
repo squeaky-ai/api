@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 nps_response_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: String!, $to_date: String!, $page: Int, $size: Int, $sort: FeedbackNpsResponseSort) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!, $page: Int, $size: Int, $sort: FeedbackNpsResponseSort) {
     site(siteId: $site_id) {
       nps(fromDate: $from_date, toDate: $to_date) {
         responses(page: $page, size: $size, sort: $sort) {

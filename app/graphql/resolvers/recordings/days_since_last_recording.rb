@@ -18,7 +18,7 @@ module Resolvers
 
         disconnected = last_recording.disconnected_at || 0
 
-        (Time.now.to_i - (disconnected / 1000)) / 1.day
+        (Time.now.utc - disconnected) / 1.day
       end
     end
   end
