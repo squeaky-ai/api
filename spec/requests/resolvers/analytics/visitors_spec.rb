@@ -53,15 +53,15 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']).to match_array([
         {
           'new' => false,
-          'timestamp' => '2021-08-06T00:00:00+01:00'
+          'timestamp' => '2021-08-06T23:00:00+00:00'
         },
         {
           'new' => false,
-          'timestamp' => '2021-08-05T00:00:00+01:00'
+          'timestamp' => '2021-08-05T23:00:00+00:00'
         },
         {
           'new' => true,
-          'timestamp' => '2021-08-04T00:00:00+01:00'
+          'timestamp' => '2021-08-04T23:00:00+00:00'
         }
       ])
     end
@@ -90,15 +90,15 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']).to match_array([
         {
           'new' => false,
-          'timestamp' => '2021-08-06T00:00:00+01:00'
+          'timestamp' => '2021-08-06T23:00:00+00:00'
         },
         {
           'new' => false,
-          'timestamp' => '2021-08-05T00:00:00+01:00'
+          'timestamp' => '2021-08-05T23:00:00+00:00'
         },
         {
           'new' => true,
-          'timestamp' => '2021-08-04T00:00:00+01:00'
+          'timestamp' => '2021-08-04T23:00:00+00:00'
         }
       ])
     end

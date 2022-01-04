@@ -62,17 +62,17 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         {
           'total' => 2,
           'unique' => 2,
-          'timestamp' => '2021-08-06T00:00:00+01:00'
+          'timestamp' => '2021-08-06T23:00:00+00:00'
         },
         {
           'total' => 1,
           'unique' => 1,
-          'timestamp' => '2021-08-05T00:00:00+01:00'
+          'timestamp' => '2021-08-05T23:00:00+00:00'
         },
         {
           'total' => 2,
           'unique' => 0,
-          'timestamp' => '2021-08-04T00:00:00+01:00'
+          'timestamp' => '2021-08-04T23:00:00+00:00'
         }
       ])
     end
@@ -112,17 +112,17 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         {
           'total' => 2,
           'unique' => 2,
-          'timestamp' => '2021-08-06T00:00:00+01:00'
+          'timestamp' => '2021-08-06T23:00:00+00:00'
         },
         {
           'total' => 3,
           'unique' => 1,
-          'timestamp' => '2021-08-05T00:00:00+01:00'
+          'timestamp' => '2021-08-05T23:00:00+00:00'
         },
         {
           'total' => 1,
           'unique' => 1,
-          'timestamp' => '2021-08-04T00:00:00+01:00'
+          'timestamp' => '2021-08-04T23:00:00+00:00'
         }
       ])
     end
