@@ -3,16 +3,26 @@
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  before_perform do |job|
-    message = JSON.parse(job.arguments[0], symbolize_names: true)
+  def perform(*args)
+    message = args.first.symbolize_keys
 
     @session = Session.new(message)
     @site = Site.find_by!(uuid: @session.site_id)
-  end
 
-  def perform(*_args, **_kwargs)
     return unless valid?
 
+    store_session!
+
+    Rails.logger.info 'Recording saved'
+  end
+
+  def jid=(*args)
+    args
+  end
+
+  private
+
+  def store_session!
     ActiveRecord::Base.transaction do
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
@@ -24,11 +34,7 @@ class RecordingSaveJob < ApplicationJob
 
       set_site_as_verified!
     end
-
-    Rails.logger.info 'Recording saved'
   end
-
-  private
 
   def set_site_as_verified!
     return if @site.verified_at

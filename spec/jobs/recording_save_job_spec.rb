@@ -23,7 +23,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'stores the recording' do
       subject
@@ -93,7 +93,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
@@ -120,7 +120,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
@@ -145,7 +145,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'saves the recording with the LOCKED status' do
       subject
@@ -172,7 +172,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
-    subject { described_class.perform_now(event.to_json) }
+    subject { described_class.perform_now(event) }
 
     it 'verifies it' do
       expect { subject }.to change { site.reload.verified_at.nil? }.from(true).to(false)

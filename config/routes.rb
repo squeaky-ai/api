@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   scope 'api' do
     get 'ping', to: 'ping#index'
@@ -10,6 +12,10 @@ Rails.application.routes.draw do
 
     # Enable the GraphQL playground
     mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
+
+    authenticate :user, ->(u) { u.superuser? } do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 
     resources :feedback, only: %i[index]
 

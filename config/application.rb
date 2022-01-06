@@ -46,9 +46,6 @@ module Squeaky
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
 
-    Aws::Rails::SqsActiveJob.configure do |config|
-      config.logger = ActiveSupport::Logger.new($stdout)
-      config.max_messages = 5
-    end
+    config.active_job.queue_adapter = :sidekiq
   end
 end
