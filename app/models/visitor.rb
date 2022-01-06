@@ -50,9 +50,14 @@ class Visitor < ApplicationRecord
   end
 
   def page_views_count
+    # Looks like [ ['/'], ['/', '/test'] ]
+    recordings_pages = visible_recordings.map { |r| r.pages.map(&:url) }
+
     {
-      total: visible_recordings.size,
-      unique: visible_recordings.map(&:pages).uniq.size
+      total: recordings_pages.flatten.size,
+      # This is unique per recording, not globally
+      # unique, confusing
+      unique: recordings_pages.map(&:uniq).size
     }
   end
 end
