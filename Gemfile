@@ -27,7 +27,6 @@ end
 
 group :development do
   gem 'listen', '~> 3.3'
-  gem 'spring'
 end
 
 group :test do
