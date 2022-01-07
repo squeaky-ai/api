@@ -13,7 +13,7 @@ class RecordingSaveJob < ApplicationJob
 
     store_session!
 
-    Rails.logger.info 'Recording saved'
+    logger.info 'Recording saved'
   end
 
   def jid=(*args)
@@ -39,7 +39,7 @@ class RecordingSaveJob < ApplicationJob
   def set_site_as_verified!
     return if @site.verified_at
 
-    Rails.logger.info "Site #{@site.id} was automatically verified"
+    logger.info "Site #{@site.id} was automatically verified"
     @site.verify!
   end
 

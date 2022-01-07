@@ -32,9 +32,10 @@ $ rspec
 Create a local recording and import it from Redis:
 ```shell
 $ rails c
-irb> RecordingSaveJob.perform_now({ site_id: '<site_uuid>', visitor_id: '<visitor_id>', session_id: '<session_id>' }.to_json)
+irb> RecordingSaveJob.perform_now({ site_id: '<site_uuid>', visitor_id: '<visitor_id>', session_id: '<session_id>' })
 ```
 
 ### Usage
 - [Playground](http://localhost:4000/api/playground/) (disabled in production)
 - [GraphQL Endpoint](http://localhost:4000/api/graphql)
+- [Sidekiq](http://localhost:4000/api/sidekiq)
