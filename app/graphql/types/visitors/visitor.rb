@@ -14,7 +14,7 @@ module Types
       field :language, String, null: true
       field :page_views_count, Types::Visitors::PagesCount, null: true
       field :starred, Boolean, null: true
-      field :attributes, String, null: true
+      field :linked_data, String, null: true
       field :devices, [Types::Recordings::Device], null: false
       field :recordings, resolver: Resolvers::Visitors::Recordings
       field :pages, resolver: Resolvers::Visitors::Pages

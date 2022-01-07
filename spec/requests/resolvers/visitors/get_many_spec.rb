@@ -24,7 +24,7 @@ visitors_query = <<-GRAPHQL
             browserName
             browserDetails
           }
-          attributes
+          linkedData
         }
         pagination {
           pageSize
@@ -124,7 +124,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
     it 'returns nil' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['attributes']).to eq nil
+      expect(response['items'][0]['linkedData']).to eq nil
     end
   end
 
@@ -146,7 +146,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
     it 'returns the attributes' do
       response = subject['data']['site']['visitors']
-      expect(response['items'][0]['attributes']).to eq external_attributes.to_json
+      expect(response['items'][0]['linkedData']).to eq external_attributes.to_json
     end
   end
 end

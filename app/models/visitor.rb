@@ -18,7 +18,7 @@ class Visitor < ApplicationRecord
     recordings.map(&:device)
   end
 
-  def attributes
+  def linked_data
     return nil if external_attributes.empty?
 
     external_attributes.to_json
