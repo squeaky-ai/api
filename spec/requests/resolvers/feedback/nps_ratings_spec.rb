@@ -48,7 +48,7 @@ RSpec.describe Resolvers::Feedback::NpsRatings, type: :request do
 
     it 'returns the data' do
       response = subject['data']['site']['nps']
-      expect(response['ratings']).to eq([
+      expect(response['ratings']).to match_array([
         {
           'score' => 9
         },

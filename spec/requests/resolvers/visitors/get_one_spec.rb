@@ -27,7 +27,7 @@ visitor_query = <<-GRAPHQL
           browserName
           browserDetails
         }
-        attributes
+        linkedData
       }
     }
   }
@@ -129,7 +129,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
 
     it 'returns nil' do
       response = subject['data']['site']['visitor']
-      expect(response['attributes']).to be nil
+      expect(response['linkedData']).to be nil
     end
   end
 
@@ -150,7 +150,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
 
     it 'returns the attributes' do
       response = subject['data']['site']['visitor']
-      expect(response['attributes']).to eq external_attributes.to_json
+      expect(response['linkedData']).to eq external_attributes.to_json
     end
   end
 end
