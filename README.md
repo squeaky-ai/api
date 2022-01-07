@@ -3,7 +3,7 @@
 ![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSE10NDhJd3B6a0FVVEs4Y1E0VzQ1QkFWbEUwR2RkdHFXVmdBazNCYWhVTEdoM0wwM3FjSnRnNXlPZFJaK1U1NklUeUFNdGdCdlZBNjhZeFVMRlEvU05VPSIsIml2UGFyYW1ldGVyU3BlYyI6IlFJWWlQU3VSMzRsaWRVTzgiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
 
 ### Requirements
-- Ruby 3.0.0
+- Ruby 3.1.0
 - Postgres 12.x
 
 In order to send mail through the API, you will need AWS credentials located at ~/.aws, @lemonjs can create you some if you need them.
