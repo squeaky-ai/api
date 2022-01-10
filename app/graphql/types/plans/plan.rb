@@ -5,8 +5,9 @@ module Types
     class Plan < Types::BaseObject
       graphql_name 'Plan'
 
-      field :max_monthly_recordings, Integer, null: false
-      field :monthly_price, Integer, null: false
+      field :name, String, null: false
+      field :max_monthly_recordings, Integer, null: true
+      field :monthly_price, Integer, null: true
     end
   end
 end

@@ -1,19 +1,29 @@
 plan_0:
+  name: Free
   max_monthly_recordings: 500
   monthly_price: 0
 
 plan_1:
+  name: Light
   max_monthly_recordings: 5000
   monthly_price: 50
 
 plan_2:
+  name: Plus
   max_monthly_recordings: 25000
   monthly_price: 150
 
 plan_3:
+  name: Business
   max_monthly_recordings: 50000
   monthly_price: 250
 
 plan_4:
+  name: Premium
   max_monthly_recordings: 100000
   monthly_price: 500
+
+plan_5:
+  name: Unlimited
+  max_monthly_recordings: null
+  monthly_price: null
