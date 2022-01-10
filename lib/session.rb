@@ -151,7 +151,7 @@ class Session
   def handle_sentiment(event)
     score = event['value']['data']['score']
     comment = event['value']['data']['comment']
-    @sentiments.push(score: score, comment: comment)
+    @sentiments.push(score:, comment:)
   end
 
   def handle_nps(event)

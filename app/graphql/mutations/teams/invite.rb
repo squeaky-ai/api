@@ -20,19 +20,19 @@ module Mutations
       def resolve(email:, role:, **_rest)
         raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
 
-        user = User.find_by(email: email)
+        user = User.find_by(email:)
 
         raise Errors::TeamExists if user&.member_of?(@site)
 
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 
-        Team.create(status: Team::PENDING, role: role, user: user, site: @site)
+        Team.create(status: Team::PENDING, role:, user:, site: @site)
       end
 
       private
 
       def send_new_user_invite!(email)
-        User.invite!({ email: email }, @user, { site_name: @site.name, new_user: true })
+        User.invite!({ email: }, @user, { site_name: @site.name, new_user: true })
       end
 
       def send_existing_user_invite!(user)

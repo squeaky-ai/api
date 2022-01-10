@@ -13,7 +13,7 @@ module Resolvers
           if existing
             existing[:count] += 1
           else
-            memo.push({ name: name, count: 1 })
+            memo.push({ name:, count: 1 })
           end
         end
       end

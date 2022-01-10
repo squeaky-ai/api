@@ -13,8 +13,8 @@ module Resolvers
           type: object.plan,
           name: object.plan_name,
           exceeded: recordings_locked.positive?,
-          recordings_limit: recordings_limit,
-          recordings_locked: recordings_locked,
+          recordings_limit:,
+          recordings_locked:,
           visitors_locked: visitors_locked_count
         }
       end

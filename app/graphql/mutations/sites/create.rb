@@ -13,13 +13,13 @@ module Mutations
       type Types::Sites::Site
 
       def resolve(name:, url:)
-        site = Site.create(name: name, url: uri(url), plan: Site::ESSENTIALS)
+        site = Site.create(name:, url: uri(url), plan: Site::ESSENTIALS)
 
         raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 
         # Set the current user as the admin of the site
         # and skip the confirmation steps
-        Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site: site)
+        Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site:)
 
         site.reload
       end

@@ -21,12 +21,14 @@ module Types
       argument :token, String, required: true
     end
 
+    field :plans, [Types::Plans::Plan, { null: false }], null: false
+
     def user
       context[:current_user]
     end
 
     def user_exists(email:)
-      User.exists?(email: email)
+      User.exists?(email:)
     end
 
     def site(site_id:)
@@ -37,7 +39,7 @@ module Types
 
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
-      context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team: team)
+      context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team:)
     end
 
     def sites
@@ -48,11 +50,15 @@ module Types
 
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
-      context[:current_user].sites.where(team: team).includes(%i[teams users])
+      context[:current_user].sites.where(team:).includes(%i[teams users])
     end
 
     def user_invitation(token:)
       User.find_team_invitation(token)
+    end
+
+    def plans
+      Plan.to_a
     end
   end
 end

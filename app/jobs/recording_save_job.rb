@@ -123,7 +123,7 @@ class RecordingSaveJob < ApplicationJob
       Sentiment.create(
         score: e[:score],
         comment: e[:comment],
-        recording: recording
+        recording:
       )
     end
   end
@@ -138,7 +138,7 @@ class RecordingSaveJob < ApplicationJob
       comment: nps[:comment],
       contact: nps[:contact],
       email: nps[:email],
-      recording: recording
+      recording:
     )
   end
 

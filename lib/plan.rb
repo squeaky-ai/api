@@ -16,4 +16,8 @@ class Plan
   def monthly_price
     @config['monthly_price']
   end
+
+  def self.to_a
+    PLANS.values
+  end
 end

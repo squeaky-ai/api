@@ -10,7 +10,7 @@ module Resolvers
 
         {
           trend: get_trend(object[:site_id], object[:from_date], object[:to_date], responses),
-          responses: responses
+          responses:
         }
       end
 

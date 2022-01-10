@@ -20,7 +20,7 @@ module Mutations
       def resolve(tag_id:, name:, **_rest)
         tag = @site.tags.find_by_id(tag_id)
 
-        tag&.update(name: name)
+        tag&.update(name:)
 
         tag
       end

@@ -11,7 +11,7 @@ module Resolvers
         {
           trend: get_trend(object[:site_id], object[:from_date], object[:to_date], responses),
           score: nps_score(responses),
-          responses: responses
+          responses:
         }
       end
 

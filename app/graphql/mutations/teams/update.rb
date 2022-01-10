@@ -29,7 +29,7 @@ module Mutations
         # Admins can't change the roles of other admins
         raise Errors::Forbidden if team.admin? && @user.admin_for?(@site)
 
-        team.update(role: role)
+        team.update(role:)
 
         TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 

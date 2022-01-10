@@ -22,7 +22,7 @@ module Mutations
 
         raise Errors::VisitorNotFound unless visitor
 
-        visitor.update(starred: starred)
+        visitor.update(starred:)
 
         visitor
       end

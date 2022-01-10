@@ -22,7 +22,7 @@ module Mutations
 
         raise Errors::RecordingNotFound unless recording
 
-        recording.update(bookmarked: bookmarked)
+        recording.update(bookmarked:)
 
         recording
       end

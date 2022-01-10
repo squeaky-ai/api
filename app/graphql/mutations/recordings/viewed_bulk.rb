@@ -22,7 +22,7 @@ module Mutations
 
         return [] if recordings.size.zero?
 
-        recordings.update_all(viewed: viewed)
+        recordings.update_all(viewed:)
         @site.recordings.reload
       end
     end

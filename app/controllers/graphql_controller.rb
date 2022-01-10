@@ -6,9 +6,9 @@ class GraphqlController < ApplicationController
 
     render json: SqueakySchema.execute(
       params[:query],
-      variables: variables,
+      variables:,
       operation_name: params[:operationName],
-      context: { current_user: current_user, request: request }
+      context: { current_user:, request: }
     )
   rescue StandardError => e
     raise e unless Rails.env.development?

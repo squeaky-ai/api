@@ -22,7 +22,7 @@ module Resolvers
           pagination: {
             page_size: size,
             total: recordings.total_count,
-            sort: sort
+            sort:
           }
         }
       end

@@ -29,7 +29,7 @@ module Resolvers
           pagination: {
             page_size: size,
             total: visitors.total_count,
-            sort: sort
+            sort:
           }
         }
       end
