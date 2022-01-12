@@ -39,3 +39,22 @@ irb> RecordingSaveJob.perform_now({ site_id: '<site_uuid>', visitor_id: '<visito
 - [Playground](http://localhost:4000/api/playground/) (disabled in production)
 - [GraphQL Endpoint](http://localhost:4000/api/graphql)
 - [Sidekiq](http://localhost:4000/api/sidekiq)
+
+### Accessing the Rails console in production
+First, find a task arn from ECS
+```shell
+aws ecs list-tasks \
+  --cluster squeaky \
+  --service-name api \
+  --region eu-west-1
+```
+Then use that to exec into the container using ECS exec
+```shell
+aws ecs execute-command \
+  --cluster squeaky \
+  --task <task arn> \
+  --container api \
+  --interactive \
+  --command '/bin/sh' \
+  --region eu-west-1
+```
