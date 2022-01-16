@@ -12,6 +12,7 @@ class RecordingSaveJob < ApplicationJob
     return unless valid?
 
     store_session!
+    @session.clean_up!
 
     logger.info 'Recording saved'
   end

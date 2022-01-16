@@ -21,6 +21,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
       allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Redis.current).to receive(:del)
     end
 
     subject { described_class.perform_now(event) }
@@ -70,6 +71,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(nps.comment).to eq 'Hello'
       expect(nps.contact).to eq true
       expect(nps.email).to eq 'bobby@gmail.com'
+    end
+
+    it 'cleans up the redis data' do
+      subject
+      expect(Redis.current).to have_received(:del)
     end
   end
 

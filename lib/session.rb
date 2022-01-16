@@ -98,6 +98,10 @@ class Session
     events.any? { |event| event['type'] == 3 && event['data']['source'] }
   end
 
+  def clean_up!
+    Redis.current.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
+  end
+
   private
 
   def fetch_and_process_events
