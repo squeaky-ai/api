@@ -17,6 +17,10 @@ module Types
 
     field :sites, [Types::Sites::Site, { null: true }], null: false
 
+    field :sites_admin, [Types::Sites::Site, { null: true }], null: false
+
+    field :users_admin, [Types::Users::User, { null: true }], null: false
+
     field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
@@ -34,9 +38,6 @@ module Types
     def site(site_id:)
       raise Errors::Unauthorized unless context[:current_user]
 
-      # Super users don't play by the rules
-      return Site.includes(%i[teams users]).find_by(id: site_id) if context[:current_user].superuser?
-
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team:)
@@ -45,12 +46,21 @@ module Types
     def sites
       raise Errors::Unauthorized unless context[:current_user]
 
-      # Show everything to superusers
-      return Site.all.includes(%i[teams users]) if context[:current_user].superuser?
-
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.where(team:).includes(%i[teams users])
+    end
+
+    def sites_admin
+      raise Errors::Unauthorized unless context[:current_user]&.superuser?
+
+      Site.includes(%i[teams users]).all
+    end
+
+    def users_admin
+      raise Errors::Unauthorized unless context[:current_user]&.superuser?
+
+      User.all
     end
 
     def user_invitation(token:)
