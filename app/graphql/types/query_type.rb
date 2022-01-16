@@ -38,6 +38,9 @@ module Types
     def site(site_id:)
       raise Errors::Unauthorized unless context[:current_user]
 
+      # Super users don't play by the rules
+      return Site.includes(%i[teams users]).find_by(id: site_id) if context[:current_user].superuser?
+
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team:)
