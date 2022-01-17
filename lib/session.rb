@@ -37,6 +37,14 @@ class Session
     recording['useragent']
   end
 
+  def timezone
+    recording['timezone']
+  end
+
+  def country_code
+    Timezone.get_country_code(timezone)
+  end
+
   def browser
     UserAgent.parse(useragent).browser
   end

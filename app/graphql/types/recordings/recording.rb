@@ -18,6 +18,8 @@ module Types
       field :start_page, String, null: false
       field :exit_page, String, null: false
       field :referrer, String, null: true
+      field :timezone, String, null: true
+      field :country_code, String, null: true
       field :device, Types::Recordings::Device, null: false
       field :connected_at, GraphQL::Types::ISO8601DateTime, null: true
       field :disconnected_at, GraphQL::Types::ISO8601DateTime, null: true

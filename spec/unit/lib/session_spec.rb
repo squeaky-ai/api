@@ -79,6 +79,18 @@ RSpec.describe Session do
     end
   end
 
+  describe '#timezone' do
+    it 'returns the timezone' do
+      expect(instance.timezone).to eq 'Europe/London'
+    end
+  end
+
+  describe '#country_code' do
+    it 'returns the country code' do
+      expect(instance.country_code).to eq 'GB'
+    end
+  end
+
   describe '#events?' do
     it 'returns whether there are events' do
       expect(instance.events?).to eq true

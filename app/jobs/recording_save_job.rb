@@ -64,6 +64,8 @@ class RecordingSaveJob < ApplicationJob
       recording.device_y = @session.device_y
       recording.referrer = @session.referrer
       recording.useragent = @session.useragent
+      recording.timezone = @session.timezone
+      recording.country_code = @session.country_code
       recording.viewport_x = @session.viewport_x
       recording.viewport_y = @session.viewport_y
       recording.connected_at = @session.connected_at

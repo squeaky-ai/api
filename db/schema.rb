@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_29_162230) do
+ActiveRecord::Schema.define(version: 2022_01_17_193606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,8 @@ ActiveRecord::Schema.define(version: 2021_12_29_162230) do
     t.string "browser"
     t.string "device_type"
     t.integer "status"
+    t.string "timezone"
+    t.string "country_code"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"
