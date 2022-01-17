@@ -41,18 +41,11 @@ irb> RecordingSaveJob.perform_now({ site_id: '<site_uuid>', visitor_id: '<visito
 - [Sidekiq](http://localhost:4000/api/sidekiq)
 
 ### Accessing the Rails console in production
-First, find a task arn from ECS
-```shell
-aws ecs list-tasks \
-  --cluster squeaky \
-  --service-name api \
-  --region eu-west-1
-```
-Then use that to exec into the container using ECS exec
+You'll need jq installed (`brew install jq`), then run the following:
 ```shell
 aws ecs execute-command \
   --cluster squeaky \
-  --task <task arn> \
+  --task $(aws ecs list-tasks --cluster squeaky --service-name api --region eu-west-1 | jq '.taskArns[0]' --raw-output) \
   --container api \
   --interactive \
   --command '/bin/sh' \
