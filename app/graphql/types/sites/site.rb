@@ -19,6 +19,7 @@ module Types
       field :languages, resolver: Resolvers::Sites::Languages
       field :browsers, resolver: Resolvers::Sites::Browsers
       field :referrers, resolver: Resolvers::Sites::Referrers
+      field :country_codes, resolver: Resolvers::Sites::CountryCodes
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
       field :domain_blacklist, [Types::Sites::DomainBlacklist, { null: true }], null: false
       field :recordings_count, Integer, null: false
