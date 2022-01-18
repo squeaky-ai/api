@@ -5,7 +5,11 @@ require 'rails_helper'
 site_countries_query = <<-GRAPHQL
   query($site_id: ID!) {
     site(siteId: $site_id) {
-      countries
+      countries {
+        name
+        code
+        count
+      }
     }
   }
 GRAPHQL
@@ -42,7 +46,20 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     it 'returns the country codes' do
       response = subject['data']['site']['countries']
-      expect(response).to eq ['United Kingdom', 'Sweden']
+      expect(response).to match_array(
+        [
+          {
+            'code' => 'GB',
+            'name' => 'United Kingdom',
+            'count' => 1
+          },
+          {
+            'code' => 'SE',
+            'name' => 'Sweden',
+            'count' => 1
+          }
+        ]
+      )
     end
   end
 
@@ -61,9 +78,22 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
       graphql_request(site_countries_query, variables, user)
     end
 
-    it 'returns them deduped' do
+    it 'returns the country codes' do
       response = subject['data']['site']['countries']
-      expect(response).to eq ['United Kingdom', 'Sweden']
+      expect(response).to match_array(
+        [
+          {
+            'code' => 'GB',
+            'name' => 'United Kingdom',
+            'count' => 2
+          },
+          {
+            'code' => 'SE',
+            'name' => 'Sweden',
+            'count' => 1
+          }
+        ]
+      )
     end
   end
 end
