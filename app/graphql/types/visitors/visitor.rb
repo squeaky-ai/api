@@ -16,6 +16,7 @@ module Types
       field :starred, Boolean, null: true
       field :linked_data, String, null: true
       field :devices, [Types::Recordings::Device], null: false
+      field :countries, [Types::Recordings::Country], null: false
       field :recordings, resolver: Resolvers::Visitors::Recordings
       field :pages, resolver: Resolvers::Visitors::Pages
       field :average_session_duration, resolver: Resolvers::Visitors::AverageSessionDuration

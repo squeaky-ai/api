@@ -27,6 +27,10 @@ visitor_query = <<-GRAPHQL
           browserName
           browserDetails
         }
+        countries {
+          code
+          name
+        }
         linkedData
       }
     }

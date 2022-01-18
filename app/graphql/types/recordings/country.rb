@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Types
-  module Sites
+  module Recordings
     class Country < Types::BaseObject
-      graphql_name 'SitesCountry'
+      graphql_name 'RecordingsCountry'
 
       field :code, String, null: false
       field :name, String, null: false

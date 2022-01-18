@@ -18,6 +18,17 @@ class Visitor < ApplicationRecord
     recordings.map(&:device)
   end
 
+  def countries
+    recordings_with_countries = recordings.filter(&:country_code)
+
+    recordings_with_countries.map do |recording|
+      {
+        code: recording.country_code,
+        name: recording.country_name
+      }
+    end
+  end
+
   def linked_data
     return nil if external_attributes.empty?
 

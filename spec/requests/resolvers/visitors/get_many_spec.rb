@@ -24,6 +24,10 @@ visitors_query = <<-GRAPHQL
             browserName
             browserDetails
           }
+          countries {
+            code
+            name
+          }
           linkedData
         }
         pagination {

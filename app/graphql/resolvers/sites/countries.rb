@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class Countries < Resolvers::Base
-      type [Types::Sites::Country, { null: true }], null: false
+      type [Types::Recordings::Country, { null: true }], null: false
 
       def resolve
         country_codes = Site
