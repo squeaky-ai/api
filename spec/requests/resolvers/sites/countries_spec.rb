@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-site_country_codes_query = <<-GRAPHQL
+site_countries_query = <<-GRAPHQL
   query($site_id: ID!) {
     site(siteId: $site_id) {
-      countryCodes
+      countries
     }
   }
 GRAPHQL
@@ -17,11 +17,11 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     subject do
       variables = { site_id: site.id }
-      graphql_request(site_country_codes_query, variables, user)
+      graphql_request(site_countries_query, variables, user)
     end
 
     it 'returns no country codes' do
-      response = subject['data']['site']['countryCodes']
+      response = subject['data']['site']['countries']
       expect(response).to eq []
     end
   end
@@ -37,12 +37,12 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     subject do
       variables = { site_id: site.id }
-      graphql_request(site_country_codes_query, variables, user)
+      graphql_request(site_countries_query, variables, user)
     end
 
     it 'returns the country codes' do
-      response = subject['data']['site']['countryCodes']
-      expect(response).to eq ['GB', 'SE']
+      response = subject['data']['site']['countries']
+      expect(response).to eq ['United Kingdom', 'Sweden']
     end
   end
 
@@ -58,12 +58,12 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     subject do
       variables = { site_id: site.id }
-      graphql_request(site_country_codes_query, variables, user)
+      graphql_request(site_countries_query, variables, user)
     end
 
     it 'returns them deduped' do
-      response = subject['data']['site']['countryCodes']
-      expect(response).to eq ['GB', 'SE']
+      response = subject['data']['site']['countries']
+      expect(response).to eq ['United Kingdom', 'Sweden']
     end
   end
 end

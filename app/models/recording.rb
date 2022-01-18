@@ -68,6 +68,10 @@ class Recording < ApplicationRecord
     Time.at(self[:disconnected_at] / 1000).utc
   end
 
+  def country_name
+    Countries.get_country(country_code)
+  end
+
   def previous_recording
     recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
     index = recordings.index(self) || 0

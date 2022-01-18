@@ -2,7 +2,7 @@
 
 module Resolvers
   module Sites
-    class CountryCodes < Resolvers::Base
+    class Countries < Resolvers::Base
       type [String, { null: true }], null: false
 
       def resolve
@@ -12,7 +12,7 @@ module Resolvers
                         .select(:country_code)
                         .where('country_code IS NOT NULL')
 
-        country_codes.map(&:country_code).uniq
+        country_codes.map(&:country_name).uniq.compact
       end
     end
   end

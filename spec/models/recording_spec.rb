@@ -251,4 +251,36 @@ RSpec.describe Recording, type: :model do
       end
     end
   end
+
+  describe '#country_name' do
+    context 'when no country code is stored' do
+      let(:recording) { described_class.new }
+
+      subject { recording.country_name }
+
+      it 'returns nil' do
+        expect(subject).to eq nil
+      end
+    end
+
+    context 'when no country code is stored but is nonesense' do
+      let(:recording) { described_class.new(country_code: 'Hippo') }
+
+      subject { recording.country_name }
+
+      it 'returns nil' do
+        expect(subject).to eq nil
+      end
+    end
+
+    context 'when no country code is stored' do
+      let(:recording) { described_class.new(country_code: 'GB') }
+
+      subject { recording.country_name }
+
+      it 'returns the country' do
+        expect(subject).to eq 'United Kingdom'
+      end
+    end
+  end
 end
