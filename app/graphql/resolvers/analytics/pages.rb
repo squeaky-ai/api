@@ -27,7 +27,7 @@ module Resolvers
         {
           items: format_results(pages),
           pagination: {
-            page_size: page,
+            page_size: size,
             total: pages.total_count
           }
         }
