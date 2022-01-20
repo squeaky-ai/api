@@ -10,6 +10,7 @@ analytics_referrers_query = <<-GRAPHQL
           items {
             referrer
             count
+            percentage
           }
         }
       }
@@ -54,14 +55,17 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
       expect(response['items']).to match_array([
         {
           'referrer' => 'http://google.com',
+          'percentage' => 50,
           'count' => 2
         },
         {
           'referrer' => 'http://facebook.com',
+          'percentage' => 25,
           'count' => 1
         },
         {
           'referrer' => 'Direct',
+          'percentage' => 25,
           'count' => 1
         }
       ])
@@ -89,14 +93,17 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
       expect(response['items']).to match_array([
         {
           'referrer' => 'http://google.com',
+          'percentage' => 33,
           'count' => 1
         },
         {
           'referrer' => 'http://facebook.com',
+          'percentage' => 33,
           'count' => 1
         },
         {
           'referrer' => 'Direct',
+          'percentage' => 33,
           'count' => 1
         }
       ])
