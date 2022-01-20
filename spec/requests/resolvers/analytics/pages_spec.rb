@@ -7,8 +7,10 @@ analytics_pages_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         pages {
-          path
-          count
+          items {
+            path
+            count
+          }
         }
       }
     }
@@ -26,8 +28,8 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     end
 
     it 'returns an empty array' do
-      response = subject['data']['site']['analytics']
-      expect(response['pages']).to eq []
+      response = subject['data']['site']['analytics']['pages']
+      expect(response['items']).to eq []
     end
   end
 
@@ -46,8 +48,8 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     end
 
     it 'returns the pages' do
-      response = subject['data']['site']['analytics']
-      expect(response['pages']).to eq(
+      response = subject['data']['site']['analytics']['pages']
+      expect(response['items']).to eq(
         [
           {
             'path' => '/',
@@ -78,8 +80,8 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     end
 
     it 'returns the pages' do
-      response = subject['data']['site']['analytics']
-      expect(response['pages']).to eq(
+      response = subject['data']['site']['analytics']['pages']
+      expect(response['items']).to eq(
         [
           {
             'path' => '/',

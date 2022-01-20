@@ -3,27 +3,39 @@
 module Resolvers
   module Analytics
     class Pages < Resolvers::Base
-      type [Types::Analytics::Page, { null: true }], null: false
+      type Types::Analytics::Pages, null: false
 
-      def resolve
-        sql = <<-SQL
-          SELECT url, count(url) page_count, AVG(exited_at - entered_at) page_avg
-          FROM pages
-          INNER JOIN recordings ON recordings.id = pages.recording_id
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
-          GROUP BY pages.url
-        SQL
+      argument :page, Integer, required: false, default_value: 0
+      argument :size, Integer, required: false, default_value: 10
 
-        variables = [
-          object[:site_id],
-          object[:from_date],
-          object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
-        ]
+      def resolve(page:, size:)
+        pages = Recording
+                .where(
+                  'recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)',
+                  object[:site_id],
+                  object[:from_date],
+                  object[:to_date],
+                  [Recording::ACTIVE, Recording::DELETED]
+                )
+                .joins(:pages)
+                .select('pages.url, count(pages.url) page_count, AVG(pages.exited_at - pages.entered_at) page_avg')
+                .page(page)
+                .per(size)
+                .group('pages.url')
 
-        results = Sql.execute(sql, variables)
+        {
+          items: format_results(pages),
+          pagination: {
+            page_size: page,
+            total: pages.total_count
+          }
+        }
+      end
 
-        results.map do |page|
+      private
+
+      def format_results(pages)
+        pages.map do |page|
           {
             path: page['url'],
             count: page['page_count'],
