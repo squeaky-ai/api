@@ -7,9 +7,13 @@ analytics_page_views_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         pageViews {
-          total
-          unique
-          timestamp
+          groupType
+          groupRange
+          items {
+            dateKey
+            totalCount
+            uniqueCount
+          }
         }
       }
     }
@@ -28,7 +32,11 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
     it 'returns an empty array' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to eq []
+      expect(response['pageViews']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' => []
+      )
     end
   end
 
@@ -58,23 +66,18 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
     it 'returns the page views' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to match_array([
-        {
-          'total' => 2,
-          'unique' => 2,
-          'timestamp' => '2021-08-06T23:00:00+00:00'
-        },
-        {
-          'total' => 1,
-          'unique' => 1,
-          'timestamp' => '2021-08-05T23:00:00+00:00'
-        },
-        {
-          'total' => 2,
-          'unique' => 0,
-          'timestamp' => '2021-08-04T23:00:00+00:00'
-        }
-      ])
+
+      expect(response['pageViews']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' =>  [
+          {
+            'dateKey' => '020', 
+            'totalCount' => 5, 
+            'uniqueCount' => 2
+          }
+        ]
+      )
     end
   end
 
@@ -108,23 +111,18 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
     it 'returns the page views' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViews']).to match_array([
-        {
-          'total' => 2,
-          'unique' => 2,
-          'timestamp' => '2021-08-06T23:00:00+00:00'
-        },
-        {
-          'total' => 3,
-          'unique' => 1,
-          'timestamp' => '2021-08-05T23:00:00+00:00'
-        },
-        {
-          'total' => 1,
-          'unique' => 1,
-          'timestamp' => '2021-08-04T23:00:00+00:00'
-        }
-      ])
+      
+      expect(response['pageViews']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' =>  [
+          {
+            'dateKey' => '020', 
+            'totalCount' => 6, 
+            'uniqueCount' => 2
+          }
+        ]
+      )
     end
   end
 end

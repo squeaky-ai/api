@@ -5,9 +5,9 @@ module Types
     class PageViews < Types::BaseObject
       graphql_name 'AnalyticsPageViews'
 
-      field :total, Integer, null: false
-      field :unique, Integer, null: false
-      field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
+      field :group_type, String, null: false
+      field :group_range, Integer, null: false
+      field :items, [Types::Analytics::PageView, { null: true }], null: false
     end
   end
 end

@@ -18,7 +18,7 @@ module Resolvers
           GROUP BY date_key
         SQL
 
-        date_format, group_type, group_range = date_groupings
+        date_format, group_type, group_range = Charts.date_groups(object[:from_date], object[:to_date])
 
         variables = [
           date_format,
@@ -33,24 +33,6 @@ module Resolvers
           group_range:,
           items: Sql.execute(sql, variables)
         }
-      end
-
-      private
-
-      def date_groupings
-        diff_in_days = (object[:to_date] - object[:from_date]).to_i
-
-        # Group all visitors by hours
-        return ['HH24', 'hourly', 24] if diff_in_days.zero?
-
-        # Group the visitors by the day of the year
-        return ['DDD', 'daily', diff_in_days] if diff_in_days <= 21
-
-        # Group the visitors by the week of the year
-        return ['WW', 'weekly', diff_in_days / 7] if diff_in_days > 21 && diff_in_days < 90
-
-        # Group the visitors by the year/month
-        ['YYYY/MM', 'monthly', diff_in_days / 30]
       end
     end
   end
