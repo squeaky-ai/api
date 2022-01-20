@@ -18,6 +18,7 @@ module Resolvers
                       [Recording::ACTIVE, Recording::DELETED]
                     )
                     .select('DISTINCT(COALESCE(referrer, \'Direct\')) referrer, count(*) count')
+                    .order('count DESC')
                     .page(page)
                     .per(size)
                     .group('referrer')
