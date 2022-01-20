@@ -5,7 +5,7 @@ module Types
     class Referrer < Types::BaseObject
       graphql_name 'AnalyticsReferrer'
 
-      field :name, String, null: true
+      field :referrer, String, null: true
       field :count, Integer, null: false
     end
   end

@@ -7,8 +7,10 @@ analytics_referrers_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         referrers {
-          name
-          count
+          items {
+            referrer
+            count
+          }
         }
       }
     }
@@ -26,8 +28,8 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     end
 
     it 'returns an empty array' do
-      response = subject['data']['site']['analytics']
-      expect(response['referrers']).to eq []
+      response = subject['data']['site']['analytics']['referrers']
+      expect(response['items']).to eq []
     end
   end
 
@@ -38,6 +40,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     before do
       create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
       create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, referrer: nil, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
       create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
     end
 
@@ -47,15 +50,19 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     end
 
     it 'returns the referrers' do
-      response = subject['data']['site']['analytics']
-      expect(response['referrers']).to match_array([
+      response = subject['data']['site']['analytics']['referrers']
+      expect(response['items']).to match_array([
         {
-          'name' => 'http://facebook.com',
+          'referrer' => 'http://google.com',
+          'count' => 2
+        },
+        {
+          'referrer' => 'http://facebook.com',
           'count' => 1
         },
         {
-          'name' => 'http://google.com',
-          'count' => 2
+          'referrer' => 'Direct',
+          'count' => 1
         }
       ])
     end
@@ -67,6 +74,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
 
     before do
       create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
+      create(:recording, referrer: nil, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
       create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
       create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site)
     end
@@ -77,14 +85,18 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
     end
 
     it 'returns the referrers' do
-      response = subject['data']['site']['analytics']
-      expect(response['referrers']).to match_array([
+      response = subject['data']['site']['analytics']['referrers']
+      expect(response['items']).to match_array([
         {
-          'name' => 'http://google.com',
+          'referrer' => 'http://google.com',
           'count' => 1
         },
         {
-          'name' => 'http://facebook.com',
+          'referrer' => 'http://facebook.com',
+          'count' => 1
+        },
+        {
+          'referrer' => 'Direct',
           'count' => 1
         }
       ])
