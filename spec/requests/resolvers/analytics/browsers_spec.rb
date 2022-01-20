@@ -7,8 +7,14 @@ analytics_browser_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         browsers {
-          name
-          count
+          items {
+            browser
+            count
+          }
+          pagination {
+            pageSize
+            total
+          }
         }
       }
     }
@@ -26,8 +32,8 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
     end
 
     it 'returns an empty array' do
-      response = subject['data']['site']['analytics']
-      expect(response['browsers']).to eq []
+      response = subject['data']['site']['analytics']['browsers']
+      expect(response['items']).to eq []
     end
   end
 
@@ -36,8 +42,8 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, browser: 'Firefox', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
     end
 
     subject do
@@ -46,15 +52,15 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
     end
 
     it 'returns the browser counts' do
-      response = subject['data']['site']['analytics']
-      expect(response['browsers']).to eq(
+      response = subject['data']['site']['analytics']['browsers']
+      expect(response['items']).to match_array(
         [
           {
-            'name' => 'Safari',
+            'browser' => 'Safari',
             'count' => 1
           },
           {
-            'name' => 'Firefox',
+            'browser' => 'Firefox',
             'count' => 1
           }
         ]
@@ -67,9 +73,9 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, useragent: '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15"', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, browser: 'Firefox', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, browser: 'Safari', site: site)
     end
 
     subject do
@@ -78,15 +84,15 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
     end
 
     it 'returns the browser counts' do
-      response = subject['data']['site']['analytics']
-      expect(response['browsers']).to eq(
+      response = subject['data']['site']['analytics']['browsers']
+      expect(response['items']).to match_array(
         [
           {
-            'name' => 'Safari',
+            'browser' => 'Safari',
             'count' => 1
           },
           {
-            'name' => 'Firefox',
+            'browser' => 'Firefox',
             'count' => 1
           }
         ]

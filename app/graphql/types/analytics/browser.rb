@@ -5,7 +5,7 @@ module Types
     class Browser < Types::BaseObject
       graphql_name 'AnalyticsBrowser'
 
-      field :name, String, null: false
+      field :browser, String, null: false
       field :count, Integer, null: false
     end
   end
