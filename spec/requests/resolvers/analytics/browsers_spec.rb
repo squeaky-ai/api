@@ -10,6 +10,7 @@ analytics_browser_query = <<-GRAPHQL
           items {
             browser
             count
+            percentage
           }
           pagination {
             pageSize
@@ -57,10 +58,12 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
         [
           {
             'browser' => 'Safari',
+            'percentage' => 50,
             'count' => 1
           },
           {
             'browser' => 'Firefox',
+            'percentage' => 50,
             'count' => 1
           }
         ]
@@ -74,6 +77,7 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
 
     before do
       create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, browser: 'Firefox', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
       create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
       create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, browser: 'Safari', site: site)
     end
@@ -89,10 +93,12 @@ RSpec.describe Resolvers::Analytics::Browsers, type: :request do
         [
           {
             'browser' => 'Safari',
-            'count' => 1
+            'percentage' => 66,
+            'count' => 2
           },
           {
             'browser' => 'Firefox',
+            'percentage' => 33,
             'count' => 1
           }
         ]

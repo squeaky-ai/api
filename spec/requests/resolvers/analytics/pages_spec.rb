@@ -10,6 +10,8 @@ analytics_pages_query = <<-GRAPHQL
           items {
             path
             count
+            avg
+            percentage
           }
         }
       }
@@ -53,10 +55,14 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
         [
           {
             'path' => '/',
+            'avg' => 8990,
+            'percentage' => 66,
             'count' => 2
           },
           {
             'path' => '/test',
+            'avg' => 8990,
+            'percentage' => 33,
             'count' => 1
           }
         ]
@@ -85,10 +91,14 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
         [
           {
             'path' => '/',
+            'avg' => 8990,
+            'percentage' => 66,
             'count' => 2
           },
           {
             'path' => '/test',
+            'avg' => 8990,
+            'percentage' => 33,
             'count' => 1
           }
         ]
