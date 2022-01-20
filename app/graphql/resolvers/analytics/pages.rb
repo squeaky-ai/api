@@ -19,6 +19,7 @@ module Resolvers
                 )
                 .joins(:pages)
                 .select('pages.url, count(pages.url) page_count, AVG(pages.exited_at - pages.entered_at) page_avg')
+                .order('page_count DESC')
                 .page(page)
                 .per(size)
                 .group('pages.url')
