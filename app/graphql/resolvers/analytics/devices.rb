@@ -7,7 +7,9 @@ module Resolvers
 
       def resolve
         sql = <<-SQL
-          SELECT useragent
+          SELECT
+            COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
+            COUNT(device_type) FILTER(WHERE device_type = 'Mobile') mobile_count
           FROM recordings
           WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
         SQL
@@ -19,18 +21,16 @@ module Resolvers
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
-        results = Sql.execute(sql, variables)
-
-        groups = results.partition { |r| UserAgent.parse(r['useragent']).mobile? }
+        results = Sql.execute(sql, variables).first
 
         [
           {
             type: 'mobile',
-            count: groups[0].size
+            count: results['mobile_count']
           },
           {
             type: 'desktop',
-            count: groups[1].size
+            count: results['desktop_count']
           }
         ]
       end
