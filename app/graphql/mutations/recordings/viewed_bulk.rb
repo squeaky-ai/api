@@ -23,6 +23,8 @@ module Mutations
         return [] if recordings.size.zero?
 
         recordings.update_all(viewed:)
+        recordings.each { |recording| recording.visitor.update(new: false) } if viewed
+
         @site.recordings.reload
       end
     end

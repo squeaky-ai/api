@@ -7,24 +7,33 @@ module Resolvers
 
       def resolve
         sql = <<-SQL
-          SELECT COUNT(DISTINCT recordings.visitor_id) total_count, COUNT(DISTINCT CASE recordings.viewed WHEN TRUE THEN NULL ELSE recordings.visitor_id END) new_count
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          SELECT
+            COUNT(*) total_count,
+            COUNT(*) FILTER(WHERE visitors.new IS TRUE) new_count
+          FROM visitors
+          LEFT OUTER JOIN recordings ON visitors.id = recordings.visitor_id
+          WHERE recordings.site_id = ? AND visitors.created_at BETWEEN ? AND ?
+          GROUP BY visitors.id
         SQL
 
         variables = [
           object[:site_id],
           object[:from_date],
-          object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
+          object[:to_date]
         ]
 
         results = Sql.execute(sql, variables).first
 
         {
-          total: results['total_count'],
-          new: results['new_count']
+          total: value_or_zero(results, 'total_count'),
+          new: value_or_zero(results, 'new_count')
         }
+      end
+
+      private
+
+      def value_or_zero(results, key)
+        results&.[](key) || 0
       end
     end
   end

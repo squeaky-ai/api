@@ -67,6 +67,10 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     it 'sets the recordings as viewed' do
       expect { subject }.to change { site.recordings.reload.where(viewed: true).size }.from(1).to(2)
     end
+
+    it 'sets the visitors of the recordings as not-new' do
+      expect { subject }.to change { site.visitors.reload.where(new: true).size }.from(3).to(1)
+    end
   end
 
   context 'when some of the recordings exist and they are marked as not viewed' do

@@ -21,7 +21,10 @@ module Mutations
 
         raise Errors::RecordingNotFound unless recording
 
-        recording.update(viewed: true) unless superuser_viewing?
+        unless superuser_viewing?
+          recording.update(viewed: true)
+          recording.visitor.update(new: false)
+        end
 
         recording
       end

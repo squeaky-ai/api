@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve
         sql = <<-SQL
-          SELECT DISTINCT(device_x) device_x, count(*) count
+          SELECT DISTINCT(ROUND(device_x, -1)) device_x, count(*) count
           FROM recordings
           WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
           GROUP BY device_x

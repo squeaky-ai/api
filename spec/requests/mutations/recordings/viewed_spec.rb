@@ -45,6 +45,10 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     it 'updates the recording in the database' do
       expect { subject }.to change { Recording.find_by(id: recording.id).viewed }.from(false).to(true)
     end
+
+    it 'marks the visitor as not-new' do
+      expect { subject }.to change { recording.visitor.reload.new }.from(true).to(false)
+    end
   end
 
   context 'when a superuser is viewing' do
@@ -64,6 +68,10 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
     it 'does not update the recording in the database' do
       expect { subject }.not_to change { Recording.find_by(id: recording.id).viewed }
+    end
+
+    it 'does not mark the visitor as not-new' do
+      expect { subject }.not_to change { recording.visitor.reload.new }
     end
   end
 end

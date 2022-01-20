@@ -41,8 +41,8 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor)
-      visitor_2 = create(:visitor)
+      visitor_1 = create(:visitor, created_at: Time.new(2021, 8, 7))
+      visitor_2 = create(:visitor, created_at: Time.new(2021, 8, 6))
 
       create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
       create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site, visitor: visitor_1)
@@ -70,8 +70,8 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor)
-      visitor_2 = create(:visitor)
+      visitor_1 = create(:visitor, created_at: Time.new(2021, 8, 7))
+      visitor_2 = create(:visitor, created_at: Time.new(2021, 8, 6))
 
       create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
       create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site, visitor: visitor_1)
@@ -95,15 +95,16 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     end
   end
 
-  context 'when some of the recordings have been viewed' do
+  context 'when the visitor has been viewed' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor)
+      visitor = create(:visitor, created_at: Time.new(2021, 8, 7))
+
+      visitor.update(new: false)
 
       create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, viewed: true, site: site, visitor: visitor)
     end
 
     subject do
@@ -118,7 +119,7 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
 
     it 'returns the number of new visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitorsCount']['new']).to eq 1
+      expect(response['visitorsCount']['new']).to eq 0
     end
   end
 end

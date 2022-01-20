@@ -9,8 +9,8 @@ module Resolvers
         sql = <<-SQL
           SELECT
             COUNT(*) all_count,
-            COUNT(*) FILTER(WHERE recordings.viewed IS FALSE) new_count,
-            COUNT(*) FILTER(WHERE recordings.viewed IS TRUE) existing_count,
+            COUNT(*) FILTER(WHERE visitors.new IS TRUE) new_count,
+            COUNT(*) FILTER(WHERE visitors.new IS FALSE) existing_count,
             to_char(to_timestamp(disconnected_at / 1000), ?) date_key
           FROM recordings
           LEFT OUTER JOIN visitors ON visitors.id = recordings.visitor_id

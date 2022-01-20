@@ -47,11 +47,14 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor)
+      visitor_1 = create(:visitor)
+      visitor_2 = create(:visitor)
 
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site)
+      visitor_2.update(new: false)
+
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
+      create(:recording, disconnected_at: Time.new(2021, 8, 8).to_i * 1000, site: site, visitor: visitor_2)
     end
 
     subject do
@@ -68,13 +71,7 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
         'items' => [
           {
             'allCount' => 1, 
-            'dateKey' => '216',
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '217', 
+            'dateKey' => '217',
             'existingCount' => 0, 
             'newCount' => 1
           }, 
@@ -83,6 +80,12 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
             'dateKey' => '218', 
             'existingCount' => 0, 
             'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '219', 
+            'existingCount' => 1, 
+            'newCount' => 0
           }
         ]
       )

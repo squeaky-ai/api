@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_17_193606) do
+ActiveRecord::Schema.define(version: 2022_01_20_191836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_193606) do
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "external_attributes", default: {}, null: false
     t.integer "recordings_count"
+    t.boolean "new", default: true
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
