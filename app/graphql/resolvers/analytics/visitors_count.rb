@@ -19,11 +19,11 @@ module Resolvers
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
-        results = Sql.execute(sql, variables)
+        results = Sql.execute(sql, variables).first
 
         {
-          total: results.first['total_count'],
-          new: results.first['new_count']
+          total: results['total_count'],
+          new: results['new_count']
         }
       end
     end
