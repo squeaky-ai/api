@@ -8,12 +8,15 @@ module Resolvers
       def resolve
         sql = <<-SQL
           SELECT
-            COUNT(*) total_count,
-            COUNT(*) FILTER(WHERE visitors.new IS TRUE) new_count
-          FROM visitors
-          LEFT OUTER JOIN recordings ON visitors.id = recordings.visitor_id
-          WHERE recordings.site_id = ? AND visitors.created_at BETWEEN ? AND ?
-          GROUP BY visitors.id
+            COUNT(v.id) total_count,
+            COUNT(v.id) FILTER(WHERE v.new IS TRUE) new_count
+          FROM (
+            SELECT visitors.id, visitors.new
+            FROM visitors
+            LEFT JOIN recordings ON visitors.id = recordings.visitor_id
+            WHERE recordings.site_id = ? AND visitors.created_at BETWEEN ? AND ?
+            GROUP BY visitors.id
+          ) v;
         SQL
 
         variables = [
