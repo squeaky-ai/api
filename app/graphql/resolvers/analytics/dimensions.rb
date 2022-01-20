@@ -3,13 +3,14 @@
 module Resolvers
   module Analytics
     class Dimensions < Resolvers::Base
-      type [Integer, { null: true }], null: false
+      type [Types::Analytics::Dimension, { null: true }], null: false
 
       def resolve
         sql = <<-SQL
-          SELECT device_x
+          SELECT DISTINCT(device_x) device_x, count(*) count
           FROM recordings
           WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          GROUP BY device_x
         SQL
 
         variables = [
@@ -19,9 +20,7 @@ module Resolvers
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
-        results = Sql.execute(sql, variables)
-
-        results.map { |r| r['device_x'] }
+        Sql.execute(sql, variables)
       end
     end
   end

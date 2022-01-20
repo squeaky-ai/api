@@ -6,7 +6,10 @@ analytics_dimensions_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        dimensions
+        dimensions {
+          deviceX
+          count
+        }
       }
     }
   }
@@ -44,7 +47,18 @@ RSpec.describe Resolvers::Analytics::Dimensions, type: :request do
 
     it 'returns the dimensions stats' do
       response = subject['data']['site']['analytics']
-      expect(response['dimensions']).to match_array([1920, 2560])
+      expect(response['dimensions']).to match_array(
+        [
+          {
+            'deviceX' => 1920,
+            'count' => 1
+          },
+          {
+            'deviceX' => 2560,
+            'count' => 1
+          }
+        ]
+      )
     end
   end
 
@@ -65,7 +79,18 @@ RSpec.describe Resolvers::Analytics::Dimensions, type: :request do
 
     it 'returns the dimensions stats' do
       response = subject['data']['site']['analytics']
-      expect(response['dimensions']).to match_array([1920, 2560])
+      expect(response['dimensions']).to match_array(
+        [
+          {
+            'deviceX' => 1920,
+            'count' => 1
+          },
+          {
+            'deviceX' => 2560,
+            'count' => 1
+          }
+        ]
+      )
     end
   end
 end
