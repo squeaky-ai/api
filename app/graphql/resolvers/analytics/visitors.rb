@@ -3,52 +3,54 @@
 module Resolvers
   module Analytics
     class Visitors < Resolvers::Base
-      type [Types::Analytics::Visitor, { null: true }], null: false
+      type Types::Analytics::Visitors, null: false
 
       def resolve
-        recordings = recordings(object[:site_id], object[:from_date], object[:to_date])
-        visitor_counts = visitors(object[:site_id], recordings.map { |r| r['visitor_id'] }.uniq)
+        sql = <<-SQL
+          SELECT
+            COUNT(*) all_count,
+            COUNT(*) FILTER(WHERE recordings.viewed IS FALSE) new_count,
+            COUNT(*) FILTER(WHERE recordings.viewed IS TRUE) existing_count,
+            to_char(to_timestamp(disconnected_at / 1000), ?) date_key
+          FROM recordings
+          LEFT OUTER JOIN visitors ON visitors.id = recordings.visitor_id
+          WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          GROUP BY date_key
+        SQL
 
-        map_response(visitor_counts, recordings)
+        date_format, group_type, group_range = date_groupings
+
+        variables = [
+          date_format,
+          object[:site_id],
+          object[:from_date],
+          object[:to_date],
+          [Recording::ACTIVE, Recording::DELETED]
+        ]
+
+        {
+          group_type:,
+          group_range:,
+          items: Sql.execute(sql, variables)
+        }
       end
 
       private
 
-      def map_response(visitor_counts, recordings)
-        recordings.map do |recording|
-          {
-            new: visitor_counts.find { |v| v['visitor_id'] == recording['visitor_id'] }['recordings_count'] == 1,
-            timestamp: recording['disconnected_at']
-          }
-        end
-      end
+      def date_groupings
+        diff_in_days = (object[:to_date] - object[:from_date]).to_i
 
-      def recordings(site_id, from_date, to_date)
-        sql = <<-SQL
-          SELECT visitor_id, to_timestamp(disconnected_at / 1000) disconnected_at
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
-        SQL
+        # Group all visitors by hours
+        return ['HH24', 'hourly', 24] if diff_in_days.zero?
 
-        variables = [
-          site_id,
-          from_date,
-          to_date,
-          [Recording::ACTIVE, Recording::DELETED]
-        ]
+        # Group the visitors by the day of the year
+        return ['DDD', 'daily', diff_in_days] if diff_in_days <= 21
 
-        Sql.execute(sql, variables)
-      end
+        # Group the visitors by the week of the year
+        return ['WW', 'weekly', diff_in_days / 7] if diff_in_days > 21 && diff_in_days < 90
 
-      def visitors(site_id, visitor_ids)
-        sql = <<-SQL
-          SELECT visitor_id, count(id) recordings_count
-          FROM recordings
-          WHERE site_id = ? AND visitor_id IN (?)
-          GROUP BY visitor_id
-        SQL
-
-        Sql.execute(sql, [site_id, visitor_ids])
+        # Group the visitors by the year/month
+        ['YYYY/MM', 'monthly', diff_in_days / 30]
       end
     end
   end

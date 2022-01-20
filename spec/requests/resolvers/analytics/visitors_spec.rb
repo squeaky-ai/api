@@ -7,8 +7,14 @@ analytics_visitors_query = <<-GRAPHQL
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
         visitors {
-          new
-          timestamp
+          groupType
+          groupRange
+          items {
+            dateKey
+            allCount
+            newCount
+            existingCount
+          }
         }
       }
     }
@@ -27,7 +33,12 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
 
     it 'returns an empty array' do
       response = subject['data']['site']['analytics']
-      expect(response['visitors']).to eq []
+
+      expect(response['visitors']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' => []
+      )
     end
   end
 
@@ -50,20 +61,31 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
 
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitors']).to match_array([
-        {
-          'new' => false,
-          'timestamp' => '2021-08-06T23:00:00+00:00'
-        },
-        {
-          'new' => false,
-          'timestamp' => '2021-08-05T23:00:00+00:00'
-        },
-        {
-          'new' => true,
-          'timestamp' => '2021-08-04T23:00:00+00:00'
-        }
-      ])
+
+      expect(response['visitors']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' => [
+          {
+            'allCount' => 1, 
+            'dateKey' => '216',
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '217', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '218', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }
+        ]
+      )
     end
   end
 
@@ -87,20 +109,31 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
 
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitors']).to match_array([
-        {
-          'new' => false,
-          'timestamp' => '2021-08-06T23:00:00+00:00'
-        },
-        {
-          'new' => false,
-          'timestamp' => '2021-08-05T23:00:00+00:00'
-        },
-        {
-          'new' => true,
-          'timestamp' => '2021-08-04T23:00:00+00:00'
-        }
-      ])
+
+      expect(response['visitors']).to eq(
+        'groupType' => 'daily',
+        'groupRange' => 7,
+        'items' => [
+          {
+            'allCount' => 1, 
+            'dateKey' => '216', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '217', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '218', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }
+        ]
+      )
     end
   end
 end
