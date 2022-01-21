@@ -30,7 +30,9 @@ module Resolvers
       def devices(page, from_date, to_date)
         sql = <<-SQL
           SELECT
-            recordings.viewport_x
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x > #{TABLET_BREAKPOINT}) desktop_count,
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x > #{MOBILE_BREAKPOINT} AND recordings.viewport_x <= #{TABLET_BREAKPOINT}) tablet_count,
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x <= #{TABLET_BREAKPOINT}) mobile_count
           FROM
             pages
           LEFT JOIN
@@ -50,9 +52,7 @@ module Resolvers
           to_date
         ]
 
-        viewports = Sql.execute(sql, variables)
-
-        group_viewports(viewports.map { |v| v['viewport_x'] })
+        Sql.execute(sql, variables).first
       end
 
       def suitable_recording(page, device, from_date, to_date)
@@ -167,22 +167,6 @@ module Resolvers
         when 'Desktop'
           "> #{TABLET_BREAKPOINT}"
         end
-      end
-
-      def group_viewports(viewports)
-        out = { mobile_count: 0, tablet_count: 0, desktop_count: 0 }
-
-        viewports.each do |v|
-          if v <= MOBILE_BREAKPOINT
-            out[:mobile_count] += 1
-          elsif v > MOBILE_BREAKPOINT && v <= TABLET_BREAKPOINT
-            out[:tablet_count] += 1
-          else
-            out[:desktop_count] += 1
-          end
-        end
-
-        out
       end
     end
   end
