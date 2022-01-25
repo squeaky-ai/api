@@ -90,7 +90,7 @@ module Resolvers
       def click_events(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
-            DISTINCT(events.data->>'selector') AS selector,
+            DISTINCT(COALESCE(events.data->>'selector', \'html > body\')) AS selector,
             COUNT(*) count
           FROM
             pages
