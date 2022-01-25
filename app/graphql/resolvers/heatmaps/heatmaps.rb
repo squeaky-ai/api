@@ -147,7 +147,7 @@ module Resolvers
             events.event_type = 3 AND
             (events.data->>'source')::integer = 3
           GROUP BY
-            pages.id;
+            pages.id
           LIMIT #{LIMIT_SO_IT_LOADS_ON_BIG_SITES}
         SQL
 
