@@ -7,7 +7,6 @@ module Resolvers
 
       MOBILE_BREAKPOINT = 380
       TABLET_BREAKPOINT = 800
-      LIMIT_SO_IT_LOADS_ON_BIG_SITES = 1000 # TODO: Performance is terrible
 
       argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
       argument :type, Types::Heatmaps::Type, required: true, default_value: 'Click'
@@ -112,7 +111,6 @@ module Resolvers
             (events.data->>'type')::integer = 2
           GROUP BY selector
           ORDER BY count DESC
-          LIMIT #{LIMIT_SO_IT_LOADS_ON_BIG_SITES}
         SQL
 
         variables = [
@@ -148,7 +146,6 @@ module Resolvers
             (events.data->>'source')::integer = 3
           GROUP BY
             pages.id
-          LIMIT #{LIMIT_SO_IT_LOADS_ON_BIG_SITES}
         SQL
 
         variables = [
