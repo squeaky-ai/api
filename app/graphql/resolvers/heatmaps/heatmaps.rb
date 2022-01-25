@@ -91,7 +91,8 @@ module Resolvers
       def click_events(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
-            events.data
+            DISTINCT(events.data->>'selector') AS selector,
+            COUNT(*) count
           FROM
             pages
           LEFT JOIN
@@ -109,6 +110,8 @@ module Resolvers
             events.event_type = 3 AND
             (events.data->>'source')::integer = 2 AND
             (events.data->>'type')::integer = 2
+          GROUP BY selector
+          ORDER BY count DESC
           LIMIT #{LIMIT_SO_IT_LOADS_ON_BIG_SITES}
         SQL
 
@@ -120,8 +123,7 @@ module Resolvers
           page
         ]
 
-        events = Sql.execute(sql, variables)
-        events.map { |e| JSON.parse(e['data']) }
+        Sql.execute(sql, variables)
       end
 
       def scroll_events(from_date, to_date, page, device)
