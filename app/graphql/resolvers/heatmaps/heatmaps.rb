@@ -90,32 +90,21 @@ module Resolvers
       def click_events(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
-            DISTINCT(COALESCE(events.data->>'selector', \'html > body\')) AS selector,
+            DISTINCT(selector) AS selector,
             COUNT(*) count
           FROM
-            pages
-          LEFT JOIN
-            recordings ON recordings.id = pages.recording_id
-          LEFT JOIN
-            events ON events.recording_id = recordings.id
+            clicks
           WHERE
-            recordings.site_id = ? AND
-            recordings.status IN (?) AND
-            recordings.viewport_x #{device_expression(device)} AND
-            to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-            pages.url = ? AND
-            events.timestamp >= pages.entered_at AND
-            events.timestamp <= pages.exited_at AND
-            events.event_type = 3 AND
-            (events.data->>'source')::integer = 2 AND
-            (events.data->>'type')::integer = 2
+            site_id = ? AND
+            viewport_x #{device_expression(device)} AND
+            to_timestamp(clicked_at / 1000)::date BETWEEN ? AND ? AND
+            page_url = ?
           GROUP BY selector
           ORDER BY count DESC
         SQL
 
         variables = [
           object.id,
-          [Recording::ACTIVE, Recording::DELETED],
           from_date,
           to_date,
           page

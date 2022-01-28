@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_191836) do
+ActiveRecord::Schema.define(version: 2022_01_28_122912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -227,4 +227,19 @@ ActiveRecord::Schema.define(version: 2022_01_20_191836) do
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
+
+  create_view "clicks", materialized: true, sql_definition: <<-SQL
+      SELECT COALESCE((events.data ->> 'selector'::text), 'html > body'::text) AS selector,
+      (events.data ->> 'x'::text) AS coordinates_x,
+      (events.data ->> 'y'::text) AS coordinates_y,
+      events."timestamp" AS clicked_at,
+      recordings.viewport_x,
+      recordings.viewport_y,
+      pages.url AS page_url,
+      recordings.site_id
+     FROM ((pages
+       LEFT JOIN recordings ON ((recordings.id = pages.recording_id)))
+       LEFT JOIN events ON ((events.recording_id = recordings.id)))
+    WHERE ((recordings.status = ANY (ARRAY[0, 2])) AND (events."timestamp" >= pages.entered_at) AND (events."timestamp" <= pages.exited_at) AND (events.event_type = 3) AND (((events.data ->> 'source'::text))::integer = 2) AND (((events.data ->> 'type'::text))::integer = 2));
+  SQL
 end
