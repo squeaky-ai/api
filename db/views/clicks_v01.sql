@@ -9,9 +9,9 @@ SELECT
   recordings.site_id as site_id
 FROM
   pages
-LEFT JOIN
+INNER JOIN
   recordings ON recordings.id = pages.recording_id
-LEFT JOIN
+INNER JOIN
   events ON events.recording_id = recordings.id
 WHERE
   recordings.status IN (0, 2) AND
