@@ -46,5 +46,8 @@ module Types
     # Visitors
     field :visitor_starred, mutation: Mutations::Visitors::Starred
     field :visitor_delete, mutation: Mutations::Visitors::Delete
+    # Contact
+    field :contact, mutation: Mutations::Contact::Contact
+    field :book_demo, mutation: Mutations::Contact::BookDemo
   end
 end
