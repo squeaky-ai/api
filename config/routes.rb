@@ -10,11 +10,9 @@ Rails.application.routes.draw do
     # Required to load devise
     devise_for :users, only: []
 
-    # Enable the GraphQL playground
-    mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
-
     authenticate :user, ->(u) { u.superuser? } do
       mount Sidekiq::Web => '/sidekiq'
+      mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
     end
 
     resources :feedback, only: %i[index]

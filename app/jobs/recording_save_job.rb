@@ -72,6 +72,12 @@ class RecordingSaveJob < ApplicationJob
     end
 
     recording.disconnected_at = @session.disconnected_at
+
+    unless recording.valid?
+      logger.info({ message: 'Recording debug', recording: @session.recording, events: @session.events }.to_json)
+      raise StandardError, 'Recording is not valid'
+    end
+
     recording.save!
     recording
   end
