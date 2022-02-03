@@ -7,7 +7,11 @@ plan_query = <<-GRAPHQL
     plans {
       name
       maxMonthlyRecordings
-      monthlyPrice
+      monthlyPrice {
+        GBP
+        EUR
+        USD
+      }
     }
   }
 GRAPHQL
@@ -21,27 +25,47 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'name' => 'Free',
           'maxMonthlyRecordings' => 500,
-          'monthlyPrice' => 0
+          'monthlyPrice' => {
+            'GBP' => 0,
+            'EUR' => 0,
+            'USD' => 0
+          }
         },
         {
           'name' => 'Light',
           'maxMonthlyRecordings' => 5000,
-          'monthlyPrice' => 50
+          'monthlyPrice' => {
+            'GBP' => 38,
+            'EUR' => 45,
+            'USD' => 50
+          }
         },
         {
           'name' => 'Plus',
           'maxMonthlyRecordings' => 25000,
-          'monthlyPrice' => 150
+          'monthlyPrice' => {
+            'GBP' => 120,
+            'EUR' => 145,
+            'USD' => 165
+          }
         },
         {
           'name' => 'Business',
           'maxMonthlyRecordings' => 50000,
-          'monthlyPrice' => 250
+          'monthlyPrice' => {
+            'GBP' => 205,
+            'EUR' => 245,
+            'USD' => 275
+          }
         },
         {
           'name' => 'Premium',
           'maxMonthlyRecordings' => 100000,
-          'monthlyPrice' => 500
+          'monthlyPrice' => {
+            'GBP' => 410,
+            'EUR' => 495,
+            'USD' => 560
+          }
         },
         {
           'name' => 'Unlimited',
