@@ -17,6 +17,10 @@ Rails.application.routes.draw do
 
     resources :feedback, only: %i[index]
 
+    namespace :webhooks do
+      post 'mollie', to: 'mollie#index'
+    end
+
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do

@@ -67,7 +67,7 @@ class MollieService
       # to let them know what's going on
       redirect_url: "https://squeaky.ai/app/sites/#{@site.id}/subscriptions?success=1",
       # Mollie will send updates to this URL
-      webhook_url: 'https://squeaky.ai/api/mollie/webhook',
+      webhook_url: 'https://squeaky.ai/api/webhooks/mollie',
       # The docs recomment taking the first payment
       sequence_type: 'first'
     )
