@@ -60,7 +60,7 @@ class MollieService
       # money, we only gain concent. Once we've got confirmation
       # via the webhook we can change the plan to whatever we
       # want
-      amount: { value: 0, currency: 'EUR' },
+      amount: { value: '0.00', currency: 'EUR' },
       # TODO: The docs suggest putting something unique in here
       description: 'Squeaky',
       # Once complete we take them to the subscription page

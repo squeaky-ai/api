@@ -27,7 +27,7 @@ RSpec.describe MollieService do
       allow(Mollie::Payment).to receive(:create)
         .with(
           customer_id:,
-          amount: { value: 0, currency: 'EUR' },
+          amount: { value: '0.00', currency: 'EUR' },
           description: 'Squeaky',
           redirect_url: "https://squeaky.ai/app/sites/#{site.id}/subscriptions?success=1",
           webhook_url: 'https://squeaky.ai/api/webhooks/mollie',
