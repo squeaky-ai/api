@@ -156,6 +156,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
+    mollie-api-ruby (4.7.1)
     msgpack (1.4.2)
     net-imap (0.2.3)
       digest
@@ -277,6 +278,7 @@ DEPENDENCIES
   graphql_playground-rails
   kaminari
   listen (~> 3.3)
+  mollie-api-ruby
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.1)
