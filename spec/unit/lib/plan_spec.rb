@@ -15,13 +15,11 @@ RSpec.describe Plan do
     before do
       plan.instance_variable_set(:@config, {
         'max_monthly_recordings' => 300,
-        'monthly_price' => 0
       })
     end
 
     it 'responds to the expected methods' do
       expect(plan.max_monthly_recordings).to eq 300
-      expect(plan.monthly_price).to eq 0
     end
   end
 end

@@ -7,7 +7,7 @@ module Types
 
       field :name, String, null: false
       field :max_monthly_recordings, Integer, null: true
-      field :monthly_price, Types::Plans::MonthlyPrice, null: true
+      field :pricing, [Types::Plans::Price, { null: false }], null: true
     end
   end
 end

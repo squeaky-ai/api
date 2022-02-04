@@ -7,10 +7,10 @@ plan_query = <<-GRAPHQL
     plans {
       name
       maxMonthlyRecordings
-      monthlyPrice {
-        GBP
-        EUR
-        USD
+      pricing {
+        id
+        currency
+        amount
       }
     }
   }
@@ -25,52 +25,96 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'name' => 'Free',
           'maxMonthlyRecordings' => 500,
-          'monthlyPrice' => {
-            'GBP' => 0,
-            'EUR' => 0,
-            'USD' => 0
-          }
+          'pricing' => nil
         },
         {
           'name' => 'Light',
           'maxMonthlyRecordings' => 5000,
-          'monthlyPrice' => {
-            'GBP' => 38,
-            'EUR' => 45,
-            'USD' => 50
-          }
+          'pricing' => [
+            {
+              'id' => 'price_1KPOV6LJ9zG7aLW852tqylTr',
+              'currency' => 'GBP',
+              'amount' => 38
+            },
+            {
+              'id' => 'price_1KPOV6LJ9zG7aLW8xMXyFGGr',
+              'currency' => 'EUR',
+              'amount' => 45
+            },
+            {
+              'id' => 'price_1KPOV6LJ9zG7aLW8tDzfMy0D',
+              'currency' => 'USD',
+              'amount' => 50
+            }
+          ]
         },
         {
           'name' => 'Plus',
           'maxMonthlyRecordings' => 25000,
-          'monthlyPrice' => {
-            'GBP' => 120,
-            'EUR' => 145,
-            'USD' => 165
-          }
+          'pricing' => [
+            {
+              'id' => 'price_1KPOVlLJ9zG7aLW88SC9VKKB',
+              'currency' => 'GBP',
+              'amount' => 120
+            },
+            {
+              'id' => 'price_1KPOVlLJ9zG7aLW892gWiiTU',
+              'currency' => 'EUR',
+              'amount' => 145
+            },
+            {
+              'id' => 'price_1KPOVlLJ9zG7aLW8bw9qLkLF',
+              'currency' => 'USD',
+              'amount' => 165
+            }
+          ]
         },
         {
           'name' => 'Business',
           'maxMonthlyRecordings' => 50000,
-          'monthlyPrice' => {
-            'GBP' => 205,
-            'EUR' => 245,
-            'USD' => 275
-          }
+          'pricing' => [
+            {
+              'id' => 'price_1KPOWCLJ9zG7aLW8ylslbe5U',
+              'currency' => 'GBP',
+              'amount' => 205
+            },
+            {
+              'id' => 'price_1KPOWCLJ9zG7aLW829kU4xrO',
+              'currency' => 'EUR',
+              'amount' => 245
+            },
+            {
+              'id' => 'price_1KPOWCLJ9zG7aLW8jXWVkVsr',
+              'currency' => 'USD',
+              'amount' => 275
+            }
+          ]
         },
         {
           'name' => 'Premium',
           'maxMonthlyRecordings' => 100000,
-          'monthlyPrice' => {
-            'GBP' => 410,
-            'EUR' => 495,
-            'USD' => 560
-          }
+          'pricing' => [
+            {
+              'id' => 'price_1KPOWhLJ9zG7aLW8J2T8etAP',
+              'currency' => 'GBP',
+              'amount' => 410
+            },
+            {
+              'id' => 'price_1KPOWhLJ9zG7aLW8lDyXxWeS',
+              'currency' => 'EUR',
+              'amount' => 495
+            },
+            {
+              'id' => 'price_1KPOWhLJ9zG7aLW8RHpK5q60',
+              'currency' => 'USD',
+              'amount' => 560
+            }
+          ]
         },
         {
           'name' => 'Unlimited',
           'maxMonthlyRecordings' => nil,
-          'monthlyPrice' => nil
+          'pricing' => nil
         }
       ]
     )
