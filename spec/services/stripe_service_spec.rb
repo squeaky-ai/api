@@ -70,4 +70,15 @@ RSpec.describe StripeService do
       expect(customer.status).to eq 'new'
     end
   end
+
+  describe '.update_status' do
+    let(:customer) { create(:customer) }
+    let(:status) { 'invalid' }
+
+    subject { StripeService.update_status(customer.customer_id, status) }
+
+    it 'updates the status' do
+      expect { subject }.to change { customer.reload.status }.from('new').to(status)
+    end
+  end
 end

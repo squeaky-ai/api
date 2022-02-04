@@ -13,6 +13,13 @@ class StripeService
         customer_id: customer.customer_id
       }
     end
+
+    def update_status(customer_id, status)
+      customer = Customer.find_by(customer_id:)
+
+      customer.status = status
+      customer.save!
+    end
   end
 
   def initialize(user, site)

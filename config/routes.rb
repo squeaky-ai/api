@@ -15,10 +15,8 @@ Rails.application.routes.draw do
       mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
     end
 
-    resources :feedback, only: %i[index]
-
     namespace :webhooks do
-      post 'stripe', to: 'string#index'
+      post 'stripe', to: 'stripe#index'
     end
 
     # Custom devise routes that are more suited to the front end
