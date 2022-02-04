@@ -12,9 +12,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         double(
           :strip_event, 
           type: 'checkout.session.completed',
-          data: {
-            'customer' => customer.customer_id
-          }
+          data: double(:data, object: { 'customer' => customer.customer_id })
         )
       end
 
@@ -45,9 +43,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       double(
         :strip_event, 
         type: 'invoice.paid',
-        data: {
-          'customer' => customer.customer_id
-        }
+        data: double(:data, object: { 'customer' => customer.customer_id })
       )
     end
 
@@ -77,9 +73,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       double(
         :strip_event, 
         type: 'invoice.payment_failed',
-        data: {
-          'customer' => customer.customer_id
-        }
+        data: double(:data, object: { 'customer' => customer.customer_id })
       )
     end
 
