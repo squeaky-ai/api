@@ -131,4 +131,51 @@ RSpec.describe StripeService do
       expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
     end
   end
+
+  describe '.store_transaction' do
+    let(:billing) { create(:billing) }
+
+    let(:transaction_event) do
+      {
+        'hosted_invoice_url' => 'http://stripe.com/web',
+        'invoice_pdf' => 'http://stripe.com/pdf',
+        'lines' => [
+          {
+            'data' => {
+              'amount' => 1000,
+              'currency' => 'usd',
+              'period' => {
+                'start' => 1644052149,
+                'end' => 1646471349
+              },
+              'plan' => {
+                'id' => 'price_1KPOV6LJ9zG7aLW8tDzfMy0D',
+                'interval' => 'month'
+              }
+            }
+          }
+        ]
+      }
+    end
+
+    subject { StripeService.store_transaction(billing.customer_id, transaction_event) }
+
+    it 'stores the transaction' do
+      expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
+    end
+
+    it 'stores the expected information' do
+      subject
+      transaction = billing.reload.transactions.first
+
+      expect(transaction.amount).to eq 1000
+      expect(transaction.currency).to eq 'USD'
+      expect(transaction.invoice_web_url).to eq 'http://stripe.com/web'
+      expect(transaction.invoice_pdf_url).to eq 'http://stripe.com/pdf'
+      expect(transaction.interval).to eq 'month'
+      expect(transaction.pricing_id).to eq 'price_1KPOV6LJ9zG7aLW8tDzfMy0D'
+      expect(transaction.period_start_at).to eq '2022-02-05 09:09:09 UTC'
+      expect(transaction.period_end_at).to eq '2022-03-05 09:09:09 UTC'
+    end
+  end
 end

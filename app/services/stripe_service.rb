@@ -31,7 +31,21 @@ class StripeService
     end
 
     def store_transaction(customer_id, stripe_event)
-      # TODO
+      billing = Billing.find_by(customer_id:)
+
+      bill = stripe_event['lines'].first['data']
+
+      Transaction.create(
+        billing:,
+        amount: bill['amount'],
+        currency: bill['currency'].upcase,
+        invoice_web_url: stripe_event['hosted_invoice_url'],
+        invoice_pdf_url: stripe_event['invoice_pdf'],
+        interval: bill['plan']['interval'],
+        pricing_id: bill['plan']['id'],
+        period_from: bill['period']['start'],
+        period_to: bill['period']['end']
+      )
     end
   end
 
