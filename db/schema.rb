@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_04_111117) do
+ActiveRecord::Schema.define(version: 2022_02_05_092739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,13 @@ ActiveRecord::Schema.define(version: 2022_02_04_111117) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "new", null: false
+    t.string "card_type"
+    t.string "country"
+    t.string "expiry"
+    t.string "card_number"
+    t.string "billing_address"
+    t.string "billing_name"
+    t.string "billing_email"
     t.index ["site_id"], name: "index_customers_on_site_id"
     t.index ["user_id"], name: "index_customers_on_user_id"
   end

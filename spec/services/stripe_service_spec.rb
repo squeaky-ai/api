@@ -81,4 +81,54 @@ RSpec.describe StripeService do
       expect { subject }.to change { customer.reload.status }.from('new').to(status)
     end
   end
+
+  describe '.store_payment_information' do
+    let(:customer) { create(:customer) }
+
+    let(:payment_methods_response) do
+      double(:payment_methods_response, data: [
+        {
+          'card' => {
+            'brand' => 'visa',
+            'country' => 'UK',
+            'exp_month' => 1,
+            'exp_year' => 3000,
+            'last4' => '0000'
+          },
+          'billing_details' => {
+            'name' => 'Bob Dylan',
+            'email' => 'bigbob2022@gmail.com',
+            'address' => {
+              'line1' => 'Hollywood',
+              'country' => 'US'
+            }
+          }
+        }
+      ])
+    end
+
+    subject { StripeService.store_payment_information(customer.customer_id) }
+
+    before do
+      allow(Stripe::Customer).to receive(:list_payment_methods)
+        .with(
+          customer.customer_id,
+          { type: 'card' }
+        )
+        .and_return(payment_methods_response)
+    end
+
+    it 'updates the users billing information' do
+      subject
+      customer.reload
+
+      expect(customer.card_type).to eq 'visa'
+      expect(customer.country).to eq 'UK'
+      expect(customer.expiry).to eq '1/3000'
+      expect(customer.card_number).to eq '0000'
+      expect(customer.billing_address).to eq 'Hollywood, US'
+      expect(customer.billing_name).to eq 'Bob Dylan'
+      expect(customer.billing_email).to eq 'bigbob2022@gmail.com'
+    end
+  end
 end

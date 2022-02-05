@@ -7,21 +7,29 @@ module Webhooks
 
       Rails.logger.info "Incoming stripe event #{event.type} #{event.data.to_json}"
 
+      customer_id = event.data.object['customer']
+
       case event.type
       when 'checkout.session.completed'
         # Sent when the customer goes through the checkout
         # flow and completes it. We need to update the customer
         # record with the new status.
-        StripeService.update_status(event.data.object['customer'], 'open')
+        StripeService.update_status(customer_id, 'open')
+        # Fetch the users payment information and store it along
+        # with the customer so we have something nice to show in
+        # the UI.
+        StripeService.store_payment_information(customer_id)
       when 'invoice.paid'
         # Sent when the customer pays their monthly bill, we
         # need to update the status to the latest so we keep
         # our own record to avoid rate limiting.
-        StripeService.update_status(event.data.object['customer'], 'valid')
+        StripeService.update_status(customer_id, 'valid')
+        # TODO: Store invoice
       when 'invoice.payment_failed'
         # Sent when the customer failed to pay their monthly
         # bill. We update the status in the database.
-        StripeService.update_status(event.data.object['customer'], 'invalid')
+        StripeService.update_status(customer_id, 'invalid')
+        # TODO: Kick off
       end
 
       render json: { success: true }

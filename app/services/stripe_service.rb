@@ -20,6 +20,15 @@ class StripeService
       customer.status = status
       customer.save!
     end
+
+    def store_payment_information(customer_id)
+      customer = Customer.find_by(customer_id:)
+
+      stripe = new(customer.user, customer.site)
+
+      payment_information = stripe.fetch_payment_information(customer.customer_id)
+      customer.update(payment_information)
+    end
   end
 
   def initialize(user, site)
@@ -43,6 +52,26 @@ class StripeService
     # records (as they could own multiple sites), but a
     # site can have only one customer record
     Customer.create!(customer_id: customer['id'], user: @user, site: @site)
+  end
+
+  def fetch_payment_information(customer)
+    response = Stripe::Customer.list_payment_methods(
+      customer,
+      { type: 'card' }
+    )
+
+    card = response.data.first['card']
+    billing = response.data.first['billing_details']
+
+    {
+      card_type: card['brand'],
+      country: card['country'],
+      expiry: "#{card['exp_month']}/#{card['exp_year']}",
+      card_number: card['last4'],
+      billing_address: "#{billing['address']['line1']}, #{billing['address']['country']}",
+      billing_name: billing['name'],
+      billing_email: billing['email']
+    }
   end
 
   def create_checkout_session(customer, pricing_id)
