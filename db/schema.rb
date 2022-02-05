@@ -10,25 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_092739) do
+ActiveRecord::Schema.define(version: 2022_02_05_134446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "communications", force: :cascade do |t|
-    t.boolean "onboarding_email", null: false
-    t.boolean "weekly_review_email", null: false
-    t.boolean "monthly_review_email", null: false
-    t.boolean "product_updates_email", null: false
-    t.boolean "marketing_and_special_offers_email", null: false
-    t.boolean "knowledge_sharing_email", null: false
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_communications_on_user_id"
-  end
-
-  create_table "customers", force: :cascade do |t|
+  create_table "billing", force: :cascade do |t|
     t.string "customer_id"
     t.bigint "user_id"
     t.bigint "site_id"
@@ -42,8 +29,21 @@ ActiveRecord::Schema.define(version: 2022_02_05_092739) do
     t.string "billing_address"
     t.string "billing_name"
     t.string "billing_email"
-    t.index ["site_id"], name: "index_customers_on_site_id"
-    t.index ["user_id"], name: "index_customers_on_user_id"
+    t.index ["site_id"], name: "index_billing_on_site_id"
+    t.index ["user_id"], name: "index_billing_on_user_id"
+  end
+
+  create_table "communications", force: :cascade do |t|
+    t.boolean "onboarding_email", null: false
+    t.boolean "weekly_review_email", null: false
+    t.boolean "monthly_review_email", null: false
+    t.boolean "product_updates_email", null: false
+    t.boolean "marketing_and_special_offers_email", null: false
+    t.boolean "knowledge_sharing_email", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_communications_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|

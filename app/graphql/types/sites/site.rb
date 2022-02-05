@@ -44,6 +44,7 @@ module Types
         argument :from_date, GraphQL::Types::ISO8601Date, required: true
         argument :to_date, GraphQL::Types::ISO8601Date, required: true
       end
+      field :billing, Types::Sites::Billing, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 

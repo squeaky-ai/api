@@ -6,20 +6,48 @@ require 'securerandom'
 RSpec.describe Webhooks::StripeController, type: :controller do
   describe 'POST /' do
     context 'when the event type is "checkout.session.completed"' do
-      let(:customer) { create(:customer) }
+      let(:billing) { create(:billing) }
 
       let(:stripe_event) do
         double(
-          :strip_event, 
+          :stripe_event, 
           type: 'checkout.session.completed',
-          data: double(:data, object: { 'customer' => customer.customer_id })
+          data: double(:data, object: { 'customer' => billing.customer_id })
         )
+      end
+
+      let(:payment_methods_response) do
+        double(:payment_methods_response, data: [
+          {
+            'card' => {
+              'brand' => 'visa',
+              'country' => 'UK',
+              'exp_month' => 1,
+              'exp_year' => 3000,
+              'last4' => '0000'
+            },
+            'billing_details' => {
+              'name' => 'Bob Dylan',
+              'email' => 'bigbob2022@gmail.com',
+              'address' => {
+                'line1' => 'Hollywood',
+                'country' => 'US'
+              }
+            }
+          }
+        ])
       end
 
       subject { get :index, body: '{}', as: :json }
 
       before do
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
+        allow(Stripe::Customer).to receive(:list_payment_methods)
+          .with(
+            billing.customer_id,
+            { type: 'card' }
+          )
+          .and_return(payment_methods_response)
       end
 
       it 'returns the success message' do
@@ -30,20 +58,33 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(response.body).to eq({ success: true }.to_json)
       end
 
-      it 'sets the customers status to be open' do
-       expect { subject }.to change { customer.reload.status }.from('new').to('open')
+      it 'sets the billing status to be open' do
+       expect { subject }.to change { billing.reload.status }.from('new').to('open')
+      end
+
+      it 'sets the billing information' do
+        subject
+        billing.reload
+
+        expect(billing.card_type).to eq 'visa'
+        expect(billing.country).to eq 'UK'
+        expect(billing.expiry).to eq '1/3000'
+        expect(billing.card_number).to eq '0000'
+        expect(billing.billing_address).to eq 'Hollywood, US'
+        expect(billing.billing_name).to eq 'Bob Dylan'
+        expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
       end
     end
   end
 
   context 'when the event type is "invoice.paid"' do
-    let(:customer) { create(:customer) }
+    let(:billing) { create(:billing) }
 
     let(:stripe_event) do
       double(
-        :strip_event, 
+        :stripe_event, 
         type: 'invoice.paid',
-        data: double(:data, object: { 'customer' => customer.customer_id })
+        data: double(:data, object: { 'customer' => billing.customer_id })
       )
     end
 
@@ -61,19 +102,19 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       expect(response.body).to eq({ success: true }.to_json)
     end
 
-    it 'sets the customers status to be valid' do
-     expect { subject }.to change { customer.reload.status }.from('new').to('valid')
+    it 'sets the billing status to be valid' do
+     expect { subject }.to change { billing.reload.status }.from('new').to('valid')
     end
   end
 
   context 'when the event type is "invoice.payment_failed"' do
-    let(:customer) { create(:customer) }
+    let(:billing) { create(:billing) }
 
     let(:stripe_event) do
       double(
-        :strip_event, 
+        :stripe_event, 
         type: 'invoice.payment_failed',
-        data: double(:data, object: { 'customer' => customer.customer_id })
+        data: double(:data, object: { 'customer' => billing.customer_id })
       )
     end
 
@@ -91,8 +132,8 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       expect(response.body).to eq({ success: true }.to_json)
     end
 
-    it 'sets the customers status to be invalid' do
-     expect { subject }.to change { customer.reload.status }.from('new').to('invalid')
+    it 'sets the billing status to be invalid' do
+     expect { subject }.to change { billing.reload.status }.from('new').to('invalid')
     end
   end
 end

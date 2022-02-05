@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_many :sites, through: :teams
-  has_many :customers
+  has_many :billing
 
   has_one :communication, dependent: :destroy
 

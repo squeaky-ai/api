@@ -60,30 +60,30 @@ RSpec.describe StripeService do
       expect(Stripe::Checkout::Session).to have_received(:create)
     end
 
-    it 'creates a customer in the database' do
+    it 'creates a billing record in the database' do
       subject
-      customer = site.reload.customer
+      billing = site.reload.billing
 
-      expect(customer.customer_id).to eq customer_id
-      expect(customer.site_id).to eq site.id
-      expect(customer.user_id).to eq user.id
-      expect(customer.status).to eq 'new'
+      expect(billing.customer_id).to eq customer_id
+      expect(billing.site_id).to eq site.id
+      expect(billing.user_id).to eq user.id
+      expect(billing.status).to eq 'new'
     end
   end
 
   describe '.update_status' do
-    let(:customer) { create(:customer) }
+    let(:billing) { create(:billing) }
     let(:status) { 'invalid' }
 
-    subject { StripeService.update_status(customer.customer_id, status) }
+    subject { StripeService.update_status(billing.customer_id, status) }
 
     it 'updates the status' do
-      expect { subject }.to change { customer.reload.status }.from('new').to(status)
+      expect { subject }.to change { billing.reload.status }.from('new').to(status)
     end
   end
 
   describe '.store_payment_information' do
-    let(:customer) { create(:customer) }
+    let(:billing) { create(:billing) }
 
     let(:payment_methods_response) do
       double(:payment_methods_response, data: [
@@ -107,12 +107,12 @@ RSpec.describe StripeService do
       ])
     end
 
-    subject { StripeService.store_payment_information(customer.customer_id) }
+    subject { StripeService.store_payment_information(billing.customer_id) }
 
     before do
       allow(Stripe::Customer).to receive(:list_payment_methods)
         .with(
-          customer.customer_id,
+          billing.customer_id,
           { type: 'card' }
         )
         .and_return(payment_methods_response)
@@ -120,15 +120,15 @@ RSpec.describe StripeService do
 
     it 'updates the users billing information' do
       subject
-      customer.reload
+      billing.reload
 
-      expect(customer.card_type).to eq 'visa'
-      expect(customer.country).to eq 'UK'
-      expect(customer.expiry).to eq '1/3000'
-      expect(customer.card_number).to eq '0000'
-      expect(customer.billing_address).to eq 'Hollywood, US'
-      expect(customer.billing_name).to eq 'Bob Dylan'
-      expect(customer.billing_email).to eq 'bigbob2022@gmail.com'
+      expect(billing.card_type).to eq 'visa'
+      expect(billing.country).to eq 'UK'
+      expect(billing.expiry).to eq '1/3000'
+      expect(billing.card_number).to eq '0000'
+      expect(billing.billing_address).to eq 'Hollywood, US'
+      expect(billing.billing_name).to eq 'Bob Dylan'
+      expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
     end
   end
 end

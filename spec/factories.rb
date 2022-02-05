@@ -105,7 +105,7 @@ FactoryBot.define do
     recording { association :recording }
   end
 
-  factory :customer do
+  factory :billing do
     customer_id { SecureRandom.base36 }
     status { 'new' }
 

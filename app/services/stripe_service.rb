@@ -5,29 +5,29 @@ class StripeService
     def create(user, site, pricing_id)
       stripe = new(user, site)
 
-      customer = stripe.create_customer!
-      redirect_url = stripe.create_checkout_session(customer, pricing_id)
+      billing = stripe.create_customer!
+      redirect_url = stripe.create_checkout_session(billing, pricing_id)
 
       {
         redirect_url:,
-        customer_id: customer.customer_id
+        customer_id: billing.customer_id
       }
     end
 
     def update_status(customer_id, status)
-      customer = Customer.find_by(customer_id:)
+      billing = Billing.find_by(customer_id:)
 
-      customer.status = status
-      customer.save!
+      billing.status = status
+      billing.save!
     end
 
     def store_payment_information(customer_id)
-      customer = Customer.find_by(customer_id:)
+      billing = Billing.find_by(customer_id:)
 
-      stripe = new(customer.user, customer.site)
+      stripe = new(billing.user, billing.site)
 
-      payment_information = stripe.fetch_payment_information(customer.customer_id)
-      customer.update(payment_information)
+      payment_information = stripe.fetch_payment_information(billing.customer_id)
+      billing.update(payment_information)
     end
 
     def store_transaction(customer_id, stripe_event)
@@ -55,12 +55,12 @@ class StripeService
     # customer id. A user can have multiple customer
     # records (as they could own multiple sites), but a
     # site can have only one customer record
-    Customer.create!(customer_id: customer['id'], user: @user, site: @site)
+    Billing.create!(customer_id: customer['id'], user: @user, site: @site)
   end
 
-  def fetch_payment_information(customer)
+  def fetch_payment_information(customer_id)
     response = Stripe::Customer.list_payment_methods(
-      customer,
+      customer_id,
       { type: 'card' }
     )
 
@@ -78,9 +78,9 @@ class StripeService
     }
   end
 
-  def create_checkout_session(customer, pricing_id)
+  def create_checkout_session(billing, pricing_id)
     response = Stripe::Checkout::Session.create(
-      customer: customer.customer_id,
+      customer: billing.customer_id,
       metadata: {
         site: @site.name
       },
