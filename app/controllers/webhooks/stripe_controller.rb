@@ -24,7 +24,9 @@ module Webhooks
         # need to update the status to the latest so we keep
         # our own record to avoid rate limiting.
         StripeService.update_status(customer_id, 'valid')
-        # TODO: Store invoice
+        # Store the invoice so the customer has a record of their
+        # payments
+        StripeService.store_transaction(customer_id, event.data.object)
       when 'invoice.payment_failed'
         # Sent when the customer failed to pay their monthly
         # bill. We update the status in the database.

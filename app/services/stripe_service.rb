@@ -29,6 +29,10 @@ class StripeService
       payment_information = stripe.fetch_payment_information(customer.customer_id)
       customer.update(payment_information)
     end
+
+    def store_transaction(customer_id, stripe_event)
+      # TODO
+    end
   end
 
   def initialize(user, site)

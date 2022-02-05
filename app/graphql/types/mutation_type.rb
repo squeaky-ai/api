@@ -49,5 +49,7 @@ module Types
     # Contact
     field :contact, mutation: Mutations::Contact::Contact
     field :book_demo, mutation: Mutations::Contact::BookDemo
+    # Subscriptions
+    field :subscriptions_create, mutation: Mutations::Subscriptions::Create
   end
 end
