@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_134446) do
+ActiveRecord::Schema.define(version: 2022_02_05_141150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,21 @@ ActiveRecord::Schema.define(version: 2022_02_05_134446) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["site_id"], name: "index_teams_on_site_id"
     t.index ["user_id"], name: "index_teams_on_user_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "amount", null: false
+    t.string "currency", null: false
+    t.string "invoice_web_url", null: false
+    t.string "invoice_pdf_url", null: false
+    t.string "interval", null: false
+    t.string "pricing_id", null: false
+    t.bigint "period_from", null: false
+    t.bigint "period_to", null: false
+    t.bigint "billing_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["billing_id"], name: "index_transactions_on_billing_id"
   end
 
   create_table "users", force: :cascade do |t|

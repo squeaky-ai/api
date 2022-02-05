@@ -16,6 +16,18 @@ sites_billing_query = <<-GRAPHQL
         billingAddress
         billingName
         billingEmail
+        transactions {
+          amount
+          currency
+          invoiceWebUrl
+          invoicePdfUrl
+          interval
+          plan {
+            name
+          }
+          periodStartAt
+          periodEndAt
+        }
       }
     }
   }
@@ -65,7 +77,63 @@ RSpec.describe 'QuerySitesBilling', type: :request do
         'expiry' => '5/30',
         'billingAddress' => 'My house, US', 
         'billingEmail' => 'email@email.com', 
-        'billingName' => 'Teapot McKettle'
+        'billingName' => 'Teapot McKettle',
+        'transactions' => []
+      )
+    end
+  end
+
+  context 'when the billing has transactions' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team, owner: user) }
+
+    before do
+      billing = Billing.create(
+        customer_id: 'id',
+        status: 'valid',
+        card_type: 'visa',
+        country: 'NL',
+        expiry: '5/30',
+        card_number: '1234',
+        billing_address: 'My house, US',
+        billing_name: 'Teapot McKettle',
+        billing_email: 'email@email.com',
+        user: user, 
+        site: site
+      )
+
+      billing.transactions << Transaction.create(
+        amount: 1000,
+        currency: 'USD',
+        invoice_web_url: 'http://stripe.com/web',
+        invoice_pdf_url: 'http://stripe.com/pdf',
+        interval: 'month',
+        pricing_id: 'price_1KPOWCLJ9zG7aLW8jXWVkVsr',
+        period_from: 1644071095,
+        period_to: 1644071104
+      )
+      
+      billing.save
+    end
+
+    it 'returns the transaction info' do
+      response = graphql_request(sites_billing_query, { site_id: site.id }, user)
+
+      expect(response['data']['site']['billing']['transactions']).to eq(
+        [
+          {
+            'amount' => 1000,
+            'currency' => 'USD',
+            'invoiceWebUrl' => 'http://stripe.com/web',
+            'invoicePdfUrl' => 'http://stripe.com/pdf',
+            'interval' => 'month',
+            'plan' => {
+              'name' => 'Business'
+            },
+            'periodStartAt' => '2022-02-05',
+            'periodEndAt' => '2022-02-05'
+          }
+        ]
       )
     end
   end
