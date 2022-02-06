@@ -13,7 +13,7 @@ module Mutations
       type Types::Sites::Site
 
       def resolve(name:, url:)
-        site = Site.create(name:, url: uri(url), plan: Site::ESSENTIALS)
+        site = Site.create(name:, url: uri(url), plan: 0)
 
         raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 

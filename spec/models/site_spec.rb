@@ -102,14 +102,6 @@ RSpec.describe Site, type: :model do
     end
   end
 
-  describe '#plan_name' do
-    it 'returns the correct plan' do
-      expect(create(:site, plan: Site::ESSENTIALS).plan_name).to eq 'Essentials'
-      expect(create(:site, plan: Site::PREMIUM).plan_name).to eq 'Premium'
-      expect(create(:site, plan: Site::UNLIMITED).plan_name).to eq 'Unlimited'
-    end
-  end
-
   describe '#recordings_count' do
     context 'when there are no recordings' do
       let(:user) { create(:user) }

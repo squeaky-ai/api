@@ -31,10 +31,6 @@
 
 en:
   site:
-    plan:
-      essentials: 'Essentials'
-      premium: 'Premium'
-      unlimited: 'Unlimited'
     validation:
       uri_invalid: 'The provided uri is not valid'
       site_in_use: 'This site is already registered'

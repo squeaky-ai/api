@@ -31,7 +31,7 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
       response = subject['data']['site']['plan']
       expect(response).to eq(
         'type' => 0,
-        'name' => 'Essentials',
+        'name' => 'Free',
         'exceeded' => false,
         'recordingsLimit' => 500,
         'recordingsLocked' => 0,
@@ -55,7 +55,7 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
       response = subject['data']['site']['plan']
       expect(response).to eq(
         'type' => 0,
-        'name' => 'Essentials',
+        'name' => 'Free',
         'exceeded' => true,
         'recordingsLimit' => 500,
         'recordingsLocked' => 50,

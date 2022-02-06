@@ -28,10 +28,6 @@ class Site < ApplicationRecord
 
   default_scope { order(name: :asc) }
 
-  ESSENTIALS = 0
-  PREMIUM = 1
-  UNLIMITED = 2
-
   def owner
     team.find(&:owner?)
   end
@@ -49,14 +45,7 @@ class Site < ApplicationRecord
   end
 
   def plan_name
-    case plan
-    when ESSENTIALS
-      I18n.t 'site.plan.essentials'
-    when PREMIUM
-      I18n.t 'site.plan.premium'
-    when UNLIMITED
-      I18n.t 'site.plan.unlimited'
-    end
+    Plan.new(plan).name
   end
 
   def recordings_count
