@@ -158,24 +158,22 @@ RSpec.describe StripeService do
       {
         'hosted_invoice_url' => 'http://stripe.com/web',
         'invoice_pdf' => 'http://stripe.com/pdf',
-        'lines' => [
-          {
-            'data' => [
-              {
-                'amount' => 1000,
-                'currency' => 'usd',
-                'period' => {
-                  'start' => 1644052149,
-                  'end' => 1646471349
-                },
-                'plan' => {
-                  'id' => 'price_1KPOV6LJ9zG7aLW8tDzfMy0D',
-                  'interval' => 'month'
-                }
+        'lines' => {
+          'data' => [
+            {
+              'amount' => 1000,
+              'currency' => 'usd',
+              'period' => {
+                'start' => 1644052149,
+                'end' => 1646471349
+              },
+              'plan' => {
+                'id' => 'price_1KPOV6LJ9zG7aLW8tDzfMy0D',
+                'interval' => 'month'
               }
-            ]
-          }
-        ]
+            }
+          ]
+        }
       }
     end
 
