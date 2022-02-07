@@ -33,7 +33,7 @@ class StripeService
     def store_transaction(customer_id, invoice_paid_event)
       billing = Billing.find_by(customer_id:)
 
-      bill = invoice_paid_event['lines'].first['data']
+      bill = invoice_paid_event['lines'].first['data'].first
 
       Transaction.create(
         billing:,
