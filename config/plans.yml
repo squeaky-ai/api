@@ -2,6 +2,10 @@ plan_0:
   name: Free
   max_monthly_recordings: 500
   pricing: null
+  data_storage_months: 6
+  support:
+    - Email
+  response_time_hours: 168
 
 plan_1:
   name: Light
@@ -16,6 +20,10 @@ plan_1:
     - id: price_1KPOV6LJ9zG7aLW8tDzfMy0D
       currency: USD
       amount: 50
+  data_storage_months: 12
+  support:
+    - Email
+  response_time_hours: 72
 
 plan_2:
   name: Plus
@@ -30,6 +38,11 @@ plan_2:
     - id: price_1KPOVlLJ9zG7aLW8bw9qLkLF
       currency: USD
       amount: 165
+  data_storage_months: 12
+  support:
+    - Email
+    - Chat
+  response_time_hours: 24
 
 plan_3:
   name: Business
@@ -44,6 +57,11 @@ plan_3:
     - id: price_1KPOWCLJ9zG7aLW8jXWVkVsr
       currency: USD
       amount: 275
+  data_storage_months: 12
+  support:
+    - Email
+    - Chat
+  response_time_hours: 24
 
 plan_4:
   name: Premium
@@ -58,8 +76,18 @@ plan_4:
     - id: price_1KPOWhLJ9zG7aLW8RHpK5q60
       currency: USD
       amount: 560
+  data_storage_months: 12
+  support:
+    - Email
+    - Chat
+  response_time_hours: 24
 
 plan_5:
   name: Unlimited
   max_monthly_recordings: null
   pricing: null
+  data_storage_months: null
+  support:
+    - Email
+    - Chat
+  response_time_hours: null

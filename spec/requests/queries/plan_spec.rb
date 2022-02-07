@@ -12,6 +12,9 @@ plan_query = <<-GRAPHQL
         currency
         amount
       }
+      dataStorageMonths
+      support
+      responseTimeHours
     }
   }
 GRAPHQL
@@ -25,7 +28,12 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'name' => 'Free',
           'maxMonthlyRecordings' => 500,
-          'pricing' => nil
+          'pricing' => nil,
+          'dataStorageMonths' => 6,
+          'support' => [
+            'Email'
+          ],
+          'responseTimeHours' => 168
         },
         {
           'name' => 'Light',
@@ -46,7 +54,12 @@ RSpec.describe 'QueryPlan', type: :request do
               'currency' => 'USD',
               'amount' => 50
             }
-          ]
+          ],
+          'dataStorageMonths' => 12,
+          'support' => [
+            'Email'
+          ],
+          'responseTimeHours' => 72
         },
         {
           'name' => 'Plus',
@@ -67,7 +80,13 @@ RSpec.describe 'QueryPlan', type: :request do
               'currency' => 'USD',
               'amount' => 165
             }
-          ]
+          ],
+          'dataStorageMonths' => 12,
+          'support' => [
+            'Email',
+            'Chat'
+          ],
+          'responseTimeHours' => 24
         },
         {
           'name' => 'Business',
@@ -88,7 +107,13 @@ RSpec.describe 'QueryPlan', type: :request do
               'currency' => 'USD',
               'amount' => 275
             }
-          ]
+          ],
+          'dataStorageMonths' => 12,
+          'support' => [
+            'Email',
+            'Chat'
+          ],
+          'responseTimeHours' => 24
         },
         {
           'name' => 'Premium',
@@ -109,12 +134,24 @@ RSpec.describe 'QueryPlan', type: :request do
               'currency' => 'USD',
               'amount' => 560
             }
-          ]
+          ],
+          'dataStorageMonths' => 12,
+          'support' => [
+            'Email',
+            'Chat'
+          ],
+          'responseTimeHours' => 24
         },
         {
           'name' => 'Unlimited',
           'maxMonthlyRecordings' => nil,
-          'pricing' => nil
+          'pricing' => nil,
+          'dataStorageMonths' => nil,
+          'support' => [
+            'Email',
+            'Chat'
+          ],
+          'responseTimeHours' => nil
         }
       ]
     )
