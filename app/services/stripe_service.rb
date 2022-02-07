@@ -55,7 +55,7 @@ class StripeService
       # to date.
       billing = Billing.find_by(customer_id:)
       # This is the plan id that they're currently on
-      pricing_id = invoice_paid_event['lines'].first['data']['plan']['id']
+      pricing_id = invoice_paid_event['lines']['data'].first['plan']['id']
 
       plan = Plan.find_by_pricing_id(pricing_id)
       billing.site.update(plan: plan[:id])

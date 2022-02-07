@@ -87,9 +87,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
             'customer' => billing.customer_id,
             'hosted_invoice_url' => 'http://stripe.com/web',
             'invoice_pdf' => 'http://stripe.com/pdf',
-            'lines' => [
-              {
-                'data' => {
+            'lines' => {
+              'data' => [
+                {
                   'amount' => 1000,
                   'currency' => 'usd',
                   'period' => {
@@ -101,8 +101,8 @@ RSpec.describe Webhooks::StripeController, type: :controller do
                     'interval' => 'month'
                   }
                 }
-              }
-            ]
+              ]
+            }
           })
         )
       end
