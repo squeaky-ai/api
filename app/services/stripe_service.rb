@@ -30,22 +30,35 @@ class StripeService
       billing.update(payment_information)
     end
 
-    def store_transaction(customer_id, stripe_event)
+    def store_transaction(customer_id, invoice_paid_event)
       billing = Billing.find_by(customer_id:)
 
-      bill = stripe_event['lines'].first['data']
+      bill = invoice_paid_event['lines'].first['data']
 
       Transaction.create(
         billing:,
         amount: bill['amount'],
         currency: bill['currency'].upcase,
-        invoice_web_url: stripe_event['hosted_invoice_url'],
-        invoice_pdf_url: stripe_event['invoice_pdf'],
+        invoice_web_url: invoice_paid_event['hosted_invoice_url'],
+        invoice_pdf_url: invoice_paid_event['invoice_pdf'],
         interval: bill['plan']['interval'],
         pricing_id: bill['plan']['id'],
         period_from: bill['period']['start'],
         period_to: bill['period']['end']
       )
+    end
+
+    def update_plan(customer_id, invoice_paid_event)
+      # Not sure if this is the best time to update this,
+      # but we update our local copy of the sites plan
+      # every time the invoice comes in so it's always up
+      # to date.
+      billing = Billing.find_by(customer_id:)
+      # This is the plan id that they're currently on
+      pricing_id = invoice_paid_event['lines'].first['data']['plan']['id']
+
+      plan = Plan.find_by_pricing_id(pricing_id)
+      billing.site.update(plan: plan[:id])
     end
   end
 
@@ -56,6 +69,9 @@ class StripeService
 
   def find_or_create_customer!
     if @site.billing
+      # It may exist where the customer exists but is in
+      # a weird state, but this should work fine until
+      # that comes up
       Rails.logger.info "Billing already exists for #{@site.id}"
       return @site.billing
     end

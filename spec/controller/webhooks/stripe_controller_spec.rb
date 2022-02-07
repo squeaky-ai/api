@@ -128,6 +128,10 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
+
+      it 'sets the sites plan to the one from the billing' do
+        expect { subject }.to change { billing.site.reload.plan }.from(0).to(1)
+      end
     end
   
     context 'when the event type is "invoice.payment_failed"' do
