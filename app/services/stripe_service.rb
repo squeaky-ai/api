@@ -5,7 +5,7 @@ class StripeService
     def create(user, site, pricing_id)
       stripe = new(user, site)
 
-      billing = stripe.create_customer!
+      billing = stripe.find_or_create_customer!
       redirect_url = stripe.create_checkout_session(billing, pricing_id)
 
       {
@@ -54,7 +54,12 @@ class StripeService
     @site = site
   end
 
-  def create_customer!
+  def find_or_create_customer!
+    if @site.billing
+      Rails.logger.info "Billing already exists for #{@site.id}"
+      return @site.billing
+    end
+
     # Create a stripe customer first so we have a stripe
     # customer id to store against our own record
     customer = Stripe::Customer.create(

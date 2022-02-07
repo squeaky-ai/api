@@ -1,4 +1,5 @@
 plan_0:
+  id: 0
   name: Free
   max_monthly_recordings: 500
   pricing: null
@@ -8,6 +9,7 @@ plan_0:
   response_time_hours: 168
 
 plan_1:
+  id: 1
   name: Light
   max_monthly_recordings: 5000
   pricing:
@@ -26,6 +28,7 @@ plan_1:
   response_time_hours: 72
 
 plan_2:
+  id: 2
   name: Plus
   max_monthly_recordings: 25000
   pricing:
@@ -45,6 +48,7 @@ plan_2:
   response_time_hours: 24
 
 plan_3:
+  id: 3
   name: Business
   max_monthly_recordings: 50000
   pricing:
@@ -64,6 +68,7 @@ plan_3:
   response_time_hours: 24
 
 plan_4:
+  id: 4
   name: Premium
   max_monthly_recordings: 100000
   pricing:
@@ -83,6 +88,7 @@ plan_4:
   response_time_hours: 24
 
 plan_5:
+  id: 5
   name: Unlimited
   max_monthly_recordings: null
   pricing: null

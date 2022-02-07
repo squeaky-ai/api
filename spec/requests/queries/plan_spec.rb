@@ -5,6 +5,7 @@ require 'rails_helper'
 plan_query = <<-GRAPHQL
   query {
     plans {
+      id
       name
       maxMonthlyRecordings
       pricing {
@@ -26,6 +27,7 @@ RSpec.describe 'QueryPlan', type: :request do
     expect(response['data']['plans']).to match_array(
       [
         {
+          'id' => '0',
           'name' => 'Free',
           'maxMonthlyRecordings' => 500,
           'pricing' => nil,
@@ -36,6 +38,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 168
         },
         {
+          'id' => '1',
           'name' => 'Light',
           'maxMonthlyRecordings' => 5000,
           'pricing' => [
@@ -62,6 +65,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 72
         },
         {
+          'id' => '2',
           'name' => 'Plus',
           'maxMonthlyRecordings' => 25000,
           'pricing' => [
@@ -89,6 +93,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 24
         },
         {
+          'id' => '3',
           'name' => 'Business',
           'maxMonthlyRecordings' => 50000,
           'pricing' => [
@@ -116,6 +121,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 24
         },
         {
+          'id' => '4',
           'name' => 'Premium',
           'maxMonthlyRecordings' => 100000,
           'pricing' => [
@@ -143,6 +149,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 24
         },
         {
+          'id' => '5',
           'name' => 'Unlimited',
           'maxMonthlyRecordings' => nil,
           'pricing' => nil,

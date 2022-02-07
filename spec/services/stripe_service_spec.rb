@@ -69,6 +69,25 @@ RSpec.describe StripeService do
       expect(billing.user_id).to eq user.id
       expect(billing.status).to eq 'new'
     end
+
+    context 'when the site already has billing' do
+      before do
+        Billing.create(customer_id:, site: site, user: user)
+      end
+
+      it 'returns the customer id and the redirect url' do
+        expect(subject).to eq(customer_id:, redirect_url:)
+      end
+
+      it 'does not create a new stripe customer' do
+        subject
+        expect(Stripe::Customer).not_to have_received(:create)
+      end
+
+      it 'does not create a new billing record' do
+        expect { subject }.not_to change { Billing.count }
+      end
+    end
   end
 
   describe '.update_status' do

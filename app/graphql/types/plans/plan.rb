@@ -5,6 +5,7 @@ module Types
     class Plan < Types::BaseObject
       graphql_name 'Plan'
 
+      field :id, ID, null: false
       field :name, String, null: false
       field :max_monthly_recordings, Integer, null: true
       field :pricing, [Types::Plans::Price, { null: false }], null: true

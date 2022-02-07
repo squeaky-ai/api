@@ -35,6 +35,7 @@ RSpec.describe Plan do
     context 'when the pricing_id is valid' do
       it 'returns the plan' do
         expect(described_class.find_by_pricing_id('price_1KPOWCLJ9zG7aLW829kU4xrO')).to eq(
+          id: 3,
           name: 'Business',
           max_monthly_recordings: 50000,
           pricing: [
@@ -53,6 +54,12 @@ RSpec.describe Plan do
               currency: 'USD',
               amount: 275
             }
+          ],
+          data_storage_months: 12,
+          response_time_hours: 24,
+          support: [
+            'Email',
+            'Chat'
           ]
         )
       end
