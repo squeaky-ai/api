@@ -72,7 +72,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'groupRange' => 7,
         'items' =>  [
           {
-            'dateKey' => '020', 
+            'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
             'totalCount' => 5, 
             'uniqueCount' => 2
           }
@@ -117,7 +117,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'groupRange' => 7,
         'items' =>  [
           {
-            'dateKey' => '020', 
+            'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
             'totalCount' => 6, 
             'uniqueCount' => 2
           }
