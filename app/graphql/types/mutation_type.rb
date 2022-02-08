@@ -51,5 +51,6 @@ module Types
     field :book_demo, mutation: Mutations::Contact::BookDemo
     # Subscriptions
     field :subscriptions_create, mutation: Mutations::Subscriptions::Create
+    field :subscriptions_update, mutation: Mutations::Subscriptions::Update
   end
 end

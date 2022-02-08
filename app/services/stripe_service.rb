@@ -2,7 +2,10 @@
 
 class StripeService
   class << self
-    def create(user, site, pricing_id)
+    # Generate a URL to send the customer off to
+    # so they can configure billing for the first
+    # time
+    def create_plan(user, site, pricing_id)
       stripe = new(user, site)
 
       billing = stripe.find_or_create_customer!
@@ -14,6 +17,20 @@ class StripeService
       }
     end
 
+    # Update the plan with a new pricing id. Stripe
+    # will fire a invoice event when this happens
+    # so do not update the site plan here
+    def update_plan(site, user, pricing_id)
+      stripe = new(user, site)
+
+      # Get the ids required to update the subscription
+      subscription = stripe.fetch_subscription
+
+      stripe.update_subscription_price_id(subscription[:id], subscription[:item_id], pricing_id)
+    end
+
+    # Update the status of the billing based on
+    # webhook events
     def update_status(customer_id, status)
       billing = Billing.find_by(customer_id:)
 
@@ -21,6 +38,10 @@ class StripeService
       billing.save!
     end
 
+    # When the customer first sets up billing we
+    # fetch the billing information and store it
+    # in the billing table so we don't have to
+    # keep querying stripe
     def store_payment_information(customer_id)
       billing = Billing.find_by(customer_id:)
 
@@ -30,6 +51,9 @@ class StripeService
       billing.update(payment_information)
     end
 
+    # When an invoice comes in we get the billing
+    # data from the webhook event and store it in the
+    # transactions table
     def store_transaction(customer_id, invoice_paid_event)
       billing = Billing.find_by(customer_id:)
 
@@ -48,7 +72,9 @@ class StripeService
       )
     end
 
-    def update_plan(customer_id, invoice_paid_event)
+    # Update the plan value that's assigned to the site
+    # whenver an invoice is paid
+    def update_billing(customer_id, invoice_paid_event)
       # Not sure if this is the best time to update this,
       # but we update our local copy of the sites plan
       # every time the invoice comes in so it's always up
@@ -131,5 +157,38 @@ class StripeService
     )
 
     response['url']
+  end
+
+  def fetch_subscription
+    billing = @site.billing.first
+
+    response = Stripe::Subscription.list(
+      customer: billing.customer_id,
+      limit: 1
+    )
+
+    {
+      id: response.id,
+      item_id: response.items['data'].first['id']
+    }
+  end
+
+  def update_subscription_price_id(subscription_id, item_id, pricing_id)
+    Stripe::Subscription.update(
+      subscription_id,
+      {
+        cancel_at_period_end: false,
+        # This will charge the user the difference in this
+        # billing cycle as they will probably be part way
+        # through the month
+        proration_behavior: 'always_invoice',
+        items: [
+          {
+            id: item_id,
+            price: pricing_id
+          }
+        ]
+      }
+    )
   end
 end

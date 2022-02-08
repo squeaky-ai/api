@@ -2,15 +2,15 @@
 
 module Mutations
   module Subscriptions
-    class Create < SiteMutation
+    class Update < SiteMutation
       null false
 
-      graphql_name 'SubscriptionsCreate'
+      graphql_name 'SubscriptionsUpdate'
 
       argument :site_id, ID, required: true
       argument :pricing_id, String, required: true
 
-      type Types::Subscriptions::Checkout
+      type Types::Sites::Billing
 
       def permitted_roles
         [Team::OWNER]
@@ -21,7 +21,9 @@ module Mutations
 
         raise GraphQL::ExecutionError, 'pricing_id is not valid' if plan.nil?
 
-        StripeService.create_plan(@user, @site, pricing_id)
+        StripeService.update_plan(@user, @site, pricing_id)
+
+        @site.billing
       end
     end
   end

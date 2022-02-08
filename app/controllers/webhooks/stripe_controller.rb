@@ -28,7 +28,7 @@ module Webhooks
         # payments
         StripeService.store_transaction(customer_id, event.data.object)
         # Update the site to reflect the plan they're currently on
-        StripeService.update_plan(customer_id, event.data.object)
+        StripeService.update_billing(customer_id, event.data.object)
       when 'invoice.payment_failed'
         # Sent when the customer failed to pay their monthly
         # bill. We update the status in the database.

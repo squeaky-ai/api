@@ -14,7 +14,7 @@ RSpec.describe StripeService do
     let(:customer_response) { { 'id' => customer_id } }
     let(:payments_response) { { 'url' => redirect_url } }
 
-    subject { StripeService.create(user, site, pricing_id) }
+    subject { StripeService.create_plan(user, site, pricing_id) }
 
     before do
       allow(Stripe::Customer).to receive(:create)
@@ -87,6 +87,59 @@ RSpec.describe StripeService do
       it 'does not create a new billing record' do
         expect { subject }.not_to change { Billing.count }
       end
+    end
+  end
+
+  describe '.update_plan' do
+    let(:billing) { create(:billing) }
+    let(:pricing_id) { double(:pricing_id) }
+
+    let(:subscription_id) { SecureRandom.base36 }
+    let(:subscription_item_id) { SecureRandom.base36 }
+
+    let(:list_subscriptions_response) do
+      double(
+        :list_subscriptions_response,
+        id: subscription_id,
+        items: {
+          'data' => [
+            {
+              'id' => subscription_item_id
+            }
+          ]
+        }
+      )
+    end
+
+    subject { StripeService.update_plan(billing.user, billing.site, pricing_id) }
+
+    before do
+      allow(Stripe::Subscription).to receive(:list)
+        .with(
+          customer: billing.customer_id,
+          limit: 1
+        )
+        .and_return(list_subscriptions_response)
+
+      allow(Stripe::Subscription).to receive(:update)
+        .with(
+          subscription_id,
+          {
+            cancel_at_period_end: false,
+            proration_behavior: 'always_invoice',
+            items: [
+              {
+                id: subscription_item_id,
+                price: pricing_id
+              }
+            ]
+          }
+        )
+    end
+
+    it 'calls stripe to update the subscription' do
+      subject
+      expect(Stripe::Subscription).to have_received(:update)
     end
   end
 
