@@ -21,7 +21,7 @@ class Site < ApplicationRecord
   has_many :tags
 
   has_one :feedback
-  has_one :billing
+  has_one :billing, dependent: :destroy
 
   # The plural sounds weird
   alias_attribute :team, :teams

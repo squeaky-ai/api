@@ -21,7 +21,7 @@ class StripeService
     # be updated immediately too, and if the billing fails
     # then we can leave them on the new plan but with invalid
     # billing
-    def update_plan(site, user, pricing_id)
+    def update_plan(user, site, pricing_id)
       stripe = new(user, site)
 
       # Get the ids required to update the subscription
@@ -52,6 +52,10 @@ class StripeService
       payment_information = stripe.fetch_payment_information(billing.customer_id)
       billing.update(payment_information)
       billing.site.unlock_recordings!
+    end
+
+    def delete_customer(customer_id)
+      Stripe::Customer.delete(customer_id)
     end
 
     # When an invoice comes in we get the billing
@@ -163,7 +167,7 @@ class StripeService
   end
 
   def fetch_subscription
-    billing = @site.billing.first
+    billing = @site.billing
 
     response = Stripe::Subscription.list(
       customer: billing.customer_id,

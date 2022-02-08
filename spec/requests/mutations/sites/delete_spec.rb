@@ -95,4 +95,27 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       expect(SiteMailer).to have_received(:destroyed).with(team_user2.email, site)
     end
   end
+
+  context 'when the site has billing' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team, owner: user) }
+
+    let(:customer_id) { SecureRandom.base36 }
+
+    before do
+      Billing.create(customer_id:, site: site, user: user)
+
+      allow(StripeService).to receive(:delete_customer)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_delete_mutation, variables, user)
+    end
+
+    it 'deletes the stripe customer' do
+      subject
+      expect(StripeService).to have_received(:delete_customer).with(customer_id)
+    end
+  end
 end

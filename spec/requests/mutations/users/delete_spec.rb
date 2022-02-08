@@ -38,7 +38,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     expect(UserMailer).to have_received(:destroyed)
   end
 
-  describe 'when the user is the owner of some sites' do
+  context 'when the user is the owner of some sites' do
     let(:user) { create(:user) }
 
     before do
@@ -56,7 +56,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     end
   end
 
-  describe 'when the user is a member of a site' do
+  context 'when the user is a member of a site' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
 
@@ -73,6 +73,29 @@ RSpec.describe Mutations::Users::Delete, type: :request do
 
     it 'does not destroy the site' do
       expect { subject }.not_to change { Site.exists?(site.id) }
+    end
+  end
+
+  context 'when the user has billing' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team, owner: user) }
+
+    let(:customer_id) { SecureRandom.base36 }
+
+    before do
+      Billing.create(customer_id:, site: site, user: user)
+
+      allow(StripeService).to receive(:delete_customer)
+    end
+
+    subject do
+      variables = {}
+      graphql_request(user_delete_mutation, variables, user)
+    end
+
+    it 'deletes the stripe customer' do
+      subject
+      expect(StripeService).to have_received(:delete_customer).with(customer_id)
     end
   end
 end
