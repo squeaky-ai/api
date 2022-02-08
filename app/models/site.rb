@@ -60,6 +60,10 @@ class Site < ApplicationRecord
     update!(verified_at: nil)
   end
 
+  def unlock_recordings!
+    recordings.where(status: Recording::LOCKED).update(status: Recording::ACTIVE)
+  end
+
   def self.format_uri(url)
     uri = URI(url)
     return nil unless uri.scheme && uri.host

@@ -42,14 +42,16 @@ class StripeService
     # When the customer first sets up billing we
     # fetch the billing information and store it
     # in the billing table so we don't have to
-    # keep querying stripe
-    def store_payment_information(customer_id)
+    # keep querying stripe. We also unlock all of
+    # their recordings because we're generous
+    def init_new_billing(customer_id)
       billing = Billing.find_by(customer_id:)
 
       stripe = new(billing.user, billing.site)
 
       payment_information = stripe.fetch_payment_information(billing.customer_id)
       billing.update(payment_information)
+      billing.site.unlock_recordings!
     end
 
     # When an invoice comes in we get the billing

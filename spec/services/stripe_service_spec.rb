@@ -158,7 +158,7 @@ RSpec.describe StripeService do
     end
   end
 
-  describe '.store_payment_information' do
+  describe '.init_new_billing' do
     let(:billing) { create(:billing) }
 
     let(:payment_methods_response) do
@@ -183,7 +183,7 @@ RSpec.describe StripeService do
       ])
     end
 
-    subject { StripeService.store_payment_information(billing.customer_id) }
+    subject { StripeService.init_new_billing(billing.customer_id) }
 
     before do
       allow(Stripe::Customer).to receive(:list_payment_methods)
@@ -205,6 +205,18 @@ RSpec.describe StripeService do
       expect(billing.billing_address).to eq 'Hollywood, US'
       expect(billing.billing_name).to eq 'Bob Dylan'
       expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
+    end
+
+    context 'when there are locked recordings' do
+      before do
+        create(:recording, site: billing.site, status: Recording::LOCKED)
+        create(:recording, site: billing.site, status: Recording::LOCKED)
+        create(:recording, site: billing.site, status: Recording::LOCKED)
+      end
+
+      it 'unlocks them' do
+        expect { subject }.to change { billing.site.recordings.reload.where(status: Recording::LOCKED).size }.from(3).to(0)
+      end
     end
   end
 

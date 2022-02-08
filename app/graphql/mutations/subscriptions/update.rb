@@ -23,6 +23,13 @@ module Mutations
 
         StripeService.update_plan(@user, @site, pricing_id)
 
+        if plan[:id] > @site.plan
+          # We should probably only unlock ones within their new
+          # limit, but I really can't be arsed so they can have
+          # them on the house
+          @site.unlock_recordings!
+        end
+
         @site.plan = plan[:id]
         @site.save
 

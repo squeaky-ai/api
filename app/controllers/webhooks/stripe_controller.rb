@@ -18,7 +18,7 @@ module Webhooks
         # Fetch the users payment information and store it along
         # with the customer so we have something nice to show in
         # the UI.
-        StripeService.store_payment_information(customer_id)
+        StripeService.init_new_billing(customer_id)
       when 'invoice.paid'
         # Sent when the customer pays their monthly bill, we
         # need to update the status to the latest so we keep
