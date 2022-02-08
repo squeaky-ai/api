@@ -17,9 +17,10 @@ class StripeService
       }
     end
 
-    # Update the plan with a new pricing id. Stripe
-    # will fire a invoice event when this happens
-    # so do not update the site plan here
+    # Update the plan with a new pricing id. The site can
+    # be updated immediately too, and if the billing fails
+    # then we can leave them on the new plan but with invalid
+    # billing
     def update_plan(site, user, pricing_id)
       stripe = new(user, site)
 

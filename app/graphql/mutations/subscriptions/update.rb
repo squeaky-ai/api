@@ -10,7 +10,7 @@ module Mutations
       argument :site_id, ID, required: true
       argument :pricing_id, String, required: true
 
-      type Types::Sites::Billing
+      type Types::Sites::Site
 
       def permitted_roles
         [Team::OWNER]
@@ -23,7 +23,10 @@ module Mutations
 
         StripeService.update_plan(@user, @site, pricing_id)
 
-        @site.billing
+        @site.plan = plan[:id]
+        @site.save
+
+        @site
       end
     end
   end

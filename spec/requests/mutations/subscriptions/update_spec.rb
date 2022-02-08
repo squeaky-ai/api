@@ -5,7 +5,11 @@ require 'rails_helper'
 subscriptions_update_mutation = <<-GRAPHQL
   mutation($site_id: ID!, $pricing_id: String!) {
     subscriptionsUpdate(input: { siteId: $site_id, pricingId: $pricing_id }) {
-      customerId
+      id
+      plan {
+        type
+        name
+      }
     }
   }
 GRAPHQL
@@ -43,9 +47,19 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
       graphql_request(subscriptions_update_mutation, variables, user)
     end
 
-    it 'returns the billing' do
+    it 'returns the updated site' do
       response = subject['data']['subscriptionsUpdate']
-      expect(response).to eq('customerId' => customer_id)
+      expect(response).to eq(
+        'id' => site.id.to_s,
+        'plan' => {
+          'type' => 2,
+          'name' => 'Plus'
+        }
+      )
+    end
+
+    it 'updates the plan' do
+      expect { subject }.to change { site.reload.plan }.from(0).to(2)
     end
 
     it 'calls the service' do
