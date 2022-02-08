@@ -2,7 +2,16 @@ plan_0:
   id: 0
   name: Free
   max_monthly_recordings: 500
-  pricing: null
+  pricing:
+    - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
+      currency: GBP
+      amount: 0
+    - id: price_1KQvNFLJ9zG7aLW855a0hFk7
+      currency: EUR
+      amount: 0
+    - id: price_1KQvNFLJ9zG7aLW8J97ZS43l
+      currency: USD
+      amount: 0
   data_storage_months: 6
   support:
     - Email

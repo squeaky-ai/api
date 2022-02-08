@@ -30,7 +30,23 @@ RSpec.describe 'QueryPlan', type: :request do
           'id' => '0',
           'name' => 'Free',
           'maxMonthlyRecordings' => 500,
-          'pricing' => nil,
+          'pricing' => [
+            {
+              'id' => 'price_1KQvNFLJ9zG7aLW8HEgPtppy',
+              'currency' => 'GBP',
+              'amount' => 0
+            },
+            {
+              'id' => 'price_1KQvNFLJ9zG7aLW855a0hFk7',
+              'currency' => 'EUR',
+              'amount' => 0
+            },
+            {
+              'id' => 'price_1KQvNFLJ9zG7aLW8J97ZS43l',
+              'currency' => 'USD',
+              'amount' => 0
+            }
+          ],
           'dataStorageMonths' => 6,
           'support' => [
             'Email'

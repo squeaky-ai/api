@@ -167,9 +167,11 @@ class StripeService
       limit: 1
     )
 
+    subscription = response.data.first
+
     {
-      id: response.id,
-      item_id: response.items['data'].first['id']
+      id: subscription['id'],
+      item_id: subscription['items']['data'].first['id']
     }
   end
 

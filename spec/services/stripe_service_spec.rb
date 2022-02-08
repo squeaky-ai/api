@@ -100,14 +100,18 @@ RSpec.describe StripeService do
     let(:list_subscriptions_response) do
       double(
         :list_subscriptions_response,
-        id: subscription_id,
-        items: {
-          'data' => [
-            {
-              'id' => subscription_item_id
+        data: [
+          {
+            'id' => subscription_id,
+            'items' => {
+              'data' => [
+                {
+                  'id' => subscription_item_id
+                }
+              ]
             }
-          ]
-        }
+          }
+        ]
       )
     end
 
