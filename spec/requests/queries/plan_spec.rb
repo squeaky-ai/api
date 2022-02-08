@@ -29,7 +29,7 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'id' => '0',
           'name' => 'Free',
-          'maxMonthlyRecordings' => 500,
+          'maxMonthlyRecordings' => 1000,
           'pricing' => [
             {
               'id' => 'price_1KQvNFLJ9zG7aLW8HEgPtppy',

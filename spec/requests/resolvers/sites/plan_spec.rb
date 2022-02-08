@@ -33,7 +33,7 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
         'type' => 0,
         'name' => 'Free',
         'exceeded' => false,
-        'recordingsLimit' => 500,
+        'recordingsLimit' => 1000,
         'recordingsLocked' => 0,
         'visitorsLocked' => 0
       )
@@ -57,7 +57,7 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
         'type' => 0,
         'name' => 'Free',
         'exceeded' => true,
-        'recordingsLimit' => 500,
+        'recordingsLimit' => 1000,
         'recordingsLocked' => 50,
         'visitorsLocked' => 0
       )
