@@ -19,6 +19,7 @@ class RecordingSaveJob < ApplicationJob
     logger.info 'Recording saved'
   end
 
+  # It crashes for some reason without this
   def jid=(*args)
     args
   end
@@ -75,9 +76,9 @@ class RecordingSaveJob < ApplicationJob
 
     recording.disconnected_at = @session.disconnected_at
 
-    unless recording.valid?
+    unless recording.locale
       logger.info({ message: 'Recording debug', recording: @session.recording, events: @session.events }.to_json)
-      raise StandardError, 'Recording is not valid'
+      raise StandardError, 'Recording is missing locale for some reason'
     end
 
     recording.save!
