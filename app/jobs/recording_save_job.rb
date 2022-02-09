@@ -76,11 +76,6 @@ class RecordingSaveJob < ApplicationJob
 
     recording.disconnected_at = @session.disconnected_at
 
-    unless recording.locale
-      logger.info({ message: 'Recording debug', recording: @session.recording, events: @session.events }.to_json)
-      raise StandardError, 'Recording is missing locale for some reason'
-    end
-
     recording.save!
     recording
   end
@@ -160,6 +155,8 @@ class RecordingSaveJob < ApplicationJob
     return false unless @session.events?
 
     return false if @session.duration.zero?
+
+    return false unless @session.recording?
 
     true
   end
