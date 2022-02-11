@@ -158,7 +158,7 @@ RSpec.describe StripeService do
     end
   end
 
-  describe '.init_new_billing' do
+  describe '.update_customer' do
     let(:billing) { create(:billing) }
 
     let(:payment_methods_response) do
@@ -183,7 +183,7 @@ RSpec.describe StripeService do
       ])
     end
 
-    subject { StripeService.init_new_billing(billing.customer_id) }
+    subject { StripeService.update_customer(billing.customer_id) }
 
     before do
       allow(Stripe::Customer).to receive(:list_payment_methods)

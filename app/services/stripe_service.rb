@@ -39,12 +39,9 @@ class StripeService
       billing.save!
     end
 
-    # When the customer first sets up billing we
-    # fetch the billing information and store it
-    # in the billing table so we don't have to
-    # keep querying stripe. We also unlock all of
-    # their recordings because we're generous
-    def init_new_billing(customer_id)
+    # Fetch the latest billing information for a customer
+    # and store our own copy of it in the database
+    def update_customer(customer_id)
       billing = Billing.find_by(customer_id:)
 
       stripe = new(billing.user, billing.site)
@@ -143,6 +140,9 @@ class StripeService
       customer_id,
       { type: 'card' }
     )
+
+    # TODO
+    puts '@@@ card data', response.data
 
     card = response.data.first['card']
     billing = response.data.first['billing_details']
