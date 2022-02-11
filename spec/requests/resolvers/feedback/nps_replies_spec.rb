@@ -44,7 +44,7 @@ RSpec.describe Resolvers::Feedback::NpsReplies, type: :request do
 
     before do
       create(:nps, score: 9, created_at: Time.new(2021, 8, 3), recording: create(:recording, site: site, visitor: visitor))
-      create(:nps, score: 3, created_at: Time.new(2021, 8, 3), recording: create(:recording, site: site, visitor: visitor))
+      create(:nps, score: 3, created_at: Time.new(2021, 8, 4), recording: create(:recording, site: site, visitor: visitor))
       create(:nps, score: 3, created_at: Time.new(2020, 8, 3), recording: create(:recording, site: site, visitor: visitor))
     end
 
@@ -64,7 +64,7 @@ RSpec.describe Resolvers::Feedback::NpsReplies, type: :request do
           },
           {
             'score' => 3,
-            'timestamp' => '2021-08-02T23:00:00Z'
+            'timestamp' => '2021-08-03T23:00:00Z'
           }
         ]
       )

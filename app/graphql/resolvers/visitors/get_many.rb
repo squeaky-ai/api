@@ -97,8 +97,8 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # first appeared between two dates
       def filter_by_between_first_visited(visitors, filters)
-        from_date = format_date(filters.first_visited[:between_from_date])
-        to_date = format_date(filters.first_visited[:between_to_date])
+        from_date = filters.first_visited[:between_from_date]
+        to_date = filters.first_visited[:between_to_date]
 
         visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date BETWEEN ? AND ?', from_date, to_date)
       end
@@ -106,7 +106,7 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # first appeared before a date
       def filter_by_before_first_viewed(visitors, filters)
-        from_date = format_date(filters.first_visited[:from_date])
+        from_date = filters.first_visited[:from_date]
 
         visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date < ?', from_date)
       end
@@ -114,7 +114,7 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # first appeared after a dates
       def filter_by_after_first_viewed(visitors, filters)
-        from_date = format_date(filters.first_visited[:from_date])
+        from_date = filters.first_visited[:from_date]
 
         visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date > ?', from_date)
       end
@@ -137,8 +137,8 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # last had activity between two dates
       def filter_by_between_last_activity(visitors, filters)
-        from_date = format_date(filters.last_activity[:between_from_date])
-        to_date = format_date(filters.last_activity[:between_to_date])
+        from_date = filters.last_activity[:between_from_date]
+        to_date = filters.last_activity[:between_to_date]
 
         visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date BETWEEN ? AND ?', from_date, to_date)
       end
@@ -146,7 +146,7 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # last had activity before a date
       def filter_by_before_last_activity(visitors, filters)
-        from_date = format_date(filters.last_activity[:from_date])
+        from_date = filters.last_activity[:from_date]
 
         visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date < ?', from_date)
       end
@@ -154,7 +154,7 @@ module Resolvers
       # Allow filtering of visitors where one of their recordings
       # last had activity after a date
       def filter_by_after_last_activity(visitors, filters)
-        from_date = format_date(filters.last_activity[:from_date])
+        from_date = filters.last_activity[:from_date]
 
         visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date > ?', from_date)
       end
@@ -167,10 +167,6 @@ module Resolvers
         locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
 
         visitors.where('LOWER(recordings.locale) IN (?)', locales)
-      end
-
-      def format_date(string)
-        string.split('/').reverse.join('-')
       end
     end
   end
