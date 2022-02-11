@@ -44,7 +44,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
-          .and_return('object' => { 'default_payment_method' => payment_id })
+          .and_return('object' => { 'invoice_settings' => { 'default_payment_method' => payment_id } })
 
         allow(Stripe::PaymentMethod).to receive(:retrieve)
           .with(payment_id)
@@ -216,7 +216,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
       allow(Stripe::Customer).to receive(:retrieve)
         .with(billing.customer_id)
-        .and_return('object' => { 'default_payment_method' => payment_id })
+        .and_return('object' => { 'invoice_settings' => { 'default_payment_method' => payment_id } })
 
       allow(Stripe::PaymentMethod).to receive(:retrieve)
         .with(payment_id)
