@@ -7,6 +7,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
   describe 'POST /' do
     context 'when the event type is "checkout.session.completed"' do
       let(:billing) { create(:billing) }
+      let(:payment_id) { SecureRandom.base36 }
 
       let(:stripe_event) do
         double(
@@ -17,36 +18,36 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       let(:payment_methods_response) do
-        double(:payment_methods_response, data: [
-          {
-            'card' => {
-              'brand' => 'visa',
-              'country' => 'UK',
-              'exp_month' => 1,
-              'exp_year' => 3000,
-              'last4' => '0000'
-            },
-            'billing_details' => {
-              'name' => 'Bob Dylan',
-              'email' => 'bigbob2022@gmail.com',
-              'address' => {
-                'line1' => 'Hollywood',
-                'country' => 'US'
-              }
+        double(:payment_methods_response, data: {
+          'card' => {
+            'brand' => 'visa',
+            'country' => 'UK',
+            'exp_month' => 1,
+            'exp_year' => 3000,
+            'last4' => '0000'
+          },
+          'billing_details' => {
+            'name' => 'Bob Dylan',
+            'email' => 'bigbob2022@gmail.com',
+            'address' => {
+              'line1' => 'Hollywood',
+              'country' => 'US'
             }
           }
-        ])
+        })
       end
 
       subject { get :index, body: '{}', as: :json }
 
       before do
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
-        allow(Stripe::Customer).to receive(:list_payment_methods)
-          .with(
-            billing.customer_id,
-            { type: 'card' }
-          )
+
+        allow(Stripe::Customer).to receive(:retrieve)
+          .with(billing.customer_id)
+          .and_return({ 'default_source' => payment_id })
+
+        allow(Stripe::PaymentMethod).to receive(:retrieve)
+          .with(payment_id)
           .and_return(payment_methods_response)
       end
 
@@ -178,6 +179,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
   context 'when the event type is "customer.updated"' do
     let(:billing) { create(:billing) }
+    let(:payment_id) { SecureRandom.base36 }
 
     let(:stripe_event) do
       double(
@@ -188,36 +190,36 @@ RSpec.describe Webhooks::StripeController, type: :controller do
     end
 
     let(:payment_methods_response) do
-      double(:payment_methods_response, data: [
-        {
-          'card' => {
-            'brand' => 'visa',
-            'country' => 'UK',
-            'exp_month' => 1,
-            'exp_year' => 3000,
-            'last4' => '0000'
-          },
-          'billing_details' => {
-            'name' => 'Bob Dylan',
-            'email' => 'bigbob2022@gmail.com',
-            'address' => {
-              'line1' => 'Hollywood',
-              'country' => 'US'
-            }
+      double(:payment_methods_response, data: {
+        'card' => {
+          'brand' => 'visa',
+          'country' => 'UK',
+          'exp_month' => 1,
+          'exp_year' => 3000,
+          'last4' => '0000'
+        },
+        'billing_details' => {
+          'name' => 'Bob Dylan',
+          'email' => 'bigbob2022@gmail.com',
+          'address' => {
+            'line1' => 'Hollywood',
+            'country' => 'US'
           }
         }
-      ])
+      })
     end
 
     subject { get :index, body: '{}', as: :json }
 
     before do
       allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
-      allow(Stripe::Customer).to receive(:list_payment_methods)
-        .with(
-          billing.customer_id,
-          { type: 'card' }
-        )
+
+      allow(Stripe::Customer).to receive(:retrieve)
+        .with(billing.customer_id)
+        .and_return({ 'default_source' => payment_id })
+
+      allow(Stripe::PaymentMethod).to receive(:retrieve)
+        .with(payment_id)
         .and_return(payment_methods_response)
     end
 

@@ -47,9 +47,7 @@ class StripeService
     # Fetch the latest billing information for a customer
     # and store our own copy of it in the database
     def update_customer(customer_id)
-      puts '111', customer_id
       billing = Billing.find_by(customer_id:)
-      puts '222', billing
 
       stripe = new(billing.user, billing.site)
 
@@ -142,16 +140,14 @@ class StripeService
   end
 
   def fetch_payment_information(customer_id)
-    response = Stripe::Customer.list_payment_methods(
-      customer_id,
-      { type: 'card' }
-    )
+    customer = Stripe::Customer.retrieve(customer_id)
+    response = Stripe::PaymentMethod.retrieve(customer['default_source'])
 
-    # TODO
-    puts '@@@ card data', response.data
+    puts '@@', response
+    puts '@@', response.data
 
-    card = response.data.first['card']
-    billing = response.data.first['billing_details']
+    card = response.data['card']
+    billing = response.data['billing_details']
 
     {
       card_type: card['brand'],
