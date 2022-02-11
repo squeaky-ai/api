@@ -183,7 +183,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       double(
         :stripe_event, 
         type: 'customer.updated',
-        data: double(:data, object: { 'customer' => billing.customer_id })
+        data: double(:data, object: { 'id' => billing.customer_id })
       )
     end
 

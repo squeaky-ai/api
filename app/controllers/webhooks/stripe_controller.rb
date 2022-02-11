@@ -7,7 +7,8 @@ module Webhooks
 
       Rails.logger.info "Incoming stripe event #{event.type} #{event.data.to_json}"
 
-      customer_id = event.data.object['customer']
+      event_data = event.data.object
+      customer_id = event_data['customer']
 
       case event.type
       when 'checkout.session.completed'
@@ -28,9 +29,9 @@ module Webhooks
         StripeService.update_status(customer_id, 'valid')
         # Store the invoice so the customer has a record of their
         # payments
-        StripeService.store_transaction(customer_id, event.data.object)
+        StripeService.store_transaction(customer_id, event_data)
         # Update the site to reflect the plan they're currently on
-        StripeService.update_billing(customer_id, event.data.object)
+        StripeService.update_billing(customer_id, event_data)
       when 'invoice.payment_failed'
         # Sent when the customer failed to pay their monthly
         # bill. We update the status in the database.
@@ -38,7 +39,7 @@ module Webhooks
       when 'customer.updated'
         # The customer updated their details in the stripe portal
         # so we need to sync those with the database
-        StripeService.update_customer(customer_id)
+        StripeService.update_customer(event_data['id'])
       end
 
       render json: { success: true }
