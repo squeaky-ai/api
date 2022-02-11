@@ -141,16 +141,10 @@ class StripeService
 
   def fetch_payment_information(customer_id)
     customer = Stripe::Customer.retrieve(customer_id)
-    puts '!!!', customer['invoice_settings']
-    default_payment_id = customer['invoice_settings']['default_payment_method']
+    response = Stripe::PaymentMethod.retrieve(customer['invoice_settings']['default_payment_method'])
 
-    response = Stripe::PaymentMethod.retrieve(default_payment_id)
-
-    puts '@@', response
-    puts '@@', response.data
-
-    card = response.data['card']
-    billing = response.data['billing_details']
+    card = response['card']
+    billing = response['billing_details']
 
     {
       card_type: card['brand'],

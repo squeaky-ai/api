@@ -162,26 +162,6 @@ RSpec.describe StripeService do
     let(:billing) { create(:billing) }
     let(:payment_id) { SecureRandom.base36 }
 
-    let(:payment_methods_response) do
-      double(:payment_methods_response, data: {
-        'card' => {
-          'brand' => 'visa',
-          'country' => 'UK',
-          'exp_month' => 1,
-          'exp_year' => 3000,
-          'last4' => '0000'
-        },
-        'billing_details' => {
-          'name' => 'Bob Dylan',
-          'email' => 'bigbob2022@gmail.com',
-          'address' => {
-            'line1' => 'Hollywood',
-            'country' => 'US'
-          }
-        }
-      })
-    end
-
     subject { StripeService.update_customer(billing.customer_id) }
 
     before do
@@ -191,7 +171,23 @@ RSpec.describe StripeService do
 
       allow(Stripe::PaymentMethod).to receive(:retrieve)
         .with(payment_id)
-        .and_return(payment_methods_response)
+        .and_return(
+          'card' => {
+            'brand' => 'visa',
+            'country' => 'UK',
+            'exp_month' => 1,
+            'exp_year' => 3000,
+            'last4' => '0000'
+          },
+          'billing_details' => {
+            'name' => 'Bob Dylan',
+            'email' => 'bigbob2022@gmail.com',
+            'address' => {
+              'line1' => 'Hollywood',
+              'country' => 'US'
+            }
+          }
+        )
     end
 
     it 'updates the users billing information' do
