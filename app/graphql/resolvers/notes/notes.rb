@@ -12,6 +12,9 @@ module Resolvers
         notes = Site
                 .find(object.id)
                 .notes
+                # If they soft delete the recording then the notes
+                # should also appear deleted
+                .where('recordings.status = ?', Recording::ACTIVE)
                 .order('created_at DESC')
                 .page(page)
                 .per(size)

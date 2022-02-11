@@ -110,4 +110,24 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
       )
     end
   end
+
+  context 'when the recording is soft deleted' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team, owner: user) }
+    let(:recording) { create(:recording, site: site, status: Recording::DELETED) }
+    
+    before do
+      create(:note, recording_id: recording.id, user: user)
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_notes_query, variables, user)
+    end
+
+    it 'does not return the note' do
+      response = subject['data']['site']['notes']
+      expect(response['items']).to eq([])
+    end
+  end
 end
