@@ -33,8 +33,8 @@ RSpec.describe StripeService do
           metadata: {
             site: site.name
           },
-          success_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?success=1",
-          cancel_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?success=0",
+          success_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?billing_setup_success=1",
+          cancel_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?billing_setup_success=0",
           mode: 'subscription',
           line_items: [
             {
@@ -202,7 +202,6 @@ RSpec.describe StripeService do
       expect(billing.country).to eq 'UK'
       expect(billing.expiry).to eq '1/3000'
       expect(billing.card_number).to eq '0000'
-      expect(billing.billing_address).to eq 'Hollywood, US'
       expect(billing.billing_name).to eq 'Bob Dylan'
       expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
     end
@@ -264,6 +263,27 @@ RSpec.describe StripeService do
       expect(transaction.pricing_id).to eq 'price_1KPOV6LJ9zG7aLW8tDzfMy0D'
       expect(transaction.period_start_at).to eq '2022-02-05 09:09:09 UTC'
       expect(transaction.period_end_at).to eq '2022-03-05 09:09:09 UTC'
+    end
+  end
+
+  describe '.create_billing_portal' do
+    let(:billing) { create(:billing) }
+    let(:redirect_url) { 'https://stripe.com/fake_redirect_url' }
+    let(:portal_response) { { 'url' => redirect_url } }
+
+    subject { StripeService.create_billing_portal(billing.user, billing.site) }
+
+    before do
+      allow(Stripe::BillingPortal::Session).to receive(:create)
+        .with(
+          customer: billing.customer_id,
+          return_url: "https://squeaky.ai/app/sites/#{billing.site.id}/settings/subscription"
+        )
+        .and_return(portal_response)
+    end
+
+    it 'returns the customer id and the redirect url' do
+      expect(subject).to eq(customer_id: billing.customer_id, redirect_url:)
     end
   end
 end

@@ -12,7 +12,6 @@ module Types
       field :country, String, null: true
       field :expiry, String, null: true
       field :card_number, String, null: true
-      field :billing_address, String, null: true
       field :billing_name, String, null: true
       field :billing_email, String, null: true
       field :transactions, [Types::Subscriptions::Transaction, { null: true }], null: false

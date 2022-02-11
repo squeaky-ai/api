@@ -93,6 +93,18 @@ class StripeService
       plan = Plan.find_by_pricing_id(pricing_id)
       billing.site.update(plan: plan[:id])
     end
+
+    def create_billing_portal(user, site)
+      stripe = new(user, site)
+
+      billing = stripe.find_or_create_customer!
+      redirect_url = stripe.create_billing_portal_session(billing.customer_id)
+
+      {
+        redirect_url:,
+        customer_id: billing.customer_id
+      }
+    end
   end
 
   def initialize(user, site)
@@ -140,7 +152,6 @@ class StripeService
       country: card['country'],
       expiry: "#{card['exp_month']}/#{card['exp_year']}",
       card_number: card['last4'],
-      billing_address: "#{billing['address']['line1']}, #{billing['address']['country']}",
       billing_name: billing['name'],
       billing_email: billing['email']
     }
@@ -152,8 +163,8 @@ class StripeService
       metadata: {
         site: @site.name
       },
-      success_url: "https://squeaky.ai/app/sites/#{@site.id}/settings/subscription?success=1",
-      cancel_url: "https://squeaky.ai/app/sites/#{@site.id}/settings/subscription?success=0",
+      success_url: "https://squeaky.ai/app/sites/#{@site.id}/settings/subscription?billing_setup_success=1",
+      cancel_url: "https://squeaky.ai/app/sites/#{@site.id}/settings/subscription?billing_setup_success=0",
       mode: 'subscription',
       line_items: [
         {
@@ -161,6 +172,15 @@ class StripeService
           price: pricing_id
         }
       ]
+    )
+
+    response['url']
+  end
+
+  def create_billing_portal_session(customer_id)
+    response = Stripe::BillingPortal::Session.create(
+      customer: customer_id,
+      return_url: "https://squeaky.ai/app/sites/#{@site.id}/settings/subscription"
     )
 
     response['url']

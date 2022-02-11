@@ -70,7 +70,6 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.country).to eq 'UK'
         expect(billing.expiry).to eq '1/3000'
         expect(billing.card_number).to eq '0000'
-        expect(billing.billing_address).to eq 'Hollywood, US'
         expect(billing.billing_name).to eq 'Bob Dylan'
         expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
       end

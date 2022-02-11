@@ -13,7 +13,6 @@ sites_billing_query = <<-GRAPHQL
         country
         expiry
         cardNumber
-        billingAddress
         billingName
         billingEmail
         transactions {
@@ -57,7 +56,6 @@ RSpec.describe 'QuerySitesBilling', type: :request do
         country: 'NL',
         expiry: '5/30',
         card_number: '1234',
-        billing_address: 'My house, US',
         billing_name: 'Teapot McKettle',
         billing_email: 'email@email.com',
         user: user, 
@@ -75,7 +73,6 @@ RSpec.describe 'QuerySitesBilling', type: :request do
         'status' => 'valid',
         'country' => 'NL',
         'expiry' => '5/30',
-        'billingAddress' => 'My house, US', 
         'billingEmail' => 'email@email.com', 
         'billingName' => 'Teapot McKettle',
         'transactions' => []
@@ -95,7 +92,6 @@ RSpec.describe 'QuerySitesBilling', type: :request do
         country: 'NL',
         expiry: '5/30',
         card_number: '1234',
-        billing_address: 'My house, US',
         billing_name: 'Teapot McKettle',
         billing_email: 'email@email.com',
         user: user, 

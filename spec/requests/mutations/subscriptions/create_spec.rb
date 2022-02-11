@@ -55,8 +55,8 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
           metadata: {
             site: site.name
           },
-          success_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?success=1",
-          cancel_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?success=0",
+          success_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?billing_setup_success=1",
+          cancel_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription?billing_setup_success=0",
           mode: 'subscription',
           line_items: [
             {

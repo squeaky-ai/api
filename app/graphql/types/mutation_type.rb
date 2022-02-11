@@ -52,5 +52,6 @@ module Types
     # Subscriptions
     field :subscriptions_create, mutation: Mutations::Subscriptions::Create
     field :subscriptions_update, mutation: Mutations::Subscriptions::Update
+    field :subscriptions_portal, mutation: Mutations::Subscriptions::Portal
   end
 end
