@@ -39,16 +39,22 @@ class StripeService
       billing.save!
     end
 
+    def unlock_recordings(customer_id)
+      billing = Billing.find_by(customer_id:)
+      billing.site.unlock_recordings!
+    end
+
     # Fetch the latest billing information for a customer
     # and store our own copy of it in the database
     def update_customer(customer_id)
+      puts '111', customer_id
       billing = Billing.find_by(customer_id:)
+      puts '222', billing
 
       stripe = new(billing.user, billing.site)
 
       payment_information = stripe.fetch_payment_information(billing.customer_id)
       billing.update(payment_information)
-      billing.site.unlock_recordings!
     end
 
     def delete_customer(customer_id)
