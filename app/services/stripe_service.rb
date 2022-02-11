@@ -141,7 +141,8 @@ class StripeService
 
   def fetch_payment_information(customer_id)
     customer = Stripe::Customer.retrieve(customer_id)
-    response = Stripe::PaymentMethod.retrieve(customer['default_payment_method'])
+    puts '@@', customer.to_json
+    response = Stripe::PaymentMethod.retrieve(customer['object']['default_payment_method'])
 
     puts '@@', response
     puts '@@', response.data

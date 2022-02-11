@@ -187,7 +187,7 @@ RSpec.describe StripeService do
     before do
       allow(Stripe::Customer).to receive(:retrieve)
         .with(billing.customer_id)
-        .and_return('default_payment_method' => payment_id)
+        .and_return('object' => { 'default_payment_method' => payment_id })
 
       allow(Stripe::PaymentMethod).to receive(:retrieve)
         .with(payment_id)
