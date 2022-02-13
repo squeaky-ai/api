@@ -18,6 +18,7 @@ gem 'rails', '~> 7.0.1'
 gem 'redis'
 gem 'scenic'
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
 gem 'stripe'
 gem 'useragent'
 
