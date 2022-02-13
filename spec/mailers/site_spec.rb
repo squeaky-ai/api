@@ -14,4 +14,54 @@ RSpec.describe SiteMailer, type: :mailer do
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
   end
+
+  describe 'weekly_review' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+
+    let(:data) do
+      {
+        total_visitors: 0,
+        new_visitors: 0,
+        total_recordings: 0,
+        new_recordings: 0,
+        average_session_duration: 0,
+        pages_per_session: 0,
+        busiest_day: 'Monday',
+        biggest_referrer_url: 'https://squeaky.ai',
+        most_popular_country: 'UK',
+        most_popular_browser: 'Chrome',
+        most_popular_visitor_id: 'ID',
+        most_popular_page_url: 'https://squeaky.ai'
+      }
+    end
+
+    subject { described_class.weekly_review(site, data, user) }
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq 'Your Week In Review'
+      expect(subject.to).to eq [user.email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+
+    context 'when the user has the communication disabled' do
+      before do
+        Communication.create(
+          user_id: user.id,
+          onboarding_email: true,
+          weekly_review_email: false,
+          monthly_review_email: true,
+          product_updates_email: true,
+          marketing_and_special_offers_email: true,
+          knowledge_sharing_email: true
+        )
+      end
+
+      it 'does not render the headers' do
+        expect(subject.subject).to eq nil
+        expect(subject.to).to eq nil
+        expect(subject.from).to eq nil
+      end
+    end
+  end
 end

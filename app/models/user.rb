@@ -54,6 +54,12 @@ class User < ApplicationRecord
     teams.where(status: Team::PENDING).size.positive?
   end
 
+  def communication_enabled?(key)
+    return true if communication.nil?
+
+    communication[key]
+  end
+
   def self.find_team_invitation(token)
     user = User.find_by_invitation_token(token, true)
 

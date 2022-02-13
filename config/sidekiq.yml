@@ -7,6 +7,6 @@
     cron: '0 0 5 * * *' # Every morning at 5AM
     class: RefreshClicksJob
 
-  review_emails:
+  weekly_review_emails:
     cron: '0 30 0 * * 1' # Every monday morning at 12:30AM
-    class: ReviewEmailsJob
+    class: WeeklyReviewEmailsJob

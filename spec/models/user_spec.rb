@@ -162,6 +162,58 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#communication_enabled?' do
+    context 'when communication preferences are not set' do
+      let(:user) { create(:user) }
+
+      it 'returns true' do
+        expect(user.communication_enabled?(:weekly_review_email)).to be true
+      end
+    end
+
+    context 'when communication preferences are set' do
+      context 'and the key is enabled' do
+        let(:user) { create(:user) }
+
+        before do
+          Communication.create(
+            user_id: user.id,
+            onboarding_email: true,
+            weekly_review_email: true,
+            monthly_review_email: true,
+            product_updates_email: true,
+            marketing_and_special_offers_email: true,
+            knowledge_sharing_email: true
+          )
+        end
+
+        it 'returns true' do
+          expect(user.communication_enabled?(:weekly_review_email)).to be true
+        end
+      end
+
+      context 'and the key is disabled' do
+        let(:user) { create(:user) }
+
+        before do
+          Communication.create(
+            user_id: user.id,
+            onboarding_email: true,
+            weekly_review_email: false,
+            monthly_review_email: true,
+            product_updates_email: true,
+            marketing_and_special_offers_email: true,
+            knowledge_sharing_email: true
+          )
+        end
+
+        it 'returns false' do
+          expect(user.communication_enabled?(:weekly_review_email)).to be false
+        end
+      end
+    end
+  end
+
   describe '.find_team_invitation' do
     context 'when the token does not match a user' do
       let(:token) { 'dfgdgdfgdfgd' }
