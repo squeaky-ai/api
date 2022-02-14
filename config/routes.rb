@@ -4,7 +4,7 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
-  scope 'api' do
+  scope 'api', defaults: { format: :json } do
     get 'ping', to: 'ping#index'
     post 'graphql', to: 'graphql#execute'
 
