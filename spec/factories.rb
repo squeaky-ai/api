@@ -107,7 +107,7 @@ FactoryBot.define do
 
   factory :billing do
     customer_id { SecureRandom.base36 }
-    status { 'new' }
+    status { Billing::NEW }
 
     site { association :site }
     user { association :user }

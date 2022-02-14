@@ -230,6 +230,60 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe '#valid_billing?' do
+    context 'when they are on the free plan' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user, plan: 0) }
+
+      subject { site.valid_billing? }
+      
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when they are on a paid tier but have no billing' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user, plan: 1) }
+
+      subject { site.valid_billing? }
+      
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when they are on a paid tier and the latest billing was valid' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user, plan: 1) }
+
+      before do
+        create(:billing, site: site, user: user, status: Billing::VALID)
+      end
+
+      subject { site.valid_billing? }
+      
+      it 'returns true' do
+        expect(subject).to be true
+      end
+    end
+
+    context 'when they are on a paid tier and the latest billing was invalid' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user, plan: 1) }
+
+      before do
+        create(:billing, site: site, user: user, status: Billing::INVALID)
+      end
+
+      subject { site.valid_billing? }
+      
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+  end
+
   describe '#page_urls' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -251,7 +305,7 @@ RSpec.describe Site, type: :model do
   describe '#active_user_count' do
     context 'when there is nothing in Redis' do
       let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
+      let(:site) { create(:site_with_team, owner: user, plan: 0) }
   
       subject { site.active_user_count }
 

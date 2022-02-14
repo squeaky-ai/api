@@ -162,6 +162,35 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
   end
 
+  context 'when the customer has not paid their bill' do
+    let(:site) { create(:site) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+
+      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+
+      create(:billing, site: site, status: Billing::INVALID)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'saves the recording with the LOCKED status' do
+      subject
+      recording = site.reload.recordings.first
+      expect(recording.status).to eq Recording::LOCKED
+    end
+  end
+
   context 'when the site was not verified' do
     let(:site) { create(:site) }
 

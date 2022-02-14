@@ -51,7 +51,7 @@ RSpec.describe 'QuerySitesBilling', type: :request do
     before do
       billing = Billing.create(
         customer_id: 'id',
-        status: 'valid',
+        status: Billing::VALID,
         card_type: 'visa',
         country: 'NL',
         expiry: '5/30',
@@ -70,7 +70,7 @@ RSpec.describe 'QuerySitesBilling', type: :request do
         'customerId' => 'id',
         'cardNumber' => '1234',
         'cardType' => 'visa',
-        'status' => 'valid',
+        'status' => Billing::VALID,
         'country' => 'NL',
         'expiry' => '5/30',
         'billingEmail' => 'email@email.com', 
@@ -87,7 +87,7 @@ RSpec.describe 'QuerySitesBilling', type: :request do
     before do
       billing = Billing.create(
         customer_id: 'id',
-        status: 'valid',
+        status: Billing::VALID,
         card_type: 'visa',
         country: 'NL',
         expiry: '5/30',

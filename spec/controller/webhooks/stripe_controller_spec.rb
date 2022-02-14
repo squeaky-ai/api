@@ -56,7 +56,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the billing status to be open' do
-       expect { subject }.to change { billing.reload.status }.from('new').to('open')
+       expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::OPEN)
       end
 
       it 'sets the billing information' do
@@ -130,7 +130,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
   
       it 'sets the billing status to be valid' do
-       expect { subject }.to change { billing.reload.status }.from('new').to('valid')
+       expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
   
       it 'stores the invoice' do
@@ -168,7 +168,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
   
       it 'sets the billing status to be invalid' do
-       expect { subject }.to change { billing.reload.status }.from('new').to('invalid')
+       expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::INVALID)
       end
     end
   end

@@ -15,7 +15,7 @@ module Webhooks
         # Sent when the customer goes through the checkout
         # flow and completes it. We need to update the customer
         # record with the new status.
-        StripeService.update_status(customer_id, 'open')
+        StripeService.update_status(customer_id, Billing::OPEN)
         # Fetch the users payment information and store it along
         # with the customer so we have something nice to show in
         # the UI.
@@ -26,7 +26,7 @@ module Webhooks
         # Sent when the customer pays their monthly bill, we
         # need to update the status to the latest so we keep
         # our own record to avoid rate limiting.
-        StripeService.update_status(customer_id, 'valid')
+        StripeService.update_status(customer_id, Billing::VALID)
         # Store the invoice so the customer has a record of their
         # payments
         StripeService.store_transaction(customer_id, event_data)
@@ -35,7 +35,7 @@ module Webhooks
       when 'invoice.payment_failed'
         # Sent when the customer failed to pay their monthly
         # bill. We update the status in the database.
-        StripeService.update_status(customer_id, 'invalid')
+        StripeService.update_status(customer_id, Billing::INVALID)
       when 'customer.updated'
         # The customer updated their details in the stripe portal
         # so we need to sync those with the database

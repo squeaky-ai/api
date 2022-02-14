@@ -149,12 +149,12 @@ RSpec.describe StripeService do
 
   describe '.update_status' do
     let(:billing) { create(:billing) }
-    let(:status) { 'invalid' }
+    let(:status) { Billing::INVALID }
 
     subject { StripeService.update_status(billing.customer_id, status) }
 
     it 'updates the status' do
-      expect { subject }.to change { billing.reload.status }.from('new').to(status)
+      expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(status)
     end
   end
 

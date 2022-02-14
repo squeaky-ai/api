@@ -10,6 +10,17 @@ class Billing < ApplicationRecord
 
   self.table_name = 'billing'
 
+  # Latest bill was paid
+  VALID = 'valid'
+  # Latest bill was not paid
+  INVALID = 'invalid'
+  # Customer went through the onboarding flow
+  # but we haven't recieved confirmation yet
+  OPEN = 'open'
+  # Customer attempted billing but bounced
+  # and never completed
+  NEW = 'new'
+
   def destroy_stripe_customer!
     StripeService.delete_customer(customer_id) if customer_id
   end

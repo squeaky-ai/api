@@ -78,6 +78,18 @@ class Site < ApplicationRecord
     count >= Plan.new(plan).max_monthly_recordings
   end
 
+  def valid_billing?
+    # If they are on the free plan then we don't care
+    return true if plan.zero?
+
+    # There are some people that are on paid tiers from
+    # when Squeaky was in beta. They don't have any
+    # billing
+    return true if billing.nil?
+
+    billing&.status == Billing::VALID
+  end
+
   def page_urls
     pages.select(:url).all.map(&:url).uniq
   end

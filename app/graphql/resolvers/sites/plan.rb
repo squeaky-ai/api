@@ -8,11 +8,13 @@ module Resolvers
       def resolve
         recordings_limit = ::Plan.new(object.plan).max_monthly_recordings
         recordings_locked = recordings_locked_count
+        billing_valid = object.valid_billing?
 
         {
           type: object.plan,
           name: object.plan_name,
-          exceeded: recordings_locked.positive?,
+          exceeded: recordings_locked.positive? || !billing_valid,
+          billing_valid:,
           recordings_limit:,
           recordings_locked:,
           visitors_locked: visitors_locked_count

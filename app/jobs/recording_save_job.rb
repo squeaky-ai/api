@@ -163,8 +163,8 @@ class RecordingSaveJob < ApplicationJob
 
   def recording_status
     # Users can unlock these recordings if they upgrade their
-    # plan
-    return Recording::LOCKED if @site.recording_count_exceeded?
+    # plan or pay for their bill
+    return Recording::LOCKED if @site.recording_count_exceeded? || !@site.valid_billing?
 
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
