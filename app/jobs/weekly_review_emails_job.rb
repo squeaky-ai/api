@@ -7,7 +7,7 @@ class WeeklyReviewEmailsJob < ApplicationJob
     from_date, to_date = date_range(args)
     site_ids = suitable_sites(from_date, to_date)
 
-    Rails.logger.info "Generating weekly review emails for #{site_ids.join(',')} between #{from_date} and #{to_date}"
+    logger.info "Generating weekly review emails for #{site_ids.join(',')} between #{from_date} and #{to_date}"
 
     site_ids.each do |site_id|
       review = WeeklyReview.new(site_id, from_date, to_date)
