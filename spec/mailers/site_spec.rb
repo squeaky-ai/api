@@ -45,7 +45,10 @@ RSpec.describe SiteMailer, type: :mailer do
         biggest_referrer_url: 'https://squeaky.ai',
         most_popular_country: 'UK',
         most_popular_browser: 'Chrome',
-        most_popular_visitor_id: 'ID',
+        most_popular_visitor: {
+          id: 1,
+          visitor_id: '12312312'
+        },
         most_popular_page_url: 'https://squeaky.ai'
       }
     end

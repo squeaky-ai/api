@@ -23,7 +23,7 @@ class WeeklyReview
       biggest_referrer_url:,
       most_popular_country:,
       most_popular_browser:,
-      most_popular_visitor_id:,
+      most_popular_visitor:,
       most_popular_page_url:
     }
   end
@@ -211,19 +211,24 @@ class WeeklyReview
     response.first&.[]('browser')
   end
 
-  def most_popular_visitor_id
+  def most_popular_visitor
     sql = <<-SQL
-      SELECT visitors.visitor_id, count(*)
+      SELECT visitors.id, visitors.visitor_id, count(*)
       FROM recordings
       INNER JOIN visitors ON visitors.id = recordings.visitor_id
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-      GROUP BY visitors.visitor_id
+      GROUP BY visitors.id
       ORDER BY count DESC
       LIMIT 1;
     SQL
 
     response = Sql.execute(sql, [@site_id, @from_date, @to_date])
-    response.first&.[]('visitor_id')
+    visitor = response.first
+
+    {
+      id: visitor&.[]('id'),
+      visitor_id: visitor&.[]('visitor_id')
+    }
   end
 
   def most_popular_page_url
@@ -246,6 +251,6 @@ class WeeklyReview
   end
 
   def milliseconds_to_mmss(milliseconds = 0)
-    Time.at(milliseconds / 1000).utc.strftime('%M:%S')
+    Time.at(milliseconds / 1000).utc.strftime('%-Mm %-Ss')
   end
 end

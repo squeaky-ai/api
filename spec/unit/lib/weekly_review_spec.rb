@@ -117,10 +117,10 @@ RSpec.describe WeeklyReview do
         new_recordings: 2,
         average_session_duration: {
           raw: 2800,
-          formatted: '00:02'
+          formatted: '0m 2s'
         },
         average_session_duration_trend: {
-          trend: '00:02',
+          trend: '0m 2s',
           direction: 'up'
         },
         pages_per_session: {
@@ -135,7 +135,10 @@ RSpec.describe WeeklyReview do
         biggest_referrer_url: 'https://google.com',
         most_popular_country: 'United Kingdom',
         most_popular_browser: 'Chrome',
-        most_popular_visitor_id: visitor_2.visitor_id,
+        most_popular_visitor: {
+          id: visitor_2.id,
+          visitor_id: visitor_2.visitor_id
+        },
         most_popular_page_url: '/'
       )
     end
