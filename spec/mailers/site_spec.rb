@@ -33,7 +33,10 @@ RSpec.describe SiteMailer, type: :mailer do
           trend: '00:02',
           direction: 'up'
         },
-        pages_per_session: 1,
+        pages_per_session: {
+          raw: 1.0,
+          formatted: '1.00'
+        },
         pages_per_session_trend: {
           trend: 1,
           direction: 'up'

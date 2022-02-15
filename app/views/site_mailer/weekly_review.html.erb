@@ -4,13 +4,13 @@
 <p><b>Overview</b></p>
 <p>Total visitors: <a href="<%= @web_url %>/app/sites/<% @site.id %>/visitors"><%= @data[:total_visitors] %></a> <i style="color:#A0A0A0">(<%= @data[:new_visitors] %> new)</i><br />
 Total recordings: <a href="<%= @web_url %>/app/sites/<% @site.id %>/recordings"><%= @data[:total_recordings] %></a> <i style="color:#A0A0A0">(<%= @data[:new_recordings] %> new)</i><br />
-Average session duration: <b><%= @data[:average_session_duration][:formatted] %></b> <i style="color:#A0A0A0">trending <%= @data[:average_session_duration_trend][:direction] %> <%= @data[:average_session_duration_trend][:trend] %></i><br />
-Pages per session: <b><%= @data[:pages_per_session] %></b> <i style="color:#A0A0A0">trending <%= @data[:pages_per_session_trend][:direction] %> <%= @data[:pages_per_session_trend][:trend] %></i><br />
+Average session duration: <b><%= @data[:average_session_duration][:formatted] %></b> <i style="color:#A0A0A0">(trending <%= @data[:average_session_duration_trend][:direction] %> <%= @data[:average_session_duration_trend][:trend] %>)</i><br />
+Pages per session: <b><%= @data[:pages_per_session][:formatted] %></b> <i style="color:#A0A0A0">(trending <%= @data[:pages_per_session_trend][:direction] %> <%= @data[:pages_per_session_trend][:trend] %>)</i><br />
 
 <p><b>Trends</b></p>
 <p>Busiest day: <b><%= @data[:busiest_day] %></b><br />
-#1 indirect traffic source: <% if @data[:biggest_referrer_url] == 'Direct' %>Direct<% else %><a href="<%= @data[:biggest_referrer_url] %>"><%= @data[:biggest_referrer_url] %></a><% end %><br />
+#1 indirect traffic source: <a href="<%= @data[:biggest_referrer_url] %>"><%= @data[:biggest_referrer_url] %></a><br />
 #1 country: <b><%= @data[:most_popular_country] %></b><br />
 #1 browser: <b><%= @data[:most_popular_browser] %></b><br />
 Most popular visitor: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors/<%= @data[:most_popular_visitor_id] %>"><%= @data[:most_popular_visitor_id] %></a><br />
-Most popular page: <a href="<%= @site.url %><%= @data[:most_popular_page_url] %>"><%= @data[:most_popular_page_url] %></a></p>
+Most popular page: <a href="<%= @site.url %><%= @data[:most_popular_page_url] %>"><%= @site.url %><%= @data[:most_popular_page_url] %></a></p>

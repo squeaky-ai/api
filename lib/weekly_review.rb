@@ -132,17 +132,22 @@ class WeeklyReview
     SQL
 
     response = Sql.execute(sql, [@site_id, from_date, to_date])
-    response.first['avg'].to_i
+    pages_count = response.first['avg'].to_f
+
+    {
+      raw: pages_count,
+      formatted: to_two_decimal_places(pages_count)
+    }
   end
 
   def pages_per_session_trend
     from_date, to_date = Trend.offset_period(@from_date, @to_date)
 
-    current_week = pages_per_session
-    previous_week = pages_per_session(from_date, to_date)
+    current_week = pages_per_session[:raw]
+    previous_week = pages_per_session(from_date, to_date)[:raw]
 
     {
-      trend: current_week - previous_week,
+      trend: to_two_decimal_places(current_week - previous_week),
       direction: current_week >= previous_week ? 'up' : 'down'
     }
   end
@@ -166,16 +171,16 @@ class WeeklyReview
 
   def biggest_referrer_url
     sql = <<-SQL
-      SELECT COALESCE(referrer, \'Direct\') referrer, count(*)
+      SELECT referrer, count(*)
       FROM recordings
-      WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+      WHERE referrer IS NOT NULL AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY referrer
       ORDER BY count DESC
       LIMIT 1;
     SQL
 
     response = Sql.execute(sql, [@site_id, @from_date, @to_date])
-    response.first&.[]('referrer')
+    response.first&.[]('referrer') || @site.url
   end
 
   def most_popular_country
@@ -234,6 +239,10 @@ class WeeklyReview
 
     response = Sql.execute(sql, [@site_id, @from_date, @to_date])
     response.first&.[]('url')
+  end
+
+  def to_two_decimal_places(num)
+    '%.2f' % num.to_f
   end
 
   def milliseconds_to_mmss(milliseconds = 0)
