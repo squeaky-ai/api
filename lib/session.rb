@@ -115,10 +115,18 @@ class Session
   def fetch_and_process_events
     key = "events::#{@site_id}::#{@visitor_id}::#{@session_id}"
 
-    events = Redis
-             .current
-             .lrange(key, 0, -1)
-             .map { |e| JSON.parse(e) }
+    redis_events = Redis.current.lrange(key, 0, -1)
+    # TODO: revert this once it's resolved
+    events = redis_events
+             .map
+             .with_index do |event, index|
+               JSON.parse(event)
+             rescue JSON::ParserError => e
+               Rails.logger.info 'JSON parse fail'
+               Rails.logger.info e
+               Rails.logger.info redis_events[index]
+               raise
+             end
              .sort_by { |e| e['value']['timestamp'] }
 
     extract_and_set_events(events)
