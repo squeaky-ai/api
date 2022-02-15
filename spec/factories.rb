@@ -75,6 +75,7 @@ FactoryBot.define do
   factory :visitor do
     visitor_id { SecureRandom.base36 }
     starred { false }
+    new { true }
     external_attributes { {} }
   end
 

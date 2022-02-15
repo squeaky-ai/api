@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 RSpec.describe Trend do
   it 'offsets the dates by their diff' do

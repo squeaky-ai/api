@@ -3,22 +3,50 @@
 class WeeklyReviewEmailsJob < ApplicationJob
   queue_as :default
 
-  def perform(*_args)
-    puts '!!'
+  def perform(*args)
+    from_date, to_date = date_range(args)
+    site_ids = suitable_sites(from_date, to_date)
 
-    {
-      total_visitors: 0,
-      new_visitors: 0,
-      total_recordings: 0,
-      new_recordings: 0,
-      average_session_duration: 0,
-      pages_per_session: 0,
-      busiest_day: 'Monday',
-      biggest_referrer_url: 'https://squeaky.ai',
-      most_popular_country: 'UK',
-      most_popular_browser: 'Chrome',
-      most_popular_visitor_id: 'ID',
-      most_popular_page_url: 'https://squeaky.ai'
-    }
+    Rails.logger.info "Generating weekly review emails for #{site_ids.join(',')} between #{from_date} and #{to_date}"
+
+    site_ids.each do |site_id|
+      review = WeeklyReview.new(site_id, from_date, to_date)
+
+      review.members.each do |member|
+        SiteMailer.weekly_review(review.site, review.to_h, member.user).deliver_later
+      end
+    end
+  end
+
+  private
+
+  def date_range(args)
+    # The job could fail and we might want to rerun
+    # a job for a given time period
+    return [args.first[:from_date], args.first[:to_date]] unless args.empty?
+
+    now = Date.today
+    now -= 1.week
+
+    [now.beginning_of_week, now.end_of_week]
+  end
+
+  def suitable_sites(from_date, to_date)
+    # TODO: We're only trying this out on Squeaky for now
+    return ['82'] if Rails.env.production?
+
+    sql = <<-SQL
+      SELECT site_id
+      FROM (
+        SELECT sites.id site_id, count(recordings) recordings_count
+        FROM sites
+        INNER JOIN recordings on recordings.site_id = sites.id
+        WHERE to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+        GROUP BY sites.id
+      ) c
+      WHERE recordings_count > 0;
+    SQL
+
+    Sql.execute(sql, [from_date, to_date]).map { |x| x['site_id'] }
   end
 end

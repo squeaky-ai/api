@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RefreshClicksJob, type: :job do
   include ActiveJob::TestHelper
 
-  subject { described_class.perform_now(Click) }
+  subject { described_class.perform_now }
 
   before do
     allow(Click).to receive(:refresh).and_call_original
