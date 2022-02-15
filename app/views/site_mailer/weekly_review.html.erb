@@ -12,5 +12,5 @@ Pages per session: <b><%= @data[:pages_per_session][:formatted] %></b> <i style=
 #1 indirect traffic source: <a href="<%= @data[:biggest_referrer_url] %>"><%= @data[:biggest_referrer_url] %></a><br />
 #1 country: <b><%= @data[:most_popular_country] %></b><br />
 #1 browser: <b><%= @data[:most_popular_browser] %></b><br />
-Most popular visitor: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors/<%= @data[:most_popular_visitor][:id] %>"><%= @data[:most_popular_visitor][:visitor_id] %></a><br />
-Most popular page: <a href="<%= @site.url %><%= @data[:most_popular_page_url] %>"><%= @site.url %><%= @data[:most_popular_page_url] %></a></p>
+Most frequent visitor: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors/<%= @data[:most_popular_visitor][:id] %>"><%= @data[:most_popular_visitor][:visitor_id] %></a><br />
+Most popular page (exc. home): <a href="<%= @site.url %><%= @data[:most_popular_page_url] %>"><%= @site.url %><%= @data[:most_popular_page_url] %></a></p>

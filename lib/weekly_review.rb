@@ -236,7 +236,7 @@ class WeeklyReview
       SELECT pages.url, count(*)
       FROM pages
       INNER JOIN recordings ON recordings.id = pages.recording_id
-      WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+      WHERE pages.url != '/' AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY pages.url
       ORDER BY count DESC
       LIMIT 1;

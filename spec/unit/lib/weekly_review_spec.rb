@@ -79,7 +79,10 @@ RSpec.describe WeeklyReview do
         viewed: true, 
         referrer: nil,
         browser: 'Firefox',
-        country_code: 'GB'
+        country_code: 'GB',
+        pages: [
+          create(:page, url: '/test')
+        ]
       )
       create(
         :recording, 
@@ -101,7 +104,11 @@ RSpec.describe WeeklyReview do
         viewed: false, 
         referrer: 'https://google.com',
         browser: 'Chrome',
-        country_code: 'GB'
+        country_code: 'GB',
+        pages: [
+          create(:page, url: '/test'),
+          create(:page, url: '/sausage')
+        ]
       )
     end
 
@@ -124,11 +131,11 @@ RSpec.describe WeeklyReview do
           direction: 'up'
         },
         pages_per_session: {
-          raw: 1.0,
-          formatted: '1.00'
+          raw: 1.6,
+          formatted: '1.60'
         },
         pages_per_session_trend: {
-          trend: '1.00',
+          trend: '1.60',
           direction: 'up'
         },
         busiest_day: 'Sunday',
@@ -139,7 +146,7 @@ RSpec.describe WeeklyReview do
           id: visitor_2.id,
           visitor_id: visitor_2.visitor_id
         },
-        most_popular_page_url: '/'
+        most_popular_page_url: '/test'
       )
     end
   end
