@@ -99,12 +99,24 @@ class WeeklyReview
     SQL
 
     response = Sql.execute(sql, [@site_id, from_date, to_date])
-    response.first['average_session_duration'].to_i
+    duration = response.first&.[]('average_session_duration') || 0
+
+    {
+      raw: duration.to_i,
+      formatted: milliseconds_to_mmss(duration)
+    }
   end
 
   def average_session_duration_trend
     from_date, to_date = Trend.offset_period(@from_date, @to_date)
-    average_session_duration(from_date, to_date)
+
+    current_week = average_session_duration[:raw]
+    previous_week = average_session_duration(from_date, to_date)[:raw]
+
+    {
+      trend: milliseconds_to_mmss(current_week - previous_week),
+      direction: current_week >= previous_week ? 'up' : 'down'
+    }
   end
 
   def pages_per_session(from_date = @from_date, to_date = @to_date)
@@ -125,7 +137,14 @@ class WeeklyReview
 
   def pages_per_session_trend
     from_date, to_date = Trend.offset_period(@from_date, @to_date)
-    pages_per_session(from_date, to_date)
+
+    current_week = pages_per_session
+    previous_week = pages_per_session(from_date, to_date)
+
+    {
+      trend: current_week - previous_week,
+      direction: current_week >= previous_week ? 'up' : 'down'
+    }
   end
 
   def busiest_day
@@ -215,5 +234,9 @@ class WeeklyReview
 
     response = Sql.execute(sql, [@site_id, @from_date, @to_date])
     response.first&.[]('url')
+  end
+
+  def milliseconds_to_mmss(milliseconds = 0)
+    Time.at(milliseconds / 1000).utc.strftime('%M:%S')
   end
 end

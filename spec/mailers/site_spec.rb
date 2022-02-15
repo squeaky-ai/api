@@ -25,8 +25,19 @@ RSpec.describe SiteMailer, type: :mailer do
         new_visitors: 0,
         total_recordings: 0,
         new_recordings: 0,
-        average_session_duration: 0,
-        pages_per_session: 0,
+        average_session_duration: {
+          raw: 2800,
+          formatted: '00:02'
+        },
+        average_session_duration_trend: {
+          trend: '00:02',
+          direction: 'up'
+        },
+        pages_per_session: 1,
+        pages_per_session_trend: {
+          trend: 1,
+          direction: 'up'
+        },
         busiest_day: 'Monday',
         biggest_referrer_url: 'https://squeaky.ai',
         most_popular_country: 'UK',
