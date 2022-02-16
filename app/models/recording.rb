@@ -18,6 +18,7 @@ class Recording < ApplicationRecord
   ACTIVE = 0
   LOCKED = 1
   DELETED = 2
+  ALL = [0, 1, 2].freeze
 
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)

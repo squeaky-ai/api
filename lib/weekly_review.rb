@@ -24,7 +24,11 @@ class WeeklyReview
       most_popular_country:,
       most_popular_browser:,
       most_popular_visitor:,
-      most_popular_page_url:
+      most_popular_page_url:,
+      feedback_nps:,
+      feedback_nps_trend:,
+      feedback_sentiment:,
+      feedback_sentiment_trend:
     }
   end
 
@@ -244,6 +248,53 @@ class WeeklyReview
 
     response = Sql.execute(sql, [@site_id, @from_date, @to_date])
     response.first&.[]('url')
+  end
+
+  def feedback_nps
+    {
+      enabled: site.nps_enabled?,
+      score: Nps.get_score_between(@site_id, @from_date, @to_date, Recording::ALL)
+    }
+  end
+
+  def feedback_nps_trend
+    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+
+    current_week = feedback_nps[:score]
+    previous_week = Nps.get_score_between(@site_id, from_date, to_date)
+
+    {
+      trend: current_week - previous_week,
+      direction: current_week >= previous_week ? 'up' : 'down'
+    }
+  end
+
+  def feedback_sentiment(from_date = @from_date, to_date = @to_date)
+    sql = <<-SQL
+      SELECT AVG(sentiments.score)
+      FROM sentiments
+      INNER JOIN recordings ON recordings.id = sentiments.recording_id
+      WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
+    SQL
+
+    response = Sql.execute(sql, [@site_id, from_date, to_date])
+
+    {
+      enabled: site.sentiment_enabled?,
+      score: response.first['avg'].to_f.round(2)
+    }
+  end
+
+  def feedback_sentiment_trend
+    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+
+    current_week = feedback_sentiment[:score]
+    previous_week = feedback_sentiment(from_date, to_date)[:score]
+
+    {
+      trend: current_week - previous_week,
+      direction: current_week >= previous_week ? 'up' : 'down'
+    }
   end
 
   def to_two_decimal_places(num)

@@ -98,4 +98,12 @@ class Site < ApplicationRecord
     count = Redis.current.get("active_user_count::#{uuid}")
     count.to_i
   end
+
+  def nps_enabled?
+    feedback&.nps_enabled || false
+  end
+
+  def sentiment_enabled?
+    feedback&.sentiment_enabled || false
+  end
 end

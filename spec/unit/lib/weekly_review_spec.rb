@@ -48,6 +48,21 @@ RSpec.describe WeeklyReview do
       visitor_2.update(new: true)
       visitor_3.update(new: false)
 
+      Feedback.create(
+        site:,
+        nps_enabled: true,
+        nps_accent_color: '#000',
+        nps_schedule: '1_week',
+        nps_phrase: 'Teapot',
+        nps_follow_up_enabled: false,
+        nps_contact_consent_enabled: false,
+        nps_layout: 'bottom_left',
+        sentiment_enabled: true,
+        sentiment_accent_color: '#000',
+        sentiment_excluded_pages: [],
+        sentiment_layout: 'bottom_left'
+      )
+
       create(
         :recording, 
         site:,
@@ -57,7 +72,9 @@ RSpec.describe WeeklyReview do
         viewed: true, 
         referrer: 'https://google.com',
         browser: 'Chrome',
-        country_code: 'GB'
+        country_code: 'GB',
+        nps: create(:nps, score: 10, created_at: Date.new(2022, 2, 8)),
+        sentiment: create(:sentiment, score: 4)
       )
       create(
         :recording, 
@@ -82,7 +99,9 @@ RSpec.describe WeeklyReview do
         country_code: 'GB',
         pages: [
           create(:page, url: '/test')
-        ]
+        ],
+        nps: create(:nps, score: 9, created_at: Date.new(2022, 2, 13)),
+        sentiment: create(:sentiment, score: 8)
       )
       create(
         :recording, 
@@ -93,7 +112,8 @@ RSpec.describe WeeklyReview do
         viewed: false, 
         referrer: nil,
         browser: 'Chrome',
-        country_code: 'SE'
+        country_code: 'SE',
+        sentiment: create(:sentiment, score: 1)
       )
       create(
         :recording, 
@@ -108,7 +128,8 @@ RSpec.describe WeeklyReview do
         pages: [
           create(:page, url: '/test'),
           create(:page, url: '/sausage')
-        ]
+        ],
+        nps: create(:nps, score: 2, created_at: Date.new(2022, 2, 13))
       )
     end
 
@@ -146,7 +167,23 @@ RSpec.describe WeeklyReview do
           id: visitor_2.id,
           visitor_id: visitor_2.visitor_id
         },
-        most_popular_page_url: '/test'
+        most_popular_page_url: '/test',
+        feedback_nps: {
+          enabled: true,
+          score: 33.33
+        },
+        feedback_nps_trend: {
+          direction: 'up', 
+          trend: 33.33
+        },
+        feedback_sentiment: {
+          enabled: true, 
+          score: 4.33
+        },
+        feedback_sentiment_trend: {
+          direction: 'up', 
+          trend: 4.33
+        }
       )
     end
   end

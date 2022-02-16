@@ -49,7 +49,23 @@ RSpec.describe SiteMailer, type: :mailer do
           id: 1,
           visitor_id: '12312312'
         },
-        most_popular_page_url: 'https://squeaky.ai'
+        most_popular_page_url: 'https://squeaky.ai',
+        feedback_nps: {
+          enabled: true,
+          score: 33.33
+        },
+        feedback_nps_trend: {
+          direction: 'up', 
+          trend: 33.33
+        },
+        feedback_sentiment: {
+          enabled: true, 
+          score: 4.33
+        },
+        feedback_sentiment_trend: {
+          direction: 'up', 
+          trend: 4.33
+        }
       }
     end
 
