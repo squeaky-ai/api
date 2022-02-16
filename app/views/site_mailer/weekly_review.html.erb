@@ -19,10 +19,10 @@ Most popular page (exc. home): <a href="<%= @site.url %><%= @data[:most_popular_
   <p><b>Feedback</b></p>
   <p>
     <% if @data[:feedback_nps][:enabled] %>
-      NPS: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/nps"><%= @data[:feedback_nps][:score] %></a> <i style="color:#A0A0A0">(trending <%= @data[:feedback_nps_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:feedback_nps_trend][:direction] } %>)<%= @data[:feedback_nps_trend][:trend] %></i><br />
+      NPS: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/nps"><%= @data[:feedback_nps][:score] %></a> <i style="color:#A0A0A0">(trending <%= @data[:feedback_nps_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:feedback_nps_trend][:direction] } %><%= @data[:feedback_nps_trend][:trend] %>)</i><br />
     <% end %>
     <% if @data[:feedback_sentiment][:enabled] %>
-      Sentiment: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/sentiment"><%= @data[:feedback_sentiment][:score] %></a> <i style="color:#A0A0A0">(trending <%= @data[:feedback_sentiment_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:feedback_sentiment_trend][:direction] } %>)<%= @data[:feedback_sentiment_trend][:trend] %></i>
+      Sentiment: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/sentiment"><%= @data[:feedback_sentiment][:score] %></a> <i style="color:#A0A0A0">(trending <%= @data[:feedback_sentiment_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:feedback_sentiment_trend][:direction] } %><%= @data[:feedback_sentiment_trend][:trend] %>)</i>
     <% end %>
   </p>
 <% end %>
