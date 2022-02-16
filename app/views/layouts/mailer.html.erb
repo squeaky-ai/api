@@ -23,9 +23,9 @@
       }
 
       .header {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #F2F2F2;
         margin: 0 0 3rem 0;
-        padding: 1.5rem 0 .5rem 0;
+        padding: 1.5rem 0 1rem 0;
       }
 
       .header img {
@@ -36,11 +36,23 @@
         background: #F2F2F2;
         font-size: 13px;
         margin: 4rem 0 0 0;
-        padding: 1rem;
+        padding: 2rem;
       }
 
       .footer .divider {
         color: #707070;
+      }
+
+      .footer .wrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .footer p {
+        font-size: 13px;
+        line-height: 16px;
+        margin: 0;
       }
 
       h1 {
@@ -104,9 +116,16 @@
       </div>
       <div class="footer">
         <div class="wrapper">
-          <a href="<%= @web_url %>">Squeaky.ai</a>
-          <span class="divider"> | </span>
-          <span>Privacy-first customer experience analytics.</span>
+          <p>
+            <a href="<%= @web_url %>">Squeaky.ai</a>
+            <span class="divider"> | </span>
+            <span>Privacy-first customer experience analytics.</span>
+          </p>
+          <p>
+            <% if @unsubscribable %>
+              <a href="<%= @web_url %>/app/users/preferences">Unsubscribe</a>
+            <% end %>
+          </p>
         </div>
       </div>
     </body>

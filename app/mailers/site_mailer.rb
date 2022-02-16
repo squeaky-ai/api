@@ -9,6 +9,7 @@ class SiteMailer < ApplicationMailer
   def weekly_review(site, data, user)
     @site = site
     @data = data
+    @unsubscribable = true
 
     return unless user.communication_enabled?(:weekly_review_email)
 
