@@ -3,6 +3,8 @@
 class WeeklyReviewEmailsJob < ApplicationJob
   queue_as :default
 
+  sidekiq_options retry: false
+
   def perform(*args)
     from_date, to_date = date_range(args)
     site_ids = suitable_sites(from_date, to_date)
@@ -15,6 +17,8 @@ class WeeklyReviewEmailsJob < ApplicationJob
       review.members.each do |member|
         SiteMailer.weekly_review(review.site, review.to_h, member.user).deliver_later
       end
+    rescue StandardError => e
+      logger.error e
     end
   end
 
