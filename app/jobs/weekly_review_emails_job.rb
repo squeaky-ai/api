@@ -32,8 +32,8 @@ class WeeklyReviewEmailsJob < ApplicationJob
   end
 
   def suitable_sites(from_date, to_date)
-    # TODO: We're only trying this out on Squeaky for now
-    return ['82'] if Rails.env.production?
+    # TODO: We're only trying this out on select sites for now
+    return %w[82 51 577] if Rails.env.production?
 
     sql = <<-SQL
       SELECT site_id
