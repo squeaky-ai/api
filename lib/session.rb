@@ -181,7 +181,7 @@ class Session
   def parse_event_and_ignore_errors(event)
     JSON.parse!(event)
   rescue JSON::ParserError => e
-    Rails.logger.warn 'Failed to parse JSON', e
+    Rails.logger.warn "Failed to parse JSON #{e}"
     nil
   end
 end
