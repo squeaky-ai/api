@@ -28,12 +28,12 @@ class Recording < ApplicationRecord
     {
       browser_name: browser,
       browser_details: "#{browser} Version #{user_agent.version}",
-      viewport_x: viewport_x,
-      viewport_y: viewport_y,
-      device_x: device_x,
-      device_y: device_y,
-      device_type: device_type,
-      useragent: useragent
+      viewport_x:,
+      viewport_y:,
+      device_x:,
+      device_y:,
+      device_type:,
+      useragent:
     }
   end
 

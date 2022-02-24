@@ -27,6 +27,10 @@ module Types
 
     field :plans, [Types::Plans::Plan, { null: false }], null: false
 
+    field :feedback, Types::Feedback::Feedback, null: true do
+      argument :site_id, String, required: true
+    end
+
     def user
       context[:current_user]
     end
@@ -72,6 +76,10 @@ module Types
 
     def plans
       Plan.to_a
+    end
+
+    def feedback(arguments)
+      Site.find_by(uuid: arguments[:site_id])&.feedback
     end
   end
 end

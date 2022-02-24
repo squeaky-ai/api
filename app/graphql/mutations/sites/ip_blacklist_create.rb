@@ -18,7 +18,7 @@ module Mutations
       end
 
       def resolve(name:, value:, **_rest)
-        @site.ip_blacklist << { name: name, value: value }
+        @site.ip_blacklist << { name:, value: }
         @site.save
 
         @site

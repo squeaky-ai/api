@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# TODO:
-# I think we should convert the locale to a
-# language during the save process so we can
+# TODO: I think we should convert the locale to
+# a language during the save process so we can
 # paginate this properly
 
 module Resolvers
