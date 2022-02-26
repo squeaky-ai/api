@@ -37,7 +37,7 @@ class WeeklyReviewEmailsJob < ApplicationJob
 
   def suitable_sites(from_date, to_date)
     # TODO: We're only trying this out on select sites for now
-    return %w[82 51 577] if Rails.env.production?
+    return %w[82 51 577 148] if Rails.env.production?
 
     sql = <<-SQL
       SELECT site_id
