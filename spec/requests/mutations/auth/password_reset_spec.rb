@@ -2,21 +2,21 @@
 
 require 'rails_helper'
 
-auth_reset_password_mutation = <<-GRAPHQL
+auth_password_reset_mutation = <<-GRAPHQL
   mutation($email: String!) {
-    authResetPassword(input: { email: $email }) {
+    authPasswordReset(input: { email: $email }) {
       message
     }
   }
 GRAPHQL
 
-RSpec.describe Mutations::Auth::ResetPassword, type: :request do
+RSpec.describe Mutations::Auth::PasswordReset, type: :request do
   context 'when the user does not exist' do
     subject do
       variables = {
         email: 'dsfsdfsdfdsfsd@gmail.com'
       }
-      graphql_request(auth_reset_password_mutation, variables, nil)
+      graphql_request(auth_password_reset_mutation, variables, nil)
     end
 
     it 'returns an error' do
@@ -34,11 +34,11 @@ RSpec.describe Mutations::Auth::ResetPassword, type: :request do
       variables = {
         email: user.email
       }
-      graphql_request(auth_reset_password_mutation, variables, nil)
+      graphql_request(auth_password_reset_mutation, variables, nil)
     end
 
     it 'returns a success message' do
-      response = subject['data']['authResetPassword']
+      response = subject['data']['authPasswordReset']
       expect(response).to eq('message' => 'Password reset sent')
     end
 
