@@ -15,7 +15,7 @@ module Mutations
         user = User.confirm_by_token(token)
 
         unless user.errors.empty?
-          Rails.logger.warn 'Sign up token was incorrect'
+          Rails.logger.warn "Sign up token was incorrect #{token}"
           raise GraphQL::ExecutionError, user.errors.full_messages.first
         end
 

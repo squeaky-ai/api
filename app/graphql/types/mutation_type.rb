@@ -4,6 +4,7 @@ module Types
   class MutationType < Types::BaseObject
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
+    field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
     # Users
     field :user_update, mutation: Mutations::Users::Update
     field :user_delete, mutation: Mutations::Users::Delete
