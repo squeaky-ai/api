@@ -5,7 +5,7 @@ module Mutations
     class PasswordUpdate < BaseMutation
       null true
 
-      graphql_name 'AuthConfirmationsPasswordUpdate'
+      graphql_name 'AuthPasswordUpdate'
 
       argument :password, String, required: true
       argument :reset_password_token, String, required: true

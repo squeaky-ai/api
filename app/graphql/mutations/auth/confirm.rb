@@ -5,7 +5,7 @@ module Mutations
     class Confirm < BaseMutation
       null true
 
-      graphql_name 'AuthConfirmationsConfirm'
+      graphql_name 'AuthConfirm'
 
       argument :token, String, required: true
 

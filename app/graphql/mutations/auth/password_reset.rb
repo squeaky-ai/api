@@ -5,7 +5,7 @@ module Mutations
     class PasswordReset < BaseMutation
       null true
 
-      graphql_name 'AuthConfirmationsPasswordReset'
+      graphql_name 'AuthPasswordReset'
 
       argument :email, String, required: true
 

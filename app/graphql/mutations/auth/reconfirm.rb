@@ -5,7 +5,7 @@ module Mutations
     class Reconfirm < BaseMutation
       null true
 
-      graphql_name 'AuthConfirmationsReconfirm'
+      graphql_name 'AuthReconfirm'
 
       argument :email, String, required: true
 
