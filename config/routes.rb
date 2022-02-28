@@ -32,9 +32,6 @@ Rails.application.routes.draw do
         # DELETE /api/auth/sign_out
         # -
         delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
-        # POST /api/auth/reset_password
-        # body: { "email": string }
-        post 'reset_password', to: 'auth/passwords#create'
         # PUT /api/auth/change_password
         # body: { "password": string, "reset_password_token": string }
         put 'change_password', to: 'auth/passwords#update'

@@ -5,6 +5,7 @@ module Types
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
+    field :auth_reset_password, mutation: Mutations::Auth::ResetPassword
     # Users
     field :user_update, mutation: Mutations::Users::Update
     field :user_delete, mutation: Mutations::Users::Delete
