@@ -4,7 +4,7 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
-  scope 'api', defaults: { format: :json } do
+  scope 'api' do
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
 
