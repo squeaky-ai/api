@@ -5,12 +5,6 @@ module Auth
     clear_respond_to
     respond_to :json
 
-    def current
-      return render nothing: true, status: :unauthorized unless user_signed_in?
-
-      render json: current_user
-    end
-
     private
 
     def respond_with(resource, _opts = {})
