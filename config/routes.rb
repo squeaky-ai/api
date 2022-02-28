@@ -23,9 +23,6 @@ Rails.application.routes.draw do
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do
-        # GET /api/auth/current
-        # -
-        get 'current', to: 'auth/sessions#current'
         # POST /api/auth/sign_in
         # body: { "email": string, "password": string }
         post 'sign_in', to: 'auth/sessions#create', as: :user_session
@@ -38,9 +35,6 @@ Rails.application.routes.draw do
         # POST /api/auth/confirm
         # body: { "email": string }
         post 'confirm', to: 'auth/confirmations#create', as: :user_confirmation
-        # GET /api/auth/confirm
-        # query: { "confirmation_token": string }
-        get 'confirm', to: 'auth/confirmations#show'
         # POST /api/auth/reset_password
         # body: { "email": string }
         post 'reset_password', to: 'auth/passwords#create'
