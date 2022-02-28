@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 subscriptions_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $pricing_id: String!) {
-    subscriptionsUpdate(input: { siteId: $site_id, pricingId: $pricing_id }) {
+  mutation($input: SubscriptionsUpdateInput!) {
+    subscriptionsUpdate(input: $input) {
       id
       plan {
         type
@@ -20,7 +20,12 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, pricing_id: 'teapot' }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          pricingId: 'teapot' 
+        }
+      }
       graphql_request(subscriptions_update_mutation, variables, user)
     end
 
@@ -43,7 +48,12 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, pricing_id: }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          pricingId: pricing_id
+        }
+      }
       graphql_request(subscriptions_update_mutation, variables, user)
     end
 

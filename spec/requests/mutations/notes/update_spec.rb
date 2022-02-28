@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 note_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!, $note_id: ID!, $body: String, $timestamp: Int) {
-    noteUpdate(input: { siteId: $site_id, recordingId: $recording_id, noteId: $note_id, body: $body, timestamp: $timestamp }) {
+  mutation($input: NotesUpdateInput!) {
+    noteUpdate(input: $input) {
       id
       body
       timestamp
@@ -24,9 +24,11 @@ RSpec.describe Mutations::Notes::Update, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        recording_id: SecureRandom.uuid,
-        note_id: SecureRandom.uuid
+        input: {
+          siteId: site.id,
+          recordingId: SecureRandom.uuid,
+          noteId: SecureRandom.uuid
+        }
       }
       graphql_request(note_update_mutation, variables, user)
     end
@@ -44,9 +46,11 @@ RSpec.describe Mutations::Notes::Update, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        recording_id: recording.id,
-        note_id: SecureRandom.uuid
+        input: {
+          siteId: site.id,
+          recordingId: recording.id,
+          noteId: SecureRandom.uuid
+        }
       }
       graphql_request(note_update_mutation, variables, user)
     end
@@ -78,10 +82,12 @@ RSpec.describe Mutations::Notes::Update, type: :request do
   
         subject do
           variables = {
-            site_id: site.id,
-            recording_id: recording.id,
-            note_id: note.id.to_s,
-            body: body
+            input: {
+              siteId: site.id,
+              recordingId: recording.id,
+              noteId: note.id.to_s,
+              body: body
+            }
           }
           graphql_request(note_update_mutation, variables, user)
         end
@@ -111,10 +117,12 @@ RSpec.describe Mutations::Notes::Update, type: :request do
   
         subject do
           variables = {
-            site_id: site.id,
-            recording_id: recording.id,
-            note_id: note.id.to_s,
-            body: body
+            input: {
+              siteId: site.id,
+              recordingId: recording.id,
+              noteId: note.id.to_s,
+              body: body
+            }
           }
           graphql_request(note_update_mutation, variables, user)
         end
@@ -144,10 +152,12 @@ RSpec.describe Mutations::Notes::Update, type: :request do
 
       subject do
         variables = {
-          site_id: site.id,
-          recording_id: recording.id,
-          note_id: note.id.to_s,
-          body: body
+          input: {
+            siteId: site.id,
+            recordingId: recording.id,
+            noteId: note.id.to_s,
+            body: body
+          }
         }
         graphql_request(note_update_mutation, variables, user)
       end
@@ -173,10 +183,12 @@ RSpec.describe Mutations::Notes::Update, type: :request do
 
       subject do
         variables = {
-          site_id: site.id,
-          recording_id: recording.id,
-          note_id: note.id.to_s,
-          body: body
+          input: {
+            siteId: site.id,
+            recordingId: recording.id,
+            noteId: note.id.to_s,
+            body: body
+          }
         }
         graphql_request(note_update_mutation, variables, user)
       end

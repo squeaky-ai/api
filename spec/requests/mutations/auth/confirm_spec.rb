@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 auth_confirm_mutation = <<-GRAPHQL
-  mutation($token: String!) {
-    authConfirm(input: { token: $token }) {
+  mutation($input: AuthConfirmInput!) {
+    authConfirm(input: $input) {
       id
       email
     }
@@ -15,7 +15,9 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
   context 'when there is no user matching the token' do
     subject do
       variables = {
-        token: 'dsfsdfsdfdsfsd'
+        input: {
+          token: 'dsfsdfsdfdsfsd'
+        }
       }
       graphql_request(auth_confirm_mutation, variables, nil)
     end
@@ -31,7 +33,9 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
 
     subject do
       variables = {
-        token: user.confirmation_token
+        input: {
+          token: user.confirmation_token
+        }
       }
       graphql_request(auth_confirm_mutation, variables, nil)
     end

@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 tag_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $tag_id: ID!) {
-    tagDelete(input: { siteId: $site_id, tagId: $tag_id }) {
+  mutation($input: TagsDeleteInput!) {
+    tagDelete(input: $input) {
       id
       name
     }
@@ -18,7 +18,12 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, tag_id: 23423423 }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          tagId: 23423423 
+        }
+      }
       graphql_request(tag_delete_mutation, variables, user)
     end
 
@@ -36,7 +41,12 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     before { tag }
 
     subject do
-      variables = { site_id: site.id, tag_id: tag.id.to_s }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          tagId: tag.id.to_s 
+        }
+      }
       graphql_request(tag_delete_mutation, variables, user)
     end
 
@@ -62,7 +72,12 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, tag_id: tag.id.to_s }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          tagId: tag.id.to_s 
+        }
+      }
       graphql_request(tag_delete_mutation, variables, user)
     end
 

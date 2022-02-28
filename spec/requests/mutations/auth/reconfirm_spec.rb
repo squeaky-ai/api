@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 auth_reconfirm_mutation = <<-GRAPHQL
-  mutation($email: String!) {
-    authReconfirm(input: { email: $email }) {
+  mutation($input: AuthReconfirmInput!) {
+    authReconfirm(input: $input) {
       message
     }
   }
@@ -14,7 +14,9 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
   context 'when the user does not exist' do
     subject do
       variables = {
-        email: 'dsfsdfsdfdsfsd@gmail.com'
+        input: {
+          email: 'dsfsdfsdfdsfsd@gmail.com'
+        }
       }
       graphql_request(auth_reconfirm_mutation, variables, nil)
     end
@@ -32,7 +34,9 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
 
     subject do
       variables = {
-        email: user.email
+        input: {
+          email: user.email
+        }
       }
       graphql_request(auth_reconfirm_mutation, variables, nil)
     end
@@ -50,7 +54,9 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
 
     subject do
       variables = {
-        email: user.email
+        input: {
+          email: user.email
+        }
       }
       graphql_request(auth_reconfirm_mutation, variables, nil)
     end

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!) {
-    siteDelete(input: { siteId: $site_id }) {
+  mutation($input: SitesDeleteInput!) {
+    siteDelete(input: $input) {
       id
     }
   }
@@ -17,7 +17,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_delete_mutation, variables, user)
     end
 
@@ -42,7 +46,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_delete_mutation, variables, user)
     end
 
@@ -85,7 +93,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_delete_mutation, variables, user)
     end
 
@@ -109,7 +121,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_delete_mutation, variables, user)
     end
 

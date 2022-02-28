@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_create_mutation = <<-GRAPHQL
-  mutation($name: String!, $url: String!) {
-    siteCreate(input: { name: $name, url: $url }) {
+  mutation($input: SitesCreateInput!) {
+    siteCreate(input: $input) {
       id
       name
       url
@@ -35,7 +35,12 @@ RSpec.describe Mutations::Sites::Create, type: :request do
     let(:user) { create(:user) }
 
     subject do
-      variables = { url: url, name: 'Cowbell' }
+      variables = {
+        input: { 
+          url:, 
+          name: 'Cowbell' 
+        }
+      }
       graphql_request(site_create_mutation, variables, user)
     end
 
@@ -52,7 +57,12 @@ RSpec.describe Mutations::Sites::Create, type: :request do
       let(:user) { create(:user) }
 
       subject do
-        variables = { url: url, name: 'Arctic Monkeys' }
+        variables = {
+          input: { 
+            url:, 
+            name: 'Arctic Monkeys' 
+          }
+        }
         graphql_request(site_create_mutation, variables, user)
       end
 
@@ -67,7 +77,12 @@ RSpec.describe Mutations::Sites::Create, type: :request do
       let(:user) { create(:user) }
 
       subject do
-        variables = { url: url, name: name }
+        variables = {
+          input: { 
+            url:, 
+            name:
+          }
+        }
         graphql_request(site_create_mutation, variables, user)
       end
 

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_transfer_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $team_id: ID!) {
-    teamTransfer(input: { siteId: $site_id, teamId: $team_id }) {
+  mutation($input: TeamTransferInput!) {
+    teamTransfer(input: $input) {
       team {
         id
         role
@@ -26,7 +26,12 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, team_id: 4234 }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: 4234
+        }
+      }
       graphql_request(team_transfer_mutation, variables, user)
     end
 
@@ -42,7 +47,12 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team.id 
+        }
+      }
       graphql_request(team_transfer_mutation, variables, user)
     end
 
@@ -62,7 +72,13 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:new_owner_team) { create(:team, user: new_owner, site: site, role: Team::ADMIN) }
 
     subject do
-      graphql_request(team_transfer_mutation, { site_id: site.id, team_id: new_owner_team.id }, old_owner_team.user)
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: new_owner_team.id 
+        }
+      }
+      graphql_request(team_transfer_mutation, variables, old_owner_team.user)
     end
 
     before do

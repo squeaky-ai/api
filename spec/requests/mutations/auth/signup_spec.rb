@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 auth_signup_mutation = <<-GRAPHQL
-  mutation($email: String!, $password: String!) {
-    authSignup(input: { email: $email, password: $password }) {
+  mutation($input: AuthSignUpInput!) {
+    authSignup(input: $input) {
       email
     }
   }
@@ -16,8 +16,10 @@ RSpec.describe Mutations::Auth::Signup, type: :request do
 
     subject do
       variables = {
-        email: user.email,
-        password: 'sdfsdfdssfd'
+        input: {
+          email: user.email,
+          password: 'sdfsdfdssfd'
+        }
       }
       graphql_request(auth_signup_mutation, variables, nil)
     end
@@ -31,8 +33,10 @@ RSpec.describe Mutations::Auth::Signup, type: :request do
   context 'when the email is not in use but the password is not good enough' do
     subject do
       variables = {
-        email: 'sdfdsfsd@gmail.com',
-        password: 'a'
+        input: {
+          email: 'sdfdsfsd@gmail.com',
+          password: 'a'
+        }
       }
       graphql_request(auth_signup_mutation, variables, nil)
     end
@@ -46,8 +50,10 @@ RSpec.describe Mutations::Auth::Signup, type: :request do
   context 'when the email is not in use and the password is in use' do
     subject do
       variables = {
-        email: 'sdfdsfsd@gmail.com',
-        password: 'adfgdfg@2222££@£gbbb'
+        input: {
+          email: 'sdfdsfsd@gmail.com',
+          password: 'adfgdfg@2222££@£gbbb'
+        }
       }
       graphql_request(auth_signup_mutation, variables, nil)
     end

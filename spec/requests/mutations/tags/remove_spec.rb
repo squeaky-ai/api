@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 tag_remove_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!, $tag_id: ID!) {
-    tagRemove(input: { siteId: $site_id, recordingId: $recording_id, tagId: $tag_id }) {
+  mutation($input: TagsRemoveInput!) {
+    tagRemove(input: $input) {
       id
       name
     }
@@ -18,7 +18,13 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: SecureRandom.uuid, tag_id: 345345 }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: SecureRandom.uuid, 
+          tagId: 345345 
+        }
+      }
       graphql_request(tag_remove_mutation, variables, user)
     end
 
@@ -34,7 +40,13 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
     let(:recording) { create(:recording, site: site) }
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id, tag_id: 23423423 }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: recording.id, 
+          tagId: 23423423 
+        }
+      }
       graphql_request(tag_remove_mutation, variables, user)
     end
 
@@ -60,7 +72,13 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id, tag_id: tag.id.to_s }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: recording.id, 
+          tagId: tag.id.to_s 
+        }
+      }
       graphql_request(tag_remove_mutation, variables, user)
     end
 

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $team_id: ID!, $role: Int!) {
-    teamUpdate(input: { siteId: $site_id, teamId: $team_id, role: $role }) {
+  mutation($input: TeamUpdateInput!) {
+    teamUpdate(input: $input) {
       id
       role
       status
@@ -24,7 +24,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, team_id: 4324, role: Team::ADMIN }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: 4324,
+          role: Team::ADMIN 
+        }
+      }
       graphql_request(team_update_mutation, variables, user)
     end
 
@@ -40,7 +46,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id, role: 5 }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team.id, 
+          role: 5 
+        }
+      }
       graphql_request(team_update_mutation, variables, user)
     end
 
@@ -55,7 +67,14 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      graphql_request(team_update_mutation, { site_id: site.id, team_id: site.team[0].id, role: Team::ADMIN }, user)
+      variables = {
+        input: { 
+          siteId: site.id, 
+          teamId: site.team[0].id, 
+          role: Team::ADMIN 
+        }
+      }
+      graphql_request(team_update_mutation, variables, user)
     end
 
     it 'raises an error' do
@@ -70,7 +89,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id, role: Team::ADMIN }
+      variables = { 
+        input: {
+          siteId: site.id,
+          teamId: team.id, 
+          role: Team::ADMIN 
+        }
+      }
       graphql_request(team_update_mutation, variables, user)
     end
 
@@ -97,7 +122,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id, role: Team::MEMBER }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team.id, 
+          role: Team::MEMBER 
+        }
+      }
       graphql_request(team_update_mutation, variables, user)
     end
 
@@ -131,7 +162,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, team_id: team2.id, role: Team::ADMIN }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team2.id, 
+          role: Team::ADMIN 
+        }
+      }
       graphql_request(team_update_mutation, variables, team1.user)
     end
 
@@ -153,7 +190,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:team2) { create(:team, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id, team_id: team2.id, role: Team::MEMBER }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team2.id, 
+          role: Team::MEMBER 
+        }
+      }
       graphql_request(team_update_mutation, variables, team1.user)
     end
 

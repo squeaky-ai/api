@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 recording_bookmarked_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!, $bookmarked: Boolean!) {
-    recordingBookmarked(input: { siteId: $site_id, recordingId: $recording_id, bookmarked: $bookmarked }) {
+  mutation($input: RecordingsBookmarkedInput!) {
+    recordingBookmarked(input: $input) {
       id
       bookmarked
     }
@@ -17,7 +17,13 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: 234234, bookmarked: false }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: 234234, 
+          bookmarked: false 
+        }
+      }
       graphql_request(recording_bookmarked_mutation, variables, user)
     end
 
@@ -34,7 +40,13 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       let(:recording) { create(:recording, site: site) }
 
       subject do
-        variables = { site_id: site.id, recording_id: recording.id, bookmarked: true }
+        variables = {
+          input: { 
+            siteId: site.id,
+            recordingId: recording.id,
+            bookmarked: true 
+          }
+        }
         graphql_request(recording_bookmarked_mutation, variables, user)
       end
 
@@ -54,7 +66,13 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       let(:recording) { create(:recording, bookmarked: true, site: site) }
 
       subject do
-        variables = { site_id: site.id, recording_id: recording.id, bookmarked: false }
+        variables = {
+          input: {
+            siteId: site.id, 
+            recordingId: recording.id, 
+            bookmarked: false
+          }
+        }
         graphql_request(recording_bookmarked_mutation, variables, user)
       end
 

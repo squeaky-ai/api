@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 recordings_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_ids: [String!]!) {
-    recordingsDelete(input: { siteId: $site_id, recordingIds: $recording_ids }) {
+  mutation($input: RecordingsDeleteBulkInput!) {
+    recordingsDelete(input: $input) {
       id
     }
   }
@@ -16,9 +16,11 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
-        site_id: site.id, 
-        recording_ids: ['23423423423']
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingIds: ['23423423423']
+        }
       }
 
       graphql_request(recordings_delete_mutation, variables, user)
@@ -49,9 +51,11 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     end
 
     subject do
-      variables = { 
-        site_id: site.id, 
-        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131']
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131']
+        }
       }
 
       graphql_request(recordings_delete_mutation, variables, user)

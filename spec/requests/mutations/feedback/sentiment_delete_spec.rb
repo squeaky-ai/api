@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 sentiment_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $sentiment_id: ID!) {
-    sentimentDelete(input: { siteId: $site_id, sentimentId: $sentiment_id }) {
+  mutation($input: SentimentDeleteInput!) {
+    sentimentDelete(input: $input) {
       id
     }
   }
@@ -18,8 +18,10 @@ RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        sentiment_id: SecureRandom.uuid
+        input: {
+          siteId: site.id,
+          sentimentId: SecureRandom.uuid
+        }
       }
       graphql_request(sentiment_delete_mutation, variables, user)
     end
@@ -40,8 +42,10 @@ RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        sentiment_id: sentiment.id
+        input: {
+          siteId: site.id,
+          sentimentId: sentiment.id
+        }
       }
       graphql_request(sentiment_delete_mutation, variables, user)
     end

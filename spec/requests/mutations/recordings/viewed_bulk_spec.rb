@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 recordings_viewed_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_ids: [String!]!, $viewed: Boolean!) {
-    recordingsViewed(input: { siteId: $site_id, recordingIds: $recording_ids, viewed: $viewed }) {
+  mutation($input: RecordingsViewedBulkInput!) {
+    recordingsViewed(input: $input) {
       id
       viewed
     }
@@ -17,10 +17,12 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
-        site_id: site.id, 
-        recording_ids: ['23423423423'], 
-        viewed: true
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingIds: ['23423423423'], 
+          viewed: true
+        }
       }
       graphql_request(recordings_viewed_mutation, variables, user)
     end
@@ -46,10 +48,12 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     end
 
     subject do
-      variables = { 
-        site_id: site.id, 
-        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
-        viewed: true
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
+          viewed: true
+        }
       }
 
       graphql_request(recordings_viewed_mutation, variables, user)
@@ -88,10 +92,12 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     end
 
     subject do
-      variables = { 
-        site_id: site.id, 
-        recording_ids: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
-        viewed: false
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
+          viewed: false
+        }
       }
 
       graphql_request(recordings_viewed_mutation, variables, user)

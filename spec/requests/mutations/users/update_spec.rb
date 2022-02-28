@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 user_update_mutation = <<-GRAPHQL
-  mutation($first_name: String, $last_name: String, $email: String) {
-    userUpdate(input: { firstName: $first_name, lastName: $last_name, email: $email }) {
+  mutation($input: UsersUpdateInput!) {
+    userUpdate(input: $input) {
       id
       firstName
       lastName
@@ -26,7 +26,13 @@ RSpec.describe Mutations::Users::Update, type: :request do
   end
 
   subject do
-    update = { first_name: first_name, last_name: last_name, email: email }
+    update = { 
+      input: {
+        firstName: first_name, 
+        lastName: last_name, 
+        email: 
+      }
+    }
     graphql_request(user_update_mutation, update, user)
   end
 
@@ -65,7 +71,12 @@ RSpec.describe Mutations::Users::Update, type: :request do
     end
 
     subject do
-      update = { first_name: first_name, last_name: last_name }
+      update = { 
+        input: {
+          firstName: first_name,
+          lastName: last_name
+        }
+      }
       graphql_request(user_update_mutation, update, user)
     end
 

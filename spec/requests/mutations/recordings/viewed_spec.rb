@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 recording_viewed_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!) {
-    recordingViewed(input: { siteId: $site_id, recordingId: $recording_id }) {
+  mutation($input: RecordingsViewedInput!) {
+    recordingViewed(input: $input) {
       id
       viewed
     }
@@ -17,7 +17,12 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, recording_id: 234234 }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: 234234 
+        }
+      }
       graphql_request(recording_viewed_mutation, variables, user)
     end
 
@@ -33,7 +38,12 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     let(:recording) { create(:recording, site: site) }
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: recording.id 
+        }
+      }
       graphql_request(recording_viewed_mutation, variables, user)
     end
 
@@ -57,7 +67,12 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     let(:recording) { create(:recording, site: site) }
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          recordingId: recording.id 
+        }
+      }
       graphql_request(recording_viewed_mutation, variables, user)
     end
 

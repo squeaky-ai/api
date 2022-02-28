@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_domain_blacklist_create_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $type: String!, $value: String!) {
-    domainBlacklistCreate(input: { siteId: $site_id, type: $type, value: $value }) {
+  mutation($input: SitesDomainBlacklistCreateInput!) {
+    domainBlacklistCreate(input: $input) {
       id
       domainBlacklist {
         type
@@ -20,7 +20,13 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, type: 'domain', value: 'squeaky.ai' }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          type: 'domain', 
+          value: 'squeaky.ai'
+        }
+      }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
     end
 
@@ -45,7 +51,13 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, type: 'email', value: 'john@squeaky.ai' }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          type: 'email', 
+          value: 'john@squeaky.ai' 
+        }
+      }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
     end
 
@@ -78,7 +90,13 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, type: 'domain', value: 'squeaky.ai' }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          type: 'domain', 
+          value: 'squeaky.ai' 
+        }
+      }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
     end
 
@@ -108,7 +126,13 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, type: 'email', value: 'john@squeaky.ai' }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          type: 'email', 
+          value: 'john@squeaky.ai' 
+        }
+      }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
     end
 

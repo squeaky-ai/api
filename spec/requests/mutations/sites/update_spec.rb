@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $name: String, $url: String) {
-    siteUpdate(input: { siteId: $site_id, name: $name, url: $url }) {
+  mutation($input: SitesUpdateInput!) {
+    siteUpdate(input: $input) {
       id
       name
       url
@@ -20,7 +20,12 @@ RSpec.describe Mutations::Sites::Update, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { site_id: site.id, url: url }
+        variables = {
+          input: { 
+            siteId: site.id, 
+            url:
+          }
+        }
         graphql_request(site_update_mutation, variables, user)
       end
 
@@ -37,7 +42,12 @@ RSpec.describe Mutations::Sites::Update, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { site_id: site.id, url: url }
+        variables = {
+          input: { 
+            siteId: site.id, 
+            url:
+          }
+        }
         graphql_request(site_update_mutation, variables, user)
       end
 
@@ -52,7 +62,12 @@ RSpec.describe Mutations::Sites::Update, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { site_id: site.id, url: url }
+        variables = {
+          input: { 
+            siteId: site.id, 
+            url: 
+          }
+        }
         graphql_request(site_update_mutation, variables, user)
       end
 
@@ -73,7 +88,12 @@ RSpec.describe Mutations::Sites::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, name: name }
+      variables = {
+        input: { 
+          siteId: site.id, 
+          name:
+        }
+      }
       graphql_request(site_update_mutation, variables, user)
     end
 

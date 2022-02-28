@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Add feedback section
-
 class WeeklyReview
   def initialize(site_id, from_date, to_date)
     @site_id = site_id

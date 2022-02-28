@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 visitor_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $visitor_id: ID!) {
-    visitorDelete(input: { siteId: $site_id, visitorId: $visitor_id }) {
+  mutation($input: VisitorsDeleteInput!) {
+    visitorDelete(input: $input) {
       id
     }
   }
@@ -17,7 +17,12 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, visitor_id: SecureRandom.base36 }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          visitorId: SecureRandom.base36 
+        }
+      }
       graphql_request(visitor_delete_mutation, variables, user)
     end
 
@@ -35,7 +40,12 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     before { recording }
 
     subject do
-      variables = { site_id: site.id, visitor_id: recording.visitor.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          visitorId: recording.visitor.id 
+        }
+      }
       graphql_request(visitor_delete_mutation, variables, user)
     end
 

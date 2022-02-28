@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_ip_blacklist_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $value: String!) {
-    ipBlacklistDelete(input: { siteId: $site_id, value: $value }) {
+  mutation($input: SitesIpBlacklistDeleteInput!) {
+    ipBlacklistDelete(input: $input) {
       id
       ipBlacklist {
         name
@@ -20,7 +20,12 @@ RSpec.describe Mutations::Sites::IpBlacklistDelete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, value: '0.0.0.0' }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          value: '0.0.0.0' 
+        }
+      }
       graphql_request(site_ip_blacklist_delete_mutation, variables, user)
     end
 
@@ -43,7 +48,12 @@ RSpec.describe Mutations::Sites::IpBlacklistDelete, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, value: '0.0.0.0' }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          value: '0.0.0.0' 
+        }
+      }
       graphql_request(site_ip_blacklist_delete_mutation, variables, user)
     end
 

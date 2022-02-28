@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 tag_update_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $tag_id: ID!, $name: String!) {
-    tagUpdate(input: { siteId: $site_id, tagId: $tag_id, name: $name }) {
+  mutation($input: TagsUpdateInput!) {
+    tagUpdate(input: $input) {
       id
       name
     }
@@ -20,7 +20,13 @@ RSpec.describe Mutations::Tags::Update, type: :request do
     let(:name) { 'Teapot' }
 
     subject do
-      variables = { site_id: site.id, tag_id: 345345345, name: name }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          tagId: 345345345, 
+          name:
+        }
+      }
       graphql_request(tag_update_mutation, variables, user)
     end
 
@@ -47,7 +53,13 @@ RSpec.describe Mutations::Tags::Update, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, tag_id: tag.id.to_s, name: name }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          tagId: tag.id.to_s, 
+          name:
+        }
+      }
       graphql_request(tag_update_mutation, variables, user)
     end
 

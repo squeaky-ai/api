@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 site_verify_mutation = <<-GRAPHQL
-  mutation($site_id: ID!) {
-    siteVerify(input: { siteId: $site_id }) {
+  mutation($input: SitesVerifyInput!) {
+    siteVerify(input: $input) {
       id
       verifiedAt
     }
@@ -17,7 +17,11 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_verify_mutation, variables, user)
     end
 
@@ -43,13 +47,18 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_verify_mutation, variables, user)
     end
 
     before { allow(Net::HTTP).to receive(:get).and_return('') }
 
     it 'returns nil' do
+      puts '@@', subject['errors']
       expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
     end
   end
@@ -61,7 +70,11 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     before { site.verify! }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_verify_mutation, variables, user)
     end
 
@@ -75,7 +88,11 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(site_verify_mutation, variables, user)
     end
 

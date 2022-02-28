@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_invite_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $email: String!, $role: Int!) {
-    teamInvite(input: { siteId: $site_id, email: $email, role: $role }) {
+  mutation($input: TeamInviteInput!) {
+    teamInvite(input: $input) {
       id
       role
       status
@@ -27,7 +27,13 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
     before { site }
 
     subject do
-      variables = { site_id: site.id, email: email, role: Team::ADMIN }
+      variables = { 
+        input: {
+          siteId: site.id,
+          email:, 
+          role: Team::ADMIN 
+        }
+      }
       graphql_request(team_invite_mutation, variables, user)
     end
 
@@ -55,7 +61,14 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       let(:invited_user) { create(:user) }
 
       subject do
-        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
+        variables = { 
+          input: {
+            siteId: site.id, 
+            email: invited_user.email, 
+            role: Team::ADMIN 
+          }
+        }
+        graphql_request(team_invite_mutation, variables, user)
       end
 
       before do
@@ -80,14 +93,24 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:invited_user) { create(:user) }
 
-      before { site }
-
-      subject do
+      before do
         stub = double
         allow(stub).to receive(:deliver_now)
         allow(AuthMailer).to receive(:invitation_instructions).and_return(stub)
+        
+        site
+      end
 
-        graphql_request(team_invite_mutation, { site_id: site.id, email: invited_user.email, role: Team::ADMIN }, user)
+      subject do
+        variables = { 
+          input: {
+            siteId: site.id, 
+            email: invited_user.email,
+            role: Team::ADMIN
+          }
+        }
+
+        graphql_request(team_invite_mutation, variables, user)
       end
 
       it 'returns the team' do

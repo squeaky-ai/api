@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 note_create_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!, $body: String!, $timestamp: Int) {
-    noteCreate(input: { siteId: $site_id, recordingId: $recording_id, body: $body, timestamp: $timestamp }) {
+  mutation($input: NotesCreateInput!) {
+    noteCreate(input: $input) {
       id
       body
       timestamp
@@ -26,10 +26,12 @@ RSpec.describe Mutations::Notes::Create, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        recording_id: SecureRandom.uuid,
-        body: body,
-        timestamp: timestamp
+        input: {
+          siteId: site.id,
+          recordingId: SecureRandom.uuid,
+          body: body,
+          timestamp: timestamp
+        }
       }
       graphql_request(note_create_mutation, variables, user)
     end
@@ -49,10 +51,12 @@ RSpec.describe Mutations::Notes::Create, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        recording_id: recording.id,
-        body: body,
-        timestamp: timestamp
+        input: {
+          siteId: site.id,
+          recordingId: recording.id,
+          body: body,
+          timestamp: timestamp
+        }
       }
       graphql_request(note_create_mutation, variables, user)
     end

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $team_id: ID!) {
-    teamDelete(input: { siteId: $site_id, teamId: $team_id }) {
+  mutation($input: TeamDeleteInput!) {
+    teamDelete(input: $input) {
       id
     }
   }
@@ -17,7 +17,12 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id, team_id: site.owner.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: site.owner.id 
+        }
+      }
       graphql_request(team_delete_mutation, variables, user)
     end
 
@@ -38,7 +43,12 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team.id 
+        }
+      }
       graphql_request(team_delete_mutation, variables, user)
     end
 
@@ -66,7 +76,12 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, team_id: team2.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team2.id 
+        }
+      }
       graphql_request(team_delete_mutation, variables, user)
     end
 
@@ -85,7 +100,12 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     let(:team) { create(:team, site: site, role: Team::MEMBER) }
 
     subject do
-      variables = { site_id: site.id, team_id: team.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team.id 
+        }
+      }
       graphql_request(team_delete_mutation, variables, user)
     end
 

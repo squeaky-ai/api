@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 subscriptions_create_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $pricing_id: String!) {
-    subscriptionsCreate(input: { siteId: $site_id, pricingId: $pricing_id }) {
+  mutation($input: SubscriptionsCreateInput!) {
+    subscriptionsCreate(input: $input) {
       customerId
       redirectUrl
     }
@@ -17,7 +17,12 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id, pricing_id: 'teapot' }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          pricingId: 'teapot' 
+        }
+      }
       graphql_request(subscriptions_create_mutation, variables, user)
     end
 
@@ -69,7 +74,12 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, pricing_id: pricing_id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          pricingId: pricing_id 
+        }
+      }
       graphql_request(subscriptions_create_mutation, variables, user)
     end
 

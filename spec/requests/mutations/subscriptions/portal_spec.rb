@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 subscriptions_portal_mutation = <<-GRAPHQL
-  mutation($site_id: ID!) {
-    subscriptionsPortal(input: { siteId: $site_id }) {
+  mutation($input: SubscriptionsPortalInput!) {
+    subscriptionsPortal(input: $input) {
       customerId
       redirectUrl
     }
@@ -29,7 +29,11 @@ RSpec.describe Mutations::Subscriptions::Portal, type: :request do
   end
 
   subject do
-    variables = { site_id: billing.site.id }
+    variables = { 
+      input: {
+        siteId: billing.site.id 
+      }
+    }
     graphql_request(subscriptions_portal_mutation, variables, user)
   end
 

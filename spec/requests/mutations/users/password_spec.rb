@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 user_password_mutation = <<-GRAPHQL
-  mutation($password: String!, $password_confirmation: String!, $current_password: String!) {
-    userPassword(input: { password: $password, passwordConfirmation: $password_confirmation, currentPassword: $current_password }) {
+  mutation($input: UsersPasswordInput!) {
+    userPassword(input: $input) {
       id
     }
   }
@@ -19,7 +19,13 @@ RSpec.describe Mutations::Users::Update, type: :request do
     before { user }
 
     subject do
-      update = { password: new_password, password_confirmation: new_password, current_password: old_password }
+      update = { 
+        input: {
+          password: new_password,
+          passwordConfirmation: new_password, 
+          currentPassword: old_password 
+        }
+      }
       graphql_request(user_password_mutation, update, user)
     end
 
@@ -44,7 +50,13 @@ RSpec.describe Mutations::Users::Update, type: :request do
     before { user }
 
     subject do
-      update = { password: new_password, password_confirmation: new_password, current_password: old_password }
+      update = { 
+        input: {
+          password: new_password, 
+          passwordConfirmation: new_password, 
+          currentPassword: old_password 
+        }
+      }
       graphql_request(user_password_mutation, update, user)
     end
 

@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 tag_create_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $recording_id: ID!, $name: String!) {
-    tagCreate(input: { siteId: $site_id, recordingId: $recording_id, name: $name }) {
+  mutation($input: TagsCreateInput!) {
+    tagCreate(input: $input) {
       id
       name
     }
@@ -19,7 +19,13 @@ RSpec.describe Mutations::Tags::Create, type: :request do
     let(:name) { 'Anteater' }
 
     subject do
-      variables = { site_id: site.id, recording_id: SecureRandom.uuid, name: name }
+      variables = {
+        input: {
+          siteId: site.id, 
+          recordingId: SecureRandom.uuid, 
+          name: 
+        }
+      }
       graphql_request(tag_create_mutation, variables, user)
     end
 
@@ -36,7 +42,13 @@ RSpec.describe Mutations::Tags::Create, type: :request do
     let(:name) { 'Carpet' }
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id, name: name }
+      variables = {
+        input: {
+          siteId: site.id, 
+          recordingId: recording.id, 
+          name:
+        }
+      }
       graphql_request(tag_create_mutation, variables, user)
     end
 
@@ -62,7 +74,13 @@ RSpec.describe Mutations::Tags::Create, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, recording_id: recording.id, name: name }
+      variables = {
+        input: {
+          siteId: site.id, 
+          recordingId: recording.id, 
+          name:
+        }
+      }
       graphql_request(tag_create_mutation, variables, user)
     end
 

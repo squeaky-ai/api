@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_invite_resend_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $team_id: ID!) {
-    teamInviteResend(input: { siteId: $site_id, teamId: $team_id }) {
+  mutation($input: TeamInviteResendInput!) {
+    teamInviteResend(input: $input) {
       id
       role
       status
@@ -27,7 +27,12 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     before { site }
 
     subject do
-      variables = { site_id: site.id, team_id: team_id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team_id 
+        }
+      }
       graphql_request(team_invite_resend_mutation, variables, user)
     end
 
@@ -52,7 +57,12 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, team_id: team_member.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team_member.id 
+        }
+      }
       graphql_request(team_invite_resend_mutation, variables, user)
     end
 
@@ -83,7 +93,12 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id, team_id: team_member.id }
+      variables = { 
+        input: {
+          siteId: site.id, 
+          teamId: team_member.id
+        }
+      }
       graphql_request(team_invite_resend_mutation, variables, user)
     end
 

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_leave_mutation = <<-GRAPHQL
-  mutation($site_id: ID!) {
-    teamLeave(input: { siteId: $site_id }) {
+  mutation($input: TeamLeaveInput!) {
+    teamLeave(input: $input) {
       id
     }
   }
@@ -16,7 +16,11 @@ RSpec.describe Mutations::Teams::Leave, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id
+        }
+      }
       graphql_request(team_leave_mutation, variables, user)
     end
 
@@ -35,7 +39,11 @@ RSpec.describe Mutations::Teams::Leave, type: :request do
     let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
-      variables = { site_id: site.id }
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
       graphql_request(team_leave_mutation, variables, user)
     end
 

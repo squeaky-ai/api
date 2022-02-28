@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'securerandom'
 
 nps_delete_mutation = <<-GRAPHQL
-  mutation($site_id: ID!, $nps_id: ID!) {
-    npsDelete(input: { siteId: $site_id, npsId: $nps_id }) {
+  mutation($input: NpsDeleteInput!) {
+    npsDelete(input: $input) {
       id
     }
   }
@@ -18,8 +18,10 @@ RSpec.describe Mutations::Feedback::NpsDelete, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        nps_id: SecureRandom.uuid
+        input: {
+          siteId: site.id,
+          npsId: SecureRandom.uuid
+        }
       }
       graphql_request(nps_delete_mutation, variables, user)
     end
@@ -40,8 +42,10 @@ RSpec.describe Mutations::Feedback::NpsDelete, type: :request do
 
     subject do
       variables = {
-        site_id: site.id,
-        nps_id: nps.id
+        input: {
+          siteId: site.id,
+          npsId: nps.id
+        }
       }
       graphql_request(nps_delete_mutation, variables, user)
     end

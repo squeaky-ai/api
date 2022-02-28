@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 auth_password_update_mutation = <<-GRAPHQL
-  mutation($password: String!, $reset_password_token: String!) {
-    authPasswordUpdate(input: { password: $password, resetPasswordToken: $reset_password_token }) {
+  mutation($input: AuthPasswordUpdateInput!) {
+    authPasswordUpdate(input: $input) {
       id
       email
     }
@@ -15,8 +15,10 @@ RSpec.describe Mutations::Auth::PasswordUpdate, type: :request do
   context 'when the reset token is invalid' do
     subject do
       variables = {
-        password: 'password',
-        reset_password_token: 'asdasdasd'
+        input: {
+          password: 'password',
+          resetPasswordToken: 'asdasdasd'
+        }
       }
       graphql_request(auth_password_update_mutation, variables, nil)
     end
@@ -33,8 +35,10 @@ RSpec.describe Mutations::Auth::PasswordUpdate, type: :request do
 
     subject do
       variables = {
-        password: 'a',
-        reset_password_token: reset_password_token
+        input: {
+          password: 'a',
+          resetPasswordToken: reset_password_token
+        }
       }
       graphql_request(auth_password_update_mutation, variables, nil)
     end
@@ -51,8 +55,10 @@ RSpec.describe Mutations::Auth::PasswordUpdate, type: :request do
 
     subject do
       variables = {
-        password: 'aaaa!!!!!!@@@@@vvvVVVVV',
-        reset_password_token: reset_password_token
+        input: {
+          password: 'aaaa!!!!!!@@@@@vvvVVVVV',
+          resetPasswordToken: reset_password_token
+        }
       }
       graphql_request(auth_password_update_mutation, variables, nil)
     end

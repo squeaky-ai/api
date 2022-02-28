@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 team_invite_accept_mutation = <<-GRAPHQL
-  mutation($token: String!, $password: String) {
-    teamInviteAccept(input: { token: $token, password: $password }) {
+  mutation($input: TeamInviteAcceptInput!) {
+    teamInviteAccept(input: $input) {
       id
       role
       status
@@ -23,7 +23,12 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     let(:token) { 'sdfdsfdsfdsf' }
 
     subject do
-      variables = { token: token, password: 'dfgdfgdfg' }
+      variables = { 
+        input: {
+          token:, 
+          password: 'dfgdfgdfg' 
+        }
+      }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -38,7 +43,12 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     let(:user) { invite_user } # The team won't exist
 
     subject do
-      variables = { token: user.raw_invitation_token, password: 'sdfsfdsf' }
+      variables = { 
+        input: {
+          token: user.raw_invitation_token, 
+          password: 'sdfsfdsf' 
+        }
+      }
       graphql_request(team_invite_accept_mutation, variables, nil)
     end
 
@@ -57,7 +67,12 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       before { team }
 
       subject do
-        variables = { token: team.user.raw_invitation_token, password: 'sdfsdfsdf' }
+        variables = { 
+          input: {
+            token: team.user.raw_invitation_token, 
+            password: 'sdfsdfsdf' 
+          }
+        }
         graphql_request(team_invite_accept_mutation, variables, nil)
       end
 
@@ -83,7 +98,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
 
       subject do
         team.user.invite_to_team!
-        variables = { token: team.user.reload.raw_invitation_token }
+        variables = { 
+          input: {
+            token: team.user.reload.raw_invitation_token 
+          }
+        }
         graphql_request(team_invite_accept_mutation, variables, nil)
       end
 
