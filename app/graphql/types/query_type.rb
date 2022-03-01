@@ -21,6 +21,8 @@ module Types
 
     field :users_admin, [Types::Users::User, { null: true }], null: false
 
+    field :active_users_admin, Integer, null: false
+
     field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
@@ -68,6 +70,13 @@ module Types
       raise Errors::Unauthorized unless context[:current_user]&.superuser?
 
       User.all
+    end
+
+    def active_users_admin
+      raise Errors::Unauthorized unless context[:current_user]&.superuser?
+
+      keys = Redis.current.keys('active_user_count:*')
+      keys.inject(0) { |sum, key| sum + Redis.current.get(key).to_i }
     end
 
     def user_invitation(token:)
