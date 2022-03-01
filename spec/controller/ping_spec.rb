@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PingController, type: :controller do
-  describe 'GET /index' do
+  describe 'GET /' do
     context 'when the database is available' do
       it 'returns PONG' do
         get :index
