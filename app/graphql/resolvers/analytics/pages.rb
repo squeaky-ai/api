@@ -9,31 +9,35 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
 
       def resolve(page:, size:)
-        pages = Recording
-                .where(
-                  'recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)',
-                  object[:site_id],
-                  object[:from_date],
-                  object[:to_date],
-                  [Recording::ACTIVE, Recording::DELETED]
-                )
-                .joins(:pages)
-                .select('pages.url, count(pages.url) page_count, AVG(pages.exited_at - pages.entered_at) page_avg')
-                .order('page_count DESC')
-                .page(page)
-                .per(size)
-                .group('pages.url')
+        results = pages(page, size)
 
         {
-          items: format_results(pages),
+          items: format_results(results),
           pagination: {
             page_size: size,
-            total: pages.total_count
+            total: results.total_count
           }
         }
       end
 
       private
+
+      def pages(page, size)
+        Recording
+          .where(
+            'recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)',
+            object[:site_id],
+            object[:from_date],
+            object[:to_date],
+            [Recording::ACTIVE, Recording::DELETED]
+          )
+          .joins(:pages)
+          .select('pages.url, count(pages.url) page_count, AVG(pages.exited_at - pages.entered_at) page_avg')
+          .order('page_count DESC')
+          .page(page)
+          .per(size)
+          .group('pages.url')
+      end
 
       def format_results(pages)
         total = total_pages_count
