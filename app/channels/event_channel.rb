@@ -29,16 +29,13 @@ class EventChannel < ApplicationCable::Channel
   private
 
   def incr_active_user_count!
-    key = "active_user_count::#{current_visitor[:site_id]}"
-
-    Redis.current.incr(key)
+    Redis.current.zincrby('active_user_count', 1, current_visitor[:site_id])
   end
 
   def decr_active_user_count!
-    key = "active_user_count::#{current_visitor[:site_id]}"
-    count = Redis.current.get(key).to_i
+    count = Redis.current.zscore('active_user_count', current_visitor[:site_id])
 
-    Redis.current.decr(key) if count.positive?
+    Redis.current.zincrby('active_user_count', -1, current_visitor[:site_id]) if count.positive?
   end
 
   def session_key

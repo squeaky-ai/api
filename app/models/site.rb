@@ -95,8 +95,8 @@ class Site < ApplicationRecord
   end
 
   def active_user_count
-    count = Redis.current.zmscore('active_user_count', uuid)
-    count.first.to_i
+    count = Redis.current.zscore('active_user_count', uuid)
+    count.to_i
   end
 
   def nps_enabled?
