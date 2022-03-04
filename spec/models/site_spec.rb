@@ -319,7 +319,7 @@ RSpec.describe Site, type: :model do
       let(:site) { create(:site_with_team, owner: user) }
       
       before do
-        allow(Redis.current).to receive(:get).with("active_user_count::#{site.uuid}").and_return(5)
+        Redis.current.zincrby('active_user_count', 5, site.uuid)
       end
   
       subject { site.active_user_count }
