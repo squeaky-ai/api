@@ -88,40 +88,19 @@ module Resolvers
       end
 
       def click_events(from_date, to_date, page, device)
-        # sql = <<-SQL
-        #   SELECT
-        #     DISTINCT(selector) AS selector,
-        #     COUNT(*) count
-        #   FROM
-        #     clicks
-        #   WHERE
-        #     site_id = ? AND
-        #     viewport_x #{device_expression(device)} AND
-        #     to_timestamp(clicked_at / 1000)::date BETWEEN ? AND ? AND
-        #     page_url = ?
-        #   GROUP BY selector
-        #   ORDER BY count DESC
-        # SQL
-
         sql = <<-SQL
           SELECT
-            DISTINCT(COALESCE(events.data->>'selector', 'html > body')) AS selector,
-            COUNT(*)
+            DISTINCT(selector) AS selector,
+            COUNT(*) count
           FROM
-            events
-          INNER JOIN
-            recordings ON recordings.id = events.recording_id
+            clicks
           WHERE
-            recordings.site_id = ? AND
-            recordings.viewport_x #{device_expression(device)} AND
-            recordings.status IN (0, 2) AND
-            events.event_type = 3 AND
-            to_timestamp(events.timestamp / 1000)::date BETWEEN ? AND ? AND
-            (events.data->>'source')::integer = 2 AND
-            (events.data->>'type')::integer = 2 AND
-            (events.data->>'href')::text = ?
+            site_id = ? AND
+            viewport_x #{device_expression(device)} AND
+            to_timestamp(clicked_at / 1000)::date BETWEEN ? AND ? AND
+            page_url = ?
           GROUP BY selector
-          ORDER BY count DESC;
+          ORDER BY count DESC
         SQL
 
         variables = [
