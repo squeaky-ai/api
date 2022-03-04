@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_11_100834) do
+ActiveRecord::Schema.define(version: 2022_03_04_090805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,10 +71,6 @@ ActiveRecord::Schema.define(version: 2022_02_11_100834) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["site_id"], name: "index_feedback_on_site_id"
-  end
-
-  create_table "migrations", force: :cascade do |t|
-    t.bigint "version", null: false
   end
 
   create_table "notes", force: :cascade do |t|
@@ -140,15 +136,6 @@ ActiveRecord::Schema.define(version: 2022_02_11_100834) do
   create_table "recordings_tags", id: false, force: :cascade do |t|
     t.bigint "recording_id", null: false
     t.bigint "tag_id", null: false
-  end
-
-  create_table "screenshots", force: :cascade do |t|
-    t.string "url"
-    t.string "image_url"
-    t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["site_id"], name: "index_screenshots_on_site_id"
   end
 
   create_table "sentiments", force: :cascade do |t|
@@ -264,14 +251,13 @@ ActiveRecord::Schema.define(version: 2022_02_11_100834) do
       SELECT COALESCE((events.data ->> 'selector'::text), 'html > body'::text) AS selector,
       (events.data ->> 'x'::text) AS coordinates_x,
       (events.data ->> 'y'::text) AS coordinates_y,
+      (events.data ->> 'href'::text) AS page_url,
       events."timestamp" AS clicked_at,
       recordings.viewport_x,
       recordings.viewport_y,
-      pages.url AS page_url,
       recordings.site_id
-     FROM ((pages
-       LEFT JOIN recordings ON ((recordings.id = pages.recording_id)))
-       LEFT JOIN events ON ((events.recording_id = recordings.id)))
-    WHERE ((recordings.status = ANY (ARRAY[0, 2])) AND (events."timestamp" >= pages.entered_at) AND (events."timestamp" <= pages.exited_at) AND (events.event_type = 3) AND (((events.data ->> 'source'::text))::integer = 2) AND (((events.data ->> 'type'::text))::integer = 2));
+     FROM (events
+       JOIN recordings ON ((recordings.id = events.recording_id)))
+    WHERE ((recordings.status = ANY (ARRAY[0, 2])) AND (events.event_type = 3) AND (((events.data ->> 'source'::text))::integer = 2) AND (((events.data ->> 'type'::text))::integer = 2));
   SQL
 end
