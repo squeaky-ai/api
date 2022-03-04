@@ -21,7 +21,7 @@ module Types
 
     field :users_admin, [Types::Users::User, { null: true }], null: false
 
-    field :active_users_admin, Integer, null: false
+    field :active_visitors_admin, [Types::Admin::ActiveVisitorCount, { null: true }], null: false
 
     field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
@@ -72,11 +72,17 @@ module Types
       User.all
     end
 
-    def active_users_admin
+    def active_visitors_admin
       raise Errors::Unauthorized unless context[:current_user]&.superuser?
 
-      keys = Redis.current.keys('active_user_count:*')
-      keys.inject(0) { |sum, key| sum + Redis.current.get(key).to_i }
+      items = Redis.current.zrange('active_user_count', 0, -1, with_scores: true)
+
+      items.map do |slice|
+        {
+          site_id: slice[0],
+          count: slice[1]
+        }
+      end
     end
 
     def user_invitation(token:)
