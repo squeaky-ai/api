@@ -262,7 +262,7 @@ class WeeklyReview
     previous_week = Nps.get_score_between(@site_id, from_date, to_date)
 
     {
-      trend: current_week - previous_week,
+      trend: to_two_decimal_places(current_week - previous_week),
       direction: current_week >= previous_week ? 'up' : 'down'
     }
   end
@@ -290,13 +290,13 @@ class WeeklyReview
     previous_week = feedback_sentiment(from_date, to_date)[:score]
 
     {
-      trend: current_week - previous_week,
+      trend: to_two_decimal_places(current_week - previous_week),
       direction: current_week >= previous_week ? 'up' : 'down'
     }
   end
 
   def to_two_decimal_places(num)
-    '%.2f' % num.to_f
+    format('%.2f', num.to_f)
   end
 
   def milliseconds_to_mmss(milliseconds = 0)

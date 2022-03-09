@@ -174,7 +174,7 @@ RSpec.describe WeeklyReview do
         },
         feedback_nps_trend: {
           direction: 'up', 
-          trend: 33.33
+          trend: '33.33'
         },
         feedback_sentiment: {
           enabled: true, 
@@ -182,7 +182,7 @@ RSpec.describe WeeklyReview do
         },
         feedback_sentiment_trend: {
           direction: 'up', 
-          trend: 4.33
+          trend: '4.33'
         }
       )
     end

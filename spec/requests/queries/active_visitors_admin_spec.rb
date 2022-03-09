@@ -42,6 +42,8 @@ RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
     let(:site_3_id) { SecureRandom.uuid }
 
     before do
+      Redis.current.del('active_user_count')
+
       Redis.current.zincrby('active_user_count', 1, site_1_id)
       Redis.current.zincrby('active_user_count', 5, site_2_id)
       Redis.current.zincrby('active_user_count', 3, site_3_id)
