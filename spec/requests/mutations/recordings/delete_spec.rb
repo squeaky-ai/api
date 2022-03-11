@@ -54,5 +54,9 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
     it 'soft deletes the recording' do
       expect { subject }.to change { Recording.find_by(id: recording.id).deleted? }.from(false).to(true)
     end
+
+    it 'updates the counter cache' do
+      expect { subject }.to change { Visitor.find(recording.visitor_id).recordings_count }.from(1).to(0)
+    end
   end
 end

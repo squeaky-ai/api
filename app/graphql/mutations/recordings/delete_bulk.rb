@@ -21,7 +21,13 @@ module Mutations
 
         return [] if recordings.size.zero?
 
-        recordings.update_all(status: Recording::DELETED)
+        ActiveRecord::Base.transaction do
+          recordings.each do |recording|
+            # Manually update the counter cache for soft deleted
+            Visitor.decrement_counter(:recordings_count, recording.visitor.id)
+            recordings.update(status: Recording::DELETED)
+          end
+        end
 
         []
       end

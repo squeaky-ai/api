@@ -21,7 +21,11 @@ module Mutations
 
         raise Errors::RecordingNotFound unless recording
 
-        recording.update!(status: Recording::DELETED)
+        ActiveRecord::Base.transaction do
+          # Manually update the counter cache for soft deleted
+          Visitor.decrement_counter(:recordings_count, recording.visitor.id)
+          recording.update!(status: Recording::DELETED)
+        end
 
         nil
       end

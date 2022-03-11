@@ -69,5 +69,11 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     it 'soft deletes the recordings' do
       expect { subject }.to change { site.recordings.reload.where(status: Recording::ACTIVE).size }.from(3).to(1)
     end
+
+    it 'updates the counter cache' do
+      expect { subject }.to change { recording_1.visitor.reload.recordings_count }.from(1).to(0)
+        .and change { recording_2.visitor.reload.recordings_count }.from(1).to(0)
+        .and change { recording_3.visitor.reload.recordings_count }.by(0)
+    end
   end
 end
