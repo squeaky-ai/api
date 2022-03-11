@@ -3,13 +3,14 @@
 module Resolvers
   module Analytics
     class VisitsAt < Resolvers::Base
-      type [GraphQL::Types::ISO8601DateTime, { null: true }], null: false
+      type [Types::Analytics::VisitAt, { null: true }], null: false
 
       def resolve
         sql = <<-SQL
-          SELECT to_timestamp(disconnected_at / 1000) disconnected_at
+          SELECT to_char(to_timestamp(disconnected_at / 1000), 'Dy,HH24') day_hour, COUNT(*)
           FROM recordings
           WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          GROUP BY day_hour;
         SQL
 
         variables = [
@@ -20,7 +21,16 @@ module Resolvers
         ]
 
         results = Sql.execute(sql, variables)
-        results.map { |r| r['disconnected_at'] }
+
+        results.map do |r|
+          day, hour = r['day_hour'].split(',')
+
+          {
+            day: day.strip,
+            hour: hour.to_i,
+            count: r['count']
+          }
+        end
       end
     end
   end

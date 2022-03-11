@@ -269,7 +269,7 @@ RSpec.describe Recording, type: :model do
       subject { recording.country_name }
 
       it 'returns nil' do
-        expect(subject).to eq nil
+        expect(subject).to eq 'Unknown'
       end
     end
 

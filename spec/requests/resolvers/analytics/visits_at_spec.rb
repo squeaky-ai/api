@@ -6,7 +6,11 @@ analytics_visits_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        visitsAt
+        visitsAt {
+          day
+          hour
+          count
+        }
       }
     }
   }
@@ -35,9 +39,10 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
     before do
       visitor = create(:visitor)
 
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 7, 3, 0, 0).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
+      create(:recording, disconnected_at: Time.new(2021, 8, 5, 9, 0, 0).to_i * 1000, site: site)
     end
 
     subject do
@@ -47,7 +52,25 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
 
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
-      expect(response['visitsAt']).to match_array(['2021-08-04T23:00:00+00:00', '2021-08-05T23:00:00+00:00', '2021-08-06T23:00:00+00:00'])
+      expect(response['visitsAt']).to match_array(
+        [
+          {
+            'count' => 1,
+            'day' => 'Thu', 
+            'hour' => 8
+          },
+          {
+            'count' => 2,
+            'day' => 'Fri', 
+            'hour' => 15
+          },
+          {
+            'count' => 1, 
+            'day' => 'Sat',
+            'hour' => 2
+          }
+        ]
+      )
     end
   end
 end
