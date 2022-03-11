@@ -40,6 +40,7 @@ RSpec.describe Resolvers::Analytics::Countries, type: :request do
       create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, country_code: 'SE', site: site)
       create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'GB', site: site)
       create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'FR', site: site)
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'ZZ', site: site)
       create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'GB', site: site)
     end
 
@@ -62,6 +63,10 @@ RSpec.describe Resolvers::Analytics::Countries, type: :request do
           },
           {
             'name' => 'France',
+            'count' => 1
+          },
+          {
+            'name' => 'Unknown',
             'count' => 1
           }
         ]

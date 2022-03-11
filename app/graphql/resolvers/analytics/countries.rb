@@ -18,7 +18,7 @@ module Resolvers
 
       def countries
         sql = <<-SQL
-          SELECT DISTINCT country_code, COUNT(*) country_code_code
+          SELECT DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
           FROM recordings
           WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
           GROUP BY country_code

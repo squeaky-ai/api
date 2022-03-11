@@ -8,6 +8,6 @@ class Countries
   def self.get_country(country_code = '')
     return nil if country_code.nil? || country_code.empty?
 
-    COUNTRIES[country_code]
+    COUNTRIES[country_code] || 'Unknown'
   end
 end
