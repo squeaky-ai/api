@@ -20,6 +20,7 @@ module Types
       field :visits_at, resolver: Resolvers::Analytics::VisitsAt
       field :page_views, resolver: Resolvers::Analytics::PageViews
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
+      field :countries, resolver: Resolvers::Analytics::Countries
     end
   end
 end
