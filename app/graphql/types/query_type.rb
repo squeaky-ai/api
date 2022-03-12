@@ -23,6 +23,8 @@ module Types
 
     field :active_visitors_admin, [Types::Admin::ActiveVisitorCount, { null: true }], null: false
 
+    field :blog_images_admin, [String, { null: true }], null: false
+
     field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
@@ -83,6 +85,15 @@ module Types
           count: slice[1]
         }
       end
+    end
+
+    def blog_images_admin
+      raise Errors::Unauthorized unless context[:current_user]&.superuser?
+
+      client = Aws::S3::Client.new(region: 'eu-west-1')
+      items = client.list_objects_v2(bucket: 'cdn.squeaky.ai', prefix: 'blog/').contents.map(&:key)
+      items.delete('blog/')
+      items
     end
 
     def user_invitation(token:)
