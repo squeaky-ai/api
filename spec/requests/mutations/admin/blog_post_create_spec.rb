@@ -26,9 +26,7 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
         metaImage: 'https://cdn.squeaky.ai/blog/cat-in-space.jpg',
         metaDescription: 'Meta',
         slug: '/category/hello',
-        body: 'Hello',
-        createdAt: Time.now.iso8601,
-        updatedAt: Time.now.iso8601
+        body: 'Hello'
       }
     }
 

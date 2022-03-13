@@ -16,8 +16,6 @@ module Mutations
       argument :meta_description, String, required: true
       argument :slug, String, required: true
       argument :body, String, required: true
-      argument :created_at, GraphQL::Types::ISO8601DateTime, required: true
-      argument :updated_at, GraphQL::Types::ISO8601DateTime, required: true
 
       type Types::Blog::Post
 

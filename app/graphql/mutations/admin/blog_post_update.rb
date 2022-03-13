@@ -17,8 +17,6 @@ module Mutations
       argument :meta_description, String, required: false
       argument :slug, String, required: false
       argument :body, String, required: false
-      argument :created_at, String, required: false
-      argument :updated_at, String, required: false
 
       type Types::Blog::Post
 
