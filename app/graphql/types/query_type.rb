@@ -41,7 +41,7 @@ module Types
 
     field :blog_posts, Types::Blog::Posts, null: false do
       argument :category, String, required: false
-      argument :tags, [String], required: false
+      argument :tags, [String], required: false, default_value: []
     end
 
     def user

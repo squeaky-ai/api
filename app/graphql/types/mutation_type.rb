@@ -5,6 +5,9 @@ module Types
     # Admin
     field :admin_blog_sign_image, mutation: Mutations::Admin::BlogSignImage
     field :admin_blog_delete_image, mutation: Mutations::Admin::BlogDeleteImage
+    field :admin_blog_post_create, mutation: Mutations::Admin::BlogPostCreate
+    field :admin_blog_post_delete, mutation: Mutations::Admin::BlogPostDelete
+    field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm

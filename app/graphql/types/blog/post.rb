@@ -5,6 +5,7 @@ module Types
     class Post < Types::BaseObject
       graphql_name 'BlogPost'
 
+      field :id, ID, null: false
       field :title, String, null: false
       field :tags, [String], null: false
       field :author, Types::Blog::Author, null: false
