@@ -35,6 +35,10 @@ module Types
       argument :site_id, String, required: true
     end
 
+    field :blog_post, Types::Blog::Post, null: true do
+      argument :slug, String, required: true
+    end
+
     field :blog_posts, Types::Blog::Posts, null: false do
       argument :category, String, required: false
       argument :tags, [String], required: false
@@ -111,6 +115,14 @@ module Types
 
     def feedback(arguments)
       Site.find_by(uuid: arguments[:site_id])&.feedback
+    end
+
+    def blog_post(arguments)
+      blog = ::Blog.find_by(slug: arguments[:slug])
+
+      return nil if blog&.draft && !context[:current_user]&.superuser?
+
+      blog
     end
 
     def blog_posts(arguments)
