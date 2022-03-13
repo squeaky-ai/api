@@ -35,6 +35,11 @@ module Types
       argument :site_id, String, required: true
     end
 
+    field :blog_posts, Types::Blog::Posts, null: false do
+      argument :category, String, required: false
+      argument :tags, [String], required: false
+    end
+
     def user
       context[:current_user]
     end
@@ -106,6 +111,22 @@ module Types
 
     def feedback(arguments)
       Site.find_by(uuid: arguments[:site_id])&.feedback
+    end
+
+    def blog_posts(arguments)
+      categories = ::Blog.select('DISTINCT(category)').map(&:category)
+      tags = ::Blog.select('DISTINCT(UNNEST(tags)) tag').map(&:tag)
+
+      posts = context[:current_user]&.superuser? ? ::Blog.all : ::Blog.where(draft: false)
+
+      posts = posts.where(category: arguments[:category]) if arguments[:category]
+      posts = posts.where(tags: arguments[:tags]) unless arguments[:tags].empty?
+
+      {
+        categories:,
+        tags:,
+        posts:
+      }
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_04_090805) do
+ActiveRecord::Schema.define(version: 2022_03_13_085819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,20 @@ ActiveRecord::Schema.define(version: 2022_03_04_090805) do
     t.string "billing_email"
     t.index ["site_id"], name: "index_billing_on_site_id"
     t.index ["user_id"], name: "index_billing_on_user_id"
+  end
+
+  create_table "blog", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "tags", default: [], array: true
+    t.string "author", null: false
+    t.string "category", null: false
+    t.boolean "draft", default: true, null: false
+    t.string "meta_image", null: false
+    t.string "meta_description", null: false
+    t.string "slug", null: false
+    t.string "body", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "communications", force: :cascade do |t|

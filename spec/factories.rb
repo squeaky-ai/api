@@ -113,4 +113,16 @@ FactoryBot.define do
     site { association :site }
     user { association :user }
   end
+
+  factory :blog do
+    title { 'Title' }
+    tags { ['Tag 1', 'Tag 2'] }
+    author { 'lewis' }
+    category { 'Category' }
+    draft { false }
+    meta_image { 'https://cdn.squeaky.ai/image.png' }
+    meta_description { 'Meta Description' }
+    slug { '/category/title' }
+    body { 'Hello world' }
+  end
 end
