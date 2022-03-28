@@ -6,6 +6,7 @@ module Types
       graphql_name 'AnalyticsCountry'
 
       field :name, String, null: false
+      field :code, String, null: false
       field :count, Integer, null: false
     end
   end

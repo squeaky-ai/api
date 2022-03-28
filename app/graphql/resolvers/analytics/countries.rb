@@ -9,6 +9,7 @@ module Resolvers
         countries.map do |country|
           {
             name: ::Countries.get_country(country['country_code']),
+            code: country['country_code'],
             count: country['country_code_code']
           }
         end
