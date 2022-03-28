@@ -10,6 +10,9 @@ module Types
       argument :first_visited, Types::Common::FiltersDate, required: true
       argument :last_activity, Types::Common::FiltersDate, required: true
       argument :languages, [String], required: true
+      argument :visited_pages, [String], required: true
+      argument :unvisited_pages, [String], required: true
+      argument :referrers, [String], required: true
     end
   end
 end

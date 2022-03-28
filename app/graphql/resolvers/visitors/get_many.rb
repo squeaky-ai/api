@@ -55,6 +55,9 @@ module Resolvers
           visitors = filter_by_language(visitors, filters)
           visitors = filter_by_first_visited(visitors, filters)
           visitors = filter_by_last_activity(visitors, filters)
+          visitors = filter_by_visited_pages(visitors, filters)
+          visitors = filter_by_unvisited_pages(visitors, filters)
+          visitors = filter_by_referrers(visitors, filters)
         end
 
         visitors
@@ -167,6 +170,56 @@ module Resolvers
         locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
 
         visitors.where('LOWER(recordings.locale) IN (?)', locales)
+      end
+
+      # Allow filtering of visitors that include certain
+      # pages
+      def filter_by_visited_pages(visitors, filters)
+        return visitors unless filters.visited_pages.any?
+
+        sql = <<-SQL
+          ? IN (
+            SELECT pages.url
+            FROM pages
+            INNER JOIN recordings ON pages.recording_id = recordings.id
+            WHERE recordings.visitor_id = visitors.id
+          )
+        SQL
+
+        filters.visited_pages.each { |page| visitors = visitors.where(sql, page) }
+        visitors
+      end
+
+      # Allow filtering of visitors that exclude certain
+      # pages
+      def filter_by_unvisited_pages(visitors, filters)
+        return visitors unless filters.unvisited_pages.any?
+
+        sql = <<-SQL
+          ? NOT IN (
+            SELECT pages.url
+            FROM pages
+            INNER JOIN recordings ON pages.recording_id = recordings.id
+            WHERE recordings.visitor_id = visitors.id
+          )
+        SQL
+
+        filters.unvisited_pages.each { |page| visitors = visitors.where(sql, page) }
+        visitors
+      end
+
+      # Adds a filter that lets users show only visitors
+      # that were from one of the referrers
+      def filter_by_referrers(visitors, filters)
+        return visitors unless filters.referrers.any?
+
+        has_none = filters.referrers.any? { |r| r == 'none' }
+
+        if has_none
+          visitors.where('recordings.referrer IS NULL OR recordings.referrer IN (?)', filters.referrers)
+        else
+          visitors.where('recordings.referrer IN (?)', filters.referrers)
+        end
       end
     end
   end
