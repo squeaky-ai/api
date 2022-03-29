@@ -5,7 +5,7 @@
 <p>Total visitors: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors"><%= @data[:total_visitors] %></a> <i style="color:#A0A0A0">(<%= @data[:new_visitors] %> new)</i><br />
 Total recordings: <a href="<%= @web_url %>/app/sites/<%= @site.id %>/recordings"><%= @data[:total_recordings] %></a> <i style="color:#A0A0A0">(<%= @data[:new_recordings] %> new)</i><br />
 Average session duration: <b><%= @data[:average_session_duration][:formatted] %></b> <i style="color:#A0A0A0">(trending <%= @data[:average_session_duration_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:average_session_duration_trend][:direction] } %><%= @data[:average_session_duration_trend][:trend] %>)</i><br />
-Pages per session: <b><%= @data[:pages_per_session][:formatted] %></b> <i style="color:#A0A0A0">(trending <%= @data[:pages_per_session_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:pages_per_session_trend][:direction] } %><%= @data[:pages_per_session_trend][:trend] %>)</i><br />
+Pages per session: <b><%= @data[:pages_per_session][:formatted] %></b> <i style="color:#A0A0A0">(trending <%= @data[:pages_per_session_trend][:direction] %> <%= render 'shared/trend', locals: { direction: @data[:pages_per_session_trend][:direction] } %><%= @data[:pages_per_session_trend][:trend] %>)</i></p>
 
 <p><b>Trends</b></p>
 <p>Busiest day: <b><%= @data[:busiest_day] %></b><br />
