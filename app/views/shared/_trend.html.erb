@@ -1,5 +1,7 @@
-<% if locals[:direction] == 'up' %>
-  <span style="color: #32D05F; font-size: 13px; vertical-align: middle;">↑</span>
+<% if locals[:trend].to_i.zero? %>
+  <i style="color:#A0A0A0">(no change)</i>
+<% elsif locals[:direction] == 'up' %>
+  <i style="color:#A0A0A0">(trending up <span style="color: #32D05F; font-size: 13px; vertical-align: middle;">↑</span><%= locals[:trend] %>)</i>
 <% else %>
-  <span style="color: #F96155; font-size: 13px; vertical-align: middle;">↓</span>
+  <i style="color:#A0A0A0">(trending down <span style="color: #F96155; font-size: 13px; vertical-align: middle;">↓</span><%= locals[:trend] %>)</i>
 <% end %>
