@@ -1,4 +1,4 @@
-<% if locals[:trend].to_i.zero? %>
+<% if locals[:trend].scan(/\d/).join('').to_i.zero? %>
   <i style="color:#A0A0A0">(no change)</i>
 <% elsif locals[:direction] == 'up' %>
   <i style="color:#A0A0A0">(trending up <span style="color: #32D05F; font-size: 13px; vertical-align: middle;">↑</span><%= locals[:trend] %>)</i>
