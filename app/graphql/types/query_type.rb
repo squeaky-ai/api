@@ -86,7 +86,7 @@ module Types
     def active_visitors_admin
       raise Errors::Unauthorized unless context[:current_user]&.superuser?
 
-      items = Redis.current.zrange('active_user_count', 0, -1, with_scores: true)
+      items = Cache.redis.zrange('active_user_count', 0, -1, with_scores: true)
 
       items.map do |slice|
         {

@@ -3,7 +3,7 @@
 class PingController < ApplicationController
   def index
     ActiveRecord::Base.connection.verify!
-    Redis.current.ping
+    Cache.redis.ping
     render plain: 'PONG'
   rescue StandardError => e
     logger.error(e)

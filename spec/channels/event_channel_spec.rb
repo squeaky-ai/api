@@ -13,13 +13,13 @@ RSpec.describe EventChannel, :type => :channel do
     end
 
     before do
-      Redis.current.zincrby('active_user_count', 5, current_visitor[:site_id])
+      Cache.redis.zincrby('active_user_count', 5, current_visitor[:site_id])
     end
 
     it 'increments the active user count' do
       stub_connection current_visitor: current_visitor
 
-      expect { subscribe }.to change { Redis.current.zscore('active_user_count', current_visitor[:site_id]).to_i }.from(5).to(6)
+      expect { subscribe }.to change { Cache.redis.zscore('active_user_count', current_visitor[:site_id]).to_i }.from(5).to(6)
     end
   end
 
@@ -39,18 +39,18 @@ RSpec.describe EventChannel, :type => :channel do
 
       subscribe
 
-      expect { subscription.unsubscribe_from_channel }.to change { Redis.current.zscore('active_user_count', current_visitor[:site_id]).to_i }.from(1).to(0)
+      expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.zscore('active_user_count', current_visitor[:site_id]).to_i }.from(1).to(0)
     end
 
     it 'sets the expiry on the events' do
       stub_connection current_visitor: current_visitor
 
-      Redis.current.lpush(events_key, "{}")
+      Cache.redis.lpush(events_key, "{}")
 
       subscribe
       subscription.unsubscribe_from_channel
 
-      expect(Redis.current.ttl(events_key)).to eq 3600
+      expect(Cache.redis.ttl(events_key)).to eq 3600
     end
 
     it 'enqueues the job' do
@@ -85,7 +85,7 @@ RSpec.describe EventChannel, :type => :channel do
 
       events.each { |e| perform :event, **JSON.parse(e) }
 
-      response = Redis.current.lrange(events_key, 0, -1)
+      response = Cache.redis.lrange(events_key, 0, -1)
 
       expect(response.size).to eq events.size
     end

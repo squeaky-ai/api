@@ -319,7 +319,7 @@ RSpec.describe Site, type: :model do
       let(:site) { create(:site_with_team, owner: user) }
       
       before do
-        Redis.current.zincrby('active_user_count', 5, site.uuid)
+        Cache.redis.zincrby('active_user_count', 5, site.uuid)
       end
   
       subject { site.active_user_count }

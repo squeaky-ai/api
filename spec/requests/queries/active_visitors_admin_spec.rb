@@ -26,7 +26,7 @@ RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
   context 'when the user is a superuser but there are no active visitors' do
     let(:user) { create(:user, superuser: true) }
 
-    before { Redis.current.del('active_user_count') }
+    before { Cache.redis.del('active_user_count') }
 
     it 'returns all the sites' do
       response = graphql_request(active_visitors_admin_query, {}, user)
@@ -42,11 +42,11 @@ RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
     let(:site_3_id) { SecureRandom.uuid }
 
     before do
-      Redis.current.del('active_user_count')
+      Cache.redis.del('active_user_count')
 
-      Redis.current.zincrby('active_user_count', 1, site_1_id)
-      Redis.current.zincrby('active_user_count', 5, site_2_id)
-      Redis.current.zincrby('active_user_count', 3, site_3_id)
+      Cache.redis.zincrby('active_user_count', 1, site_1_id)
+      Cache.redis.zincrby('active_user_count', 5, site_2_id)
+      Cache.redis.zincrby('active_user_count', 3, site_3_id)
     end
 
     it 'returns all the sites' do

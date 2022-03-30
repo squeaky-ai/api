@@ -38,7 +38,7 @@ RSpec.describe SiteMailer, type: :mailer do
           formatted: '1.00'
         },
         pages_per_session_trend: {
-          trend: 1,
+          trend: '1',
           direction: 'up'
         },
         busiest_day: 'Monday',
@@ -56,7 +56,7 @@ RSpec.describe SiteMailer, type: :mailer do
         },
         feedback_nps_trend: {
           direction: 'up', 
-          trend: 33.33
+          trend: '33.33'
         },
         feedback_sentiment: {
           enabled: true, 
@@ -64,7 +64,7 @@ RSpec.describe SiteMailer, type: :mailer do
         },
         feedback_sentiment_trend: {
           direction: 'up', 
-          trend: 4.33
+          trend: '4.33'
         }
       }
     end

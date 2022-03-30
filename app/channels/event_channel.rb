@@ -19,23 +19,23 @@ class EventChannel < ApplicationCable::Channel
     # to consider a user truly gone
     RecordingSaveJob.set(wait: 30.minutes).perform_later(current_visitor)
 
-    Redis.current.expire("events::#{session_key}", 3600)
+    Cache.redis.expire("events::#{session_key}", 3600)
   end
 
   def event(data)
-    Redis.current.lpush("events::#{session_key}", data['payload'].to_json)
+    Cache.redis.lpush("events::#{session_key}", data['payload'].to_json)
   end
 
   private
 
   def incr_active_user_count!
-    Redis.current.zincrby('active_user_count', 1, current_visitor[:site_id])
+    Cache.redis.zincrby('active_user_count', 1, current_visitor[:site_id])
   end
 
   def decr_active_user_count!
-    count = Redis.current.zscore('active_user_count', current_visitor[:site_id])
+    count = Cache.redis.zscore('active_user_count', current_visitor[:site_id])
 
-    Redis.current.zincrby('active_user_count', -1, current_visitor[:site_id]) if count.positive?
+    Cache.redis.zincrby('active_user_count', -1, current_visitor[:site_id]) if count.positive?
   end
 
   def session_key

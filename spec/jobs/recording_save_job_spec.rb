@@ -20,8 +20,8 @@ RSpec.describe RecordingSaveJob, type: :job do
     before do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow(Redis.current).to receive(:del)
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:del)
     end
 
     subject { described_class.perform_now(event) }
@@ -77,7 +77,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'cleans up the redis data' do
       subject
-      expect(Redis.current).to have_received(:del)
+      expect(Cache.redis).to have_received(:del)
     end
   end
 
@@ -98,7 +98,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
     subject { described_class.perform_now(event) }
@@ -125,7 +125,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
     subject { described_class.perform_now(event) }
@@ -149,7 +149,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     before do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
       allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
     end
 
@@ -176,7 +176,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     before do
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
       allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
 
       create(:billing, site: site, status: Billing::INVALID)
@@ -206,7 +206,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       site.update(verified_at: nil)
       events_fixture = File.read("#{__dir__}/../fixtures/events.json")
 
-      allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
     end
 
     subject { described_class.perform_now(event) }

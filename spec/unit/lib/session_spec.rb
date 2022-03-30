@@ -14,7 +14,7 @@ RSpec.describe Session do
 
   before do
     events_fixture = File.read("#{__dir__}/../../fixtures/events.json")
-    allow(Redis.current).to receive(:lrange).and_return(JSON.parse(events_fixture))
+    allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
   end
 
   let(:instance) { Session.new(message) }

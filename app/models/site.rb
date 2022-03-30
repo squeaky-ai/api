@@ -95,7 +95,7 @@ class Site < ApplicationRecord
   end
 
   def active_user_count
-    count = Redis.current.zscore('active_user_count', uuid)
+    count = Cache.redis.zscore('active_user_count', uuid)
     count.to_i
   end
 

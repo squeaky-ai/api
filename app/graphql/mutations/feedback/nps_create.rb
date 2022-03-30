@@ -32,7 +32,7 @@ module Mutations
 
         key = "events::#{site_id}::#{visitor_id}::#{session_id}"
 
-        Redis.current.lpush(key, event.to_json)
+        Cache.redis.lpush(key, event.to_json)
 
         { message: 'NPS score saved' }
       end

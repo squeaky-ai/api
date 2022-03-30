@@ -44,7 +44,7 @@ RSpec.describe Mutations::Feedback::SentimentCreate, type: :request do
   it 'adds the score to the redis list' do
     subject
 
-    value = Redis.current.lrange("events::#{site_id}::#{visitor_id}::#{session_id}", 0, 1)
+    value = Cache.redis.lrange("events::#{site_id}::#{visitor_id}::#{session_id}", 0, 1)
     expect(value.first).to eq("{\"key\":\"sentiment\",\"value\":{\"type\":5,\"data\":{\"score\":5,\"comment\":\"Looks alright\"},\"timestamp\":1645723427000}}")
   end
 end

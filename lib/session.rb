@@ -107,7 +107,7 @@ class Session
   end
 
   def clean_up!
-    Redis.current.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
+    Cache.redis.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
   end
 
   private
@@ -115,8 +115,8 @@ class Session
   def fetch_and_process_events
     key = "events::#{@site_id}::#{@visitor_id}::#{@session_id}"
 
-    events = Redis
-             .current
+    events = Cache
+             .redis
              .lrange(key, 0, -1)
              .map { |e| parse_event_and_ignore_errors(e) }
              .filter { |e| !e.nil? }
