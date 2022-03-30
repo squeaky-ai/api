@@ -1,108 +1,219 @@
-plan_0:
-  id: 0
-  name: Free
-  max_monthly_recordings: 1000
-  pricing:
-    - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
-      currency: GBP
-      amount: 0
-    - id: price_1KQvNFLJ9zG7aLW855a0hFk7
-      currency: EUR
-      amount: 0
-    - id: price_1KQvNFLJ9zG7aLW8J97ZS43l
-      currency: USD
-      amount: 0
-  data_storage_months: 6
-  support:
-    - Email
-  response_time_hours: 168
+development:
+  plan_0:
+    id: 0
+    name: Free
+    max_monthly_recordings: 1000
+    pricing:
+      - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
+        currency: GBP
+        amount: 0
+      - id: price_1KQvNFLJ9zG7aLW855a0hFk7
+        currency: EUR
+        amount: 0
+      - id: price_1KQvNFLJ9zG7aLW8J97ZS43l
+        currency: USD
+        amount: 0
+    data_storage_months: 6
+    support:
+      - Email
+    response_time_hours: 168
 
-plan_1:
-  id: 1
-  name: Light
-  max_monthly_recordings: 5000
-  pricing:
-    - id: price_1KPOV6LJ9zG7aLW852tqylTr
-      currency: GBP
-      amount: 38
-    - id: price_1KPOV6LJ9zG7aLW8xMXyFGGr
-      currency: EUR
-      amount: 45
-    - id: price_1KPOV6LJ9zG7aLW8tDzfMy0D
-      currency: USD
-      amount: 50
-  data_storage_months: 12
-  support:
-    - Email
-  response_time_hours: 72
+  plan_1:
+    id: 1
+    name: Light
+    max_monthly_recordings: 5000
+    pricing:
+      - id: price_1KPOV6LJ9zG7aLW852tqylTr
+        currency: GBP
+        amount: 38
+      - id: price_1KPOV6LJ9zG7aLW8xMXyFGGr
+        currency: EUR
+        amount: 45
+      - id: price_1KPOV6LJ9zG7aLW8tDzfMy0D
+        currency: USD
+        amount: 50
+    data_storage_months: 12
+    support:
+      - Email
+    response_time_hours: 72
 
-plan_2:
-  id: 2
-  name: Plus
-  max_monthly_recordings: 25000
-  pricing:
-    - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
-      currency: GBP
-      amount: 120
-    - id: price_1KPOVlLJ9zG7aLW892gWiiTU
-      currency: EUR
-      amount: 145
-    - id: price_1KPOVlLJ9zG7aLW8bw9qLkLF
-      currency: USD
-      amount: 165
-  data_storage_months: 12
-  support:
-    - Email
-    - Chat
-  response_time_hours: 24
+  plan_2:
+    id: 2
+    name: Plus
+    max_monthly_recordings: 25000
+    pricing:
+      - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
+        currency: GBP
+        amount: 120
+      - id: price_1KPOVlLJ9zG7aLW892gWiiTU
+        currency: EUR
+        amount: 145
+      - id: price_1KPOVlLJ9zG7aLW8bw9qLkLF
+        currency: USD
+        amount: 165
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
 
-plan_3:
-  id: 3
-  name: Business
-  max_monthly_recordings: 50000
-  pricing:
-    - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
-      currency: GBP
-      amount: 205
-    - id: price_1KPOWCLJ9zG7aLW829kU4xrO
-      currency: EUR
-      amount: 245
-    - id: price_1KPOWCLJ9zG7aLW8jXWVkVsr
-      currency: USD
-      amount: 275
-  data_storage_months: 12
-  support:
-    - Email
-    - Chat
-  response_time_hours: 24
+  plan_3:
+    id: 3
+    name: Business
+    max_monthly_recordings: 50000
+    pricing:
+      - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
+        currency: GBP
+        amount: 205
+      - id: price_1KPOWCLJ9zG7aLW829kU4xrO
+        currency: EUR
+        amount: 245
+      - id: price_1KPOWCLJ9zG7aLW8jXWVkVsr
+        currency: USD
+        amount: 275
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
 
-plan_4:
-  id: 4
-  name: Premium
-  max_monthly_recordings: 100000
-  pricing:
-    - id: price_1KPOWhLJ9zG7aLW8J2T8etAP
-      currency: GBP
-      amount: 410
-    - id: price_1KPOWhLJ9zG7aLW8lDyXxWeS
-      currency: EUR
-      amount: 495
-    - id: price_1KPOWhLJ9zG7aLW8RHpK5q60
-      currency: USD
-      amount: 560
-  data_storage_months: 12
-  support:
-    - Email
-    - Chat
-  response_time_hours: 24
+  plan_4:
+    id: 4
+    name: Premium
+    max_monthly_recordings: 100000
+    pricing:
+      - id: price_1KPOWhLJ9zG7aLW8J2T8etAP
+        currency: GBP
+        amount: 410
+      - id: price_1KPOWhLJ9zG7aLW8lDyXxWeS
+        currency: EUR
+        amount: 495
+      - id: price_1KPOWhLJ9zG7aLW8RHpK5q60
+        currency: USD
+        amount: 560
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
 
-plan_5:
-  id: 5
-  name: Unlimited
-  max_monthly_recordings: null
-  pricing: null
-  data_storage_months: null
-  support:
-    - Email
-    - Chat
-  response_time_hours: null
+  plan_5:
+    id: 5
+    name: Unlimited
+    max_monthly_recordings: null
+    pricing: null
+    data_storage_months: null
+    support:
+      - Email
+      - Chat
+    response_time_hours: null
+
+production:
+  plan_0:
+    id: 0
+    name: Free
+    max_monthly_recordings: 1000
+    pricing:
+      - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
+        currency: GBP
+        amount: 0
+      - id: price_1Kii41LJ9zG7aLW8AMLaYkxK
+        currency: EUR
+        amount: 0
+      - id: price_1Kii41LJ9zG7aLW8MWDPJvRc
+        currency: USD
+        amount: 0
+    data_storage_months: 6
+    support:
+      - Email
+    response_time_hours: 168
+
+  plan_1:
+    id: 1
+    name: Light
+    max_monthly_recordings: 5000
+    pricing:
+      - id: price_1Kii3vLJ9zG7aLW8bunMa8I9
+        currency: GBP
+        amount: 38
+      - id: price_1Kii3vLJ9zG7aLW8XqBlwzv7
+        currency: EUR
+        amount: 45
+      - id: price_1Kii3vLJ9zG7aLW8CTCDfmaJ
+        currency: USD
+        amount: 50
+    data_storage_months: 12
+    support:
+      - Email
+    response_time_hours: 72
+
+  plan_2:
+    id: 2
+    name: Plus
+    max_monthly_recordings: 25000
+    pricing:
+      - id: price_1Kii3pLJ9zG7aLW8QI29OvbY
+        currency: GBP
+        amount: 120
+      - id: price_1Kii3oLJ9zG7aLW836KLDHtC
+        currency: EUR
+        amount: 145
+      - id: price_1Kii3pLJ9zG7aLW8PRU8vDcv
+        currency: USD
+        amount: 165
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
+
+  plan_3:
+    id: 3
+    name: Business
+    max_monthly_recordings: 50000
+    pricing:
+      - id: price_1Kii3aLJ9zG7aLW8XBLl3UUM
+        currency: GBP
+        amount: 205
+      - id: price_1Kii3aLJ9zG7aLW8AiH4F8Mc
+        currency: EUR
+        amount: 245
+      - id: price_1Kii3aLJ9zG7aLW874mLf8qs
+        currency: USD
+        amount: 275
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
+
+  plan_4:
+    id: 4
+    name: Premium
+    max_monthly_recordings: 100000
+    pricing:
+      - id: price_1Kii2mLJ9zG7aLW8q0H1rXtt
+        currency: GBP
+        amount: 410
+      - id: price_1Kii2mLJ9zG7aLW8Q1F943wq
+        currency: EUR
+        amount: 495
+      - id: price_1Kii2mLJ9zG7aLW8m0X6dQCe
+        currency: USD
+        amount: 560
+    data_storage_months: 12
+    support:
+      - Email
+      - Chat
+    response_time_hours: 24
+
+  plan_5:
+    id: 5
+    name: Unlimited
+    max_monthly_recordings: null
+    pricing: null
+    data_storage_months: null
+    support:
+      - Email
+      - Chat
+    response_time_hours: null

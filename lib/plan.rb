@@ -5,7 +5,8 @@ class Plan
   PLANS = YAML.load_file(File.expand_path('../config/plans.yml', __dir__))
 
   def initialize(plan)
-    @config = PLANS["plan_#{plan}"]
+    env = Rails.env.production? ? 'production' : 'development'
+    @config = PLANS[env]["plan_#{plan}"]
     raise StandardError, 'Plan number is invalid' unless @config
   end
 
@@ -26,6 +27,7 @@ class Plan
   end
 
   def self.to_a
-    PLANS.values
+    env = Rails.env.production? ? 'production' : 'development'
+    PLANS[env].values
   end
 end
