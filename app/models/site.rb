@@ -61,7 +61,10 @@ class Site < ApplicationRecord
   end
 
   def unlock_recordings!
-    recordings.where(status: Recording::LOCKED).update(status: Recording::ACTIVE)
+    # Do not use .update as it instantiates the models
+    # and will use a shit load of resources if there
+    # are a lot of recordigns to unlock!
+    recordings.where(status: Recording::LOCKED).update_all(status: Recording::ACTIVE)
   end
 
   def self.format_uri(url)
