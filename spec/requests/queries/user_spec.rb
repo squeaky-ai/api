@@ -25,10 +25,10 @@ RSpec.describe 'QueryUser', type: :request do
   context 'when there is a current_user' do
     let(:user) { create(:user) }
 
-    it 'returns the user' do
-      response = graphql_request(user_query, {}, user)
+    subject {  response = graphql_request(user_query, {}, user) }
 
-      expect(response['data']['user']).to eq(
+    it 'returns the user' do
+      expect(subject['data']['user']).to eq(
         {
           'id' => user.id.to_s,
           'firstName' => user.first_name,
@@ -36,6 +36,10 @@ RSpec.describe 'QueryUser', type: :request do
           'email' => user.email
         }
       )
+    end
+
+    it 'updates the last_activity_at' do
+      expect { subject }.to change { user.last_activity_at.nil? }.from(true).to(false)
     end
   end
 end

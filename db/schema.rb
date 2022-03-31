@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_13_085819) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_03_31_174355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,8 +18,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "customer_id"
     t.bigint "user_id"
     t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "status", default: "new", null: false
     t.string "card_type"
     t.string "country"
@@ -41,9 +40,9 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "meta_image", null: false
     t.string "meta_description", null: false
     t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "body", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "communications", force: :cascade do |t|
@@ -54,8 +53,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.boolean "marketing_and_special_offers_email", null: false
     t.boolean "knowledge_sharing_email", null: false
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_communications_on_user_id"
   end
 
@@ -64,8 +63,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.jsonb "data", null: false
     t.bigint "timestamp", null: false
     t.bigint "recording_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_events_on_recording_id"
   end
 
@@ -82,8 +81,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "sentiment_excluded_pages", default: [], null: false, array: true
     t.string "sentiment_layout"
     t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_feedback_on_site_id"
   end
 
@@ -92,8 +91,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.integer "timestamp"
     t.bigint "user_id"
     t.bigint "recording_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_notes_on_recording_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
@@ -103,8 +102,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "comment"
     t.boolean "contact", default: false, null: false
     t.bigint "recording_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email"
     t.index ["recording_id"], name: "index_nps_on_recording_id"
   end
@@ -114,8 +113,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.bigint "entered_at", null: false
     t.bigint "exited_at", null: false
     t.bigint "recording_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_pages_on_recording_id"
   end
 
@@ -130,8 +129,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.bigint "connected_at", null: false
     t.bigint "disconnected_at", null: false
     t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "visitor_id"
     t.string "referrer"
     t.integer "device_x", default: -1, null: false
@@ -156,8 +155,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.integer "score", null: false
     t.string "comment"
     t.bigint "recording_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_sentiments_on_recording_id"
   end
 
@@ -166,9 +165,9 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "url", null: false
     t.string "uuid", null: false
     t.integer "plan", null: false
-    t.datetime "verified_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "verified_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "ip_blacklist", default: [], null: false
     t.jsonb "domain_blacklist", default: [], null: false
     t.index ["url"], name: "index_sites_on_url", unique: true
@@ -177,8 +176,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "site_id"
     t.index ["site_id"], name: "index_tags_on_site_id"
   end
@@ -188,8 +187,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.integer "role"
     t.bigint "user_id"
     t.bigint "site_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_teams_on_site_id"
     t.index ["user_id"], name: "index_teams_on_user_id"
   end
@@ -204,8 +203,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.bigint "period_from", null: false
     t.bigint "period_to", null: false
     t.bigint "billing_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["billing_id"], name: "index_transactions_on_billing_id"
   end
 
@@ -215,31 +214,32 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
     t.string "email"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.string "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
+    t.datetime "invitation_created_at", precision: nil
+    t.datetime "invitation_sent_at", precision: nil
+    t.datetime "invitation_accepted_at", precision: nil
     t.integer "invitation_limit"
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "superuser", default: false
+    t.datetime "last_activity_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -252,8 +252,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_085819) do
   create_table "visitors", force: :cascade do |t|
     t.string "visitor_id", null: false
     t.boolean "starred", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "external_attributes", default: {}, null: false
     t.integer "recordings_count"
     t.boolean "new", default: true

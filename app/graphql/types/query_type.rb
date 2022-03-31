@@ -45,7 +45,11 @@ module Types
     end
 
     def user
-      context[:current_user]
+      user = context[:current_user]
+
+      user&.touch :last_activity_at
+
+      user
     end
 
     def user_exists(email:)
