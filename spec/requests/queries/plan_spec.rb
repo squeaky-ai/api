@@ -56,7 +56,7 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'id' => '1',
           'name' => 'Light',
-          'maxMonthlyRecordings' => 5000,
+          'maxMonthlyRecordings' => 10000,
           'pricing' => [
             {
               'id' => 'price_1KPOV6LJ9zG7aLW852tqylTr',
@@ -83,7 +83,7 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'id' => '2',
           'name' => 'Plus',
-          'maxMonthlyRecordings' => 25000,
+          'maxMonthlyRecordings' => 50000,
           'pricing' => [
             {
               'id' => 'price_1KPOVlLJ9zG7aLW88SC9VKKB',
@@ -103,15 +103,14 @@ RSpec.describe 'QueryPlan', type: :request do
           ],
           'dataStorageMonths' => 12,
           'support' => [
-            'Email',
-            'Chat'
+            'Email'
           ],
           'responseTimeHours' => 24
         },
         {
           'id' => '3',
           'name' => 'Business',
-          'maxMonthlyRecordings' => 50000,
+          'maxMonthlyRecordings' => 100000,
           'pricing' => [
             {
               'id' => 'price_1KPOWCLJ9zG7aLW8ylslbe5U',
@@ -139,7 +138,7 @@ RSpec.describe 'QueryPlan', type: :request do
         {
           'id' => '4',
           'name' => 'Premium',
-          'maxMonthlyRecordings' => 100000,
+          'maxMonthlyRecordings' => 200000,
           'pricing' => [
             {
               'id' => 'price_1KPOWhLJ9zG7aLW8J2T8etAP',
@@ -166,7 +165,7 @@ RSpec.describe 'QueryPlan', type: :request do
         },
         {
           'id' => '5',
-          'name' => 'Unlimited',
+          'name' => 'Enterprise',
           'maxMonthlyRecordings' => nil,
           'pricing' => nil,
           'dataStorageMonths' => nil,

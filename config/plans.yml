@@ -21,7 +21,7 @@ development:
   plan_1:
     id: 1
     name: Light
-    max_monthly_recordings: 5000
+    max_monthly_recordings: 10000
     pricing:
       - id: price_1KPOV6LJ9zG7aLW852tqylTr
         currency: GBP
@@ -40,7 +40,7 @@ development:
   plan_2:
     id: 2
     name: Plus
-    max_monthly_recordings: 25000
+    max_monthly_recordings: 50000
     pricing:
       - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
         currency: GBP
@@ -54,13 +54,12 @@ development:
     data_storage_months: 12
     support:
       - Email
-      - Chat
     response_time_hours: 24
 
   plan_3:
     id: 3
     name: Business
-    max_monthly_recordings: 50000
+    max_monthly_recordings: 100000
     pricing:
       - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
         currency: GBP
@@ -80,7 +79,7 @@ development:
   plan_4:
     id: 4
     name: Premium
-    max_monthly_recordings: 100000
+    max_monthly_recordings: 200000
     pricing:
       - id: price_1KPOWhLJ9zG7aLW8J2T8etAP
         currency: GBP
@@ -99,7 +98,7 @@ development:
 
   plan_5:
     id: 5
-    name: Unlimited
+    name: Enterprise
     max_monthly_recordings: null
     pricing: null
     data_storage_months: null
@@ -131,7 +130,7 @@ production:
   plan_1:
     id: 1
     name: Light
-    max_monthly_recordings: 5000
+    max_monthly_recordings: 10000
     pricing:
       - id: price_1Kii3vLJ9zG7aLW8bunMa8I9
         currency: GBP
@@ -150,7 +149,7 @@ production:
   plan_2:
     id: 2
     name: Plus
-    max_monthly_recordings: 25000
+    max_monthly_recordings: 50000
     pricing:
       - id: price_1Kii3pLJ9zG7aLW8QI29OvbY
         currency: GBP
@@ -170,7 +169,7 @@ production:
   plan_3:
     id: 3
     name: Business
-    max_monthly_recordings: 50000
+    max_monthly_recordings: 100000
     pricing:
       - id: price_1Kii3aLJ9zG7aLW8XBLl3UUM
         currency: GBP
@@ -184,13 +183,12 @@ production:
     data_storage_months: 12
     support:
       - Email
-      - Chat
     response_time_hours: 24
 
   plan_4:
     id: 4
     name: Premium
-    max_monthly_recordings: 100000
+    max_monthly_recordings: 200000
     pricing:
       - id: price_1Kii2mLJ9zG7aLW8q0H1rXtt
         currency: GBP
@@ -209,7 +207,7 @@ production:
 
   plan_5:
     id: 5
-    name: Unlimited
+    name: Enterprise
     max_monthly_recordings: null
     pricing: null
     data_storage_months: null

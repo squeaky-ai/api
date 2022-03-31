@@ -114,7 +114,7 @@ RSpec.describe Resolvers::Sites::Plan, type: :request do
         'name' => 'Light',
         'exceeded' => true,
         'billingValid' => false,
-        'recordingsLimit' => 5000,
+        'recordingsLimit' => 10000,
         'recordingsLocked' => 0,
         'visitorsLocked' => 0
       )
