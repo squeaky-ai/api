@@ -15,4 +15,12 @@ class SiteMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Your Week In Review')
   end
+
+  def plan_exceeded(site, data, user)
+    @site = site
+    @user = user
+    @data = data
+
+    mail(to: user.email, subject: "You've exceeded your monthly visit limit on #{site.name}")
+  end
 end

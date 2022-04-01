@@ -56,4 +56,16 @@ class SitePreview < ActionMailer::Preview
 
     SiteMailer.weekly_review(site, data, user)
   end
+
+  def plan_exceeded
+    site = Site.first
+    user = site.team.first.user
+
+    data = {
+      monthly_recording_count: 5000,
+      next_plan_name: 'Light'
+    }
+
+    SiteMailer.plan_exceeded(site, data, user)
+  end
 end

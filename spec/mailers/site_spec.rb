@@ -97,4 +97,24 @@ RSpec.describe SiteMailer, type: :mailer do
       end
     end
   end
+
+  describe '#plan_exceeded' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+
+    let(:data) do
+      {
+        monthly_recording_count: 5000,
+        next_plan: 'Light'
+      }
+    end
+
+    subject { described_class.plan_exceeded(site, data, user) }
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq "You've exceeded your monthly visit limit on #{site.name}"
+      expect(subject.to).to eq [user.email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

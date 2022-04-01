@@ -14,7 +14,7 @@ class RecordingSaveJob < ApplicationJob
     return unless valid?
 
     store_session!
-    @session.clean_up!
+    perform_post_save_actions!
 
     logger.info 'Recording saved'
   end
@@ -35,16 +35,14 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
-
-      set_site_as_verified!
     end
   end
 
-  def set_site_as_verified!
-    return if @site.verified_at
-
-    logger.info "Site #{@site.id} was automatically verified"
+  def perform_post_save_actions!
     @site.verify!
+    @session.clean_up!
+
+    PlanService.alert_if_exceeded(@site)
   end
 
   def persist_visitor!

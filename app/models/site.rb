@@ -53,6 +53,8 @@ class Site < ApplicationRecord
   end
 
   def verify!
+    return if verified_at
+
     update!(verified_at: Time.now)
   end
 

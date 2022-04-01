@@ -7,7 +7,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
 
   context 'when the recording is new' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
@@ -82,7 +82,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email domain is blacklisted' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
@@ -109,7 +109,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email address is blacklisted' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
@@ -136,7 +136,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the site recording limit has been exceeded' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
@@ -151,6 +151,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
       allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+      allow(PlanService).to receive(:alert_if_exceeded).and_call_original
     end
 
     subject { described_class.perform_now(event) }
@@ -160,10 +161,15 @@ RSpec.describe RecordingSaveJob, type: :job do
       recording = site.reload.recordings.first
       expect(recording.status).to eq Recording::LOCKED
     end
+
+    it 'checks if the exceeded email needs to be send' do
+      subject
+      expect(PlanService).to have_received(:alert_if_exceeded)
+    end
   end
 
   context 'when the customer has not paid their bill' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
@@ -192,7 +198,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the site was not verified' do
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     let(:event) do
       {
