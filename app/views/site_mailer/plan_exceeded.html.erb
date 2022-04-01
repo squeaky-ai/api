@@ -1,8 +1,8 @@
 <p>Hey <%= @user.first_name %>,</p>
-<p>It looks like you're having a great month on <a href="<%= @site.url %>"><%= @site.url %></a>! Reaching <%= @data[:monthly_recording_count] %> site visits already is great news, but it also means you've gone over the monthly visit allowance on your current Squeaky subscription.</p>
+<p>It looks like you're having a great month on <a href="<%= @site.url %>"><%= @site.url %></a>! Reaching <%= number_with_delimiter(@data[:monthly_recording_count]) %> site visits already is great news, but it also means you've gone over the monthly visit allowance on your current Squeaky subscription.</p>
 <p>Don&apos;t worry, we&apos;re still capturing all of your site data for you, and you will continue to have full access to all of the data you collected prior to reaching your subscription limit. If you want to unlock the visitor data you&apos;ve missed, or increase your visit limit to accommodate your growing traffic, please upgrade to the <%= @data[:next_plan_name] %> Plan:</p>
 <a href="<%= @web_url %>/app/sites/<%= @site.id %>/settings/subscription" class="button" style="text-decoration: none; margin-bottom: 24px;">View Plans</a>
 <p><i>You can change your plan at any time.</i></p>
-<p>If you have any question and your Squeaky subscription, you can reply to this email at any time.</p>
+<p>If you have any question and your Squeaky subscription, you can reply to this email.</p>
 <p>Kind Regards,</p>
 <p>The Squeaky Team</p>

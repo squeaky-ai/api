@@ -39,7 +39,7 @@ RSpec.describe PlanService do
           site,
           {
             monthly_recording_count: 1000,
-            next_plan: 'Light'
+            next_plan_name: 'Light'
           },
           site.owner.user
         )

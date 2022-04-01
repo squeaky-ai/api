@@ -16,7 +16,7 @@ class PlanService
 
     data = {
       monthly_recording_count: Plan.new(@site.plan).max_monthly_recordings,
-      next_plan: Plan.new(@site.plan + 1).name
+      next_plan_name: Plan.new(@site.plan + 1).name
     }
 
     SiteMailer.plan_exceeded(@site, data, @site.owner.user).deliver_now
