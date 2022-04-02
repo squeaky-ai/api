@@ -58,7 +58,6 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     before { allow(Net::HTTP).to receive(:get).and_return('') }
 
     it 'returns nil' do
-      puts '@@', subject['errors']
       expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
     end
   end

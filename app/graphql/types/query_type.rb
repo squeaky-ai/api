@@ -122,7 +122,7 @@ module Types
     end
 
     def blog_post(arguments)
-      blog = ::Blog.find_by('LOWER(slug) = ?', arguments[:slug])
+      blog = ::Blog.find_by_slug(arguments[:slug])
 
       return nil if blog&.draft && !context[:current_user]&.superuser?
 
@@ -130,18 +130,15 @@ module Types
     end
 
     def blog_posts(arguments)
-      categories = ::Blog.select('DISTINCT(category)').map(&:category)
-      tags = ::Blog.select('DISTINCT(UNNEST(tags)) tag').map(&:tag)
-
       posts = context[:current_user]&.superuser? ? ::Blog.all : ::Blog.where(draft: false)
 
       posts = posts.where('LOWER(category) = ?', arguments[:category].downcase) if arguments[:category]
       posts = posts.where('tags && ARRAY[?]::varchar[]', arguments[:tags]) unless arguments[:tags].empty?
 
       {
-        categories:,
-        tags:,
-        posts:
+        posts:,
+        tags: ::Blog.tags,
+        categories: ::Blog.categories
       }
     end
   end
