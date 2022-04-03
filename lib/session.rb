@@ -73,6 +73,26 @@ class Session
     recording['referrer'].presence
   end
 
+  def utm_source
+    recording['utm_source']
+  end
+
+  def utm_medium
+    recording['utm_medium']
+  end
+
+  def utm_campaign
+    recording['utm_campaign']
+  end
+
+  def utm_content
+    recording['utm_content']
+  end
+
+  def utm_term
+    recording['utm_term']
+  end
+
   def connected_at
     return 0 unless events?
 

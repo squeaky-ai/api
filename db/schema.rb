@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_31_174355) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_03_085604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -141,6 +141,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_174355) do
     t.integer "status"
     t.string "timezone"
     t.string "country_code"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_campaign"
+    t.string "utm_content"
+    t.string "utm_term"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"

@@ -70,6 +70,11 @@ class RecordingSaveJob < ApplicationJob
       recording.viewport_x = @session.viewport_x
       recording.viewport_y = @session.viewport_y
       recording.connected_at = @session.connected_at
+      recording.utm_source = @session.utm_source
+      recording.utm_medium = @session.utm_medium
+      recording.utm_campaign = @session.utm_campaign
+      recording.utm_content = @session.utm_content
+      recording.utm_term = @session.utm_term
     end
 
     recording.disconnected_at = @session.disconnected_at

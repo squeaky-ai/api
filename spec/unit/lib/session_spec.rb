@@ -114,4 +114,34 @@ RSpec.describe Session do
       expect(instance.interaction?).to eq true
     end
   end
+
+  describe '#utm_source' do
+    it 'returns the utm source' do
+      expect(instance.utm_source).to eq nil
+    end
+  end
+
+  describe '#utm_medium' do
+    it 'returns the utm medium' do
+      expect(instance.utm_medium).to eq nil
+    end
+  end
+
+  describe '#utm_campaign' do
+    it 'returns the utm campaign' do
+      expect(instance.utm_campaign).to eq nil
+    end
+  end
+
+  describe '#utm_content' do
+    it 'returns the utm content' do
+      expect(instance.utm_content).to eq nil
+    end
+  end
+
+  describe '#utm_term' do
+    it 'returns the utm term' do
+      expect(instance.utm_term).to eq nil
+    end
+  end
 end
