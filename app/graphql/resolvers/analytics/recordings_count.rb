@@ -16,7 +16,7 @@ module Resolvers
           object[:site_id],
           object[:from_date],
           object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
+          [Recording::ACTIVE]
         ]
 
         results = Sql.execute(sql, variables).first
