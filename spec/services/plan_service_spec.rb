@@ -23,7 +23,7 @@ RSpec.describe PlanService do
       let(:site) { create(:site_with_team) }
 
       before do
-        allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+        allow(site).to receive(:recording_count_exceeded?).and_return(true)
         allow(SiteMailer).to receive(:plan_exceeded).and_call_original
       end
 
@@ -62,13 +62,35 @@ RSpec.describe PlanService do
 
       before do
         Cache.redis.set("plan_exeeded_alerted::#{site.id}", '1')
-        allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+        allow(site).to receive(:recording_count_exceeded?).and_return(true)
       end
 
       subject { PlanService.alert_if_exceeded(site) }
 
       it 'does not send an email' do
         expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+      end
+    end
+
+    context 'when there are multiple jobs running at once' do
+      let(:site) { create(:site_with_team) }
+      
+      before do
+        allow(site).to receive(:recording_count_exceeded?).and_return(true)
+      end
+
+      subject do
+        threads = []
+
+        10.times do
+          threads << Thread.new { PlanService.alert_if_exceeded(site) }
+        end
+
+        threads.map(&:join)
+      end
+
+      it 'sends the email only once' do
+        expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
   end

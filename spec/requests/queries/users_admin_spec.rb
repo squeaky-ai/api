@@ -32,7 +32,7 @@ RSpec.describe 'QueryUsersAdmin', type: :request do
       create(:user)
     end
 
-    it 'returns all the sites' do
+    it 'returns all the users' do
       response = graphql_request(users_admin_query, {}, user)
 
       expect(response['data']['usersAdmin'].size).to eq 3
