@@ -35,11 +35,10 @@ module Resolvers
       end
 
       def visitors_locked_count
-        object.visitors
-              .joins(:recordings)
-              .preload(:recordings)
+        object.recordings
+              .select('DISTINCT(visitor_id)')
               .where(
-                'recordings.status = ? AND visitors.created_at > ? AND visitors.created_at < ?',
+                'status = ? AND created_at > ? AND created_at < ?',
                 Recording::LOCKED,
                 Time.now.beginning_of_month,
                 Time.now.end_of_month
