@@ -7,7 +7,7 @@ module Types
 
       field :referrer, String, null: true
       field :count, Integer, null: false
-      field :percentage, Integer, null: false
+      field :percentage, Float, null: false
     end
   end
 end

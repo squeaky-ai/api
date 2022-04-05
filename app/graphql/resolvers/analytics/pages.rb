@@ -47,7 +47,7 @@ module Resolvers
             path: page['url'],
             count: page['page_count'],
             avg: page['page_avg'].negative? ? 0 : page['page_avg'],
-            percentage: (page['page_count'].to_f / total) * 100
+            percentage: ((page['page_count'].to_f / total) * 100).round(2)
           }
         end
       end

@@ -41,7 +41,7 @@ module Resolvers
           {
             referrer: referrer.referrer,
             count: referrer.count,
-            percentage: (referrer.count.to_f / total) * 100
+            percentage: ((referrer.count.to_f / total) * 100).round(2)
           }
         end
       end
