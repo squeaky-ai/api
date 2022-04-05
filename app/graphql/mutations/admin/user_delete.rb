@@ -18,7 +18,7 @@ module Mutations
 
         ActiveRecord::Base.transaction do
           # Destroy all sites the user is the owner of
-          user.teams.filter(&:owner?).each { |team| team.site.destroy }
+          user.teams.filter(&:owner?).each { |team| team.site&.destroy }
           # Destroy the user last
           user.destroy
         end
