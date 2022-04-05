@@ -8,6 +8,7 @@ module Types
     field :admin_blog_post_create, mutation: Mutations::Admin::BlogPostCreate
     field :admin_blog_post_delete, mutation: Mutations::Admin::BlogPostDelete
     field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
+    field :admin_user_delete, mutation: Mutations::Admin::UserDelete
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
