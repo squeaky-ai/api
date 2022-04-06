@@ -4,16 +4,18 @@ require 'rails_helper'
 
 users_admin_query = <<-GRAPHQL
   query {
-    usersAdmin {
-      id
-      firstName
-      lastName
-      email
+    admin {
+      users {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
 GRAPHQL
 
-RSpec.describe 'QueryUsersAdmin', type: :request do
+RSpec.describe Resolvers::Admin::Users, type: :request do
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
@@ -28,6 +30,8 @@ RSpec.describe 'QueryUsersAdmin', type: :request do
     let(:user) { create(:user, superuser: true) }
 
     before do
+      User.destroy_all
+
       create(:user)
       create(:user)
     end
@@ -35,7 +39,7 @@ RSpec.describe 'QueryUsersAdmin', type: :request do
     it 'returns all the users' do
       response = graphql_request(users_admin_query, {}, user)
 
-      expect(response['data']['usersAdmin'].size).to eq 3
+      expect(response['data']['admin']['users'].size).to eq 3
     end
   end
 end

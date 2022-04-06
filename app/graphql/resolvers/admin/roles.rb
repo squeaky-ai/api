@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+module Resolvers
+  module Admin
+    class Roles < Resolvers::Base
+      type Types::Admin::Roles, null: false
+
+      def resolve
+        roles = Team.select(:role).group(:role).count
+
+        {
+          owners: roles[Team::OWNER] || 0,
+          admins: roles[Team::ADMIN] || 0,
+          members: roles[Team::MEMBER] || 0
+        }
+      end
+    end
+  end
+end

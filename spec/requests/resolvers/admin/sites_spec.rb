@@ -4,31 +4,33 @@ require 'rails_helper'
 
 sites_admin_query = <<-GRAPHQL
   query {
-    sitesAdmin {
-      id
-      name
-      url
-      plan {
-        type
-        name
-      }
-      uuid
-      verifiedAt
-      team {
+    admin {
+      sites {
         id
-        role
-        status
-        user {
+        name
+        url
+        plan {
+          type
+          name
+        }
+        uuid
+        verifiedAt
+        team {
           id
-          firstName
-          lastName
+          role
+          status
+          user {
+            id
+            firstName
+            lastName
+          }
         }
       }
     }
   }
 GRAPHQL
 
-RSpec.describe 'QuerySitesAdmin', type: :request do
+RSpec.describe Resolvers::Admin::Sites, type: :request do
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
@@ -50,7 +52,7 @@ RSpec.describe 'QuerySitesAdmin', type: :request do
     it 'returns all the sites' do
       response = graphql_request(sites_admin_query, {}, user)
 
-      expect(response['data']['sitesAdmin'].size).to eq 2
+      expect(response['data']['admin']['sites'].size).to eq 2
     end
   end
 end

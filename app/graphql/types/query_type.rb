@@ -17,14 +17,6 @@ module Types
 
     field :sites, [Types::Sites::Site, { null: true }], null: false
 
-    field :sites_admin, [Types::Sites::Site, { null: true }], null: false
-
-    field :users_admin, [Types::Users::User, { null: true }], null: false
-
-    field :active_visitors_admin, [Types::Admin::ActiveVisitorCount, { null: true }], null: false
-
-    field :blog_images_admin, [String, { null: true }], null: false
-
     field :user_invitation, Types::Users::Invitation, null: true do
       argument :token, String, required: true
     end
@@ -43,6 +35,8 @@ module Types
       argument :category, String, required: false
       argument :tags, [String], required: false, default_value: []
     end
+
+    field :admin, Types::Admin::Admin, null: false
 
     def user
       user = context[:current_user]
@@ -73,40 +67,6 @@ module Types
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.where(team:).includes(%i[teams users])
-    end
-
-    def sites_admin
-      raise Errors::Unauthorized unless context[:current_user]&.superuser?
-
-      Site.includes(%i[teams users]).all
-    end
-
-    def users_admin
-      raise Errors::Unauthorized unless context[:current_user]&.superuser?
-
-      User.all
-    end
-
-    def active_visitors_admin
-      raise Errors::Unauthorized unless context[:current_user]&.superuser?
-
-      items = Cache.redis.zrange('active_user_count', 0, -1, with_scores: true)
-
-      items.map do |slice|
-        {
-          site_id: slice[0],
-          count: slice[1]
-        }
-      end
-    end
-
-    def blog_images_admin
-      raise Errors::Unauthorized unless context[:current_user]&.superuser?
-
-      client = Aws::S3::Client.new(region: 'eu-west-1')
-      items = client.list_objects_v2(bucket: 'cdn.squeaky.ai', prefix: 'blog/').contents.map(&:key)
-      items.delete('blog/')
-      items
     end
 
     def user_invitation(token:)
@@ -140,6 +100,12 @@ module Types
         tags: ::Blog.tags,
         categories: ::Blog.categories
       }
+    end
+
+    def admin
+      raise Errors::Unauthorized unless context[:current_user]&.superuser?
+
+      {}
     end
   end
 end

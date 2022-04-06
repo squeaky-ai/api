@@ -5,14 +5,16 @@ require 'securerandom'
 
 active_visitors_admin_query = <<-GRAPHQL
   query {
-    activeVisitorsAdmin {
-      siteId
-      count
+    admin {
+      activeVisitors {
+        siteId
+        count
+      }
     }
   }
 GRAPHQL
 
-RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
+RSpec.describe Resolvers::Admin::ActiveVisitors, type: :request do
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
@@ -31,7 +33,7 @@ RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
     it 'returns all the sites' do
       response = graphql_request(active_visitors_admin_query, {}, user)
 
-      expect(response['data']['activeVisitorsAdmin']).to eq []
+      expect(response['data']['admin']['activeVisitors']).to eq []
     end
   end
 
@@ -52,7 +54,7 @@ RSpec.describe 'QueryActiveVisitorsAdminQuery', type: :request do
     it 'returns all the sites' do
       response = graphql_request(active_visitors_admin_query, {}, user)
 
-      expect(response['data']['activeVisitorsAdmin']).to match_array(
+      expect(response['data']['admin']['activeVisitors']).to match_array(
         [
           {
             'siteId' => site_1_id,

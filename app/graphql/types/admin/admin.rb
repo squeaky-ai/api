@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+module Types
+  module Admin
+    class Admin < Types::BaseObject
+      graphql_name 'Admin'
+
+      field :users, resolver: Resolvers::Admin::Users
+      field :sites, resolver: Resolvers::Admin::Sites
+      field :active_visitors, resolver: Resolvers::Admin::ActiveVisitors
+      field :active_monthly_users, resolver: Resolvers::Admin::ActiveMonthlyUsers
+      field :roles, resolver: Resolvers::Admin::Roles
+      field :verified, resolver: Resolvers::Admin::Verified
+      field :blog_images, resolver: Resolvers::Admin::BlogImages
+    end
+  end
+end
