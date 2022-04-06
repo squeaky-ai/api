@@ -12,6 +12,9 @@ module Types
       field :roles, resolver: Resolvers::Admin::Roles
       field :verified, resolver: Resolvers::Admin::Verified
       field :blog_images, resolver: Resolvers::Admin::BlogImages
+      field :recordings_processed, resolver: Resolvers::Admin::RecordingsProcessed
+      field :recordings_count, resolver: Resolvers::Admin::RecordingsCount
+      field :visitors_count, resolver: Resolvers::Admin::VisitorsCount
     end
   end
 end

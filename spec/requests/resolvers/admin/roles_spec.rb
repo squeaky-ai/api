@@ -25,7 +25,7 @@ RSpec.describe Resolvers::Admin::Roles, type: :request do
     end
   end
 
-  context 'whjen the user is a superuser' do
+  context 'when the user is a superuser' do
     let(:user) { create(:user, superuser: true) }
 
     before do
