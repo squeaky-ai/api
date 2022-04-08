@@ -183,6 +183,7 @@ production:
     data_storage_months: 12
     support:
       - Email
+      - Chat
     response_time_hours: 24
 
   plan_4:
