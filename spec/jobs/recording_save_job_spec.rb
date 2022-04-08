@@ -42,6 +42,11 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.connected_at).to eq Time.at(1637177342265 / 1000).utc
       expect(recording.disconnected_at).to eq Time.at(1637177353431 / 1000).utc
       expect(recording.pages_count).to eq 1
+      expect(recording.utm_source).to eq 'google'
+      expect(recording.utm_medium).to eq 'organic'
+      expect(recording.utm_campaign).to eq 'my_campaign'
+      expect(recording.utm_content).to eq 'test'
+      expect(recording.utm_term).to eq 'analytics'
     end
 
     it 'stores the page' do

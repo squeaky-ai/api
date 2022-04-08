@@ -117,31 +117,31 @@ RSpec.describe Session do
 
   describe '#utm_source' do
     it 'returns the utm source' do
-      expect(instance.utm_source).to eq nil
+      expect(instance.utm_source).to eq 'google'
     end
   end
 
   describe '#utm_medium' do
     it 'returns the utm medium' do
-      expect(instance.utm_medium).to eq nil
+      expect(instance.utm_medium).to eq 'organic'
     end
   end
 
   describe '#utm_campaign' do
     it 'returns the utm campaign' do
-      expect(instance.utm_campaign).to eq nil
+      expect(instance.utm_campaign).to eq 'my_campaign'
     end
   end
 
   describe '#utm_content' do
     it 'returns the utm content' do
-      expect(instance.utm_content).to eq nil
+      expect(instance.utm_content).to eq 'test'
     end
   end
 
   describe '#utm_term' do
     it 'returns the utm term' do
-      expect(instance.utm_term).to eq nil
+      expect(instance.utm_term).to eq 'analytics'
     end
   end
 end
