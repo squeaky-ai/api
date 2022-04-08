@@ -16,6 +16,7 @@ feedback_update_mutation = <<-GRAPHQL
       sentimentAccentColor
       sentimentExcludedPages
       sentimentLayout
+      sentimentDevices
     }
   }
 GRAPHQL
@@ -39,7 +40,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
           sentimentEnabled: true,
           sentimentAccentColor: '#000',
           sentimentExcludedPages: [],
-          sentimentLayout: 'bottom_left'
+          sentimentLayout: 'bottom_left',
+          sentimentDevices: %w[desktop tablet mobile]
         }
       }
       graphql_request(feedback_update_mutation, variables, user)
@@ -57,7 +59,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'sentimentEnabled' => true,
         'sentimentAccentColor' => '#000',
         'sentimentExcludedPages' => [],
-        'sentimentLayout' => 'bottom_left'
+        'sentimentLayout' => 'bottom_left',
+        'sentimentDevices' => ['desktop', 'tablet', 'mobile']
       )
     end
 
@@ -83,7 +86,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         sentiment_enabled: true,
         sentiment_accent_color: '#000',
         sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left'
+        sentiment_layout: 'bottom_left',
+        sentiment_devices: %w[desktop tablet]
       )
     end
 
@@ -93,7 +97,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
           siteId: site.id,
           npsEnabled: false,
           sentimentAccentColor: '#fff',
-          sentimentLayout: 'top_right'
+          sentimentLayout: 'top_right',
+          sentimentDevices: %w[tablet mobile]
         }
       }
       graphql_request(feedback_update_mutation, variables, user)
@@ -111,7 +116,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'sentimentEnabled' => true,
         'sentimentAccentColor' => '#fff',
         'sentimentExcludedPages' => [],
-        'sentimentLayout' => 'top_right'
+        'sentimentLayout' => 'top_right',
+        'sentimentDevices' => ['tablet', 'mobile']
       )
     end
 
