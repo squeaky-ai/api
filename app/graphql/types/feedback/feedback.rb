@@ -19,6 +19,7 @@ module Types
       field :sentiment_accent_color, String, null: true
       field :sentiment_excluded_pages, [String, { null: true }], null: false
       field :sentiment_layout, String, null: true
+      field :sentiment_devices, [String, { null: true }], null: false
     end
   end
 end

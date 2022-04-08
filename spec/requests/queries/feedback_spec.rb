@@ -16,6 +16,7 @@ feedback_query = <<-GRAPHQL
       sentimentAccentColor
       sentimentExcludedPages
       sentimentLayout
+      sentimentDevices
     }
   }
 GRAPHQL
@@ -45,7 +46,8 @@ RSpec.describe 'QueryFeedback', type: :request do
         sentiment_enabled: true,
         sentiment_accent_color: '#000',
         sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left'
+        sentiment_layout: 'bottom_left',
+        sentiment_devices: ['desktop', 'mobile']
       )
     end
 
@@ -63,7 +65,8 @@ RSpec.describe 'QueryFeedback', type: :request do
         'sentimentAccentColor' => '#000',
         'sentimentEnabled' => true, 
         'sentimentExcludedPages' => [], 
-        'sentimentLayout' => 'bottom_left'
+        'sentimentLayout' => 'bottom_left',
+        'sentimentDevices' => ['desktop', 'mobile']
       )
     end
   end

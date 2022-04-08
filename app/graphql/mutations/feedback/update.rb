@@ -19,6 +19,7 @@ module Mutations
       argument :sentiment_accent_color, String, required: false
       argument :sentiment_excluded_pages, [String], required: false
       argument :sentiment_layout, String, required: false
+      argument :sentiment_devices, [String], required: false
 
       type Types::Feedback::Feedback
 
@@ -39,7 +40,8 @@ module Mutations
           sentiment_enabled: false,
           sentiment_accent_color: '#0074E0',
           sentiment_excluded_pages: [],
-          sentiment_layout: 'right_middle'
+          sentiment_layout: 'right_middle',
+          sentiment_devices: %w[desktop tablet]
         )
 
         feedback.assign_attributes(args.except(:site_id))
