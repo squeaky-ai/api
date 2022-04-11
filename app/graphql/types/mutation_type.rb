@@ -30,6 +30,7 @@ module Types
     field :domain_blacklist_create, mutation: Mutations::Sites::DomainBlacklistCreate
     field :domain_blacklist_delete, mutation: Mutations::Sites::DomainBlacklistDelete
     field :magic_erasure_update, mutation: Mutations::Sites::MagicErasureUpdate
+    field :css_selector_blacklist_update, mutation: Mutations::Sites::CssSelectorBlacklistUpdate
     # Team
     field :team_invite, mutation: Mutations::Teams::Invite
     field :team_delete, mutation: Mutations::Teams::Delete

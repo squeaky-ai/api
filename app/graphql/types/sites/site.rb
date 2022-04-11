@@ -46,6 +46,7 @@ module Types
       end
       field :billing, Types::Sites::Billing, null: true
       field :magic_erasure_enabled, Boolean, null: false
+      field :css_selector_blacklist, [String, { null: true }], null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
