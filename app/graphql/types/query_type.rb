@@ -15,6 +15,10 @@ module Types
       argument :site_id, ID, required: true
     end
 
+    field :site_by_uuid, Types::Sites::Site, null: true do
+      argument :site_id, ID, required: true
+    end
+
     field :sites, [Types::Sites::Site, { null: true }], null: false
 
     field :user_invitation, Types::Users::Invitation, null: true do
@@ -59,6 +63,15 @@ module Types
       # We don't show pending sites to the user in the UI
       team = { status: Team::ACCEPTED }
       context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team:)
+    end
+
+    def site_by_uuid(site_id:)
+      # This is used externally for the magic erasure and
+      # should not raise
+      return nil unless context[:current_user]
+
+      team = { status: Team::ACCEPTED }
+      context[:current_user].sites.find_by(uuid: site_id, team:)
     end
 
     def sites
