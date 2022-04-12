@@ -2,13 +2,13 @@
 
 module Mutations
   module Sites
-    class CssSelectorBlacklistUpdate < SiteMutation
+    class CssSelectorBlacklistCreate < SiteMutation
       null false
 
-      graphql_name 'SitesCssSelectorBlacklistUpdate'
+      graphql_name 'SitesCssSelectorBlacklistCreate'
 
       argument :site_id, ID, required: true
-      argument :selectors, [String], required: true
+      argument :selector, String, required: true
 
       type Types::Sites::Site
 
@@ -16,7 +16,10 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(selectors:, **_rest)
+      def resolve(selector:, **_rest)
+        selectors = @site.css_selector_blacklist
+        selectors.push(selector)
+
         @site.update(css_selector_blacklist: selectors.uniq)
 
         @site

@@ -57,7 +57,7 @@ RSpec.describe Resolvers::Feedback::NpsScores, type: :request do
 
     it 'returns the data' do
       response = subject['data']['site']['nps']
-      expect(response['scores']).to match_array(
+      expect(response['scores']).to eq(
         'trend' => 0,
         'score' => 0,
         'responses' => [
