@@ -73,6 +73,11 @@ module Resolvers
             referrers
             starred
             tags
+            utm_source
+            utm_campaign
+            utm_medium
+            utm_term
+            utm_content
           ]
 
           filter_options.each do |option|
@@ -280,6 +285,44 @@ module Resolvers
         recordings
           .joins(:tags)
           .where('tags.id IN (?)', filters.tags)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that contain a certain utm source
+      def filter_by_utm_source(recordings, filters)
+        return recordings unless filters.utm_source
+
+        recordings.where('recordings.utm_source = ?', filters.utm_source)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that contain a certain utm campaign
+      def filter_by_utm_campaign(recordings, filters)
+        return recordings unless filters.utm_campaign
+
+        recordings.where('recordings.utm_campaign = ?', filters.utm_campaign)
+      end
+
+      def filter_by_utm_medium(recordings, filters)
+        return recordings unless filters.utm_medium
+
+        recordings.where('recordings.utm_medium = ?', filters.utm_medium)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that contain a certain utm term
+      def filter_by_utm_term(recordings, filters)
+        return recordings unless filters.utm_term
+
+        recordings.where('recordings.utm_term = ?', filters.utm_term)
+      end
+
+      # Adds a filter that lets users show only recordings
+      # that contain a certain utm content
+      def filter_by_utm_content(recordings, filters)
+        return recordings unless filters.utm_content
+
+        recordings.where('recordings.utm_content = ?', filters.utm_content)
       end
     end
   end

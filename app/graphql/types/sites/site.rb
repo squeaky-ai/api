@@ -20,6 +20,11 @@ module Types
       field :browsers, resolver: Resolvers::Sites::Browsers
       field :referrers, resolver: Resolvers::Sites::Referrers
       field :countries, resolver: Resolvers::Sites::Countries
+      field :utm_sources, resolver: Resolvers::Sites::UtmSources
+      field :utm_campaigns, resolver: Resolvers::Sites::UtmCampaigns
+      field :utm_terms, resolver: Resolvers::Sites::UtmTerms
+      field :utm_contents, resolver: Resolvers::Sites::UtmContents
+      field :utm_mediums, resolver: Resolvers::Sites::UtmMediums
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
       field :domain_blacklist, [Types::Sites::DomainBlacklist, { null: true }], null: false
       field :recordings_count, Integer, null: false

@@ -19,6 +19,11 @@ module Types
       argument :status, Types::Common::FiltersStatus, required: false
       argument :duration, Types::Common::FiltersDuration, required: true
       argument :viewport, Types::Common::FiltersViewport, required: true
+      argument :utm_source, String, required: false
+      argument :utm_campaign, String, required: false
+      argument :utm_medium, String, required: false
+      argument :utm_term, String, required: false
+      argument :utm_content, String, required: false
     end
   end
 end
