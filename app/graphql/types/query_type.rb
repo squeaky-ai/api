@@ -31,6 +31,10 @@ module Types
       argument :site_id, String, required: true
     end
 
+    field :css_selector_blacklist, [String, { null: true }], null: false do
+      argument :site_id, String, required: true
+    end
+
     field :blog_post, Types::Blog::Post, null: true do
       argument :slug, String, required: true
     end
@@ -92,6 +96,10 @@ module Types
 
     def feedback(arguments)
       Site.find_by(uuid: arguments[:site_id])&.feedback
+    end
+
+    def css_selector_blacklist(arguments)
+      Site.find_by(uuid: arguments[:site_id])&.css_selector_blacklist || []
     end
 
     def blog_post(arguments)
