@@ -10,7 +10,7 @@ module Resolvers
 
       def resolve(page:, size:)
         events = Event
-                 .select('id, data, event_type type, timestamp')
+                 .select('id, data, event_type as type, timestamp')
                  .where(recording_id: object.id)
                  .order('timestamp asc')
                  .page(page)
