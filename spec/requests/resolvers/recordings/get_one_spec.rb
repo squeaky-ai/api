@@ -29,12 +29,6 @@ site_recording_query = <<-GRAPHQL
           id
           visitorId
         }
-        previousRecording {
-          id
-        }
-        nextRecording {
-          id
-        }
       }
     }
   }
@@ -85,32 +79,6 @@ RSpec.describe Resolvers::Recordings::GetOne, type: :request do
     it 'returns the recording because it might be needed for heatmaps' do
       response = subject['data']['site']['recording']
       expect(response).not_to be_nil
-    end
-  end
-
-  context 'when selecting the next and previous recordings' do
-    let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user) }
-    
-    let(:recordings) do
-      3.times.each_with_index.map do |i| 
-        create(:recording, site: site, connected_at: Time.new(2021, 8, i + 1).to_i * 1000)
-      end
-    end
-
-    subject do
-      variables = { site_id: site.id, recording_id: recordings[1].id }
-      graphql_request(site_recording_query, variables, user)
-    end
-
-    it 'returns the previous recording' do
-      previous_rec = subject['data']['site']['recording']['previousRecording']
-      expect(previous_rec['id']).to eq recordings.first.id.to_s
-    end
-
-    it 'returns the next recording' do
-      next_rec = subject['data']['site']['recording']['nextRecording']
-      expect(next_rec['id']).to eq recordings.last.id.to_s
     end
   end
 end
