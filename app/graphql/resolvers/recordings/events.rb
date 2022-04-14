@@ -6,31 +6,23 @@ module Resolvers
       type Types::Recordings::Events, null: false
 
       argument :page, Integer, required: false, default_value: 1
-      argument :size, Integer, required: false, default_value: 250
+      argument :size, Integer, required: false, default_value: 100
 
       def resolve(page:, size:)
         events = Event
+                 .select('id, data, event_type type, timestamp')
                  .where(recording_id: object.id)
                  .order('timestamp asc')
                  .page(page)
                  .per(size)
 
         {
-          items: events.map { |e| format_event(e).to_json },
+          items: events.map(&:to_json),
           pagination: pagination(events, arguments)
         }
       end
 
       private
-
-      def format_event(event)
-        {
-          id: event.id,
-          data: event.data,
-          type: event.event_type,
-          timestamp: event.timestamp
-        }
-      end
 
       def pagination(events, arguments)
         {

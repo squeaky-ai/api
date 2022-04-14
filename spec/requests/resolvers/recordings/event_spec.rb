@@ -43,7 +43,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'perPage' => 250,
+        'perPage' => 100,
         'itemCount' => 0,
         'currentPage' => 1,
         'totalPages' => 0
@@ -71,13 +71,13 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
 
     it 'returns the item with the events' do
       response = subject['data']['site']['recording']
-      expect(response['events']['items']).to  eq ["{\"id\":#{recording.events.first.id},\"data\":{\"href\":\"http://localhost/\",\"width\":0,\"height\":0},\"type\":4,\"timestamp\":1625389200000}"]
+      expect(response['events']['items']).to eq ["{\"id\":#{recording.events.first.id},\"data\":{\"href\":\"http://localhost/\",\"width\":0,\"height\":0},\"type\":4,\"timestamp\":1625389200000}"]
     end
 
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'perPage' => 250,
+        'perPage' => 100,
         'itemCount' => 1,
         'currentPage' => 1,
         'totalPages' => 1
