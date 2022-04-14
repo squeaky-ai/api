@@ -4,19 +4,13 @@ class GraphqlController < ApplicationController
   def execute
     variables = prepare_variables(params[:variables])
 
-    x = nil
-
-    Stats.timer("graphql::execute::#{params[:operationName]}") do
-      x = SqueakySchema.execute(
+    StackProf.run(mode: :cpu, raw: true, out: 'tmp/stackprof.dump') do
+      render json: SqueakySchema.execute(
         params[:query],
         variables:,
         operation_name: params[:operationName],
         context: { current_user:, request: }
       )
-    end
-
-    Stats.timer("graphql::render::#{params[:operationName]}") do
-      render json: x
     end
   rescue StandardError => e
     raise e unless Rails.env.development?

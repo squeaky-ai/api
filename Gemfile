@@ -21,6 +21,7 @@ gem 'redis'
 gem 'scenic'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+gem 'stackprof'
 gem 'stripe'
 gem 'useragent'
 
