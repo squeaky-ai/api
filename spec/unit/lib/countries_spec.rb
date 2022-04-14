@@ -12,7 +12,7 @@ RSpec.describe Countries do
 
     context 'when given an unknown country code' do
       it 'returns nil' do
-        expect(Countries.get_country('__--------....')).to eq nil
+        expect(Countries.get_country('__--------....')).to eq 'Unknown'
       end
     end
   end

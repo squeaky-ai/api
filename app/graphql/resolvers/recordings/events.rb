@@ -9,17 +9,19 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 100
 
       def resolve(page:, size:)
-        events = Event
-                 .select('id, data, event_type as type, timestamp')
-                 .where(recording_id: object.id)
-                 .order('timestamp asc')
-                 .page(page)
-                 .per(size)
+        Stats.timer('list_events') do
+          events = Event
+                   .select('id, data, event_type as type, timestamp')
+                   .where(recording_id: object.id)
+                   .order('timestamp asc')
+                   .page(page)
+                   .per(size)
 
-        {
-          items: events.map(&:to_json),
-          pagination: pagination(events, arguments)
-        }
+          {
+            items: events.map(&:to_json),
+            pagination: pagination(events, arguments)
+          }
+        end
       end
 
       private
