@@ -74,15 +74,13 @@ class Recording < ApplicationRecord
   end
 
   def previous_recording
-    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
-    index = recordings.index(self) || 0
-    index.zero? ? nil : recordings[index - 1]
+    index = site_recordings.index(self) || 0
+    index.zero? ? nil : site_recordings[index - 1]
   end
 
   def next_recording
-    recordings = site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
-    index = recordings.index(self) || recordings.size
-    index >= recordings.size ? nil : recordings[index + 1]
+    index = site_recordings.index(self) || site_recordings.size
+    index >= site_recordings.size ? nil : site_recordings[index + 1]
   end
 
   def deleted?
@@ -93,5 +91,9 @@ class Recording < ApplicationRecord
 
   def ordered_pages
     @ordered_pages ||= pages.sort_by(&:entered_at)
+  end
+
+  def site_recordings
+    @site_recordings ||= site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
   end
 end

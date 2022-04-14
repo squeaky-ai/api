@@ -17,7 +17,10 @@ RSpec.describe Stats do
 
     it 'logs the duration' do
       subject
-      expect(Rails.logger).to have_received(:info).with('stats::timer::name - 1')
+
+      expect(Rails.logger).to have_received(:info) do |message|
+        expect(message).to start_with('stats::timer::name - 1')
+      end
     end
 
     it 'returns the contents of the block' do

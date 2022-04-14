@@ -6,7 +6,7 @@ class Stats
     response = block.call
     duration = Time.now - start
 
-    Rails.logger.info("stats::timer::#{name} - #{duration.to_i}")
+    Rails.logger.info("stats::timer::#{name} - #{duration}")
 
     response
   end
