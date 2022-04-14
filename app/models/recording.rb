@@ -74,11 +74,15 @@ class Recording < ApplicationRecord
   end
 
   def previous_recording
+    return nil
+
     index = site_recordings.index(self) || 0
     index.zero? ? nil : site_recordings[index - 1]
   end
 
   def next_recording
+    return nil
+
     index = site_recordings.index(self) || site_recordings.size
     index >= site_recordings.size ? nil : site_recordings[index + 1]
   end
