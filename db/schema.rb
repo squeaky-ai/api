@@ -65,8 +65,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_14_081125) do
     t.bigint "recording_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["recording_id", "timestamp"], name: "index_events_on_recording_id_and_timestamp"
     t.index ["recording_id"], name: "index_events_on_recording_id"
-    t.index ["timestamp"], name: "index_events_on_timestamp"
   end
 
   create_table "feedback", force: :cascade do |t|
