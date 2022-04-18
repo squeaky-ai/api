@@ -13,6 +13,7 @@ module Types
       argument :visited_pages, [String], required: true
       argument :unvisited_pages, [String], required: true
       argument :referrers, [String], required: true
+      argument :starred, Boolean, required: false
     end
   end
 end

@@ -58,6 +58,7 @@ module Resolvers
           visitors = filter_by_visited_pages(visitors, filters)
           visitors = filter_by_unvisited_pages(visitors, filters)
           visitors = filter_by_referrers(visitors, filters)
+          visitors = filter_by_starred(visitors, filters)
         end
 
         visitors
@@ -220,6 +221,14 @@ module Resolvers
         else
           visitors.where('recordings.referrer IN (?)', filters.referrers)
         end
+      end
+
+      # Adds a filter that lets users show only visitors
+      # that are starred
+      def filter_by_starred(visitors, filters)
+        return visitors if filters.starred.nil?
+
+        visitors.where('visitors.starred = ?', filters.starred)
       end
     end
   end
