@@ -43,7 +43,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'perPage' => 100,
+        'perPage' => 250,
         'itemCount' => 0,
         'currentPage' => 1,
         'totalPages' => 0
@@ -77,7 +77,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
     it 'returns the correct pagination' do
       response = subject['data']['site']['recording']
       expect(response['events']['pagination']).to eq(
-        'perPage' => 100,
+        'perPage' => 250,
         'itemCount' => 1,
         'currentPage' => 1,
         'totalPages' => 1

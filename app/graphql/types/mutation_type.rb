@@ -69,7 +69,6 @@ module Types
     field :subscriptions_create, mutation: Mutations::Subscriptions::Create
     field :subscriptions_update, mutation: Mutations::Subscriptions::Update
     field :subscriptions_portal, mutation: Mutations::Subscriptions::Portal
-
     # Public feedback
     field :nps_create, mutation: Mutations::Feedback::NpsCreate
     field :sentiment_create, mutation: Mutations::Feedback::SentimentCreate

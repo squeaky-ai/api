@@ -6,7 +6,7 @@ module Resolvers
       type Types::Recordings::Events, null: false
 
       argument :page, Integer, required: false, default_value: 1
-      argument :size, Integer, required: false, default_value: 100
+      argument :size, Integer, required: false, default_value: 250
 
       def resolve(page:, size:)
         Stats.timer('list_events') do
