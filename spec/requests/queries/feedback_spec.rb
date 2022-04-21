@@ -12,6 +12,7 @@ feedback_query = <<-GRAPHQL
       npsFollowUpEnabled
       npsContactConsentEnabled
       npsLayout
+      npsExcludedPages
       sentimentEnabled
       sentimentAccentColor
       sentimentExcludedPages
@@ -43,6 +44,7 @@ RSpec.describe 'QueryFeedback', type: :request do
         nps_follow_up_enabled: false,
         nps_contact_consent_enabled: false,
         nps_layout: 'bottom_left',
+        nps_excluded_pages: [],
         sentiment_enabled: true,
         sentiment_accent_color: '#000',
         sentiment_excluded_pages: [],
@@ -62,6 +64,7 @@ RSpec.describe 'QueryFeedback', type: :request do
         'npsLayout' => 'bottom_left',
         'npsPhrase' => 'Teapot',
         'npsSchedule' => '1_week',
+        'npsExcludedPages' => [],
         'sentimentAccentColor' => '#000',
         'sentimentEnabled' => true, 
         'sentimentExcludedPages' => [], 

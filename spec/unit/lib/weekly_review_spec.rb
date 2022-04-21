@@ -57,6 +57,7 @@ RSpec.describe WeeklyReview do
         nps_follow_up_enabled: false,
         nps_contact_consent_enabled: false,
         nps_layout: 'bottom_left',
+        nps_excluded_pages: [],
         sentiment_enabled: true,
         sentiment_accent_color: '#000',
         sentiment_excluded_pages: [],

@@ -14,6 +14,7 @@ module Types
       field :nps_follow_up_enabled, Boolean, null: true
       field :nps_contact_consent_enabled, Boolean, null: true
       field :nps_layout, String, null: true
+      field :nps_excluded_pages, [String, { null: true }], null: false
 
       field :sentiment_enabled, Boolean, null: true
       field :sentiment_accent_color, String, null: true

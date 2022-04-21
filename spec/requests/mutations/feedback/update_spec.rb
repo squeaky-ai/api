@@ -12,6 +12,7 @@ feedback_update_mutation = <<-GRAPHQL
       npsFollowUpEnabled
       npsContactConsentEnabled
       npsLayout
+      npsExcludedPages
       sentimentEnabled
       sentimentAccentColor
       sentimentExcludedPages
@@ -37,6 +38,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
           npsFollowUpEnabled: false,
           npsContactConsentEnabled: false,
           npsLayout: 'bottom_left',
+          npsExcludedPages: [],
           sentimentEnabled: true,
           sentimentAccentColor: '#000',
           sentimentExcludedPages: [],
@@ -56,6 +58,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'npsFollowUpEnabled' => false,
         'npsContactConsentEnabled' => false,
         'npsLayout' => 'bottom_left',
+        'npsExcludedPages' => [],
         'sentimentEnabled' => true,
         'sentimentAccentColor' => '#000',
         'sentimentExcludedPages' => [],
@@ -83,6 +86,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         nps_follow_up_enabled: false,
         nps_contact_consent_enabled: false,
         nps_layout: 'bottom_left',
+        nps_excluded_pages: [],
         sentiment_enabled: true,
         sentiment_accent_color: '#000',
         sentiment_excluded_pages: [],
@@ -113,6 +117,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'npsFollowUpEnabled' => false,
         'npsContactConsentEnabled' => false,
         'npsLayout' => 'bottom_left',
+        'npsExcludedPages' => [],
         'sentimentEnabled' => true,
         'sentimentAccentColor' => '#fff',
         'sentimentExcludedPages' => [],
