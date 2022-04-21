@@ -34,6 +34,11 @@ module Squeaky
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
 
+    config.plans = config_for(:plans)
+    config.countries = config_for(:countries)
+    config.languages = config_for(:languages)
+    config.timezones = config_for(:timezones)
+
     config.active_job.queue_adapter = :sidekiq
   end
 end

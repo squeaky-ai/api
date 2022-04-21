@@ -14,9 +14,7 @@ RSpec.describe Plan do
       plan = described_class.new(0)
 
       before do
-        plan.instance_variable_set(:@config, {
-          'max_monthly_recordings' => 300,
-        })
+        plan.instance_variable_set(:@config, { max_monthly_recordings: 300 })
       end
 
       it 'responds to the expected methods' do

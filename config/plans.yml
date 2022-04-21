@@ -1,4 +1,4 @@
-development:
+default: &default
   plan_0:
     id: 0
     name: Free
@@ -106,6 +106,12 @@ development:
       - Email
       - Chat
     response_time_hours: null
+
+development:
+  <<: *default
+
+test:
+  <<: *default
 
 production:
   plan_0:
