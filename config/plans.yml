@@ -98,14 +98,15 @@ default: &default
 
   plan_5:
     id: 5
-    name: Enterprise
-    max_monthly_recordings: null
-    pricing: null
-    data_storage_months: null
+    name: Enterprise Tier 1
+    max_monthly_recordings: 250000
+    pricing: []
+    data_storage_months: -1
     support:
       - Email
       - Chat
-    response_time_hours: null
+      - Phone
+    response_time_hours: 0
 
 development:
   <<: *default

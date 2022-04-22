@@ -29,7 +29,7 @@ class Site < ApplicationRecord
 
   default_scope { order(name: :asc) }
 
-  after_create { Plan.create(tier: 0, site: self) }
+  after_create { create_plan(tier: 0) }
 
   def owner
     team.find(&:owner?)

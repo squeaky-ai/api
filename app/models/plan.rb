@@ -3,12 +3,15 @@
 class Plan < ApplicationRecord
   belongs_to :site
 
+  alias_attribute :invalid, :invalid?
+  alias_attribute :exceeded, :exceeded?
+
   def name
     plan_defaults[:name]
   end
 
   def exceeded?
-    recordings_locked_count.positive? || invalid?
+    recordings_locked_count.positive?
   end
 
   def invalid?
