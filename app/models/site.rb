@@ -20,6 +20,7 @@ class Site < ApplicationRecord
   has_many :sentiments, through: :recordings
   has_many :tags
 
+  has_one :plan, dependent: :destroy
   has_one :feedback
   has_one :billing, dependent: :destroy
 
@@ -27,6 +28,8 @@ class Site < ApplicationRecord
   alias_attribute :team, :teams
 
   default_scope { order(name: :asc) }
+
+  after_create { Plan.create(tier: 0, site: self) }
 
   def owner
     team.find(&:owner?)
@@ -42,10 +45,6 @@ class Site < ApplicationRecord
 
   def member(id)
     team.find { |t| t.id == id.to_i }
-  end
-
-  def plan_name
-    Plan.new(plan).name
   end
 
   def recordings_count
@@ -74,30 +73,6 @@ class Site < ApplicationRecord
     return nil unless uri.scheme && uri.host
 
     "#{uri.scheme}://#{uri.host.downcase}"
-  end
-
-  def recording_count_exceeded?
-    count = recordings
-            .where(
-              'status = ? AND created_at > ? AND created_at < ?',
-              Recording::ACTIVE,
-              Time.now.beginning_of_month,
-              Time.now.end_of_month
-            )
-            .count
-    count >= Plan.new(plan).max_monthly_recordings
-  end
-
-  def valid_billing?
-    # If they are on the free plan then we don't care
-    return true if plan.zero?
-
-    # There are some people that are on paid tiers from
-    # when Squeaky was in beta. They don't have any
-    # billing
-    return true if billing.nil?
-
-    billing&.status == Billing::VALID
   end
 
   def page_urls

@@ -10,7 +10,7 @@ site_create_mutation = <<-GRAPHQL
       url
       ownerName
       plan {
-        type
+        tier
         name
       }
       uuid

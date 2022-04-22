@@ -138,7 +138,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan }.from(0).to(1)
+        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
       end
     end
   

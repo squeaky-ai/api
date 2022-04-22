@@ -4,7 +4,7 @@ class Transaction < ApplicationRecord
   belongs_to :billing
 
   def plan
-    Plan.find_by_pricing_id(pricing_id)
+    Plans.find_by_pricing_id(pricing_id)
   end
 
   def period_start_at

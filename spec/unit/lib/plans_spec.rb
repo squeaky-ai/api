@@ -2,27 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Plan do
-  describe '.initialize' do
-    context 'when the plan is not valid' do
-      it 'raises an error' do
-        expect { described_class.new(123019283129312) }.to raise_error('Plan number is invalid')
-      end
-    end
-
-    context 'when the plan is valid' do
-      plan = described_class.new(0)
-
-      before do
-        plan.instance_variable_set(:@config, { max_monthly_recordings: 300 })
-      end
-
-      it 'responds to the expected methods' do
-        expect(plan.max_monthly_recordings).to eq 300
-      end
-    end
-  end
-
+RSpec.describe Plans do
   describe '.find_by_pricing_id' do
     context 'when the pricing_id is not valid' do
       it 'returns nil' do

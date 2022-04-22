@@ -22,7 +22,6 @@ FactoryBot.define do
   factory :site do
     name { 'Morrison Hotel' }
     url { "https://#{SecureRandom.base36}.com" }
-    plan { 0 }
     uuid { SecureRandom.uuid }
     verified_at { Time.now }
 

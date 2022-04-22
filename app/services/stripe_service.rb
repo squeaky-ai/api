@@ -91,8 +91,11 @@ class StripeService
       # This is the plan id that they're currently on
       pricing_id = invoice_paid_event['lines']['data'].first['plan']['id']
 
-      plan = Plan.find_by_pricing_id(pricing_id)
-      billing.site.update(plan: plan[:id])
+      plan = Plans.find_by_pricing_id(pricing_id)
+
+      raise StandardError, "Plan with pricing_id: #{pricing_id} not found" unless plan
+
+      billing.site.plan.update(tier: plan[:id])
     end
 
     def create_billing_portal(user, site)
