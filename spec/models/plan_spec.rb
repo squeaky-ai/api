@@ -14,13 +14,11 @@ RSpec.describe Plan, type: :model do
   end
 
   describe '#exceeded?' do
-    context 'when the there are no locked recordings and the billing is valid' do
+    context 'when the there are no locked recordings' do
       let(:site) { create(:site_with_team) }
       let(:instance) { described_class.new(tier: 3) }
   
       before do
-        create(:billing, status: Billing::VALID, site:, user: site.owner.user)
-
         site.update(plan: instance)
       end
   
@@ -31,49 +29,11 @@ RSpec.describe Plan, type: :model do
       end
     end
 
-    context 'when the there are no locked recordings and the billing is invalid' do
+    context 'when the there are locked recordings' do
       let(:site) { create(:site_with_team) }
       let(:instance) { described_class.new(tier: 3) }
   
       before do
-        create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
-
-        site.update(plan: instance)
-      end
-  
-      subject { instance.exceeded? }
-
-      it 'returns true' do
-        expect(subject).to eq true
-      end
-    end
-
-    context 'when the there are locked recordings and the billing is valid' do
-      let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
-  
-      before do
-        create(:billing, status: Billing::VALID, site:, user: site.owner.user)
-
-        allow(instance).to receive(:recordings_locked_count).and_return 5
-
-        site.update(plan: instance)
-      end
-  
-      subject { instance.exceeded? }
-
-      it 'returns true' do
-        expect(subject).to eq true
-      end
-    end
-
-    context 'when the there are locked recordings and the billing is invalid' do
-      let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
-  
-      before do
-        create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
-
         allow(instance).to receive(:recordings_locked_count).and_return 5
 
         site.update(plan: instance)

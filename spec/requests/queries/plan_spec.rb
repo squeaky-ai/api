@@ -165,15 +165,16 @@ RSpec.describe 'QueryPlan', type: :request do
         },
         {
           'id' => '5',
-          'name' => 'Enterprise',
-          'maxMonthlyRecordings' => nil,
-          'pricing' => nil,
-          'dataStorageMonths' => nil,
+          'name' => 'Enterprise Tier 1',
+          'maxMonthlyRecordings' => 250000,
+          'pricing' => [],
+          'dataStorageMonths' => -1,
           'support' => [
             'Email',
-            'Chat'
+            'Chat',
+            'Phone'
           ],
-          'responseTimeHours' => nil
+          'responseTimeHours' => 0
         }
       ]
     )
