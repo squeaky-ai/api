@@ -14,7 +14,7 @@ class Locale
   def self.get_locale(language = '')
     return DEFAULT if language.nil? || language.empty?
 
-    result = Rails.configuration.languages.find { |_k, v| v == language }.first
-    (result || DEFAULT).sub('_', '-')
+    result = Rails.configuration.languages.find { |_k, v| v == language }&.first
+    (result || DEFAULT).to_s.sub('_', '-')
   end
 end
