@@ -18,6 +18,11 @@ class Plan < ApplicationRecord
     # They have no billing so it can't be invalid
     return false if tier.zero?
 
+    unless site.billing
+      Rails.logger.error "Site #{site.id} is missing billing but is not on the free tier"
+      return true
+    end
+
     site.billing.status == Billing::INVALID
   end
 

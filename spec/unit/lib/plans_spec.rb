@@ -20,17 +20,38 @@ RSpec.describe Plans do
             {
               id: 'price_1KPOWCLJ9zG7aLW8ylslbe5U',
               currency: 'GBP',
-              amount: 205
+              amount: 205,
+              interval: 'month'
             },
             {
               id: 'price_1KPOWCLJ9zG7aLW829kU4xrO',
               currency: 'EUR',
-              amount: 245
+              amount: 245,
+              interval: 'month'
             },
             {
               id: 'price_1KPOWCLJ9zG7aLW8jXWVkVsr',
               currency: 'USD',
-              amount: 275
+              amount: 275,
+              interval: 'month'
+            },
+            {
+              id: 'price_1KrRvELJ9zG7aLW8oTujLmg4',
+              currency: 'GBP',
+              amount: 1968,
+              interval: 'year'
+            },
+            {
+              id: 'price_1KrRuKLJ9zG7aLW8n2g9Fue9',
+              currency: 'EUR',
+              amount: 2352,
+              interval: 'year'
+            },
+            {
+              id: 'price_1KrRudLJ9zG7aLW8q3rQMsp3',
+              currency: 'USD',
+              amount: 2640,
+              interval: 'year'
             }
           ],
           data_storage_months: 12,

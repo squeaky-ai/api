@@ -80,8 +80,7 @@ RSpec.describe EventChannel, :type => :channel do
 
       subscribe
 
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
-      events = JSON.parse(events_fixture)
+      events = require_fixture('events.json')
 
       events.each { |e| perform :event, **JSON.parse(e) }
 

@@ -59,6 +59,10 @@ module Webhooks
       # Store the invoice so the customer has a record of their
       # payments
       StripeService.store_transaction(customer_id, event_data)
+      # Check the users payment information is up to date and
+      # store it along with the customer so we have something
+      # nice to show in the UI.
+      StripeService.update_customer(customer_id)
       # Update the site to reflect the plan they're currently on
       StripeService.update_billing(customer_id, event_data)
     end
