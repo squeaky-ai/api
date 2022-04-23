@@ -128,6 +128,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
     t.integer "response_time_hours"
     t.string "support", default: [], null: false, array: true
     t.bigint "site_id"
+    t.boolean "sso_enabled", null: false, default: false
+    t.boolean "audit_trail_enabled", null: false, default: false
+    t.boolean "private_instance_enabled", null: false, default: false
+    t.string "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_plans_on_site_id"

@@ -15,6 +15,10 @@ module Types
       field :data_storage_months, Integer, null: false
       field :response_time_hours, Integer, null: false
       field :support, [String, { null: false }], null: true
+      field :sso_enabled, Boolean, null: false
+      field :audit_trail_enabled, Boolean, null: false
+      field :private_instance_enabled, Boolean, null: false
+      field :notes, String, null: true
     end
   end
 end

@@ -14,6 +14,9 @@ module Types
       field :plan, Types::Plans::Plan, null: false
       field :period_start_at, GraphQL::Types::ISO8601Date, null: false
       field :period_end_at, GraphQL::Types::ISO8601Date, null: false
+      field :discount_name, String, null: true
+      field :discount_percentage, Float, null: true
+      field :discount_id, String, null: true
     end
   end
 end

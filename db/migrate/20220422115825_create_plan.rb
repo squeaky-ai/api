@@ -8,6 +8,10 @@ class CreatePlan < ActiveRecord::Migration[7.0]
       t.integer :data_storage_months
       t.integer :response_time_hours
       t.string :support, null: false, array: true, default: []
+      t.boolean :sso_enabled, null: false, default: false
+      t.boolean :audit_trail_enabled, null: false, default: false
+      t.boolean :private_instance_enabled, null: false, default: false
+      t.string :notes
 
       t.belongs_to :site
 
