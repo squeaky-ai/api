@@ -18,9 +18,9 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     before do
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(Cache.redis).to receive(:del)
     end
 
@@ -101,9 +101,9 @@ RSpec.describe RecordingSaveJob, type: :job do
       site.domain_blacklist << { type: 'domain', value: 'gmail.com' }
       site.save
 
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 
     subject { described_class.perform_now(event) }
@@ -128,9 +128,9 @@ RSpec.describe RecordingSaveJob, type: :job do
       site.domain_blacklist << { type: 'email', value: 'bobdylan@gmail.com' }
       site.save
 
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 
     subject { described_class.perform_now(event) }
@@ -152,11 +152,11 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     before do
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(PlanService).to receive(:alert_if_exceeded).and_call_original
+      allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
     end
 
     subject { described_class.perform_now(event) }
@@ -185,10 +185,10 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     before do
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
-      allow_any_instance_of(Site).to receive(:recording_count_exceeded?).and_return(true)
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
 
       create(:billing, site: site, status: Billing::INVALID)
     end
@@ -215,9 +215,9 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     before do
       site.update(verified_at: nil)
-      events_fixture = File.read("#{__dir__}/../fixtures/events.json")
+      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 
     subject { described_class.perform_now(event) }

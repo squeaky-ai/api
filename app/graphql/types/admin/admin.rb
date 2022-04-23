@@ -5,6 +5,7 @@ module Types
     class Admin < Types::BaseObject
       graphql_name 'Admin'
 
+      field :site, resolver: Resolvers::Admin::Site
       field :users, resolver: Resolvers::Admin::Users
       field :sites, resolver: Resolvers::Admin::Sites
       field :active_visitors, resolver: Resolvers::Admin::ActiveVisitors

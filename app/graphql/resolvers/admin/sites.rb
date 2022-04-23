@@ -6,7 +6,7 @@ module Resolvers
       type [Types::Sites::Site, { null: true }], null: false
 
       def resolve
-        Site.includes(%i[teams users]).all
+        ::Site.includes(%i[teams users]).all
       end
     end
   end

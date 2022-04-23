@@ -7,7 +7,7 @@ subscriptions_update_mutation = <<-GRAPHQL
     subscriptionsUpdate(input: $input) {
       id
       plan {
-        type
+        tier
         name
       }
     }
@@ -62,14 +62,14 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
       expect(response).to eq(
         'id' => site.id.to_s,
         'plan' => {
-          'type' => 2,
+          'tier' => 2,
           'name' => 'Plus'
         }
       )
     end
 
     it 'updates the plan' do
-      expect { subject }.to change { site.reload.plan }.from(0).to(2)
+      expect { subject }.to change { site.plan.reload.tier }.from(0).to(2)
     end
 
     it 'calls the service' do
@@ -95,7 +95,7 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
 
     context 'when there are locked recordings and they are downgrading' do
       before do
-        site.update(plan: 4)
+        site.plan.update(tier: 4)
 
         create(:recording, site: site, status: Recording::LOCKED)
         create(:recording, site: site, status: Recording::LOCKED)

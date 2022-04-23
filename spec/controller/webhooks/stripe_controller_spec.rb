@@ -5,16 +5,16 @@ require 'securerandom'
 
 RSpec.describe Webhooks::StripeController, type: :controller do
   describe 'POST /' do
-    context 'when the event type is "checkout.session.completed"' do
-      let(:billing) { create(:billing) }
+    context 'when the event type is "checkout.session.completed" for a monthly customer and they do not have a preferrered payment method' do
+      let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
       let(:payment_id) { SecureRandom.base36 }
 
+      let(:monthly_checkout_session_completed_fixture) { require_fixture('stripe/monthly_checkout_session_completed.json') }
+      let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+      let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
+
       let(:stripe_event) do
-        double(
-          :stripe_event, 
-          type: 'checkout.session.completed',
-          data: double(:data, object: { 'customer' => billing.customer_id })
-        )
+        double(:stripe_event, type: 'checkout.session.completed', data: double(:data, monthly_checkout_session_completed_fixture))
       end
 
       subject { get :index, body: '{}', as: :json }
@@ -24,27 +24,11 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
-          .and_return('invoice_settings' => { 'default_payment_method' => payment_id })
+          .and_return(customer_retrieved_fixture)
 
-        allow(Stripe::PaymentMethod).to receive(:retrieve)
-          .with(payment_id)
-          .and_return(
-            'card' => {
-              'brand' => 'visa',
-              'country' => 'UK',
-              'exp_month' => 1,
-              'exp_year' => 3000,
-              'last4' => '0000'
-            },
-            'billing_details' => {
-              'name' => 'Bob Dylan',
-              'email' => 'bigbob2022@gmail.com',
-              'address' => {
-                'line1' => 'Hollywood',
-                'country' => 'US'
-              }
-            }
-          )
+        allow(Stripe::PaymentMethod).to receive(:list)
+          .with(customer: billing.customer_id, type: 'card')
+          .and_return(list_payments_methods_fixture)
       end
 
       it 'returns the success message' do
@@ -65,10 +49,10 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         expect(billing.card_type).to eq 'visa'
         expect(billing.country).to eq 'UK'
-        expect(billing.expiry).to eq '1/3000'
-        expect(billing.card_number).to eq '0000'
-        expect(billing.billing_name).to eq 'Bob Dylan'
-        expect(billing.billing_email).to eq 'bigbob2022@gmail.com'
+        expect(billing.expiry).to eq '10/2025'
+        expect(billing.card_number).to eq '4242'
+        expect(billing.billing_name).to eq 'Lewis Monteith'
+        expect(billing.billing_email).to eq 'lewismonteith@gmail.com'
       end
 
       context 'when there are locked recordings' do
@@ -84,40 +68,28 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
     end
 
-    context 'when the event type is "invoice.paid"' do
-      let(:billing) { create(:billing) }
+    context 'when the event type is "invoice.paid" for a monthly customer' do
+      let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
+
+      let(:invoice_paid_fixture) { require_fixture('stripe/monthly_invoice_paid.json') }
+      let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+      let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
   
       let(:stripe_event) do
-        double(
-          :stripe_event, 
-          type: 'invoice.paid',
-          data: double(:data, object: { 
-            'customer' => billing.customer_id,
-            'hosted_invoice_url' => 'http://stripe.com/web',
-            'invoice_pdf' => 'http://stripe.com/pdf',
-            'lines' => {
-              'data' => [
-                {
-                  'amount' => 1000,
-                  'currency' => 'usd',
-                  'period' => {
-                    'start' => 1644052149,
-                    'end' => 1646471349
-                  },
-                  'plan' => {
-                    'id' => 'price_1KPOV6LJ9zG7aLW8tDzfMy0D',
-                    'interval' => 'month'
-                  }
-                }
-              ]
-            }
-          })
-        )
+        double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
   
       subject { get :index, body: '{}', as: :json }
   
       before do
+        allow(Stripe::Customer).to receive(:retrieve)
+          .with(billing.customer_id)
+          .and_return(customer_retrieved_fixture)
+
+        allow(Stripe::PaymentMethod).to receive(:list)
+          .with(customer: billing.customer_id, type: 'card')
+          .and_return(list_payments_methods_fixture)
+
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
   
@@ -130,15 +102,191 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
   
       it 'sets the billing status to be valid' do
-       expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
+        expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
+      end
+
+      it 'stores the correct billing data' do
+        subject
+        billing.reload
+        
+        expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
+        expect(billing.status).to eq(Billing::VALID)
+        expect(billing.card_type).to eq('visa')
+        expect(billing.country).to eq('UK')
+        expect(billing.expiry).to eq('10/2025')
+        expect(billing.card_number).to eq('4242')
+        expect(billing.billing_name).to eq('Lewis Monteith')
+        expect(billing.billing_email).to eq('lewismonteith@gmail.com')
       end
   
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
 
+      it 'stores the correct invoice details' do
+        subject
+        transaction = billing.reload.transactions.first
+
+        expect(transaction.amount).to eq(3800)
+        expect(transaction.currency).to eq('GBP')
+        expect(transaction.interval).to eq('month')
+        expect(transaction.period_from).to eq(1650697044)
+        expect(transaction.period_to).to eq(1653289044)
+        expect(transaction.discount_id).to eq(nil)
+        expect(transaction.discount_name).to eq(nil)
+        expect(transaction.discount_percentage).to eq(nil)
+      end
+
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan }.from(0).to(1)
+        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
+      end
+    end
+
+    context 'when the event type is "invoice.paid" for a yearly customer' do
+      let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
+
+      let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid.json') }
+      let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+      let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
+  
+      let(:stripe_event) do
+        double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
+      end
+
+      subject { get :index, body: '{}', as: :json }
+  
+      before do
+        allow(Stripe::Customer).to receive(:retrieve)
+          .with(billing.customer_id)
+          .and_return(customer_retrieved_fixture)
+
+        allow(Stripe::PaymentMethod).to receive(:list)
+          .with(customer: billing.customer_id, type: 'card')
+          .and_return(list_payments_methods_fixture)
+
+        allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
+      end
+  
+      it 'returns the success message' do
+        subject
+  
+        expect(response).to have_http_status(200)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+        expect(response.body).to eq({ success: true }.to_json)
+      end
+  
+      it 'sets the billing status to be valid' do
+        expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
+      end
+
+      it 'stores the correct billing data' do
+        subject
+        billing.reload
+        
+        expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
+        expect(billing.status).to eq(Billing::VALID)
+        expect(billing.card_type).to eq('visa')
+        expect(billing.country).to eq('UK')
+        expect(billing.expiry).to eq('10/2025')
+        expect(billing.card_number).to eq('4242')
+        expect(billing.billing_name).to eq('Lewis Monteith')
+        expect(billing.billing_email).to eq('lewismonteith@gmail.com')
+      end
+  
+      it 'stores the invoice' do
+        expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
+      end
+
+      it 'stores the correct invoice details' do
+        subject
+        transaction = billing.reload.transactions.first
+
+        expect(transaction.amount).to eq(796800)
+        expect(transaction.currency).to eq('GBP')
+        expect(transaction.interval).to eq('year')
+        expect(transaction.period_from).to eq(1650700595)
+        expect(transaction.period_to).to eq(1682236595)
+        expect(transaction.discount_id).to eq(nil)
+        expect(transaction.discount_name).to eq(nil)
+        expect(transaction.discount_percentage).to eq(nil)
+      end
+
+      it 'sets the sites plan to the one from the billing' do
+        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(5)
+      end
+    end
+
+    context 'when the event type is "invoice.paid" for a yearly customer and they have a coupon applied' do
+      let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
+
+      let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid_with_coupon.json') }
+      let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+      let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
+  
+      let(:stripe_event) do
+        double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
+      end
+
+      subject { get :index, body: '{}', as: :json }
+  
+      before do
+        allow(Stripe::Customer).to receive(:retrieve)
+          .with(billing.customer_id)
+          .and_return(customer_retrieved_fixture)
+
+        allow(Stripe::PaymentMethod).to receive(:list)
+          .with(customer: billing.customer_id, type: 'card')
+          .and_return(list_payments_methods_fixture)
+
+        allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
+      end
+  
+      it 'returns the success message' do
+        subject
+  
+        expect(response).to have_http_status(200)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+        expect(response.body).to eq({ success: true }.to_json)
+      end
+  
+      it 'sets the billing status to be valid' do
+        expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
+      end
+
+      it 'stores the correct billing data' do
+        subject
+        billing.reload
+        
+        expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
+        expect(billing.status).to eq(Billing::VALID)
+        expect(billing.card_type).to eq('visa')
+        expect(billing.country).to eq('UK')
+        expect(billing.expiry).to eq('10/2025')
+        expect(billing.card_number).to eq('4242')
+        expect(billing.billing_name).to eq('Lewis Monteith')
+        expect(billing.billing_email).to eq('lewismonteith@gmail.com')
+      end
+  
+      it 'stores the invoice' do
+        expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
+      end
+
+      it 'stores the correct invoice details' do
+        subject
+        transaction = billing.reload.transactions.first
+
+        expect(transaction.amount).to eq(4003200)
+        expect(transaction.currency).to eq('GBP')
+        expect(transaction.interval).to eq('year')
+        expect(transaction.period_from).to eq(1650702967)
+        expect(transaction.period_to).to eq(1682238967)
+        expect(transaction.discount_id).to eq('di_1KreRnLJ9zG7aLW8NPzlACk5')
+        expect(transaction.discount_name).to eq('Annual Payment Discount')
+        expect(transaction.discount_percentage).to eq(20.0)
+      end
+
+      it 'sets the sites plan to the one from the billing' do
+        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(7)
       end
     end
   
@@ -168,51 +316,39 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
   
       it 'sets the billing status to be invalid' do
-       expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::INVALID)
+        expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::INVALID)
       end
     end
   end
 
   context 'when the event type is "customer.updated"' do
-    let(:billing) { create(:billing) }
+    let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T', status: Billing::VALID) }
     let(:payment_id) { SecureRandom.base36 }
+
+    let(:customer_updated_fixture) { require_fixture('stripe/customer_updated.json') }
+    let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+    let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
 
     let(:stripe_event) do
       double(
         :stripe_event, 
         type: 'customer.updated',
-        data: double(:data, object: { 'id' => billing.customer_id })
+        data: double(:data, customer_updated_fixture)
       )
     end
 
     subject { get :index, body: '{}', as: :json }
 
     before do
-      allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
-
       allow(Stripe::Customer).to receive(:retrieve)
         .with(billing.customer_id)
-        .and_return('invoice_settings' => { 'default_payment_method' => payment_id })
+        .and_return(customer_retrieved_fixture)
 
-      allow(Stripe::PaymentMethod).to receive(:retrieve)
-        .with(payment_id)
-        .and_return(
-          'card' => {
-            'brand' => 'visa',
-            'country' => 'UK',
-            'exp_month' => 1,
-            'exp_year' => 3000,
-            'last4' => '0000'
-          },
-          'billing_details' => {
-            'name' => 'Bob Dylan',
-            'email' => 'bigbob2022@gmail.com',
-            'address' => {
-              'line1' => 'Hollywood',
-              'country' => 'US'
-            }
-          }
-        )
+      allow(Stripe::PaymentMethod).to receive(:list)
+        .with(customer: billing.customer_id, type: 'card')
+        .and_return(list_payments_methods_fixture)
+
+      allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
     end
 
     it 'returns the success message' do
@@ -226,7 +362,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
     it 'updates the billing' do
       subject
       billing.reload
-      expect(billing.card_type).to eq 'visa'
+      expect(billing.status).to eq(Billing::VALID)
+      expect(billing.card_type).to eq('visa')
+      expect(billing.country).to eq('UK')
+      expect(billing.expiry).to eq('10/2025')
+      expect(billing.card_number).to eq('4242')
+      expect(billing.billing_name).to eq('Lewis Monteith')
+      expect(billing.billing_email).to eq('lewismonteith@gmail.com')
     end
   end
 end

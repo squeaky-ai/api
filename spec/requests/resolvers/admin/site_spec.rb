@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-sites_admin_query = <<-GRAPHQL
-  query {
+site_admin_query = <<-GRAPHQL
+  query($site_id: ID!) {
     admin {
-      sites {
+      site(siteId: $site_id) {
         id
         name
         url
@@ -30,12 +30,13 @@ sites_admin_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Admin::Sites, type: :request do
+RSpec.describe Resolvers::Admin::Site, type: :request do
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
     it 'raises an error' do
-      response = graphql_request(sites_admin_query, {}, user)
+      variables = { site_id: 345345345 }
+      response = graphql_request(site_admin_query, variables, user)
 
       expect(response['errors'][0]['message']).to eq 'Unauthorized'
     end
@@ -43,16 +44,15 @@ RSpec.describe Resolvers::Admin::Sites, type: :request do
 
   context 'when the user is a superuser' do
     let(:user) { create(:user, superuser: true) }
+    let(:site) { create(:site) }
 
-    before do
-      create(:site)
-      create(:site)
-    end
+    before { site }
 
     it 'returns all the sites' do
-      response = graphql_request(sites_admin_query, {}, user)
+      variables = { site_id: site.id }
+      response = graphql_request(site_admin_query, variables, user)
 
-      expect(response['data']['admin']['sites'].size).to eq 2
+      expect(response['data']['admin']['site']['id']).to eq site.id.to_s
     end
   end
 end

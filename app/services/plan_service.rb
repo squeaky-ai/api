@@ -12,7 +12,7 @@ class PlanService
   end
 
   def alert_if_exceeded
-    return unless @site.recording_count_exceeded?
+    return unless @site.plan.exceeded?
     return if been_alerted_of_plan_exceeded?
 
     # This has to be done ASAP otherwise multiple jobs
@@ -21,8 +21,8 @@ class PlanService
     set_has_been_alerted_of_plan_exceeded!
 
     data = {
-      monthly_recording_count: Plan.new(@site.plan).max_monthly_recordings,
-      next_plan_name: Plan.new(@site.plan + 1).name
+      monthly_recording_count: @site.plan.max_monthly_recordings,
+      next_plan_name: Plans.next_tier_name(@site.plan.tier)
     }
 
     SiteMailer.plan_exceeded(@site, data, @site.owner.user).deliver_now

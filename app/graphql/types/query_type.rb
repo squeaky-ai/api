@@ -91,7 +91,7 @@ module Types
     end
 
     def plans
-      Plan.to_a
+      ::Plans.to_a
     end
 
     def feedback(arguments)

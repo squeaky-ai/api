@@ -1,0 +1,71 @@
+{
+  "object": {
+    "id": "cs_test_a1DvBcOwnSRpCvooB0ZGz5PHVliLWzBA2c3JruML30puv9YiTNqlHZrT8H",
+    "object": "checkout.session",
+    "after_expiration": null,
+    "allow_promotion_codes": null,
+    "amount_subtotal": 3800,
+    "amount_total": 3800,
+    "automatic_tax": {
+      "enabled": false,
+      "status": null
+    },
+    "billing_address_collection": null,
+    "cancel_url": "https://squeaky.ai/app/sites/1/settings/subscription?billing_setup_success=0",
+    "client_reference_id": null,
+    "consent": null,
+    "consent_collection": null,
+    "currency": "gbp",
+    "customer": "cus_LYkhU0zACd6T4T",
+    "customer_creation": null,
+    "customer_details": {
+      "address": {
+        "city": null,
+        "country": "GB",
+        "line1": null,
+        "line2": null,
+        "postal_code": "PO16 8DX",
+        "state": null
+      },
+      "email": "lewismonteith@gmail.com",
+      "name": "Lewis Monteith",
+      "phone": null,
+      "tax_exempt": "none",
+      "tax_ids": []
+    },
+    "customer_email": null,
+    "expires_at": 1650783419,
+    "livemode": false,
+    "locale": null,
+    "metadata": {
+      "site": "Localhost"
+    },
+    "mode": "subscription",
+    "payment_intent": null,
+    "payment_link": null,
+    "payment_method_options": null,
+    "payment_method_types": [
+      "card"
+    ],
+    "payment_status": "paid",
+    "phone_number_collection": {
+      "enabled": false
+    },
+    "recovered_from": null,
+    "setup_intent": null,
+    "shipping": null,
+    "shipping_address_collection": null,
+    "shipping_options": [],
+    "shipping_rate": null,
+    "status": "complete",
+    "submit_type": null,
+    "subscription": "sub_1KrcuGLJ9zG7aLW8ZewbpPxD",
+    "success_url": "https://squeaky.ai/app/sites/1/settings/subscription?billing_setup_success=1",
+    "total_details": {
+      "amount_discount": 0,
+      "amount_shipping": 0,
+      "amount_tax": 0
+    },
+    "url": null
+  }
+}

@@ -8,7 +8,7 @@ module Types
       field :id, ID, null: false
       field :name, String, null: false
       field :url, String, null: false
-      field :plan, Types::Sites::Plan, resolver: Resolvers::Sites::Plan
+      field :plan, Types::Sites::Plan
       field :uuid, String, null: false
       field :owner_name, String, null: false
       field :verified_at, GraphQL::Types::ISO8601DateTime, null: true

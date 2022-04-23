@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_21_093027) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,6 +121,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_093027) do
     t.index ["recording_id"], name: "index_pages_on_recording_id"
   end
 
+  create_table "plans", force: :cascade do |t|
+    t.integer "tier", null: false
+    t.integer "max_monthly_recordings"
+    t.integer "data_storage_months"
+    t.integer "response_time_hours"
+    t.string "support", default: [], null: false, array: true
+    t.bigint "site_id"
+    t.boolean "sso_enabled", null: false, default: false
+    t.boolean "audit_trail_enabled", null: false, default: false
+    t.boolean "private_instance_enabled", null: false, default: false
+    t.string "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_plans_on_site_id"
+  end
+
   create_table "recordings", force: :cascade do |t|
     t.string "session_id", null: false
     t.boolean "viewed", default: false
@@ -172,7 +188,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_093027) do
     t.string "name", null: false
     t.string "url", null: false
     t.string "uuid", null: false
-    t.integer "plan", null: false
     t.datetime "verified_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -215,6 +230,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_093027) do
     t.bigint "billing_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "discount_name"
+    t.float "discount_percentage"
+    t.string "discount_id"
     t.index ["billing_id"], name: "index_transactions_on_billing_id"
   end
 

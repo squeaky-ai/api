@@ -13,8 +13,8 @@ RSpec.describe Session do
   end
 
   before do
-    events_fixture = File.read("#{__dir__}/../../fixtures/events.json")
-    allow(Cache.redis).to receive(:lrange).and_return(JSON.parse(events_fixture))
+    events_fixture = require_fixture('events.json')
+    allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
   end
 
   let(:instance) { Session.new(message) }

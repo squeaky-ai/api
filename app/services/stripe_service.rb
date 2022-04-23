@@ -35,6 +35,8 @@ class StripeService
     def update_status(customer_id, status)
       billing = Billing.find_by(customer_id:)
 
+      raise StandardError, "Billing not found for customer_id: #{customer_id}" unless billing
+
       billing.status = status
       billing.save!
     end
@@ -66,6 +68,7 @@ class StripeService
       billing = Billing.find_by(customer_id:)
 
       bill = invoice_paid_event['lines']['data'].first
+      discount = invoice_paid_event['discount']
 
       Transaction.create(
         billing:,
@@ -76,7 +79,10 @@ class StripeService
         interval: bill['plan']['interval'],
         pricing_id: bill['plan']['id'],
         period_from: bill['period']['start'],
-        period_to: bill['period']['end']
+        period_to: bill['period']['end'],
+        discount_id: discount ? discount['id'] : nil,
+        discount_name: discount ? discount['coupon']['name'] : nil,
+        discount_percentage: discount ? discount['coupon']['percent_off'] : nil
       )
     end
 
@@ -91,8 +97,11 @@ class StripeService
       # This is the plan id that they're currently on
       pricing_id = invoice_paid_event['lines']['data'].first['plan']['id']
 
-      plan = Plan.find_by_pricing_id(pricing_id)
-      billing.site.update(plan: plan[:id])
+      plan = Plans.find_by_pricing_id(pricing_id)
+
+      raise StandardError, "Plan with pricing_id: #{pricing_id} not found" unless plan
+
+      billing.site.plan.update(tier: plan[:id])
     end
 
     def create_billing_portal(user, site)
@@ -141,7 +150,16 @@ class StripeService
 
   def fetch_payment_information(customer_id)
     customer = Stripe::Customer.retrieve(customer_id)
-    response = Stripe::PaymentMethod.retrieve(customer['invoice_settings']['default_payment_method'])
+
+    # During checkout this can be null, not sure why,
+    # so it's best to fall back to listing them all
+    # and picking the first if it's nil
+    if customer['invoice_settings']['default_payment_method']
+      response = Stripe::PaymentMethod.retrieve(customer['invoice_settings']['default_payment_method'])
+    else
+      all_payments = Stripe::PaymentMethod.list(customer: customer['id'], type: 'card')
+      response = all_payments['data'].first
+    end
 
     card = response['card']
     billing = response['billing_details']

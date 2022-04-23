@@ -23,7 +23,7 @@ RSpec.describe PlanService do
       let(:site) { create(:site_with_team) }
 
       before do
-        allow(site).to receive(:recording_count_exceeded?).and_return(true)
+        allow(site.plan).to receive(:exceeded?).and_return(true)
         allow(SiteMailer).to receive(:plan_exceeded).and_call_original
       end
 
@@ -62,7 +62,7 @@ RSpec.describe PlanService do
 
       before do
         Cache.redis.set("plan_exeeded_alerted::#{site.id}", '1')
-        allow(site).to receive(:recording_count_exceeded?).and_return(true)
+        allow(site.plan).to receive(:exceeded?).and_return(true)
       end
 
       subject { PlanService.alert_if_exceeded(site) }
@@ -76,7 +76,7 @@ RSpec.describe PlanService do
       let(:site) { create(:site_with_team) }
       
       before do
-        allow(site).to receive(:recording_count_exceeded?).and_return(true)
+        allow(site.plan).to receive(:exceeded?).and_return(true)
       end
 
       subject do

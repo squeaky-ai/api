@@ -10,7 +10,7 @@ site_query = <<-GRAPHQL
       url
       ownerName
       plan {
-        type
+        tier
         name
       }
       uuid
@@ -64,8 +64,8 @@ RSpec.describe 'QuerySite', type: :request do
           'url' => site.url,
           'ownerName' => "#{user.first_name} #{user.last_name}",
           'plan' => {
-            'type' => site.plan,
-            'name' => site.plan_name
+            'tier' => site.plan.tier,
+            'name' => site.plan.name
           },
           'uuid' => site.uuid,
           'verifiedAt' => site.verified_at.iso8601,

@@ -1,0 +1,193 @@
+{
+  "object": {
+    "id": "in_1KrdpXLJ9zG7aLW85oy6zLUg",
+    "object": "invoice",
+    "account_country": "NL",
+    "account_name": "Squeaky B.V.",
+    "account_tax_ids": null,
+    "amount_due": 796800,
+    "amount_paid": 796800,
+    "amount_remaining": 0,
+    "application_fee_amount": null,
+    "attempt_count": 1,
+    "attempted": true,
+    "auto_advance": false,
+    "automatic_tax": {
+      "enabled": true,
+      "status": "complete"
+    },
+    "billing_reason": "subscription_create",
+    "charge": "ch_3KrdpqLJ9zG7aLW81SG8ivsJ",
+    "collection_method": "send_invoice",
+    "created": 1650700595,
+    "currency": "gbp",
+    "custom_fields": null,
+    "customer": "cus_LYkhU0zACd6T4T",
+    "customer_address": {
+      "city": "Fareham",
+      "country": "GB",
+      "line1": "3 Harting Gardens",
+      "line2": "",
+      "postal_code": "PO16 8DX",
+      "state": ""
+    },
+    "customer_email": "lewismonteith@gmail.com",
+    "customer_name": "Lewis Monteith",
+    "customer_phone": "+447488585641",
+    "customer_shipping": {
+      "address": {
+        "city": "Fareham",
+        "country": "GB",
+        "line1": "3 Harting Gardens",
+        "line2": "",
+        "postal_code": "PO16 8DX",
+        "state": ""
+      },
+      "name": "Lewis Monteith",
+      "phone": "+447488585641"
+    },
+    "customer_tax_exempt": "none",
+    "customer_tax_ids": [],
+    "default_payment_method": null,
+    "default_source": null,
+    "default_tax_rates": [],
+    "description": null,
+    "discount": null,
+    "discounts": [],
+    "due_date": 1653292595,
+    "ending_balance": 0,
+    "footer": null,
+    "hosted_invoice_url": "https://invoice.stripe.com/i/acct_1KPOB2LJ9zG7aLW8/test_YWNjdF8xS1BPQjJMSjl6RzdhTFc4LF9MWWxNRFhObVdrMHpncThndFYzdUZDdVFEQ3NaMlBaLDQxMjQxNDU00200P8hnFEEx?s=ap",
+    "invoice_pdf": "https://pay.stripe.com/invoice/acct_1KPOB2LJ9zG7aLW8/test_YWNjdF8xS1BPQjJMSjl6RzdhTFc4LF9MWWxNRFhObVdrMHpncThndFYzdUZDdVFEQ3NaMlBaLDQxMjQxNDU00200P8hnFEEx/pdf?s=ap",
+    "last_finalization_error": null,
+    "lines": {
+      "object": "list",
+      "data": [
+        {
+          "id": "il_1KrdpXLJ9zG7aLW8hj1NnAZ5",
+          "object": "line_item",
+          "amount": 796800,
+          "currency": "gbp",
+          "description": "1 × Enterprise Tier 1 (at £7,968.00 / year)",
+          "discount_amounts": [],
+          "discountable": true,
+          "discounts": [],
+          "livemode": false,
+          "metadata": {},
+          "period": {
+            "end": 1682236595,
+            "start": 1650700595
+          },
+          "plan": {
+            "id": "price_1KrS2KLJ9zG7aLW87ZLHGqgI",
+            "object": "plan",
+            "active": true,
+            "aggregate_usage": null,
+            "amount": 796800,
+            "amount_decimal": "796800",
+            "billing_scheme": "per_unit",
+            "created": 1650655260,
+            "currency": "gbp",
+            "interval": "year",
+            "interval_count": 1,
+            "livemode": false,
+            "metadata": {},
+            "nickname": null,
+            "product": "prod_LYZAsKXgiJC8q2",
+            "tiers_mode": null,
+            "transform_usage": null,
+            "trial_period_days": null,
+            "usage_type": "licensed"
+          },
+          "price": {
+            "id": "price_1KrS2KLJ9zG7aLW87ZLHGqgI",
+            "object": "price",
+            "active": true,
+            "billing_scheme": "per_unit",
+            "created": 1650655260,
+            "currency": "gbp",
+            "livemode": false,
+            "lookup_key": null,
+            "metadata": {},
+            "nickname": null,
+            "product": "prod_LYZAsKXgiJC8q2",
+            "recurring": {
+              "aggregate_usage": null,
+              "interval": "year",
+              "interval_count": 1,
+              "trial_period_days": null,
+              "usage_type": "licensed"
+            },
+            "tax_behavior": "inclusive",
+            "tiers_mode": null,
+            "transform_quantity": null,
+            "type": "recurring",
+            "unit_amount": 796800,
+            "unit_amount_decimal": "796800"
+          },
+          "proration": false,
+          "proration_details": {
+            "credited_items": null
+          },
+          "quantity": 1,
+          "subscription": "sub_1KrdpXLJ9zG7aLW8gUzFRgPE",
+          "subscription_item": "si_LYlMGbb0HVpJ8a",
+          "tax_amounts": [
+            {
+              "amount": 0,
+              "inclusive": true,
+              "tax_rate": "txr_1Kr4BaLJ9zG7aLW8e0BYCqfL"
+            }
+          ],
+          "tax_rates": [],
+          "type": "subscription"
+        }
+      ],
+      "has_more": false,
+      "total_count": 1,
+      "url": "/v1/invoices/in_1KrdpXLJ9zG7aLW85oy6zLUg/lines"
+    },
+    "livemode": false,
+    "metadata": {},
+    "next_payment_attempt": null,
+    "number": "42A5DE55-0028",
+    "on_behalf_of": null,
+    "paid": true,
+    "paid_out_of_band": false,
+    "payment_intent": "pi_3KrdpqLJ9zG7aLW81GA9zszH",
+    "payment_settings": {
+      "payment_method_options": null,
+      "payment_method_types": null
+    },
+    "period_end": 1650700595,
+    "period_start": 1650700595,
+    "post_payment_credit_notes_amount": 0,
+    "pre_payment_credit_notes_amount": 0,
+    "quote": null,
+    "receipt_number": null,
+    "starting_balance": 0,
+    "statement_descriptor": null,
+    "status": "paid",
+    "status_transitions": {
+      "finalized_at": 1650700613,
+      "marked_uncollectible_at": null,
+      "paid_at": 1650700653,
+      "voided_at": null
+    },
+    "subscription": "sub_1KrdpXLJ9zG7aLW8gUzFRgPE",
+    "subtotal": 796800,
+    "tax": 0,
+    "test_clock": null,
+    "total": 796800,
+    "total_discount_amounts": [],
+    "total_tax_amounts": [
+      {
+        "amount": 0,
+        "inclusive": true,
+        "tax_rate": "txr_1Kr4BaLJ9zG7aLW8e0BYCqfL"
+      }
+    ],
+    "transfer_data": null,
+    "webhooks_delivered_at": 1650700596
+  }
+}
