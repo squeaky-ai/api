@@ -6,7 +6,7 @@ module Resolvers
       type Types::Admin::Verified, null: false
 
       def resolve
-        dates = Site.select('verified_at').map(&:verified_at)
+        dates = ::Site.select('verified_at').map(&:verified_at)
         verified = dates.compact
 
         {
