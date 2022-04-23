@@ -16,7 +16,7 @@ GRAPHQL
 RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
   context 'when no billing exists' do
     let(:user) { create(:user, superuser: true) }
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     subject do
       variables = {
@@ -38,7 +38,7 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
 
   context 'when the billing already exists' do
     let(:user) { create(:user, superuser: true) }
-    let(:site) { create(:site) }
+    let(:site) { create(:site_with_team) }
 
     subject do
       create(:billing, site: site, customer_id: 'cus_12342342342')

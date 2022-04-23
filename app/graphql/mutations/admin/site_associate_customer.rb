@@ -19,7 +19,7 @@ module Mutations
 
         return site if site.billing
 
-        site.create_billing(customer_id:)
+        site.create_billing(customer_id:, user: site.owner.user)
 
         site
       end
