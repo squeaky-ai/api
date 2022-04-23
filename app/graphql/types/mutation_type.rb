@@ -10,6 +10,7 @@ module Types
     field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
     field :admin_user_delete, mutation: Mutations::Admin::UserDelete
     field :admin_site_plan_update, mutation: Mutations::Admin::SitePlanUpdate
+    field :admin_site_associate_customer, mutation: Mutations::Admin::SiteAssociateCustomer
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
