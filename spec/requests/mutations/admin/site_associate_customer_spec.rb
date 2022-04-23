@@ -34,15 +34,23 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
         'customerId' => 'cus_12342342342'
       )
     end
+
+    it 'creates the billing in the database' do
+      subject
+      billing = site.reload.billing
+      expect(billing.customer_id).to eq 'cus_12342342342'
+    end
   end
 
   context 'when the billing already exists' do
     let(:user) { create(:user, superuser: true) }
     let(:site) { create(:site_with_team) }
+    
+    before do
+      create(:billing, site:, customer_id: 'cus_12342342342')
+    end
 
     subject do
-      create(:billing, site: site, customer_id: 'cus_12342342342')
-
       variables = {
         input: {
           siteId: site.id,
@@ -57,6 +65,10 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
       expect(subject['data']['adminSiteAssociateCustomer']['billing']).to eq(
         'customerId' => 'cus_12342342342'
       )
+    end
+
+    it 'does not update the database' do
+      expect { subject }.not_to change { site.billing.customer_id }
     end
   end
 end
