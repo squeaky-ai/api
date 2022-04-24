@@ -7,10 +7,11 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
+      argument :search, String, required: false, default_value: nil
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
-      def resolve(page:, size:, sort:, filters:)
+      def resolve(page:, size:, search:, sort:, filters:)
         visitors = Site
                    .find(object.id)
                    .visitors
@@ -20,6 +21,9 @@ module Resolvers
 
         # Apply all the filters
         visitors = filter(visitors, filters)
+
+        # Apply the search
+        visitors = filter_search(visitors, search)
 
         # Paginate the results
         visitors = visitors.page(page).per(size).group(:id)
@@ -62,6 +66,14 @@ module Resolvers
         end
 
         visitors
+      end
+
+      def filter_search(visitors, search)
+        return visitors if search.blank?
+
+        query = "%#{search}%"
+
+        visitors.where('visitors.external_attributes::text ILIKE :query OR visitors.visitor_id ILIKE :query', query:)
       end
 
       # Adds a filter that lets users show only visitors
