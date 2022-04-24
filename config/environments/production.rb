@@ -89,5 +89,5 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.web_host = 'https://squeaky.ai'
+  config.web_host = ENV.fetch('WEB_HOST', 'https://squeaky.ai')
 end
