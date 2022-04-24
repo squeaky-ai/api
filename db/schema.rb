@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_24_183215) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "body", null: false
+  end
+
+  create_table "clicks", force: :cascade do |t|
+    t.string "selector", null: false
+    t.integer "coordinates_x", null: false
+    t.integer "coordinates_y", null: false
+    t.string "page_url", null: false
+    t.bigint "clicked_at", null: false
+    t.integer "viewport_x", null: false
+    t.integer "viewport_y", null: false
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_clicks_on_site_id"
   end
 
   create_table "communications", force: :cascade do |t|
@@ -128,12 +142,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
     t.integer "response_time_hours"
     t.string "support", default: [], null: false, array: true
     t.bigint "site_id"
-    t.boolean "sso_enabled", null: false, default: false
-    t.boolean "audit_trail_enabled", null: false, default: false
-    t.boolean "private_instance_enabled", null: false, default: false
-    t.string "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "sso_enabled", default: false, null: false
+    t.boolean "audit_trail_enabled", default: false, null: false
+    t.boolean "private_instance_enabled", default: false, null: false
+    t.string "notes"
     t.index ["site_id"], name: "index_plans_on_site_id"
   end
 
@@ -288,18 +302,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_23_084949) do
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
-
-  create_view "clicks", materialized: true, sql_definition: <<-SQL
-      SELECT COALESCE((events.data ->> 'selector'::text), 'html > body'::text) AS selector,
-      (events.data ->> 'x'::text) AS coordinates_x,
-      (events.data ->> 'y'::text) AS coordinates_y,
-      (events.data ->> 'href'::text) AS page_url,
-      events."timestamp" AS clicked_at,
-      recordings.viewport_x,
-      recordings.viewport_y,
-      recordings.site_id
-     FROM (events
-       JOIN recordings ON ((recordings.id = events.recording_id)))
-    WHERE ((recordings.status = ANY (ARRAY[0, 2])) AND (events.event_type = 3) AND (((events.data ->> 'source'::text))::integer = 2) AND (((events.data ->> 'type'::text))::integer = 2));
-  SQL
 end

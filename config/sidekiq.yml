@@ -3,10 +3,6 @@
   - default
 
 :schedule:
-  refresh_clicks:
-    cron: '0 0 5 * * *' # Every morning at 5AM
-    class: RefreshClicksJob
-
   weekly_review_emails:
     cron: '0 30 12 * * 1' # Every monday afternoon at 12:30AM
     class: WeeklyReviewEmailsJob

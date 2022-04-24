@@ -35,6 +35,7 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
+      persist_clicks!(recording)
     end
   end
 
@@ -150,6 +151,29 @@ class RecordingSaveJob < ApplicationJob
       email: nps[:email],
       recording:
     )
+  end
+
+  def persist_clicks!(recording)
+    items = []
+
+    @session.events.each do |event|
+      next unless event['type'] == 3 &&
+                  event['data']['source'] == 2 &&
+                  event['data']['type'] == 2
+
+      items.push(
+        selector: event['data']['selector'] || 'html > body',
+        coordinates_x: event['data']['x'],
+        coordinates_y: event['data']['y'],
+        clicked_at: event['timestamp'],
+        page_url: event['data']['href'] || '/',
+        viewport_x: recording.viewport_x,
+        viewport_y: recording.viewport_y,
+        site_id: recording.site_id
+      )
+    end
+
+    Click.insert_all!(items) unless items.empty?
   end
 
   def valid?
