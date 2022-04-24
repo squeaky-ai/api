@@ -23,7 +23,7 @@ RSpec.describe Mutations::Subscriptions::Portal, type: :request do
     allow(Stripe::BillingPortal::Session).to receive(:create)
       .with(
         customer: billing.customer_id,
-        return_url: "https://squeaky.ai/app/sites/#{site.id}/settings/subscription"
+        return_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription"
       )
       .and_return(portal_response)
   end
