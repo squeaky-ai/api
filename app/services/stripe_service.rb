@@ -82,7 +82,8 @@ class StripeService
         period_to: bill['period']['end'],
         discount_id: discount ? discount['id'] : nil,
         discount_name: discount ? discount['coupon']['name'] : nil,
-        discount_percentage: discount ? discount['coupon']['percent_off'] : nil
+        discount_percentage: discount ? discount['coupon']['percent_off'] : nil,
+        discount_amount: discount ? discount['coupon']['amount_off'] : nil
       )
     end
 

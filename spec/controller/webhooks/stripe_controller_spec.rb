@@ -135,6 +135,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(transaction.discount_id).to eq(nil)
         expect(transaction.discount_name).to eq(nil)
         expect(transaction.discount_percentage).to eq(nil)
+        expect(transaction.discount_amount).to eq(nil)
       end
 
       it 'sets the sites plan to the one from the billing' do
@@ -209,6 +210,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(transaction.discount_id).to eq(nil)
         expect(transaction.discount_name).to eq(nil)
         expect(transaction.discount_percentage).to eq(nil)
+        expect(transaction.discount_amount).to eq(nil)
       end
 
       it 'sets the sites plan to the one from the billing' do
@@ -283,10 +285,86 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(transaction.discount_id).to eq('di_1KreRnLJ9zG7aLW8NPzlACk5')
         expect(transaction.discount_name).to eq('Annual Payment Discount')
         expect(transaction.discount_percentage).to eq(20.0)
+        expect(transaction.discount_amount).to eq(nil)
       end
 
       it 'sets the sites plan to the one from the billing' do
         expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(7)
+      end
+    end
+
+    context 'when the event type is "invoice.paid" for a yearly customer and they have a fixed price coupon applied' do
+      let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
+
+      let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid_with_fixed_amount_coupon.json') }
+      let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
+      let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
+  
+      let(:stripe_event) do
+        double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
+      end
+
+      subject { get :index, body: '{}', as: :json }
+  
+      before do
+        allow(Stripe::Customer).to receive(:retrieve)
+          .with(billing.customer_id)
+          .and_return(customer_retrieved_fixture)
+
+        allow(Stripe::PaymentMethod).to receive(:list)
+          .with(customer: billing.customer_id, type: 'card')
+          .and_return(list_payments_methods_fixture)
+
+        allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
+      end
+  
+      it 'returns the success message' do
+        subject
+  
+        expect(response).to have_http_status(200)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+        expect(response.body).to eq({ success: true }.to_json)
+      end
+  
+      it 'sets the billing status to be valid' do
+        expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
+      end
+
+      it 'stores the correct billing data' do
+        subject
+        billing.reload
+        
+        expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
+        expect(billing.status).to eq(Billing::VALID)
+        expect(billing.card_type).to eq('visa')
+        expect(billing.country).to eq('UK')
+        expect(billing.expiry).to eq('10/2025')
+        expect(billing.card_number).to eq('4242')
+        expect(billing.billing_name).to eq('Lewis Monteith')
+        expect(billing.billing_email).to eq('lewismonteith@gmail.com')
+      end
+  
+      it 'stores the invoice' do
+        expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
+      end
+
+      it 'stores the correct invoice details' do
+        subject
+        transaction = billing.reload.transactions.first
+
+        expect(transaction.amount).to eq(796800)
+        expect(transaction.currency).to eq('GBP')
+        expect(transaction.interval).to eq('year')
+        expect(transaction.period_from).to eq(1650827774)
+        expect(transaction.period_to).to eq(1682363774)
+        expect(transaction.discount_id).to eq('di_1KsAuoLJ9zG7aLW8LGq2lcnj')
+        expect(transaction.discount_name).to eq('Annual Payment Discount')
+        expect(transaction.discount_percentage).to eq(nil)
+        expect(transaction.discount_amount).to eq(561600)
+      end
+
+      it 'sets the sites plan to the one from the billing' do
+        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(5)
       end
     end
   

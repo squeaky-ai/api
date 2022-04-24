@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_24_183215) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_24_193312) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -247,6 +247,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_24_183215) do
     t.string "discount_name"
     t.float "discount_percentage"
     t.string "discount_id"
+    t.integer "discount_amount"
     t.index ["billing_id"], name: "index_transactions_on_billing_id"
   end
 
