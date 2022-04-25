@@ -42,4 +42,6 @@ Rails.application.routes.draw do
     post 'test/user', to: 'test#create_user'
     delete 'test/user', to: 'test#destroy_user'
   end
+
+  match '*anything', to: 'application#not_found', via: %i[get post]
 end
