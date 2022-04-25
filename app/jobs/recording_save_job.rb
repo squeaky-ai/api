@@ -163,8 +163,8 @@ class RecordingSaveJob < ApplicationJob
 
       items.push(
         selector: event['data']['selector'] || 'html > body',
-        coordinates_x: event['data']['x'],
-        coordinates_y: event['data']['y'],
+        coordinates_x: event['data']['x'] || 0,
+        coordinates_y: event['data']['y'] || 0,
         clicked_at: event['timestamp'],
         page_url: event['data']['href'] || '/',
         viewport_x: recording.viewport_x,
