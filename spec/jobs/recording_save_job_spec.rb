@@ -22,6 +22,8 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(Cache.redis).to receive(:del)
+      allow(Cache.redis).to receive(:set)
+      allow(Cache.redis).to receive(:expire)
     end
 
     subject { described_class.perform_now(event) }
@@ -89,6 +91,18 @@ RSpec.describe RecordingSaveJob, type: :job do
     it 'cleans up the redis data' do
       subject
       expect(Cache.redis).to have_received(:del)
+    end
+
+    it 'sets a lock so that duplicate jobs do not run' do
+      subject
+
+      expect(Cache.redis)
+        .to have_received(:set)
+        .with("job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}", '1')
+
+      expect(Cache.redis)
+        .to have_received(:expire)
+        .with("job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}", 7200)
     end
   end
 
@@ -230,6 +244,38 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'verifies it' do
       expect { subject }.to change { site.reload.verified_at.nil? }.from(true).to(false)
+    end
+  end
+
+  context 'when an existing job with the same arguments has been locked' do
+    let(:site) { create(:site_with_team) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      site.update(verified_at: nil)
+      events_fixture = require_fixture('events.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      allow(Cache.redis)
+        .to receive(:get)
+        .with("job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}")
+        .and_return('1')
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'raises an error' do
+      expect { subject }.to raise_error(
+        StandardError, 
+        "RecordingSaveJob lock hit for job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}"
+      )
     end
   end
 end

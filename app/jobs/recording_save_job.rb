@@ -5,6 +5,16 @@ class RecordingSaveJob < ApplicationJob
 
   sidekiq_options retry: false
 
+  before_perform do |job|
+    args = job.arguments.first
+    key = "job_lock::#{args['site_id']}::#{args['visitor_id']}::#{args['session_id']}"
+
+    raise StandardError, "RecordingSaveJob lock hit for #{key}" if Cache.redis.get(key)
+
+    Cache.redis.set(key, '1')
+    Cache.redis.expire(key, 7200)
+  end
+
   def perform(*args)
     message = args.first.symbolize_keys
 
