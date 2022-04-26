@@ -43,5 +43,6 @@ Rails.application.routes.draw do
     delete 'test/user', to: 'test#destroy_user'
   end
 
+  root to: 'application#not_found'
   match '*anything', to: 'application#not_found', via: %i[get post]
 end
