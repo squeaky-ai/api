@@ -19,6 +19,10 @@ module Types
       argument :site_id, ID, required: true
     end
 
+    field :site_session_settings, Types::Sites::SessionSettings, null: true do
+      argument :site_id, String, required: true
+    end
+
     field :sites, [Types::Sites::Site, { null: true }], null: false
 
     field :user_invitation, Types::Users::Invitation, null: true do
@@ -28,10 +32,6 @@ module Types
     field :plans, [Types::Plans::Plan, { null: false }], null: false
 
     field :feedback, Types::Feedback::Feedback, null: true do
-      argument :site_id, String, required: true
-    end
-
-    field :css_selector_blacklist, [String, { null: true }], null: false do
       argument :site_id, String, required: true
     end
 
@@ -98,7 +98,20 @@ module Types
       Site.find_by(uuid: arguments[:site_id])&.feedback
     end
 
-    def css_selector_blacklist(arguments)
+    def site_session_settings(arguments)
+      site = Site
+             .select(%i[css_selector_blacklist anonymise_form_inputs])
+             .find_by(uuid: arguments[:site_id])
+
+      return unless site
+
+      {
+        css_selector_blacklist: site.css_selector_blacklist,
+        anonymise_form_inputs: site&.anonymise_form_inputs
+      }
+    end
+
+    def anonymise_form_inputs(arguments)
       Site.find_by(uuid: arguments[:site_id])&.css_selector_blacklist || []
     end
 

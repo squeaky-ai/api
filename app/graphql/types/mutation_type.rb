@@ -32,6 +32,7 @@ module Types
     field :domain_blacklist_create, mutation: Mutations::Sites::DomainBlacklistCreate
     field :domain_blacklist_delete, mutation: Mutations::Sites::DomainBlacklistDelete
     field :magic_erasure_update, mutation: Mutations::Sites::MagicErasureUpdate
+    field :anonymise_form_inputs_update, mutation: Mutations::Sites::AnonymiseFormInputsUpdate
     field :css_selector_blacklist_create, mutation: Mutations::Sites::CssSelectorBlacklistCreate
     field :css_selector_blacklist_delete, mutation: Mutations::Sites::CssSelectorBlacklistDelete
     # Team
