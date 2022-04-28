@@ -13,15 +13,16 @@ module Resolvers
       argument :page, String, required: true
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
+      argument :exclude_recording_ids, [ID], required: false, default_value: []
 
-      def resolve(device:, type:, page:, from_date:, to_date:)
+      def resolve(device:, type:, page:, from_date:, to_date:, exclude_recording_ids:)
         device_counts = devices(page, from_date, to_date)
         items = type == 'Click' ? click_events(from_date, to_date, page, device) : scroll_events(from_date, to_date, page, device)
 
         {
           **device_counts,
           items: items.compact,
-          recording_id: suitable_recording(page, device, from_date, to_date)
+          recording_id: suitable_recording(page, device, from_date, to_date, exclude_recording_ids)
         }
       end
 
@@ -55,7 +56,7 @@ module Resolvers
         Sql.execute(sql, variables).first
       end
 
-      def suitable_recording(page, device, from_date, to_date)
+      def suitable_recording(page, device, from_date, to_date, exclude_recording_ids)
         sql = <<-SQL
           SELECT
             recording_id
@@ -64,6 +65,7 @@ module Resolvers
           LEFT JOIN
             recordings ON recordings.id = pages.recording_id
           WHERE
+            recordings.id NOT IN (?) AND
             recordings.site_id = ? AND
             recordings.status IN (?) AND
             pages.url = ? AND
@@ -76,6 +78,7 @@ module Resolvers
         SQL
 
         variables = [
+          exclude_recording_ids.empty? ? [0] : exclude_recording_ids,
           object.id,
           [Recording::ACTIVE, Recording::DELETED],
           page,
