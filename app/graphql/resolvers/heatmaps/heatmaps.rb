@@ -5,8 +5,9 @@ module Resolvers
     class Heatmaps < Resolvers::Base
       type Types::Heatmaps::Heatmaps, null: false
 
-      MOBILE_BREAKPOINT = 380
+      MOBILE_BREAKPOINT = 320
       TABLET_BREAKPOINT = 800
+      DESKTOP_BREAKPOINT = 1280
 
       argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
       argument :type, Types::Heatmaps::Type, required: true, default_value: 'Click'
@@ -31,9 +32,9 @@ module Resolvers
       def devices(page, from_date, to_date)
         sql = <<-SQL
           SELECT
-            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x > #{TABLET_BREAKPOINT}) desktop_count,
-            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x > #{MOBILE_BREAKPOINT} AND recordings.viewport_x <= #{TABLET_BREAKPOINT}) tablet_count,
-            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x <= #{TABLET_BREAKPOINT}) mobile_count
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Desktop')}) desktop_count,
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Tablet')}) tablet_count,
+            COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Mobile')}) mobile_count
           FROM
             pages
           LEFT JOIN
@@ -155,11 +156,11 @@ module Resolvers
       def device_expression(device)
         case device
         when 'Mobile'
-          "<= #{MOBILE_BREAKPOINT}"
-        when 'Tablet'
           "BETWEEN #{MOBILE_BREAKPOINT} AND #{TABLET_BREAKPOINT}"
+        when 'Tablet'
+          "BETWEEN #{TABLET_BREAKPOINT} AND #{DESKTOP_BREAKPOINT}"
         when 'Desktop'
-          "> #{TABLET_BREAKPOINT}"
+          ">= #{DESKTOP_BREAKPOINT}"
         end
       end
     end
