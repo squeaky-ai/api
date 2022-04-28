@@ -158,6 +158,21 @@ RSpec.describe StripeService do
     end
   end
 
+  describe '.delete_customer' do
+    let(:customer_id) { SecureRandom.uuid }
+
+    before do
+      allow(Stripe::Customer).to receive(:delete)
+    end
+
+    subject { StripeService.delete_customer(customer_id) }
+
+    it 'calls the stripe delete method' do
+      subject
+      expect(Stripe::Customer).to have_received(:delete).with(customer_id)
+    end
+  end
+
   describe '.update_customer' do
     let(:billing) { create(:billing) }
     let(:payment_id) { SecureRandom.base36 }

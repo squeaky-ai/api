@@ -82,8 +82,4 @@ class Recording < ApplicationRecord
   def ordered_pages
     @ordered_pages ||= pages.sort_by(&:entered_at)
   end
-
-  def site_recordings
-    @site_recordings ||= site.recordings.where(status: Recording::ACTIVE).order('connected_at ASC')
-  end
 end

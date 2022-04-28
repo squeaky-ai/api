@@ -111,10 +111,6 @@ module Types
       }
     end
 
-    def anonymise_form_inputs(arguments)
-      Site.find_by(uuid: arguments[:site_id])&.css_selector_blacklist || []
-    end
-
     def blog_post(arguments)
       blog = ::Blog.find_by_slug(arguments[:slug])
 

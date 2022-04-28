@@ -144,4 +144,23 @@ RSpec.describe Session do
       expect(instance.utm_term).to eq 'analytics'
     end
   end
+
+  context 'when the events include some bad json' do
+    before do
+      event_1 = { key: 'event', value: { timestamp: 1651157003244 } }.to_json
+      event_2 = 'sdfdsf{}11@@@2'
+
+      allow(Cache.redis).to receive(:lrange).and_return([event_1, event_2])
+      allow(Rails.logger).to receive(:warn).and_call_original
+    end
+
+    it 'skips bad events' do
+      expect(instance.events.size).to eq 1
+    end
+
+    it 'logs a warning' do
+      instance
+      expect(Rails.logger).to have_received(:warn).with('Failed to parse JSON 859: unexpected token at \'sdfdsf{}11@@@2\'')
+    end
+  end
 end
