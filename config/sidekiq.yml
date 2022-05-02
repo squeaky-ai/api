@@ -6,3 +6,7 @@
   weekly_review_emails:
     cron: '0 30 12 * * 1' # Every monday afternoon at 12:30AM
     class: WeeklyReviewEmailsJob
+
+  data_retention_job:
+    cron: '0 0 1 * * *' # Every day at 01:00AM
+    class: DataRetentionJob
