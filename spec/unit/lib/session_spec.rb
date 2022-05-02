@@ -163,4 +163,22 @@ RSpec.describe Session do
       expect(Rails.logger).to have_received(:warn).with('Failed to parse JSON 859: unexpected token at \'sdfdsf{}11@@@2\'')
     end
   end
+
+  describe '#exists?' do
+    context 'when the session does not exist' do
+      it 'returns false' do
+        expect(instance.exists?).to eq false
+      end
+    end
+
+    context 'when the session does exist' do
+      before do
+        create(:recording, session_id: instance.session_id)
+      end
+
+      it 'returns true' do
+        expect(instance.exists?).to eq true
+      end
+    end
+  end
 end

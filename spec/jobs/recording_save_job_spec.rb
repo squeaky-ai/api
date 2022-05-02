@@ -278,4 +278,28 @@ RSpec.describe RecordingSaveJob, type: :job do
       )
     end
   end
+
+  context 'when the session already exists' do
+    let(:site) { create(:site_with_team) }
+    let(:session_id) { SecureRandom.base36 }
+    let(:recording) { create(:recording, site:, session_id: )}
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => session_id,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      events_fixture = require_fixture('events.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+    end
+
+    it 'does not store the recording' do
+      expect { subject }.not_to change { site.reload.recordings.size }
+    end
+  end
 end

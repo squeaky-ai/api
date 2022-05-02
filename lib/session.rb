@@ -130,6 +130,12 @@ class Session
     Cache.redis.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
   end
 
+  def exists?
+    exists = Recording.where(session_id: @session_id).exists?
+    Stats.count('session_exists') if exists
+    exists
+  end
+
   private
 
   def fetch_and_process_events

@@ -64,34 +64,30 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_recording!(visitor)
-    recording = @site.recordings.find_or_create_by(session_id: @session.session_id)
-
-    if recording.new_record?
-      recording.visitor_id = visitor.id
-      recording.status = recording_status
-      recording.locale = @session.locale
-      recording.device_x = @session.device_x
-      recording.browser = @session.browser
-      recording.device_type = @session.device_type
-      recording.device_y = @session.device_y
-      recording.referrer = @session.referrer
-      recording.useragent = @session.useragent
-      recording.timezone = @session.timezone
-      recording.country_code = @session.country_code
-      recording.viewport_x = @session.viewport_x
-      recording.viewport_y = @session.viewport_y
-      recording.connected_at = @session.connected_at
-      recording.utm_source = @session.utm_source
-      recording.utm_medium = @session.utm_medium
-      recording.utm_campaign = @session.utm_campaign
-      recording.utm_content = @session.utm_content
-      recording.utm_term = @session.utm_term
-    end
-
-    recording.disconnected_at = @session.disconnected_at
-
-    recording.save!
-    recording
+    Recording.create!(
+      session_id: @session.session_id,
+      visitor_id: visitor.id,
+      site_id: @site.id,
+      status: recording_status,
+      locale: @session.locale,
+      device_x: @session.device_x,
+      browser: @session.browser,
+      device_type: @session.device_type,
+      device_y: @session.device_y,
+      referrer: @session.referrer,
+      useragent: @session.useragent,
+      timezone: @session.timezone,
+      country_code: @session.country_code,
+      viewport_x: @session.viewport_x,
+      viewport_y: @session.viewport_y,
+      connected_at: @session.connected_at,
+      disconnected_at: @session.disconnected_at,
+      utm_source: @session.utm_source,
+      utm_medium: @session.utm_medium,
+      utm_campaign: @session.utm_campaign,
+      utm_content: @session.utm_content,
+      utm_term: @session.utm_term
+    )
   end
 
   def persist_events!(recording)
@@ -194,6 +190,8 @@ class RecordingSaveJob < ApplicationJob
     return false if @session.duration.zero?
 
     return false unless @session.recording?
+
+    return false if @session.exists?
 
     true
   end

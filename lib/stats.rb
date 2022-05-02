@@ -10,4 +10,8 @@ class Stats
 
     response
   end
+
+  def self.count(name)
+    Rails.logger.info("stats::count::#{name}")
+  end
 end
