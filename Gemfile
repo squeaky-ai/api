@@ -3,18 +3,18 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.1'
+ruby '3.1.2'
 
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3', '~> 1.110'
-gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bootsnap', require: false
 gem 'devise'
-gem 'devise_invitable', '~> 2.0.0'
+gem 'devise_invitable'
 gem 'graphql'
 gem 'graphql_playground-rails'
 gem 'kaminari'
-gem 'pg', '~> 1.1'
-gem 'puma', '~> 5.0'
+gem 'pg', '~> 1.3.5'
+gem 'puma', '~> 5.6'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.2'
 gem 'redis'
@@ -26,11 +26,11 @@ gem 'useragent'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec-rails', '~> 5.1'
 end
 
 group :development do
-  gem 'listen', '~> 3.3'
+  gem 'listen', '~> 3.7'
 end
 
 group :test do
