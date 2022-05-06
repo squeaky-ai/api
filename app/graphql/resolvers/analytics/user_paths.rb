@@ -9,6 +9,8 @@ module Resolvers
       argument :end_page, String, required: false, default_value: nil
 
       def resolve(start_page:, end_page:)
+        return [] unless start_page || end_page
+
         sql = <<-SQL
           SELECT page_urls path
           FROM (

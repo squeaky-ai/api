@@ -34,6 +34,22 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
       create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
     end
 
+    context 'when there are no start or end pages' do
+      subject do
+        variables = { 
+          site_id: site.id, 
+          from_date: '2021-08-01', 
+          to_date: '2021-08-08'
+        }
+        graphql_request(analytics_user_paths_query, variables, user)
+      end
+  
+      it 'returns an empty array' do
+        paths = subject['data']['site']['analytics']['userPaths']
+        expect(paths).to eq([])
+      end
+    end
+
     context 'when the start and end page is given' do
       subject do
         variables = { 
