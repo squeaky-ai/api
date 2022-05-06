@@ -21,6 +21,7 @@ module Types
       field :page_views, resolver: Resolvers::Analytics::PageViews
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
       field :countries, resolver: Resolvers::Analytics::Countries
+      field :user_paths, resolver: Resolvers::Analytics::UserPaths
     end
   end
 end
