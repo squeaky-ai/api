@@ -16,6 +16,7 @@ module Types
       field :recordings_processed, resolver: Resolvers::Admin::RecordingsProcessed
       field :recordings_count, resolver: Resolvers::Admin::RecordingsCount
       field :visitors_count, resolver: Resolvers::Admin::VisitorsCount
+      field :recordings_stored, resolver: Resolvers::Admin::RecordingsStored
     end
   end
 end
