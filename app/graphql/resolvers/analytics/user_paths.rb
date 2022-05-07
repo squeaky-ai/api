@@ -15,7 +15,7 @@ module Resolvers
           SELECT page_urls path
           FROM (
             SELECT
-              ARRAY_AGG(pages.url ORDER BY entered_at DESC) page_urls
+              ARRAY_AGG(pages.url ORDER BY entered_at ASC) page_urls
             FROM
               recordings
             INNER JOIN
