@@ -27,7 +27,7 @@ module Resolvers
             GROUP BY
               pages.recording_id
           ) page_urls
-          WHERE #{page_where_clause(start_page, end_page)}
+          WHERE #{page_where_clause(start_page, end_page)} AND array_length(page_urls, 1) != 1
         SQL
 
         variables = [
