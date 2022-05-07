@@ -5,12 +5,10 @@ module Resolvers
     class UserPaths < Resolvers::Base
       type [Types::Analytics::UserPath, { null: true }], null: false
 
-      argument :start_page, String, required: false, default_value: nil
-      argument :end_page, String, required: false, default_value: nil
+      argument :page, String, required: true
+      argument :position, Types::Analytics::PathPosition, required: true
 
-      def resolve(start_page:, end_page:)
-        return [] unless start_page || end_page
-
+      def resolve(page:, position:)
         sql = <<-SQL
           SELECT page_urls path
           FROM (
@@ -27,18 +25,16 @@ module Resolvers
             GROUP BY
               pages.recording_id
           ) page_urls
-          WHERE #{page_where_clause(start_page, end_page)} AND array_length(page_urls, 1) != 1
+          WHERE #{page_where_clause(position)} AND array_length(page_urls, 1) != 1
         SQL
 
         variables = [
           object[:site_id],
           object[:from_date],
           object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
+          [Recording::ACTIVE, Recording::DELETED],
+          page
         ]
-
-        variables.push(start_page) if start_page
-        variables.push(end_page) if end_page
 
         Sql.execute(sql, variables).map do |path|
           {
@@ -49,12 +45,13 @@ module Resolvers
 
       private
 
-      def page_where_clause(start_page, end_page)
-        return 'page_urls[1] = ? AND page_urls[array_upper(page_urls, 1)] = ?' if start_page && end_page
-        return 'page_urls[1] = ?' if start_page
-        return 'page_urls[array_upper(page_urls, 1)] = ?' if end_page
-
-        ''
+      def page_where_clause(position)
+        case position
+        when 'Start'
+          'page_urls[1] = ?'
+        when 'End'
+          'page_urls[array_upper(page_urls, 1)] = ?'
+        end
       end
     end
   end

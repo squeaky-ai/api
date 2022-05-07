@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 analytics_user_paths_query = <<-GRAPHQL
-  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!, $start_page: String, $end_page: String) {
+  query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!, $page: String!, $position: PathPosition!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        userPaths(startPage: $start_page, endPage: $end_page) {
+        userPaths(page: $page, position: $position) {
           path
         }
       }
@@ -34,30 +34,14 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
       create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
     end
 
-    context 'when there are no start or end pages' do
-      subject do
-        variables = { 
-          site_id: site.id, 
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08'
-        }
-        graphql_request(analytics_user_paths_query, variables, user)
-      end
-  
-      it 'returns an empty array' do
-        paths = subject['data']['site']['analytics']['userPaths']
-        expect(paths).to eq([])
-      end
-    end
-
-    context 'when the start and end page is given' do
+    context 'when using the start position' do
       subject do
         variables = { 
           site_id: site.id, 
           from_date: '2021-08-01', 
           to_date: '2021-08-08',
-          start_page: '/',
-          end_page: '/test'
+          page: '/',
+          position: 'Start'
         }
         graphql_request(analytics_user_paths_query, variables, user)
       end
@@ -74,36 +58,14 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
       end
     end
   
-    context 'when only the start page is given' do
+    context 'when using the end position' do
       subject do
         variables = { 
           site_id: site.id, 
           from_date: '2021-08-01', 
           to_date: '2021-08-08',
-          start_page: '/'
-        }
-        graphql_request(analytics_user_paths_query, variables, user)
-      end
-  
-      it 'returns the paths that match' do
-        paths = subject['data']['site']['analytics']['userPaths']
-        expect(paths).to eq(
-          [
-            {
-              'path' => ['/', '/test']
-            }
-          ]
-        )
-      end
-    end
-  
-    context 'when only the end page is given' do
-      subject do
-        variables = { 
-          site_id: site.id, 
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08',
-          end_page: '/test'
+          page: '/test',
+          position: 'End'
         }
         graphql_request(analytics_user_paths_query, variables, user)
       end
