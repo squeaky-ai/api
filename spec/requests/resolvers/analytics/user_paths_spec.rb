@@ -52,6 +52,9 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
           [
             {
               'path' => ['/', '/test']
+            },
+            {
+              'path' => ['/']
             }
           ]
         )
