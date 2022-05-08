@@ -25,7 +25,7 @@ module Resolvers
             GROUP BY
               pages.recording_id
           ) page_urls
-          WHERE #{page_where_clause(position)}
+          WHERE page_urls @> ?
         SQL
 
         variables = [
@@ -33,24 +33,36 @@ module Resolvers
           object[:from_date],
           object[:to_date],
           [Recording::ACTIVE, Recording::DELETED],
-          page
+          "{#{page}}"
         ]
 
-        Sql.execute(sql, variables).map do |path|
-          {
-            path: path['path'].sub('{', '').sub('}', '').split(',')
-          }
-        end
+        format_results(
+          Sql.execute(sql, variables),
+          page,
+          position
+        )
       end
 
       private
 
-      def page_where_clause(position)
-        case position
-        when 'Start'
-          'page_urls[1] = ?'
-        when 'End'
-          'page_urls[array_upper(page_urls, 1)] = ?'
+      def format_results(paths, page, position)
+        paths.map do |path|
+          # The postgres array does not get converted to a ruby array
+          pages_list = path['path'].sub('{', '').sub('}', '').split(',')
+
+          if position == 'Start'
+            # Find the first occurance of the page in the array
+            pages_index = pages_list.index(page)
+            # Return every page from the first occurance of the
+            # selected page until the end
+            { path: pages_list.slice(pages_index, pages_list.size) }
+          else
+            # Find the last occurance of the page in the array
+            pages_index = pages_list.rindex(page)
+            # Return every page leading up to the point where
+            # the last instance of the select page exists
+            { path: pages_list.slice(0, pages_index + 1) }
+          end
         end
       end
     end
