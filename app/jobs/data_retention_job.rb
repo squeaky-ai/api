@@ -18,8 +18,7 @@ class DataRetentionJob < ApplicationJob
 
       logger.info "site #{site.id} has #{recordings.count} to delete"
 
-      # TODO: Turn this on when we're ready
-      recordings.each(&:destroy) unless Rails.env.production?
+      recordings.each(&:destroy)
     end
 
     nil
