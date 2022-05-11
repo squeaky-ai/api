@@ -136,4 +136,15 @@ FactoryBot.define do
     slug { '/category/title' }
     body { 'Hello world' }
   end
+
+  factory :communication do
+    onboarding_email { true }
+    weekly_review_email { true }
+    monthly_review_email { true }
+    product_updates_email { true }
+    marketing_and_special_offers_email { true }
+    knowledge_sharing_email { true }
+
+    user { association :user }
+  end
 end

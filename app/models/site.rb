@@ -52,6 +52,10 @@ class Site < ApplicationRecord
     recordings.where(status: Recording::ACTIVE).count
   end
 
+  def verified?
+    !verified_at.nil?
+  end
+
   def verify!
     return if verified_at
 
