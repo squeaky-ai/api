@@ -48,7 +48,7 @@ class OnboardingMailerService
 
     wait_for = admin? ? 24.hours : 5.minutes
 
-    OnboardingMailer.enqueue_getting_started(user.id).deliver_later(wait: wait_for)
+    OnboardingMailer.getting_started(user.id).deliver_later(wait: wait_for)
   end
 
   def enqueue_book_demo
