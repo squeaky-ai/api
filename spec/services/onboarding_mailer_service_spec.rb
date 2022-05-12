@@ -25,7 +25,7 @@ RSpec.describe OnboardingMailerService do
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'getting_started', 'deliver_now', { args: [user.id] })
-          .at(now + 10.minutes)
+          .at(now + 24.hours)
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'book_demo', 'deliver_now', { args: [user.id] })
@@ -60,7 +60,7 @@ RSpec.describe OnboardingMailerService do
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'getting_started', 'deliver_now', { args: [user.id] })
-          .at(now + 24.hours)
+          .at(now + 10.minutes)
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'book_demo', 'deliver_now', { args: [user.id] })
@@ -126,7 +126,7 @@ RSpec.describe OnboardingMailerService do
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'getting_started', 'deliver_now', { args: [user.id] })
-          .at(now + 10.minutes)
+          .at(now + 24.hours)
         expect(ActionMailer::MailDeliveryJob)
           .to have_been_enqueued
           .with('OnboardingMailer', 'book_demo', 'deliver_now', { args: [user.id] })
