@@ -1,6 +1,6 @@
 <h1>Getting started with Squeaky</h1>
 
-<% if @user.teams.first&.role == Team::MEMBER %>
+<% if @team&.role == Team::MEMBER %>
   <p>It&apos;s awesome that <%= @user.invited_by&.full_name %> has invited you to their team on Squeaky, but perhaps you&apos;re wondering what Squeaky is all about? To help you get up and running, we&apos;ve written a short explainer on our key features.</p>
   <table width="100%" style="margin-bottom: 2rem">
     <tr>
@@ -57,13 +57,13 @@
   <p>We&apos;d like your first steps as a Squeaky user to be as straightforward and enjoyable as possible, so we&apos;ve listed <b>a few easy steps that will help you get started</b>:</p>
   <p>
     <ol>
-      <li>If you haven&apos;t already, <a href="#todo">create your first site</a>! <i style="color:#A0A0A0">(1 minute)</i></li>
-      <li>Install the Squeaky tracking code on your website or web app, you can use our <a href="#todo">installation guides</a> if you need any help. <i style="color:#A0A0A0">(2-5 minutes)</i></li>
-      <li>Don&apos;t keep all that delicious data to yourself, <a href="#todo">invite your team</a>! You can add unlimited team members to your site for free. <i style="color:#A0A0A0">(2 minutes)</i></li>
-      <li>One of the best ways to improve your product or services is by gathering regular feedback from your customers. We&apos;ve made it simple to configure <a href="#todo">NPS</a> or <a href="#todo">Sentiment Surveys</a> for your site using Squeaky...and it&apos;s all paired with your recordings too! <i style="color:#A0A0A0">(5 minutes each)</i></li>
+      <li>If you haven&apos;t already, <a href="<%= @web_url %>/app/sites">create your first site</a>! <i style="color:#A0A0A0">(1 minute)</i></li>
+      <li>Install the Squeaky tracking code on your website or web app, you can use our <a href="https://squeaky.notion.site/Install-your-tracking-code-6ab27212bb5c434196f494ac43349b72#582b9522ff9a4f268dab90b0be05fbb5">installation guides</a> if you need any help. <i style="color:#A0A0A0">(2-5 minutes)</i></li>
+      <li>Don&apos;t keep all that delicious data to yourself, <a href="<%= @web_url %>/app/sites/<%= @site.id %>/settings/team">invite your team</a>! You can add unlimited team members to your site for free. <i style="color:#A0A0A0">(2 minutes)</i></li>
+      <li>One of the best ways to improve your product or services is by gathering regular feedback from your customers. We&apos;ve made it simple to configure <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/nps">NPS</a> or <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/sentiment">Sentiment Surveys</a> for your site using Squeaky...and it&apos;s all paired with your recordings too! <i style="color:#A0A0A0">(5 minutes each)</i></li>
     </ol>
   </p>
-  <p>That&apos;s all for now, we&apos;ll only send you a couple more onboarding emails, but if you need any help you can reply directly to this email, or book a free demo <a href="#todo">here</a>.</p>
+  <p>That&apos;s all for now, we&apos;ll only send you a couple more onboarding emails, but if you need any help you can reply directly to this email, or book a free demo <a href="<%= @web_url %>/book-demo">here</a>.</p>
   <p>Kind Regards,</p>
   <p><b>The Squeaky Team</b></p>
 <% end %>

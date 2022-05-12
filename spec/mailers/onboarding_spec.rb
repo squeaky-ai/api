@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe OnboardingMailer, type: :mailer do
   describe '#welcome' do
-    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+    let(:user) { site.owner.user }
     let(:mail) { described_class.welcome(user&.id) }
 
     it 'renders the headers' do
@@ -31,7 +32,8 @@ RSpec.describe OnboardingMailer, type: :mailer do
   end
 
   describe '#getting_started' do
-    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+    let(:user) { site.owner.user }
     let(:mail) { described_class.getting_started(user&.id) }
 
     it 'renders the headers' do
@@ -58,7 +60,8 @@ RSpec.describe OnboardingMailer, type: :mailer do
   end
 
   describe '#book_demo' do
-    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+    let(:user) { site.owner.user }
     let(:mail) { described_class.book_demo(user&.id) }
 
     it 'renders the headers' do

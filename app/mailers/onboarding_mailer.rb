@@ -14,6 +14,9 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
+    @team = @user.teams.first
+    @site = @user.sites.first
+
     mail(to: @user.email, subject: 'Getting started with Squeaky.')
   end
 
@@ -29,7 +32,10 @@ class OnboardingMailer < ApplicationMailer
     @user = User.find_by(id: user_id)
 
     return unless should_send?
-    # They've already verified their site so there's no need
+    # They may also have not added a site yet
+    return unless @user.sites.size.positive?
+    # If they have already verified their site then there
+    # is no need to send this one
     return if @user.sites.first.verified?
 
     mail(to: @user.email, subject: 'How to install your Squeaky tracking code')
@@ -40,7 +46,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
     # They've already verified their site so there's no need
-    return if @user.sites.first.verified?
+    return if @user.sites.first&.verified?
 
     mail(to: @user.email, subject: 'How can we make Squeaky work for you?')
   end
