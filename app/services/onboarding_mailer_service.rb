@@ -10,6 +10,7 @@ class OnboardingMailerService
   def initialize(user)
     @user = user
     @site = user.sites.first
+    @team = user.teams.find { |t| t.site_id = @site.id }
   end
 
   def enqueue_all
@@ -22,7 +23,7 @@ class OnboardingMailerService
 
   private
 
-  attr_reader :site, :user
+  attr_reader :site, :user, :team
 
   def enqueue_welcome
     # Recipients:
@@ -38,17 +39,21 @@ class OnboardingMailerService
 
   def enqueue_getting_started
     # Recipients:
-    # Owners, Admins
+    # Owners, Admins, User
     #
     # When to send:
     # Owner: 24 hours
-    # Admin: 5 minutes
+    # Admin: 5 minutes,
+    # User: Immediately
 
-    return unless owner? || admin?
+    waits = {
+      Team::OWNER => 5.minutes,
+      Team::ADMIN => 24.hours,
+      Team::MEMBER => 0
+    }
 
-    wait_for = admin? ? 24.hours : 5.minutes
-
-    OnboardingMailer.getting_started(user.id).deliver_later(wait: wait_for)
+    role = team&.role || Team::OWNER
+    OnboardingMailer.getting_started(user.id).deliver_later(wait: waits[role])
   end
 
   def enqueue_book_demo

@@ -88,13 +88,14 @@ RSpec.describe OnboardingMailerService do
 
       it 'enqueues the emails for a member' do
         subject
-        
+
         expect(ActionMailer::MailDeliveryJob)
           .not_to have_been_enqueued
           .with('OnboardingMailer', 'welcome', 'deliver_now', { args: [user.id] })
         expect(ActionMailer::MailDeliveryJob)
-          .not_to have_been_enqueued
+          .to have_been_enqueued
           .with('OnboardingMailer', 'getting_started', 'deliver_now', { args: [user.id] })
+          .at(now)
         expect(ActionMailer::MailDeliveryJob)
           .not_to have_been_enqueued
           .with('OnboardingMailer', 'book_demo', 'deliver_now', { args: [user.id] })
