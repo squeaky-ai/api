@@ -25,6 +25,8 @@ RSpec.describe Resolvers::Admin::VisitorsCount, type: :request do
     let(:user) { create(:user, superuser: true) }
 
     before do
+      Visitor.destroy_all
+
       create(:visitor)
       create(:visitor)
       create(:visitor)

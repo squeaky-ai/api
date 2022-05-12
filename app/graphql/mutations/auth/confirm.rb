@@ -19,6 +19,10 @@ module Mutations
           raise GraphQL::ExecutionError, user.errors.full_messages.first
         end
 
+        # Queue up all the email for a user when they
+        # confirm their account
+        OnboardingMailerService.enqueue(user)
+
         user
       end
     end
