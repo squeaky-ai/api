@@ -24,6 +24,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Cache.redis).to receive(:del)
       allow(Cache.redis).to receive(:set)
       allow(Cache.redis).to receive(:expire)
+
+      allow(RecordingMailerService).to receive(:enqueue_if_first_recording)
     end
 
     subject { described_class.perform_now(event) }
@@ -103,6 +105,12 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(Cache.redis)
         .to have_received(:expire)
         .with("job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}", 7200)
+    end
+
+    it 'triggers the recordings mailer' do
+      subject
+
+      expect(RecordingMailerService).to have_received(:enqueue_if_first_recording).with(site)
     end
   end
 

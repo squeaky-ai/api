@@ -2,8 +2,8 @@
 
 class RecordingMailerService
   class << self
-    def enqueue(site)
-      new(site).enqueue_all
+    def enqueue_if_first_recording(site)
+      new(site).enqueue_all if site.recordings.count == 1
     end
   end
 

@@ -54,6 +54,7 @@ class RecordingSaveJob < ApplicationJob
     @session.clean_up!
 
     PlanService.alert_if_exceeded(@site)
+    RecordingMailerService.enqueue_if_first_recording(@site)
   end
 
   def persist_visitor!
