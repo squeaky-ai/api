@@ -6,7 +6,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'A welcome message from the Squeaky founders.')
+    mail(to: @user.email, subject: 'A welcome message from the Squeaky founders')
   end
 
   def getting_started(user_id)
@@ -14,10 +14,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    @team = @user.teams.first
-    @site = @user.sites.first
-
-    mail(to: @user.email, subject: 'Getting started with Squeaky.')
+    mail(to: @user.email, subject: 'Getting started with Squeaky')
   end
 
   def book_demo(user_id)
@@ -25,7 +22,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Book your 1-on-1 introductory demo.')
+    mail(to: @user.email, subject: 'Book your 1-on-1 introductory demo')
   end
 
   def install_tracking_code(user_id)

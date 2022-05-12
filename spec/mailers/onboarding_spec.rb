@@ -9,7 +9,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
     let(:mail) { described_class.welcome(user&.id) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq 'A welcome message from the Squeaky founders.'
+      expect(mail.subject).to eq 'A welcome message from the Squeaky founders'
       expect(mail.to).to eq [user.email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
@@ -37,7 +37,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
     let(:mail) { described_class.getting_started(user&.id) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq 'Getting started with Squeaky.'
+      expect(mail.subject).to eq 'Getting started with Squeaky'
       expect(mail.to).to eq [user.email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
@@ -65,7 +65,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
     let(:mail) { described_class.book_demo(user&.id) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq 'Book your 1-on-1 introductory demo.'
+      expect(mail.subject).to eq 'Book your 1-on-1 introductory demo'
       expect(mail.to).to eq [user.email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end

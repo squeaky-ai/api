@@ -1,6 +1,6 @@
 <h1>Getting started with Squeaky</h1>
 
-<% if @team&.role == Team::MEMBER %>
+<% if  @user.teams.first&.role == Team::MEMBER %>
   <p>It&apos;s awesome that <%= @user.invited_by&.full_name %> has invited you to their team on Squeaky, but perhaps you&apos;re wondering what Squeaky is all about? To help you get up and running, we&apos;ve written a short explainer on our key features.</p>
   <table width="100%" style="margin-bottom: 2rem">
     <tr>
@@ -59,8 +59,8 @@
     <ol>
       <li>If you haven&apos;t already, <a href="<%= @web_url %>/app/sites">create your first site</a>! <i style="color:#A0A0A0">(1 minute)</i></li>
       <li>Install the Squeaky tracking code on your website or web app, you can use our <a href="https://squeaky.notion.site/Install-your-tracking-code-6ab27212bb5c434196f494ac43349b72#582b9522ff9a4f268dab90b0be05fbb5">installation guides</a> if you need any help. <i style="color:#A0A0A0">(2-5 minutes)</i></li>
-      <li>Don&apos;t keep all that delicious data to yourself, <a href="<%= @web_url %>/app/sites/<%= @site.id %>/settings/team">invite your team</a>! You can add unlimited team members to your site for free. <i style="color:#A0A0A0">(2 minutes)</i></li>
-      <li>One of the best ways to improve your product or services is by gathering regular feedback from your customers. We&apos;ve made it simple to configure <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/nps">NPS</a> or <a href="<%= @web_url %>/app/sites/<%= @site.id %>/feedback/sentiment">Sentiment Surveys</a> for your site using Squeaky...and it&apos;s all paired with your recordings too! <i style="color:#A0A0A0">(5 minutes each)</i></li>
+      <li>Don&apos;t keep all that delicious data to yourself, <a href="https://www.notion.so/squeaky/Invite-team-members-dc1b139e5e9d45a89860496e8355cca1">invite your team</a>! You can add unlimited team members to your site for free. <i style="color:#A0A0A0">(2 minutes)</i></li>
+      <li>One of the best ways to improve your product or services is by gathering regular feedback from your customers. We&apos;ve made it simple to configure <a href="https://www.notion.so/squeaky/Net-Promoter-Score-Feedback-b752d3077be5450c837fe0a85142f0c4">NPS</a> or <a href="https://www.notion.so/squeaky/Sentiment-Feedback-50aaa0d256194ee38fda9f2b3a420163">Sentiment Surveys</a> for your site using Squeaky...and it&apos;s all paired with your recordings too! <i style="color:#A0A0A0">(5 minutes each)</i></li>
     </ol>
   </p>
   <p>That&apos;s all for now, we&apos;ll only send you a couple more onboarding emails, but if you need any help you can reply directly to this email, or book a free demo <a href="<%= @web_url %>/book-demo">here</a>.</p>
