@@ -24,7 +24,7 @@ class RecordingMailer < ApplicationMailer
   private
 
   def owner_and_admin_emails
-    members =@site.team.filter do |team|
+    members = @site.team.filter do |team|
       [Team::OWNER, Team::ADMIN].include?(team.role) && team.user.communication_enabled?(:onboarding_email)
     end
 
