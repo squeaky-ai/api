@@ -47,7 +47,7 @@ class OnboardingMailerService
     # User: Immediately
 
     waits = {
-      Team::OWNER => 5.minutes,
+      Team::OWNER => 10.minutes,
       Team::ADMIN => 24.hours,
       Team::MEMBER => 0
     }
