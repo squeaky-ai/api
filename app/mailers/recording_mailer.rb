@@ -8,7 +8,10 @@ class RecordingMailer < ApplicationMailer
 
     emails = owner_and_admin_emails
 
-    mail(to: emails, subject: 'Your first Squeaky recording is in! 👀') unless emails.empty?
+    return if emails.empty?
+
+    Stats.count("RecordingMailer.first_recording - site_id:#{site_id}")
+    mail(to: emails, subject: 'Your first Squeaky recording is in! 👀')
   end
 
   def first_recording_followup(site_id)
@@ -18,7 +21,10 @@ class RecordingMailer < ApplicationMailer
 
     emails = owner_and_admin_emails
 
-    mail(to: emails, subject: 'Capture only the right data') unless emails.empty?
+    return if emails.empty?
+
+    Stats.count("RecordingMailer.first_recording_followup - site_id:#{site_id}")
+    mail(to: emails, subject: 'Capture only the right data')
   end
 
   private

@@ -6,6 +6,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
+    Stats.count("OnboardingMailer.welcome - user_id:#{user_id}")
     mail(to: @user.email, subject: 'A welcome message from the Squeaky founders')
   end
 
@@ -14,6 +15,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
+    Stats.count("OnboardingMailer.getting_started - user_id:#{user_id}")
     mail(to: @user.email, subject: 'Getting started with Squeaky')
   end
 
@@ -22,6 +24,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
+    Stats.count("OnboardingMailer.book_demo - user_id:#{user_id}")
     mail(to: @user.email, subject: 'Book your 1-on-1 introductory demo')
   end
 
@@ -35,6 +38,7 @@ class OnboardingMailer < ApplicationMailer
     # is no need to send this one
     return if @user.sites.first.verified?
 
+    Stats.count("OnboardingMailer.install_tracking_code - user_id:#{user_id}")
     mail(to: @user.email, subject: 'How to install your Squeaky tracking code')
   end
 
@@ -45,6 +49,7 @@ class OnboardingMailer < ApplicationMailer
     # They've already verified their site so there's no need
     return if @user.sites.first&.verified?
 
+    Stats.count("OnboardingMailer.tracking_code_not_installed - user_id:#{user_id}")
     mail(to: @user.email, subject: 'How can we make Squeaky work for you?')
   end
 
