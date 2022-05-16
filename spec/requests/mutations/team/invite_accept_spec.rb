@@ -22,6 +22,10 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
   context 'when the token is not valid' do
     let(:token) { 'sdfdsfdsfdsf' }
 
+    before do
+      allow(OnboardingMailerService).to receive(:enqueue)
+    end
+
     subject do
       variables = { 
         input: {
@@ -36,11 +40,20 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       error = subject['errors'][0]['message']
       expect(error).to eq 'Team invite is invalid'
     end
+
+    it 'does not enqueue the onboarding emails' do
+      subject
+      expect(OnboardingMailerService).not_to have_received(:enqueue)
+    end
   end
 
   context 'when the token is valid, but has been cancelled' do
     let(:site) { create(:site) }
     let(:user) { invite_user } # The team won't exist
+
+    before do
+      allow(OnboardingMailerService).to receive(:enqueue)
+    end
 
     subject do
       variables = { 
@@ -56,6 +69,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       error = subject['errors'][0]['message']
       expect(error).to eq 'Team invite has expired'
     end
+
+    it 'does not enqueue the onboarding emails' do
+      subject
+      expect(OnboardingMailerService).not_to have_received(:enqueue)
+    end
   end
 
   context 'when the token is valid' do
@@ -64,7 +82,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:team) { create(:team, user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
-      before { team }
+      before do
+        team
+
+        allow(OnboardingMailerService).to receive(:enqueue)
+      end
 
       subject do
         variables = { 
@@ -87,6 +109,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       it 'does not send any emails' do
         expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
       end
+
+      it 'enqueues the onboarding emails' do
+        subject
+        expect(OnboardingMailerService).to have_received(:enqueue)
+      end
     end
 
     context 'when it is an existing user' do
@@ -94,7 +121,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
-      before { team }
+      before do
+        team 
+
+        allow(OnboardingMailerService).to receive(:enqueue)
+      end
 
       subject do
         team.user.invite_to_team!
@@ -116,6 +147,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
 
       it 'does not send any emails' do
         expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+      end
+
+      it 'does not enqueue the onboarding emails' do
+        subject
+        expect(OnboardingMailerService).not_to have_received(:enqueue)
       end
     end
   end

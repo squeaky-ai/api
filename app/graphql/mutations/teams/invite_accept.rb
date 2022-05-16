@@ -30,6 +30,10 @@ module Mutations
         user.confirm
         user.save
 
+        # Queue up all the email for a user when they
+        # confirm their account
+        OnboardingMailerService.enqueue(user) if user.created_by_invite?
+
         team.update(status: Team::ACCEPTED)
 
         team
