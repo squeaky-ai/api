@@ -21,8 +21,15 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
         # Regular auth will still apply even if the cors
         # is correct
         site = Site.exists?(url: [source, source.sub('www.', '')])
-        Rails.logger.info "Request is using CORS, #{source} is #{site ? 'valid' : 'invalid'}"
-        source ? site : false
+
+        if site
+          Rails.logger.info "Request is using CORS, #{source} is valid"
+          true
+        else
+          Rails.logger.warn "Request is using CORS, #{source} is invalid"
+          Stats.count('invalid_cors')
+          false
+        end
       end
     end
 
