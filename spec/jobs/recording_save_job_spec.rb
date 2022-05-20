@@ -65,7 +65,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'stores the events' do
       subject
-      expect(site.reload.recordings.first.events.size).to eq 82
+      expect(site.reload.recordings.first.events.size).to eq 83
     end
 
     it 'stores the sentiments' do

@@ -123,7 +123,7 @@ class Session
   end
 
   def interaction?
-    events.any? { |event| event['type'] == 3 && event['data']['source'] }
+    events.any? { |event| event['type'] == Event::INCREMENTAL_SNAPSHOT && event['data']['source'] }
   end
 
   def clean_up!
@@ -166,6 +166,8 @@ class Session
         handle_sentiment(event)
       when 'nps'
         handle_nps(event)
+      when 'error'
+        handle_error(event)
       end
     end
   end
@@ -202,6 +204,14 @@ class Session
       contact: data['contact'],
       email: data['email'].presence
     }
+  end
+
+  def handle_error(event)
+    data = event['value']
+    # This comes through as Event::CUSTOM as the script is not
+    # aware of the extra codes but we should store it as Event::Error
+    data['type'] = Event::ERROR
+    @events.push(data)
   end
 
   def parse_event_and_ignore_errors(event)

@@ -85,5 +85,6 @@
   "{\"key\":\"event\",\"value\":{\"type\":4,\"data\":{\"href\":\"http://localhost:8080/examples/static/\",\"width\":1813,\"height\":1429},\"timestamp\":1637177342265}}",
   "{\"key\":\"pageview\",\"value\":{\"type\":5,\"data\":{\"href\":\"http://localhost:8080/examples/static/\"},\"timestamp\":1637177342265}}",
   "{\"key\":\"sentiment\",\"value\":{\"type\":5,\"data\":{\"comment\":\"Hello\",\"score\":\"2\"},\"timestamp\":1637177342295}}",
-  "{\"key\":\"nps\",\"value\":{\"type\":5,\"data\":{\"comment\":\"Hello\",\"contact\":true,\"email\":\"bobby@gmail.com\",\"score\":\"9\"},\"timestamp\":1637177342305}}"
+  "{\"key\":\"nps\",\"value\":{\"type\":5,\"data\":{\"comment\":\"Hello\",\"contact\":true,\"email\":\"bobby@gmail.com\",\"score\":\"9\"},\"timestamp\":1637177342305}}",
+  "{\"key\":\"error\",\"value\":{\"type\":5,\"data\":{\"line_number\":74,\"col_number\":25,\"message\":\"Error: Oh no\",\"stack\":\"onclick@http://localhost:8081/examples/static/#:74:16\",\"filename\":\"http://localhost:8081/examples/static/#\",\"href\":\"/examples/static/\"},\"timestamp\":1637177342309}}"
 ]

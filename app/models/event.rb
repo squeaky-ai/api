@@ -12,6 +12,9 @@ class Event < ApplicationRecord
   CUSTOM = 5
   PLUGIN = 6
 
+  # Our own custom events
+  ERROR = 100
+
   def type?(event)
     event_type == event
   end
