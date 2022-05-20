@@ -8,6 +8,8 @@ class UserCleanupJob < ApplicationJob
   def perform(*_args)
     now = Time.now
 
+    count = 0
+
     User.find_each do |user|
       # Delete users who:
       # - Created their account on their own
@@ -20,8 +22,12 @@ class UserCleanupJob < ApplicationJob
       logger.info("Destroying user #{user.id} as they did not confirm after 48 hours")
       Stats.count('destroyed_unconfirmed_user')
 
-      # user.destroy
+      count += 1
+
+      user.destroy
     end
+
+    logger.info("Destroyed #{count} unconfirmed users")
 
     nil
   end
