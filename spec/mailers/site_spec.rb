@@ -86,7 +86,8 @@ RSpec.describe SiteMailer, type: :mailer do
           monthly_review_email: true,
           product_updates_email: true,
           marketing_and_special_offers_email: true,
-          knowledge_sharing_email: true
+          knowledge_sharing_email: true,
+          feedback_email: true
         )
       end
 

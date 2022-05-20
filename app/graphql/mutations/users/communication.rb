@@ -13,6 +13,7 @@ module Mutations
       argument :product_updates_email, Boolean, required: false
       argument :marketing_and_special_offers_email, Boolean, required: false
       argument :knowledge_sharing_email, Boolean, required: false
+      argument :feedback_email, Boolean, required: false
 
       type Types::Users::User
 
@@ -24,7 +25,8 @@ module Mutations
           monthly_review_email: true,
           product_updates_email: true,
           marketing_and_special_offers_email: true,
-          knowledge_sharing_email: true
+          knowledge_sharing_email: true,
+          feedback_email: true
         )
 
         communication.assign_attributes(args)
