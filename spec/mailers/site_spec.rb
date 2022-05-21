@@ -118,4 +118,25 @@ RSpec.describe SiteMailer, type: :mailer do
       expect(subject.from).to eq ['hello@squeaky.ai']
     end
   end
+
+  describe '#new_feedback' do
+    let(:site) { create(:site_with_team) }
+    let(:user) { site.team.first.user }
+
+    subject { described_class.new_feedback(data, user) }
+
+    let(:data) do
+      {
+        site:,
+        nps: [],
+        sentiment: []
+      }
+    end
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq "You've got new feedback from your visitors"
+      expect(subject.to).to eq [user.email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

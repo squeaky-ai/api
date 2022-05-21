@@ -68,4 +68,17 @@ class SitePreview < ActionMailer::Preview
 
     SiteMailer.plan_exceeded(site, data, user)
   end
+
+  def new_feedback
+    site = Site.find(1)
+    user = site.team.first.user
+
+    data = {
+      site:,
+      nps: site.nps,
+      sentiment: site.sentiments
+    }
+
+    SiteMailer.new_feedback(data, user)
+  end
 end

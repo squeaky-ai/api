@@ -23,4 +23,14 @@ class SiteMailer < ApplicationMailer
 
     mail(to: user.email, subject: "You've exceeded your monthly visit limit on #{site.name}")
   end
+
+  def new_feedback(data, user)
+    @site = data[:site]
+    @nps = data[:nps]
+    @sentiment = data[:sentiment]
+
+    return unless user.communication_enabled?(:feedback_email)
+
+    mail(to: user.email, subject: "You've got new feedback from your visitors")
+  end
 end
