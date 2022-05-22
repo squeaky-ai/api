@@ -23,7 +23,7 @@ class NewFeedbackJob < ApplicationJob
       nps = site.nps.where('nps.created_at > ?', now - 1.hour).to_a
       sentiment = site.sentiments.where('sentiments.created_at > ?', now - 1.hour).to_a
 
-      next nil if nps.empty? || sentiment.empty?
+      next nil if nps.empty? && sentiment.empty?
 
       { site:, nps:, sentiment: }
     end
