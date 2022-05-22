@@ -3,7 +3,7 @@
   - default
 
 :schedule:
-  weekly_review_emails:
+  weekly_review_emails_job:
     cron: '0 30 12 * * 1' # Every monday afternoon at 12:30AM
     class: WeeklyReviewEmailsJob
 
@@ -14,3 +14,7 @@
   user_cleanup_job:
     cron: '0 0 1 * * *' # Every day at 01:00AM
     class: UserCleanupJob
+
+  new_feedback_job:
+    cron: '0 0 * * * *' # Every hour
+    class: NewFeedbackJob
