@@ -6,11 +6,35 @@ module Resolvers
       type Types::Analytics::PageViews, null: false
 
       def resolve
+        date_format, group_type, group_range = Charts.date_groups(object[:from_date], object[:to_date])
+        trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
+
+        current_page_views = page_views(date_format, object[:site_id], object[:from_date], object[:to_date])
+        previous_page_views = page_views(date_format, object[:site_id], *trend_date_range)
+
+        current_total = sum_of_page_views(current_page_views)
+        previous_total = sum_of_page_views(previous_page_views)
+
+        {
+          group_type:,
+          group_range:,
+          total: current_total,
+          trend: current_total - previous_total,
+          items: current_page_views
+        }
+      end
+
+      private
+
+      def sum_of_page_views(page_views)
+        page_views.reduce(0) { |count, page| count + page['count'] }
+      end
+
+      def page_views(date_format, site_id, from_date, to_date)
         sql = <<-SQL
           SELECT
             v.date_key date_key,
-            SUM(v.total_count) total_count,
-            SUM(CASE v.total_count WHEN 1 THEN 0 ELSE 1 END) unique_count
+            SUM(v.total_count) count
           FROM (
             SELECT
               COUNT(pages.id) total_count,
@@ -23,21 +47,15 @@ module Resolvers
           GROUP BY v.date_key;
         SQL
 
-        date_format, group_type, group_range = Charts.date_groups(object[:from_date], object[:to_date])
-
         variables = [
           date_format,
-          object[:site_id],
-          object[:from_date],
-          object[:to_date],
+          site_id,
+          from_date,
+          to_date,
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
-        {
-          group_type:,
-          group_range:,
-          items: Sql.execute(sql, variables)
-        }
+        Sql.execute(sql, variables)
       end
     end
   end

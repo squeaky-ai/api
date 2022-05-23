@@ -9,10 +9,11 @@ analytics_page_views_query = <<-GRAPHQL
         pageViews {
           groupType
           groupRange
+          total
+          trend
           items {
             dateKey
-            totalCount
-            uniqueCount
+            count
           }
         }
       }
@@ -35,6 +36,8 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
       expect(response['pageViews']).to eq(
         'groupType' => 'daily',
         'groupRange' => 7,
+        'total' => 0,
+        'trend' => 0,
         'items' => []
       )
     end
@@ -70,11 +73,12 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
       expect(response['pageViews']).to eq(
         'groupType' => 'daily',
         'groupRange' => 7,
+        'total' => 5,
+        'trend' => 5,
         'items' =>  [
           {
             'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
-            'totalCount' => 5, 
-            'uniqueCount' => 2
+            'count' => 5,
           }
         ]
       )
@@ -115,11 +119,12 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
       expect(response['pageViews']).to eq(
         'groupType' => 'daily',
         'groupRange' => 7,
+        'total' => 6,
+        'trend' => 6,
         'items' =>  [
           {
             'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
-            'totalCount' => 6, 
-            'uniqueCount' => 2
+            'count' => 6,
           }
         ]
       )

@@ -5,8 +5,7 @@ module Types
     class PageView < Types::BaseObject
       graphql_name 'AnalyticsPageView'
 
-      field :total_count, Integer, null: false
-      field :unique_count, Integer, null: false
+      field :count, Integer, null: false
       field :date_key, String, null: false
     end
   end
