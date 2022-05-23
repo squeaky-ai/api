@@ -189,36 +189,4 @@ RSpec.describe Recording, type: :model do
       end
     end
   end
-
-  describe '#timezone_offset' do
-    context 'when there is no timezone' do
-      let(:recording) { described_class.new }
-
-      subject { recording.timezone_offset }
-
-      it 'returns 0' do
-        expect(subject).to eq(0)
-      end
-    end
-
-    context 'when there is a timezone but it is garbage' do
-      let(:recording) { described_class.new(timezone: 'sdfsdfdsfdsfs') }
-
-      subject { recording.timezone_offset }
-
-      it 'returns 0' do
-        expect(subject).to eq(0)
-      end
-    end
-
-    context 'when there is a timezone and it is legit' do
-      let(:recording) { described_class.new(timezone: 'Europe/London') }
-
-      subject { recording.timezone_offset }
-
-      it 'returns the offset' do
-        expect(subject).to eq(3600)
-      end
-    end
-  end
 end
