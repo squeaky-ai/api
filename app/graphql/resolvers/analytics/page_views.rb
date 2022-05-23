@@ -38,7 +38,7 @@ module Resolvers
           FROM (
             SELECT
               COUNT(pages.id) total_count,
-              to_char(to_timestamp(disconnected_at / 1000)::timestamp with time zone at time zone timezone, ?) date_key
+              to_char(to_timestamp(disconnected_at / 1000), ?) date_key
             FROM pages
             INNER JOIN recordings ON recordings.id = pages.recording_id
             WHERE recordings.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
