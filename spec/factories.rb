@@ -43,6 +43,7 @@ FactoryBot.define do
     useragent { 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0' }
     browser { 'Firefox' }
     device_type { 'Desktop' }
+    timezone { 'Europe/London' }
     viewport_x { 1920 }
     viewport_y { 1080 }
     device_x { 1920 }

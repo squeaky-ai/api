@@ -11,7 +11,7 @@ module Resolvers
             COUNT(*) all_count,
             COUNT(*) FILTER(WHERE visitors.new IS TRUE) new_count,
             COUNT(*) FILTER(WHERE visitors.new IS FALSE) existing_count,
-            to_char(to_timestamp(disconnected_at / 1000), ?) date_key
+            to_char(to_timestamp(disconnected_at / 1000)::timestamp with time zone at time zone timezone, ?) date_key
           FROM recordings
           LEFT OUTER JOIN visitors ON visitors.id = recordings.visitor_id
           WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)

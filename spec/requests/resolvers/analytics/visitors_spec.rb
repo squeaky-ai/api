@@ -71,19 +71,19 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
         'items' => [
           {
             'allCount' => 1, 
-            'dateKey' => '217',
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '218', 
+            'dateKey' => '218',
             'existingCount' => 0, 
             'newCount' => 1
           }, 
           {
             'allCount' => 1, 
             'dateKey' => '219', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '220', 
             'existingCount' => 1, 
             'newCount' => 0
           }
@@ -119,12 +119,6 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
         'items' => [
           {
             'allCount' => 1, 
-            'dateKey' => '216', 
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
             'dateKey' => '217', 
             'existingCount' => 0, 
             'newCount' => 1
@@ -132,6 +126,12 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
           {
             'allCount' => 1, 
             'dateKey' => '218', 
+            'existingCount' => 0, 
+            'newCount' => 1
+          }, 
+          {
+            'allCount' => 1, 
+            'dateKey' => '219', 
             'existingCount' => 0, 
             'newCount' => 1
           }

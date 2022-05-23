@@ -77,6 +77,16 @@ class Recording < ApplicationRecord
     status != Recording::ACTIVE
   end
 
+  def timezone_offset
+    # First check that the value we have is valid, as
+    # TZInfo::Timezone.get will raise if the value is
+    # nil, or is not in the list
+    valid_identifier = TZInfo::Timezone.all_identifiers.include?(timezone)
+    # Get the offset by the timezone of the user, or
+    # default to 0 if it's not valid
+    valid_identifier ? TZInfo::Timezone.get(timezone).utc_offset : 0
+  end
+
   private
 
   def ordered_pages
@@ -84,13 +94,6 @@ class Recording < ApplicationRecord
   end
 
   def epoch_to_timestamp(epoch)
-    # First check that the value we have is valid, as
-    # TZInfo::Timezone.get will raise if the value is
-    # nil, or is not in the list
-    valid_identifier = TZInfo::Timezone.all_identifiers.include?(timezone)
-    # Get the offset by the timezone of the user, or
-    # default to 0 if it's not valid
-    offset = valid_identifier ? TZInfo::Timezone.get(timezone).utc_offset : 0
-    Time.at(epoch / 1000).getutc + offset
+    Time.at(epoch / 1000).getutc + timezone_offset
   end
 end

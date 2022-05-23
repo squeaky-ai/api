@@ -17,8 +17,9 @@ module Resolvers
         return -1 unless last_recording
 
         disconnected = last_recording.disconnected_at || 0
+        now = Time.now.getutc + last_recording.timezone_offset
 
-        (Time.now.utc - disconnected) / 1.day
+        (now - disconnected) / 1.day
       end
     end
   end
