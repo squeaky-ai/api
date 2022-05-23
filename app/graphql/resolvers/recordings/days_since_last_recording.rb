@@ -11,7 +11,7 @@ module Resolvers
         last_recording = Recording
                          .where(site_id: object.id)
                          .order('disconnected_at desc')
-                         .select(:disconnected_at)
+                         .select(:disconnected_at, :timezone)
                          .first
 
         return -1 unless last_recording

@@ -62,11 +62,11 @@ class Recording < ApplicationRecord
   end
 
   def connected_at
-    Time.at(self[:connected_at] / 1000).utc
+    epoch_to_timestamp(self[:connected_at])
   end
 
   def disconnected_at
-    Time.at(self[:disconnected_at] / 1000).utc
+    epoch_to_timestamp(self[:disconnected_at])
   end
 
   def country_name
@@ -81,5 +81,16 @@ class Recording < ApplicationRecord
 
   def ordered_pages
     @ordered_pages ||= pages.sort_by(&:entered_at)
+  end
+
+  def epoch_to_timestamp(epoch)
+    # First check that the value we have is valid, as
+    # TZInfo::Timezone.get will raise if the value is
+    # nil, or is not in the list
+    valid_identifier = TZInfo::Timezone.all_identifiers.include?(timezone)
+    # Get the offset by the timezone of the user, or
+    # default to 0 if it's not valid
+    offset = valid_identifier ? TZInfo::Timezone.get(timezone).utc_offset : 0
+    Time.at(epoch / 1000).getutc + offset
   end
 end
