@@ -8,12 +8,10 @@ module Resolvers
       argument :recording_id, GraphQL::Types::ID, required: true
 
       def resolve(recording_id:)
-        Stats.timer('get_recording') do
-          Recording
-            .joins(:pages, :visitor)
-            .preload(:pages, :visitor)
-            .find_by(site_id: object.id, id: recording_id, status: [Recording::ACTIVE, Recording::DELETED])
-        end
+        Recording
+          .joins(:pages, :visitor)
+          .preload(:pages, :visitor)
+          .find_by(site_id: object.id, id: recording_id, status: [Recording::ACTIVE, Recording::DELETED])
       end
     end
   end

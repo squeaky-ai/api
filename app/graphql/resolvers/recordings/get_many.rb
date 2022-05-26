@@ -13,35 +13,33 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve(page:, size:, sort:, filters:, from_date:, to_date:)
-        Stats.timer('list_recordings') do
-          recordings = Site
-                       .find(object.id)
-                       .recordings
-                       .includes(:nps, :sentiment)
-                       .joins(:pages, :visitor)
-                       .preload(:pages, :visitor)
-                       .where(
-                         'recordings.status = ? AND
-                         to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                         Recording::ACTIVE, from_date, to_date
-                       )
-                       .order(order(sort))
+        recordings = Site
+                      .find(object.id)
+                      .recordings
+                      .includes(:nps, :sentiment)
+                      .joins(:pages, :visitor)
+                      .preload(:pages, :visitor)
+                      .where(
+                        'recordings.status = ? AND
+                        to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                        Recording::ACTIVE, from_date, to_date
+                      )
+                      .order(order(sort))
 
-          # Apply all the filters
-          recordings = filter(recordings, filters)
+        # Apply all the filters
+        recordings = filter(recordings, filters)
 
-          # Paginate the results
-          recordings = recordings.page(page).per(size).group(:id)
+        # Paginate the results
+        recordings = recordings.page(page).per(size).group(:id)
 
-          {
-            items: recordings,
-            pagination: {
-              page_size: size,
-              total: recordings.total_count,
-              sort:
-            }
+        {
+          items: recordings,
+          pagination: {
+            page_size: size,
+            total: recordings.total_count,
+            sort:
           }
-        end
+        }
       end
 
       private

@@ -22,18 +22,16 @@ module Resolvers
       private
 
       def list_events_from_s3(page)
-        Stats.timer('list_events_s3') do
-          files = list_files_in_s3
+        files = list_files_in_s3
 
-          # If there is nothing in there then fall through as it
-          # was likely stored in the database
-          unless files.empty?
-            return {
-              items: get_events_file(files[page - 1]),
-              pagination: s3_pagination(files)
-            }
-          end
-        end
+        return nil if files.empty?
+
+        # If there is nothing in there then fall through as it
+        # was likely stored in the database
+        {
+          items: get_events_file(files[page - 1]),
+          pagination: s3_pagination(files)
+        }
       end
 
       def list_files_in_s3
@@ -61,19 +59,17 @@ module Resolvers
       end
 
       def list_events_from_database(page, size)
-        Stats.timer('list_events_database') do
-          events = Event
-                   .select('id, data, event_type as type, timestamp')
-                   .where(recording_id: object.id)
-                   .order('timestamp asc')
-                   .page(page)
-                   .per(size)
+        events = Event
+                  .select('id, data, event_type as type, timestamp')
+                  .where(recording_id: object.id)
+                  .order('timestamp asc')
+                  .page(page)
+                  .per(size)
 
-          {
-            items: events.map(&:to_json),
-            pagination: database_pagination(events, arguments)
-          }
-        end
+        {
+          items: events.map(&:to_json),
+          pagination: database_pagination(events, arguments)
+        }
       end
 
       def database_pagination(events, arguments)
