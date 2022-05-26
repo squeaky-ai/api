@@ -9,7 +9,59 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 250
 
       def resolve(page:, size:)
-        Stats.timer('list_events') do
+        if Rails.configuration.sites_that_store_events_in_s3.include?(object.site_id)
+          events = list_events_from_s3(page)
+          return events if events
+
+          Stats.count('events_fallback_to_database')
+        end
+
+        list_events_from_database(page, size)
+      end
+
+      private
+
+      def list_events_from_s3(page)
+        Stats.timer('list_events_s3') do
+          files = list_files_in_s3
+
+          # If there is nothing in there then fall through as it
+          # was likely stored in the database
+          unless files.empty?
+            return {
+              items: get_events_file(files[page - 1]),
+              pagination: s3_pagination(files)
+            }
+          end
+        end
+      end
+
+      def list_files_in_s3
+        client = Aws::S3::Client.new
+        prefix = "#{object.site.uuid}/#{object.visitor.visitor_id}/#{object.session_id}"
+
+        files = client.list_objects_v2(prefix:, bucket: 'events.squeaky.ai')
+        files.contents.map { |c| c[:key] }
+      end
+
+      def get_events_file(key)
+        client = Aws::S3::Client.new
+        file = client.get_object(key:, bucket: 'events.squeaky.ai')
+
+        JSON.parse(file.body.read).map(&:to_json)
+      end
+
+      def s3_pagination(files)
+        {
+          per_page: -1,
+          item_count: -1,
+          current_page: arguments[:page],
+          total_pages: files.size
+        }
+      end
+
+      def list_events_from_database(page, size)
+        Stats.timer('list_events_database') do
           events = Event
                    .select('id, data, event_type as type, timestamp')
                    .where(recording_id: object.id)
@@ -19,14 +71,12 @@ module Resolvers
 
           {
             items: events.map(&:to_json),
-            pagination: pagination(events, arguments)
+            pagination: database_pagination(events, arguments)
           }
         end
       end
 
-      private
-
-      def pagination(events, arguments)
+      def database_pagination(events, arguments)
         {
           per_page: arguments[:size],
           item_count: events.total_count,

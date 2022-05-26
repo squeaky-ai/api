@@ -92,6 +92,26 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_events!(recording)
+    if Rails.configuration.sites_that_store_events_in_s3.include?(@site.id)
+      persist_events_in_s3!
+    else
+      persist_events_in_database!(recording)
+    end
+  end
+
+  def persist_events_in_s3!
+    client = Aws::S3::Client.new
+
+    @session.events.each_slice(500).with_index do |slice, index|
+      client.put_object(
+        body: slice.to_json,
+        bucket: 'events.squeaky.ai',
+        key: "#{@session.site_id}/#{@session.visitor_id}/#{@session.session_id}/#{index}.json"
+      )
+    end
+  end
+
+  def persist_events_in_database!(recording)
     now = Time.now
     # Batch insert all of the events. PG has a limit of
     # 65535 placeholders and some users spend bloody ages on

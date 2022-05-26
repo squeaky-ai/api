@@ -336,4 +336,38 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(site.reload.recordings.first.events.size).to eq 83
     end
   end
+
+  context 'when the site should store the events in S3' do
+    let(:site) { create(:site_with_team) }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      @events_fixture = require_fixture('events.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(@events_fixture)
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
+
+      Rails.configuration.sites_that_store_events_in_s3.push(site.id)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'stores them in S3' do
+      subject
+      
+      expect(s3_client).to have_received(:put_object).with(
+        body: anything,
+        bucket: 'events.squeaky.ai',
+        key: "#{event['site_id']}/#{event['visitor_id']}/#{event['session_id']}/0.json"
+      )
+    end
+  end
 end
