@@ -41,7 +41,7 @@ module Resolvers
         prefix = "#{object.site.uuid}/#{object.visitor.visitor_id}/#{object.session_id}"
 
         files = client.list_objects_v2(prefix:, bucket: 'events.squeaky.ai')
-        files.contents.map { |c| c[:key] }
+        files.contents.map { |c| c[:key] }.filter { |c| c.end_with?('.json') }
       end
 
       def get_events_file(key)
