@@ -40,6 +40,8 @@ module Resolvers
         client = Aws::S3::Client.new
         prefix = "#{object.site.uuid}/#{object.visitor.visitor_id}/#{object.session_id}"
 
+        puts '>>>> 0000', prefix
+
         files = client.list_objects_v2(prefix:, bucket: 'events.squeaky.ai')
         files.contents.map { |c| c[:key] }.filter { |c| c.end_with?('.json') }
       end
