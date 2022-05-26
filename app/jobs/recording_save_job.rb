@@ -41,7 +41,7 @@ class RecordingSaveJob < ApplicationJob
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
 
-      persist_events!(recording)
+      persist_events!(recording, visitor)
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
@@ -91,22 +91,22 @@ class RecordingSaveJob < ApplicationJob
     )
   end
 
-  def persist_events!(recording)
+  def persist_events!(recording, visitor)
     if Rails.configuration.sites_that_store_events_in_s3.include?(@site.id)
-      persist_events_in_s3!
+      persist_events_in_s3!(visitor)
     else
       persist_events_in_database!(recording)
     end
   end
 
-  def persist_events_in_s3!
+  def persist_events_in_s3!(visitor)
     client = Aws::S3::Client.new
 
     @session.events.each_slice(500).with_index do |slice, index|
       client.put_object(
         body: slice.to_json,
         bucket: 'events.squeaky.ai',
-        key: "#{@session.site_id}/#{@session.visitor_id}/#{@session.session_id}/#{index}.json"
+        key: "#{@session.site_id}/#{visitor.visitor_id}/#{@session.session_id}/#{index}.json"
       )
     end
   end

@@ -24,8 +24,6 @@ module Resolvers
       def list_events_from_s3(page)
         files = list_files_in_s3
 
-        puts '>>>> 111', files
-
         return nil if files.empty?
 
         # If there is nothing in there then fall through as it
@@ -40,8 +38,6 @@ module Resolvers
         client = Aws::S3::Client.new
         prefix = "#{object.site.uuid}/#{object.visitor.visitor_id}/#{object.session_id}"
 
-        puts '>>>> 0000', prefix
-
         files = client.list_objects_v2(prefix:, bucket: 'events.squeaky.ai')
         files.contents.map { |c| c[:key] }.filter { |c| c.end_with?('.json') }
       end
@@ -49,8 +45,6 @@ module Resolvers
       def get_events_file(key)
         client = Aws::S3::Client.new
         file = client.get_object(key:, bucket: 'events.squeaky.ai')
-
-        puts '>>>> 222', file
 
         JSON.parse(file.body.read).map(&:to_json)
       end
