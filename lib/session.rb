@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'uri'
+require 'zlib'
+require 'base64'
 
 # Format the Redis list into something useful
 class Session
@@ -215,9 +217,27 @@ class Session
   end
 
   def parse_event_and_ignore_errors(event)
-    JSON.parse!(event)
+    # TODO: For backwards compatibilty the events may be stored
+    # as strings, just check if there's a readable string in there
+    return JSON.parse!(event) if event.include?('timestamp')
+
+    zstream = Zlib::Inflate.new
+
+    str = Base64.decode64(event)
+    str = zstream.inflate(str)
+    zstream.finish
+    zstream.close
+
+    JSON.parse!(str)
   rescue JSON::ParserError => e
+    # There have been cases where individual events are not valid
+    # json, but it seems to be due to some weird encoding on the
+    # client. I think it's best to ignore these and try and
+    # continue as the rest of the data is still useful
     Rails.logger.warn "Failed to parse JSON #{e}"
+    nil
+  rescue Zlib::DataError => e
+    Rails.logger.warn "Failed to deflate zlib #{e}"
     nil
   end
 end

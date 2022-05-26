@@ -310,4 +310,30 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect { subject }.not_to change { site.reload.recordings.size }
     end
   end
+
+  context 'when the events are compressed with zlib' do
+    let(:site) { create(:site_with_team) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      events_fixture = require_fixture('events.json')
+      events_fixture = compress_events(events_fixture)
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'stores the events' do
+      subject
+      expect(site.reload.recordings.first.events.size).to eq 83
+    end
+  end
 end

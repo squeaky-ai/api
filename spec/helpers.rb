@@ -17,4 +17,11 @@ module Helpers
     file = File.read(Rails.root.join(path))
     JSON.parse(file)
   end
+
+  def compress_events(events_fixture)
+    events_fixture.map do |e|
+      x = Zlib::Deflate.new.deflate(e, Zlib::FINISH)
+      Base64.encode64(x)
+    end
+  end
 end
