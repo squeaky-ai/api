@@ -7,6 +7,8 @@ namespace :backfill_events do
     Recording.find_each do |recording|
       Rails.logger.info "Backfilling #{recording.id} ..."
 
+      next if recording.events.size.zero?
+
       recording
         .events
         .select('data, event_type as type, timestamp')
@@ -24,6 +26,8 @@ namespace :backfill_events do
           key: "#{recording.site.uuid}/#{recording.visitor.visitor_id}/#{recording.session_id}/#{index}.json"
         )
       end
+
+      recording.events.delete_all
     end
   end
 end
