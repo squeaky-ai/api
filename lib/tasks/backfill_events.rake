@@ -4,8 +4,8 @@ namespace :backfill_events do
   task all: :environment do
     client = Aws::S3::Client.new
 
-    Recording.find_each do |recording|
-      Rails.logger.info "Backfilling #{recording.id} ..."
+    Recording.find_each(batch_size: 100).with_index do |recording, i|
+      Rails.logger.info "Backfilling #{recording.id} (#{i}) ..."
 
       next if recording.events.size.zero?
 
