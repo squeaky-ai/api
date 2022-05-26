@@ -41,7 +41,7 @@ class RecordingSaveJob < ApplicationJob
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
 
-      persist_events!(recording, visitor)
+      persist_events!(visitor)
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
@@ -91,15 +91,7 @@ class RecordingSaveJob < ApplicationJob
     )
   end
 
-  def persist_events!(recording, visitor)
-    if Rails.configuration.sites_that_store_events_in_s3.include?(@site.id)
-      persist_events_in_s3!(visitor)
-    else
-      persist_events_in_database!(recording)
-    end
-  end
-
-  def persist_events_in_s3!(visitor)
+  def persist_events!(visitor)
     client = Aws::S3::Client.new
 
     @session.events.each_slice(500).with_index do |slice, index|
@@ -108,28 +100,6 @@ class RecordingSaveJob < ApplicationJob
         bucket: 'events.squeaky.ai',
         key: "#{@session.site_id}/#{visitor.visitor_id}/#{@session.session_id}/#{index}.json"
       )
-    end
-  end
-
-  def persist_events_in_database!(recording)
-    now = Time.now
-    # Batch insert all of the events. PG has a limit of
-    # 65535 placeholders and some users spend bloody ages on
-    # the site, so it's best to chunk all of these up so they
-    # don't hit the limit
-    @session.events.each_slice(100) do |slice|
-      items = slice.map do |s|
-        {
-          event_type: s['type'],
-          data: s['data'],
-          timestamp: s['timestamp'],
-          recording_id: recording.id,
-          created_at: now,
-          updated_at: now
-        }
-      end
-
-      Event.insert_all!(items)
     end
   end
 

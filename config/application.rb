@@ -39,8 +39,6 @@ module Squeaky
     config.languages = config_for(:languages)
     config.timezones = config_for(:timezones)
 
-    config.sites_that_store_events_in_s3 = [82]
-
     config.active_job.queue_adapter = :sidekiq
   end
 end

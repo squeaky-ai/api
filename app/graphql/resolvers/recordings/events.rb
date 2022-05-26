@@ -6,15 +6,11 @@ module Resolvers
       type Types::Recordings::Events, null: false
 
       argument :page, Integer, required: false, default_value: 1
-      argument :size, Integer, required: false, default_value: 250
+      argument :size, Integer, required: false, default_value: 500
 
       def resolve(page:, size:)
-        if Rails.configuration.sites_that_store_events_in_s3.include?(object.site_id)
-          events = list_events_from_s3(page)
-          return events if events
-
-          Stats.count('events_fallback_to_database')
-        end
+        events = list_events_from_s3(page)
+        return events if events
 
         list_events_from_database(page, size)
       end
@@ -60,11 +56,11 @@ module Resolvers
 
       def list_events_from_database(page, size)
         events = Event
-                  .select('id, data, event_type as type, timestamp')
-                  .where(recording_id: object.id)
-                  .order('timestamp asc')
-                  .page(page)
-                  .per(size)
+                 .select('id, data, event_type as type, timestamp')
+                 .where(recording_id: object.id)
+                 .order('timestamp asc')
+                 .page(page)
+                 .per(size)
 
         {
           items: events.map(&:to_json),
