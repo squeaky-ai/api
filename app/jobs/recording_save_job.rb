@@ -93,24 +93,24 @@ class RecordingSaveJob < ApplicationJob
 
   def persist_events!(recording)
     now = Time.now
-     # Batch insert all of the events. PG has a limit of
-     # 65535 placeholders and some users spend bloody ages on
-     # the site, so it's best to chunk all of these up so they
-     # don't hit the limit
-     @session.events.each_slice(100) do |slice|
-       items = slice.map do |s|
-         {
-           event_type: s['type'],
-           data: s['data'],
-           timestamp: s['timestamp'],
-           recording_id: recording.id,
-           created_at: now,
-           updated_at: now
-         }
-       end
+    # Batch insert all of the events. PG has a limit of
+    # 65535 placeholders and some users spend bloody ages on
+    # the site, so it's best to chunk all of these up so they
+    # don't hit the limit
+    @session.events.each_slice(100) do |slice|
+      items = slice.map do |s|
+        {
+          event_type: s['type'],
+          data: s['data'],
+          timestamp: s['timestamp'],
+          recording_id: recording.id,
+          created_at: now,
+          updated_at: now
+        }
+      end
 
-       Event.insert_all!(items)
-     end
+      Event.insert_all!(items)
+    end
   end
 
   def persist_pageviews!(recording)

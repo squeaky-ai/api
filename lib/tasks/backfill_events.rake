@@ -4,30 +4,45 @@ namespace :backfill_events do
   task all: :environment do
     client = Aws::S3::Client.new
 
-    Recording.find_each(batch_size: 100).with_index do |recording, i|
-      Rails.logger.info "Backfilling #{recording.id} (#{i}) ..."
+    objects = client.list_objects_v2(bucket: 'events.squeaky.ai', max_keys: 1)
 
-      next if recording.events.size.zero?
+    object_keys = objects.contents.map { |c| c[:key] }
+    recording_keys = object_keys.map { |k| k.split('/').slice(0, 3).join('/') }.uniq
 
-      recording
-        .events
-        .select('data, event_type as type, timestamp')
-        .order('timestamp asc')
-        .in_batches(of: 500).each_with_index do |batch, index|
-        client.put_object(
-          body: batch.map do |b|
+    recording_keys.each do |recording_key|
+      Rails.logger.info "Backfilling #{recording_key}"
+
+      _site_uuid, _visitor_visitor_id, session_id = recording_key.split('/')
+
+      recording = Recording.find_by(session_id:)
+
+      event_files = objects = client.list_objects_v2(bucket: 'events.squeaky.ai', prefix: recording_key)
+
+      event_files.contents.each do |event_file|
+        event_file_key = event_file[:key]
+
+        events_response = client.get_object(bucket: 'events.squeaky.ai', key: event_file_key)
+        events_data = JSON.parse(events_response.body.read)
+
+        now = Time.now
+
+        events_data.each_slice(100) do |slice|
+          items = slice.map do |s|
             {
-              data: b.data,
-              type: b.type,
-              timestamp: b.timestamp
+              event_type: s['type'],
+              data: s['data'],
+              timestamp: s['timestamp'],
+              recording_id: recording.id,
+              created_at: now,
+              updated_at: now
             }
-          end.to_json,
-          bucket: 'events.squeaky.ai',
-          key: "#{recording.site.uuid}/#{recording.visitor.visitor_id}/#{recording.session_id}/#{index}.json"
-        )
-      end
+          end
 
-      recording.events.delete_all
+          Event.insert_all!(items)
+        end
+      end
     end
+
+    client.delete_objects(bucket: 'events', delete: { objects: object_keys.map { |k| { key: k } } })
   end
 end
