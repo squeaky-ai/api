@@ -43,6 +43,6 @@ namespace :backfill_events do
       end
     end
 
-    client.delete_objects(bucket: 'events', delete: { objects: object_keys.map { |k| { key: k } } })
+    client.delete_objects(bucket: 'events.squeaky.ai', delete: { objects: object_keys.map { |k| { key: k } } })
   end
 end
