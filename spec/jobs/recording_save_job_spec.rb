@@ -336,4 +336,35 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(site.reload.recordings.first.events.size).to eq 83
     end
   end
+
+  context 'when the events are being stored in clickhouse' do
+    let(:site) { create(:site_with_team) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      Rails.configuration.sites_that_use_clickhouse.push(site.id)
+
+      events_fixture = require_fixture('events.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'stores the events' do
+      subject
+      total = ClickHouse::Event
+                .where(recording_id: site.recordings.first.id)
+                .select('count(*) total')
+                .select_one
+      expect(total['total']).to eq 83
+    end
+  end
 end

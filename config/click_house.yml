@@ -1,5 +1,5 @@
 default: &default
-  url: http://localhost:8123
+  url: <%= ENV.fetch("CLICKHOUSE_URL") { 'http://localhost:8123' } %>
   timeout: 60
   open_timeout: 3
 
