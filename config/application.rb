@@ -39,6 +39,8 @@ module Squeaky
     config.languages = config_for(:languages)
     config.timezones = config_for(:timezones)
 
+    config.sites_that_use_clickhouse = [2096] # lemonjs site
+
     config.active_job.queue_adapter = :sidekiq
   end
 end
