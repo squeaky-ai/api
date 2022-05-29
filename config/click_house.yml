@@ -1,0 +1,16 @@
+default: &default
+  url: <%= ENV.fetch("CLICKHOUSE_URL") { 'http://localhost:8123' } %>
+  timeout: 60
+  open_timeout: 3
+
+development:
+  database: squeaky_development
+  <<: *default
+
+test:
+  database: squeaky_test
+  <<: *default
+
+production:
+  <<: *default
+  database: squeaky_production

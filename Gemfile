@@ -8,6 +8,7 @@ ruby '3.1.2'
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3', '~> 1.110'
 gem 'bootsnap', require: false
+gem 'click_house'
 gem 'devise'
 gem 'devise_invitable'
 gem 'graphql'

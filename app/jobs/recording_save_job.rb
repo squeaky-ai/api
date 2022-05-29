@@ -92,6 +92,30 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_events!(recording)
+    if Rails.configuration.sites_that_use_clickhouse.include?(recording.site_id)
+      persist_events_in_clickhouse(recording)
+    else
+      persist_events_in_postgres(recording)
+    end
+  end
+
+  def persist_events_in_clickhouse(recording)
+    ClickHouse::Event.insert do |buffer|
+      @session.events.each do |event|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: recording.site_id,
+          recording_id: recording.id,
+          type: event['type'],
+          source: event['data']['source'],
+          data: event['data'].to_json,
+          timestamp: event['timestamp']
+        }
+      end
+    end
+  end
+
+  def persist_events_in_postgres(recording)
     now = Time.now
     # Batch insert all of the events. PG has a limit of
     # 65535 placeholders and some users spend bloody ages on
