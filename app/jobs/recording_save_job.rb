@@ -185,6 +185,8 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_clicks!(recording)
+    return if Rails.configuration.sites_that_use_clickhouse.include?(recording.site_id)
+
     items = []
 
     @session.events.each do |event|

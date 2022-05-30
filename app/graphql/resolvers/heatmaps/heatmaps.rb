@@ -92,6 +92,62 @@ module Resolvers
       end
 
       def click_events(from_date, to_date, page, device)
+        if Rails.configuration.sites_that_use_clickhouse.include?(object.id)
+          click_events_from_clickhouse(from_date, to_date, page, device)
+        else
+          click_events_from_postgres(from_date, to_date, page, device)
+        end
+      end
+
+      def click_events_from_clickhouse(from_date, to_date, page, device)
+        sql = <<-SQL
+          SELECT
+            DISTINCT(clicks.selector) selector,
+            COUNT(*) count
+          FROM (
+            SELECT JSONExtractString(data, 'selector') selector, JSONExtractString(data, 'href') href, toDateTime(timestamp / 1000) clicked_at, site_id
+            FROM squeaky_development.events
+            WHERE type = 3 AND source = 2 AND site_id = ? AND clicked_at BETWEEN ? AND ? AND href = ? AND recording_id IN ?
+          ) clicks
+          GROUP BY selector
+          ORDER BY count DESC;
+        SQL
+
+        variables = [
+          object.id,
+          from_date,
+          to_date,
+          page,
+          recordings_ids_for_device(from_date, to_date, device)
+        ]
+
+        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+
+        ClickHouse.connection.select_all(query)
+      end
+
+      def recordings_ids_for_device(from_date, to_date, device)
+        sql = <<-SQL
+          SELECT
+            id
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            viewport_x #{device_expression(device)} AND
+            to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          object.id,
+          from_date,
+          to_date
+        ]
+
+        Sql.execute(sql, variables).map { |x| x['id'] }
+      end
+
+      def click_events_from_postgres(from_date, to_date, page, device)
         sql = <<-SQL
           SELECT
             DISTINCT(selector) AS selector,
