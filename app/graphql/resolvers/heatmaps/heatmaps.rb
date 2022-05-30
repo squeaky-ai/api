@@ -105,9 +105,9 @@ module Resolvers
             DISTINCT(clicks.selector) selector,
             COUNT(*) count
           FROM (
-            SELECT JSONExtractString(data, 'selector') selector, JSONExtractString(data, 'href') href, toDateTime(timestamp / 1000) clicked_at, site_id
+            SELECT JSONExtractString(data, 'selector') selector, JSONExtractString(data, 'href') href, toDate(timestamp / 1000) clicked_at, site_id
             FROM events
-            WHERE type = 3 AND source = 2 AND site_id = ? AND clicked_at BETWEEN ? AND ? AND href = ? AND recording_id IN ?
+            WHERE type = 3 AND source = 2 AND site_id = ? AND clicked_at BETWEEN ? AND ? AND href = ? AND recording_id IN (?)
           ) clicks
           GROUP BY selector
           ORDER BY count DESC;

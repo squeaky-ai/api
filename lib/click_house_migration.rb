@@ -2,10 +2,14 @@
 
 class ClickHouseMigration
   def self.read?(site_id)
+    return true unless Rails.env.production?
+
     [3, 2096].include?(site_id)
   end
 
   def self.write?(site_id)
+    return true unless Rails.env.production?
+
     [3, 82, 2096].include?(site_id)
   end
 end
