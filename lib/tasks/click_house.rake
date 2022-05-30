@@ -21,6 +21,8 @@ namespace :click_house do
     end
   end
 
+  # Syntax is weird:
+  # rake 'click_house:backfill[1]'
   task :backfill, [:site_id] => :environment do |_t, args|
     Site.find(args[:site_id]).recordings.find_each do |recording|
       Rails.logger.info("Backfilling recording #{recording.id}")
