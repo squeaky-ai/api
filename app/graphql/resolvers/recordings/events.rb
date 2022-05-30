@@ -11,7 +11,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 250
 
       def resolve(page:, size:)
-        if Rails.configuration.sites_that_use_clickhouse.include?(object.site_id)
+        if ClickHouseMigration.read?(object.site_id)
           events_from_clickhouse(page, size)
         else
           events_from_postgres(page, size)

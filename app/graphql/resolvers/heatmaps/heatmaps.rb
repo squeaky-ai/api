@@ -92,7 +92,7 @@ module Resolvers
       end
 
       def click_events(from_date, to_date, page, device)
-        if Rails.configuration.sites_that_use_clickhouse.include?(object.id)
+        if ClickHouseMigration.read?(object.id)
           click_events_from_clickhouse(from_date, to_date, page, device)
         else
           click_events_from_postgres(from_date, to_date, page, device)

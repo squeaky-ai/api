@@ -32,7 +32,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
       end
 
       before do
-        Rails.configuration.sites_that_use_clickhouse.push(site.id)
+        allow(ClickHouseMigration).to receive(:read?).with(site.id).and_return(true)
       end
 
       subject do
@@ -62,7 +62,7 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
       let(:recording) { create(:recording, site: site) }
 
       before do
-        Rails.configuration.sites_that_use_clickhouse.push(site.id)
+        allow(ClickHouseMigration).to receive(:read?).with(site.id).and_return(true)
 
         events_fixture = require_fixture('events.json')
         events = events_fixture.map { |e| JSON.parse(e)['value'] }

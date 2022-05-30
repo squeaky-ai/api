@@ -92,11 +92,9 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_events!(recording)
-    if Rails.configuration.sites_that_use_clickhouse.include?(recording.site_id)
-      persist_events_in_clickhouse(recording)
-    else
-      persist_events_in_postgres(recording)
-    end
+    # TODO: Remove this once/if we prove ClickHouse is better
+    persist_events_in_postgres(recording)
+    persist_events_in_clickhouse(recording) if ClickHouseMigration.write?(recording.site_id)
   end
 
   def persist_events_in_clickhouse(recording)
@@ -185,8 +183,6 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_clicks!(recording)
-    return if Rails.configuration.sites_that_use_clickhouse.include?(recording.site_id)
-
     items = []
 
     @session.events.each do |event|
