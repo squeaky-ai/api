@@ -352,7 +352,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = require_fixture('events.json')
 
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-      allow(ClickHouseMigration).to receive(:write?).with(site.id).and_return(true)
     end
 
     subject { described_class.perform_now(event) }

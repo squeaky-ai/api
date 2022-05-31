@@ -94,7 +94,7 @@ class RecordingSaveJob < ApplicationJob
   def persist_events!(recording)
     # TODO: Remove this once/if we prove ClickHouse is better
     persist_events_in_postgres(recording)
-    persist_events_in_clickhouse(recording) if ClickHouseMigration.write?(recording.site_id)
+    persist_events_in_clickhouse(recording)
   end
 
   def persist_events_in_clickhouse(recording)
@@ -111,6 +111,8 @@ class RecordingSaveJob < ApplicationJob
         }
       end
     end
+  rescue StandardError => e
+    logger.error "Failed to store data in ClickHouse #{e}"
   end
 
   def persist_events_in_postgres(recording)
