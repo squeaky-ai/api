@@ -11,6 +11,7 @@ module Types
     field :admin_user_delete, mutation: Mutations::Admin::UserDelete
     field :admin_site_plan_update, mutation: Mutations::Admin::SitePlanUpdate
     field :admin_site_associate_customer, mutation: Mutations::Admin::SiteAssociateCustomer
+    field :admin_site_delete, mutation: Mutations::Admin::SiteDelete
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
