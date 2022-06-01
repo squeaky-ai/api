@@ -35,6 +35,7 @@ module Types
     field :anonymise_form_inputs_update, mutation: Mutations::Sites::AnonymiseFormInputsUpdate
     field :css_selector_blacklist_create, mutation: Mutations::Sites::CssSelectorBlacklistCreate
     field :css_selector_blacklist_delete, mutation: Mutations::Sites::CssSelectorBlacklistDelete
+    field :superuser_access_update, mutation: Mutations::Sites::SuperuserAccessUpdate
     # Team
     field :team_invite, mutation: Mutations::Teams::Invite
     field :team_delete, mutation: Mutations::Teams::Delete
