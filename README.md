@@ -5,7 +5,6 @@
 ### Requirements
 - Ruby 3.1.2
 - Postgres 12.x
-- ClickHouse
 
 In order to send mail through the API, you will need AWS credentials located at ~/.aws, @lemonjs can create you some if you need them.
 
@@ -16,11 +15,6 @@ $ cd api
 
 $ bundle install
 $ bundle exec rails server
-```
-
-### Create the ClickHouse database
-```shell
-$ bundle exec rake click_house:create
 ```
 
 ### Create the Postgres database and run migrations
