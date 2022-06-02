@@ -104,6 +104,7 @@ class RecordingSaveJob < ApplicationJob
           data: s['data'],
           timestamp: s['timestamp'],
           recording_id: recording.id,
+          site_id: recording.site_id,
           created_at: now,
           updated_at: now
         }
