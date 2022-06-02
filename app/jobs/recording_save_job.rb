@@ -93,7 +93,7 @@ class RecordingSaveJob < ApplicationJob
 
   def persist_events!(recording)
     persist_events_in_postgres(recording)
-    # persist_events_in_clickhouse(recording)
+    persist_events_in_clickhouse(recording)
   end
 
   def persist_events_in_clickhouse(recording)
