@@ -15,17 +15,19 @@ class ClickHouseImportJob < ApplicationJob
     Recording.find_each(start: start_id, finish: end_id) do |recording|
       Rails.logger.info("Backfilling recording #{recording.id}")
 
-      ClickHouse::Event.insert do |buffer|
-        recording.events.find_each do |event|
-          buffer << {
-            uuid: SecureRandom.uuid,
-            site_id: recording.site_id,
-            recording_id: recording.id,
-            type: event.event_type,
-            source: event.data['source'],
-            data: event.data.to_json,
-            timestamp: event.timestamp
-          }
+      recording.events.find_in_batches(batch_size: 500) do |events|
+        ClickHouse::Event.insert do |buffer|
+          events.each do |event|
+            buffer << {
+              uuid: SecureRandom.uuid,
+              site_id: recording.site_id,
+              recording_id: recording.id,
+              type: event.event_type,
+              source: event.data['source'],
+              data: event.data.to_json,
+              timestamp: event.timestamp
+            }
+          end
         end
       end
     end
