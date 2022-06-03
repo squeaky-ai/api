@@ -14,11 +14,11 @@ class DataRetentionJob < ApplicationJob
         next
       end
 
-      recordings = recordings_outside_retention_period(site, data_retention_months.months)
+      recording_ids = recording_ids_outside_retention_period(site, data_retention_months.months)
 
-      logger.info "site #{site.id} has #{recordings.count} to delete"
+      logger.info "site #{site.id} has #{recording_ids.count} to delete"
 
-      recordings.each(&:destroy)
+      destroy_recordings(recording_ids)
     end
 
     nil
@@ -26,8 +26,19 @@ class DataRetentionJob < ApplicationJob
 
   private
 
-  def recordings_outside_retention_period(site, months)
+  def recording_ids_outside_retention_period(site, months)
     cut_off_date = Time.now - months
-    site.recordings.where('created_at < ?', cut_off_date)
+    ids = Sql.execute('SELECT id FROM recordings WHERE site_id = ? AND created_at < ?', [site, cut_off_date])
+    ids.map { |r| r['id'] }
+  end
+
+  def destroy_recordings(recording_ids)
+    recording_ids.each do |recording_id|
+      # Delete these first as they can cause the job to
+      # crash if using the dependent: :destroy
+      Event.where('recording_id = ?', recording_id).delete_all
+      # Then delete the recording and clean up the pages and the rest
+      Recording.find_by(id: recording_id)&.destroy
+    end
   end
 end
