@@ -34,6 +34,7 @@ class DataRetentionJob < ApplicationJob
 
   def destroy_recordings(recording_ids)
     recording_ids.each do |recording_id|
+      logger.info "deleting recording #{recording_id}"
       # Delete these first as they can cause the job to
       # crash if using the dependent: :destroy
       Event.where('recording_id = ?', recording_id).delete_all
