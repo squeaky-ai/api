@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_02_124708) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_04_150601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_02_124708) do
     t.index ["user_id"], name: "index_communications_on_user_id"
   end
 
+  create_table "event_captures", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "event_type", null: false
+    t.integer "count", default: 0, null: false
+    t.json "rules", default: [], null: false
+    t.datetime "last_counted_at"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_event_captures_on_site_id"
+  end
+
+  create_table "event_captures_groups", id: false, force: :cascade do |t|
+    t.bigint "event_capture_id", null: false
+    t.bigint "event_group_id", null: false
+  end
+
+  create_table "event_groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.integer "event_type", null: false
     t.jsonb "data", null: false
@@ -80,8 +103,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_02_124708) do
     t.bigint "recording_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "site_id"
     t.index ["recording_id", "timestamp"], name: "index_events_on_recording_id_and_timestamp"
     t.index ["recording_id"], name: "index_events_on_recording_id"
+    t.index ["site_id"], name: "index_events_on_site_id"
   end
 
   create_table "feedback", force: :cascade do |t|
