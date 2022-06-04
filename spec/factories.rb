@@ -158,4 +158,10 @@ FactoryBot.define do
 
     site { association :site }
   end
+
+  factory :event_group do
+    name { 'My event' }
+
+    site { association :site }
+  end
 end

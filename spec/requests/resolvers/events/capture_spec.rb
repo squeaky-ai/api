@@ -27,7 +27,7 @@ event_capture_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Feedback::NpsGroups, type: :request do
+RSpec.describe Resolvers::Events::Capture, type: :request do
   context 'when there is no data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }

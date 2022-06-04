@@ -16,6 +16,8 @@ class CreateEventCapture < ActiveRecord::Migration[7.0]
 
     create_table :event_groups do |t|
       t.string :name, null: false
+      
+      t.belongs_to :site
 
       t.timestamps
     end

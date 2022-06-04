@@ -7,7 +7,7 @@ module Types
 
       field :id, ID, null: false
       field :name, String, null: false
-      field :items, [Events::Capture, { null: true }], null: false
+      field :items, [Events::CaptureItem, { null: true }], null: false
     end
   end
 end
