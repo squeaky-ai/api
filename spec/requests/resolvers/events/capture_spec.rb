@@ -10,9 +10,9 @@ event_capture_query = <<-GRAPHQL
           name
           type
           rules {
+            matcher
             condition
             value
-            type
           }
           count
           lastCountedAt

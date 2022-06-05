@@ -77,5 +77,10 @@ module Types
     # Public feedback
     field :nps_create, mutation: Mutations::Feedback::NpsCreate
     field :sentiment_create, mutation: Mutations::Feedback::SentimentCreate
+    # Events
+    field :event_group_create, mutation: Mutations::Events::GroupCreate
+    field :event_group_delete, mutation: Mutations::Events::GroupDelete
+    field :event_capture_create, mutation: Mutations::Events::CaptureCreate
+    field :event_capture_delete, mutation: Mutations::Events::CaptureDelete
   end
 end

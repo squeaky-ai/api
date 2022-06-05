@@ -5,9 +5,9 @@ module Types
     class Rule < Types::BaseObject
       graphql_name 'EventsRule'
 
+      field :matcher, Events::Match, null: false
       field :condition, Events::Condition, null: false
       field :value, String, null: false
-      field :type, String, null: false
     end
   end
 end

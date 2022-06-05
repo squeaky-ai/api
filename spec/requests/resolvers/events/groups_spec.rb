@@ -13,7 +13,7 @@ event_groups_query = <<-GRAPHQL
           rules {
             condition
             value
-            type
+            matcher
           }
           count
           lastCountedAt
