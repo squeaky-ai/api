@@ -7,7 +7,7 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 20
-      argument :sort, Types::Events::CaptureSort, required: false, default_value: 'count_desc'
+      argument :sort, Types::Events::CaptureSort, required: false, default_value: 'count__desc'
 
       def resolve(page:, size:, sort:)
         events = Site
@@ -33,8 +33,8 @@ module Resolvers
         sorts = {
           'name__asc' => 'name ASC',
           'name__desc' => 'name DESC',
-          'count_asc' => 'count ASC',
-          'count_desc' => 'count DESC'
+          'count__asc' => 'count ASC',
+          'count__desc' => 'count DESC'
         }
         sorts[sort]
       end

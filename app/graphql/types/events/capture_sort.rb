@@ -7,8 +7,8 @@ module Types
 
       value 'name__asc', 'Alphabeticaly by name (A-Z)'
       value 'name__desc', 'Alphabeticaly by name (Z-A)'
-      value 'count_asc', 'Number of triggered events ascending'
-      value 'count_desc', 'Number of triggered events descending'
+      value 'count__asc', 'Number of triggered events ascending'
+      value 'count__desc', 'Number of triggered events descending'
     end
   end
 end
