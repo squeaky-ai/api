@@ -37,6 +37,8 @@ module Types
       field :recording_latest, resolver: Resolvers::Recordings::Latest
       field :visitor, resolver: Resolvers::Visitors::GetOne
       field :visitors, resolver: Resolvers::Visitors::GetMany
+      field :event_capture, resolver: Resolvers::Events::Capture
+      field :event_groups, resolver: Resolvers::Events::Groups
       field :analytics, Types::Analytics::Analytics, null: false do
         argument :from_date, GraphQL::Types::ISO8601Date, required: true
         argument :to_date, GraphQL::Types::ISO8601Date, required: true
