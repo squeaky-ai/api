@@ -8,7 +8,7 @@ module Mutations
       graphql_name 'EventAddToGroup'
 
       argument :site_id, ID, required: true
-      argument :group_id, ID, required: true
+      argument :group_ids, [ID], required: true
       argument :event_ids, [ID], required: true
 
       type [Types::Events::CaptureItem]
@@ -17,12 +17,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(group_id:, event_ids:, **_rest)
-        group = @site.event_groups.find(group_id)
+      def resolve(group_ids:, event_ids:, **_rest)
+        groups = @site.event_groups.where(id: group_ids)
         events = @site.event_captures.where(id: event_ids)
 
         events.each do |event|
-          event.event_groups << group
+          event.event_groups.concat(groups)
           event.save
         end
 

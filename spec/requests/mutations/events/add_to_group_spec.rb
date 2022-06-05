@@ -28,7 +28,7 @@ RSpec.describe Mutations::Events::AddToGroup, type: :request do
       variables = {
         input: {
           siteId: site.id, 
-          groupId: group_1.id,
+          groupIds: [group_1.id],
           eventIds: [event_1.id, event_2.id, event_3.id]
         }
       }
