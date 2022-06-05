@@ -37,7 +37,7 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
         site_id: site.id, 
         page: 1,
         size: 20,
-        sort: 'count_desc'
+        sort: 'count__desc'
       }
       graphql_request(event_capture_query, variables, user)
     end
@@ -52,7 +52,7 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
       expect(response['pagination']).to eq(
         'pageSize' => 20,
         'total' => 0,
-        'sort' => 'count_desc'
+        'sort' => 'count__desc'
       )
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
         site_id: site.id, 
         page: 1,
         size: 20,
-        sort: 'count_desc'
+        sort: 'count__desc'
       }
       graphql_request(event_capture_query, variables, user)
     end
@@ -117,7 +117,7 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
       expect(response['pagination']).to eq(
         'pageSize' => 20,
         'total' => 4,
-        'sort' => 'count_desc'
+        'sort' => 'count__desc'
       )
     end
   end
