@@ -21,7 +21,7 @@ module Resolvers
           {
             id: group.id,
             name: group.name,
-            items: items.filter { |item| item.event_groups.map(&:id).include?(group.id) }
+            items: items.filter { |item| item.event_groups.map(&:id).include?(group.id) }.uniq(&:id)
           }
         end
       end
