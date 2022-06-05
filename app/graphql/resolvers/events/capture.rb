@@ -13,6 +13,7 @@ module Resolvers
         events = Site
                  .find(object.id)
                  .event_captures
+                 .includes(:event_groups) # So we can map &:name for #group_names
                  .order(order(sort))
                  .page(page)
                  .per(size)

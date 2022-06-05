@@ -13,4 +13,8 @@ class EventCapture < ApplicationRecord
   def type
     event_type
   end
+
+  def group_names
+    event_groups.map(&:name)
+  end
 end
