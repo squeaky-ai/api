@@ -76,9 +76,35 @@ RSpec.describe EventsProcessingJob, type: :job do
       allow(EventsService::Captures).to receive(:for).with(event_2).and_return(double(count: 34))
     end
 
-    it 'only deletes the ones that are unconfirmed after 48 hours' do
+    it 'updates their existing counts' do
       expect { subject }.to change { event_1.reload.count }.from(5).to(11)
                        .and change { event_2.reload.count }.from(8).to(42)
+    end
+  end
+
+  context 'when specific ids are passed' do
+    let(:now) { Time.now}
+    let(:site) { create(:site) }
+
+    let!(:event_1) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, rules: ['...']) }
+    let!(:event_2) { create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, rules: ['...']) }
+    let!(:event_3) { create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, rules: ['...']) }
+
+    before do
+      allow(Time).to receive(:now).and_return(now)
+
+      allow(EventsService::Captures).to receive(:for).with(event_1).and_return(double(count: 5))
+      allow(EventsService::Captures).to receive(:for).with(event_2).and_return(double(count: 2))
+      allow(EventsService::Captures).to receive(:for).with(event_3)
+    end
+
+    subject { described_class.perform_now([event_1.id, event_2.id]) }
+
+    it 'only updates the ones that have be passed' do
+      subject
+      expect(EventsService::Captures).to have_received(:for).with(event_1)
+      expect(EventsService::Captures).to have_received(:for).with(event_2)
+      expect(EventsService::Captures).not_to have_received(:for).with(event_3)
     end
   end
 end

@@ -7,11 +7,11 @@ module EventsService
         @event = event
       end
 
-      def count(event)
+      def count
         raise NotImplementedError, 'EventTypes::Base#count not implemented'
       end
 
-      def results(event)
+      def results
         raise NotImplementedError, 'EventTypes::Base#results not implemented'
       end
 
