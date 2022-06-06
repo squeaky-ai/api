@@ -22,13 +22,21 @@ module Mutations
       def resolve(type:, name:, rules:, group_ids:, **_rest)
         groups = EventGroup.where(id: group_ids, site_id: @site.id)
 
-        EventCapture.create(
+        event = EventCapture.create(
           name:,
           rules:,
           event_type: type,
           site: @site,
           event_groups: groups
         )
+
+        # Go off and run the job in the background to
+        # fetch the history events and update the counts.
+        # This can take a while depending on how old the
+        # site is so we must do it in the background
+        EventsProcessingJob.perform_later([event.id])
+
+        event
       end
     end
   end
