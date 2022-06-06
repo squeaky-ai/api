@@ -3,11 +3,11 @@
 module EventsService
   module Types
     class SelectorClick < Base
-      def count(event)
+      def count
         # TODO
       end
 
-      def results(event)
+      def results
         # TODO
       end
     end
