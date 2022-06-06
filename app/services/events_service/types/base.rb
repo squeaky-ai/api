@@ -33,6 +33,27 @@ module EventsService
         # we should start from when the site was created
         (event.last_counted_at || event.site.created_at).to_i
       end
+
+      def rule_expression
+        # SQL helper for constructing the correct where
+        # syntax for the rule matcher type. This should
+        # always be ran through the ActiveRecord sanitizer
+        # or we will be open to attacks
+        value = rule['value']
+
+        case rule['matcher']
+        when 'equals'
+          "= '#{value}'"
+        when 'not_equals'
+          "!= '#{value}'"
+        when 'contains'
+          "LIKE '%#{value}%'"
+        when 'not_contains'
+          "NOT LIKE '%#{value}%'"
+        when 'starts_with'
+          "LIKE '#{value}%'"
+        end
+      end
     end
   end
 end

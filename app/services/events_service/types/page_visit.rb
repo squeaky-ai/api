@@ -19,23 +19,6 @@ module EventsService
 
       private
 
-      def href_expression
-        value = rule['value']
-
-        case rule['matcher']
-        when 'equals'
-          "= '#{value}'"
-        when 'not_equals'
-          "!= '#{value}'"
-        when 'contains'
-          "LIKE '%#{value}%'"
-        when 'not_contains'
-          "NOT LIKE '%#{value}%'"
-        when 'starts_with'
-          "LIKE '#{value}%'"
-        end
-      end
-
       def query_count
         <<-SQL
           SELECT COUNT(*)
@@ -44,7 +27,7 @@ module EventsService
             site_id = ? AND
             type = 4 AND
             timestamp / 1000 >= ? AND
-            JSONExtractString(data, 'href') #{href_expression}
+            JSONExtractString(data, 'href') #{rule_expression}
         SQL
       end
     end

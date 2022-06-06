@@ -2,34 +2,34 @@
 
 require 'rails_helper'
 
-RSpec.describe EventsService::Types::PageVisit do
+RSpec.describe EventsService::Types::SelectorClick do
   describe '#count' do
     let(:now) { Time.now }
 
     let(:site) { create(:site, created_at: now) }
-    let(:event) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT) }
+    let(:event) { create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK) }
 
-    let(:hrefs) do
+    let(:selectors) do
       [
-        'http://localhost:8081/',
-        'http://localhost:8081/test',
-        'http://localhost:8081/test/foo',
-        'http://localhost:8081/',
-        'http://localhost:8081/foo/test',
-        'http://localhost:8081/foo/bar'
+        'body > div#test',
+        'body > p:nth-of-type(2) > span > i',
+        'body > div#test',
+        'body > div#container > button:nth-of-type(1)',
+        'body > a#logo',
+        'body > div#container > input'
       ]
     end
 
     before do
       ClickHouse::Event.insert do |buffer|
-        hrefs.each do |href|
+        selectors.each do |selector|
           buffer << {
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: '-1',
-            type: ClickHouse::Event::META,
-            source: nil,
-            data: { href:, width: 1920, height: 1080 }.to_json,
+            type: ClickHouse::Event::INCREMENTAL_SNAPSHOT,
+            source: 2,
+            data: { source: 2, x: 50, y: 50, selector: }.to_json,
             timestamp: now.to_i * 1000
           }
         end
@@ -40,7 +40,7 @@ RSpec.describe EventsService::Types::PageVisit do
 
     context 'when the matcher is "equals"' do
       before do
-        event.update(rules: [{ matcher: 'equals', condition: 'or', value: 'http://localhost:8081/' }])
+        event.update(rules: [{ matcher: 'equals', condition: 'or', value: 'body > div#test' }])
       end
 
       it 'returns the right count' do
@@ -50,7 +50,7 @@ RSpec.describe EventsService::Types::PageVisit do
 
     context 'when the matcher is "not_equals"' do
       before do
-        event.update(rules: [{ matcher: 'not_equals', condition: 'or', value: 'http://localhost:8081/' }])
+        event.update(rules: [{ matcher: 'not_equals', condition: 'or', value: 'body > div#test' }])
       end
 
       it 'returns the right count' do
@@ -60,31 +60,31 @@ RSpec.describe EventsService::Types::PageVisit do
 
     context 'when the matcher is "contains"' do
       before do
-        event.update(rules: [{ matcher: 'contains', condition: 'or', value: 'foo' }])
+        event.update(rules: [{ matcher: 'contains', condition: 'or', value: '#test' }])
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(3)
+        expect(subject).to eq(2)
       end
     end
 
     context 'when the matcher is "not_contains"' do
       before do
-        event.update(rules: [{ matcher: 'not_contains', condition: 'or', value: 'foo' }])
+        event.update(rules: [{ matcher: 'not_contains', condition: 'or', value: '#test' }])
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(3)
+        expect(subject).to eq(4)
       end
     end
 
     context 'when the matcher is "starts_with"' do
       before do
-        event.update(rules: [{ matcher: 'starts_with', condition: 'or', value: 'http://localhost:8081/test' }])
+        event.update(rules: [{ matcher: 'starts_with', condition: 'or', value: 'body > div' }])
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(2)
+        expect(subject).to eq(4)
       end
     end
   end
