@@ -8,7 +8,7 @@ module EventsService
         when EventCapture::PAGE_VISIT
           EventsService::Types::PageVisit.new(event)
         when EventCapture::TEXT_CLICK
-          EventsService::Types::TextCick.new(event)
+          EventsService::Types::TextClick.new(event)
         when EventCapture::SELECTOR_CLICK
           EventsService::Types::SelectorClick.new(event)
         when EventCapture::ERROR
