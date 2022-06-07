@@ -7,10 +7,11 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
+      argument :sort, Types::Analytics::PagesSort, required: false, default_value: 'views__desc'
 
-      def resolve(page:, size:)
+      def resolve(page:, size:, sort:)
         total_count = total_pages_count
-        results = pages(page, size)
+        results = pages(page, size, sort)
         {
           items: format_results(results, total_count),
           pagination: {
@@ -22,7 +23,7 @@ module Resolvers
 
       private
 
-      def pages(page, size)
+      def pages(page, size, sort)
         sql = <<-SQL
           SELECT
             exit_rate_1.url url,
@@ -109,7 +110,7 @@ module Resolvers
                 recordings.site_id = :site_id
               GROUP BY pages.url
             ) view_times ON exit_rate_1.url = view_times.url
-          ORDER BY view_count DESC
+          ORDER BY #{order(sort)}
           LIMIT :limit
           OFFSET :offset;
         SQL
@@ -129,6 +130,22 @@ module Resolvers
         )
       end
 
+      def order(sort)
+        orders = {
+          'views__desc' => 'view_count DESC',
+          'views__asc' => 'view_count ASC',
+          'unique_views__desc' => 'unique_view_count DESC',
+          'unique_views__asc' => 'unique_view_count ASC',
+          'duration__desc' => 'average_duration DESC',
+          'duration__asc' => 'average_duration ASC',
+          'bounce_rate__desc' => 'bounce_rate DESC',
+          'bounce_rate__asc' => 'bounce_rate ASC',
+          'exit_rate__desc' => 'exit_rate DESC',
+          'exit_rate__asc' => 'exit_rate ASC'
+        }
+        orders[sort]
+      end
+
       def format_results(pages, total_count)
         pages.map do |page|
           {
@@ -137,7 +154,7 @@ module Resolvers
             view_percentage: percentage(page['view_count'], total_count['all_count']),
             unique_view_count: page['unique_view_count'],
             unique_view_percentage: percentage(page['unique_view_count'], total_count['all_count']),
-            exit_rate_percentage: page['exit_rate'] * 100,
+            exit_rate_percentage: page['exit_rate'].to_i * 100,
             bounce_rate_percentage: page['bounce_rate'].to_i * 100,
             average_duration: page['average_duration']
           }
