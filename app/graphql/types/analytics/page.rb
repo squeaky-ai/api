@@ -5,10 +5,14 @@ module Types
     class Page < Types::BaseObject
       graphql_name 'AnalyticsPage'
 
-      field :path, String, null: false
-      field :count, Integer, null: false
-      field :avg, Integer, null: false
-      field :percentage, Float, null: false
+      field :url, String, null: false
+      field :view_count, Integer, null: false
+      field :view_percentage, Float, null: false
+      field :unique_view_count, Integer, null: false
+      field :unique_view_percentage, Float, null: false
+      field :exit_rate_percentage, Float, null: false
+      field :bounce_rate_percentage, Float, null: false
+      field :average_duration, Integer, null: false
     end
   end
 end
