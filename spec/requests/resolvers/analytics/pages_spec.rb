@@ -8,10 +8,14 @@ analytics_pages_query = <<-GRAPHQL
       analytics(fromDate: $from_date, toDate: $to_date) {
         pages {
           items {
-            path
-            count
-            avg
-            percentage
+            url
+            viewCount
+            viewPercentage
+            uniqueViewCount
+            uniqueViewPercentage
+            exitRatePercentage
+            bounceRatePercentage
+            averageDuration
           }
         }
       }
@@ -54,17 +58,25 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'path' => '/',
-            'avg' => 8990,
-            'percentage' => 66.67,
-            'count' => 2
+            'averageDuration' => 8990,
+            'bounceRatePercentage' => 0.0,
+            'exitRatePercentage' => 0.0,
+            'uniqueViewCount' => 2,
+            'uniqueViewPercentage' => 66.67,
+            'url' => '/',
+            'viewCount' => 2,
+            'viewPercentage' => 66.67
           },
           {
-            'path' => '/test',
-            'avg' => 8990,
-            'percentage' => 33.33,
-            'count' => 1
-          }
+            'averageDuration' => 8990,
+            'bounceRatePercentage' => 0.0,
+            'exitRatePercentage' => 100.0,
+            'uniqueViewCount' => 1,
+            'uniqueViewPercentage' => 33.33,
+            'url' => '/test',
+            'viewCount' => 1,
+            'viewPercentage' => 33.33
+         }
         ]
       )
     end
@@ -90,16 +102,24 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'path' => '/',
-            'avg' => 8990,
-            'percentage' => 66.67,
-            'count' => 2
+            'averageDuration' => 8990,
+            'bounceRatePercentage' => 0.0,
+            'exitRatePercentage' => 0.0,
+            'uniqueViewCount' => 2,
+            'uniqueViewPercentage' => 66.67,
+            'url' => '/',
+            'viewCount' => 2,
+            'viewPercentage' => 66.67
           },
           {
-            'path' => '/test',
-            'avg' => 8990,
-            'percentage' => 33.33,
-            'count' => 1
+            'averageDuration' => 8990,
+            'bounceRatePercentage' => 0.0,
+            'exitRatePercentage' => 100.0,
+            'uniqueViewCount' => 1,
+            'uniqueViewPercentage' => 33.33,
+            'url' => '/test',
+            'viewCount' => 1,
+            'viewPercentage' => 33.33
           }
         ]
       )
