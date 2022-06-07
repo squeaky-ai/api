@@ -170,6 +170,8 @@ class Session
         handle_nps(event)
       when 'error'
         handle_error(event)
+      when 'custom'
+        handle_custom(event)
       end
     end
   end
@@ -213,6 +215,15 @@ class Session
     # This comes through as Event::CUSTOM as the script is not
     # aware of the extra codes but we should store it as Event::Error
     data['type'] = Event::ERROR
+    @events.push(data)
+  end
+
+  def handle_custom(event)
+    puts '@@', event
+    data = event['value']
+    # This comes through as Event::CUSTOM as the script is not
+    # aware of the extra codes but we should store it as Event::Error
+    data['type'] = Event::CUSTOM_TRACK
     @events.push(data)
   end
 

@@ -14,6 +14,7 @@ class Event < ApplicationRecord
 
   # Our own custom events
   ERROR = 100
+  CUSTOM_TRACK = 101
 
   def type?(event)
     event_type == event

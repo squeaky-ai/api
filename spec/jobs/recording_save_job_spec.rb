@@ -65,7 +65,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'stores the events' do
       subject
-      expect(site.reload.recordings.first.events.size).to eq 83
+      expect(site.reload.recordings.first.events.size).to eq 84
     end
 
     it 'stores the sentiments' do
@@ -333,7 +333,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'stores the events' do
       subject
-      expect(site.reload.recordings.first.events.size).to eq 83
+      expect(site.reload.recordings.first.events.size).to eq 84
     end
   end
 
@@ -362,7 +362,7 @@ RSpec.describe RecordingSaveJob, type: :job do
                 .where(recording_id: site.recordings.first.id)
                 .select('count(*) total')
                 .select_one
-      expect(total['total']).to eq 83
+      expect(total['total']).to eq 84
     end
   end
 end
