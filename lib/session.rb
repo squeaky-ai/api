@@ -219,10 +219,9 @@ class Session
   end
 
   def handle_custom(event)
-    puts '@@', event
     data = event['value']
     # This comes through as Event::CUSTOM as the script is not
-    # aware of the extra codes but we should store it as Event::Error
+    # aware of the extra codes but we should store it as Event::CustomTrack
     data['type'] = Event::CUSTOM_TRACK
     @events.push(data)
   end

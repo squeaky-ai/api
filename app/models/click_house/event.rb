@@ -13,5 +13,6 @@ module ClickHouse
 
     # Our own custom events
     ERROR = 100
+    CUSTOM_TRACK = 101
   end
 end
