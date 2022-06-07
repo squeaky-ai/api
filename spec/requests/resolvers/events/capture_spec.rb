@@ -62,10 +62,10 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, count: 5)
-      create(:event_capture, site:, event_type: EventCapture::ERROR, count: 3)
-      create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, count: 2)
-      create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, count: 1)
+      create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, count: 5, name: 'Page visit event')
+      create(:event_capture, site:, event_type: EventCapture::ERROR, count: 3, name: 'Error event')
+      create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, count: 2, name: 'Text click event')
+      create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, count: 1, name: 'Selector event')
     end
 
     subject do
@@ -84,28 +84,28 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
         {
           'count' => 5,
           'lastCountedAt' => nil,
-          'name' => 'My event',
+          'name' => 'Page visit event',
           'rules' => [],
           'type' => 0
         },
         {
           'count' => 3,
           'lastCountedAt' => nil,
-          'name' => 'My event',
+          'name' => 'Error event',
           'rules' => [],
           'type' => 3
         },
         {
           'count' => 2,
           'lastCountedAt' => nil,
-          'name' => 'My event',
+          'name' => 'Text click event',
           'rules' => [],
           'type' => 1
         },
         {
           'count' => 1,
           'lastCountedAt' => nil,
-          'name' => 'My event',
+          'name' => 'Selector event',
           'rules' => [],
           'type' => 2
         }

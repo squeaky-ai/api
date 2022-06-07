@@ -112,6 +112,10 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       expect(RecordingMailerService).to have_received(:enqueue_if_first_recording).with(site)
     end
+
+    it 'creates the event captures' do
+      expect { subject }.to change { site.reload.event_captures.size }.from(0).to(1)
+    end
   end
 
   context 'when the email domain is blacklisted' do
@@ -363,6 +367,31 @@ RSpec.describe RecordingSaveJob, type: :job do
                 .select('count(*) total')
                 .select_one
       expect(total['total']).to eq 84
+    end
+  end
+
+  context 'when one of the event captures already exists' do
+    let(:site) { create(:site_with_team) }
+    let!(:event_capture) { create(:event_capture, site:, name: 'my-event') }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    subject { described_class.perform_now(event) }
+
+    before do
+      events_fixture = require_fixture('events.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+    end
+
+    it 'does not save it again' do
+      expect { subject }.not_to change { site.reload.event_captures.size }
     end
   end
 end

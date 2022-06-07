@@ -46,6 +46,7 @@ class RecordingSaveJob < ApplicationJob
       persist_sentiments!(recording)
       persist_nps!(recording)
       persist_clicks!(recording)
+      persist_custom_event_names!
     end
   end
 
@@ -204,6 +205,22 @@ class RecordingSaveJob < ApplicationJob
     end
 
     Click.insert_all!(items) unless items.empty?
+  end
+
+  def persist_custom_event_names!
+    @session.custom_tracking.each do |event|
+      name = event['data']['name']
+
+      event_capture = EventCapture.create(
+        name:,
+        rules: [{ matcher: 'equals', condition: 'or', value: name }],
+        event_type: EventCapture::CUSTOM,
+        site: @site,
+        event_groups: []
+      )
+
+      logger.info "EventCapture with constrant #{name}:#{@site.id} already exists" unless event_capture.valid?
+    end
   end
 
   def valid?

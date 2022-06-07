@@ -151,7 +151,7 @@ FactoryBot.define do
   end
 
   factory :event_capture do
-    name { 'My event' }
+    name { "My event #{SecureRandom.uuid}" }
     event_type { 0 }
     count { 0 }
     rules { [] }

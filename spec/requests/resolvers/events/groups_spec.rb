@@ -47,10 +47,10 @@ RSpec.describe Resolvers::Events::Groups, type: :request do
       event_group_1 = create(:event_group, site:, name: 'Group 1')
       event_group_2 = create(:event_group, site:, name: 'Group 2')
 
-      create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, count: 5, event_groups: [event_group_1])
-      create(:event_capture, site:, event_type: EventCapture::ERROR, count: 3, event_groups: [event_group_1])
-      create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, count: 2, event_groups: [event_group_2])
-      create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, count: 1)
+      create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, count: 5, event_groups: [event_group_1], name: 'Click event')
+      create(:event_capture, site:, event_type: EventCapture::ERROR, count: 3, event_groups: [event_group_1], name: 'Error event')
+      create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, count: 2, event_groups: [event_group_2], name: 'Text click event')
+      create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, count: 1, name: 'Selector event')
     end
 
     subject do
@@ -67,14 +67,14 @@ RSpec.describe Resolvers::Events::Groups, type: :request do
             {
               'count' => 5,
               'lastCountedAt' => nil,
-              'name' => 'My event',
+              'name' => 'Click event',
               'rules' => [],
               'type' => 0
             },
             {
               'count' => 3,
               'lastCountedAt' => nil,
-              'name' => 'My event',
+              'name' => 'Error event',
               'rules' => [],
               'type' => 3
             }
@@ -86,7 +86,7 @@ RSpec.describe Resolvers::Events::Groups, type: :request do
             {
               'count' => 2,
               'lastCountedAt' => nil,
-              'name' => 'My event',
+              'name' => 'Text click event',
               'rules' => [],
               'type' => 1
             }

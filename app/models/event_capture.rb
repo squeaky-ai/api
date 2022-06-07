@@ -4,6 +4,8 @@ class EventCapture < ApplicationRecord
   belongs_to :site
   has_and_belongs_to_many :event_groups
 
+  validates :name, uniqueness: { scope: :site_id }
+
   PAGE_VISIT = 0
   TEXT_CLICK = 1
   SELECTOR_CLICK = 2

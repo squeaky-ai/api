@@ -145,6 +145,12 @@ RSpec.describe Session do
     end
   end
 
+  describe '#custom_tracking' do
+    it 'returns the custom events' do
+      expect(instance.custom_tracking.size).to eq 1
+    end
+  end
+
   context 'when the events include some bad json' do
     before do
       event_1 = { key: 'event', value: { timestamp: 1651157003244 } }.to_json

@@ -10,6 +10,7 @@ class Session
               :pageviews,
               :sentiments,
               :nps,
+              :custom_tracking,
               :external_attributes,
               :events,
               :site_id,
@@ -22,6 +23,7 @@ class Session
     @recording = {}
     @sentiments = []
     @nps = nil
+    @custom_tracking = []
     @external_attributes = {}
 
     @site_id = message[:site_id]
@@ -224,6 +226,7 @@ class Session
     # aware of the extra codes but we should store it as Event::CustomTrack
     data['type'] = Event::CUSTOM_TRACK
     @events.push(data)
+    @custom_tracking.push(data)
   end
 
   def parse_event_and_ignore_errors(event)
