@@ -28,9 +28,7 @@ RSpec.describe Mutations::Auth::PasswordReset, type: :request do
   end
 
   context 'when the user exists' do
-    let(:user) { create(:user) }
-
-    before { user }
+    let!(:user) { create(:user) }
 
     subject do
       variables = {

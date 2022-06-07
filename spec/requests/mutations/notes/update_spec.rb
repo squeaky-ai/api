@@ -70,15 +70,10 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       context 'and they are deleting their own note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
+        let!(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create(:recording, site: site) }
         let(:body) { 'Toad' }
-        let(:note) { create(:note, recording_id: recording.id, user: user) }
-  
-        before do
-          note
-          team
-        end
+        let!(:note) { create(:note, recording_id: recording.id, user: user) }
   
         subject do
           variables = {
@@ -105,15 +100,10 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       context 'and they are deleting someone elses note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
+        let!(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
         let(:recording) { create(:recording, site: site) }
         let(:body) { 'Princess Peach' }
-        let(:note) { create(:note, recording_id: recording.id) }
-  
-        before do
-          note
-          team
-        end
+        let!(:note) { create(:note, recording_id: recording.id) }
   
         subject do
           variables = {
@@ -142,11 +132,10 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team) }
       let(:recording) { create(:recording, site: site) }
-      let(:note) { create(:note, recording_id: recording.id) }
+      let!(:note) { create(:note, recording_id: recording.id) }
       let(:body) { 'Bowser' }
       
       before do
-        note
         create(:team, user: user, site: site, role: Team::ADMIN)
       end
 
@@ -176,10 +165,8 @@ RSpec.describe Mutations::Notes::Update, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
       let(:recording) { create(:recording, site: site) }
-      let(:note) { create(:note, recording_id: recording.id) }
+      let!(:note) { create(:note, recording_id: recording.id) }
       let(:body) { 'Kooper Trooper' }
-
-      before { note }
 
       subject do
         variables = {

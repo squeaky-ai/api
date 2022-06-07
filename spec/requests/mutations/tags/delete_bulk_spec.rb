@@ -36,9 +36,7 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
   context 'when one of the tags exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
-
-    before { tag }
+    let!(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
     subject do
       variables = { 
@@ -63,13 +61,8 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
   context 'when multiple tags exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:tag_1) { Tag.create(name: 'Foo', site_id: site.id) }
-    let(:tag_2) { Tag.create(name: 'Bar', site_id: site.id) }
-
-    before do
-      tag_1
-      tag_2
-    end
+    let!(:tag_1) { Tag.create(name: 'Foo', site_id: site.id) }
+    let!(:tag_2) { Tag.create(name: 'Bar', site_id: site.id) }
 
     subject do
       variables = { 

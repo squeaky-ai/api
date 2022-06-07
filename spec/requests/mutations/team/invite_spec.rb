@@ -21,10 +21,8 @@ GRAPHQL
 RSpec.describe Mutations::Teams::Invite, type: :request do
   context 'when the invited user does not have an account' do
     let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user) }
+    let!(:site) { create(:site_with_team, owner: user) }
     let(:email) { 'paulmccartney@msn.com' }
-
-    before { site }
 
     subject do
       variables = { 
@@ -97,8 +95,6 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
         stub = double
         allow(stub).to receive(:deliver_now)
         allow(AuthMailer).to receive(:invitation_instructions).and_return(stub)
-        
-        site
       end
 
       subject do

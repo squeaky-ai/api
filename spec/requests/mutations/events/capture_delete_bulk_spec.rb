@@ -14,7 +14,7 @@ RSpec.describe Mutations::Events::CaptureDeleteBulk, type: :request do
   let(:user) { create(:user) }
   let(:site) { create(:site_with_team, owner: user) }
 
-  let(:events) do
+  let!(:events) do
     [
       create(:event_capture, site:),
       create(:event_capture, site:),
@@ -22,8 +22,6 @@ RSpec.describe Mutations::Events::CaptureDeleteBulk, type: :request do
       create(:event_capture, site:)
     ]
   end
-
-  before { events }
 
   subject do
     ids = events.map(&:id).map(&:to_s)

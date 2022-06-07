@@ -37,15 +37,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:recording_1) { create(:recording, viewed: true, site: site) }
-    let(:recording_2) { create(:recording, site: site) }
-    let(:recording_3) { create(:recording, site: site) }
-
-    before do 
-      recording_1
-      recording_2
-      recording_3
-    end
+    let!(:recording_1) { create(:recording, viewed: true, site: site) }
+    let!(:recording_2) { create(:recording, site: site) }
+    let!(:recording_3) { create(:recording, site: site) }
 
     subject do
       variables = {
@@ -81,15 +75,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:recording_1) { create(:recording, viewed: true, site: site) }
-    let(:recording_2) { create(:recording, site: site) }
-    let(:recording_3) { create(:recording, viewed: true, site: site) }
-
-    before do 
-      recording_1
-      recording_2
-      recording_3
-    end
+    let!(:recording_1) { create(:recording, viewed: true, site: site) }
+    let!(:recording_2) { create(:recording, site: site) }
+    let!(:recording_3) { create(:recording, viewed: true, site: site) }
 
     subject do
       variables = {

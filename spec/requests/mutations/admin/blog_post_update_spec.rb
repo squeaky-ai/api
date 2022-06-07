@@ -14,9 +14,7 @@ GRAPHQL
 
 RSpec.describe Mutations::Admin::BlogPostUpdate, type: :request do
   let(:user) { create(:user, superuser: true) }
-  let(:post) { create(:blog, title: 'Foo', category: 'Bar') }
-
-  before { post }
+  let!(:post) { create(:blog, title: 'Foo', category: 'Bar') }
 
   subject do
     variables = {

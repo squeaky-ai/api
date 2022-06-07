@@ -38,9 +38,7 @@ RSpec.describe Mutations::Events::GroupDelete, type: :request do
   context 'when the group exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:group) { create(:event_group, site:) }
-
-    before { group }
+    let!(:group) { create(:event_group, site:) }
 
     subject do
       variables = {

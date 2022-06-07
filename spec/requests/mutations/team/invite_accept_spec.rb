@@ -80,11 +80,9 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     context 'when it is a new user' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:team) { create(:team, user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
+      let!(:team) { create(:team, user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
       before do
-        team
-
         allow(OnboardingMailerService).to receive(:enqueue)
       end
 
@@ -119,11 +117,9 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     context 'when it is an existing user' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
+      let!(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
       before do
-        team 
-
         allow(OnboardingMailerService).to receive(:enqueue)
       end
 

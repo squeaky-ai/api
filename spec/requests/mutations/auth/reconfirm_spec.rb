@@ -48,9 +48,7 @@ RSpec.describe Mutations::Auth::Confirm, type: :request do
   end
 
   context 'when the user exists but has not confirmed' do
-    let(:user) { create(:user, confirmed_at: nil) }
-
-    before { user }
+    let!(:user) { create(:user, confirmed_at: nil) }
 
     subject do
       variables = {

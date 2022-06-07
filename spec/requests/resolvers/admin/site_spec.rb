@@ -44,9 +44,7 @@ RSpec.describe Resolvers::Admin::Site, type: :request do
 
   context 'when the user is a superuser' do
     let(:user) { create(:user, superuser: true) }
-    let(:site) { create(:site) }
-
-    before { site }
+    let!(:site) { create(:site) }
 
     it 'returns all the sites' do
       variables = { site_id: site.id }

@@ -52,9 +52,7 @@ RSpec.describe 'QuerySites', type: :request do
 
   context 'when the user is a member of a site' do
     let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user) }
-
-    before { site }
+    let!(:site) { create(:site_with_team, owner: user) }
 
     it 'returns the list of sites' do
       response = graphql_request(sites_query, {}, user)

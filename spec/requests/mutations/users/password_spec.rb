@@ -14,9 +14,7 @@ RSpec.describe Mutations::Users::Update, type: :request do
   context 'when the current password is incorrect' do
     let(:old_password) { 'oldpassword' }
     let(:new_password) { 'newpassword' }
-    let(:user) { create(:user) }
-
-    before { user }
+    let!(:user) { create(:user) }
 
     subject do
       update = { 
@@ -45,9 +43,7 @@ RSpec.describe Mutations::Users::Update, type: :request do
   context 'when the current password is correct' do
     let(:old_password) { 'oldpassword' }
     let(:new_password) { 'newpassword' }
-    let(:user) { create(:user, password: old_password) }
-
-    before { user }
+    let!(:user) { create(:user, password: old_password) }
 
     subject do
       update = { 

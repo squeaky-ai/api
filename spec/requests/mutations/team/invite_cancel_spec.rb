@@ -47,7 +47,7 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
   context 'when the team member exist but is not pending' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let!(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
       variables = { 
@@ -58,8 +58,6 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
       }
       graphql_request(team_invite_cancel_mutation, variables, user)
     end
-
-    before { team_member } # Otherwise subject will be responsible for creating the team
 
     it 'returns the team' do
       team = subject['data']['teamInviteCancel']
@@ -74,7 +72,7 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
   context 'when the team member exist and is pending' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
+    let!(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
 
     subject do
       variables = { 
@@ -85,8 +83,6 @@ RSpec.describe Mutations::Teams::InviteCancel, type: :request do
       }
       graphql_request(team_invite_cancel_mutation, variables, user)
     end
-
-    before { team_member }
 
     it 'returns nil' do
       team = subject['data']['teamInviteCancel']

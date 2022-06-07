@@ -66,11 +66,9 @@ RSpec.describe Site, type: :model do
   describe '#owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site) }
-    let(:team) { create(:team, user: user, site: site, role: Team::OWNER) }
+    let!(:team) { create(:team, user: user, site: site, role: Team::OWNER) }
 
     subject { site.owner }
-
-    before { team }
 
     it 'returns the owner' do
       expect(subject).to eq team

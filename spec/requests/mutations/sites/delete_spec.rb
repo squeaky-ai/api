@@ -14,7 +14,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
   context 'when the user is not the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let!(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
 
     subject do
       variables = { 
@@ -24,8 +24,6 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       }
       graphql_request(site_delete_mutation, variables, user)
     end
-
-    before { team }
 
     it 'raises an error' do
       error = subject['errors'][0]['message']

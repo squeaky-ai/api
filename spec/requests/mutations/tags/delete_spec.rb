@@ -36,9 +36,7 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
   context 'when the tag exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
-
-    before { tag }
+    let!(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
     subject do
       variables = { 

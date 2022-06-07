@@ -38,9 +38,7 @@ RSpec.describe Mutations::Events::CaptureDelete, type: :request do
   context 'when the capture exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:event) { create(:event_capture, site:) }
-
-    before { event }
+    let!(:event) { create(:event_capture, site:) }
 
     subject do
       variables = {

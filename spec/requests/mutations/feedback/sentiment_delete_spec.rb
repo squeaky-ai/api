@@ -36,9 +36,7 @@ RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create(:recording, site: site) }
-    let(:sentiment) { create(:sentiment, recording: recording) }
-
-    before { sentiment }
+    let!(:sentiment) { create(:sentiment, recording: recording) }
 
     subject do
       variables = {

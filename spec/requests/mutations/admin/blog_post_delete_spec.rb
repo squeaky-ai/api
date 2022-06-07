@@ -33,9 +33,7 @@ RSpec.describe Mutations::Admin::BlogPostDelete, type: :request do
 
   context 'when the post exists' do
     let(:user) { create(:user, superuser: true) }
-    let(:post) { create(:blog) }
-
-    before { post }
+    let!(:post) { create(:blog) }
 
     subject do
       variables = {

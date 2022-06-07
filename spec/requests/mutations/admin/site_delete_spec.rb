@@ -13,11 +13,9 @@ GRAPHQL
 
 RSpec.describe Mutations::Admin::SiteDelete, type: :request do
   let(:site) { create(:site) }
-  let(:user) { create(:user, superuser: true) }
+  let!(:user) { create(:user, superuser: true) }
 
   before do
-    user
-
     create(:team, site: site, role: Team::MEMBER)
     create(:team, site: site, role: Team::ADMIN)
     create(:team, site: site, role: Team::OWNER)

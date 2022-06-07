@@ -28,9 +28,7 @@ RSpec.describe TestController, type: :controller do
   end
 
   describe 'DELETE /test/user' do
-    let(:user) { create(:user) }
-
-    before { user }
+    let!(:user) { create(:user) }
 
     subject do
       delete :destroy_user, params: { email: user.email }
