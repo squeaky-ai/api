@@ -15,19 +15,29 @@ module Resolvers
         events = site.event_captures.where(id: capture_ids)
 
         [
-          *groups.map { |g| format_item(g, 'group') },
-          *events.map { |e| format_item(e, 'capture') }
+          *groups.map { |g| format_group(g) },
+          *events.map { |e| format_capture(e) }
         ]
       end
 
       private
 
-      def format_item(group_or_capture, type)
+      def format_group(capture)
         {
-          id: group_or_capture.id,
-          name: group_or_capture.name,
-          type:,
-          count: group_or_capture.count,
+          id: capture.id,
+          name: capture.name,
+          type: 'group',
+          count: capture.event_captures.map(&:count).sum,
+          average_events_per_visitor: 0
+        }
+      end
+
+      def format_capture(capture)
+        {
+          id: capture.id,
+          name: capture.name,
+          type: 'capture',
+          count: capture.count,
           average_events_per_visitor: 0
         }
       end
