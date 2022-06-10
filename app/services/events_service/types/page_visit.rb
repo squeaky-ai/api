@@ -14,7 +14,14 @@ module EventsService
       end
 
       def results
-        # TODO
+        <<-SQL
+          SELECT uuid, recording_id, '#{event.name}' as event_name, timestamp
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') #{rule_expression}
+        SQL
       end
 
       private

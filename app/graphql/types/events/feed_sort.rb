@@ -7,8 +7,6 @@ module Types
 
       value 'timestamp__asc', 'Oldest first'
       value 'timestamp__desc', 'Newest first'
-      value 'event_name__asc', 'Name of event ascending (A-Z)'
-      value 'event_name__desc', 'Name of event descending (Z-A)'
     end
   end
 end
