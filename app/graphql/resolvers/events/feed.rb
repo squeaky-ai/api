@@ -74,7 +74,9 @@ module Resolvers
         union_queries = capture_events.map.with_index do |event, index|
           query = EventsService::Captures.for(event).results
 
-          "(#{query})#{index == capture_events.size - 1 ? '' : ' UNION ALL '}"
+          # TODO: Invesigate how we can limit here as otherwise it
+          # will return them all
+          "(#{query} LIMIT :limit)#{index == capture_events.size - 1 ? '' : ' UNION ALL '}"
         end
 
         sql = <<-SQL
