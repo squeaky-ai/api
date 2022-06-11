@@ -42,12 +42,12 @@ module Resolvers
 
       def format_results(results, recordings)
         results.map do |result|
-          recording = recordings.detect { |r| r.id == result['recording_id'] }
+          recording = recordings.detect { |r| r.id.to_s == result['recording_id'].to_s }
 
           {
             id: result['uuid'],
             event_name: result['event_name'],
-            timestamp: Time.at(result['timestamp'] / 1000).utc,
+            timestamp: Time.at(result['timestamp'].to_i / 1000).utc,
             recording:,
             visitor: recording.visitor
           }
@@ -104,6 +104,7 @@ module Resolvers
           ORDER BY #{order(sort)}
           LIMIT :limit
           OFFSET :offset
+          FORMAT JSON
         SQL
 
         query = ActiveRecord::Base.sanitize_sql_array(
@@ -113,9 +114,7 @@ module Resolvers
           ]
         )
 
-        puts '11', query
-
-        ClickHouse.connection.select_all(query)
+        ClickHouse.connection.execute(query).body['data']
       end
 
       def recordings(site, results)
