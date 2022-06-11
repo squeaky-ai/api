@@ -113,7 +113,9 @@ module Resolvers
           ]
         )
 
-        ClickHouse.connection.select_all(query).to_a
+        puts '11', query
+
+        ClickHouse.connection.select_all(query)
       end
 
       def recordings(site, results)
