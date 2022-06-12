@@ -70,6 +70,8 @@ module Types
     # Contact
     field :contact, mutation: Mutations::Contact::Contact
     field :book_demo, mutation: Mutations::Contact::BookDemo
+    field :contact_partners, mutation: Mutations::Contact::Partners
+    field :contact_startups, mutation: Mutations::Contact::Startups
     # Subscriptions
     field :subscriptions_create, mutation: Mutations::Subscriptions::Create
     field :subscriptions_update, mutation: Mutations::Subscriptions::Update

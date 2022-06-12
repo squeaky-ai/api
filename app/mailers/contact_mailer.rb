@@ -10,4 +10,14 @@ class ContactMailer < ApplicationMailer
     @details = details
     mail(to: 'hello@squeaky.ai', subject: 'Book demo form')
   end
+
+  def partners(details)
+    @details = details
+    mail(to: 'hello@squeaky.ai', subject: 'Partners form')
+  end
+
+  def startups(details)
+    @details = details
+    mail(to: 'hello@squeaky.ai', subject: 'Startups form')
+  end
 end
