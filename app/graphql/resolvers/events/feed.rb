@@ -47,7 +47,7 @@ module Resolvers
           {
             id: result['uuid'],
             event_name: result['event_name'],
-            timestamp: Time.at(result['timestamp'] / 1000).utc,
+            timestamp: result['timestamp'],
             recording:,
             visitor: recording.visitor
           }
@@ -99,7 +99,11 @@ module Resolvers
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
         sql = <<-SQL
-          SELECT results.uuid, results.recording_id, results.event_name, results.timestamp
+          SELECT
+            results.uuid uuid,
+            results.recording_id recording_id,
+            results.event_name event_name,
+            toDateTime(results.timestamp / 1000) timestamp
           FROM (#{union_queries.join(' ')}) results
           ORDER BY #{order(sort)}
           LIMIT :limit
