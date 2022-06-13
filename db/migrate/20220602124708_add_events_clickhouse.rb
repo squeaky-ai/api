@@ -5,7 +5,7 @@ class AddEventsClickhouse < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'events', 
       engine: 'MergeTree',
-      order: 'timestamp'
+      order: '(site_id, timestamp)'
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
