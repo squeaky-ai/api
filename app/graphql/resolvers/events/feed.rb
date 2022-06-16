@@ -117,8 +117,6 @@ module Resolvers
           ]
         )
 
-        puts '11', query
-
         ClickHouse.connection.select_all(query)
       end
 

@@ -19,10 +19,6 @@ module EventsService
 
       attr_reader :event
 
-      def sanitize_query(query, *variables)
-        ActiveRecord::Base.sanitize_sql_array([query, *variables])
-      end
-
       def rule
         # At the moment we only support a single rule
         event.rules.first

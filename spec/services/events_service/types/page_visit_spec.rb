@@ -9,33 +9,6 @@ RSpec.describe EventsService::Types::PageVisit do
     let(:site) { create(:site, created_at: now) }
     let(:event) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT) }
 
-    let(:hrefs) do
-      [
-        'http://localhost:8081/',
-        'http://localhost:8081/test',
-        'http://localhost:8081/test/foo',
-        'http://localhost:8081/',
-        'http://localhost:8081/foo/test',
-        'http://localhost:8081/foo/bar'
-      ]
-    end
-
-    before do
-      ClickHouse::Event.insert do |buffer|
-        hrefs.each do |href|
-          buffer << {
-            uuid: SecureRandom.uuid,
-            site_id: site.id,
-            recording_id: '-1',
-            type: ClickHouse::Event::META,
-            source: nil,
-            data: { href:, width: 1920, height: 1080 }.to_json,
-            timestamp: now.to_i * 1000
-          }
-        end
-      end
-    end
-
     subject { described_class.new(event).count }
 
     context 'when the matcher is "equals"' do
@@ -44,7 +17,16 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(2)
+        sql = <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') = 'http://localhost:8081/' AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
+        expect(subject).to eq(sql)
       end
     end
 
@@ -54,7 +36,16 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(4)
+        sql = <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') != 'http://localhost:8081/' AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
+        expect(subject).to eq(sql)
       end
     end
 
@@ -64,7 +55,16 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(3)
+        sql = <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') LIKE '%foo%' AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
+        expect(subject).to eq(sql)
       end
     end
 
@@ -74,7 +74,16 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(3)
+        sql = <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') NOT LIKE '%foo%' AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
+        expect(subject).to eq(sql)
       end
     end
 
@@ -84,7 +93,16 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        expect(subject).to eq(2)
+        sql = <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 4 AND
+            JSONExtractString(data, 'href') LIKE 'http://localhost:8081/test%' AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
+        expect(subject).to eq(sql)
       end
     end
   end
