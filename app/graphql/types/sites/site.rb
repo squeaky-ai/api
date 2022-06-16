@@ -41,6 +41,7 @@ module Types
       field :event_groups, resolver: Resolvers::Events::Groups
       field :event_stats, resolver: Resolvers::Events::Stats
       field :event_feed, resolver: Resolvers::Events::Feed
+      field :event_counts, resolver: Resolvers::Events::Counts
       field :analytics, Types::Analytics::Analytics, null: false do
         argument :from_date, GraphQL::Types::ISO8601Date, required: true
         argument :to_date, GraphQL::Types::ISO8601Date, required: true
