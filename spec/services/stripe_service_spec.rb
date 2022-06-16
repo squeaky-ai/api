@@ -30,6 +30,7 @@ RSpec.describe StripeService do
       allow(Stripe::Checkout::Session).to receive(:create)
         .with(
           customer: customer_id,
+          allow_promotion_codes: true,
           metadata: {
             site: site.name
           },

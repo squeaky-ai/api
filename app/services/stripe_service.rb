@@ -178,6 +178,7 @@ class StripeService
   def create_checkout_session(billing, pricing_id)
     response = Stripe::Checkout::Session.create(
       customer: billing.customer_id,
+      allow_promotion_codes: true,
       metadata: {
         site: @site.name
       },
