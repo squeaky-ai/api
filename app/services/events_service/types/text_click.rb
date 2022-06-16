@@ -26,7 +26,6 @@ module EventsService
             source = 2 AND
             JSONExtractString(data, 'text') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
-          LIMIT :limit
         SQL
       end
     end

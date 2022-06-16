@@ -18,13 +18,14 @@ module Resolvers
 
         capture_events = event_captures(site, group_ids, capture_ids)
         results = aggregated_results(site, capture_events, from_date, to_date, page, size, sort)
+        results_count = total_results_count(site, capture_events, from_date, to_date)
         recordings = recordings(site, results)
 
         {
           items: format_results(results, recordings),
           pagination: {
             page_size: size,
-            total: results.size, # TODO: fetch true count
+            total: results_count,
             sort:
           }
         }
@@ -82,8 +83,8 @@ module Resolvers
         site.event_captures.where(id: capture_ids)
       end
 
-      def aggregated_results(site, capture_events, from_date, to_date, page, size, sort)
-        union_queries = capture_events.map.with_index do |event, index|
+      def union_queries(capture_events)
+        @union_queries ||= capture_events.map.with_index do |event, index|
           query = EventsService::Captures.for(event).results
 
           # TODO: Invesigate how we can limit here as otherwise it
@@ -95,7 +96,25 @@ module Resolvers
           # aggregated, apart from the last index
           "(#{query})#{index == capture_events.size - 1 ? '' : ' UNION ALL '}"
         end
+      end
 
+      def total_results_count(site, capture_events, from_date, to_date)
+        sql = <<-SQL
+          SELECT COUNT(*) count
+          FROM (#{union_queries(capture_events).join(' ')})
+        SQL
+
+        query = ActiveRecord::Base.sanitize_sql_array(
+          [
+            sql,
+            { site_id: site.id, from_date:, to_date: }
+          ]
+        )
+
+        ClickHouse.connection.select_value(query)
+      end
+
+      def aggregated_results(site, capture_events, from_date, to_date, page, size, sort)
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
         sql = <<-SQL
@@ -104,7 +123,7 @@ module Resolvers
             results.recording_id recording_id,
             results.event_name event_name,
             toDateTime(results.timestamp / 1000) timestamp
-          FROM (#{union_queries.join(' ')}) results
+          FROM (#{union_queries(capture_events).join(' ')}) results
           ORDER BY #{order(sort)}
           LIMIT :limit
           OFFSET :offset

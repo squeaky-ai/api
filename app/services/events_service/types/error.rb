@@ -24,7 +24,6 @@ module EventsService
             type = 100 AND
             replaceOne(JSONExtractString(data, 'message'), 'Error: ', '') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
-          LIMIT :limit
         SQL
       end
     end
