@@ -2,8 +2,8 @@
 
 module Resolvers
   module Events
-    class HistoryStats < Resolvers::Base
-      type [Types::Events::HistoryStat, { null: true }], null: false
+    class Stats < Resolvers::Base
+      type [Types::Events::Stat, { null: true }], null: false
 
       argument :group_ids, [ID], required: true, default_value: []
       argument :capture_ids, [ID], required: true, default_value: []

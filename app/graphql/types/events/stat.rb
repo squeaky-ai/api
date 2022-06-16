@@ -2,12 +2,12 @@
 
 module Types
   module Events
-    class HistoryStat < Types::BaseObject
-      graphql_name 'EventsHistoryStat'
+    class Stat < Types::BaseObject
+      graphql_name 'EventsStat'
 
       field :id, ID, null: false
       field :name, String, null: false
-      field :type, Types::Events::HistoryType, null: false
+      field :type, Types::Events::Type, null: false
       field :count, Integer, null: false
       field :average_events_per_visitor, Float, null: false
     end

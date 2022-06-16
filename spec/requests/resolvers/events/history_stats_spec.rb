@@ -5,7 +5,7 @@ require 'rails_helper'
 event_history_stats_query = <<-GRAPHQL
   query($site_id: ID!, $group_ids: [ID!]!, $capture_ids: [ID!]!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      eventHistoryStats(groupIds: $group_ids, captureIds: $capture_ids, fromDate: $from_date, toDate: $to_date) {
+      eventStats(groupIds: $group_ids, captureIds: $capture_ids, fromDate: $from_date, toDate: $to_date) {
         name
         type
         count
@@ -15,7 +15,7 @@ event_history_stats_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Events::HistoryStats, type: :request do
+RSpec.describe Resolvers::Events::Stats, type: :request do
   context 'when there is no data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -32,7 +32,7 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
     end
 
     it 'returns an empty array' do
-      response = subject['data']['site']['eventHistoryStats']
+      response = subject['data']['site']['eventStats']
       expect(response).to eq([])
     end
   end
@@ -117,7 +117,7 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
     end
 
     it 'returns the results' do
-      response = subject['data']['site']['eventHistoryStats']
+      response = subject['data']['site']['eventStats']
       expect(response).to match_array (
         [
           {

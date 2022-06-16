@@ -2,8 +2,8 @@
 
 module Types
   module Events
-    class HistoryType < Types::BaseEnum
-      graphql_name 'EventsHistoryType'
+    class Type < Types::BaseEnum
+      graphql_name 'EventsType'
 
       value 'capture', ''
       value 'group', ''
