@@ -11,7 +11,7 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve(group_ids:, capture_ids:, from_date:, to_date:)
-        date_format, group_type, group_range = Charts.date_groups(from_date, to_date)
+        date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
 
         puts '@@', group_ids, capture_ids, date_format
 
