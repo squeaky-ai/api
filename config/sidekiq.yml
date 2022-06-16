@@ -18,7 +18,3 @@
   new_feedback_job:
     cron: '0 0 * * * *' # Every hour
     class: NewFeedbackJob
-
-  events_processing_job:
-    cron: '0 */15 * * * *' # Every 15 minutes
-    class: EventsProcessingJob

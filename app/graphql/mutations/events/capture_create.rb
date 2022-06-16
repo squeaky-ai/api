@@ -30,12 +30,6 @@ module Mutations
           event_groups: groups
         )
 
-        # Go off and run the job in the background to
-        # fetch the history events and update the counts.
-        # This can take a while depending on how old the
-        # site is so we must do it in the background
-        EventsProcessingJob.perform_later([event.id])
-
         event
       end
     end

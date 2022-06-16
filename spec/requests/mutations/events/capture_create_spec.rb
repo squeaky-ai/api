@@ -23,10 +23,6 @@ RSpec.describe Mutations::Events::CaptureCreate, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    before do
-      allow(EventsProcessingJob).to receive(:perform_later)
-    end
-
     subject do
       variables = {
         input: {
@@ -65,11 +61,6 @@ RSpec.describe Mutations::Events::CaptureCreate, type: :request do
 
     it 'creates the record' do
       expect { subject }.to change { site.reload.event_captures.size }.from(0).to(1)
-    end
-
-    it 'kicks off a job to fetch the counts' do
-      subject
-      expect(EventsProcessingJob).to have_received(:perform_later)
     end
   end
 end

@@ -4,13 +4,16 @@ module EventsService
   module Types
     class SelectorClick < Base
       def count
-        query = sanitize_query(
-          query_count,
-          event.site_id,
-          from_date
-        )
-
-        ClickHouse.connection.select_value(query)
+        <<-SQL
+          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 3 AND
+            source = 2 AND
+            JSONExtractString(data, 'selector') #{rule_expression} AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+        SQL
       end
 
       def results
@@ -24,21 +27,6 @@ module EventsService
             JSONExtractString(data, 'selector') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
           LIMIT :limit
-        SQL
-      end
-
-      private
-
-      def query_count
-        <<-SQL
-          SELECT COUNT(*)
-          FROM events
-          WHERE
-            site_id = ? AND
-            type = 3 AND
-            source = 2 AND
-            timestamp / 1000 >= ? AND
-            JSONExtractString(data, 'selector') #{rule_expression}
         SQL
       end
     end
