@@ -17,6 +17,9 @@ module Resolvers
         # list where all the grouped captures appear along side the
         # actual captures
         capture_events = event_captures(site, group_ids, capture_ids)
+
+        return [] if capture_events.empty?
+
         # Perform a chungus union query to get back all the results in
         # a single request
         results = aggregated_results(site, capture_events, from_date, to_date)

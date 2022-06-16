@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 event_history_stats_query = <<-GRAPHQL
-  query($site_id: ID!, $group_ids: [ID!]!, $capture_ids: [ID!]!) {
+  query($site_id: ID!, $group_ids: [ID!]!, $capture_ids: [ID!]!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      eventHistoryStats(groupIds: $group_ids, captureIds: $capture_ids) {
+      eventHistoryStats(groupIds: $group_ids, captureIds: $capture_ids, fromDate: $from_date, toDate: $to_date) {
         name
         type
         count
@@ -24,7 +24,9 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
       variables = { 
         site_id: site.id,
         group_ids: [],
-        capture_ids: []
+        capture_ids: [],
+        from_date: '2022-06-02',
+        to_date: '2022-06-16'
       }
       graphql_request(event_history_stats_query, variables, user)
     end
@@ -38,20 +40,78 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
   context 'when there is some data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording) { create(:recording, site:) }
 
-    # A recording/visitor needs to exist
-    before { create(:recording, site:) }
+    let(:rule_1) do
+      {
+        value: '/',
+        matcher: 'equals',
+        condition: 'or'
+      }
+    end
+
+    let(:rule_2) do
+      {
+        value: '/test',
+        matcher: 'contains',
+        condition: 'or'
+      }
+    end
 
     let(:group_1) { create(:event_group, site:, name: 'Group 1') }
     let(:group_2) { create(:event_group, site:, name: 'Group 2') }
-    let(:capture_1) { create(:event_capture, site:, name: 'Capture 1', count: 1) }
-    let(:capture_2) { create(:event_capture, site:, name: 'Capture 2', count: 3) }
+    let(:capture_1) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, name: 'Capture 1', rules: [rule_1]) }
+    let(:capture_2) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, name: 'Capture 2', rules: [rule_2]) }
+
+    before do
+      group_1.update(event_captures: [capture_1, capture_2])
+
+      ClickHouse::Event.insert do |buffer|
+        5.times do |i|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording.id,
+            type: Event::META,
+            source: nil,
+            data: { href: '/' }.to_json,
+            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+          }
+        end
+
+        3.times do |i|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording.id,
+            type: Event::META,
+            source: nil,
+            data: { href: '/test' }.to_json,
+            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+          }
+        end
+
+        3.times do |i|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording.id,
+            type: Event::META,
+            source: nil,
+            data: { href: '/something_else' }.to_json,
+            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+          }
+        end
+      end
+    end
 
     subject do
       variables = { 
         site_id: site.id,
         group_ids: [group_1.id, group_2.id],
-        capture_ids: [capture_1.id, capture_2.id]
+        capture_ids: [capture_1.id, capture_2.id],
+        from_date: '2022-06-02',
+        to_date: '2022-06-16'
       }
       graphql_request(event_history_stats_query, variables, user)
     end
@@ -61,8 +121,8 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
       expect(response).to match_array (
         [
           {
-            'averageEventsPerVisitor' => 0.0,
-            'count' => 0,
+            'averageEventsPerVisitor' => 8.0,
+            'count' => 8,
             'name' => 'Group 1',
             'type' => 'group'
           },
@@ -74,8 +134,8 @@ RSpec.describe Resolvers::Events::HistoryStats, type: :request do
             'type' => 'group'
           },
           {
-            'averageEventsPerVisitor' => 1.0,
-            'count' => 1,
+            'averageEventsPerVisitor' => 5.0,
+            'count' => 5,
             'name' => 'Capture 1',
             'type' => 'capture'
           },
