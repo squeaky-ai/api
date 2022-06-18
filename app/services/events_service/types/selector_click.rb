@@ -28,6 +28,20 @@ module EventsService
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
       end
+
+      def counts
+        <<-SQL
+          SELECT COUNT(*) count, '#{event.id}' as id, formatDateTime(toDate(timestamp / 1000), :date_format) date_key
+          FROM events
+          WHERE
+            site_id = :site_id AND
+            type = 3 AND
+            source = 2 AND
+            JSONExtractString(data, 'selector') #{rule_expression} AND
+            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+          GROUP BY date_key
+        SQL
+      end
     end
   end
 end

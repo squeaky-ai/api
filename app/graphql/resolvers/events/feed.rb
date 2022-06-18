@@ -86,10 +86,6 @@ module Resolvers
       def union_queries(capture_events)
         @union_queries ||= capture_events.map.with_index do |event, index|
           query = EventsService::Captures.for(event).results
-
-          # TODO: Invesigate how we can limit here as otherwise it
-          # will return them all
-
           # Build a big MF union query of all the queries
           # that come from the EventService. Each query
           # needs to be followed by a UNION ALL so they get
