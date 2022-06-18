@@ -81,44 +81,48 @@ module Resolvers
       end
 
       def aggregate_results(site, results, group_ids, capture_ids)
+        date_keys = results.map { |r| r['date_key'] }.uniq
         groups = site.event_groups.where(id: group_ids).includes(:event_captures)
 
-        results_captures = results.filter { |r| capture_ids.include?(r['id']) }
+        date_keys.map do |date_key|
+          {
+            date_key:,
+            metrics: metrics_for_date_key(date_key, results, groups, capture_ids)
+          }
+        end
+      end
+
+      def metrics_for_date_key(date_key, results, groups, capture_ids)
+        # All the metrics that match the date_key
+        metrics = results.filter { |r| r['date_key'] == date_key }
+        # All the metrics that are specifically capture_ids. Remember
+        # that at this point the list is full of individually selected
+        # captures as well as the exploded groups
+        captures = metrics.filter { |r| capture_ids.include?(r['id']) } # TODO: Do we need to make these uniq?
 
         [
-          # These ones are easy as we already know that they were
-          # specifically requested as capture_ids, and have been
-          # filtered. All we need to do is add the  type and return them.
-          *results_captures.map { |capture| aggregate_capture(capture) },
-          # These are more difficult as we need group them all by the
-          # group id and by the date_key.
-          *aggregate_groups(results, groups)
+          *captures.map { |c| format_capture_metric(c) },
+          *groups.map { |group| aggregate_group_metrics(group, metrics) }
         ]
       end
 
-      def aggregate_capture(capture)
+      def format_group_metric(group)
+        { **group, type: 'group' }
+      end
+
+      def format_capture_metric(capture)
         { **capture, type: 'capture' }
       end
 
-      def aggregate_groups(results, groups)
-        date_keys = results.map { |r| r['date_key'] }.uniq
+      def aggregate_group_metrics(group, metrics)
+        capture_ids = group.event_captures.map(&:id).map(&:to_s)
 
-        combined = groups.map do |group|
-          capture_ids = group.event_captures.map(&:id).map(&:to_s)
+        group_metrics = metrics.filter { |m| capture_ids.include?(m['id']) }
 
-          date_keys.map do |date_key|
-            matches = results.filter { |r| r['date_key'] == date_key && capture_ids.include?(r['id']) }
-
-            {
-              id: group.id,
-              type: 'group',
-              date_key:,
-              count: matches.map { |m| m['count'] }.sum
-            }
-          end
-        end
-
-        combined.flatten
+        format_group_metric(
+          id: group.id,
+          count: group_metrics.map { |g| g['count'] }.sum
+        )
       end
     end
   end
