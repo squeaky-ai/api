@@ -101,8 +101,8 @@ module Resolvers
         captures = metrics.filter { |r| capture_ids.include?(r['id']) } # TODO: Do we need to make these uniq?
 
         [
-          *captures.map { |c| format_capture_metric(c) },
-          *groups.map { |group| aggregate_group_metrics(group, metrics) }
+          *captures.map { |c| format_capture_metric(date_key, c) },
+          *groups.map { |group| aggregate_group_metrics(date_key, group, metrics) }
         ]
       end
 
@@ -110,17 +110,17 @@ module Resolvers
         { **group, type: 'group' }
       end
 
-      def format_capture_metric(capture)
-        { **capture, type: 'capture' }
+      def format_capture_metric(date_key, capture)
+        { **capture, type: 'capture', id: "#{date_key}::#{capture['id']}" }
       end
 
-      def aggregate_group_metrics(group, metrics)
+      def aggregate_group_metrics(date_key, group, metrics)
         capture_ids = group.event_captures.map(&:id).map(&:to_s)
 
         group_metrics = metrics.filter { |m| capture_ids.include?(m['id']) }
 
         format_group_metric(
-          id: group.id,
+          id: "#{date_key}::#{group.id}",
           count: group_metrics.map { |g| g['count'] }.sum
         )
       end
