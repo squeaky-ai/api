@@ -83,6 +83,7 @@ module Types
     field :event_group_create, mutation: Mutations::Events::GroupCreate
     field :event_group_delete, mutation: Mutations::Events::GroupDelete
     field :event_capture_create, mutation: Mutations::Events::CaptureCreate
+    field :event_capture_update, mutation: Mutations::Events::CaptureUpdate
     field :event_capture_delete, mutation: Mutations::Events::CaptureDelete
     field :event_capture_delete_bulk, mutation: Mutations::Events::CaptureDeleteBulk
     field :event_add_to_group, mutation: Mutations::Events::AddToGroup

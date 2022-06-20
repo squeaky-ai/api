@@ -19,4 +19,8 @@ class EventCapture < ApplicationRecord
   def group_names
     event_groups.map(&:name)
   end
+
+  def group_ids
+    event_groups.map(&:id)
+  end
 end

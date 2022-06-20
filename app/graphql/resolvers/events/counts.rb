@@ -16,16 +16,25 @@ module Resolvers
         date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
 
         capture_events = event_captures(site, group_ids, capture_ids)
+
+        # The code below craps itself if there are no events
+        # so return early
+        return respond(group_type, group_range, []) if capture_events.empty?
+
         results = aggregated_results(site, capture_events, from_date, to_date, date_format)
 
-        {
-          group_type:,
-          group_range:,
-          items: aggregate_results(site, results, group_ids, capture_ids)
-        }
+        respond(group_type, group_range, aggregate_results(site, results, group_ids, capture_ids))
       end
 
       private
+
+      def respond(group_type, group_range, items)
+        {
+          group_type:,
+          group_range:,
+          items:
+        }
+      end
 
       def all_event_ids(group_ids, capture_ids)
         sql = <<-SQL
