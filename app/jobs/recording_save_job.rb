@@ -156,6 +156,12 @@ class RecordingSaveJob < ApplicationJob
 
     page_views.last.exited_at = recording[:disconnected_at]
 
+    # Mark the page as being bounced on if there was
+    # only a single page view
+    page_views.first.bounced_on = true if page_views.size == 1
+    # The last page was always the page that they exited on
+    page_views.last.exited_on = true
+
     recording.pages << page_views
     recording.save
   end

@@ -7,8 +7,6 @@ module Types
 
       value 'views__desc', 'Most amount of views first'
       value 'views__asc', 'Least amount of views first'
-      value 'unique_views__desc', 'Most amount of unique views first'
-      value 'unique_views__asc', 'Least amount of unique views first'
       value 'duration__desc', 'Longest duration first'
       value 'duration__asc', 'Shortest duration first'
       value 'bounce_rate__desc', 'Highest bounce rate first'

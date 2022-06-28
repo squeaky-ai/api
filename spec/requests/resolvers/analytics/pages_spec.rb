@@ -11,8 +11,6 @@ analytics_pages_query = <<-GRAPHQL
             url
             viewCount
             viewPercentage
-            uniqueViewCount
-            uniqueViewPercentage
             exitRatePercentage
             bounceRatePercentage
             averageDuration
@@ -44,8 +42,12 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
+      page_1 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true)
+      page_2 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false)
+      page_3 = create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true)
+
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, pages: [page_1])
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, pages: [page_2, page_3])
     end
 
     subject do
@@ -58,24 +60,20 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 8990,
-            'bounceRatePercentage' => 0.0,
-            'exitRatePercentage' => 0.0,
-            'uniqueViewCount' => 2,
-            'uniqueViewPercentage' => 66.67,
+            'averageDuration' => 10731,
+            'bounceRatePercentage' => 25.0,
+            'exitRatePercentage' => 25.0,
             'url' => '/',
-            'viewCount' => 2,
-            'viewPercentage' => 66.67
+            'viewCount' => 4,
+            'viewPercentage' => 80.00
           },
           {
-            'averageDuration' => 8990,
+            'averageDuration' => 12472,
             'bounceRatePercentage' => 0.0,
             'exitRatePercentage' => 100.0,
-            'uniqueViewCount' => 1,
-            'uniqueViewPercentage' => 33.33,
             'url' => '/test',
             'viewCount' => 1,
-            'viewPercentage' => 33.33
+            'viewPercentage' => 20.0
          }
         ]
       )
@@ -87,8 +85,12 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
+      page_1 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true)
+      page_2 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false)
+      page_3 = create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true)
+
+      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, pages: [page_1])
+      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, pages: [page_2, page_3])
       create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site, page_urls: ['/contact'])
     end
 
@@ -102,24 +104,20 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 8990,
-            'bounceRatePercentage' => 0.0,
-            'exitRatePercentage' => 0.0,
-            'uniqueViewCount' => 2,
-            'uniqueViewPercentage' => 66.67,
+            'averageDuration' => 10731,
+            'bounceRatePercentage' => 25.0,
+            'exitRatePercentage' => 25.0,
             'url' => '/',
-            'viewCount' => 2,
-            'viewPercentage' => 66.67
+            'viewCount' => 4,
+            'viewPercentage' => 80.0
           },
           {
-            'averageDuration' => 8990,
+            'averageDuration' => 12472,
             'bounceRatePercentage' => 0.0,
             'exitRatePercentage' => 100.0,
-            'uniqueViewCount' => 1,
-            'uniqueViewPercentage' => 33.33,
             'url' => '/test',
             'viewCount' => 1,
-            'viewPercentage' => 33.33
+            'viewPercentage' => 20.0
           }
         ]
       )

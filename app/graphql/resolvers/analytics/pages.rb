@@ -12,6 +12,7 @@ module Resolvers
       def resolve(page:, size:, sort:)
         total_count = total_pages_count
         results = pages(page, size, sort)
+
         {
           items: format_results(results, total_count),
           pagination: {
@@ -26,106 +27,42 @@ module Resolvers
       def pages(page, size, sort)
         sql = <<-SQL
           SELECT
-            exit_rate_1.url url,
-            view_times.average_page_duration average_duration,
-            exit_rate_2.view_count view_count,
-            exit_rate_2.unique_view_count unique_view_count,
-            exit_rate_1.exit_count / exit_rate_2.view_count as exit_rate,
-            bounce_rate_1.bounce_rate bounce_rate
-          FROM
-            (
-              SELECT
-                last_page AS url,
-                COUNT(last_page) as exit_count
-              FROM
-                (
-                  SELECT recordings.id,
-                    (
-                      SELECT pages.url
-                      FROM pages
-                      WHERE pages.recording_id = recordings.id
-                      ORDER BY pages.id DESC
-                      LIMIT 1
-                    ) AS last_page
-                  FROM recordings
-                  WHERE
-                    site_id = :site_id AND
-                    recordings.status IN (:status) AND
-                    to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN :start_date AND :end_date
-                ) last_page_per_recording
-                GROUP BY last_page
-                ORDER BY last_page
-            ) exit_rate_1
-          LEFT JOIN
-            (
-              SELECT
-                pages.url,
-                COUNT(pages.recording_id) AS view_count,
-                COUNT(distinct pages.recording_id) AS unique_view_count
-              FROM pages
-              LEFT JOIN recordings ON recordings.id = pages.recording_id
-              WHERE
-                recordings.site_id = :site_id AND
-                recordings.status IN (:status) AND
-                to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN :start_date AND :end_date
-              GROUP BY pages.url
-            ) exit_rate_2 on exit_rate_1.url = exit_rate_2.url
-          LEFT JOIN
-            (
-              SELECT
-                first_page as url,
-                SUM(CASE WHEN recording_length = 1 THEN 1 ELSE 0 END) / COUNT(first_page) AS bounce_rate
-              FROM
-                (
-                  SELECT recordings.id,
-                    (
-                      SELECT pages.url
-                      FROM pages
-                      WHERE pages.recording_id = recordings.id
-                      ORDER BY pages.id LIMIT 1
-                    ) AS first_page,
-                    (
-                      SELECT COUNT(pages.recording_id)
-                      FROM pages
-                      WHERE pages.recording_id = recordings.id
-                      GROUP BY pages.recording_id
-                      LIMIT 1
-                    ) AS recording_length
-                  FROM recordings
-                  WHERE site_id = :site_id
-                ) first_page_and_length
-              GROUP BY first_page
-              ORDER BY first_page
-            ) bounce_rate_1 on exit_rate_1.url = bounce_rate_1.url
-          LEFT JOIN
-            (
-              SELECT
-                pages.url,
-                avg(pages.exited_at - pages.entered_at) AS average_page_duration
-              FROM pages
-              LEFT JOIN recordings ON recordings.id = pages.recording_id
-              WHERE
-                to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN :start_date AND :end_date AND
-                recordings.status IN (:status) AND
-                recordings.site_id = :site_id
-              GROUP BY pages.url
-            ) view_times ON exit_rate_1.url = view_times.url
+            p.url,
+            p.view_count,
+            p.average_duration,
+            p.exit_rate_count,
+            p.exit_rate_count / p.view_count * 100 exit_rate_percentage,
+            p.bounce_rate_count,
+            p.bounce_rate_count / p.view_count * 100 bounce_rate_percentage
+          FROM (
+            SELECT
+              url url,
+              (count(*))::numeric view_count,
+              AVG(exited_at - entered_at) average_duration,
+              (COUNT(exited_on) FILTER(WHERE exited_on = true))::numeric exit_rate_count,
+              (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
+            FROM pages
+            LEFT JOIN recordings ON recordings.id = pages.recording_id
+            WHERE
+              site_id = ? AND
+              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+              recordings.status IN (?)
+            GROUP BY url
+          ) p
           ORDER BY #{order(sort)}
-          LIMIT :limit
-          OFFSET :offset;
+          LIMIT ?
+          OFFSET ?
         SQL
 
         Sql.execute(
           sql,
           [
-            {
-              site_id: object[:site_id],
-              start_date: object[:from_date],
-              end_date: object[:to_date],
-              status: [Recording::ACTIVE, Recording::DELETED],
-              limit: size,
-              offset: (page - 1) * size
-            }
+            object[:site_id],
+            object[:from_date],
+            object[:to_date],
+            [Recording::ACTIVE, Recording::DELETED],
+            size,
+            (page - 1) * size
           ]
         )
       end
@@ -134,14 +71,12 @@ module Resolvers
         orders = {
           'views__desc' => 'view_count DESC',
           'views__asc' => 'view_count ASC',
-          'unique_views__desc' => 'unique_view_count DESC',
-          'unique_views__asc' => 'unique_view_count ASC',
           'duration__desc' => 'average_duration DESC',
           'duration__asc' => 'average_duration ASC',
-          'bounce_rate__desc' => 'bounce_rate DESC',
-          'bounce_rate__asc' => 'bounce_rate ASC',
-          'exit_rate__desc' => 'exit_rate DESC',
-          'exit_rate__asc' => 'exit_rate ASC'
+          'bounce_rate__desc' => 'bounce_rate_percentage DESC',
+          'bounce_rate__asc' => 'bounce_rate_percentage ASC',
+          'exit_rate__desc' => 'exit_rate_percentage DESC',
+          'exit_rate__asc' => 'exit_rate_percentage ASC'
         }
         orders[sort]
       end
@@ -152,10 +87,8 @@ module Resolvers
             url: page['url'],
             view_count: page['view_count'],
             view_percentage: percentage(page['view_count'], total_count['all_count']),
-            unique_view_count: page['unique_view_count'],
-            unique_view_percentage: percentage(page['unique_view_count'], total_count['all_count']),
-            exit_rate_percentage: page['exit_rate'].to_i * 100,
-            bounce_rate_percentage: page['bounce_rate'].to_i * 100,
+            exit_rate_percentage: page['exit_rate_percentage'],
+            bounce_rate_percentage: page['bounce_rate_percentage'],
             average_duration: page['average_duration']
           }
         end
