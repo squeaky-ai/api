@@ -15,6 +15,7 @@ module Types
       field :meta_description, String, null: false
       field :slug, String, null: false
       field :body, String, null: false
+      field :scripts, [String, { null: true }], null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     end
