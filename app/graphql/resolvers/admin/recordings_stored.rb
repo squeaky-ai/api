@@ -5,7 +5,7 @@ module Resolvers
     class RecordingsStored < Resolvers::Base
       type [Types::Admin::RecordingsStored, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT count(*) count, created_at::date date
           FROM recordings

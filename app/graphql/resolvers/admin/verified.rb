@@ -5,7 +5,7 @@ module Resolvers
     class Verified < Resolvers::Base
       type Types::Admin::Verified, null: false
 
-      def resolve
+      def resolve_with_timings
         dates = ::Site.select('verified_at').map(&:verified_at)
         verified = dates.compact
 

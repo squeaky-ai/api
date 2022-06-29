@@ -5,7 +5,7 @@ module Resolvers
     class RecordingsCount < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         Recording.all.count
       end
     end

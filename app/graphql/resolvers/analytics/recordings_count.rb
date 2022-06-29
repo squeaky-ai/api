@@ -5,7 +5,7 @@ module Resolvers
     class RecordingsCount < Resolvers::Base
       type Types::Analytics::RecordingsCount, null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT COUNT(recordings) total_count, COUNT(CASE recordings.viewed WHEN TRUE THEN NULL ELSE 1 END) new_count
           FROM recordings

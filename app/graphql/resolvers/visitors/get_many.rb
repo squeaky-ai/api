@@ -11,7 +11,7 @@ module Resolvers
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
-      def resolve(page:, size:, search:, sort:, filters:)
+      def resolve_with_timings(page:, size:, search:, sort:, filters:)
         visitors = Site
                    .find(object.id)
                    .visitors

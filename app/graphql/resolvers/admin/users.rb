@@ -5,7 +5,7 @@ module Resolvers
     class Users < Resolvers::Base
       type [Types::Users::User, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         User.all
       end
     end

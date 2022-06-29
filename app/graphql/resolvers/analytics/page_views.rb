@@ -5,7 +5,7 @@ module Resolvers
     class PageViews < Resolvers::Base
       type Types::Analytics::PageViews, null: false
 
-      def resolve
+      def resolve_with_timings
         date_format, group_type, group_range = Charts.date_groups(object[:from_date], object[:to_date])
         trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
 

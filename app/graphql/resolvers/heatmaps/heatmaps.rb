@@ -16,7 +16,7 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
       argument :exclude_recording_ids, [ID], required: false, default_value: []
 
-      def resolve(device:, type:, page:, from_date:, to_date:, exclude_recording_ids:)
+      def resolve_with_timings(device:, type:, page:, from_date:, to_date:, exclude_recording_ids:)
         device_counts = devices(page, from_date, to_date)
         items = type == 'Click' ? click_events(from_date, to_date, page, device) : scroll_events(from_date, to_date, page, device)
 

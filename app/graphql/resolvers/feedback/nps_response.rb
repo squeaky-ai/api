@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Feedback::NpsResponseSort, required: false, default_value: 'timestamp__desc'
 
-      def resolve(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:)
         results = Nps
                   .joins(recording: :visitor)
                   .where(

@@ -8,6 +8,7 @@ admin_blog_post_create_mutation = <<-GRAPHQL
     adminBlogPostCreate(input: $input) {
       title
       body
+      scripts
     }
   }
 GRAPHQL
@@ -26,7 +27,8 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
         metaImage: 'https://cdn.squeaky.ai/blog/cat-in-space.jpg',
         metaDescription: 'Meta',
         slug: '/category/hello',
-        body: 'Hello'
+        body: 'Hello',
+        scripts: ['script_1']
       }
     }
 
@@ -40,6 +42,6 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
 
   it 'returns the post' do
     response = subject['data']['adminBlogPostCreate']
-    expect(response).to eq('title' => 'Hello', 'body' => 'Hello')
+    expect(response).to eq('title' => 'Hello', 'body' => 'Hello', 'scripts' => ['script_1'])
   end
 end

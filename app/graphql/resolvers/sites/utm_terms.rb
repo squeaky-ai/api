@@ -5,7 +5,7 @@ module Resolvers
     class UtmTerms < Resolvers::Base
       type [String, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         utm_terms = Site
                     .find(object.id)
                     .recordings

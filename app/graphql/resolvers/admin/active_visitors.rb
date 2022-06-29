@@ -5,7 +5,7 @@ module Resolvers
     class ActiveVisitors < Resolvers::Base
       type [Types::Admin::ActiveVisitorCount, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         items = Cache.redis.zrange('active_user_count', 0, -1, with_scores: true)
 
         items.map do |slice|

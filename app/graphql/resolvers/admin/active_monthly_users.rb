@@ -5,7 +5,7 @@ module Resolvers
     class ActiveMonthlyUsers < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         now = Time.now
         now -= 30.days
         User.where('last_activity_at > ?', now).count

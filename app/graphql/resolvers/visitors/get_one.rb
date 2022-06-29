@@ -7,7 +7,7 @@ module Resolvers
 
       argument :visitor_id, GraphQL::Types::ID, required: true
 
-      def resolve(visitor_id:)
+      def resolve_with_timings(visitor_id:)
         Visitor
           .eager_load(:recordings, :pages)
           .where('recordings.site_id = ? AND visitors.id = ?', object.id, visitor_id)

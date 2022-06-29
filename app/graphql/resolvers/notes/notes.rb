@@ -8,7 +8,7 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
 
-      def resolve(page:, size:)
+      def resolve_with_timings(page:, size:)
         notes = Site
                 .find(object.id)
                 .notes

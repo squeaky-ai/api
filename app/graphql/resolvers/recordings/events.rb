@@ -10,7 +10,7 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 250
 
-      def resolve(page:, size:)
+      def resolve_with_timings(page:, size:)
         events = Event
                  .select('id, data, event_type as type, timestamp')
                  .where(recording_id: object.id)

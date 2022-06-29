@@ -5,7 +5,7 @@ module Resolvers
     class NpsScores < Resolvers::Base
       type Types::Feedback::NpsScores, null: false
 
-      def resolve
+      def resolve_with_timings
         responses = Nps.get_scores_between(object[:site_id], object[:from_date], object[:to_date])
 
         {

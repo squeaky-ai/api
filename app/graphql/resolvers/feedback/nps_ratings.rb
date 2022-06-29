@@ -5,7 +5,7 @@ module Resolvers
     class NpsRatings < Resolvers::Base
       type [Types::Feedback::NpsRating, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         Nps
           .joins(:recording)
           .where(

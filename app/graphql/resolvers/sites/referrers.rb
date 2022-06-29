@@ -5,7 +5,7 @@ module Resolvers
     class Referrers < Resolvers::Base
       type [String, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         referrers = Site
                     .find(object.id)
                     .recordings

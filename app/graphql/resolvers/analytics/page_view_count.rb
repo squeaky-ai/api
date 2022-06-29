@@ -5,7 +5,7 @@ module Resolvers
     class PageViewCount < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT COUNT(pages.id) pages_count
           FROM pages

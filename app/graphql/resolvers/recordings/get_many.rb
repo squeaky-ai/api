@@ -12,7 +12,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve(page:, size:, sort:, filters:, from_date:, to_date:)
+      def resolve_with_timings(page:, size:, sort:, filters:, from_date:, to_date:)
         recordings = Site
                       .find(object.id)
                       .recordings

@@ -8,7 +8,7 @@ module Resolvers
       argument :page, String, required: true
       argument :position, Types::Analytics::PathPosition, required: true
 
-      def resolve(page:, position:)
+      def resolve_with_timings(page:, position:)
         sql = <<-SQL
           SELECT page_urls path
           FROM (

@@ -13,7 +13,7 @@ module Resolvers
       argument :group_ids, [ID], required: true
       argument :capture_ids, [ID], required: true
 
-      def resolve(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:)
+      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:)
         site = Site.find(object.id)
 
         capture_events = event_captures(site, group_ids, capture_ids)

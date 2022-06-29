@@ -5,7 +5,7 @@ module Resolvers
     class NpsReplies < Resolvers::Base
       type Types::Feedback::NpsReplies, null: false
 
-      def resolve
+      def resolve_with_timings
         responses = get_replies(object[:site_id], object[:from_date], object[:to_date])
 
         {

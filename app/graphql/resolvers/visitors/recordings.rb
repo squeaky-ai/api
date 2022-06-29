@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
 
-      def resolve(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:)
         recordings = Recording
                      .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
                      .includes(:pages, :visitor)

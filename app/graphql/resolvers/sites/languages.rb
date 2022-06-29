@@ -5,7 +5,7 @@ module Resolvers
     class Languages < Resolvers::Base
       type [String, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         languges = Site
                    .find(object.id)
                    .recordings

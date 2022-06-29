@@ -5,7 +5,7 @@ module Resolvers
     class Countries < Resolvers::Base
       type [Types::Recordings::Country, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         country_codes = Site
                         .find(object.id)
                         .recordings

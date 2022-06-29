@@ -5,7 +5,7 @@ module Resolvers
     class Groups < Resolvers::Base
       type [Types::Events::Group, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         site = Site.find(object.id)
 
         groups = site.event_groups

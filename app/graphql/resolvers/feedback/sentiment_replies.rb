@@ -5,7 +5,7 @@ module Resolvers
     class SentimentReplies < Resolvers::Base
       type Types::Feedback::SentimentReplies, null: false
 
-      def resolve
+      def resolve_with_timings
         results = Sentiment
                   .joins(:recording)
                   .where(

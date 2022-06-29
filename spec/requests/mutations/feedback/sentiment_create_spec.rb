@@ -16,7 +16,7 @@ RSpec.describe Mutations::Feedback::SentimentCreate, type: :request do
   let(:visitor_id) { SecureRandom.base36 }
   let(:session_id) { SecureRandom.base36 }
 
-  let(:time_now) { double(:time, to_i: 1645723427) }
+  let(:time_now) { Time.new(2022, 6, 29) }
 
   before do
     allow(Time).to receive(:now).and_return(time_now)
@@ -45,6 +45,6 @@ RSpec.describe Mutations::Feedback::SentimentCreate, type: :request do
     subject
 
     value = Cache.redis.lrange("events::#{site_id}::#{visitor_id}::#{session_id}", 0, 1)
-    expect(value.first).to eq("{\"key\":\"sentiment\",\"value\":{\"type\":5,\"data\":{\"score\":5,\"comment\":\"Looks alright\"},\"timestamp\":1645723427000}}")
+    expect(value.first).to eq("{\"key\":\"sentiment\",\"value\":{\"type\":5,\"data\":{\"score\":5,\"comment\":\"Looks alright\"},\"timestamp\":1656457200000}}")
   end
 end

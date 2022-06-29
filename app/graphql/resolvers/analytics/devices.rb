@@ -5,7 +5,7 @@ module Resolvers
     class Devices < Resolvers::Base
       type [Types::Analytics::Device, { null: false }], null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT
             COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,

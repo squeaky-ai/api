@@ -5,7 +5,7 @@ module Resolvers
     class PagesPerSession < Resolvers::Base
       type Float, null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT recordings.id, count(pages.id)
           FROM recordings

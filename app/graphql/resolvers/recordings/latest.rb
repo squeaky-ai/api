@@ -5,7 +5,7 @@ module Resolvers
     class Latest < Resolvers::Base
       type Types::Recordings::Recording, null: true
 
-      def resolve
+      def resolve_with_timings
         Recording
           .eager_load(:visitor, :pages)
           .where(site_id: object.id, status: Recording::ACTIVE)

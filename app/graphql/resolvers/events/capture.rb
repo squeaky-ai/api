@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 20
       argument :sort, Types::Events::CaptureSort, required: false, default_value: 'count__desc'
 
-      def resolve(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:)
         events = Site
                  .find(object.id)
                  .event_captures

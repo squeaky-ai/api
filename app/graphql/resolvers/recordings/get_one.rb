@@ -7,7 +7,7 @@ module Resolvers
 
       argument :recording_id, GraphQL::Types::ID, required: true
 
-      def resolve(recording_id:)
+      def resolve_with_timings(recording_id:)
         Recording
           .joins(:pages, :visitor)
           .preload(:pages, :visitor)

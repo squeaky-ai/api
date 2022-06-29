@@ -5,7 +5,7 @@ module Resolvers
     class RecordingsProcessed < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         Sidekiq::Stats.new.processed || 0
       end
     end

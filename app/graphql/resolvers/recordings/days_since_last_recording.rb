@@ -7,7 +7,7 @@ module Resolvers
     class DaysSinceLastRecording < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         last_recording = Recording
                          .where(site_id: object.id)
                          .order('disconnected_at desc')

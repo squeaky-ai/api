@@ -10,7 +10,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve(group_ids:, capture_ids:, from_date:, to_date:)
+      def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
         site = Site.find(object.id)
 
         date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)

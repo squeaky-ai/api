@@ -5,7 +5,7 @@ module Resolvers
     class Browsers < Resolvers::Base
       type [String, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT DISTINCT(browser) browser
           FROM recordings

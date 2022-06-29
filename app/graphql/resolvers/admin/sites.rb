@@ -5,7 +5,7 @@ module Resolvers
     class Sites < Resolvers::Base
       type [Types::Sites::Site, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         ::Site.includes(%i[teams users]).all
       end
     end

@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Visitors::PagesSort, required: false, default_value: 'views_count__desc'
 
-      def resolve(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:)
         order = order_by(sort)
 
         pages = Visitor

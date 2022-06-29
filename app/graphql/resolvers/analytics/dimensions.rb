@@ -5,7 +5,7 @@ module Resolvers
     class Dimensions < Resolvers::Base
       type [Types::Analytics::Dimension, { null: true }], null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT DISTINCT(ROUND(device_x, -1)) grouped_device_x, count(*) count
           FROM recordings

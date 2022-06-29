@@ -5,7 +5,7 @@ module Resolvers
     class AverageSessionDuration < Resolvers::Base
       type Integer, null: false
 
-      def resolve
+      def resolve_with_timings
         sql = <<-SQL
           SELECT AVG(disconnected_at - connected_at) average_session_duration
           FROM recordings
