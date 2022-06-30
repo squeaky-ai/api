@@ -271,7 +271,9 @@ class RecordingSaveJob < ApplicationJob
       return visitor if visitor
     end
 
-    Visitor.create_or_find_by(visitor_id: session.visitor_id, site_id: site.id)
+    visitor = Visitor.create_or_find_by(visitor_id: session.visitor_id)
+    visitor.update(site_id: site.id) unless visitor.site_id
+    visitor
   end
 
   def blacklisted_visitor?
