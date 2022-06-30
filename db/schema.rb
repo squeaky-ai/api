@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_29_081901) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_30_082257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -164,7 +164,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_29_081901) do
     t.datetime "updated_at", null: false
     t.boolean "exited_on", default: false, null: false
     t.boolean "bounced_on", default: false, null: false
+    t.bigint "site_id"
     t.index ["recording_id"], name: "index_pages_on_recording_id"
+    t.index ["site_id"], name: "index_pages_on_site_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -334,6 +336,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_29_081901) do
     t.jsonb "external_attributes", default: {}, null: false
     t.integer "recordings_count"
     t.boolean "new", default: true
+    t.bigint "site_id"
+    t.index ["site_id"], name: "index_visitors_on_site_id"
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
 
