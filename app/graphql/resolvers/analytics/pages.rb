@@ -44,7 +44,7 @@ module Resolvers
             FROM pages
             LEFT JOIN recordings ON recordings.id = pages.recording_id
             WHERE
-              site_id = ? AND
+              pages.site_id = ? AND
               to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
               recordings.status IN (?)
             GROUP BY url
