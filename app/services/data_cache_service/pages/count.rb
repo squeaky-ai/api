@@ -11,11 +11,7 @@ module DataCacheService
             WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
           SQL
 
-          variables = [
-            site_id,
-            args[:from_date],
-            args[:to_date]
-          ]
+          variables = [site_id, from_date, to_date]
 
           Sql.execute(sql, variables).first['pages_count']
         end

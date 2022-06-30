@@ -29,7 +29,6 @@ module Resolvers
       private
 
       def referrers(page, size)
-        # TODO: Make this a raw query
         Recording
           .where(
             'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND status IN (?)',

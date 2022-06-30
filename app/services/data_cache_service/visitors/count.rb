@@ -13,8 +13,8 @@ module DataCacheService
 
           variables = [
             site_id,
-            args[:from_date],
-            args[:to_date],
+            from_date,
+            to_date,
             [Recording::ACTIVE, Recording::DELETED]
           ]
 
