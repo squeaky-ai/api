@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Remove either postgres of clickhouse, whichever is victorious
-
 module Resolvers
   module Recordings
     class Events < Resolvers::Base

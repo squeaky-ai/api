@@ -171,11 +171,11 @@ RSpec.describe WeeklyReview do
         most_popular_page_url: '/test',
         feedback_nps: {
           enabled: true,
-          score: 33.33
+          score: 33.34
         },
         feedback_nps_trend: {
           direction: 'up', 
-          trend: '33.33'
+          trend: '33.34'
         },
         feedback_sentiment: {
           enabled: true, 

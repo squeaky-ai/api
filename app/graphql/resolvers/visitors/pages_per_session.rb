@@ -16,8 +16,7 @@ module Resolvers
 
         results = Sql.execute(sql, [object.visitor_id])
 
-        values = results.map { |r| r['count'] }
-        values.sum.fdiv(values.size).round(2)
+        Maths.average(results.map { |r| r['count'] })
       end
     end
   end

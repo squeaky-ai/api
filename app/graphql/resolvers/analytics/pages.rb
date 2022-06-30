@@ -10,7 +10,12 @@ module Resolvers
       argument :sort, Types::Analytics::PagesSort, required: false, default_value: 'views__desc'
 
       def resolve_with_timings(page:, size:, sort:)
-        total_count = total_pages_count
+        total_count = DataCacheService::Pages::Counts.new(
+          site_id: object[:site_id],
+          from_date: object[:from_date],
+          to_date: object[:to_date]
+        ).call
+
         results = pages(page, size, sort)
 
         {
@@ -81,35 +86,12 @@ module Resolvers
           {
             url: page['url'],
             view_count: page['view_count'],
-            view_percentage: percentage(page['view_count'], total_count['all_count']),
+            view_percentage: Maths.percentage(page['view_count'], total_count['all_count']),
             exit_rate_percentage: page['exit_rate_percentage'],
             bounce_rate_percentage: page['bounce_rate_percentage'],
             average_duration: page['average_duration']
           }
         end
-      end
-
-      def total_pages_count
-        # TODO: Extract and cache this
-        sql = <<-SQL
-          SELECT
-            COUNT(pages.url) all_count,
-            COUNT(DISTINCT(pages.url)) distinct_count
-          FROM pages
-          WHERE pages.site_id = ? AND to_timestamp(pages.entered_at / 1000)::date BETWEEN ? AND ?
-        SQL
-
-        variables = [
-          object[:site_id],
-          object[:from_date],
-          object[:to_date]
-        ]
-
-        Sql.execute(sql, variables).first
-      end
-
-      def percentage(count, total)
-        ((count.to_f / total) * 100).round(2)
       end
     end
   end

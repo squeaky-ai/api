@@ -6,13 +6,7 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        sql = <<-SQL
-          SELECT DISTINCT(browser) browser
-          FROM recordings
-          WHERE site_id = ?
-        SQL
-
-        Sql.execute(sql, object.id).map { |r| r['browser'] }
+        DataCacheService::Sites::Browsers.new(site_id: object[:id]).call
       end
     end
   end

@@ -39,9 +39,7 @@ module Resolvers
       def avg_score(results)
         return 0 if results.empty?
 
-        values = results.map(&:score)
-
-        values.sum.fdiv(values.size)
+        Maths.average(results.map(&:score))
       end
 
       def map_results(results)

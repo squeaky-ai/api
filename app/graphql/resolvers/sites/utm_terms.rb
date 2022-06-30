@@ -6,13 +6,7 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        sql = <<-SQL
-          SELECT DISTINCT(utm_term) utm_term
-          FROM recordings
-          WHERE site_id = ? AND utm_term IS NOT NULL
-        SQL
-
-        Sql.execute(sql, object.id).map { |r| r['utm_term'] }
+        DataCacheService::Sites::UtmTerms.new(site_id: object[:id]).call
       end
     end
   end

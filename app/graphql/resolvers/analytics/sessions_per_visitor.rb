@@ -35,11 +35,7 @@ module Resolvers
 
         results = Sql.execute(sql, variables)
 
-        values = results.map { |c| c['count'] }
-
-        return 0 if values.empty?
-
-        values.sum.fdiv(values.size)
+        Maths.average(results.map { |c| c['count'] })
       end
     end
   end
