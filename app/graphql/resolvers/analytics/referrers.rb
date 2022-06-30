@@ -9,6 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
 
       def resolve_with_timings(page:, size:)
+        # TODO: Make this a raw query
         referrers = Recording
                     .where(
                       'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND status IN (?)',
@@ -47,6 +48,7 @@ module Resolvers
       end
 
       def total_visitors_count
+        # TODO: Extrac this and cache it
         sql = <<-SQL
           SELECT COUNT(*) total_visitors_count
           FROM recordings

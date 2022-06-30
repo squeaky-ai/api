@@ -6,14 +6,13 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        utm_mediums = Site
-                      .find(object.id)
-                      .recordings
-                      .select(:utm_medium)
-                      .where('utm_medium IS NOT NULL')
-                      .distinct
+        sql = <<-SQL
+          SELECT DISTINCT(utm_medium) utm_medium
+          FROM recordings
+          WHERE site_id = ? AND utm_medium IS NOT NULL
+        SQL
 
-        utm_mediums.map(&:utm_medium)
+        Sql.execute(sql, object.id).map { |r| r['utm_medium'] }
       end
     end
   end

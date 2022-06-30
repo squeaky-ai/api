@@ -38,11 +38,10 @@ module Resolvers
           FROM (
             SELECT
               COUNT(pages.id) total_count,
-              to_char(to_timestamp(disconnected_at / 1000), ?) date_key
+              to_char(to_timestamp(pages.exited_at / 1000), ?) date_key
             FROM pages
-            INNER JOIN recordings ON recordings.id = pages.recording_id
-            WHERE recordings.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
-            GROUP BY recordings.id
+            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
+            GROUP BY pages.id
           ) v
           GROUP BY v.date_key;
         SQL
@@ -51,8 +50,7 @@ module Resolvers
           date_format,
           site_id,
           from_date,
-          to_date,
-          [Recording::ACTIVE, Recording::DELETED]
+          to_date
         ]
 
         Sql.execute(sql, variables)

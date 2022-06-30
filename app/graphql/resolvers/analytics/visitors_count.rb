@@ -13,8 +13,7 @@ module Resolvers
           FROM (
             SELECT visitors.id, visitors.new
             FROM visitors
-            LEFT JOIN recordings ON visitors.id = recordings.visitor_id
-            WHERE recordings.site_id = ? AND visitors.created_at::date >= ? AND visitors.created_at::date <= ?
+            WHERE visitors.site_id = ? AND visitors.created_at::date BETWEEN ? AND ?
             GROUP BY visitors.id
           ) v;
         SQL

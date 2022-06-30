@@ -8,17 +8,21 @@ module Resolvers
       type Integer, null: false
 
       def resolve_with_timings
-        last_recording = Recording
-                         .where(site_id: object.id)
-                         .order('disconnected_at desc')
-                         .select(:disconnected_at)
-                         .first
+        # TODO: Cache this for 5/10 minutes as it gets hit all the time
+        sql = <<-SQL
+          SELECT disconnected_at
+          FROM recordings
+          WHERE site_id = ?
+          ORDER BY disconnected_at DESC
+          LIMIT 1;
+        SQL
 
-        return -1 unless last_recording
+        last_recorded_at = Sql.execute(sql, object.id).first
 
-        disconnected = last_recording.disconnected_at || 0
+        return -1 unless last_recorded_at
 
-        (Time.now.utc - disconnected) / 1.day
+        time_since_last_recording = Time.now.utc - Time.at(last_recorded_at['disconnected_at'].to_i / 1000)
+        time_since_last_recording / 1.day
       end
     end
   end

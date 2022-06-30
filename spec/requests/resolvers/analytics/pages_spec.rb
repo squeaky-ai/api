@@ -42,16 +42,13 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      page_1 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true)
-      page_2 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false)
-      page_3 = create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true)
-
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, pages: [page_1])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, pages: [page_2, page_3])
+      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true, site_id: site.id)
+      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false, site_id: site.id)
+      create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true, site_id: site.id)
     end
 
     subject do
-      variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
+      variables = { site_id: site.id, from_date: '2022-06-23', to_date: '2022-06-30' }
       graphql_request(analytics_pages_query, variables, user)
     end
 
@@ -60,12 +57,12 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 10731,
-            'bounceRatePercentage' => 25.0,
-            'exitRatePercentage' => 25.0,
+            'averageDuration' => 12472,
+            'bounceRatePercentage' => 50.0,
+            'exitRatePercentage' => 50.0,
             'url' => '/',
-            'viewCount' => 4,
-            'viewPercentage' => 80.00
+            'viewCount' => 2,
+            'viewPercentage' => 66.67
           },
           {
             'averageDuration' => 12472,
@@ -73,7 +70,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
             'exitRatePercentage' => 100.0,
             'url' => '/test',
             'viewCount' => 1,
-            'viewPercentage' => 20.0
+            'viewPercentage' => 33.33
          }
         ]
       )
@@ -85,17 +82,13 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      page_1 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true)
-      page_2 = create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false)
-      page_3 = create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true)
-
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, pages: [page_1])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, pages: [page_2, page_3])
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site, page_urls: ['/contact'])
+      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true, site_id: site.id)
+      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false, site_id: site.id)
+      create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true, site_id: site.id)
     end
 
     subject do
-      variables = { site_id: site.id, from_date: '2021-08-01', to_date: '2021-08-08' }
+      variables = { site_id: site.id, from_date: '2022-06-23', to_date: '2022-06-30' }
       graphql_request(analytics_pages_query, variables, user)
     end
 
@@ -104,12 +97,12 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 10731,
-            'bounceRatePercentage' => 25.0,
-            'exitRatePercentage' => 25.0,
+            'averageDuration' => 12472,
+            'bounceRatePercentage' => 50.0,
+            'exitRatePercentage' => 50.0,
             'url' => '/',
-            'viewCount' => 4,
-            'viewPercentage' => 80.0
+            'viewCount' => 2,
+            'viewPercentage' => 66.67
           },
           {
             'averageDuration' => 12472,
@@ -117,7 +110,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
             'exitRatePercentage' => 100.0,
             'url' => '/test',
             'viewCount' => 1,
-            'viewPercentage' => 20.0
+            'viewPercentage' => 33.33
           }
         ]
       )

@@ -12,9 +12,7 @@ module Resolvers
           WHERE site_id = ?
         SQL
 
-        results = Sql.execute(sql, object.id)
-
-        results.map { |r| r['browser'] }
+        Sql.execute(sql, object.id).map { |r| r['browser'] }
       end
     end
   end

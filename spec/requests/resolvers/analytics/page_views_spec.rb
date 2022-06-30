@@ -22,7 +22,7 @@ analytics_page_views_query = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Resolvers::Analytics::PageViews, type: :request do
-  context 'when there are no recordings' do
+  context 'when there are no pages' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
@@ -43,23 +43,18 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
     end
   end
 
-  context 'when there are some recordings' do
+  context 'when there are some pages' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create(:visitor)
 
-      recording_1 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
-
-      recording_2 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
-
-      recording_3 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
     end
 
     subject do
@@ -77,35 +72,36 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'trend' => 5,
         'items' =>  [
           {
-            'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
-            'count' => 5,
+            'count' => 2,
+            'dateKey' => '216'
+          },
+          {
+            'count' => 1,
+            'dateKey' => '217'
+          },
+          {
+            'count' => 2,
+            'dateKey' => '218'
           }
         ]
       )
     end
   end
 
-  context 'when some of the recordings are out of the date range' do
+  context 'when some of the pages are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
       visitor = create(:visitor)
 
-      recording_1 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, recording: recording_1)
-
-      recording_2 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, recording: recording_2)
-
-      recording_3 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, recording: recording_3)
-
-      recording_4 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000, recording: recording_4)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
+      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
+      create(:page, url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000, site_id: site.id)
     end
 
     subject do
@@ -123,8 +119,16 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'trend' => 6,
         'items' =>  [
           {
-            'dateKey' => Date.today.yday().to_s.rjust(3, '0'), 
-            'count' => 6,
+            'count' => 1,
+            'dateKey' => '216'
+          }, 
+          {
+            'count' => 3,
+            'dateKey' => '217'
+          }, 
+          {
+            'count' => 2,
+            'dateKey' => '218'
           }
         ]
       )

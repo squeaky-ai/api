@@ -6,13 +6,13 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        referrers = Site
-                    .find(object.id)
-                    .recordings
-                    .select(:referrer)
-                    .where('referrer IS NOT NULL')
+        sql = <<-SQL
+          SELECT DISTINCT(referrer) referrer
+          FROM recordings
+          WHERE site_id = ? AND referrer IS NOT NULL
+        SQL
 
-        referrers.map(&:referrer).uniq
+        Sql.execute(sql, object.id).map { |r| r['referrer'] }
       end
     end
   end

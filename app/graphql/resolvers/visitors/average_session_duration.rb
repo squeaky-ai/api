@@ -12,9 +12,7 @@ module Resolvers
           WHERE visitor_id = ?
         SQL
 
-        results = Sql.execute(sql, [object.id])
-
-        results.first['average_session_duration']
+        Sql.execute(sql, [object.id]).first['average_session_duration']
       end
     end
   end

@@ -42,11 +42,7 @@ module Resolvers
               (COUNT(exited_on) FILTER(WHERE exited_on = true))::numeric exit_rate_count,
               (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
             FROM pages
-            LEFT JOIN recordings ON recordings.id = pages.recording_id
-            WHERE
-              site_id = ? AND
-              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              recordings.status IN (?)
+            WHERE pages.site_id = ? AND pages.created_at::date BETWEEN ? AND ?
             GROUP BY url
           ) p
           ORDER BY #{order(sort)}
@@ -60,7 +56,6 @@ module Resolvers
             object[:site_id],
             object[:from_date],
             object[:to_date],
-            [Recording::ACTIVE, Recording::DELETED],
             size,
             (page - 1) * size
           ]
@@ -95,23 +90,19 @@ module Resolvers
       end
 
       def total_pages_count
+        # TODO: Extract and cache this
         sql = <<-SQL
           SELECT
             COUNT(pages.url) all_count,
             COUNT(DISTINCT(pages.url)) distinct_count
-          FROM recordings
-          INNER JOIN pages ON pages.recording_id = recordings.id
-          WHERE
-            recordings.site_id = ? AND
-            to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-            recordings.status IN (?)
+          FROM pages
+          WHERE pages.site_id = ? AND to_timestamp(pages.entered_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
           object[:site_id],
           object[:from_date],
-          object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
+          object[:to_date]
         ]
 
         Sql.execute(sql, variables).first
