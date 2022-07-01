@@ -10,11 +10,11 @@ module Resolvers
           SELECT recordings.id, count(pages.id)
           FROM recordings
           INNER JOIN pages ON pages.recording_id = recordings.id
-          WHERE visitor_id = visitor_id
+          WHERE recordings.site_id = ? AND recordings.visitor_id = ?
           GROUP BY recordings.id
         SQL
 
-        results = Sql.execute(sql, [object.visitor_id])
+        results = Sql.execute(sql, [object.site_id, object.id])
 
         Maths.average(results.map { |r| r['count'] })
       end

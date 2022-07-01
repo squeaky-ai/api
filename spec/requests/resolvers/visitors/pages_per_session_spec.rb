@@ -31,7 +31,7 @@ RSpec.describe Resolvers::Visitors::PagesPerSession, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create(:visitor) }
+    let(:visitor) { create(:visitor, site_id: site.id) }
 
     before do
       create(:recording, site: site, page_urls: ['/'], visitor: visitor)
@@ -46,7 +46,7 @@ RSpec.describe Resolvers::Visitors::PagesPerSession, type: :request do
 
     it 'returns the number of pages per session for this visitor' do
       response = subject['data']['site']['visitor']
-      expect(response['pagesPerSession']).to eq 1.33
+      expect(response['pagesPerSession']).to eq 1.5
     end
   end
 end
