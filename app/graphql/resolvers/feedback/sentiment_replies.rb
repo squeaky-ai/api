@@ -13,9 +13,9 @@ module Resolvers
                      sentiments.created_at::date >= ? AND
                      sentiments.created_at::date <= ? AND
                      recordings.status IN (?)',
-                    object[:site_id],
-                    object[:from_date],
-                    object[:to_date],
+                    object.site.id,
+                    object.from_date,
+                    object.to_date,
                     [Recording::ACTIVE, Recording::DELETED]
                   )
                   .select('sentiments.score')

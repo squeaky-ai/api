@@ -6,8 +6,8 @@ module Resolvers
       type Types::Feedback::SentimentRatings, null: false
 
       def resolve_with_timings
-        current_results = get_results(object[:from_date], object[:to_date])
-        trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
+        current_results = get_results(object.from_date, object.to_date)
+        trend_date_range = Trend.offset_period(object.from_date, object.to_date)
         previous_results = get_results(*trend_date_range)
 
         format_results(current_results, previous_results)
@@ -28,7 +28,7 @@ module Resolvers
           .joins(:recording)
           .where(
             'recordings.site_id = ? AND sentiments.created_at::date >= ? AND sentiments.created_at::date <= ? AND recordings.status IN (?)',
-            object[:site_id],
+            object.site.id,
             from_date,
             to_date,
             [Recording::ACTIVE, Recording::DELETED]

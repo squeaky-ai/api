@@ -6,9 +6,9 @@ module Resolvers
       type Types::Analytics::PagesPerSession, null: false
 
       def resolve_with_timings
-        current_average = get_average_count(object[:site_id], object[:from_date], object[:to_date])
-        trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
-        previous_average = get_average_count(object[:site_id], *trend_date_range)
+        current_average = get_average_count(object.site.id, object.from_date, object.to_date)
+        trend_date_range = Trend.offset_period(object.from_date, object.to_date)
+        previous_average = get_average_count(object.site.id, *trend_date_range)
 
         {
           average: current_average,

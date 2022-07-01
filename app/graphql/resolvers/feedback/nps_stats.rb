@@ -7,8 +7,8 @@ module Resolvers
 
       def resolve_with_timings
         {
-          displays: displays_count(object[:site_id], object[:from_date], object[:to_date]),
-          ratings: ratings_count(object[:site_id], object[:from_date], object[:to_date])
+          displays: displays_count(object.site.id, object.from_date, object.to_date),
+          ratings: ratings_count(object.site.id, object.from_date, object.to_date)
         }
       end
 

@@ -11,9 +11,9 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:)
         total_count = DataCacheService::Pages::Counts.new(
-          site_id: object[:site_id],
-          from_date: object[:from_date],
-          to_date: object[:to_date]
+          site_id: object.site.id,
+          from_date: object.from_date,
+          to_date: object.to_date
         ).call
 
         results = pages(page, size, sort)
@@ -47,7 +47,7 @@ module Resolvers
               (COUNT(exited_on) FILTER(WHERE exited_on = true))::numeric exit_rate_count,
               (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
             FROM pages
-            WHERE pages.site_id = ? AND pages.created_at::date BETWEEN ? AND ?
+            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) p
           ORDER BY #{order(sort)}
@@ -58,9 +58,9 @@ module Resolvers
         Sql.execute(
           sql,
           [
-            object[:site_id],
-            object[:from_date],
-            object[:to_date],
+            object.site.id,
+            object.from_date,
+            object.to_date,
             size,
             (page - 1) * size
           ]

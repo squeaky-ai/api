@@ -19,9 +19,9 @@ module Resolvers
         SQL
 
         variables = [
-          object[:site_id],
-          object[:from_date],
-          object[:to_date]
+          object.site.id,
+          object.from_date,
+          object.to_date
         ]
 
         results = Sql.execute(sql, variables).first
