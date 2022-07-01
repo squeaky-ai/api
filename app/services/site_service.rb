@@ -6,16 +6,17 @@ class SiteService
     raise Errors::Unauthorized unless current_user
 
     Rails.cache.fetch("data_cache:SiteService::#{current_user.id}::#{site_id}", expires_in:) do
-      # Superusers can access sites if the owner of the site gives
-      # them permission via the customer support tab
-      if current_user.superuser?
-        site = Site.includes(%i[teams users]).find_by(id: site_id)
-        site if site&.superuser_access_enabled?
-      else
-        # We don't show pending sites to the user in the UI
-        team = { status: Team::ACCEPTED }
-        current_user.sites.includes(%i[teams users]).find_by(id: site_id, team:)
+      # We don't show pending sites to the user in the UI
+      team = { status: Team::ACCEPTED }
+      site = current_user.sites.includes(%i[teams users]).find_by(id: site_id, team:)
+
+      if current_user.superuser? && !site
+        # Superusers can access sites if the owner of the site gives
+        # them permission via the customer support tab
+        site = Site.includes(%i[teams users]).find_by(id: site_id, superuser_access_enabled: true)
       end
+
+      site
     end
   end
 
