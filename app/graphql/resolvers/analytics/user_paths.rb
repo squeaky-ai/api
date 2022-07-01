@@ -9,22 +9,13 @@ module Resolvers
       argument :position, Types::Analytics::PathPosition, required: true
 
       def resolve_with_timings(page:, position:)
-        # TODO: Can we drop recordings?
         sql = <<-SQL
           SELECT page_urls path
           FROM (
-            SELECT
-              ARRAY_AGG(pages.url ORDER BY entered_at ASC) page_urls
-            FROM
-              recordings
-            INNER JOIN
-              pages ON pages.recording_id = recordings.id
-            WHERE
-              recordings.site_id = ? AND
-              to_timestamp(pages.entered_at / 1000)::date BETWEEN ? AND ? AND
-              recordings.status IN (?)
-            GROUP BY
-              pages.recording_id
+            SELECT ARRAY_AGG(pages.url ORDER BY entered_at ASC) page_urls
+            FROM pages
+            WHERE pages.site_id = ? AND to_timestamp(pages.entered_at / 1000)::date BETWEEN ? AND ?
+            GROUP BY pages.recording_id
           ) page_urls
           WHERE page_urls @> ?
         SQL
@@ -33,7 +24,6 @@ module Resolvers
           object.site.id,
           object.from_date,
           object.to_date,
-          [Recording::ACTIVE, Recording::DELETED],
           "{#{page}}"
         ]
 

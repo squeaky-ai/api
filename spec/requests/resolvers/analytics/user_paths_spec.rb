@@ -23,22 +23,22 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
       visitor = create(:visitor)
 
       recording_1 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', entered_at: Time.new(2021, 8, 7).to_i * 1000 + 1, recording: recording_1)
-      create(:page, url: '/test', entered_at: Time.new(2021, 8, 7).to_i * 1000 + 2, recording: recording_1)
+      create(:page, url: '/', entered_at: Time.new(2021, 8, 7).to_i * 1000 + 1, recording: recording_1, site_id: site.id)
+      create(:page, url: '/test', entered_at: Time.new(2021, 8, 7).to_i * 1000 + 2, recording: recording_1, site_id: site.id)
 
       recording_2 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/', entered_at: Time.new(2021, 8, 6).to_i * 1000 + 1, recording: recording_2)
+      create(:page, url: '/', entered_at: Time.new(2021, 8, 6).to_i * 1000 + 1, recording: recording_2, site_id: site.id)
 
       recording_3 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 1, recording: recording_3)
-      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 2, recording: recording_3)
+      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 1, recording: recording_3, site_id: site.id)
+      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 2, recording: recording_3, site_id: site.id)
 
       recording_4 = create(:recording, site: site, visitor: visitor)
-      create(:page, url: '/foo', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 1, recording: recording_4)
-      create(:page, url: '/bar', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 2, recording: recording_4)
-      create(:page, url: '/', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 3, recording: recording_4)
-      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 4, recording: recording_4)
-      create(:page, url: '/foo', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 5, recording: recording_4)
+      create(:page, url: '/foo', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 1, recording: recording_4, site_id: site.id)
+      create(:page, url: '/bar', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 2, recording: recording_4, site_id: site.id)
+      create(:page, url: '/', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 3, recording: recording_4, site_id: site.id)
+      create(:page, url: '/test', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 4, recording: recording_4, site_id: site.id)
+      create(:page, url: '/foo', entered_at: Time.new(2021, 8, 5).to_i * 1000 + 5, recording: recording_4, site_id: site.id)
     end
 
     context 'when using the start position' do
