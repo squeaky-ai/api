@@ -13,18 +13,17 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(page:, size:, sort:, filters:, from_date:, to_date:)
-        recordings = Site
-                      .find(object.id)
-                      .recordings
-                      .includes(:nps, :sentiment)
-                      .joins(:pages, :visitor)
-                      .preload(:pages, :visitor)
-                      .where(
-                        'recordings.status = ? AND
-                        to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                        Recording::ACTIVE, from_date, to_date
-                      )
-                      .order(order(sort))
+        recordings = object
+                     .recordings
+                     .includes(:nps, :sentiment)
+                     .joins(:pages, :visitor)
+                     .preload(:pages, :visitor)
+                     .where(
+                       'recordings.status = ? AND
+                       to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                       Recording::ACTIVE, from_date, to_date
+                     )
+                     .order(order(sort))
 
         # Apply all the filters
         recordings = filter(recordings, filters)

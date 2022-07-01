@@ -6,10 +6,8 @@ module Resolvers
       type [Types::Events::Group, { null: true }], null: false
 
       def resolve_with_timings
-        site = Site.find(object.id)
-
-        groups = site.event_groups
-        captures = site.event_captures.joins(:event_groups).preload(:event_groups)
+        groups = object.event_groups
+        captures = object.event_captures.joins(:event_groups).preload(:event_groups)
 
         group_items(groups, captures).sort { |a, b| a[:name] <=> b[:name] }
       end

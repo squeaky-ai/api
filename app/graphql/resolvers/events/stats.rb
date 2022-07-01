@@ -11,25 +11,24 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
-        site = Site.find(object.id)
         # Get a list of all the capture events including ones
         # that are included inside groups. This will be flattened
         # list where all the grouped captures appear along side the
         # actual captures
-        capture_events = event_captures(site, group_ids, capture_ids)
+        capture_events = event_captures(group_ids, capture_ids)
 
         return [] if capture_events.empty?
 
         # Perform a chungus union query to get back all the results in
         # a single request
-        results = aggregated_results(site, capture_events, from_date, to_date)
+        results = aggregated_results(capture_events, from_date, to_date)
         # Format the events so that they use the correct keys for
         # the response including the the visitor counts
         capture_events_with_counts = format_capture_events(results)
         # The user requested groups and events so we need to
         # aggregate the results back. This will require combining
         # the counts for those that should appear in groups
-        aggregate_results(site, capture_events_with_counts, group_ids, capture_ids)
+        aggregate_results(capture_events_with_counts, group_ids, capture_ids)
       end
 
       private
@@ -52,17 +51,17 @@ module Resolvers
         [capture_ids, ids].flatten.map(&:to_i).uniq
       end
 
-      def event_captures(site, group_ids, capture_ids)
+      def event_captures(group_ids, capture_ids)
         # Get a list of all the capture ids including
         # those that need to be expanded from their
         # groups
         capture_ids = all_event_ids(group_ids, capture_ids)
         # Fetch all the corrosponding groups from the
         # site
-        site.event_captures.where(id: capture_ids)
+        object.event_captures.where(id: capture_ids)
       end
 
-      def aggregated_results(site, capture_events, from_date, to_date)
+      def aggregated_results(capture_events, from_date, to_date)
         union_queries = capture_events.map.with_index do |event, index|
           query = EventsService::Captures.for(event).count
 
@@ -77,7 +76,7 @@ module Resolvers
         SQL
 
         query = ActiveRecord::Base.sanitize_sql_array(
-          [sql, { site_id: site.id, from_date:, to_date: }]
+          [sql, { site_id: object.id, from_date:, to_date: }]
         )
 
         ClickHouse.connection.select_all(query)
@@ -106,8 +105,8 @@ module Resolvers
         Sql.execute(sql, [object.id]).first['count']
       end
 
-      def aggregate_results(site, capture_events_with_counts, group_ids, capture_ids)
-        groups = site.event_groups.where(id: group_ids).includes(:event_captures)
+      def aggregate_results(capture_events_with_counts, group_ids, capture_ids)
+        groups = object.event_groups.where(id: group_ids).includes(:event_captures)
 
         [
           *capture_ids.map { |id| aggregate_capture(id, capture_events_with_counts) },

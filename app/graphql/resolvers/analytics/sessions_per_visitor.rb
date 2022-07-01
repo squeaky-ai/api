@@ -6,9 +6,9 @@ module Resolvers
       type Types::Analytics::SessionsPerVisitor, null: false
 
       def resolve_with_timings
-        current_average = get_average_count(object.site.id, object.from_date, object.to_date)
+        current_average = get_average_count(object.from_date, object.to_date)
         trend_date_range = Trend.offset_period(object.from_date, object.to_date)
-        previous_average = get_average_count(object.site.id, *trend_date_range)
+        previous_average = get_average_count(*trend_date_range)
 
         {
           average: current_average,
@@ -18,7 +18,7 @@ module Resolvers
 
       private
 
-      def get_average_count(site_id, from_date, to_date)
+      def get_average_count(from_date, to_date)
         sql = <<-SQL
           SELECT visitor_id, COUNT(visitor_id)
           FROM recordings
@@ -27,7 +27,7 @@ module Resolvers
         SQL
 
         variables = [
-          site_id,
+          object.site.id,
           from_date,
           to_date,
           [Recording::ACTIVE, Recording::DELETED]

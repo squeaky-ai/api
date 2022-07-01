@@ -6,17 +6,17 @@ module Resolvers
       type Types::Feedback::NpsReplies, null: false
 
       def resolve_with_timings
-        responses = get_replies(object.site.id, object.from_date, object.to_date)
+        responses = get_replies(object.from_date, object.to_date)
 
         {
-          trend: get_trend(object.site.id, object.from_date, object.to_date, responses),
+          trend: get_trend(object.from_date, object.to_date, responses),
           responses:
         }
       end
 
       private
 
-      def get_replies(site_id, from_date, to_date)
+      def get_replies(from_date, to_date)
         sql = <<-SQL
           SELECT nps.score, nps.created_at
           FROM nps
@@ -25,7 +25,7 @@ module Resolvers
         SQL
 
         variables = [
-          site_id,
+          object.site.id,
           from_date,
           to_date,
           [Recording::ACTIVE, Recording::DELETED]
@@ -41,9 +41,9 @@ module Resolvers
         end
       end
 
-      def get_trend(site_id, from_date, to_date, current_responses)
+      def get_trend(from_date, to_date, current_responses)
         offset_dates = Trend.offset_period(from_date, to_date)
-        last_responses = get_replies(site_id, *offset_dates)
+        last_responses = get_replies(*offset_dates)
 
         current_responses.size - last_responses.size
       end

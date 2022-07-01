@@ -11,19 +11,17 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
-        site = Site.find(object.id)
-
         date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
 
-        capture_events = event_captures(site, group_ids, capture_ids)
+        capture_events = event_captures(group_ids, capture_ids)
 
         # The code below craps itself if there are no events
         # so return early
         return respond(group_type, group_range, []) if capture_events.empty?
 
-        results = aggregated_results(site, capture_events, from_date, to_date, date_format)
+        results = aggregated_results(capture_events, from_date, to_date, date_format)
 
-        respond(group_type, group_range, aggregate_results(site, results, group_ids, capture_ids))
+        respond(group_type, group_range, aggregate_results(results, group_ids, capture_ids))
       end
 
       private
@@ -54,14 +52,14 @@ module Resolvers
         [capture_ids, ids].flatten.map(&:to_i).uniq
       end
 
-      def event_captures(site, group_ids, capture_ids)
+      def event_captures(group_ids, capture_ids)
         # Get a list of all the capture ids including
         # those that need to be expanded from their
         # groups
         capture_ids = all_event_ids(group_ids, capture_ids)
         # Fetch all the corrosponding groups from the
         # site
-        site.event_captures.where(id: capture_ids)
+        object.site.event_captures.where(id: capture_ids)
       end
 
       def union_queries(capture_events)
@@ -72,7 +70,7 @@ module Resolvers
         end
       end
 
-      def aggregated_results(site, capture_events, from_date, to_date, date_format)
+      def aggregated_results(capture_events, from_date, to_date, date_format)
         sql = <<-SQL
           SELECT results.*
           FROM (#{union_queries(capture_events).join(' ')}) results
@@ -82,16 +80,16 @@ module Resolvers
         query = ActiveRecord::Base.sanitize_sql_array(
           [
             sql,
-            { site_id: site.id, from_date:, to_date:, date_format: }
+            { site_id: object.site.id, from_date:, to_date:, date_format: }
           ]
         )
 
         ClickHouse.connection.select_all(query)
       end
 
-      def aggregate_results(site, results, group_ids, capture_ids)
+      def aggregate_results(results, group_ids, capture_ids)
         date_keys = results.map { |r| r['date_key'] }.uniq
-        groups = site.event_groups.where(id: group_ids).includes(:event_captures)
+        groups = object.site.event_groups.where(id: group_ids).includes(:event_captures)
 
         date_keys.map do |date_key|
           {
