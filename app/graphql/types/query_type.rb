@@ -59,29 +59,11 @@ module Types
     end
 
     def site(site_id:)
-      raise Errors::Unauthorized unless context[:current_user]
-
-      # Superusers can access sites if the owner of the site gives
-      # them permission via the customer support tab
-      if context[:current_user].superuser?
-        site = Site.includes(%i[teams users]).find_by(id: site_id)
-        return site if site&.superuser_access_enabled?
-
-        nil
-      end
-
-      # We don't show pending sites to the user in the UI
-      team = { status: Team::ACCEPTED }
-      context[:current_user].sites.includes(%i[teams users]).find_by(id: site_id, team:)
+      SiteService.find_by_id(context[:current_user], site_id)
     end
 
     def site_by_uuid(site_id:)
-      # This is used externally for the magic erasure and
-      # should not raise
-      return nil unless context[:current_user]
-
-      team = { status: Team::ACCEPTED }
-      context[:current_user].sites.find_by(uuid: site_id, team:)
+      SiteService.find_by_uuid(context[:current_user], site_id)
     end
 
     def sites
