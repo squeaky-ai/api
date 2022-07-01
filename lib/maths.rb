@@ -2,6 +2,8 @@
 
 class Maths
   def self.percentage(count, total, round: 2)
+    return 0 if count.zero? || total.zero?
+
     ((count.to_f / total) * 100).round(round)
   end
 
