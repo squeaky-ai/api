@@ -12,8 +12,7 @@ module Resolvers
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
       def resolve_with_timings(page:, size:, search:, sort:, filters:)
-        visitors = Site
-                   .find(object.id)
+        visitors = object
                    .visitors
                    .includes(:recordings)
                    .where('recordings.status = ?', Recording::ACTIVE)

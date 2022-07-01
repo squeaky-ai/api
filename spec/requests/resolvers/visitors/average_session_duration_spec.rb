@@ -31,7 +31,7 @@ RSpec.describe Resolvers::Visitors::AverageSessionDuration, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create(:visitor) }
+    let(:visitor) { create(:visitor, site_id: site.id) }
 
     before do
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
