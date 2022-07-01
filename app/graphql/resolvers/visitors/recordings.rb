@@ -3,14 +3,15 @@
 module Resolvers
   module Visitors
     class Recordings < Resolvers::Base
-      type Types::Recordings::Recordings, null: false
+      type 'Types::Recordings::Recordings', null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
 
       def resolve_with_timings(page:, size:, sort:)
-        recordings = Recording
+        recordings = object
+                     .recordings
                      .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
                      .includes(:pages, :visitor)
                      .order(order(sort))

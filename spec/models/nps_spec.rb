@@ -85,7 +85,7 @@ RSpec.describe Nps, type: :model do
       subject { described_class.get_score_between(site.id, from_date, to_date) }
 
       it 'returns the score' do
-        expect(subject).to eq -33.33
+        expect(subject).to eq -33.34
       end
     end
   end

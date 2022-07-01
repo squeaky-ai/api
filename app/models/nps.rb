@@ -37,6 +37,6 @@ class Nps < ApplicationRecord
     promoters = values.filter { |v| v >= 9 }.size
     detractors = values.filter { |v| v <= 6 }.size
 
-    (((promoters.to_f / total) * 100) - ((detractors.to_f / total) * 100)).round(2)
+    (Maths.percentage(promoters.to_f, total) - Maths.percentage(detractors, total)).round(2)
   end
 end

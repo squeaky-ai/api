@@ -10,7 +10,12 @@ module Resolvers
       argument :sort, Types::Analytics::PagesSort, required: false, default_value: 'views__desc'
 
       def resolve_with_timings(page:, size:, sort:)
-        total_count = total_pages_count
+        total_count = DataCacheService::Pages::Counts.new(
+          site_id: object.site.id,
+          from_date: object.from_date,
+          to_date: object.to_date
+        ).call
+
         results = pages(page, size, sort)
 
         {
@@ -42,11 +47,7 @@ module Resolvers
               (COUNT(exited_on) FILTER(WHERE exited_on = true))::numeric exit_rate_count,
               (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
             FROM pages
-            LEFT JOIN recordings ON recordings.id = pages.recording_id
-            WHERE
-              pages.site_id = ? AND
-              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              recordings.status IN (?)
+            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) p
           ORDER BY #{order(sort)}
@@ -57,10 +58,9 @@ module Resolvers
         Sql.execute(
           sql,
           [
-            object[:site_id],
-            object[:from_date],
-            object[:to_date],
-            [Recording::ACTIVE, Recording::DELETED],
+            object.site.id,
+            object.from_date,
+            object.to_date,
             size,
             (page - 1) * size
           ]
@@ -86,39 +86,12 @@ module Resolvers
           {
             url: page['url'],
             view_count: page['view_count'],
-            view_percentage: percentage(page['view_count'], total_count['all_count']),
+            view_percentage: Maths.percentage(page['view_count'], total_count['all_count']),
             exit_rate_percentage: page['exit_rate_percentage'],
             bounce_rate_percentage: page['bounce_rate_percentage'],
             average_duration: page['average_duration']
           }
         end
-      end
-
-      def total_pages_count
-        sql = <<-SQL
-          SELECT
-            COUNT(pages.url) all_count,
-            COUNT(DISTINCT(pages.url)) distinct_count
-          FROM recordings
-          INNER JOIN pages ON pages.recording_id = recordings.id
-          WHERE
-            recordings.site_id = ? AND
-            to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-            recordings.status IN (?)
-        SQL
-
-        variables = [
-          object[:site_id],
-          object[:from_date],
-          object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
-        ]
-
-        Sql.execute(sql, variables).first
-      end
-
-      def percentage(count, total)
-        ((count.to_f / total) * 100).round(2)
       end
     end
   end

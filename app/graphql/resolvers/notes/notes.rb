@@ -9,8 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 25
 
       def resolve_with_timings(page:, size:)
-        notes = Site
-                .find(object.id)
+        notes = object
                 .notes
                 # If they soft delete the recording then the notes
                 # should also appear deleted

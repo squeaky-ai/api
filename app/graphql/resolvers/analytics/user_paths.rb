@@ -9,6 +9,7 @@ module Resolvers
       argument :position, Types::Analytics::PathPosition, required: true
 
       def resolve_with_timings(page:, position:)
+        # TODO: Can we drop recordings?
         sql = <<-SQL
           SELECT page_urls path
           FROM (
@@ -29,9 +30,9 @@ module Resolvers
         SQL
 
         variables = [
-          object[:site_id],
-          object[:from_date],
-          object[:to_date],
+          object.site.id,
+          object.from_date,
+          object.to_date,
           [Recording::ACTIVE, Recording::DELETED],
           "{#{page}}"
         ]

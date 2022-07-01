@@ -6,12 +6,7 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        languges = Site
-                   .find(object.id)
-                   .recordings
-                   .select(:locale)
-
-        languges.map(&:language).uniq
+        DataCacheService::Sites::Languages.new(site_id: object.id).call
       end
     end
   end

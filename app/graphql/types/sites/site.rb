@@ -63,15 +63,27 @@ module Types
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
       def analytics(args)
-        { site_id: object.id, **args }
+        hash_to_struct(args)
       end
 
       def nps(args)
-        { site_id: object.id, **args }
+        hash_to_struct(args)
       end
 
       def sentiment(args)
-        { site_id: object.id, **args }
+        hash_to_struct(args)
+      end
+
+      private
+
+      def hash_to_struct(args)
+        # Because most things extend the site, they can access the
+        # site model and all it's methods using object.x. The data
+        # here is converted to a struct so that the attrbibutes can
+        # be accessed like methods and not symbols to keep it
+        # consistent.
+        h = { site: object, **args }
+        Struct.new(*h.keys).new(*h.values)
       end
     end
   end

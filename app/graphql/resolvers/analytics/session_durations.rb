@@ -6,9 +6,9 @@ module Resolvers
       type Types::Analytics::SessionDurations, null: false
 
       def resolve_with_timings
-        current_average = get_average_duration(object[:site_id], object[:from_date], object[:to_date])
-        trend_date_range = Trend.offset_period(object[:from_date], object[:to_date])
-        previous_average = get_average_duration(object[:site_id], *trend_date_range)
+        current_average = get_average_duration(object.from_date, object.to_date)
+        trend_date_range = Trend.offset_period(object.from_date, object.to_date)
+        previous_average = get_average_duration( *trend_date_range)
 
         {
           average: current_average,
@@ -18,7 +18,7 @@ module Resolvers
 
       private
 
-      def get_average_duration(site_id, from_date, to_date)
+      def get_average_duration(from_date, to_date)
         sql = <<-SQL
           SELECT AVG(disconnected_at - connected_at) as duration
           FROM recordings
@@ -26,7 +26,7 @@ module Resolvers
         SQL
 
         variables = [
-          site_id,
+          object.site.id,
           from_date,
           to_date,
           [Recording::ACTIVE, Recording::DELETED]

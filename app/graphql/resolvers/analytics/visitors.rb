@@ -11,21 +11,19 @@ module Resolvers
             COUNT(*) all_count,
             COUNT(*) FILTER(WHERE visitors.new IS TRUE) new_count,
             COUNT(*) FILTER(WHERE visitors.new IS FALSE) existing_count,
-            to_char(to_timestamp(disconnected_at / 1000), ?) date_key
-          FROM recordings
-          LEFT OUTER JOIN visitors ON visitors.id = recordings.visitor_id
-          WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+            to_char(visitors.created_at, ?) date_key
+          FROM visitors
+          WHERE visitors.site_id = ? AND visitors.created_at::date BETWEEN ? AND ?
           GROUP BY date_key
         SQL
 
-        date_format, group_type, group_range = Charts.date_groups(object[:from_date], object[:to_date])
+        date_format, group_type, group_range = Charts.date_groups(object.from_date, object.to_date)
 
         variables = [
           date_format,
-          object[:site_id],
-          object[:from_date],
-          object[:to_date],
-          [Recording::ACTIVE, Recording::DELETED]
+          object.site.id,
+          object.from_date,
+          object.to_date
         ]
 
         {

@@ -42,19 +42,14 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     end
   end
 
-  context 'when there are some recordings' do
+  context 'when there are some visitors' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor)
-      visitor_2 = create(:visitor)
-
-      visitor_2.update(new: false)
-
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor_1)
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor_1)
-      create(:recording, disconnected_at: Time.new(2021, 8, 8).to_i * 1000, site: site, visitor: visitor_2)
+      create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id, new: true)
+      create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id, new: true)
+      create(:visitor, created_at: Time.new(2021, 8, 8), site_id: site.id, new: false)
     end
 
     subject do
@@ -99,10 +94,10 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     before do
       visitor = create(:visitor)
 
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 5).to_i * 1000, site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 5).to_i * 1000, site: site)
+      create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 5), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 7, 5), site_id: site.id)
     end
 
     subject do

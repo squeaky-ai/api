@@ -6,14 +6,7 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        utm_campaigns = Site
-                        .find(object.id)
-                        .recordings
-                        .select(:utm_campaign)
-                        .where('utm_campaign IS NOT NULL')
-                        .distinct
-
-        utm_campaigns.map(&:utm_campaign)
+        DataCacheService::Sites::UtmCampaigns.new(site_id: object.id).call
       end
     end
   end

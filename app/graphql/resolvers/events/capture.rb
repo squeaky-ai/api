@@ -10,8 +10,7 @@ module Resolvers
       argument :sort, Types::Events::CaptureSort, required: false, default_value: 'count__desc'
 
       def resolve_with_timings(page:, size:, sort:)
-        events = Site
-                 .find(object.id)
+        events = object
                  .event_captures
                  .includes(:event_groups) # So we can map &:name for #group_names
                  .order(order(sort))
