@@ -110,10 +110,10 @@ class WeeklyReview
   end
 
   def average_session_duration_trend
-    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+    range = DateRange.new(@from_date, @to_date)
 
     current_week = average_session_duration[:raw]
-    previous_week = average_session_duration(from_date, to_date)[:raw]
+    previous_week = average_session_duration(range.trend_from, range.trend_to)[:raw]
 
     {
       trend: milliseconds_to_mmss(current_week - previous_week),
@@ -143,10 +143,10 @@ class WeeklyReview
   end
 
   def pages_per_session_trend
-    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+    range = DateRange.new(@from_date, @to_date)
 
     current_week = pages_per_session[:raw]
-    previous_week = pages_per_session(from_date, to_date)[:raw]
+    previous_week = pages_per_session(range.trend_from, range.trend_to)[:raw]
 
     {
       trend: to_two_decimal_places(current_week - previous_week),
@@ -256,10 +256,10 @@ class WeeklyReview
   end
 
   def feedback_nps_trend
-    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+    range = DateRange.new(@from_date, @to_date)
 
     current_week = feedback_nps[:score]
-    previous_week = Nps.get_score_between(@site_id, from_date, to_date)
+    previous_week = Nps.get_score_between(@site_id, range.trend_from, range.trend_to)
 
     {
       trend: to_two_decimal_places(current_week - previous_week),
@@ -284,10 +284,10 @@ class WeeklyReview
   end
 
   def feedback_sentiment_trend
-    from_date, to_date = Trend.offset_period(@from_date, @to_date)
+    range = DateRange.new(@from_date, @to_date)
 
     current_week = feedback_sentiment[:score]
-    previous_week = feedback_sentiment(from_date, to_date)[:score]
+    previous_week = feedback_sentiment(range.trend_from, range.trend_to)[:score]
 
     {
       trend: to_two_decimal_places(current_week - previous_week),

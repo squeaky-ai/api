@@ -6,9 +6,8 @@ module Resolvers
       type Types::Feedback::SentimentRatings, null: false
 
       def resolve_with_timings
-        current_results = get_results(object.from_date, object.to_date)
-        trend_date_range = Trend.offset_period(object.from_date, object.to_date)
-        previous_results = get_results(*trend_date_range)
+        current_results = get_results(object.range.from, object.range.to)
+        previous_results = get_results(object.range.trend_from, object.range.trend_to)
 
         format_results(current_results, previous_results)
       end

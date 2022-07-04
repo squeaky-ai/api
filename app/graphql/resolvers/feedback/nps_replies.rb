@@ -6,10 +6,11 @@ module Resolvers
       type Types::Feedback::NpsReplies, null: false
 
       def resolve_with_timings
-        responses = get_replies(object.from_date, object.to_date)
+        responses = get_replies(object.range.from, object.range.to)
+        previous_responses = get_replies(object.range.trend_from, object.range.trend_to)
 
         {
-          trend: get_trend(object.from_date, object.to_date, responses),
+          trend: responses.size - previous_responses.size,
           responses:
         }
       end
@@ -39,13 +40,6 @@ module Resolvers
             timestamp: r['created_at']
           }
         end
-      end
-
-      def get_trend(from_date, to_date, current_responses)
-        offset_dates = Trend.offset_period(from_date, to_date)
-        last_responses = get_replies(*offset_dates)
-
-        current_responses.size - last_responses.size
       end
     end
   end

@@ -6,20 +6,20 @@ module Resolvers
       type Types::Feedback::NpsScores, null: false
 
       def resolve_with_timings
-        responses = Nps.get_scores_between(object.site.id, object.from_date, object.to_date)
+        responses = Nps.get_scores_between(object.site.id, object.range.from, object.range.to)
+        previous_responses = Nps.get_scores_between(object.site.id, object.range.trend_from, object.range.trend_to)
 
-        {
-          trend: get_trend(object.from_date, object.to_date, responses),
-          score: Nps.calculate_scores(responses),
-          responses:
-        }
+        build_response(responses, previous_responses)
       end
 
-      def get_trend(from_date, to_date, current_responses)
-        offset_dates = Trend.offset_period(from_date, to_date)
-        last_responses = Nps.get_scores_between(object.site.id, *offset_dates)
+      private
 
-        Nps.calculate_scores(current_responses) - Nps.calculate_scores(last_responses)
+      def build_response(current_response, previous_responses)
+        {
+          trend: Nps.calculate_scores(current_response) - Nps.calculate_scores(previous_responses),
+          score: Nps.calculate_scores(current_response),
+          responses: current_response
+        }
       end
     end
   end

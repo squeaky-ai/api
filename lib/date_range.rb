@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Range
+class DateRange
   def initialize(from_date, to_date)
     @from_date = from_date
     @to_date = to_date
@@ -27,6 +27,6 @@ class Range
   def offset
     # Same day is pointless because you're comparing it against
     # itself, so always do at least one day
-    @offset ||= (to_date - from_date).days < 1.day ? 1.day : (to_date - from_date)
+    @offset ||= (to - from).days < 1.day ? 1.day : (to - from)
   end
 end

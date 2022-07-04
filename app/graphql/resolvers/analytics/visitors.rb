@@ -17,13 +17,13 @@ module Resolvers
           GROUP BY date_key
         SQL
 
-        date_format, group_type, group_range = Charts.date_groups(object.from_date, object.to_date)
+        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to)
 
         variables = [
           date_format,
           object.site.id,
-          object.from_date,
-          object.to_date
+          object.range.from,
+          object.range.to
         ]
 
         {
