@@ -16,8 +16,8 @@ module Resolvers
 
         variables = [
           object.site.id,
-          object.from_date,
-          object.to_date,
+          object.range.from,
+          object.range.to,
           [Recording::ACTIVE, Recording::DELETED]
         ]
 

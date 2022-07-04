@@ -8,8 +8,8 @@ module Resolvers
       def resolve_with_timings
         DataCacheService::Pages::Count.new(
           site_id: object.site.id,
-          from_date: object.from_date,
-          to_date: object.to_date
+          from_date: object.range.from,
+          to_date: object.range.to
         ).call
       end
     end

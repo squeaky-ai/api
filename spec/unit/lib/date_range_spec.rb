@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Trend do
-  it 'offsets the dates by their diff' do
-    scenarios = [
+RSpec.describe DateRange do
+  let(:scenarios) do
+    [
       {
         in: {
           from: Date.new(2021, 12, 22),
@@ -46,10 +46,21 @@ RSpec.describe Trend do
         }
       }
     ]
+  end
 
+  it 'exposes the dates' do
     scenarios.each do |scenario|
-      response = Trend.offset_period(scenario[:in][:from], scenario[:in][:to])
-      expect(response).to eq([scenario[:out][:from], scenario[:out][:to]])
+      range = DateRange.new(scenario[:in][:from], scenario[:in][:to])
+      expect(range.from).to eq(scenario[:in][:from])
+      expect(range.to).to eq(scenario[:in][:to])
+    end
+  end
+
+  it 'offsets the dates by their diff' do
+    scenarios.each do |scenario|
+      range = DateRange.new(scenario[:in][:from], scenario[:in][:to])
+      expect(range.trend_from).to eq(scenario[:out][:from])
+      expect(range.trend_to).to eq(scenario[:out][:to])
     end
   end
 end

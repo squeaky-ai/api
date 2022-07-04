@@ -12,8 +12,8 @@ module Resolvers
       def resolve_with_timings(page:, size:, sort:)
         total_count = DataCacheService::Pages::Counts.new(
           site_id: object.site.id,
-          from_date: object.from_date,
-          to_date: object.to_date
+          from_date: object.range.from,
+          to_date: object.range.to
         ).call
 
         results = pages(page, size, sort)
@@ -59,8 +59,8 @@ module Resolvers
           sql,
           [
             object.site.id,
-            object.from_date,
-            object.to_date,
+            object.range.from,
+            object.range.to,
             size,
             (page - 1) * size
           ]

@@ -62,27 +62,28 @@ module Types
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
-      def analytics(args)
-        hash_to_struct(args)
+      def analytics(from_date:, to_date:)
+        build_nested_args(from_date, to_date)
       end
 
-      def nps(args)
-        hash_to_struct(args)
+      def nps(from_date:, to_date:)
+        build_nested_args(from_date, to_date)
       end
 
-      def sentiment(args)
-        hash_to_struct(args)
+      def sentiment(from_date:, to_date:)
+        build_nested_args(from_date, to_date)
       end
 
       private
 
-      def hash_to_struct(args)
+      def build_nested_args(from_date, to_date)
         # Because most things extend the site, they can access the
         # site model and all it's methods using object.x. The data
         # here is converted to a struct so that the attrbibutes can
         # be accessed like methods and not symbols to keep it
         # consistent.
-        h = { site: object, **args }
+        range = DateRange.new(from_date, to_date)
+        h = { site: object, range: }
         Struct.new(*h.keys).new(*h.values)
       end
     end

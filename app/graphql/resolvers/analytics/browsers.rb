@@ -11,8 +11,8 @@ module Resolvers
       def resolve_with_timings(page:, size:)
         total_recordings_count = DataCacheService::Recordings::Count.new(
           site_id: object.site.id,
-          from_date: object.from_date,
-          to_date: object.to_date
+          from_date: object.range.from,
+          to_date: object.range.to
         ).call
 
         results = browsers(page, size)
@@ -33,8 +33,8 @@ module Resolvers
           .where(
             'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)',
             object.site.id,
-            object.from_date,
-            object.to_date,
+            object.range.from,
+            object.range.to,
             [Recording::ACTIVE, Recording::DELETED]
           )
           .select('DISTINCT(browser) browser, count(*) count')

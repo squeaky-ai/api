@@ -6,11 +6,10 @@ module Resolvers
       type Types::Analytics::PageViews, null: false
 
       def resolve_with_timings
-        date_format, group_type, group_range = Charts.date_groups(object.from_date, object.to_date)
-        trend_date_range = Trend.offset_period(object.from_date, object.to_date)
+        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to)
 
-        current_page_views = page_views(date_format, object.from_date, object.to_date)
-        previous_page_views = page_views(date_format, *trend_date_range)
+        current_page_views = page_views(date_format, object.range.from, object.range.to)
+        previous_page_views = page_views(date_format, object.range.trend_from, object.range.trend_to)
 
         current_total = sum_of_page_views(current_page_views)
         previous_total = sum_of_page_views(previous_page_views)

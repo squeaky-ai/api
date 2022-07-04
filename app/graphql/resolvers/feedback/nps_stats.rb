@@ -7,14 +7,14 @@ module Resolvers
 
       def resolve_with_timings
         {
-          displays: displays_count(object.from_date, object.to_date),
-          ratings: ratings_count(object.from_date, object.to_date)
+          displays: displays_count,
+          ratings: ratings_count
         }
       end
 
       private
 
-      def displays_count(from_date, to_date)
+      def displays_count
         sql = <<-SQL
           SELECT COUNT(id)
           FROM recordings
@@ -23,8 +23,8 @@ module Resolvers
 
         variables = [
           object.site.id,
-          from_date,
-          to_date,
+          object.range.from,
+          object.range.to,
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
@@ -32,7 +32,7 @@ module Resolvers
         results.first['count']
       end
 
-      def ratings_count(from_date, to_date)
+      def ratings_count
         sql = <<-SQL
           SELECT COUNT(nps.id)
           FROM nps
@@ -42,8 +42,8 @@ module Resolvers
 
         variables = [
           object.site.id,
-          from_date,
-          to_date,
+          object.range.from,
+          object.range.to,
           [Recording::ACTIVE, Recording::DELETED]
         ]
 
