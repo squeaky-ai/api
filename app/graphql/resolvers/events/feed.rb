@@ -137,7 +137,6 @@ module Resolvers
         ids = results.map { |r| r['recording_id'] }.uniq
 
         object
-          .site
           .recordings
           .where(id: ids)
           .includes(:visitor)
