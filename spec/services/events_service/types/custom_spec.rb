@@ -24,7 +24,7 @@ RSpec.describe EventsService::Types::Custom do
             site_id = :site_id AND
             type = 101 AND
             JSONExtractString(data, 'name') = 'my-event' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -43,7 +43,7 @@ RSpec.describe EventsService::Types::Custom do
             site_id = :site_id AND
             type = 101 AND
             JSONExtractString(data, 'name') != 'my-event' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -62,7 +62,7 @@ RSpec.describe EventsService::Types::Custom do
             site_id = :site_id AND
             type = 101 AND
             JSONExtractString(data, 'name') LIKE '%other%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -81,7 +81,7 @@ RSpec.describe EventsService::Types::Custom do
             site_id = :site_id AND
             type = 101 AND
             JSONExtractString(data, 'name') NOT LIKE '%other%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -100,7 +100,7 @@ RSpec.describe EventsService::Types::Custom do
             site_id = :site_id AND
             type = 101 AND
             JSONExtractString(data, 'name') LIKE 'my-event%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

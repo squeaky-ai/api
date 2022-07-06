@@ -8,8 +8,8 @@ RSpec.describe EventsProcessingJob, type: :job do
   subject { described_class.perform_now }
 
   context 'when events are new' do
-    let(:now) { Time.now}
-    let(:site) { create(:site) }
+    let(:now) { Time.new(2022, 7, 6, 12, 0, 0) }
+    let(:site) { create(:site, created_at: now - 1.day) }
     let(:recording) { create(:recording, site:) }
 
     let(:rule_1) { { matcher: 'equals', condition: 'or', value: '/' } }
@@ -58,7 +58,7 @@ RSpec.describe EventsProcessingJob, type: :job do
       allow(Time).to receive(:now).and_return(now)
 
       ClickHouse::Event.insert do |buffer|
-        data.each do |d|
+        data.each.with_index do |d, index|
           buffer << {
             uuid: SecureRandom.uuid,
             site_id: site.id,
@@ -66,13 +66,13 @@ RSpec.describe EventsProcessingJob, type: :job do
             type: d[:type],
             source: d[:source],
             data: d[:data].to_json,
-            timestamp: Time.now.to_i * 1000
+            timestamp: Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000 + index
           }
         end
       end
     end
 
-    it 'only deletes the ones that are unconfirmed after 48 hours' do
+    it 'changes the counts' do
       expect { subject }.to change { event_1.reload.count }.from(0).to(1)
                        .and change { event_1.last_counted_at }.from(nil).to(now)
                        .and change { event_2.reload.count }.from(0).to(1)
@@ -87,8 +87,8 @@ RSpec.describe EventsProcessingJob, type: :job do
   end
 
   context 'events already have a count' do
-    let(:now) { Time.now}
-    let(:site) { create(:site) }
+    let(:now) { Time.new(2022, 7, 6, 12, 0, 0) }
+    let(:site) { create(:site, created_at: now - 1.day) }
     let(:recording) { create(:recording, site:) }
 
     let(:rule_1) { { matcher: 'equals', condition: 'or', value: '/' } }
@@ -108,7 +108,7 @@ RSpec.describe EventsProcessingJob, type: :job do
           type: Event::META,
           source: nil,
           data: { href: '/' }.to_json,
-          timestamp: Time.now.to_i * 1000
+          timestamp: Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000
         }
         buffer << {
           uuid: SecureRandom.uuid,
@@ -117,7 +117,7 @@ RSpec.describe EventsProcessingJob, type: :job do
           type: Event::INCREMENTAL_SNAPSHOT,
           data: { text: 'Add to cart' }.to_json,
           source: 2,
-          timestamp: Time.now.to_i * 1000
+          timestamp: Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000
         }
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe EventsProcessingJob, type: :job do
   end
 
   context 'when specific ids are passed' do
-    let(:now) { Time.now}
+    let(:now) { Time.now }
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
 

@@ -24,7 +24,7 @@ RSpec.describe EventsService::Types::PageVisit do
             site_id = :site_id AND
             type = 4 AND
             JSONExtractString(data, 'href') = 'http://localhost:8081/' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -43,7 +43,7 @@ RSpec.describe EventsService::Types::PageVisit do
             site_id = :site_id AND
             type = 4 AND
             JSONExtractString(data, 'href') != 'http://localhost:8081/' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -62,7 +62,7 @@ RSpec.describe EventsService::Types::PageVisit do
             site_id = :site_id AND
             type = 4 AND
             JSONExtractString(data, 'href') LIKE '%foo%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -81,7 +81,7 @@ RSpec.describe EventsService::Types::PageVisit do
             site_id = :site_id AND
             type = 4 AND
             JSONExtractString(data, 'href') NOT LIKE '%foo%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -100,7 +100,7 @@ RSpec.describe EventsService::Types::PageVisit do
             site_id = :site_id AND
             type = 4 AND
             JSONExtractString(data, 'href') LIKE 'http://localhost:8081/test%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

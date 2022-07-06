@@ -25,7 +25,7 @@ RSpec.describe EventsService::Types::TextClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'text') = 'Add to cart' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -45,7 +45,7 @@ RSpec.describe EventsService::Types::TextClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'text') != 'Add to cart' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -65,7 +65,7 @@ RSpec.describe EventsService::Types::TextClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'text') LIKE '%cart%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -85,7 +85,7 @@ RSpec.describe EventsService::Types::TextClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'text') NOT LIKE '%Sign up%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -105,7 +105,7 @@ RSpec.describe EventsService::Types::TextClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'text') LIKE 'Add%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

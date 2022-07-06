@@ -38,8 +38,8 @@ class EventsProcessingJob < ApplicationJob
       query_count,
       {
         site_id: event.site_id,
-        from_date: (event.last_counted_at || event.site.created_at).to_date.to_s,
-        to_date: Time.now.to_date.to_s
+        from_date: (event.last_counted_at || event.site.created_at).to_fs(:db),
+        to_date: Time.now.to_fs(:db)
       }
     )
 

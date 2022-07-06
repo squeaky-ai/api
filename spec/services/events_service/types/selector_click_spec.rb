@@ -25,7 +25,7 @@ RSpec.describe EventsService::Types::SelectorClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') = 'body > div#test' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -45,7 +45,7 @@ RSpec.describe EventsService::Types::SelectorClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') != 'body > div#test' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -65,7 +65,7 @@ RSpec.describe EventsService::Types::SelectorClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') LIKE '%#test%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -85,7 +85,7 @@ RSpec.describe EventsService::Types::SelectorClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') NOT LIKE '%#test%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -105,7 +105,7 @@ RSpec.describe EventsService::Types::SelectorClick do
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') LIKE 'body > div%' AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
