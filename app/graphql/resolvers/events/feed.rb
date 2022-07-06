@@ -78,7 +78,7 @@ module Resolvers
         capture_ids = all_event_ids(group_ids, capture_ids)
         # Fetch all the corrosponding groups from the
         # site
-        object.site.event_captures.where(id: capture_ids)
+        object.event_captures.where(id: capture_ids)
       end
 
       def union_queries(capture_events)
@@ -126,7 +126,7 @@ module Resolvers
         query = ActiveRecord::Base.sanitize_sql_array(
           [
             sql,
-            { site_id: object.site.id, limit: size, offset: (size * (page - 1)), from_date:, to_date: }
+            { site_id: object.id, limit: size, offset: (size * (page - 1)), from_date:, to_date: }
           ]
         )
 
