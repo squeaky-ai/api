@@ -101,7 +101,7 @@ module Resolvers
         query = ActiveRecord::Base.sanitize_sql_array(
           [
             sql,
-            { site_id: objcet.id, from_date:, to_date: }
+            { site_id: object.id, from_date:, to_date: }
           ]
         )
 
