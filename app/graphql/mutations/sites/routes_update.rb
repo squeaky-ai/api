@@ -18,6 +18,7 @@ module Mutations
 
       def resolve(routes:, **_rest)
         @site.routes = routes
+        @site.routes_will_change!
         @site.save
         @site
       end
