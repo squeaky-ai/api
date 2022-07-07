@@ -8,7 +8,12 @@ site_recording_events_query = <<-GRAPHQL
       recording(recordingId: $recording_id) {
         id
         events {
-          items
+          items {
+            id
+            data
+            type
+            timestamp
+          }
           pagination {
             perPage
             itemCount
@@ -71,7 +76,14 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
 
     it 'returns the item with the events' do
       response = subject['data']['site']['recording']
-      expect(response['events']['items']).to eq ["{\"id\":#{recording.events.first.id},\"data\":{\"href\":\"http://localhost/\",\"width\":0,\"height\":0},\"type\":4,\"timestamp\":1625389200000}"]
+      expect(response['events']['items']).to eq [
+        {
+          "id" => recording.events.first.id.to_s,
+          "data" => "{\"href\": \"http://localhost/\", \"width\": 0, \"height\": 0}",
+          "type" => 4,
+          "timestamp" => "1625389200000"
+        }
+      ]
     end
 
     it 'returns the correct pagination' do
