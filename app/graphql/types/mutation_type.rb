@@ -37,6 +37,8 @@ module Types
     field :css_selector_blacklist_create, mutation: Mutations::Sites::CssSelectorBlacklistCreate
     field :css_selector_blacklist_delete, mutation: Mutations::Sites::CssSelectorBlacklistDelete
     field :superuser_access_update, mutation: Mutations::Sites::SuperuserAccessUpdate
+    field :routes_update, mutation: Mutations::Sites::RoutesUpdate
+    field :routes_delete, mutation: Mutations::Sites::RoutesDelete
     # Team
     field :team_invite, mutation: Mutations::Teams::Invite
     field :team_delete, mutation: Mutations::Teams::Delete
