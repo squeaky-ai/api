@@ -5,6 +5,7 @@ class ProductUpdatesMailer < ApplicationMailer
     @user = user
 
     return unless user.communication_enabled?(:product_updates_email)
+    return unless user.first_name.present?
 
     mail(to: user.email, subject: 'Product Update: Q2 2022.')
   end
