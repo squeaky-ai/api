@@ -187,4 +187,16 @@ RSpec.describe Session do
       end
     end
   end
+
+  describe '#inactivity' do
+    it 'returns the inactivity' do
+      expect(instance.inactivity).to eq []
+    end
+  end
+
+  describe '#activity_duration' do
+    it 'returns the inactivity duration' do
+      expect(instance.activity_duration).to eq 11166
+    end
+  end
 end

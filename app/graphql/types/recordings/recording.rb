@@ -30,6 +30,8 @@ module Types
       field :visitor, Types::Visitors::Visitor, null: false
       field :nps, Types::Feedback::NpsResponseItem, null: true
       field :sentiment, Types::Feedback::SentimentResponseItem, null: true
+      field :activity_duration, GraphQL::Types::BigInt, null: true
+      field :inactivity, [[GraphQL::Types::BigInt, { null: false }], { null: true }], null: false
     end
   end
 end

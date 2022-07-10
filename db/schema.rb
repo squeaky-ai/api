@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_07_091035) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_10_154031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -213,6 +213,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_07_091035) do
     t.string "utm_campaign"
     t.string "utm_content"
     t.string "utm_term"
+    t.bigint "activity_duration"
+    t.string "inactivity", default: [], null: false, array: true
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"

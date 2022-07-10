@@ -90,7 +90,9 @@ class RecordingSaveJob < ApplicationJob
       utm_medium: session.utm_medium,
       utm_campaign: session.utm_campaign,
       utm_content: session.utm_content,
-      utm_term: session.utm_term
+      utm_term: session.utm_term,
+      activity_duration: session.activity_duration,
+      inactivity: session.inactivity
     )
   end
 
