@@ -49,6 +49,8 @@ module Resolvers
           'connected_at__desc' => 'connected_at DESC',
           'duration__asc' => Arel.sql('(disconnected_at - connected_at) ASC'),
           'duration__desc' => Arel.sql('(disconnected_at - connected_at) DESC'),
+          'activity__asc' => 'activity_duration ASC',
+          'activity__desc' => 'activity_duration DESC',
           'page_count__asc' => 'pages_count ASC',
           'page_count__desc' => 'pages_count DESC'
         }
