@@ -198,9 +198,9 @@ class RecordingSaveJob < ApplicationJob
     items = []
 
     session.events.each do |event|
-      next unless event['type'] == 3 &&
-                  event['data']['source'] == 2 &&
-                  event['data']['type'] == 2
+      next unless event['type'] == Event::INCREMENTAL_SNAPSHOT &&
+                  event['data']['source'] == Event::IncrementalSource::MOUSE_INTERACTION &&
+                  event['data']['type'] == Event::MouseInteractions::CLICK
 
       items.push(
         selector: event['data']['selector'] || 'html > body',

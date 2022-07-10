@@ -8,7 +8,7 @@ RSpec.describe ProductUpdatesMailer, type: :mailer do
     let(:mail) { described_class.q2_2022(user) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq 'Product Update: Q2 2022.'
+      expect(mail.subject).to eq 'Product Update: Q2 2022'
       expect(mail.to).to eq [user.email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end

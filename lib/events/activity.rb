@@ -15,7 +15,7 @@ module Events
     attr_accessor :inactivity
 
     def initialize(events)
-      @events = events.map { |event| add_delay(event, events.first['timestamp']) }
+      @events = events_with_delay(events)
       @skipping = false
       @skipping_speed = 1
       @next_user_interaction_event = nil
@@ -32,6 +32,10 @@ module Events
     private
 
     attr_reader :events
+
+    def events_with_delay(events)
+      events.map { |event| add_delay(event, events.first['timestamp']) }
+    end
 
     def process_inactivity
       events.each { |event| process_event(event) }
@@ -68,20 +72,20 @@ module Events
         @skipping = true
       end
 
-      if @skipping_speed == 0 && @skipping
+      if @skipping_speed.zero? && @skipping
         inactivity.last.push(event['delay'])
         @skipping = false
       end
     end
 
     def user_interaction?(event)
-      return false unless event['type'] == 3
+      return false unless event['type'] == Event::INCREMENTAL_SNAPSHOT
 
-      event['data']['source'].positive? && event['data']['source'] <= 5
+      event['data']['source'] > Event::IncrementalSource::MUTATION && event['data']['source'] <= Event::IncrementalSource::INPUT
     end
 
     def add_delay(event, baseline_time)
-      if event['type'] == 3 && event['data']['source'] == 1
+      if event['type'] == Event::INCREMENTAL_SNAPSHOT && event['data']['source'] == Event::IncrementalSource::MOUSE_MOVE
         first_offset = event['data']['positions'].first['timeOffset']
         first_timestamp = event['timestamp'] + first_offset
         event['delay'] = first_timestamp - baseline_time
