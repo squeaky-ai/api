@@ -51,6 +51,9 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.utm_campaign).to eq 'my_campaign'
       expect(recording.utm_content).to eq 'test'
       expect(recording.utm_term).to eq 'analytics'
+      expect(recording.inactivity).to eq []
+      expect(recording.activity_duration).to eq 11166
+
     end
 
     it 'stores the page' do
@@ -392,6 +395,37 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'does not save it again' do
       expect { subject }.not_to change { site.reload.event_captures.size }
+    end
+  end
+
+  context 'when calculating the activity' do
+    let(:site) { create(:site_with_team) }
+
+    let(:event) do
+      {
+        'site_id' => site.uuid,
+        'session_id' => SecureRandom.base36,
+        'visitor_id' => SecureRandom.base36
+      }
+    end
+
+    before do
+      events_fixture = require_fixture('events_with_inactivity.json')
+
+      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      allow(Cache.redis).to receive(:del)
+      allow(Cache.redis).to receive(:set)
+      allow(Cache.redis).to receive(:expire)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'stores the recordings activity' do
+      subject
+      recording = site.reload.recordings.first
+
+      expect(recording.inactivity).to eq [['3125', '28410'], ['30426', '55402'], ['66031', '71252']]
+      expect(recording.activity_duration).to eq 15770
     end
   end
 end

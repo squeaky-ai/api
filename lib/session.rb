@@ -140,6 +140,14 @@ class Session
     exists
   end
 
+  def inactivity
+    activity.inactivity
+  end
+
+  def activity_duration
+    activity.activity_duration
+  end
+
   private
 
   def fetch_and_process_events
@@ -153,6 +161,10 @@ class Session
              .sort_by { |e| e['value']['timestamp'] }
 
     extract_and_set_events(events)
+  end
+
+  def activity
+    @activity ||= Events::Activity.new(events)
   end
 
   def extract_and_set_events(events)

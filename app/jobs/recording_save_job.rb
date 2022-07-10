@@ -90,7 +90,9 @@ class RecordingSaveJob < ApplicationJob
       utm_medium: session.utm_medium,
       utm_campaign: session.utm_campaign,
       utm_content: session.utm_content,
-      utm_term: session.utm_term
+      utm_term: session.utm_term,
+      activity_duration: session.activity_duration,
+      inactivity: session.inactivity
     )
   end
 
@@ -196,9 +198,9 @@ class RecordingSaveJob < ApplicationJob
     items = []
 
     session.events.each do |event|
-      next unless event['type'] == 3 &&
-                  event['data']['source'] == 2 &&
-                  event['data']['type'] == 2
+      next unless event['type'] == Event::INCREMENTAL_SNAPSHOT &&
+                  event['data']['source'] == Event::IncrementalSource::MOUSE_INTERACTION &&
+                  event['data']['type'] == Event::MouseInteractions::CLICK
 
       items.push(
         selector: event['data']['selector'] || 'html > body',
