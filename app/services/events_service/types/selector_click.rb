@@ -21,7 +21,7 @@ module EventsService
           SELECT uuid, recording_id, '#{event.name}' as event_name, timestamp
           FROM events
           WHERE
-            site_id = ? AND
+            site_id = :site_id AND
             type = 3 AND
             source = 2 AND
             JSONExtractString(data, 'selector') #{rule_expression} AND
