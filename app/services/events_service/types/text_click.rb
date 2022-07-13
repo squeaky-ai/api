@@ -9,8 +9,8 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
+            type = #{Event::INCREMENTAL_SNAPSHOT} AND
+            source = #{Event::IncrementalSource::MOUSE_INTERACTION} AND
             JSONExtractString(data, 'text') #{rule_expression} AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -22,8 +22,8 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
+            type = #{Event::INCREMENTAL_SNAPSHOT} AND
+            source = #{Event::IncrementalSource::MOUSE_INTERACTION} AND
             JSONExtractString(data, 'text') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -35,8 +35,8 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
+            type = #{Event::INCREMENTAL_SNAPSHOT} AND
+            source = #{Event::IncrementalSource::MOUSE_INTERACTION} AND
             JSONExtractString(data, 'text') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
           GROUP BY date_key

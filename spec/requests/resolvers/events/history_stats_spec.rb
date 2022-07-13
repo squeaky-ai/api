@@ -72,7 +72,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::META,
+            type: Event::PAGE_VIEW,
             source: nil,
             data: { href: '/' }.to_json,
             timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
@@ -84,7 +84,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::META,
+            type: Event::PAGE_VIEW,
             source: nil,
             data: { href: '/test' }.to_json,
             timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
@@ -96,7 +96,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::META,
+            type: Event::PAGE_VIEW,
             source: nil,
             data: { href: '/something_else' }.to_json,
             timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000

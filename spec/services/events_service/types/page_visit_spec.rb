@@ -22,7 +22,7 @@ RSpec.describe EventsService::Types::PageVisit do
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 4 AND
+            type = #{Event::PAGE_VIEW} AND
             JSONExtractString(data, 'href') = 'http://localhost:8081/' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -41,7 +41,7 @@ RSpec.describe EventsService::Types::PageVisit do
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 4 AND
+            type = #{Event::PAGE_VIEW} AND
             JSONExtractString(data, 'href') != 'http://localhost:8081/' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -60,7 +60,7 @@ RSpec.describe EventsService::Types::PageVisit do
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 4 AND
+            type = #{Event::PAGE_VIEW} AND
             JSONExtractString(data, 'href') LIKE '%foo%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -79,7 +79,7 @@ RSpec.describe EventsService::Types::PageVisit do
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 4 AND
+            type = #{Event::PAGE_VIEW} AND
             JSONExtractString(data, 'href') NOT LIKE '%foo%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -98,7 +98,7 @@ RSpec.describe EventsService::Types::PageVisit do
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 4 AND
+            type = #{Event::PAGE_VIEW} AND
             JSONExtractString(data, 'href') LIKE 'http://localhost:8081/test%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL

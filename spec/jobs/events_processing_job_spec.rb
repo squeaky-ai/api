@@ -27,7 +27,7 @@ RSpec.describe EventsProcessingJob, type: :job do
     let(:data) {
       [
         {
-          type: Event::META,
+          type: Event::PAGE_VIEW,
           data: { href: '/' },
           source: nil
         },
@@ -105,7 +105,7 @@ RSpec.describe EventsProcessingJob, type: :job do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording.id,
-          type: Event::META,
+          type: Event::PAGE_VIEW,
           source: nil,
           data: { href: '/' }.to_json,
           timestamp: Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000

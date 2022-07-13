@@ -9,7 +9,7 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
+            type = #{Event::CUSTOM_TRACK} AND
             JSONExtractString(data, 'name') #{rule_expression} AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -21,7 +21,7 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
+            type = #{Event::CUSTOM_TRACK} AND
             JSONExtractString(data, 'name') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
@@ -33,7 +33,7 @@ module EventsService
           FROM events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
+            type = #{Event::CUSTOM_TRACK} AND
             JSONExtractString(data, 'name') #{rule_expression} AND
             toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
           GROUP BY date_key
