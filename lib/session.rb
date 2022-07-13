@@ -199,8 +199,18 @@ class Session
   end
 
   def handle_pageview_event(event)
-    uri = URI(event['value']['data']['href'])
-    @pageviews.push('path' => uri.path, 'timestamp' => event['value']['timestamp'])
+    path = URI(event['value']['data']['href']).path
+
+    # This is so we can show page views for single
+    # page apps in the slider and sidebar as they
+    # won't trigger a full snapshot
+    data = event['value']
+    data['data']['href'] = path
+    data['type'] = Event::PAGE_VIEW
+    @events.push(data)
+
+    # Create the page view that we use for analytics
+    @pageviews.push('path' => path, 'timestamp' => event['value']['timestamp'])
   end
 
   def handle_event(event)
