@@ -19,7 +19,7 @@ class RecordingSaveJob < ApplicationJob
     message = args.first.symbolize_keys
 
     @session = Session.new(message)
-    @site = Site.find_by!(uuid: session.site_id)
+    @site = Site.find_by(uuid: session.site_id)
 
     return unless valid?
 
@@ -234,6 +234,8 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def valid?
+    return false unless site
+
     return false if blacklisted_visitor?
 
     return false unless session.events?
