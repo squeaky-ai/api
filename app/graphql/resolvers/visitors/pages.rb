@@ -15,7 +15,7 @@ module Resolvers
         pages = Visitor
                 .find(object.id)
                 .pages
-                .select('url, count(*) count')
+                .select('url, count(*) count, AVG(exited_at - entered_at) average_time_on_page')
                 .group(:url)
                 .order(order)
                 .page(page)
@@ -42,7 +42,7 @@ module Resolvers
           {
             page_view: page.url,
             page_view_count: page.count,
-            average_time_on_page: 0
+            average_time_on_page: page.average_time_on_page
           }
         end
       end
@@ -50,7 +50,9 @@ module Resolvers
       def order_by(sort)
         orders = {
           'views_count__desc' => 'count DESC',
-          'views_count__asc' => 'count ASC'
+          'views_count__asc' => 'count ASC',
+          'average_time_on_page__desc' => 'average_time_on_page DESC',
+          'average_time_on_page__asc' => 'average_time_on_page ASC'
         }
 
         Arel.sql(orders[sort] || orders['views_count__desc'])
