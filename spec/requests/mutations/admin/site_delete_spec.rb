@@ -12,8 +12,8 @@ admin_site_delete_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Admin::SiteDelete, type: :request do
-  let(:site) { create(:site) }
   let!(:user) { create(:user, superuser: true) }
+  let(:site) { create(:site_with_team, owner: user) }
 
   before do
     create(:team, site: site, role: Team::MEMBER)

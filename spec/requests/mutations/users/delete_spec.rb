@@ -17,6 +17,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     stub = double
     allow(stub).to receive(:deliver_now)
     allow(UserMailer).to receive(:destroyed).and_return(stub)
+    allow(AdminMailer).to receive(:site_destroyed).and_return(stub)
   end
 
   subject do
@@ -33,7 +34,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     expect { user.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
-  it 'sends the email' do
+  it 'sends the emails' do
     subject
     expect(UserMailer).to have_received(:destroyed)
   end
@@ -53,6 +54,11 @@ RSpec.describe Mutations::Users::Delete, type: :request do
 
     it 'destroys all of those sites' do
       expect { subject }.to change { user.sites.size }.from(2).to(0)
+    end
+
+    it 'sends the email that the site was deleted' do
+      subject
+      expect(AdminMailer).to have_received(:site_destroyed).twice
     end
   end
 

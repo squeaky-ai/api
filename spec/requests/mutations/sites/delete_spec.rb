@@ -85,6 +85,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       stub = double
       allow(stub).to receive(:deliver_now)
       allow(SiteMailer).to receive(:destroyed).and_return(stub)
+      allow(AdminMailer).to receive(:site_destroyed).and_return(stub)
 
       create(:team, user: team_user1, site: site, role: Team::ADMIN)
       create(:team, user: team_user2, site: site, role: Team::MEMBER)
@@ -103,6 +104,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       subject
       expect(SiteMailer).to have_received(:destroyed).with(team_user1.email, site)
       expect(SiteMailer).to have_received(:destroyed).with(team_user2.email, site)
+      expect(AdminMailer).to have_received(:site_destroyed).with(site)
     end
   end
 
