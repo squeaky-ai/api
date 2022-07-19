@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class Site < Resolvers::Base
-      type Types::Sites::Site, null: true
+      type Types::Admin::Site, null: true
 
       argument :site_id, ID, required: true
 
