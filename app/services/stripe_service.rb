@@ -162,7 +162,7 @@ class StripeService
       response = all_payments['data'].first
     end
 
-    return if response.empty?
+    return unless response
 
     card = response['card']
     billing = response['billing_details']
