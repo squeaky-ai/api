@@ -34,7 +34,7 @@ RSpec.describe Plan, type: :model do
       let(:instance) { described_class.new(tier: 3) }
   
       before do
-        allow(instance).to receive(:recordings_locked_count).and_return 5
+        allow(instance).to receive(:all_recordings_count).and_return 41234134234
 
         site.update(plan: instance)
       end

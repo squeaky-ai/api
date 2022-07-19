@@ -11,7 +11,7 @@ class Plan < ApplicationRecord
   end
 
   def exceeded?
-    recordings_locked_count.positive?
+    all_recordings_count >= max_monthly_recordings
   end
 
   def invalid?
@@ -66,6 +66,16 @@ class Plan < ApplicationRecord
   end
 
   private
+
+  def all_recordings_count
+    @all_recordings_count ||= site.recordings
+                                  .where(
+                                    'created_at > ? AND created_at < ?',
+                                    Time.now.beginning_of_month,
+                                    Time.now.end_of_month
+                                  )
+                                  .count
+  end
 
   def plan_defaults
     @plan_defaults ||= Rails.configuration.plans.values.find { |plan| plan[:id] == tier }
