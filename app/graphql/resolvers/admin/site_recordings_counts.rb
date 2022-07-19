@@ -8,20 +8,23 @@ module Resolvers
       def resolve_with_timings
         sql = <<-SQL
           SELECT
-            (COUNT(*)) total,
-            (COUNT(*) FILTER(WHERE status = ?)) locked,
-            (COUNT(*) FILTER(WHERE status = ?)) deleted,
-            (COUNT(*) FILTER(WHERE created_at BETWEEN ? AND ?)) current_month
+            (COUNT(*)) as total_all,
+            (COUNT(*) FILTER(WHERE recordings.status = :locked)) as locked_all,
+            (COUNT(*) FILTER(WHERE recordings.status = :deleted)) as deleted_all,
+            (COUNT(*) FILTER(WHERE recordings.created_at > :start_date)) as total_current_month,
+            (COUNT(*) FILTER(WHERE recordings.status = :locked AND recordings.created_at > :start_date)) as locked_current_month,
+            (COUNT(*) FILTER(WHERE recordings.status = :deleted AND recordings.created_at > :start_date)) as deleted_current_month
           FROM recordings
-          WHERE recordings.site_id = ?
+          WHERE recordings.site_id = :site_id
         SQL
 
         variables = [
-          Recording::LOCKED,
-          Recording::DELETED,
-          Time.now.beginning_of_month,
-          Time.now.end_of_month,
-          object.id
+          {
+            locked: Recording::LOCKED,
+            deleted: Recording::DELETED,
+            start_date: Time.now.beginning_of_month,
+            site_id: object.id
+          }
         ]
 
         Sql.execute(sql, variables).first
