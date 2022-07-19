@@ -54,7 +54,7 @@ class StripeService
       stripe = new(billing.user, billing.site)
 
       payment_information = stripe.fetch_payment_information(billing.customer_id)
-      billing.update(payment_information)
+      billing.update(payment_information) if payment_information
     end
 
     def delete_customer(customer_id)
@@ -161,6 +161,8 @@ class StripeService
       all_payments = Stripe::PaymentMethod.list(customer: customer['id'], type: 'card')
       response = all_payments['data'].first
     end
+
+    return if response.empty?
 
     card = response['card']
     billing = response['billing_details']
