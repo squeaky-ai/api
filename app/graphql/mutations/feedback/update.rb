@@ -47,6 +47,10 @@ module Mutations
         )
 
         feedback.assign_attributes(args.except(:site_id))
+
+        feedback.nps_excluded_pages_will_change! if args[:nps_excluded_pages]
+        feedback.sentiment_excluded_pages_will_change! if args[:sentiment_excluded_pages]
+
         feedback.save
 
         feedback
