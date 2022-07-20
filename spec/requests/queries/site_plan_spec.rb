@@ -133,7 +133,9 @@ RSpec.describe 'QuerySitePlan', type: :request do
     before do
       create(:billing, status: Billing::VALID, site:, user: site.owner.user)
 
-      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(5000)
+      allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
+      allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
+      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(1)
 
       site.plan.update(tier: 2)
     end
@@ -153,7 +155,7 @@ RSpec.describe 'QuerySitePlan', type: :request do
         'exceeded' => true,
         'invalid' => false,
         'maxMonthlyRecordings' => 50000,
-        'recordingsLockedCount' => 5000,
+        'recordingsLockedCount' => 1,
         'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
@@ -171,7 +173,9 @@ RSpec.describe 'QuerySitePlan', type: :request do
     before do
       create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
 
-      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(5000)
+      allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
+      allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
+      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(1)
 
       site.plan.update(tier: 2)
     end
@@ -191,7 +195,7 @@ RSpec.describe 'QuerySitePlan', type: :request do
         'exceeded' => true,
         'invalid' => true,
         'maxMonthlyRecordings' => 50000,
-        'recordingsLockedCount' => 5000,
+        'recordingsLockedCount' => 1,
         'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
