@@ -16,6 +16,8 @@ module Mutations
       argument :nps_contact_consent_enabled, Boolean, required: false
       argument :nps_layout, String, required: false
       argument :nps_excluded_pages, [String], required: false
+      argument :nps_languages, [String], required: false
+      argument :nps_languages_default, String, required: false
       argument :sentiment_enabled, Boolean, required: false
       argument :sentiment_accent_color, String, required: false
       argument :sentiment_excluded_pages, [String], required: false
@@ -39,6 +41,8 @@ module Mutations
           nps_contact_consent_enabled: false,
           nps_layout: 'full_width',
           nps_excluded_pages: [],
+          nps_languages: ['en'],
+          nps_languages_default: 'en',
           sentiment_enabled: false,
           sentiment_accent_color: '#0074E0',
           sentiment_excluded_pages: [],
@@ -50,6 +54,7 @@ module Mutations
 
         feedback.nps_excluded_pages_will_change! if args[:nps_excluded_pages]
         feedback.sentiment_excluded_pages_will_change! if args[:sentiment_excluded_pages]
+        feedback.nps_languages_will_change! if args[:nps_languages]
 
         feedback.save
 
