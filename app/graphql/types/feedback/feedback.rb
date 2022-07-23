@@ -17,6 +17,7 @@ module Types
       field :nps_excluded_pages, [String, { null: true }], null: false
       field :nps_languages, [String, { null: true }], null: false
       field :nps_languages_default, String, null: true
+      field :nps_translations, resolver: Resolvers::Feedback::NpsTranslations
 
       field :sentiment_enabled, Boolean, null: true
       field :sentiment_accent_color, String, null: true
