@@ -31,8 +31,8 @@ module Resolvers
                      visitors.visitor_id visitor_visitor_id
                    ')
 
-        query = filter_by_follow_up(filters, query)
-        query = filter_by_outcome_type(filters, query)
+        query = filter_by_follow_up(filters, query) if filters
+        query = filter_by_outcome_type(filters, query) if filters
 
         results = query
                   .order(sort_by(sort))
