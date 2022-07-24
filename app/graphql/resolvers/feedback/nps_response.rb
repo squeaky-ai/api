@@ -8,28 +8,33 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Feedback::NpsResponseSort, required: false, default_value: 'timestamp__desc'
+      argument :filters, Types::Feedback::NpsResponseFilters, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:)
-        results = Nps
-                  .joins(recording: :visitor)
-                  .where(
-                    'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
-                    object.site.id,
-                    object.range.from,
-                    object.range.to,
-                    [Recording::ACTIVE, Recording::DELETED]
-                  )
-                  .select('
-                    nps.*,
-                    recordings.session_id,
-                    recordings.viewport_x,
-                    recordings.viewport_y,
-                    recordings.device_x,
-                    recordings.device_y,
-                    recordings.useragent,
-                    visitors.id visitor_id,
-                    visitors.visitor_id visitor_visitor_id
-                  ')
+      def resolve_with_timings(page:, size:, sort:, filters:)
+        query = Nps.joins(recording: :visitor)
+                   .where(
+                     'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
+                     object.site.id,
+                     object.range.from,
+                     object.range.to,
+                     [Recording::ACTIVE, Recording::DELETED]
+                   )
+                   .select('
+                     nps.*,
+                     recordings.session_id,
+                     recordings.viewport_x,
+                     recordings.viewport_y,
+                     recordings.device_x,
+                     recordings.device_y,
+                     recordings.useragent,
+                     visitors.id visitor_id,
+                     visitors.visitor_id visitor_visitor_id
+                   ')
+
+        query = filter_by_follow_up(filters, query)
+        query = filter_by_outcome_type(filters, query)
+
+        results = query
                   .order(sort_by(sort))
                   .page(page)
                   .per(size)
@@ -53,6 +58,26 @@ module Resolvers
         when 'timestamp__asc'
           'created_at ASC'
         end
+      end
+
+      def filter_by_follow_up(filters, query)
+        return query if filters[:follow_up_comment].nil?
+
+        clause = filters[:follow_up_comment] ? 'comment IS NOT NULL' : 'comment IS NULL'
+
+        query.where(clause)
+      end
+
+      def filter_by_outcome_type(filters, query)
+        return query if filters[:outcome_type].nil?
+
+        clauses = {
+          'Detractor' => 'score < 7',
+          'Passive' => 'score > 6 AND score < 9',
+          'Promoter' => 'score > 8'
+        }
+
+        query.where(clauses[filters[:outcome_type]])
       end
 
       def map_results(results)
