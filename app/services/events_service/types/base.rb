@@ -37,6 +37,11 @@ module EventsService
         # or we will be open to attacks
         value = rule['value']
 
+        # TODO: The old way used to use the whole url to
+        # search but now it just uses the path. When we
+        # do multi-domain this will be a problem
+        value = URI(value).path if event.event_type == EventCapture::PAGE_VISIT
+
         case rule['matcher']
         when 'equals'
           "= '#{value}'"
