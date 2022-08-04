@@ -41,6 +41,22 @@ RSpec.describe StripeService::EventFactory do
       end
     end
 
+    context 'when the type is TAX_ID_CREATED' do
+      let(:type) { StripeService::TAX_ID_CREATED }
+
+      it 'returns an instance of TaxIdCreated' do
+        expect(subject).to be_instance_of(StripeService::Types::TaxIdCreated)
+      end
+    end
+
+    context 'when the type is TAX_ID_DELETED' do
+      let(:type) { StripeService::TAX_ID_DELETED }
+
+      it 'returns an instance of TaxIdDeleted' do
+        expect(subject).to be_instance_of(StripeService::Types::TaxIdDeleted)
+      end
+    end
+
     context 'when the type is not handled' do
       let(:type) { double(:unhandled_type) }
 

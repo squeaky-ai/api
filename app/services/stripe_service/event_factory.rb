@@ -5,6 +5,8 @@ module StripeService
   INVOICE_PAID = 'invoice.paid'
   INVOICE_PAYMENT_FAILED = 'invoice.payment_failed'
   CUSTOMER_UPDATED = 'customer.updated'
+  TAX_ID_CREATED = 'customer.tax_id.created'
+  TAX_ID_DELETED = 'customer.tax_id.deleted'
 
   class EventFactory
     def self.for(type, event)
@@ -17,6 +19,10 @@ module StripeService
         Types::InvoicePaymentFailed.new(event)
       when CUSTOMER_UPDATED
         Types::CustomerUpdated.new(event)
+      when TAX_ID_CREATED
+        Types::TaxIdCreated.new(event)
+      when TAX_ID_DELETED
+        Types::TaxIdDeleted.new(event)
       else
         Rails.logger.warn "Did not know how to process stripe event: #{type}"
         nil

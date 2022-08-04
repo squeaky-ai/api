@@ -1,0 +1,17 @@
+{
+  "object": {
+    "id": "txi_1LT9lFLJ9zG7aLW8Au6LUoPX",
+    "object": "tax_id",
+    "country": "GB",
+    "created": 1659641473,
+    "customer": "cus_LYkhU0zACd6T4T",
+    "livemode": false,
+    "type": "eu_vat",
+    "value": "XI123345678",
+    "verification": {
+      "status": "pending",
+      "verified_address": null,
+      "verified_name": null
+    }
+  }
+}
