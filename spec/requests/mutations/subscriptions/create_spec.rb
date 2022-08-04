@@ -57,7 +57,12 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
       allow(Stripe::Checkout::Session).to receive(:create)
         .with(
           customer: customer_id,
+          customer_update: {
+            address: 'auto', 
+            name: 'auto'
+          },
           allow_promotion_codes: true,
+          billing_address_collection: 'required',
           metadata: {
             site: site.name
           },
@@ -69,7 +74,10 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
               quantity: 1,
               price: pricing_id
             }
-          ]
+          ],
+          tax_id_collection: {
+            enabled: true
+          }
         )
         .and_return(payments_response)
     end

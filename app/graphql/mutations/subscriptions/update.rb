@@ -21,7 +21,7 @@ module Mutations
 
         raise GraphQL::ExecutionError, 'pricing_id is not valid' if plan.nil?
 
-        StripeService.update_plan(@user, @site, pricing_id)
+        StripeService::Billing.new(@user, @site).update_plan(pricing_id)
 
         if plan[:id] > @site.plan.tier
           # We should probably only unlock ones within their new

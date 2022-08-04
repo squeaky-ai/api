@@ -44,7 +44,7 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     before do
       Billing.create(customer_id:, site: site, user: user)
 
-      allow(StripeService).to receive(:update_plan)
+      allow_any_instance_of(StripeService::Billing).to receive(:update_plan)
     end
 
     subject do
@@ -73,12 +73,8 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     end
 
     it 'calls the service' do
+      expect_any_instance_of(StripeService::Billing).to receive(:update_plan).with(pricing_id)
       subject
-      expect(StripeService).to have_received(:update_plan).with(
-        user,
-        site,
-        pricing_id
-      )
     end
 
     context 'when there are locked recordings and they are upgrading' do
