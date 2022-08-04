@@ -99,12 +99,12 @@ RSpec.describe StripeService::Checkout do
     end
   end
 
-  describe '.create_billing' do
+  describe '.create_billing_portal' do
     let(:billing) { create(:billing) }
     let(:redirect_url) { 'https://stripe.com/fake_redirect_url' }
     let(:portal_response) { { 'url' => redirect_url } }
 
-    subject { described_class.new(billing.user, billing.site).create_billing }
+    subject { described_class.new(billing.user, billing.site).create_billing_portal }
 
     before do
       allow(Stripe::BillingPortal::Session).to receive(:create)

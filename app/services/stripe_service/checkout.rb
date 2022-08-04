@@ -17,7 +17,7 @@ module StripeService
       }
     end
 
-    def create_billing
+    def create_billing_portal
       billing = find_or_create_billing!
       redirect_url = create_billing_portal_session(billing.customer_id)
 

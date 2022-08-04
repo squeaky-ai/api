@@ -116,8 +116,6 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
 
     before do
       Billing.create(customer_id:, site: site, user: user)
-
-      allow(StripeService).to receive(:delete_customer)
     end
 
     subject do
@@ -130,8 +128,8 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     it 'deletes the stripe customer' do
+      expect_any_instance_of(StripeService::Billing).to receive(:delete_customer)
       subject
-      expect(StripeService).to have_received(:delete_customer).with(customer_id)
     end
   end
 end
