@@ -21,7 +21,7 @@ module Mutations
 
         raise GraphQL::ExecutionError, 'pricing_id is not valid' if plan.nil?
 
-        StripeService.create_plan(@user, @site, pricing_id)
+        StripeService::Checkout.new(@user, @site).create_plan(pricing_id)
       end
     end
   end

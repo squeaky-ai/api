@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_21_152336) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_02_190655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_21_152336) do
     t.string "card_number"
     t.string "billing_name"
     t.string "billing_email"
+    t.jsonb "billing_address"
+    t.jsonb "tax_ids", default: [], null: false
     t.index ["site_id"], name: "index_billing_on_site_id"
     t.index ["user_id"], name: "index_billing_on_user_id"
   end

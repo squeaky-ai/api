@@ -16,7 +16,7 @@ module Mutations
       end
 
       def resolve(**_rest)
-        StripeService.create_billing_portal(@user, @site)
+        StripeService::Checkout.create_billing_portal(@user, @site)
       end
     end
   end

@@ -15,6 +15,8 @@ module Types
       field :billing_name, String, null: true
       field :billing_email, String, null: true
       field :transactions, [Types::Subscriptions::Transaction, { null: true }], null: false
+      field :billing_address, Types::Sites::BillingAddress, null: true
+      field :tax_ids, [Types::Sites::TaxId, { null: true }], null: false
     end
   end
 end

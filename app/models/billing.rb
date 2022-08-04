@@ -22,6 +22,6 @@ class Billing < ApplicationRecord
   NEW = 'new'
 
   def destroy_stripe_customer!
-    StripeService.delete_customer(customer_id) if customer_id
+    StripeService::Billing.new(user, site).delete_customer(customer_id) if customer_id
   end
 end
