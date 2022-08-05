@@ -18,12 +18,14 @@ module Types
       field :nps_languages, [String, { null: true }], null: false
       field :nps_languages_default, String, null: true
       field :nps_translations, resolver: Resolvers::Feedback::NpsTranslations
+      field :nps_hide_logo, Boolean, null: false
 
       field :sentiment_enabled, Boolean, null: true
       field :sentiment_accent_color, String, null: true
       field :sentiment_excluded_pages, [String, { null: true }], null: false
       field :sentiment_layout, String, null: true
       field :sentiment_devices, [String, { null: true }], null: false
+      field :sentiment_hide_logo, Boolean, null: false
     end
   end
 end

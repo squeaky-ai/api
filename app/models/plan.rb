@@ -10,6 +10,10 @@ class Plan < ApplicationRecord
     plan_defaults[:name]
   end
 
+  def free?
+    tier.zero?
+  end
+
   def exceeded?
     all_recordings_count >= max_monthly_recordings
   end
