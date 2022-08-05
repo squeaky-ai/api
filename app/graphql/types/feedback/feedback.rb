@@ -26,6 +26,7 @@ module Types
       field :sentiment_layout, String, null: true
       field :sentiment_devices, [String, { null: true }], null: false
       field :sentiment_hide_logo, Boolean, null: false
+      field :sentiment_schedule, String, null: true
     end
   end
 end

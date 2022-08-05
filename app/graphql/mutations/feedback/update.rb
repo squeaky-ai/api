@@ -25,6 +25,7 @@ module Mutations
       argument :sentiment_layout, String, required: false
       argument :sentiment_devices, [String], required: false
       argument :sentiment_hide_logo, Boolean, required: false
+      argument :sentiment_schedule, String, required: false
 
       type Types::Feedback::Feedback
 
@@ -68,7 +69,8 @@ module Mutations
           sentiment_excluded_pages: [],
           sentiment_layout: 'right_middle',
           sentiment_devices: %w[desktop tablet],
-          sentiment_hide_logo: false
+          sentiment_hide_logo: false,
+          sentiment_schedule: 'always'
         )
       end
 
