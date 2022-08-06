@@ -1,0 +1,32 @@
+<p>Hey <%= @user.first_name %>,</p>
+<p>To keep up with the rapid pace of product developments at Squeaky we've switched to monthly, rather than quarterly, Product Update Emails. We've summarised the main highlights from July in the email below, and for a detailed overview you can visit the blog post linked at the end of the email.</p>
+<p>
+  <ul>
+    <li>We've released <a href="https://squeaky.ai/app/sites/<%= @user.sites.first.id %>/events">Events Tracking</a> in Beta! There's more information in the blog, but make sure you send us your feedback 🙂</li>
+    <li>There are now brand new session playback controls and performance improvements for session playback.</li>
+    <li>We've added a session <i>Activity</i> metric, so you can see how much time each visitor was active during the session recording.</li>
+    <li>
+      We've started rolling out Squeaky 4.0 Style Updates, including:
+      <ul>
+        <li>A new navigation</li>
+        <li>Improved typography and iconography</li>
+        <li>More compact table rows</li>
+        <li>New button styles</li>
+      </ul>
+    </li>
+    <li>
+      <a href="https://squeaky.ai/app/sites/<%= @user.sites.first.id %>/feedback/nps">NPS</a> received some more big updates:
+      <ul>
+        <li>It's now possible to define custom NPS triggers <i style="color: #707070">(technical expertise required)</i></li>
+        <li>We've added multi-language support! Anyone can request an additional language, but so far we offer English, Czech, Spanish, Polish, French, Dutch, and Swedish.</li>
+        <li>We've updated the tabs structure and layout</li>
+        <li>There are new and improved controls for previewing and turning your widget on and off.</li>
+      </ul>
+    </li>
+    <li>User journeys URL structure improvements:</li>
+  </ul>
+</p>
+<a href="https://squeaky.ai/blog/product-updates/product-update-july-2022?utm_source=squeaky-product-update&utm_medium=email" class="button" style="text-decoration: none; margin-bottom: 2rem;">View Product Update Post</a>
+<p>Thanks so much for your continued support, and please keep the feedback and feature requests coming!</p>
+<p>Kind Regards, </p>
+<p>The Squeaky Team</p>
