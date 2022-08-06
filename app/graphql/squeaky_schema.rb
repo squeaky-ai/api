@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class SqueakySchema < GraphQL::Schema
-  mutation(Types::MutationType)
-  query(Types::QueryType)
+  query Types::QueryType
+  mutation Types::MutationType
 
   # Union and Interface Resolution
   def self.resolve_type(_abstract_type, _obj, _ctx)

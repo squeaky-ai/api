@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_05_150745) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_06_133419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -172,6 +172,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_05_150745) do
     t.boolean "exited_on", default: false, null: false
     t.boolean "bounced_on", default: false, null: false
     t.bigint "site_id"
+    t.index ["exited_at"], name: "index_pages_on_exited_at"
     t.index ["recording_id"], name: "index_pages_on_recording_id"
     t.index ["site_id"], name: "index_pages_on_site_id"
   end
@@ -222,6 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_05_150745) do
     t.string "utm_term"
     t.bigint "activity_duration"
     t.string "inactivity", default: [], null: false, array: true
+    t.index ["disconnected_at"], name: "index_recordings_on_disconnected_at"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
     t.index ["visitor_id"], name: "index_recordings_on_visitor_id"
