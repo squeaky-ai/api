@@ -37,7 +37,8 @@ module Resolvers
           feedback_sent: I18n.t(:feedback_sent),
           thanks_for_sharing: I18n.t(:thanks_for_sharing),
           close: I18n.t(:close),
-          powered_by: I18n.t(:powered_by)
+          powered_by: I18n.t(:powered_by),
+          please_type: I18n.t(:please_type)
         }
       end
     end
