@@ -113,6 +113,8 @@ module Types
       posts = posts.where('LOWER(category) = ?', arguments[:category].downcase) if arguments[:category]
       posts = posts.where('tags && ARRAY[?]::varchar[]', arguments[:tags]) unless arguments[:tags].empty?
 
+      posts = posts.order('created_at DESC')
+
       {
         posts:,
         tags: ::Blog.tags,
