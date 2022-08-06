@@ -147,7 +147,7 @@ module Resolvers
             SELECT url
             FROM pages
             WHERE pages.recording_id = recordings.id
-            ORDER BY pages.entered_at ASC
+            ORDER BY pages.exited_at ASC
             LIMIT 1
           )
         SQL

@@ -80,6 +80,6 @@ class Recording < ApplicationRecord
   private
 
   def ordered_pages
-    @ordered_pages ||= pages.sort_by(&:entered_at)
+    @ordered_pages ||= pages.sort_by(&:exited_at)
   end
 end

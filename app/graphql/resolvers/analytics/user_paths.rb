@@ -12,9 +12,9 @@ module Resolvers
         sql = <<-SQL
           SELECT page_urls path
           FROM (
-            SELECT ARRAY_AGG(pages.url ORDER BY entered_at ASC) page_urls
+            SELECT ARRAY_AGG(pages.url ORDER BY exited_at ASC) page_urls
             FROM pages
-            WHERE pages.site_id = ? AND to_timestamp(pages.entered_at / 1000)::date BETWEEN ? AND ?
+            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY pages.recording_id
           ) page_urls
           WHERE page_urls @> ?
