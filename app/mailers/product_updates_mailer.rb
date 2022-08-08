@@ -15,6 +15,7 @@ class ProductUpdatesMailer < ApplicationMailer
     @user = user
     @unsubscribable = true
 
+    return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
     return unless user.first_name.present?
 
