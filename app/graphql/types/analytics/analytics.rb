@@ -22,6 +22,15 @@ module Types
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
       field :countries, resolver: Resolvers::Analytics::Countries
       field :user_paths, resolver: Resolvers::Analytics::UserPaths
+
+      field :per_page, Types::Analytics::PerPage::PerPage, null: false do
+        argument :page, String, required: true
+      end
+
+      def per_page(**kwargs)
+        h = { **object.to_h, **kwargs }
+        Struct.new(*h.keys).new(*h.values)
+      end
     end
   end
 end
