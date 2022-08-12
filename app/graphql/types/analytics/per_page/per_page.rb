@@ -11,6 +11,7 @@ module Types
         field :bounce_rate, resolver: Resolvers::Analytics::PerPage::BounceRate
         field :exit_rate, resolver: Resolvers::Analytics::PerPage::ExitRate
         field :page_views, resolver: Resolvers::Analytics::PerPage::PageViews
+        field :visits_at, resolver: Resolvers::Analytics::PerPage::VisitsAt
       end
     end
   end
