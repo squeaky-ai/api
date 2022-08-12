@@ -12,6 +12,11 @@ module Types
         field :exit_rate, resolver: Resolvers::Analytics::PerPage::ExitRate
         field :page_views, resolver: Resolvers::Analytics::PerPage::PageViews
         field :visits_at, resolver: Resolvers::Analytics::PerPage::VisitsAt
+        field :countries, resolver: Resolvers::Analytics::PerPage::Countries
+        field :languages, resolver: Resolvers::Analytics::PerPage::Languages
+        field :browsers, resolver: Resolvers::Analytics::PerPage::Browsers
+        field :devices, resolver: Resolvers::Analytics::PerPage::Devices
+        field :dimensions, resolver: Resolvers::Analytics::PerPage::Dimensions
       end
     end
   end
