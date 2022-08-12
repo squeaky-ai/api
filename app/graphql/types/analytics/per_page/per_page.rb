@@ -17,6 +17,7 @@ module Types
         field :browsers, resolver: Resolvers::Analytics::PerPage::Browsers
         field :devices, resolver: Resolvers::Analytics::PerPage::Devices
         field :dimensions, resolver: Resolvers::Analytics::PerPage::Dimensions
+        field :referrers, resolver: Resolvers::Analytics::PerPage::Referrers
       end
     end
   end
