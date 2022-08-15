@@ -3,6 +3,8 @@
 class Visitor < ApplicationRecord
   has_many :recordings, dependent: :destroy
   has_many :pages, through: :recordings
+  has_many :nps, through: :recordings
+  has_many :sentiments, through: :recordings
 
   alias_attribute :viewed, :viewed?
 
