@@ -56,6 +56,8 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       create(:team, site: site, role: Team::MEMBER)
       create(:team, site: site, role: Team::MEMBER)
       create(:team, site: site, role: Team::MEMBER)
+      
+      allow(SiteCleanupJob).to receive(:perform_later)
 
       site.reload
     end
@@ -71,6 +73,11 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
 
     it 'deletes the team members' do
       expect { subject }.to change { Team.where(site_id: site.id).size }.from(4).to(0)
+    end
+
+    it 'kicks off a job to clean up the data' do
+      subject
+      expect(SiteCleanupJob).to have_received(:perform_later).with([site.id])
     end
   end
 

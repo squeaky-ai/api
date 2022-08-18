@@ -14,7 +14,12 @@ module Mutations
       def resolve(id:)
         raise Errors::Unauthorized unless context[:current_user]&.superuser?
 
-        Site.find(id)&.destroy
+        site = Site.find(id)
+
+        if site
+          SiteCleanupJob.perform_later([site.id])
+          site.destroy
+        end
 
         nil
       end

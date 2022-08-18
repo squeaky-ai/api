@@ -19,6 +19,8 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
     create(:team, site: site, role: Team::MEMBER)
     create(:team, site: site, role: Team::ADMIN)
     create(:team, site: site, role: Team::OWNER)
+
+    allow(SiteCleanupJob).to receive(:perform_later)
   end
 
   subject do
@@ -42,5 +44,10 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
 
   it 'does not delete the users' do
     expect { subject }.not_to change { User.count }
+  end
+
+  it 'kicks off a job to clean up the data' do
+    subject
+    expect(SiteCleanupJob).to have_received(:perform_later).with([site.id])
   end
 end

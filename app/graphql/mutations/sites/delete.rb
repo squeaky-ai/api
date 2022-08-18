@@ -21,6 +21,7 @@ module Mutations
         # Send an email to us so we have a record of it
         AdminMailer.site_destroyed(@site).deliver_now
         # Finally destroy the site
+        SiteCleanupJob.perform_later([@site.id])
         @site.destroy
 
         nil

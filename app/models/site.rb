@@ -12,14 +12,14 @@ class Site < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_many :users, through: :teams
-  has_many :recordings, dependent: :destroy
+  has_many :recordings
   has_many :notes, through: :recordings
   has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
   has_many :nps, through: :recordings
   has_many :sentiments, through: :recordings
   has_many :tags
-  has_many :clicks, dependent: :destroy
+  has_many :clicks
   has_many :event_captures, dependent: :destroy
   has_many :event_groups
 

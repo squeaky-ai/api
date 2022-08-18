@@ -164,4 +164,12 @@ FactoryBot.define do
 
     site { association :site }
   end
+
+  factory :event do
+    data { {} }
+    event_type { 1 }
+    timestamp { Time.now.to_i * 1000 }
+
+    recording { association :recording }
+  end
 end
