@@ -22,25 +22,37 @@ module Resolvers
 
       def events(page, size)
         sql = <<-SQL
-          SELECT id, data, event_type as type, timestamp
+          SELECT uuid as id, data, type, timestamp
           FROM events
-          WHERE recording_id = ?
+          WHERE site_id = ? AND recording_id = ?
           ORDER BY timestamp ASC
-          OFFSET ?
           LIMIT ?
+          OFFSET ?
         SQL
 
-        Sql.execute(sql, [object.id, size * (page - 1), size])
+        query = ActiveRecord::Base.sanitize_sql_array(
+          [
+            sql,
+            object.site_id,
+            object.id,
+            size,
+            size * (page - 1)
+          ]
+        )
+
+        ClickHouse.connection.select_all(query)
       end
 
       def total_count
         sql = <<-SQL
           SELECT COUNT(*)
           FROM events
-          WHERE recording_id = ?
+          WHERE site_id = ? AND recording_id = ?
         SQL
 
-        Sql.execute(sql, [object.id]).first['count']
+        query = ActiveRecord::Base.sanitize_sql_array([sql, object.site_id, object.id])
+
+        ClickHouse.connection.select_value(query)
       end
 
       def pagination(results_total)
