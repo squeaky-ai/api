@@ -11,7 +11,7 @@ module DataCacheService
             WHERE site_id = ? AND locale IS NOT NULL
           SQL
 
-          Sql.execute(sql, site_id).map { |r| Locale.get_language(r['locale']) }
+          Sql.execute(sql, site.id).map { |r| Locale.get_language(r['locale']) }
         end
       end
     end

@@ -2,8 +2,8 @@
 
 module DataCacheService
   class Base
-    def initialize(site_id:, from_date: nil, to_date: nil, expires_in: 15.minutes)
-      @site_id = site_id
+    def initialize(site:, from_date: nil, to_date: nil, expires_in: 15.minutes)
+      @site = site
       @expires_in = expires_in
       @from_date = from_date
       @to_date = to_date
@@ -11,16 +11,17 @@ module DataCacheService
 
     protected
 
-    attr_reader :site_id, :expires_in, :from_date, :to_date
+    attr_reader :site, :expires_in, :from_date, :to_date
 
-    def cache(&)
-      Rails.cache.fetch(cache_key, expires_in:, &)
+    def cache(&block)
+      block.call unless site
+      Rails.cache.fetch(cache_key, expires_in:, &block)
     end
 
     private
 
     def cache_key
-      key = "data_cache::#{self.class}::#{site_id}"
+      key = "data_cache::#{self.class}::#{site.uuid}"
       key += "::from_#{from_date}" if from_date
       key += "::to_#{to_date}" if to_date
       key

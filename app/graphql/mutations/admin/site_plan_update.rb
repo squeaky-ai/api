@@ -17,7 +17,7 @@ module Mutations
       argument :private_instance_enabled, Boolean, required: false
       argument :notes, String, required: false
 
-      type Types::Sites::Site
+      type Types::Admin::Site
 
       def resolve(site_id:, **rest)
         raise Errors::Unauthorized unless context[:current_user]&.superuser?

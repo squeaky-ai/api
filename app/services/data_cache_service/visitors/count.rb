@@ -12,7 +12,7 @@ module DataCacheService
           SQL
 
           variables = [
-            site_id,
+            site.id,
             from_date,
             to_date,
             [Recording::ACTIVE, Recording::DELETED]

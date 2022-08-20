@@ -11,7 +11,7 @@ module DataCacheService
             WHERE site_id = ? AND referrer IS NOT NULL
           SQL
 
-          Sql.execute(sql, site_id).map { |r| r['referrer'] }
+          Sql.execute(sql, site.id).map { |r| r['referrer'] }
         end
       end
     end

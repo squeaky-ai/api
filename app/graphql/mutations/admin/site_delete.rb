@@ -9,7 +9,7 @@ module Mutations
 
       argument :id, ID, required: true
 
-      type Types::Sites::Site
+      type Types::Admin::Site
 
       def resolve(id:)
         raise Errors::Unauthorized unless context[:current_user]&.superuser?

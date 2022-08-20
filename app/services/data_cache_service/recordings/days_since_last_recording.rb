@@ -13,7 +13,7 @@ module DataCacheService
             LIMIT 1;
           SQL
 
-          last_recorded_at = Sql.execute(sql, site_id).first
+          last_recorded_at = Sql.execute(sql, site.id).first
 
           return -1 unless last_recorded_at
 

@@ -11,7 +11,7 @@ module DataCacheService
             WHERE site_id = ?
           SQL
 
-          Sql.execute(sql, site_id).map { |r| r['browser'] }
+          Sql.execute(sql, site.id).map { |r| r['browser'] }
         end
       end
     end

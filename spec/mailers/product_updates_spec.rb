@@ -34,6 +34,8 @@ RSpec.describe ProductUpdatesMailer, type: :mailer do
     let(:user) { create(:user) }
     let(:mail) { described_class.july_2022(user) }
 
+    before { create(:site_with_team, owner: user) }
+
     it 'renders the headers' do
       expect(mail.subject).to eq 'Product Update: July 2022'
       expect(mail.to).to eq [user.email]
