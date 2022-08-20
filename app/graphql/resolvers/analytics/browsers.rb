@@ -10,7 +10,7 @@ module Resolvers
 
       def resolve_with_timings(page:, size:)
         total_recordings_count = DataCacheService::Recordings::Count.new(
-          site_id: object.site.id,
+          site: object.site,
           from_date: object.range.from,
           to_date: object.range.to
         ).call

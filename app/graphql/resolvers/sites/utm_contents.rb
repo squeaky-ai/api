@@ -6,7 +6,7 @@ module Resolvers
       type [String, { null: true }], null: false
 
       def resolve_with_timings
-        DataCacheService::Sites::UtmContents.new(site_id: object.id).call
+        DataCacheService::Sites::UtmContents.new(site: object).call
       end
     end
   end

@@ -11,7 +11,7 @@ module DataCacheService
             WHERE site_id = ? AND utm_campaign IS NOT NULL
           SQL
 
-          Sql.execute(sql, site_id).map { |r| r['utm_campaign'] }
+          Sql.execute(sql, site.id).map { |r| r['utm_campaign'] }
         end
       end
     end

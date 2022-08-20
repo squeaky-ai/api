@@ -6,7 +6,7 @@ module Resolvers
       type [Types::Recordings::Country, { null: true }], null: false
 
       def resolve_with_timings
-        DataCacheService::Sites::Countries.new(site_id: object.id).call
+        DataCacheService::Sites::Countries.new(site: object).call
       end
     end
   end

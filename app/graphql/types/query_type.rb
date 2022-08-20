@@ -87,16 +87,8 @@ module Types
     end
 
     def site_session_settings(arguments)
-      site = Site
-             .select(%i[css_selector_blacklist anonymise_form_inputs])
-             .find_by(uuid: arguments[:site_id])
-
-      return unless site
-
-      {
-        css_selector_blacklist: site.css_selector_blacklist,
-        anonymise_form_inputs: site&.anonymise_form_inputs
-      }
+      site = Site.new(uuid: arguments[:site_id])
+      DataCacheService::Sites::Settings.new(site:).call
     end
 
     def blog_post(arguments)

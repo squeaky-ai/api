@@ -12,7 +12,7 @@ module DataCacheService
             GROUP BY country_code
           SQL
 
-          Sql.execute(sql, site_id).map do |r|
+          Sql.execute(sql, site.id).map do |r|
             {
               count: r['count'],
               code: r['country_code'],

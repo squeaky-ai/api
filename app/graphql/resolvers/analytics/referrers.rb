@@ -10,7 +10,7 @@ module Resolvers
 
       def resolve_with_timings(page:, size:)
         total_visitors_count = DataCacheService::Visitors::Count.new(
-          site_id: object.site.id,
+          site: object.site,
           from_date: object.range.from,
           to_date: object.range.to
         ).call
