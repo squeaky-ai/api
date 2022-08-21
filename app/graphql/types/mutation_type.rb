@@ -67,6 +67,8 @@ module Types
     field :feedback_update, mutation: Mutations::Feedback::Update
     field :nps_delete, mutation: Mutations::Feedback::NpsDelete
     field :sentiment_delete, mutation: Mutations::Feedback::SentimentDelete
+    # Consent
+    field :consent_update, mutation: Mutations::Consent::Update
     # Visitors
     field :visitor_starred, mutation: Mutations::Visitors::Starred
     field :visitor_delete, mutation: Mutations::Visitors::Delete

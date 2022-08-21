@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_20_080714) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_21_191853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_20_080714) do
     t.datetime "updated_at", null: false
     t.boolean "feedback_email", default: true, null: false
     t.index ["user_id"], name: "index_communications_on_user_id"
+  end
+
+  create_table "consents", force: :cascade do |t|
+    t.string "name"
+    t.string "privacy_policy_url"
+    t.string "layout"
+    t.string "consent_method"
+    t.string "languages", default: [], null: false, array: true
+    t.string "languages_default"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_consents_on_site_id"
   end
 
   create_table "event_captures", force: :cascade do |t|
@@ -258,6 +271,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_20_080714) do
     t.boolean "superuser_access_enabled", default: false
     t.string "routes", default: [], null: false, array: true
     t.boolean "ingest_enabled", default: true, null: false
+    t.boolean "consent_enabled", default: false, null: false
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end

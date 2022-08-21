@@ -24,8 +24,10 @@ class Site < ApplicationRecord
   has_many :event_groups
 
   has_one :plan, dependent: :destroy
-  has_one :feedback
   has_one :billing, dependent: :destroy
+
+  has_one :consent
+  has_one :feedback
 
   # The plural sounds weird
   alias_attribute :team, :teams

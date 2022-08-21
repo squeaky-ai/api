@@ -35,6 +35,10 @@ module Types
       argument :site_id, String, required: true
     end
 
+    field :consent, Types::Consent::Consent, null: true do
+      argument :site_id, String, required: true
+    end
+
     field :blog_post, Types::Blog::Post, null: true do
       argument :slug, String, required: true
     end
@@ -84,6 +88,10 @@ module Types
 
     def feedback(arguments)
       Site.find_by(uuid: arguments[:site_id])&.feedback
+    end
+
+    def consent(arguments)
+      Site.find_by(uuid: arguments[:site_id])&.consent
     end
 
     def site_session_settings(arguments)
