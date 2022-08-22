@@ -27,7 +27,7 @@ blog_posts_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryBlogPosts', type: :request do
+RSpec.describe Resolvers::Blog::Posts, type: :request do
   context 'when there are no posts' do
     subject do
       variables = {

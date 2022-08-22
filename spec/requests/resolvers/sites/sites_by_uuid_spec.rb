@@ -10,7 +10,7 @@ site_by_uuid_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QuerySiteByUuid', type: :request do
+RSpec.describe Resolvers::Sites::SiteByUuid, type: :request do
   context 'when there is no current_user' do
     let(:site) { create(:site) }
 

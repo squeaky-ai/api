@@ -15,7 +15,7 @@ consent_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryConsent', type: :request do
+RSpec.describe Resolvers::Consent::Consent, type: :request do
   context 'when the site has no consent saved' do
     it 'does not return the consent' do
       response = graphql_request(consent_query, { site_id: SecureRandom.uuid }, nil)

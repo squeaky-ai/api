@@ -22,7 +22,7 @@ site_plan_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QuerySitePlan', type: :request do
+RSpec.describe Resolvers::Sites::Plans, type: :request do
   context 'when the site is using the free tier' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }

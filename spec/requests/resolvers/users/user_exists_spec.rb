@@ -8,7 +8,7 @@ user_exists_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryUserExists', type: :request do
+RSpec.describe Resolvers::Users::UserExists, type: :request do
   context 'when the user does not exist' do
     let(:email) { 'jimmy@gmail.com' }
 

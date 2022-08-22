@@ -22,7 +22,7 @@ feedback_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryFeedback', type: :request do
+RSpec.describe Resolvers::Feedback::Feedback, type: :request do
   context 'when the site has no feedback saved' do
     it 'does not return the feedback' do
       response = graphql_request(feedback_query, { site_id: SecureRandom.uuid }, nil)

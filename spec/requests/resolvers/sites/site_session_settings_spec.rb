@@ -11,7 +11,7 @@ site_session_settings_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'SiteSessionSettingsQuery', type: :request do
+RSpec.describe Resolvers::Sites::SiteSessionSettings, type: :request do
   context 'when the site does not exist' do
     subject do
       graphql_request(site_session_settings_query, { site_id: SecureRandom.uuid }, nil)

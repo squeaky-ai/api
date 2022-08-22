@@ -11,7 +11,7 @@ user_invitation = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryUserInvitation', type: :request do
+RSpec.describe Resolvers::Users::UserInvitation, type: :request do
   context 'when there is no user invitation' do
     subject do
       graphql_request(user_invitation, { token: 'sdfsdfsdfsdfsdf' }, nil)

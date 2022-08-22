@@ -23,7 +23,7 @@ blog_post_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QueryBlogPosts', type: :request do
+RSpec.describe Resolvers::Blog::Post, type: :request do
   context 'when the post does not exist' do
     subject do
       variables = {

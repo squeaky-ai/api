@@ -32,7 +32,7 @@ sites_billing_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe 'QuerySitesBilling', type: :request do
+RSpec.describe 'SitesBilling', type: :request do
   context 'when the site is not set up for billing' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
