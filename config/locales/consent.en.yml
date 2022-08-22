@@ -1,7 +1,7 @@
 en:
   "privacy_friendly_analytics": "Privacy-friendly analytics"
   "we_use_squeaky": "At %{name} we use a privacy-friendly analytics tool called Squeaky to help us monitor and improve our site, and provide excellent customer support."
-  "set_consent_preferemces": "You can set your consent preferences using the options below, and learn more by visiting our privacy policy."
+  "set_consent_preferemces": "You can set your consent preferences using the options below, and learn more by visiting our <a target=\"_blank\" rel=\"noreferrer\" href=\"%{privacy_policy_url}\">privacy policy</a>."
   "what_makes_squeaky_different": "What makes Squeaky different?"
   "no_cookies": "They don't use cookies or IP-tracking"
   "never_sold": "Your data is never sold to, or shared with, third parties"

@@ -1,7 +1,7 @@
 se:
   "privacy_friendly_analytics": "Integritetsvänlig analys"
   "we_use_squeaky": "Vid %{name} använder vi ett integritetsvänligt analytiskt verktyg som kallas Squeaky, vilket hjälper oss att följa och förbättra vår hemsida, det möjliggör oss också att erbjuda utmärkt kundsservice."
-  "set_consent_preferemces": "Nedanför kan du konfigurera dina samtyckesinställningar, gå till vår integritetspolicy för att läsa mera."
+  "set_consent_preferemces": "Nedanför kan du konfigurera dina samtyckesinställningar, gå till vår <a target=\"_blank\" rel=\"noreferrer\" href=\"%{privacy_policy_url}\">integritetspolicy</a> för att läsa mera."
   "what_makes_squeaky_different": "Vad gör Squeaky annorlunda?"
   "no_cookies": "Dom använder varken kakor eller IP-spårning"
   "never_sold": "Din data blir aldrig såld eller delad med tredje parter"

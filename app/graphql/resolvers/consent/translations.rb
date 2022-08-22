@@ -27,7 +27,7 @@ module Resolvers
         {
           privacy_friendly_analytics: I18n.t(:privacy_friendly_analytics),
           we_use_squeaky: I18n.t(:we_use_squeaky, name: object.name),
-          set_consent_preferemces: I18n.t(:set_consent_preferemces),
+          set_consent_preferemces: I18n.t(:set_consent_preferemces, privacy_policy_url: object.privacy_policy_url),
           what_makes_squeaky_different: I18n.t(:what_makes_squeaky_different),
           no_cookies: I18n.t(:no_cookies),
           never_sold: I18n.t(:never_sold),
