@@ -6,14 +6,16 @@ module Resolvers
       type [Types::Admin::RecordingsStored, { null: true }], null: false
 
       def resolve_with_timings
-        sql = <<-SQL
-          SELECT count(*) count, created_at::date date
-          FROM recordings
-          GROUP BY date
-          ORDER BY date ASC;
-        SQL
+        Rails.cache.fetch('data_cache:AdminRecordingsStored', expires_in: 1.hour) do
+          sql = <<-SQL
+            SELECT count(*) count, created_at::date date
+            FROM recordings
+            GROUP BY date
+            ORDER BY date ASC;
+          SQL
 
-        Sql.execute(sql)
+          Sql.execute(sql)
+        end
       end
     end
   end
