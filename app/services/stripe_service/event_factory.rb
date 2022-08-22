@@ -9,7 +9,7 @@ module StripeService
   TAX_ID_DELETED = 'customer.tax_id.deleted'
 
   class EventFactory
-    def self.for(type, event)
+    def self.for(type, event) # rubocop:disable Metrics/MethodLength
       case type
       when CHECKOUT_SESSION_COMPLETED
         Types::CheckoutSessionCompleted.new(event)

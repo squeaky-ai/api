@@ -13,7 +13,7 @@ module Resolvers
       argument :group_ids, [ID], required: true
       argument :capture_ids, [ID], required: true
 
-      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:)
+      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:) # rubocop:disable Metrics/ParameterLists
         capture_events = event_captures(group_ids, capture_ids)
         results = aggregated_results(capture_events, from_date, to_date, page, size, sort)
         results_count = total_results_count(capture_events, from_date, to_date)
@@ -108,7 +108,7 @@ module Resolvers
         ClickHouse.connection.select_value(query)
       end
 
-      def aggregated_results(capture_events, from_date, to_date, page, size, sort)
+      def aggregated_results(capture_events, from_date, to_date, page, size, sort) # rubocop:disable Metrics/ParameterLists
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
         sql = <<-SQL

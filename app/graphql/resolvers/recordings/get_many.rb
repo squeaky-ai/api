@@ -2,7 +2,7 @@
 
 module Resolvers
   module Recordings
-    class GetMany < Resolvers::Base
+    class GetMany < Resolvers::Base # rubocop:disable Metrics/ClassLength
       type Types::Recordings::Recordings, null: false
 
       argument :page, Integer, required: false, default_value: 0
@@ -12,7 +12,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, sort:, filters:, from_date:, to_date:)
+      def resolve_with_timings(page:, size:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         recordings = object
                      .recordings
                      .includes(:nps, :sentiment)

@@ -5,7 +5,7 @@ require 'zlib'
 require 'base64'
 
 # Format the Redis list into something useful
-class Session
+class Session # rubocop:disable Metrics/ClassLength
   attr_reader :recording,
               :pageviews,
               :sentiments,
@@ -167,7 +167,7 @@ class Session
     @activity ||= Events::Activity.new(events)
   end
 
-  def extract_and_set_events(events)
+  def extract_and_set_events(events) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
     events.each do |event|
       case event['key']
       when 'recording'

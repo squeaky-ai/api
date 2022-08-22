@@ -6,7 +6,7 @@ module Resolvers
       class PageViews < Resolvers::Base
         type Types::Analytics::PageViews, null: false
 
-        def resolve_with_timings
+        def resolve_with_timings # rubocop:disable Metrics/AbcSize
           date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to)
 
           current_page_views = page_views(date_format, object.range.from, object.range.to)

@@ -46,7 +46,7 @@ module Resolvers
           Sql.execute(sql, variables).first['total_recordings_count']
         end
 
-        def browsers(page, size)
+        def browsers(page, size) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           Recording
             .joins(:pages)
             .where(

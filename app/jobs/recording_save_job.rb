@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob
+class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   queue_as :default
 
   sidekiq_options retry: false
@@ -67,7 +67,7 @@ class RecordingSaveJob < ApplicationJob
     visitor
   end
 
-  def persist_recording!(visitor)
+  def persist_recording!(visitor) # rubocop:disable Metrics/AbcSize
     Recording.create!(
       session_id: session.session_id,
       visitor_id: visitor.id,
@@ -141,7 +141,7 @@ class RecordingSaveJob < ApplicationJob
     end
   end
 
-  def persist_pageviews!(recording)
+  def persist_pageviews!(recording) # rubocop:disable Metrics/AbcSize
     page_views = []
 
     session.pageviews.each do |page|
@@ -194,7 +194,7 @@ class RecordingSaveJob < ApplicationJob
     )
   end
 
-  def persist_clicks!(recording)
+  def persist_clicks!(recording) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
     items = []
 
     session.events.each do |event|
@@ -265,7 +265,7 @@ class RecordingSaveJob < ApplicationJob
     Recording::ACTIVE
   end
 
-  def find_or_create_visitor
+  def find_or_create_visitor # rubocop:disable Metrics/AbcSize
     if session.external_attributes['id']
       visitor = site
                 .visitors

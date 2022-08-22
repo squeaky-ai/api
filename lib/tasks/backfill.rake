@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :backfill do
+namespace :backfill do # rubocop:disable Metrics/BlockLength
   task visitor_site_ids: :environment do
     sql = <<-SQL
       SELECT site_id, visitor_id

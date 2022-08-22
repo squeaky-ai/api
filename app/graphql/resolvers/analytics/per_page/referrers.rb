@@ -29,7 +29,7 @@ module Resolvers
 
         private
 
-        def referrers(page, size)
+        def referrers(page, size) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           Recording
             .joins(:pages)
             .where(

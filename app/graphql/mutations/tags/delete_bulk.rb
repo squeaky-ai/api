@@ -17,7 +17,7 @@ module Mutations
       end
 
       def resolve(tag_ids:, **_rest)
-        @site.tags.where(id: tag_ids)&.each { |t| t.destroy }
+        @site.tags.where(id: tag_ids)&.each(&:destroy)
 
         []
       end

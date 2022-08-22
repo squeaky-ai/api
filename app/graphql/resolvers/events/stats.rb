@@ -120,7 +120,7 @@ module Resolvers
         { **capture, type: 'capture' }
       end
 
-      def aggregate_group(id, groups, capture_events_with_counts)
+      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize
         # Find the group that matches this id
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group

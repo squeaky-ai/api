@@ -10,7 +10,7 @@ module Resolvers
       argument :sort, Types::Feedback::NpsResponseSort, required: false, default_value: 'timestamp__desc'
       argument :filters, Types::Feedback::NpsResponseFilters, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:, filters:)
+      def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         query = Nps.joins(recording: :visitor)
                    .where(
                      'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
@@ -80,7 +80,7 @@ module Resolvers
         query.where(clauses[filters[:outcome_type]])
       end
 
-      def map_results(results)
+      def map_results(results) # rubocop:disable Metrics/AbcSize
         results.map do |r|
           useragent = UserAgent.parse(r.useragent)
 

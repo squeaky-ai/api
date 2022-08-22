@@ -72,7 +72,7 @@ module Events
         @skipping = true
       end
 
-      if @skipping_speed.zero? && @skipping
+      if @skipping_speed.zero? && @skipping # rubocop:disable Style/GuardClause
         inactivity.last.push(event['delay'])
         @skipping = false
       end

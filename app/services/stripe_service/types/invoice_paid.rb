@@ -36,7 +36,7 @@ module StripeService
         event['lines']['data'].first['plan']['id']
       end
 
-      def store_transaction!
+      def store_transaction! # rubocop:disable Metrics/AbcSize
         Transaction.create!(
           billing:,
           amount: bill['amount'],
