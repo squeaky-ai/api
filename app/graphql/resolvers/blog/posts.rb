@@ -8,7 +8,7 @@ module Resolvers
       argument :category, String, required: false
       argument :tags, [String], required: false, default_value: []
 
-      def resolve_with_timings(category:, tags:)
+      def resolve_with_timings(tags:, category: nil)
         posts = context[:current_user]&.superuser? ? ::Blog.all : ::Blog.where(draft: false)
 
         posts = posts.where('LOWER(category) = ?', category.downcase) if category
