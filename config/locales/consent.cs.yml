@@ -1,7 +1,7 @@
 cs:
   "privacy_friendly_analytics": "Sběr dat s ohledem na Vaše soukromí"
   "we_use_squeaky": "Uvnitř %{name} sbíráme data s ohledem na Vaše soukromí díky Squeaky. Tyto data používáme k vylepšení našeho webu a zajištění skvělé zákaznické podpory"
-  "set_consent_preferemces": "Váš souhlas můžete změnit pomocí nastavení niže. Více se dozvíte v našich zásadách ochrany osobních údajů"
+  "set_consent_preferemces": "Váš souhlas můžete změnit pomocí nastavení niže. Více se dozvíte v našich <a target=\"_blank\" rel=\"noreferrer\" href=\"%{privacy_policy_url}\">zásadách ochrany osobních údajů</a>"
   "what_makes_squeaky_different": "Co odlišuje Squeaky jiné od ostatních?"
   "no_cookies": "Nepoužívají sledování přes IP adresy"
   "never_sold": "Vaše data se nikdy neprodávají či nesdílejí s třetíma stranama"
