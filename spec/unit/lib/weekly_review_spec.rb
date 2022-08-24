@@ -48,21 +48,7 @@ RSpec.describe WeeklyReview do
       visitor_2.update(new: true)
       visitor_3.update(new: false)
 
-      Feedback.create(
-        site:,
-        nps_enabled: true,
-        nps_accent_color: '#000',
-        nps_schedule: '1_week',
-        nps_phrase: 'Teapot',
-        nps_follow_up_enabled: false,
-        nps_contact_consent_enabled: false,
-        nps_layout: 'bottom_left',
-        nps_excluded_pages: [],
-        sentiment_enabled: true,
-        sentiment_accent_color: '#000',
-        sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left'
-      )
+      create(:feedback, nps_enabled: true, sentiment_enabled: true, site:)
 
       create(
         :recording, 

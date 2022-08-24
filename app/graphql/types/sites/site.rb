@@ -29,7 +29,7 @@ module Types
       field :domain_blacklist, [Types::Sites::DomainBlacklist, { null: true }], null: false
       field :recordings_count, Integer, null: false
       field :active_user_count, Integer, null: false
-      field :feedback, Types::Feedback::Feedback, null: true
+      field :feedback, resolver: Resolvers::Sites::Feedback
       field :tags, [Types::Tags::Tag, { null: true }], null: false
       field :heatmaps, resolver: Resolvers::Heatmaps::Heatmaps
       field :recording, resolver: Resolvers::Recordings::GetOne
@@ -60,7 +60,7 @@ module Types
       field :anonymise_form_inputs, Boolean, null: false
       field :superuser_access_enabled, Boolean, null: false
       field :routes, [String, { null: true }], null: false
-      field :consent, Types::Consent::Consent, null: true
+      field :consent, resolver: Resolvers::Sites::Consent
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 

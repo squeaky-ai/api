@@ -80,24 +80,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    before do
-      Feedback.create(
-        site: site,
-        nps_enabled: true,
-        nps_accent_color: '#000',
-        nps_schedule: '1_week',
-        nps_phrase: 'Teapot',
-        nps_follow_up_enabled: false,
-        nps_contact_consent_enabled: false,
-        nps_layout: 'bottom_left',
-        nps_excluded_pages: [],
-        sentiment_enabled: true,
-        sentiment_accent_color: '#000',
-        sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left',
-        sentiment_devices: %w[desktop tablet]
-      )
-    end
+    before { create(:feedback, site:) }
 
     subject do
       variables = {
@@ -115,15 +98,15 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
     it 'returns the data' do
       expect(subject['data']['feedbackUpdate']).to eq(
         'npsEnabled' => false,
-        'npsAccentColor' => '#000',
-        'npsSchedule' => '1_week',
-        'npsPhrase' => 'Teapot',
-        'npsFollowUpEnabled' => false,
+        'npsAccentColor' => '#0074E0',
+        'npsSchedule' => 'once',
+        'npsPhrase' => 'My Feedback',
+        'npsFollowUpEnabled' => true,
         'npsContactConsentEnabled' => false,
-        'npsLayout' => 'bottom_left',
+        'npsLayout' => 'full_width',
         'npsExcludedPages' => [],
         'npsHideLogo' => false,
-        'sentimentEnabled' => true,
+        'sentimentEnabled' => false,
         'sentimentAccentColor' => '#fff',
         'sentimentExcludedPages' => [],
         'sentimentLayout' => 'top_right',
@@ -141,26 +124,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    before do
-      Feedback.create(
-        site: site,
-        nps_enabled: true,
-        nps_accent_color: '#000',
-        nps_schedule: '1_week',
-        nps_phrase: 'Teapot',
-        nps_follow_up_enabled: false,
-        nps_contact_consent_enabled: false,
-        nps_layout: 'bottom_left',
-        nps_excluded_pages: [],
-        nps_hide_logo: false,
-        sentiment_enabled: true,
-        sentiment_accent_color: '#000',
-        sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left',
-        sentiment_devices: %w[desktop tablet],
-        sentiment_hide_logo: false
-      )
-    end
+    before { create(:feedback, site:) }
 
     subject do
       variables = {

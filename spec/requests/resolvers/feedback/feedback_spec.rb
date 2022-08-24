@@ -34,42 +34,25 @@ RSpec.describe Resolvers::Feedback::Feedback, type: :request do
   context 'when the site has feedback saved' do
     let(:site) { create(:site) }
 
-    before do
-      Feedback.create(
-        site: site,
-        nps_enabled: true,
-        nps_accent_color: '#000',
-        nps_schedule: '1_week',
-        nps_phrase: 'Teapot',
-        nps_follow_up_enabled: false,
-        nps_contact_consent_enabled: false,
-        nps_layout: 'bottom_left',
-        nps_excluded_pages: [],
-        sentiment_enabled: true,
-        sentiment_accent_color: '#000',
-        sentiment_excluded_pages: [],
-        sentiment_layout: 'bottom_left',
-        sentiment_devices: ['desktop', 'mobile']
-      )
-    end
+    before { create(:feedback, site:) }
 
     it 'returns the feedback' do
       response = graphql_request(feedback_query, { site_id: site.uuid }, nil)
 
       expect(response['data']['feedback']).to eq(
-        'npsAccentColor' => '#000', 
+        'npsAccentColor' => '#0074E0', 
         'npsContactConsentEnabled' => false, 
-        'npsEnabled' => true, 
-        'npsFollowUpEnabled' => false,
-        'npsLayout' => 'bottom_left',
-        'npsPhrase' => 'Teapot',
-        'npsSchedule' => '1_week',
+        'npsEnabled' => false, 
+        'npsFollowUpEnabled' => true,
+        'npsLayout' => 'full_width',
+        'npsPhrase' => 'My Feedback',
+        'npsSchedule' => 'once',
         'npsExcludedPages' => [],
-        'sentimentAccentColor' => '#000',
-        'sentimentEnabled' => true, 
+        'sentimentAccentColor' => '#0074E0',
+        'sentimentEnabled' => false, 
         'sentimentExcludedPages' => [], 
-        'sentimentLayout' => 'bottom_left',
-        'sentimentDevices' => ['desktop', 'mobile']
+        'sentimentLayout' => 'right_middle',
+        'sentimentDevices' => ['desktop', 'tablet']
       )
     end
   end

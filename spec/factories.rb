@@ -172,4 +172,33 @@ FactoryBot.define do
 
     recording { association :recording }
   end
+
+  factory :consent do
+    name { 'My consent' }
+    consent_method { 'disabled' }
+    languages { ['en'] }
+    languages_default { 'en' }
+    layout { 'bottom_left' }
+    privacy_policy_url { "https://#{SecureRandom.base36}.com" }
+
+    site { association :site }
+  end
+
+  factory :feedback do
+    nps_accent_color { '#0074E0' }
+    nps_contact_consent_enabled { false }
+    nps_enabled { false }
+    nps_excluded_pages { [] }
+    nps_follow_up_enabled { true }
+    nps_layout { 'full_width' }
+    nps_phrase { 'My Feedback' }
+    nps_schedule { 'once' }
+    sentiment_accent_color { '#0074E0' }
+    sentiment_devices { ['desktop', 'tablet'] }
+    sentiment_enabled { false }
+    sentiment_excluded_pages { [] }
+    sentiment_layout { 'right_middle' }
+
+    site { association :site }
+  end
 end
