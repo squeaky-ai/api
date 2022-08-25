@@ -9,7 +9,7 @@ module Resolvers
         client = Aws::S3::Client.new(region: 'eu-west-1')
 
         items = client.list_objects_v2(bucket: 'cdn.squeaky.ai', prefix: 'blog/covers').contents.map(&:key)
-        items.delete('blog/covers') # This deletes the folder itself, not anything from S3
+        items.delete('blog/covers/') # This deletes the folder itself, not anything from S3
         items
       end
     end
