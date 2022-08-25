@@ -57,7 +57,16 @@ FactoryBot.define do
     end
 
     after(:create) do |recording, evaluator|
-      evaluator.page_urls.each { |url| create(:page, url: url, recording: recording) }
+      evaluator.page_urls.each_with_index do |url, index| 
+        create(
+          :page,
+          url:, 
+          recording:,
+          site_id: recording.site_id,
+          entered_at: (recording.connected_at.to_i + index) * 1000,
+          exited_at: (recording.connected_at.to_i + index + index) * 1000
+        )
+      end
     end
 
     site { association :site }

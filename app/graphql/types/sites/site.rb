@@ -16,6 +16,7 @@ module Types
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
       field :page_urls, [String, { null: true }], null: false
+      field :pages, resolver: Resolvers::Sites::Pages
       field :languages, resolver: Resolvers::Sites::Languages
       field :browsers, resolver: Resolvers::Sites::Browsers
       field :referrers, resolver: Resolvers::Sites::Referrers
