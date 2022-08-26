@@ -128,6 +128,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#role_for' do
+    context 'when the user is not a member of the team' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site) }
+
+      subject { user }
+
+      it 'returns nil' do
+        expect(subject.role_for(site)).to be nil
+      end
+    end
+
+    context 'when the user is a member of the team' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: subject) }
+
+      subject { user }
+
+      it 'returns true' do
+        expect(subject.role_for(site)).to be Team::OWNER
+      end
+    end
+  end
+
   describe '#invite_to_team!' do
     let(:user) { create(:user) }
 

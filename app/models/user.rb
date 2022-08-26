@@ -47,6 +47,10 @@ class User < ApplicationRecord
     site.team.any? { |t| t.user.id == id }
   end
 
+  def role_for(site)
+    site.team.find { |t| t.user.id == id }&.role
+  end
+
   def invite_to_team!
     # This is a procted devise method but we want to call
     # it to bypass the default invite flow when the user

@@ -77,6 +77,10 @@ module Types
         build_nested_args(from_date, to_date)
       end
 
+      def magic_erasure_enabled
+        [Team::OWNER, Team::ADMIN].include?(context[:current_user].role_for(object))
+      end
+
       private
 
       def build_nested_args(from_date, to_date)
