@@ -8,6 +8,7 @@ class Team < ApplicationRecord
   OWNER = 2
   ADMIN = 1
   MEMBER = 0
+  READ_ONLY = -1
 
   # Statuses
   PENDING = 1
@@ -25,6 +26,10 @@ class Team < ApplicationRecord
     role == MEMBER
   end
 
+  def read_only?
+    role == READ_ONLY
+  end
+
   def pending?
     status == PENDING
   end
@@ -37,6 +42,8 @@ class Team < ApplicationRecord
       'Admin'
     when MEMBER
       'User'
+    when READ_ONLY
+      'Read-only'
     end
   end
 end

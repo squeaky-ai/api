@@ -18,7 +18,7 @@ module Mutations
       end
 
       def resolve(team_id:, role:, **_rest)
-        raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
+        raise Errors::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         team = @site.member(team_id)
 

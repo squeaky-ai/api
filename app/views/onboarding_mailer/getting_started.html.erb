@@ -1,6 +1,6 @@
 <h1>Getting started with Squeaky</h1>
 
-<% if @user.teams.first&.role == Team::MEMBER %>
+<% if [Team::MEMBER, Team::READ_ONLY].include?(@user.teams.first&.role) %>
   <p>It&apos;s awesome that <%= @user.invited_by&.full_name %> has invited you to their team on Squeaky, but perhaps you&apos;re wondering what Squeaky is all about? To help you get up and running, we&apos;ve written a short explainer on our key features.</p>
   <table width="100%" style="margin-bottom: 2rem">
     <tr>

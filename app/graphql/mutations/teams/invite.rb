@@ -18,7 +18,7 @@ module Mutations
       end
 
       def resolve(email:, role:, **_rest)
-        raise Errors::TeamRoleInvalid unless [0, 1].include?(role)
+        raise Errors::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         user = User.find_by(email:)
 

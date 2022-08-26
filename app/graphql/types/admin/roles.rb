@@ -8,6 +8,7 @@ module Types
       field :owners, Integer, null: false
       field :admins, Integer, null: false
       field :members, Integer, null: false
+      field :readonly, Integer, null: false
     end
   end
 end
