@@ -5,7 +5,7 @@ module Types
     class Stat < Types::BaseObject
       graphql_name 'EventsStat'
 
-      field :id, String, null: false # Using an ID causes the counts to not update
+      field :event_or_group_id, String, null: false
       field :name, String, null: false
       field :type, Types::Events::Type, null: false
       field :count, Integer, null: false

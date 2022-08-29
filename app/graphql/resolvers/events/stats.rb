@@ -117,7 +117,13 @@ module Resolvers
       def aggregate_capture(id, capture_events_with_counts)
         capture = capture_events_with_counts.detect { |c| c[:id] == id }
 
-        { **capture, type: 'capture' }
+        {
+          event_or_group_id: capture[:id],
+          name: capture[:name],
+          count: capture[:count],
+          type: 'capture',
+          average_events_per_visitor: capture[:average_events_per_visitor]
+        }
       end
 
       def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize
@@ -133,7 +139,7 @@ module Resolvers
         average_events_per_visitor = captures.map { |c| c[:average_events_per_visitor] }.sum
 
         {
-          id: group.id,
+          event_or_group_id: group.id,
           name: group.name,
           type: 'group',
           count:,
