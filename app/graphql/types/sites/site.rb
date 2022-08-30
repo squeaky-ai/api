@@ -78,7 +78,9 @@ module Types
       end
 
       def magic_erasure_enabled
-        [Team::OWNER, Team::ADMIN].include?(context[:current_user].role_for(object))
+        return false unless [Team::OWNER, Team::ADMIN].include?(context[:current_user].role_for(object))
+
+        object.magic_erasure_enabled
       end
 
       private
