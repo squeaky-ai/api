@@ -133,7 +133,8 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
           timestamp: s['timestamp'],
           recording_id: recording.id,
           created_at: now,
-          updated_at: now
+          updated_at: now,
+          site_id: site.id
         }
       end
 

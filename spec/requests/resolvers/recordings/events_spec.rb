@@ -59,20 +59,14 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
   context 'when there are some events' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
-    let(:event_uuid) { SecureRandom.uuid }
 
-    before do
-      ClickHouse::Event.insert do |buffer|
-        buffer << {
-          uuid: event_uuid,
-          site_id: recording.site_id,
-          recording_id: recording.id,
-          type: Event::META,
-          data: { href: 'http://localhost/', width: 0, height: 0 }.to_json,
-          timestamp: 1625389200000
-        }
-      end
+    let(:recording) do
+      rec = create(:recording, site: site)
+
+      data = { href: "http://localhost/", width: 0, height: 0 }
+      rec.events << Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)
+
+      rec
     end
 
     subject do
@@ -84,8 +78,8 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
       response = subject['data']['site']['recording']
       expect(response['events']['items']).to eq [
         {
-          "id" => event_uuid,
-          "data" => "{\"href\":\"http://localhost/\",\"width\":0,\"height\":0}",
+          "id" => recording.events.first.id.to_s,
+          "data" => "{\"href\": \"http://localhost/\", \"width\": 0, \"height\": 0}",
           "type" => 4,
           "timestamp" => "1625389200000"
         }
