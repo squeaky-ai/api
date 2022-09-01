@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_21_191853) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_31_082723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_191853) do
     t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "text"
+    t.bigint "recording_id"
     t.index ["site_id"], name: "index_clicks_on_site_id"
   end
 
@@ -87,6 +89,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_191853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_consents_on_site_id"
+  end
+
+  create_table "custom_events", force: :cascade do |t|
+    t.string "name", null: false
+    t.jsonb "data", null: false
+    t.string "page_url", null: false
+    t.bigint "recording_id", null: false
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_custom_events_on_site_id"
+  end
+
+  create_table "error_events", force: :cascade do |t|
+    t.string "filename"
+    t.string "message", null: false
+    t.string "page_url", null: false
+    t.bigint "recording_id", null: false
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_error_events_on_site_id"
   end
 
   create_table "event_captures", force: :cascade do |t|

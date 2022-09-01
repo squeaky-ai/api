@@ -93,6 +93,19 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(clicks.size).to eq 3
     end
 
+    it 'stores the custom events' do
+      subject
+      custom_events = site.reload.custom_events
+      expect(custom_events.size).to eq 1
+    end
+
+    it 'stores the error events' do
+      subject
+      error_events = site.reload.error_events
+      puts '@@', error_events.to_json
+      expect(error_events.size).to eq 1
+    end
+
     it 'cleans up the redis data' do
       subject
       expect(Cache.redis).to have_received(:del)

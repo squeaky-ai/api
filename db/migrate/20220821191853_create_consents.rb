@@ -3,7 +3,6 @@
 class CreateConsents < ActiveRecord::Migration[7.0]
   def change
     create_table :consents do |t|
-
       t.string :name
       t.string :privacy_policy_url
       t.string :layout

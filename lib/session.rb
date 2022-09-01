@@ -12,6 +12,7 @@ class Session # rubocop:disable Metrics/ClassLength
               :nps,
               :custom_tracking,
               :external_attributes,
+              :errors,
               :events,
               :site_id,
               :visitor_id,
@@ -25,6 +26,7 @@ class Session # rubocop:disable Metrics/ClassLength
     @nps = nil
     @custom_tracking = []
     @external_attributes = {}
+    @errors = []
 
     @site_id = message[:site_id]
     @visitor_id = message[:visitor_id]
@@ -240,6 +242,7 @@ class Session # rubocop:disable Metrics/ClassLength
     # aware of the extra codes but we should store it as Event::Error
     data['type'] = Event::ERROR
     @events.push(data)
+    @errors.push(data)
   end
 
   def handle_custom(event)

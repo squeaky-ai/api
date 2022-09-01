@@ -151,6 +151,12 @@ RSpec.describe Session do
     end
   end
 
+  describe '#errors' do
+    it 'returns the errors' do
+      expect(instance.errors.size).to eq 1
+    end
+  end
+
   context 'when the events include some bad json' do
     before do
       event_1 = { key: 'event', value: { timestamp: 1651157003244 } }.to_json

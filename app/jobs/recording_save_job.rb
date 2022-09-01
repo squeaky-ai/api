@@ -48,6 +48,8 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       persist_sentiments!(recording)
       persist_nps!(recording)
       persist_clicks!(recording)
+      persist_custom!(recording)
+      persist_errors!(recording)
       persist_custom_event_names!
     end
   end
@@ -204,6 +206,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
                   event['data']['type'] == Event::MouseInteractions::CLICK
 
       items.push(
+        text: event['data']['text'],
         selector: event['data']['selector'] || 'html > body',
         coordinates_x: event['data']['x'] || 0,
         coordinates_y: event['data']['y'] || 0,
@@ -211,11 +214,46 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
         page_url: event['data']['href'] || '/',
         viewport_x: recording.viewport_x,
         viewport_y: recording.viewport_y,
-        site_id: recording.site_id
+        site_id: recording.site_id,
+        recording_id: recording.id
       )
     end
 
     Click.insert_all!(items) unless items.empty?
+  end
+
+  def persist_custom!(recording)
+    items = []
+
+    session.custom_tracking.each do |event|
+      data = event['data'].except('name', 'href')
+
+      items.push(
+        data:,
+        name: event['data']['name'],
+        page_url: event['data']['href'],
+        site_id: recording.site_id,
+        recording_id: recording.id
+      )
+    end
+
+    CustomEvent.insert_all!(items) unless items.empty?
+  end
+
+  def persist_errors!(recording)
+    items = []
+
+    session.errors.each do |event|
+      items.push(
+        filename: event['data']['filename'],
+        message: event['data']['message'],
+        page_url: event['data']['href'],
+        site_id: recording.site_id,
+        recording_id: recording.id
+      )
+    end
+
+    ErrorEvent.insert_all!(items) unless items.empty?
   end
 
   def persist_custom_event_names!
