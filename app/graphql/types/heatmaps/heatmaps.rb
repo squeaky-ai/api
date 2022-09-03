@@ -5,11 +5,11 @@ module Types
     class Heatmaps < Types::BaseObject
       graphql_name 'Heatmaps'
 
-      field :desktop_count, Integer, null: false
-      field :tablet_count, Integer, null: false
-      field :mobile_count, Integer, null: false
-      field :recording_id, String, null: true
-      field :items, [Types::Heatmaps::Item, { null: true }], null: false
+      field :counts, resolver: Resolvers::Heatmaps::Counts
+      field :recording, resolver: Resolvers::Heatmaps::Recording
+      field :clicks, resolver: Resolvers::Heatmaps::Clicks
+      field :scrolls, resolver: Resolvers::Heatmaps::Scrolls
+      field :cursors, resolver: Resolvers::Heatmaps::Cursors
     end
   end
 end

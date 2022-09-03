@@ -20,6 +20,10 @@ class Recording < ApplicationRecord
   DELETED = 2
   ALL = [0, 1, 2].freeze
 
+  MOBILE_BREAKPOINT = 320
+  TABLET_BREAKPOINT = 800
+  DESKTOP_BREAKPOINT = 1280
+
   def user_agent
     @user_agent ||= UserAgent.parse(useragent)
   end
@@ -75,6 +79,17 @@ class Recording < ApplicationRecord
 
   def deleted?
     status != Recording::ACTIVE
+  end
+
+  def self.device_expression(device)
+    case device
+    when 'Mobile'
+      "BETWEEN #{MOBILE_BREAKPOINT} AND #{TABLET_BREAKPOINT}"
+    when 'Tablet'
+      "BETWEEN #{TABLET_BREAKPOINT} AND #{DESKTOP_BREAKPOINT}"
+    when 'Desktop'
+      ">= #{DESKTOP_BREAKPOINT}"
+    end
   end
 
   private
