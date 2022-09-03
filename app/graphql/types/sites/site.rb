@@ -32,7 +32,14 @@ module Types
       field :active_user_count, Integer, null: false
       field :feedback, resolver: Resolvers::Sites::Feedback
       field :tags, [Types::Tags::Tag, { null: true }], null: false
-      field :heatmaps, resolver: Resolvers::Heatmaps::Heatmaps
+      field :heatmaps, Types::Heatmaps::Heatmaps, null: false do
+        argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
+        argument :type, Types::Heatmaps::Type, required: true, default_value: 'Click'
+        argument :page, String, required: true
+        argument :from_date, GraphQL::Types::ISO8601Date, required: true
+        argument :to_date, GraphQL::Types::ISO8601Date, required: true
+        argument :exclude_recording_ids, [ID], required: false, default_value: []
+      end
       field :recording, resolver: Resolvers::Recordings::GetOne
       field :recordings, resolver: Resolvers::Recordings::GetMany
       field :recording_latest, resolver: Resolvers::Recordings::Latest
@@ -75,6 +82,11 @@ module Types
 
       def sentiment(from_date:, to_date:)
         build_nested_args(from_date, to_date)
+      end
+
+      def heatmaps(**kwargs)
+        h = { site: object, **kwargs }
+        Struct.new(*h.keys).new(*h.values)
       end
 
       def magic_erasure_enabled

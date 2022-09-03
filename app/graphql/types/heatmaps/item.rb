@@ -2,15 +2,20 @@
 
 module Types
   module Heatmaps
-    class Item < Types::BaseObject
-      graphql_name 'HeatmapsItem'
+    class Item < Types::BaseUnion
+      possible_types Types::Heatmaps::Click, Types::Heatmaps::Cursor, Types::Heatmaps::Scroll
 
-      # TODO: Make this a union
-
-      field :x, Integer, null: true
-      field :y, Integer, null: true
-      field :selector, String, null: true
-      field :count, Integer, null: true
+      def self.resolve_type(object, _context)
+        type = object[:type] || object['type']
+        case type
+        when 'click'
+          Types::Heatmaps::Click
+        when 'scroll'
+          Types::Heatmaps::Scroll
+        when 'cursor'
+          Types::Heatmaps::Cursor
+        end
+      end
     end
   end
 end
