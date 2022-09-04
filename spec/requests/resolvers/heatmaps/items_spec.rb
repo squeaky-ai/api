@@ -15,10 +15,6 @@ heatmaps_items_query = <<-GRAPHQL
             x
             y
           }
-          ... on HeatmapsCursor {
-            x
-            y
-          }
         }
       }
     }
@@ -166,124 +162,6 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
             {
               'x' => nil,
               'y' => 10
-            }
-          ]
-        )
-      end
-    end
-  end
-  
-  context 'when the type is cursor' do
-    context 'when there is no data for this page' do
-      let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
-  
-      subject do
-        variables = { 
-          site_id: site.id,
-          device: 'Desktop',
-          page: '/',
-          type: 'Cursor',
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08' 
-        }
-        graphql_request(heatmaps_items_query, variables, user)
-      end
-  
-      it 'returns empty data' do
-        response = subject['data']['site']['heatmaps']['items']
-  
-        expect(response).to eq([])
-      end
-    end
-  
-    context 'when there is data for the scrolls' do
-      let(:user) { create(:user) }
-      let(:site) { create(:site_with_team, owner: user) }
-  
-      let!(:recording) do
-        create(:recording, viewport_x: 1440, connected_at: 1651153548000, disconnected_at: 1651153550000, site:)
-      end
-  
-      before do
-        create(
-          :page,
-          recording:,
-          url: '/',
-          entered_at: 1651153548000,
-          exited_at: 1651153550000
-        )
-  
-        create(
-          :event,
-          recording:,
-          site_id: site.id,
-          data: {
-            source: 1,
-            positions: [
-              {
-                x: 1353,
-                y: 660
-              },
-              {
-                x: 1353,
-                y: 661
-              },
-              {
-                x: 1353,
-                y: 670
-              },
-              {
-                x: 1353,
-                y: 675
-              },
-              {
-                x: 1353,
-                y: 676
-              }
-            ]
-          },
-          event_type: 3, 
-          timestamp: 1651153548001
-        )
-      end
-  
-      subject do
-        variables = { 
-          site_id: site.id,
-          device: 'Desktop',
-          page: '/',
-          type: 'Cursor',
-          from_date: '2022-04-23', 
-          to_date: '2022-04-30' 
-        }
-        graphql_request(heatmaps_items_query, variables, user)
-      end
-  
-      it 'returns the data' do
-        response = subject['data']['site']['heatmaps']['items']
-  
-        expect(response).to match(
-          [
-            {
-              'x' => 1353,
-              'y' => 660
-            },
-            {
-              'x' => 1353,
-              'y' => 661
-            },
-            {
-              'x' => 1353,
-              'y' => 670
-            },
-            {
-              'x' => 1353,
-              'y' => 675
-            },
-            {
-              'x' => 1353,
-              'y' => 676
             }
           ]
         )
