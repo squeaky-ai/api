@@ -30,6 +30,7 @@ module Resolvers
       end
 
       def page_views(date_format, from_date, to_date)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             v.date_key date_key,

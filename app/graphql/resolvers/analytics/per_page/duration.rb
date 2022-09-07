@@ -19,6 +19,7 @@ module Resolvers
         private
 
         def duration(start_date, end_date)
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT AVG(pages.exited_at - pages.entered_at) average
             FROM pages

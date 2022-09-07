@@ -9,6 +9,7 @@ module Resolvers
       argument :position, Types::Analytics::PathPosition, required: true
 
       def resolve_with_timings(page:, position:)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT page_urls path
           FROM (

@@ -30,6 +30,7 @@ module Resolvers
       private
 
       def pages(page, size, sort)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             p.url,
