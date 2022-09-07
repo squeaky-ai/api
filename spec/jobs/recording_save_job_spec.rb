@@ -119,6 +119,14 @@ RSpec.describe RecordingSaveJob, type: :job do
     it 'creates the event captures' do
       expect { subject }.to change { site.reload.event_captures.size }.from(0).to(1)
     end
+
+    it 'stores all the clickhouse data' do
+      expect { subject }
+        .to change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM click_events WHERE site_id = #{site.id}") }.from(0).to(3)
+        .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM custom_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM error_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}") }.from(0).to(1)
+    end
   end
 
   context 'when the email domain is blacklisted' do
