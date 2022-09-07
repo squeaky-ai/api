@@ -76,7 +76,11 @@ module Resolvers
         SQL
 
         query = ActiveRecord::Base.sanitize_sql_array(
-          [sql, { site_id: object.id, from_date:, to_date: }]
+          [sql, {
+            site_id: object.id,
+            from_date: "#{from_date} 00:00:00",
+            to_date: "#{to_date} 23:59:59"
+          }]
         )
 
         ClickHouse.connection.select_all(query)

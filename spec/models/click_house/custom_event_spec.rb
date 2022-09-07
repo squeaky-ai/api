@@ -39,8 +39,8 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
           'data' => '{"foo":"bar"}', 
           'device_x' => 1920, 
           'device_y' => 1080, 
-          'name' => '', 
-          'url' => '', 
+          'name' => 'my-event', 
+          'url' => '/examples/static/', 
           'viewport_x' => 1920, 
           'viewport_y' => 1080
         }
