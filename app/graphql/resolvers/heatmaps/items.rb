@@ -17,6 +17,7 @@ module Resolvers
       private
 
       def clicks
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             DISTINCT(selector) AS selector,

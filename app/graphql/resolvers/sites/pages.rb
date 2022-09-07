@@ -9,6 +9,7 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT pages.url, count(*)
           FROM pages

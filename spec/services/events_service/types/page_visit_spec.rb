@@ -18,13 +18,14 @@ RSpec.describe EventsService::Types::PageVisit do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            page_events
           WHERE
             site_id = :site_id AND
-            type = #{Event::PAGE_VIEW} AND
-            JSONExtractString(data, 'href') = '/' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            url = '/' AND
+            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -37,13 +38,14 @@ RSpec.describe EventsService::Types::PageVisit do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            page_events
           WHERE
             site_id = :site_id AND
-            type = #{Event::PAGE_VIEW} AND
-            JSONExtractString(data, 'href') != '/' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            url != '/' AND
+            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -56,13 +58,14 @@ RSpec.describe EventsService::Types::PageVisit do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            page_events
           WHERE
             site_id = :site_id AND
-            type = #{Event::PAGE_VIEW} AND
-            JSONExtractString(data, 'href') LIKE '%foo%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            url LIKE '%foo%' AND
+            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -75,13 +78,14 @@ RSpec.describe EventsService::Types::PageVisit do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            page_events
           WHERE
             site_id = :site_id AND
-            type = #{Event::PAGE_VIEW} AND
-            JSONExtractString(data, 'href') NOT LIKE '%foo%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            url NOT LIKE '%foo%' AND
+            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -94,13 +98,14 @@ RSpec.describe EventsService::Types::PageVisit do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            page_events
           WHERE
             site_id = :site_id AND
-            type = #{Event::PAGE_VIEW} AND
-            JSONExtractString(data, 'href') LIKE '/test%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            url LIKE '/test%' AND
+            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

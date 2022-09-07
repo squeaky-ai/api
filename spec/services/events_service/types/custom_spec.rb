@@ -18,12 +18,13 @@ RSpec.describe EventsService::Types::Custom do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            custom_events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
-            JSONExtractString(data, 'name') = 'my-event' AND
+            name = 'my-event' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -37,12 +38,13 @@ RSpec.describe EventsService::Types::Custom do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            custom_events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
-            JSONExtractString(data, 'name') != 'my-event' AND
+            name != 'my-event' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -56,12 +58,13 @@ RSpec.describe EventsService::Types::Custom do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            custom_events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
-            JSONExtractString(data, 'name') LIKE '%other%' AND
+            name LIKE '%other%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -75,12 +78,13 @@ RSpec.describe EventsService::Types::Custom do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            custom_events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
-            JSONExtractString(data, 'name') NOT LIKE '%other%' AND
+            name NOT LIKE '%other%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -94,12 +98,13 @@ RSpec.describe EventsService::Types::Custom do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            custom_events
           WHERE
             site_id = :site_id AND
-            type = 101 AND
-            JSONExtractString(data, 'name') LIKE 'my-event%' AND
+            name LIKE 'my-event%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)

@@ -19,6 +19,7 @@ module Resolvers
         private
 
         def exit_rate(start_date, end_date)
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT
               (count(*))::numeric view_count,
