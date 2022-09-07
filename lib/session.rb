@@ -10,6 +10,7 @@ class Session # rubocop:disable Metrics/ClassLength
               :pageviews,
               :sentiments,
               :nps,
+              :clicks,
               :custom_tracking,
               :external_attributes,
               :errors,
@@ -23,6 +24,7 @@ class Session # rubocop:disable Metrics/ClassLength
     @pageviews = []
     @recording = {}
     @sentiments = []
+    @clicks = []
     @nps = nil
     @custom_tracking = []
     @external_attributes = {}
@@ -150,6 +152,40 @@ class Session # rubocop:disable Metrics/ClassLength
     activity.activity_duration
   end
 
+  def pages # rubocop:disable Metrics/AbcSize
+    page_views = []
+
+    pageviews.each do |page|
+      prev = page_views.last
+      path = page['path']
+      timestamp = page['timestamp']
+
+      next if prev && prev[:url] == path
+
+      prev[:exited_at] = timestamp if prev
+
+      page_views.push(
+        url: path,
+        entered_at: timestamp,
+        exited_at: timestamp,
+        bounced_on: false,
+        exited_on: false
+      )
+    end
+
+    return unless page_views.any?
+
+    page_views.last[:exited_at] = disconnected_at
+
+    # Mark the page as being bounced on if there was
+    # only a single page view
+    page_views.first[:bounced_on] = true if page_views.size == 1
+    # The last page was always the page that they exited on
+    page_views.last[:exited_on] = true
+
+    page_views
+  end
+
   private
 
   def fetch_and_process_events
@@ -216,7 +252,15 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def handle_event(event)
-    @events.push(event['value'])
+    data = event['value']
+
+    @events.push(data)
+
+    if data['type'] == Event::INCREMENTAL_SNAPSHOT &&
+       data['data']['source'] == Event::IncrementalSource::MOUSE_INTERACTION &&
+       data['data']['type'] == Event::MouseInteractions::CLICK
+      @clicks.push(data)
+    end
   end
 
   def handle_sentiment(event)

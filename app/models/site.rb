@@ -20,8 +20,6 @@ class Site < ApplicationRecord
   has_many :sentiments, through: :recordings
   has_many :tags
   has_many :clicks
-  has_many :custom_events
-  has_many :error_events
   has_many :event_captures, dependent: :destroy
   has_many :event_groups
 

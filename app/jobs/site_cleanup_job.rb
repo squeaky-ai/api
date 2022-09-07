@@ -16,7 +16,6 @@ class SiteCleanupJob < ApplicationJob
       # crash if using the dependent: :destroy
       # Then delete the recording and clean up the pages and the rest
       delete_postgres_events(recording.id)
-      delete_clickhouse_events(recording.id)
       delete_postgres_pages(recording.id)
 
       recording.destroy
@@ -35,16 +34,5 @@ class SiteCleanupJob < ApplicationJob
 
   def delete_postgres_pages(recording_id)
     Page.where('recording_id = ?', recording_id).delete_all
-  end
-
-  def delete_clickhouse_events(recording_id)
-    sql = <<-SQL
-      ALTER TABLE events
-      DELETE where recording_id = ?
-    SQL
-
-    query = ActiveRecord::Base.sanitize_sql_array([sql, recording_id])
-
-    ClickHouse.connection.execute(query)
   end
 end

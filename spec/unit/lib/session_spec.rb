@@ -19,6 +19,114 @@ RSpec.describe Session do
 
   let(:instance) { Session.new(message) }
 
+  describe '#recording' do
+    it 'returns the recording' do
+      expect(instance.recording).to eq(
+        'device_x' => 3840,
+        'device_y' => 1600,
+        'locale' => 'en-GB',
+        'referrer' => nil,
+        'timezone' => 'Europe/London',
+        'useragent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0',
+        'utm_campaign' => 'my_campaign',
+        'utm_content' => 'test',
+        'utm_medium' => 'organic',
+        'utm_source' => 'google',
+        'utm_term' => 'analytics',
+        'viewport_x' => 1813,
+        'viewport_y' => 1813
+      )
+    end
+  end
+
+  describe '#pageviews' do
+    it 'returns the pageviews' do
+      expect(instance.pageviews).to match_array([
+        {
+          'path' => '/examples/static/',
+          'timestamp' => 1637177342265
+        }
+      ])
+    end
+  end
+
+  describe '#clicks' do
+    it 'returns the clicks' do
+      expect(instance.clicks).to match_array([
+        {
+          'data' => {
+            'id' => 31,
+            'selector' => 'html > body > form > div:nth-of-type(2) > input',
+            'source' => 2,
+            'type' => 2,
+            'x' => 74,
+            'y' => 86
+          },
+          'timestamp' => 1637177349467,
+          'type' => 3
+        },
+        {
+          'data' => {
+            'id' => 23,
+            'selector' => 'html > body > form > div > input',
+            'source' => 2,
+            'type' => 2,
+            'x' => 79,
+            'y' => 74
+          },
+          'timestamp' => 1637177350203,
+          'type' => 3
+        },
+        {
+          'data' => {
+            'id' => 34,
+            'selector' => 'html > body > form > div:nth-of-type(3)',
+            'source' => 2,
+            'type' => 2,
+            'x' => 571,
+            'y' => 123
+          },
+          'timestamp' => 1637177351329,
+          'type' => 3
+        }
+      ])
+    end
+  end
+
+  describe '#custom_tracking' do
+    it 'returns the custom tracking' do
+      expect(instance.custom_tracking).to match_array([
+        {
+          'data' => {
+            'foo' => 'bar',
+            'href' => '/examples/static/', 'name'=>'my-event'
+          },
+          'timestamp' => 1637177342311,
+          'type' => 101
+        }
+      ])
+    end
+  end
+
+  describe '#errors' do
+    it 'returns the errors' do
+      expect(instance.errors).to match_array([
+        {
+          'data' => {
+            'line_number' => 74,
+            'col_number' => 25,
+            'message' => 'Error: Oh no',
+            'stack' => 'onclick@http://localhost:8081/examples/static/#:74:16',
+            'filename' => 'http://localhost:8081/examples/static/#',
+            'href' => '/examples/static/'
+          }, 
+          'timestamp' => 1637177342309,
+          'type' => 100
+        }
+      ])
+    end
+  end
+
   describe '#locale' do
     it 'returns the locale' do
       expect(instance.locale).to eq 'en-GB'
@@ -88,6 +196,20 @@ RSpec.describe Session do
   describe '#country_code' do
     it 'returns the country code' do
       expect(instance.country_code).to eq 'GB'
+    end
+  end
+
+  describe '#pages' do
+    it 'returns the pages' do
+      expect(instance.pages).to match_array([
+        {
+          url: '/examples/static/',
+          entered_at: 1637177342265,
+          exited_at: 1637177353431,
+          bounced_on: true,
+          exited_on: true
+        }
+      ])
     end
   end
 

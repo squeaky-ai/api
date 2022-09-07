@@ -93,19 +93,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(clicks.size).to eq 3
     end
 
-    it 'stores the custom events' do
-      subject
-      custom_events = site.reload.custom_events
-      expect(custom_events.size).to eq 1
-    end
-
-    it 'stores the error events' do
-      subject
-      error_events = site.reload.error_events
-      puts '@@', error_events.to_json
-      expect(error_events.size).to eq 1
-    end
-
     it 'cleans up the redis data' do
       subject
       expect(Cache.redis).to have_received(:del)
@@ -354,35 +341,6 @@ RSpec.describe RecordingSaveJob, type: :job do
     it 'stores the events' do
       subject
       expect(site.reload.recordings.first.events.size).to eq 85
-    end
-  end
-
-  context 'when the events are being stored in clickhouse' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
-    before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-    end
-
-    subject { described_class.perform_now(event) }
-
-    it 'stores the events' do
-      subject
-      total = ClickHouse::Event
-                .where(recording_id: site.recordings.first.id)
-                .select('count(*) total')
-                .select_one
-      expect(total['total']).to eq 85
     end
   end
 

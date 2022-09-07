@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
+class RecordingSaveJob < ApplicationJob
   queue_as :default
 
   sidekiq_options retry: false
@@ -48,8 +48,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       persist_sentiments!(recording)
       persist_nps!(recording)
       persist_clicks!(recording)
-      persist_custom!(recording)
-      persist_errors!(recording)
+      persist_clickhouse_data!(recording)
       persist_custom_event_names!
     end
   end
@@ -99,29 +98,6 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def persist_events!(recording)
-    persist_events_in_postgres(recording)
-    persist_events_in_clickhouse(recording)
-  end
-
-  def persist_events_in_clickhouse(recording)
-    ClickHouse::Event.insert do |buffer|
-      session.events.each do |event|
-        buffer << {
-          uuid: SecureRandom.uuid,
-          site_id: recording.site_id,
-          recording_id: recording.id,
-          type: event['type'],
-          source: event['data']['source'],
-          data: event['data'].to_json,
-          timestamp: event['timestamp']
-        }
-      end
-    end
-  rescue StandardError => e
-    logger.error "Failed to store data in ClickHouse #{e}"
-  end
-
-  def persist_events_in_postgres(recording)
     now = Time.now
     # Batch insert all of the events. PG has a limit of
     # 65535 placeholders and some users spend bloody ages on
@@ -144,32 +120,19 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def persist_pageviews!(recording) # rubocop:disable Metrics/AbcSize
-    page_views = []
-
-    session.pageviews.each do |page|
-      prev = page_views.last
-      path = page['path']
-      timestamp = page['timestamp']
-
-      next if prev && prev[:url] == path
-
-      prev[:exited_at] = timestamp if prev
-
-      page_views.push(Page.new(url: path, entered_at: timestamp, exited_at: timestamp, site_id: site.id))
+  def persist_pageviews!(recording)
+    pages = session.pages.map do |e|
+      Page.new(
+        url: e[:url],
+        entered_at: e[:entered_at],
+        exited_at: e[:exited_at],
+        bounced_on: e[:bounced_on],
+        exited_on: e[:exited_on],
+        site_id: site.id
+      )
     end
 
-    return unless page_views.any?
-
-    page_views.last.exited_at = recording[:disconnected_at]
-
-    # Mark the page as being bounced on if there was
-    # only a single page view
-    page_views.first.bounced_on = true if page_views.size == 1
-    # The last page was always the page that they exited on
-    page_views.last.exited_on = true
-
-    recording.pages << page_views
+    recording.pages << pages
     recording.save
   end
 
@@ -197,15 +160,9 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     )
   end
 
-  def persist_clicks!(recording) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
-    items = []
-
-    session.events.each do |event|
-      next unless event['type'] == Event::INCREMENTAL_SNAPSHOT &&
-                  event['data']['source'] == Event::IncrementalSource::MOUSE_INTERACTION &&
-                  event['data']['type'] == Event::MouseInteractions::CLICK
-
-      items.push(
+  def persist_clicks!(recording) # rubocop:disable Metrics/AbcSize
+    items = session.clicks.map do |event|
+      {
         text: event['data']['text'],
         selector: event['data']['selector'] || 'html > body',
         coordinates_x: event['data']['x'] || 0,
@@ -216,44 +173,16 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
         viewport_y: recording.viewport_y,
         site_id: recording.site_id,
         recording_id: recording.id
-      )
+      }
     end
 
     Click.insert_all!(items) unless items.empty?
   end
 
-  def persist_custom!(recording)
-    items = []
-
-    session.custom_tracking.each do |event|
-      data = event['data'].except('name', 'href')
-
-      items.push(
-        data:,
-        name: event['data']['name'],
-        page_url: event['data']['href'],
-        site_id: recording.site_id,
-        recording_id: recording.id
-      )
+  def persist_clickhouse_data!(recording)
+    [ClickHouse::ClickEvent, ClickHouse::CustomEvent, ClickHouse::ErrorEvent, ClickHouse::PageEvent].each do |model|
+      model.create_from_session(recording, session)
     end
-
-    CustomEvent.insert_all!(items) unless items.empty?
-  end
-
-  def persist_errors!(recording)
-    items = []
-
-    session.errors.each do |event|
-      items.push(
-        filename: event['data']['filename'],
-        message: event['data']['message'],
-        page_url: event['data']['href'],
-        site_id: recording.site_id,
-        recording_id: recording.id
-      )
-    end
-
-    ErrorEvent.insert_all!(items) unless items.empty?
   end
 
   def persist_custom_event_names!
