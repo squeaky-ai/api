@@ -66,16 +66,14 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
     before do
       group_1.update(event_captures: [capture_1, capture_2])
 
-      ClickHouse::Event.insert do |buffer|
+      ClickHouse::PageEvent.insert do |buffer|
         5.times do |i|
           buffer << {
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::PAGE_VIEW,
-            source: nil,
-            data: { href: '/' }.to_json,
-            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            url: '/',
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
           }
         end
 
@@ -84,10 +82,8 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::PAGE_VIEW,
-            source: nil,
-            data: { href: '/test' }.to_json,
-            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            url: '/test',
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
           }
         end
 
@@ -96,10 +92,8 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             uuid: SecureRandom.uuid,
             site_id: site.id,
             recording_id: recording.id,
-            type: Event::PAGE_VIEW,
-            source: nil,
-            data: { href: '/something_else' }.to_json,
-            timestamp: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            url: '/something_else',
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
           }
         end
       end

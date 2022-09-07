@@ -24,7 +24,7 @@ RSpec.describe EventsService::Types::TextClick do
             click_events
           WHERE
             site_id = :site_id AND
-            selector = 'Add to cart' AND
+            text = 'Add to cart' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -44,7 +44,7 @@ RSpec.describe EventsService::Types::TextClick do
             click_events
           WHERE
             site_id = :site_id AND
-            selector != 'Add to cart' AND
+            text != 'Add to cart' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -64,7 +64,7 @@ RSpec.describe EventsService::Types::TextClick do
             click_events
           WHERE
             site_id = :site_id AND
-            selector LIKE '%cart%' AND
+            text LIKE '%cart%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -84,7 +84,7 @@ RSpec.describe EventsService::Types::TextClick do
             click_events
           WHERE
             site_id = :site_id AND
-            selector NOT LIKE '%Sign up%' AND
+            text NOT LIKE '%Sign up%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -104,7 +104,7 @@ RSpec.describe EventsService::Types::TextClick do
             click_events
           WHERE
             site_id = :site_id AND
-            selector LIKE 'Add%' AND
+            text LIKE 'Add%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
