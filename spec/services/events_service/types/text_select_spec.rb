@@ -18,13 +18,13 @@ RSpec.describe EventsService::Types::TextClick do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            click_events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
-            JSONExtractString(data, 'text') = 'Add to cart' AND
+            selector = 'Add to cart' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -38,13 +38,13 @@ RSpec.describe EventsService::Types::TextClick do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            click_events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
-            JSONExtractString(data, 'text') != 'Add to cart' AND
+            selector != 'Add to cart' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -58,13 +58,13 @@ RSpec.describe EventsService::Types::TextClick do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            click_events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
-            JSONExtractString(data, 'text') LIKE '%cart%' AND
+            selector LIKE '%cart%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -78,13 +78,13 @@ RSpec.describe EventsService::Types::TextClick do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            click_events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
-            JSONExtractString(data, 'text') NOT LIKE '%Sign up%' AND
+            selector NOT LIKE '%Sign up%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
@@ -98,13 +98,13 @@ RSpec.describe EventsService::Types::TextClick do
 
       it 'returns the right count' do
         sql = <<-SQL
-          SELECT COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
-          FROM events
+          SELECT
+            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+          FROM
+            click_events
           WHERE
             site_id = :site_id AND
-            type = 3 AND
-            source = 2 AND
-            JSONExtractString(data, 'text') LIKE 'Add%' AND
+            selector LIKE 'Add%' AND
             toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
