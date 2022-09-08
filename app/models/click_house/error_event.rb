@@ -22,6 +22,9 @@ module ClickHouse
           }
         end
       end
+    rescue ClickHouse::DbException => e
+      Rails.logger.error "Failed to insert events to clickhouse: #{e} - #{session.errors.to_json}"
+      raise
     end
   end
 end
