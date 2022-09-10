@@ -7,7 +7,6 @@ module StripeService
         update_billing_status(::Billing::OPEN)
 
         refresh_customer_payment_information!
-        unlock_recordings!
       end
     end
   end

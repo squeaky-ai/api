@@ -46,29 +46,6 @@ class Plan < ApplicationRecord
     self[:support].empty? ? plan_defaults[:support] : self[:support]
   end
 
-  def recordings_locked_count
-    @recordings_locked_count ||= site.recordings
-                                     .where(
-                                       'status = ? AND created_at > ? AND created_at < ?',
-                                       Recording::LOCKED,
-                                       Time.now.beginning_of_month,
-                                       Time.now.end_of_month
-                                     )
-                                     .count
-  end
-
-  def visitors_locked_count
-    @visitors_locked_count ||= site.recordings
-                                   .select('DISTINCT(visitor_id)')
-                                   .where(
-                                     'status = ? AND created_at > ? AND created_at < ?',
-                                     Recording::LOCKED,
-                                     Time.now.beginning_of_month,
-                                     Time.now.end_of_month
-                                   )
-                                   .count
-  end
-
   private
 
   def all_recordings_count

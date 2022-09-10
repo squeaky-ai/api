@@ -16,7 +16,7 @@ class Recording < ApplicationRecord
   has_and_belongs_to_many :tags
 
   ACTIVE = 0
-  LOCKED = 1
+  LOCKED = 1 # Deprecated
   DELETED = 2
   ALL = [0, 1, 2].freeze
 

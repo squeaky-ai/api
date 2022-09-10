@@ -40,17 +40,5 @@ RSpec.describe StripeService::Types::CheckoutSessionCompleted do
       expect(billing.billing_name).to eq 'Lewis Monteith'
       expect(billing.billing_email).to eq 'lewismonteith@gmail.com'
     end
-
-    context 'when there are locked recordings' do
-      before do
-        create(:recording, site: billing.site, status: Recording::LOCKED)
-        create(:recording, site: billing.site, status: Recording::LOCKED)
-        create(:recording, site: billing.site, status: Recording::LOCKED)
-      end
-
-      it 'unlocks them' do
-        expect { subject }.to change { billing.site.recordings.reload.where(status: Recording::LOCKED).size }.from(3).to(0)
-      end
-    end
   end
 end

@@ -72,10 +72,6 @@ module StripeService
           billing_email: billing_details['email']
         )
       end
-
-      def unlock_recordings!
-        site.unlock_recordings!
-      end
     end
   end
 end

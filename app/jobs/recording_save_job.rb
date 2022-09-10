@@ -222,10 +222,6 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def recording_status
-    # Users can unlock these recordings if they upgrade their
-    # plan or pay for their bill
-    return Recording::LOCKED if site.plan.exceeded? || site.plan.invalid?
-
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
     return Recording::DELETED if session.duration < 3000

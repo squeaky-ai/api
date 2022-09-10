@@ -76,31 +76,5 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
       expect_any_instance_of(StripeService::Billing).to receive(:update_plan).with(pricing_id)
       subject
     end
-
-    context 'when there are locked recordings and they are upgrading' do
-      before do
-        create(:recording, site: site, status: Recording::LOCKED)
-        create(:recording, site: site, status: Recording::LOCKED)
-        create(:recording, site: site, status: Recording::LOCKED)
-      end
-
-      it 'unlocks the recordings' do
-        expect { subject }.to change { site.recordings.reload.where(status: Recording::LOCKED).size }.from(3).to(0)
-      end
-    end
-
-    context 'when there are locked recordings and they are downgrading' do
-      before do
-        site.plan.update(tier: 4)
-
-        create(:recording, site: site, status: Recording::LOCKED)
-        create(:recording, site: site, status: Recording::LOCKED)
-        create(:recording, site: site, status: Recording::LOCKED)
-      end
-
-      it 'does not unlock the recordings' do
-        expect { subject }.not_to change { site.recordings.reload.where(status: Recording::LOCKED).size }
-      end
-    end
   end
 end

@@ -13,8 +13,6 @@ admin_site_plan_update_mutation = <<-GRAPHQL
         invalid
         support
         maxMonthlyRecordings
-        recordingsLockedCount
-        visitorsLockedCount
         ssoEnabled
         auditTrailEnabled
         privateInstanceEnabled
@@ -61,12 +59,10 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
           "name" => "Free",
           "notes" => "Hello there",
           "privateInstanceEnabled" => true,
-          "recordingsLockedCount" => 0,
           "responseTimeHours" => 12,
           "ssoEnabled" => true,
           "support" => ["Phone", "Chat"],
-          "tier" => 0,
-          "visitorsLockedCount" => 0,
+          "tier" => 0
         }
       )
     end

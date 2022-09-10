@@ -205,44 +205,9 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     subject { described_class.perform_now(event) }
 
-    it 'saves the recording with the LOCKED status' do
-      subject
-      recording = site.reload.recordings.first
-      expect(recording.status).to eq Recording::LOCKED
-    end
-
     it 'checks if the exceeded email needs to be send' do
       subject
       expect(PlanService).to have_received(:alert_if_exceeded)
-    end
-  end
-
-  context 'when the customer has not paid their bill' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
-    before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-      allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
-
-      create(:billing, site: site, status: Billing::INVALID)
-    end
-
-    subject { described_class.perform_now(event) }
-
-    it 'saves the recording with the LOCKED status' do
-      subject
-      recording = site.reload.recordings.first
-      expect(recording.status).to eq Recording::LOCKED
     end
   end
 

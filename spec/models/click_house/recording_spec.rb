@@ -53,7 +53,7 @@ RSpec.describe ClickHouse::Recording, type: :model do
           activity_duration,
           inactivity
         FROM recordings
-        WHERE site_id = #{site.id}
+        WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
 
       expect(results).to eq(
