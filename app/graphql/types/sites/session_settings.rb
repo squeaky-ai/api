@@ -12,6 +12,7 @@ module Types
       field :anonymise_form_inputs, Boolean, null: false
       field :ingest_enabled, Boolean, null: false
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: true }], null: false
+      field :invalid_or_exceeded_plan, Boolean, null: false
     end
   end
 end

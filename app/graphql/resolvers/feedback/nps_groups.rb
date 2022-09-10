@@ -10,14 +10,13 @@ module Resolvers
           SELECT nps.score
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id
-          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?
         SQL
 
         variables = [
           object.site.id,
           object.range.from,
           object.range.to,
-          [Recording::ACTIVE, Recording::DELETED]
         ]
 
         results = Sql.execute(sql, variables)

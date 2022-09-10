@@ -21,14 +21,13 @@ module Resolvers
         sql = <<-SQL
           SELECT AVG(disconnected_at - connected_at) as duration
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
           object.site.id,
           from_date,
-          to_date,
-          [Recording::ACTIVE, Recording::DELETED]
+          to_date
         ]
 
         result = Sql.execute(sql, variables)

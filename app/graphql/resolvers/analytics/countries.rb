@@ -21,7 +21,7 @@ module Resolvers
         sql = <<-SQL
           SELECT DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY country_code
           ORDER BY country_code_code DESC
         SQL
@@ -29,8 +29,7 @@ module Resolvers
         variables = [
           object.site.id,
           object.range.from,
-          object.range.to,
-          [Recording::ACTIVE, Recording::DELETED]
+          object.range.to
         ]
 
         Sql.execute(sql, variables)

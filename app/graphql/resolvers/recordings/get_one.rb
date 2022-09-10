@@ -11,7 +11,7 @@ module Resolvers
         Recording
           .joins(:pages, :visitor)
           .preload(:pages, :visitor)
-          .find_by(site_id: object.id, id: recording_id, status: [Recording::ACTIVE, Recording::DELETED])
+          .find_by(site_id: object.id, id: recording_id)
       end
     end
   end

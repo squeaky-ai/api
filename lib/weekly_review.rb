@@ -251,7 +251,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
   def feedback_nps
     {
       enabled: site.nps_enabled?,
-      score: Nps.get_score_between(@site_id, @from_date, @to_date, Recording::ALL)
+      score: Nps.get_score_between(@site_id, @from_date, @to_date)
     }
   end
 

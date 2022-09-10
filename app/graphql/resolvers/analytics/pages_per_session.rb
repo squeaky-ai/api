@@ -20,15 +20,14 @@ module Resolvers
           SELECT count(pages.id)
           FROM recordings
           INNER JOIN pages ON pages.recording_id = recordings.id
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY recordings.id
         SQL
 
         variables = [
           object.site.id,
           from_date,
-          to_date,
-          [Recording::ACTIVE, Recording::DELETED]
+          to_date
         ]
 
         results = Sql.execute(sql, variables)

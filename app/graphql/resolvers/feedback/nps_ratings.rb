@@ -9,11 +9,10 @@ module Resolvers
         Nps
           .joins(:recording)
           .where(
-            'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
+            'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
             object.site.id,
             object.range.from,
             object.range.to,
-            [Recording::ACTIVE, Recording::DELETED]
           )
           .select('nps.score')
       end

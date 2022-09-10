@@ -21,15 +21,14 @@ module Resolvers
         sql = <<-SQL
           SELECT visitor_id, COUNT(visitor_id)
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY visitor_id
         SQL
 
         variables = [
           object.site.id,
           from_date,
-          to_date,
-          [Recording::ACTIVE, Recording::DELETED]
+          to_date
         ]
 
         results = Sql.execute(sql, variables)

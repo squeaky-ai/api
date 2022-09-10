@@ -31,11 +31,10 @@ module Resolvers
       def browsers(page, size)
         Recording
           .where(
-            'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)',
+            'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?',
             object.site.id,
             object.range.from,
-            object.range.to,
-            [Recording::ACTIVE, Recording::DELETED]
+            object.range.to
           )
           .select('DISTINCT(browser) browser, count(*) count')
           .order('count DESC')
