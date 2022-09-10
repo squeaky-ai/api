@@ -16,7 +16,7 @@ module Resolvers
         variables = [
           object.site.id,
           object.range.from,
-          object.range.to,
+          object.range.to
         ]
 
         results = Sql.execute(sql, variables)

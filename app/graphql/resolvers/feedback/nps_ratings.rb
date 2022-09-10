@@ -12,7 +12,7 @@ module Resolvers
             'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
             object.site.id,
             object.range.from,
-            object.range.to,
+            object.range.to
           )
           .select('nps.score')
       end

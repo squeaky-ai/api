@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
+class RecordingSaveJob < ApplicationJob
   queue_as :default
 
   sidekiq_options retry: false
@@ -68,33 +68,8 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     visitor
   end
 
-  def persist_recording!(visitor) # rubocop:disable Metrics/AbcSize
-    Recording.create!(
-      session_id: session.session_id,
-      visitor_id: visitor.id,
-      site_id: site.id,
-      status: recording_status,
-      locale: session.locale,
-      device_x: session.device_x,
-      browser: session.browser,
-      device_type: session.device_type,
-      device_y: session.device_y,
-      referrer: session.referrer,
-      useragent: session.useragent,
-      timezone: session.timezone,
-      country_code: session.country_code,
-      viewport_x: session.viewport_x,
-      viewport_y: session.viewport_y,
-      connected_at: session.connected_at,
-      disconnected_at: session.disconnected_at,
-      utm_source: session.utm_source,
-      utm_medium: session.utm_medium,
-      utm_campaign: session.utm_campaign,
-      utm_content: session.utm_content,
-      utm_term: session.utm_term,
-      activity_duration: session.activity_duration,
-      inactivity: session.inactivity
-    )
+  def persist_recording!(visitor)
+    Recording.create_from_session(session, visitor, site, recording_status)
   end
 
   def persist_events!(recording)

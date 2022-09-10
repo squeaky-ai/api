@@ -92,6 +92,35 @@ class Recording < ApplicationRecord
     end
   end
 
+  def self.create_from_session(session, visitor, site, status) # rubocop:disable Metrics/AbcSize
+    create(
+      status:,
+      site_id: site.id,
+      visitor_id: visitor.id,
+      session_id: session.session_id,
+      locale: session.locale,
+      device_x: session.device_x,
+      browser: session.browser,
+      device_type: session.device_type,
+      device_y: session.device_y,
+      referrer: session.referrer,
+      useragent: session.useragent,
+      timezone: session.timezone,
+      country_code: session.country_code,
+      viewport_x: session.viewport_x,
+      viewport_y: session.viewport_y,
+      connected_at: session.connected_at,
+      disconnected_at: session.disconnected_at,
+      utm_source: session.utm_source,
+      utm_medium: session.utm_medium,
+      utm_campaign: session.utm_campaign,
+      utm_content: session.utm_content,
+      utm_term: session.utm_term,
+      activity_duration: session.activity_duration,
+      inactivity: session.inactivity
+    )
+  end
+
   private
 
   def ordered_pages
