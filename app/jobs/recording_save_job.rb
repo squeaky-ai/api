@@ -48,7 +48,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       persist_sentiments!(recording)
       persist_nps!(recording)
       persist_clicks!(recording)
-      # persist_clickhouse_data!(recording)
+      persist_clickhouse_data!(recording)
       persist_custom_event_names!
     end
   end
