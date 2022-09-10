@@ -14,36 +14,19 @@ RSpec.describe Plan, type: :model do
   end
 
   describe '#exceeded?' do
-    context 'when the there are no locked recordings' do
-      let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
-  
-      before do
-        site.update(plan: instance)
-      end
-  
-      subject { instance.exceeded? }
+    let(:site) { create(:site_with_team) }
+    let(:instance) { described_class.new(tier: 3) }
 
-      it 'returns false' do
-        expect(subject).to eq false
-      end
+    before do
+      allow(instance).to receive(:all_recordings_count).and_return 41234134234
+
+      site.update(plan: instance)
     end
 
-    context 'when the there are locked recordings' do
-      let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
-  
-      before do
-        allow(instance).to receive(:all_recordings_count).and_return 41234134234
+    subject { instance.exceeded? }
 
-        site.update(plan: instance)
-      end
-  
-      subject { instance.exceeded? }
-
-      it 'returns true' do
-        expect(subject).to eq true
-      end
+    it 'returns true' do
+      expect(subject).to eq true
     end
   end
 
@@ -194,50 +177,6 @@ RSpec.describe Plan, type: :model do
       it 'returns the override' do
         expect(subject).to eq ['Email', 'Afternoon Tea']
       end
-    end
-  end
-
-  describe '#recordings_locked_count' do
-    let(:site) { create(:site) }
-    let(:instance) { described_class.new(tier: 0) }
-
-    before do
-      create(:recording, status: Recording::ACTIVE, site:)
-      create(:recording, status: Recording::ACTIVE, site:)
-      create(:recording, status: Recording::LOCKED, site:)
-      create(:recording, status: Recording::LOCKED, site:)
-      create(:recording, status: Recording::LOCKED, site:)
-      create(:recording, status: Recording::DELETED, site:)
-
-      site.update(plan: instance)
-    end
-
-    subject { instance.recordings_locked_count }
-
-    it 'returns the number of locked recordings' do
-      expect(subject).to eq 3
-    end
-  end
-
-  describe '#visitors_locked_count' do
-    let(:site) { create(:site) }
-    let(:instance) { described_class.new(tier: 0) }
-
-    before do
-      create(:visitor)
-      create(:visitor)
-      
-      create(:recording, site:, status: Recording::LOCKED, visitor: create(:visitor))
-      create(:recording, site:, status: Recording::LOCKED, visitor: create(:visitor))
-      create(:recording, site:, status: Recording::DELETED, visitor: create(:visitor))
-
-      site.update(plan: instance)
-    end
-
-    subject { instance.visitors_locked_count }
-
-    it 'returns the number of locked visitors' do
-      expect(subject).to eq 2
     end
   end
 end

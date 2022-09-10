@@ -9,15 +9,14 @@ module Resolvers
         sql = <<-SQL
           SELECT to_char(to_timestamp(disconnected_at / 1000), 'Dy,HH24') day_hour, COUNT(*)
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY day_hour;
         SQL
 
         variables = [
           object.site.id,
           object.range.from,
-          object.range.to,
-          [Recording::ACTIVE, Recording::DELETED]
+          object.range.to
         ]
 
         results = Sql.execute(sql, variables)

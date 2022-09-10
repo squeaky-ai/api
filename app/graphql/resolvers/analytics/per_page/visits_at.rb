@@ -14,7 +14,6 @@ module Resolvers
             WHERE
               recordings.site_id = ? AND
               to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              recordings.status IN (?) AND
               pages.url = ?
             GROUP BY day_hour;
           SQL
@@ -23,7 +22,6 @@ module Resolvers
             object.site.id,
             object.range.from,
             object.range.to,
-            [Recording::ACTIVE, Recording::DELETED],
             object.page
           ]
 

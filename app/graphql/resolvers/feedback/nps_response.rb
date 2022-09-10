@@ -13,11 +13,10 @@ module Resolvers
       def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         query = Nps.joins(recording: :visitor)
                    .where(
-                     'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
+                     'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
                      object.site.id,
                      object.range.from,
                      object.range.to,
-                     [Recording::ACTIVE, Recording::DELETED]
                    )
                    .select('
                      nps.*,

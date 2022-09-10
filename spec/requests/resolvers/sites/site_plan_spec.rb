@@ -12,8 +12,6 @@ site_plan_query = <<-GRAPHQL
         exceeded
         invalid
         maxMonthlyRecordings
-        recordingsLockedCount
-        visitorsLockedCount
         dataStorageMonths
         responseTimeHours
         support
@@ -42,8 +40,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 1000,
-        'recordingsLockedCount' => 0,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 6,
         'responseTimeHours' => 168,
         'support' => [
@@ -78,8 +74,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 100000,
-        'recordingsLockedCount' => 0,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
         'support' => [
@@ -115,8 +109,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => true,
         'maxMonthlyRecordings' => 50000,
-        'recordingsLockedCount' => 0,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
         'support' => [
@@ -135,7 +127,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
 
       allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
-      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(1)
 
       site.plan.update(tier: 2)
     end
@@ -155,8 +146,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => true,
         'invalid' => false,
         'maxMonthlyRecordings' => 50000,
-        'recordingsLockedCount' => 1,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
         'support' => [
@@ -175,7 +164,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
 
       allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
-      allow_any_instance_of(Plan).to receive(:recordings_locked_count).and_return(1)
 
       site.plan.update(tier: 2)
     end
@@ -195,8 +183,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => true,
         'invalid' => true,
         'maxMonthlyRecordings' => 50000,
-        'recordingsLockedCount' => 1,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
         'support' => [
@@ -231,8 +217,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 250000,
-        'recordingsLockedCount' => 0,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => -1,
         'responseTimeHours' => 0,
         'support' => [
@@ -274,8 +258,6 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 500000,
-        'recordingsLockedCount' => 0,
-        'visitorsLockedCount' => 0,
         'dataStorageMonths' => 36,
         'responseTimeHours' => 0,
         'support' => [

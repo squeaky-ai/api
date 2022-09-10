@@ -11,14 +11,13 @@ module Resolvers
             COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
             COUNT(device_type) FILTER(WHERE device_type = 'Mobile') mobile_count
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
           object.site.id,
           object.range.from,
-          object.range.to,
-          [Recording::ACTIVE, Recording::DELETED]
+          object.range.to
         ]
 
         results = Sql.execute(sql, variables).first

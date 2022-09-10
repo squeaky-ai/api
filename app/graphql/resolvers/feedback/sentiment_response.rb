@@ -16,12 +16,10 @@ module Resolvers
                 .where(
                   'recordings.site_id = ? AND
                     sentiments.created_at::date >= ? AND
-                    sentiments.created_at::date <= ? AND
-                    recordings.status IN (?)',
+                    sentiments.created_at::date <= ?',
                   object.site.id,
                   object.range.from,
-                  object.range.to,
-                  [Recording::ACTIVE, Recording::DELETED]
+                  object.range.to
                 )
                 .select('
                   sentiments.*,

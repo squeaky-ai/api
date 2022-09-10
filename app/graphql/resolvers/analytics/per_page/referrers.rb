@@ -35,12 +35,10 @@ module Resolvers
             .where(
               'recordings.site_id = ? AND
                to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-               recordings.status IN (?) AND
                pages.url = ?',
               object.site.id,
               object.range.from,
               object.range.to,
-              [Recording::ACTIVE, Recording::DELETED],
               object.page
             )
             .select('DISTINCT(COALESCE(recordings.referrer, \'Direct\')) referrer, count(*) count')

@@ -3,15 +3,14 @@
 class Nps < ApplicationRecord
   belongs_to :recording
 
-  def self.get_scores_between(site_id, from_date, to_date, statuses = [Recording::ACTIVE, Recording::DELETED])
+  def self.get_scores_between(site_id, from_date, to_date)
     results = select('nps.created_at, nps.score')
               .joins(:recording)
               .where(
-                'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ? AND recordings.status IN (?)',
+                'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
                 site_id,
                 from_date,
-                to_date,
-                statuses
+                to_date
               )
 
     results.map do |r|
@@ -22,8 +21,8 @@ class Nps < ApplicationRecord
     end
   end
 
-  def self.get_score_between(site_id, from_date, to_date, statuses = [Recording::ACTIVE, Recording::DELETED])
-    scores = get_scores_between(site_id, from_date, to_date, statuses)
+  def self.get_score_between(site_id, from_date, to_date)
+    scores = get_scores_between(site_id, from_date, to_date)
 
     calculate_scores(scores)
   end

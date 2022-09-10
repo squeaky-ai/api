@@ -23,13 +23,6 @@ module Mutations
 
         StripeService::Billing.new(@user, @site).update_plan(pricing_id)
 
-        if plan[:id] > @site.plan.tier
-          # We should probably only unlock ones within their new
-          # limit, but I really can't be arsed so they can have
-          # them on the house
-          @site.unlock_recordings!
-        end
-
         @site.plan.update(tier: plan[:id])
 
         @site

@@ -29,7 +29,7 @@ module Resolvers
         sql = <<-SQL
           SELECT DISTINCT LOWER(locale) locale, COUNT(*) locale_count
           FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND recordings.status IN (?)
+          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY LOWER(recordings.locale)
           ORDER BY locale_count DESC
         SQL
@@ -37,8 +37,7 @@ module Resolvers
         variables = [
           object.site.id,
           object.range.from,
-          object.range.to,
-          [Recording::ACTIVE, Recording::DELETED]
+          object.range.to
         ]
 
         Sql.execute(sql, variables)

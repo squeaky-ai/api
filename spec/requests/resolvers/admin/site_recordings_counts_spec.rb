@@ -9,10 +9,8 @@ site_admin_recordings_counts_query = <<-GRAPHQL
         id
         recordingCounts {
           totalAll
-          lockedAll
           deletedAll
           totalCurrentMonth
-          lockedCurrentMonth
           deletedCurrentMonth
         }
       }
@@ -42,10 +40,8 @@ RSpec.describe Resolvers::Admin::SiteRecordingsCounts, type: :request do
 
       expect(response['data']['admin']['site']['recordingCounts']).to eq(
         'totalAll' => 0,
-        'lockedAll' => 0,
         'deletedAll' => 0,
         'totalCurrentMonth' => 0,
-        'lockedCurrentMonth' => 0,
         'deletedCurrentMonth' => 0
       )
     end
@@ -56,8 +52,6 @@ RSpec.describe Resolvers::Admin::SiteRecordingsCounts, type: :request do
 
       before do
         create(:recording, site:)
-        create(:recording, site:, status: Recording::LOCKED)
-        create(:recording, site:, status: Recording::LOCKED)
         create(:recording, site:, status: Recording::DELETED)
         create(:recording, site:, created_at: Time.now - 2.months)
         create(:recording, site:, created_at: Time.now - 2.months, status: Recording::DELETED)
@@ -68,11 +62,9 @@ RSpec.describe Resolvers::Admin::SiteRecordingsCounts, type: :request do
         response = graphql_request(site_admin_recordings_counts_query, variables, user)
 
         expect(response['data']['admin']['site']['recordingCounts']).to eq(
-          'totalAll' => 6,
-          'lockedAll' => 2,
+          'totalAll' => 4,
           'deletedAll' => 2,
-          'totalCurrentMonth' => 4,
-          'lockedCurrentMonth' => 2,
+          'totalCurrentMonth' => 2,
           'deletedCurrentMonth' => 1
         )
       end

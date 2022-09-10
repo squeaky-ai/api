@@ -11,7 +11,7 @@ class DateRange
   end
 
   def to
-    @to_date # TODO: Return this, or the locked_at when this exists
+    @to_date
   end
 
   def trend_from
