@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob
+class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   queue_as :default
 
   sidekiq_options retry: false
@@ -48,7 +48,7 @@ class RecordingSaveJob < ApplicationJob
       persist_sentiments!(recording)
       persist_nps!(recording)
       persist_clicks!(recording)
-      persist_clickhouse_data!(recording)
+      # persist_clickhouse_data!(recording)
       persist_custom_event_names!
     end
   end
@@ -180,9 +180,13 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_clickhouse_data!(recording)
-    [ClickHouse::ClickEvent, ClickHouse::CustomEvent, ClickHouse::ErrorEvent, ClickHouse::PageEvent].each do |model|
-      model.create_from_session(recording, session)
-    end
+    [
+      ClickHouse::Recording,
+      ClickHouse::ClickEvent,
+      ClickHouse::CustomEvent,
+      ClickHouse::ErrorEvent,
+      ClickHouse::PageEvent
+    ].each { |model| model.create_from_session(recording, session) }
   end
 
   def persist_custom_event_names!
