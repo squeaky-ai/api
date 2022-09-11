@@ -105,7 +105,7 @@ class RecordingSaveJob < ApplicationJob
 
     session.events.each_slice(250).with_index do |slice, index|
       client.put_object(
-        body: slice.map.with_index { |s, id| { **s, id: } }.to_json,
+        body: slice.map { |s| { **s, id: SecureRandom.uuid } }.to_json,
         bucket: 'events.squeaky.ai',
         key: "#{site.uuid}/#{visitor.visitor_id}/#{session.session_id}/#{index}.json"
       )
