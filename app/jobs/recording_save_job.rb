@@ -43,7 +43,7 @@ class RecordingSaveJob < ApplicationJob
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
 
-      persist_events!(recording)
+      persist_events!(recording, visitor)
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
@@ -72,7 +72,12 @@ class RecordingSaveJob < ApplicationJob
     Recording.create_from_session(session, visitor, site, recording_status)
   end
 
-  def persist_events!(recording)
+  def persist_events!(recording, visitor)
+    persist_postgres_events!(recording)
+    persist_s3_events!(visitor)
+  end
+
+  def persist_postgres_events!(recording)
     now = Time.now
     # Batch insert all of the events. PG has a limit of
     # 65535 placeholders and some users spend bloody ages on
@@ -92,6 +97,18 @@ class RecordingSaveJob < ApplicationJob
       end
 
       Event.insert_all!(items)
+    end
+  end
+
+  def persist_s3_events!(visitor)
+    client = Aws::S3::Client.new
+
+    session.events.each_slice(250).with_index do |slice, index|
+      client.put_object(
+        body: slice.map.with_index { |s, id| { **s, id: } }.to_json,
+        bucket: 'events.squeaky.ai',
+        key: "#{site.uuid}/#{visitor.visitor_id}/#{session.session_id}/#{index}.json"
+      )
     end
   end
 

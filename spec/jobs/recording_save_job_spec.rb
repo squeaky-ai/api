@@ -8,6 +8,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the recording is new' do
     let(:site) { create(:site_with_team) }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
 
     let(:event) do
       {
@@ -25,7 +26,10 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Cache.redis).to receive(:set)
       allow(Cache.redis).to receive(:expire)
 
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
+
       allow(RecordingMailerService).to receive(:enqueue_if_first_recording)
+
     end
 
     subject { described_class.perform_now(event) }
@@ -128,6 +132,16 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}") }.from(0).to(1)
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}") }.from(0).to(1)
     end
+
+    it 'writes the events to S3' do
+      subject 
+
+      expect(s3_client).to have_received(:put_object).with(
+        body: anything,
+        bucket: 'events.squeaky.ai',
+        key: "#{event['site_id']}/#{event['visitor_id']}/#{event['session_id']}/0.json"
+      )
+    end
   end
 
   context 'when the email domain is blacklisted' do
@@ -186,6 +200,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the site recording limit has been exceeded' do
     let(:site) { create(:site_with_team) }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
 
     let(:event) do
       {
@@ -201,6 +216,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(PlanService).to receive(:alert_if_exceeded).and_call_original
       allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }
@@ -213,6 +229,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the site was not verified' do
     let(:site) { create(:site_with_team) }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
 
     let(:event) do
       {
@@ -227,6 +244,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = require_fixture('events.json')
 
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }
@@ -294,6 +312,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the events are compressed with zlib' do
     let(:site) { create(:site_with_team) }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
 
     let(:event) do
       {
@@ -308,6 +327,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = compress_events(events_fixture)
 
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
     end
 
     subject { described_class.perform_now(event) }
@@ -321,6 +341,7 @@ RSpec.describe RecordingSaveJob, type: :job do
   context 'when one of the event captures already exists' do
     let(:site) { create(:site_with_team) }
     let!(:event_capture) { create(:event_capture, site:, name: 'my-event') }
+    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
 
     let(:event) do
       {
@@ -336,6 +357,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       events_fixture = require_fixture('events.json')
 
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     it 'does not save it again' do
@@ -361,6 +383,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Cache.redis).to receive(:del)
       allow(Cache.redis).to receive(:set)
       allow(Cache.redis).to receive(:expire)
+      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }
