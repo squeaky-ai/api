@@ -17,7 +17,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
     let(:session) { Session.new(message) }
     
     before do
-      events_fixture = require_fixture('events.json')
+      events_fixture = require_fixture('events.json', compress: true)
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 

@@ -12,10 +12,12 @@ module Helpers
     User.invite!(email: email || 'geeza@gmail.com') { |u| u.skip_invitation = true }
   end
 
-  def require_fixture(relative_path) 
+  def require_fixture(relative_path, compress: false) 
     path = "spec/fixtures/#{relative_path}"
     file = File.read(Rails.root.join(path))
-    JSON.parse(file)
+    json = JSON.parse(file)
+
+    compress ? compress_events(json) : json
   end
 
   def compress_events(events_fixture)

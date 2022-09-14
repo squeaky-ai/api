@@ -8,7 +8,7 @@ module ClickHouse
           uuid: SecureRandom.uuid,
           recording_id: recording.id,
           session_id: recording.session_id,
-          visitor_id: recording.id,
+          visitor_id: recording.visitor_id,
           site_id: recording.site_id,
           locale: recording.locale,
           device_x: recording.device_x,

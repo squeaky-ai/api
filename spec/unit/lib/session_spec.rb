@@ -13,7 +13,7 @@ RSpec.describe Session do
   end
 
   before do
-    events_fixture = require_fixture('events.json')
+    events_fixture = require_fixture('events.json', compress: true)
     allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
   end
 
@@ -284,7 +284,7 @@ RSpec.describe Session do
       event_1 = { key: 'event', value: { timestamp: 1651157003244 } }.to_json
       event_2 = 'sdfdsf{}11@@@2'
 
-      allow(Cache.redis).to receive(:lrange).and_return([event_1, event_2])
+      allow(Cache.redis).to receive(:lrange).and_return(compress_events([event_1, event_2]))
       allow(Rails.logger).to receive(:warn).and_call_original
     end
 

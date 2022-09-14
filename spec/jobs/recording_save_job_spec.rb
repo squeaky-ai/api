@@ -6,30 +6,31 @@ require 'securerandom'
 RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
 
+  let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
+  let(:events_fixture) { require_fixture('events.json', compress: true) }
+
+  let(:site) { create(:site_with_team) }
+
+  let(:event) do
+    {
+      'site_id' => site.uuid,
+      'session_id' => SecureRandom.base36,
+      'visitor_id' => SecureRandom.base36
+    }
+  end
+
+  before do
+    allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
+    allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+  end
+
   context 'when the recording is new' do
-    let(:site) { create(:site_with_team) }
-    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(Cache.redis).to receive(:del)
       allow(Cache.redis).to receive(:set)
       allow(Cache.redis).to receive(:expire)
 
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-
       allow(RecordingMailerService).to receive(:enqueue_if_first_recording)
-
     end
 
     subject { described_class.perform_now(event) }
@@ -68,11 +69,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(pages[0].url).to eq '/examples/static/'
       expect(pages[0].entered_at).to eq Time.at(1637177342265 / 1000).utc
       expect(pages[0].exited_at).to eq Time.at(1637177353431 / 1000).utc
-    end
-
-    it 'stores the events' do
-      subject
-      expect(site.reload.recordings.first.events.size).to eq 85
     end
 
     it 'stores the sentiments' do
@@ -145,23 +141,9 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email domain is blacklisted' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
       site.domain_blacklist << { type: 'domain', value: 'gmail.com' }
       site.save
-
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 
     subject { described_class.perform_now(event) }
@@ -172,23 +154,9 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the email address is blacklisted' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
       site.domain_blacklist << { type: 'email', value: 'bobdylan@gmail.com' }
       site.save
-
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
     end
 
     subject { described_class.perform_now(event) }
@@ -199,24 +167,9 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the site recording limit has been exceeded' do
-    let(:site) { create(:site_with_team) }
-    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(PlanService).to receive(:alert_if_exceeded).and_call_original
       allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }
@@ -228,23 +181,8 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the site was not verified' do
-    let(:site) { create(:site_with_team) }
-    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
       site.update(verified_at: nil)
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }
@@ -255,21 +193,9 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when an existing job with the same arguments has been locked' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
     before do
       site.update(verified_at: nil)
-      events_fixture = require_fixture('events.json')
 
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(Cache.redis)
         .to receive(:get)
         .with("job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}")
@@ -287,7 +213,6 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when the session already exists' do
-    let(:site) { create(:site_with_team) }
     let(:session_id) { SecureRandom.base36 }
     let(:recording) { create(:recording, site:, session_id: )}
 
@@ -299,66 +224,15 @@ RSpec.describe RecordingSaveJob, type: :job do
       }
     end
 
-    before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-    end
-
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
     end
   end
 
-  context 'when the events are compressed with zlib' do
-    let(:site) { create(:site_with_team) }
-    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
-
-    before do
-      events_fixture = require_fixture('events.json')
-      events_fixture = compress_events(events_fixture)
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-      let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-    end
-
-    subject { described_class.perform_now(event) }
-
-    it 'stores the events' do
-      subject
-      expect(site.reload.recordings.first.events.size).to eq 85
-    end
-  end
-
   context 'when one of the event captures already exists' do
-    let(:site) { create(:site_with_team) }
     let!(:event_capture) { create(:event_capture, site:, name: 'my-event') }
-    let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
 
     subject { described_class.perform_now(event) }
-
-    before do
-      events_fixture = require_fixture('events.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-    end
 
     it 'does not save it again' do
       expect { subject }.not_to change { site.reload.event_captures.size }
@@ -366,24 +240,12 @@ RSpec.describe RecordingSaveJob, type: :job do
   end
 
   context 'when calculating the activity' do
-    let(:site) { create(:site_with_team) }
-
-    let(:event) do
-      {
-        'site_id' => site.uuid,
-        'session_id' => SecureRandom.base36,
-        'visitor_id' => SecureRandom.base36
-      }
-    end
+    let(:events_fixture) { require_fixture('events_with_inactivity.json', compress: false) }
 
     before do
-      events_fixture = require_fixture('events_with_inactivity.json')
-
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
       allow(Cache.redis).to receive(:del)
       allow(Cache.redis).to receive(:set)
       allow(Cache.redis).to receive(:expire)
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     end
 
     subject { described_class.perform_now(event) }

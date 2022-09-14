@@ -299,10 +299,6 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def parse_event_and_ignore_errors(event)
-    # TODO: For backwards compatibilty the events may be stored
-    # as strings, just check if there's a readable string in there
-    return JSON.parse!(event) if event.include?('timestamp')
-
     zstream = Zlib::Inflate.new
 
     str = Base64.decode64(event)
