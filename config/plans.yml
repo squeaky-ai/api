@@ -16,7 +16,7 @@ default: &default
         currency: USD
         amount: 0
         interval: month
-    data_storage_months: 6
+    data_storage_months: 3
     support:
       - Email
     response_time_hours: 168
