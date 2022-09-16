@@ -109,7 +109,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.data_storage_months }
 
       it 'returns the plan default' do
-        expect(subject).to eq 6
+        expect(subject).to eq 3
       end
     end
 

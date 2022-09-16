@@ -40,7 +40,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 1000,
-        'dataStorageMonths' => 6,
+        'dataStorageMonths' => 3,
         'responseTimeHours' => 168,
         'support' => [
           'Email'

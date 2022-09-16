@@ -51,7 +51,7 @@ RSpec.describe 'QueryPlan', type: :request do
               'interval' => 'month'
             }
           ],
-          'dataStorageMonths' => 6,
+          'dataStorageMonths' => 3,
           'support' => [
             'Email'
           ],

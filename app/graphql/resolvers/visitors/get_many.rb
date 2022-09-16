@@ -98,80 +98,26 @@ module Resolvers
       # who first visited a website within a given time
       # frame
       def filter_by_first_visited(visitors, filters)
-        return visitors unless filters.first_visited[:range_type]
+        return visitors unless filters.first_visited
 
-        return filter_by_between_first_visited(visitors, filters) if filters.first_visited[:range_type] == 'Between'
-
-        return filter_by_before_first_viewed(visitors, filters) if filters.first_visited[:from_type] == 'Before'
-
-        return filter_by_after_first_viewed(visitors, filters) if filters.first_visited[:from_type] == 'After'
-
-        visitors
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # first appeared between two dates
-      def filter_by_between_first_visited(visitors, filters)
-        from_date = filters.first_visited[:between_from_date]
-        to_date = filters.first_visited[:between_to_date]
-
-        visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # first appeared before a date
-      def filter_by_before_first_viewed(visitors, filters)
-        from_date = filters.first_visited[:from_date]
-
-        visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date < ?', from_date)
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # first appeared after a dates
-      def filter_by_after_first_viewed(visitors, filters)
-        from_date = filters.first_visited[:from_date]
-
-        visitors.having('to_timestamp(MIN(recordings.connected_at) / 1000)::date > ?', from_date)
+        visitors.having(
+          'to_timestamp(MIN(recordings.connected_at) / 1000)::date BETWEEN ? AND ?',
+          filters.first_visited[:from_date],
+          filters.first_visited[:to_date]
+        )
       end
 
       # Adds a filter that lets users show only visitors
       # who last interacted a website within a given time
       # frame
       def filter_by_last_activity(visitors, filters)
-        return visitors unless filters.last_activity[:range_type]
+        return visitors unless filters.last_activity
 
-        return filter_by_between_last_activity(visitors, filters) if filters.last_activity[:range_type] == 'Between'
-
-        return filter_by_before_last_activity(visitors, filters) if filters.last_activity[:from_type] == 'Before'
-
-        return filter_by_after_last_activity(visitors, filters) if filters.last_activity[:from_type] == 'After'
-
-        visitors
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # last had activity between two dates
-      def filter_by_between_last_activity(visitors, filters)
-        from_date = filters.last_activity[:between_from_date]
-        to_date = filters.last_activity[:between_to_date]
-
-        visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # last had activity before a date
-      def filter_by_before_last_activity(visitors, filters)
-        from_date = filters.last_activity[:from_date]
-
-        visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date < ?', from_date)
-      end
-
-      # Allow filtering of visitors where one of their recordings
-      # last had activity after a date
-      def filter_by_after_last_activity(visitors, filters)
-        from_date = filters.last_activity[:from_date]
-
-        visitors.having('to_timestamp(MAX(recordings.disconnected_at) / 1000)::date > ?', from_date)
+        visitors.having(
+          'to_timestamp(MAX(recordings.disconnected_at) / 1000)::date BETWEEN ? AND ?',
+          filters.last_activity[:from_date],
+          filters.last_activity[:to_date]
+        )
       end
 
       # Adds a filter that lets users show only visitors

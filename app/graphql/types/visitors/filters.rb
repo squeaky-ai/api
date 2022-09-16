@@ -7,8 +7,8 @@ module Types
 
       argument :status, Types::Common::FiltersStatus, required: false
       argument :recordings, Types::Common::FiltersRecordings, required: true
-      argument :first_visited, Types::Common::FiltersDate, required: true
-      argument :last_activity, Types::Common::FiltersDate, required: true
+      argument :first_visited, Types::Common::FiltersDate, required: false
+      argument :last_activity, Types::Common::FiltersDate, required: false
       argument :languages, [String], required: true
       argument :visited_pages, [String], required: true
       argument :unvisited_pages, [String], required: true
