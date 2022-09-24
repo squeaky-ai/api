@@ -42,6 +42,8 @@ module EventsService
         # do multi-domain this will be a problem
         value = URI(value).path if event.event_type == EventCapture::PAGE_VISIT
 
+        value = value.gsub("'", "\\\\'")
+
         case rule['matcher']
         when 'equals'
           "= '#{value}'"
