@@ -30,6 +30,10 @@ module EventsService
         (event.last_counted_at || event.site.created_at).to_i
       end
 
+      def event_name
+        escape_quotes(event.name)
+      end
+
       def rule_expression
         # SQL helper for constructing the correct where
         # syntax for the rule matcher type. This should
@@ -42,7 +46,7 @@ module EventsService
         # do multi-domain this will be a problem
         value = URI(value).path if event.event_type == EventCapture::PAGE_VISIT
 
-        value = value.gsub("'", "\\\\'")
+        value = escape_quotes(value)
 
         case rule['matcher']
         when 'equals'
@@ -56,6 +60,12 @@ module EventsService
         when 'starts_with'
           "LIKE '#{value}%'"
         end
+      end
+
+      private
+
+      def escape_quotes(string)
+        string.gsub("'", "\\\\'")
       end
     end
   end

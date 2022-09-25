@@ -43,8 +43,6 @@ class EventsProcessingJob < ApplicationJob
       }
     )
 
-    puts '@@ DEBUG', query
-
     ClickHouse.connection.select_value(query)
   end
 

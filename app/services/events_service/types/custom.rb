@@ -6,7 +6,7 @@ module EventsService
       def count
         <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count, '#{event_name}' as event_name, '#{event.id}' as event_id
           FROM
             custom_events
           WHERE
@@ -19,7 +19,7 @@ module EventsService
       def results
         <<-SQL
           SELECT
-            uuid, recording_id, '#{event.name}' as event_name, timestamp
+            uuid, recording_id, '#{event_name}' as event_name, timestamp
           FROM
             custom_events
           WHERE
