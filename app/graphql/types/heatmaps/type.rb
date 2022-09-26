@@ -7,6 +7,7 @@ module Types
 
       value 'Click', 'Show clicks'
       value 'Scroll', 'Show scrolls'
+      value 'Cursor', 'Show mouse positions'
     end
   end
 end
