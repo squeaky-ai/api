@@ -56,7 +56,7 @@ module Resolvers
         visitors = visitors_from_user_ids(users.map(&:id))
 
         users.map do |u|
-          u.visitor = visitors.find { |v| v.external_attributes['id'] == user_id.to_s }
+          u.visitor = visitors.find { |v| v.external_attributes['id'] == u.id.to_s }
           u
         end
       end
