@@ -6,24 +6,31 @@ sites_admin_query = <<-GRAPHQL
   query {
     admin {
       sites {
-        id
-        name
-        url
-        plan {
-          tier
-          name
-        }
-        uuid
-        verifiedAt
-        team {
+        items {
           id
-          role
-          status
-          user {
-            id
-            firstName
-            lastName
+          name
+          url
+          plan {
+            tier
+            name
           }
+          uuid
+          verifiedAt
+          team {
+            id
+            role
+            status
+            user {
+              id
+              firstName
+              lastName
+            }
+          }
+        }
+        pagination {
+          pageSize
+          total
+          sort
         }
       }
     }
@@ -31,13 +38,13 @@ sites_admin_query = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Resolvers::Admin::Sites, type: :request do
+  subject { graphql_request(sites_admin_query, {}, user) }
+
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
     it 'raises an error' do
-      response = graphql_request(sites_admin_query, {}, user)
-
-      expect(response['errors'][0]['message']).to eq 'Unauthorized'
+      expect(subject['errors'][0]['message']).to eq 'Unauthorized'
     end
   end
 
@@ -50,9 +57,9 @@ RSpec.describe Resolvers::Admin::Sites, type: :request do
     end
 
     it 'returns all the sites' do
-      response = graphql_request(sites_admin_query, {}, user)
+      response = subject['data']['admin']['sites']
 
-      expect(response['data']['admin']['sites'].size).to eq 2
+      expect(response['items'].size).to eq 2
     end
   end
 end

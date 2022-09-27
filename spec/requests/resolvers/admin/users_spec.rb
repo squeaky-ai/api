@@ -6,23 +6,30 @@ users_admin_query = <<-GRAPHQL
   query {
     admin {
       users {
-        id
-        firstName
-        lastName
-        email
+        items {
+          id
+          firstName
+          lastName
+          email
+        }
+        pagination {
+          pageSize
+          total
+          sort
+        }
       }
     }
   }
 GRAPHQL
 
 RSpec.describe Resolvers::Admin::Users, type: :request do
+  subject { graphql_request(users_admin_query, {}, user) }
+
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
     it 'raises an error' do
-      response = graphql_request(users_admin_query, {}, user)
-
-      expect(response['errors'][0]['message']).to eq 'Unauthorized'
+      expect(subject['errors'][0]['message']).to eq 'Unauthorized'
     end
   end
 
@@ -37,9 +44,14 @@ RSpec.describe Resolvers::Admin::Users, type: :request do
     end
 
     it 'returns all the users' do
-      response = graphql_request(users_admin_query, {}, user)
+      response = subject['data']['admin']['users']
 
-      expect(response['data']['admin']['users'].size).to eq 3
+      expect(response['items'].size).to eq 3
+      expect(response['pagination']).to eq(
+        'pageSize' => 25,
+        'total' => 3,
+        'sort' => 'created_at__desc'
+      )
     end
   end
 end

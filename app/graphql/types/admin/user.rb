@@ -6,6 +6,7 @@ module Types
       graphql_name 'AdminUser'
 
       field :visitor, Types::Visitors::Visitor, null: true
+      field :sites, [Types::Sites::Site, { null: true }], null: false
     end
   end
 end
