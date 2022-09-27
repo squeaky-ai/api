@@ -13,7 +13,11 @@ module Resolvers
       argument :sort, Types::Admin::UserSort, required: false, default_value: 'created_at__desc'
 
       def resolve_with_timings(page:, size:, search:, sort:)
-        users = User.page(page).per(size).order(order(sort))
+        users = User
+                .includes(:sites)
+                .page(page)
+                .per(size)
+                .order(order(sort))
         users = search_by(users, search)
 
         {
@@ -52,8 +56,7 @@ module Resolvers
         visitors = visitors_from_user_ids(users.map(&:id))
 
         users.map do |u|
-          visitor = visitors.find { |v| v.external_attributes['id'] == u.id.to_s }
-          u.visitor = visitor if visitor
+          u.visitor = visitors.find { |v| v.external_attributes['id'] == user_id.to_s }
           u
         end
       end
