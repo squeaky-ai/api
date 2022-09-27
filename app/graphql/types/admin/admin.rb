@@ -7,7 +7,9 @@ module Types
 
       field :site, resolver: Resolvers::Admin::Site
       field :users, resolver: Resolvers::Admin::Users
+      field :users_count, resolver: Resolvers::Admin::UsersCount
       field :sites, resolver: Resolvers::Admin::Sites
+      field :sites_count, resolver: Resolvers::Admin::SitesCount
       field :active_visitors, resolver: Resolvers::Admin::ActiveVisitors
       field :active_monthly_users, resolver: Resolvers::Admin::ActiveMonthlyUsers
       field :roles, resolver: Resolvers::Admin::Roles
