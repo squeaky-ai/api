@@ -12,6 +12,7 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, search:, sort:)
         sites = ::Site
+                .unscoped
                 .includes(%i[teams users])
                 .page(page)
                 .per(size)
@@ -40,7 +41,7 @@ module Resolvers
       end
 
       def search_by(sites, search)
-        return sites unless search
+        return sites unless search.presence
 
         query = "%#{search}%"
 

@@ -41,7 +41,7 @@ module Resolvers
       end
 
       def search_by(users, search)
-        return users unless search
+        return users unless search.presence
 
         query = "%#{search}%"
 
