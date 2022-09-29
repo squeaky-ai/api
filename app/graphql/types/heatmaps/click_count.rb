@@ -2,8 +2,8 @@
 
 module Types
   module Heatmaps
-    class Click < Types::BaseObject
-      graphql_name 'HeatmapsClick'
+    class ClickCount < Types::BaseObject
+      graphql_name 'HeatmapsClickCount'
 
       field :id, ID, null: false
       field :selector, String, null: false

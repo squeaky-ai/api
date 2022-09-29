@@ -5,7 +5,8 @@ module Types
     class Type < Types::BaseEnum
       graphql_name 'HeatmapsType'
 
-      value 'Click', 'Show clicks'
+      value 'ClickCount', 'Show click counts'
+      value 'ClickPosition', 'Show click positions'
       value 'Scroll', 'Show scrolls'
       value 'Cursor', 'Show mouse positions'
     end

@@ -7,8 +7,10 @@ module Resolvers
 
       def resolve_with_timings
         case object.type
-        when 'Click'
-          clicks
+        when 'ClickCount'
+          click_counts
+        when 'ClickPosition'
+          click_positions
         when 'Cursor'
           cursors
         when 'Scroll'
@@ -18,7 +20,7 @@ module Resolvers
 
       private
 
-      def clicks
+      def click_counts
         # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
@@ -46,9 +48,47 @@ module Resolvers
 
         events.map do |x|
           {
-            **x,
             id: Base64.encode64(x['selector']), # This is for apollo caching
-            type: 'click'
+            type: 'click_count',
+            count: x['count'],
+            selector: x['selector']
+          }
+        end
+      end
+
+      def click_positions # rubocop:disable Metrics/AbcSize
+        sql = <<-SQL
+          SELECT
+            selector,
+            relative_to_element_x,
+            relative_to_element_y
+          FROM
+            clicks
+          WHERE
+            site_id = ? AND
+            viewport_x #{device_expression} AND
+            to_timestamp(clicked_at / 1000)::date BETWEEN ? AND ? AND
+            page_url = ? AND
+            relative_to_element_x IS NOT NULL AND
+            relative_to_element_y IS NOT NULL
+        SQL
+
+        variables = [
+          object.site.id,
+          object.from_date,
+          object.to_date,
+          object.page
+        ]
+
+        events = Sql.execute(sql, variables)
+
+        events.map do |x|
+          {
+            id: Base64.encode64(x['selector']), # This is for apollo caching
+            type: 'click_position',
+            selector: x['selector'],
+            relative_to_element_x: x['relative_to_element_x'],
+            relative_to_element_y: x['relative_to_element_y']
           }
         end
       end

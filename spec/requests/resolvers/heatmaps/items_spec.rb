@@ -7,9 +7,14 @@ heatmaps_items_query = <<-GRAPHQL
     site(siteId: $site_id) {
       heatmaps(device: $device, type: $type, page: $page, fromDate: $from_date, toDate: $to_date) {
         items {
-          ... on HeatmapsClick {
+          ... on HeatmapsClickCount {
             selector
             count
+          }
+          ... on HeatmapsClickPosition {
+            selector
+            relativeToElementX
+            relativeToElementY
           }
           ... on HeatmapsScroll {
             x
@@ -26,7 +31,7 @@ heatmaps_items_query = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Resolvers::Heatmaps::Items, type: :request do
-  context 'when the type is click' do
+  context 'when the type is click_count' do
     context 'when there is no data for this page' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
@@ -36,7 +41,7 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
           site_id: site.id,
           device: 'Desktop',
           page: '/',
-          type: 'Click',
+          type: 'ClickCount',
           from_date: '2021-08-01', 
           to_date: '2021-08-08' 
         }
@@ -69,7 +74,7 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
           site_id: site.id,
           device: 'Desktop',
           page: '/',
-          type: 'Click',
+          type: 'ClickCount',
           from_date: '2022-04-23', 
           to_date: '2022-04-30' 
         }
@@ -88,6 +93,88 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
             {
               'count' => 3,
               'selector' => 'p#foo'
+            }
+          ]
+        )
+      end
+    end
+  end
+
+  context 'when the type is click_position' do
+    context 'when there is no data for this page' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user) }
+
+      subject do
+        variables = { 
+          site_id: site.id,
+          device: 'Desktop',
+          page: '/',
+          type: 'ClickPosition',
+          from_date: '2021-08-01', 
+          to_date: '2021-08-08' 
+        }
+        graphql_request(heatmaps_items_query, variables, user)
+      end
+
+      it 'returns empty data' do
+        response = subject['data']['site']['heatmaps']['items']
+
+        expect(response).to eq([])
+      end
+    end
+
+    context 'when there is data for the clicks' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user) }
+
+      before do
+        create(
+          :click,
+          site:,
+          viewport_x: 1440,
+          relative_to_element_x: 10,
+          relative_to_element_y: 10,
+          clicked_at: 1651153548001
+        )
+
+        create(
+          :click,
+          selector: 'p#foo',
+          site:, 
+          viewport_x: 1440, 
+          relative_to_element_x: 10,
+          relative_to_element_y: 10,
+          clicked_at: 1651153548001
+        )
+      end
+
+      subject do
+        variables = { 
+          site_id: site.id,
+          device: 'Desktop',
+          page: '/',
+          type: 'ClickPosition',
+          from_date: '2022-04-23', 
+          to_date: '2022-04-30' 
+        }
+        graphql_request(heatmaps_items_query, variables, user)
+      end
+
+      it 'returns the data' do
+        response = subject['data']['site']['heatmaps']['items']
+
+        expect(response).to match(
+          [
+            {
+              'selector' => 'html > body',
+              'relativeToElementX' => 10,
+              'relativeToElementY' => 10
+            },
+            {
+              'selector' => 'p#foo',
+              'relativeToElementX' => 10,
+              'relativeToElementY' => 10
             }
           ]
         )

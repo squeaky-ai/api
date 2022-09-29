@@ -3,13 +3,18 @@
 module Types
   module Heatmaps
     class Item < Types::BaseUnion
-      possible_types Types::Heatmaps::Click, Types::Heatmaps::Cursor, Types::Heatmaps::Scroll
+      possible_types Types::Heatmaps::ClickCount,
+                     Types::Heatmaps::ClickPosition,
+                     Types::Heatmaps::Cursor,
+                     Types::Heatmaps::Scroll
 
       def self.resolve_type(object, _context)
         type = object[:type] || object['type']
         case type
-        when 'click'
-          Types::Heatmaps::Click
+        when 'click_count'
+          Types::Heatmaps::ClickCount
+        when 'click_position'
+          Types::Heatmaps::ClickPosition
         when 'cursor'
           Types::Heatmaps::Cursor
         when 'scroll'
