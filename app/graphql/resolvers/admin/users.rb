@@ -49,7 +49,7 @@ module Resolvers
 
         query = "%#{search}%"
 
-        users.where('first_name ILIKE :query OR last_name ILIKE :query OR email ILIKE :query', query:)
+        users.where("CONCAT(first_name, ' ', last_name) ILIKE :query OR email ILIKE :query", query:)
       end
 
       def map_visitors_to_users(users)

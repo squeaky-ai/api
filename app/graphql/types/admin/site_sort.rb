@@ -7,6 +7,8 @@ module Types
 
       value 'created_at__asc'
       value 'created_at__desc'
+      value 'name__asc'
+      value 'name__desc'
     end
   end
 end

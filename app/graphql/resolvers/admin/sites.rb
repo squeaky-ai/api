@@ -35,7 +35,9 @@ module Resolvers
       def order(sort)
         sorts = {
           'created_at__asc' => 'created_at ASC',
-          'created_at__desc' => 'created_at DESC'
+          'created_at__desc' => 'created_at DESC',
+          'name__asc' => 'name ASC',
+          'name__desc' => 'name DESC'
         }
         sorts[sort]
       end
