@@ -29,7 +29,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
       results = ClickHouse.connection.select_all("
         SELECT site_id, recording_id, name, data, url, viewport_x, viewport_y, device_x, device_y
         FROM custom_events
-        WHERE site_id = #{site.id}
+        WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
 
       expect(results).to match_array([

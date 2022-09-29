@@ -27,9 +27,22 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
       subject
 
       results = ClickHouse.connection.select_all("
-        SELECT site_id, recording_id, url, selector, text, coordinates_x, coordinates_y, viewport_x, viewport_y, device_x, device_y
+        SELECT 
+          site_id,
+          recording_id,
+          url,
+          selector,
+          text,
+          coordinates_x,
+          coordinates_y,
+          viewport_x,
+          viewport_y,
+          device_x,
+          device_y,
+          relative_to_element_x,
+          relative_to_element_y
         FROM click_events
-        WHERE site_id = #{site.id}
+        WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
 
       expect(results).to match_array([
@@ -44,7 +57,9 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
           'viewport_x' => 1920,
           'viewport_y' => 1080,
           'device_x' => 1920,
-          'device_y' => 1080
+          'device_y' => 1080,
+          'relative_to_element_x' => 0,
+          'relative_to_element_y' => 0
         },
         {
           'site_id' => site.id,
@@ -57,7 +72,9 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
           'viewport_x' => 1920,
           'viewport_y' => 1080,
           'device_x' => 1920,
-          'device_y' => 1080
+          'device_y' => 1080,
+          'relative_to_element_x' => 0,
+          'relative_to_element_y' => 0
         },
         {
           'site_id' => site.id,
@@ -70,7 +87,9 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
           'viewport_x' => 1920,
           'viewport_y' => 1080,
           'device_x' => 1920,
-          'device_y' => 1080
+          'device_y' => 1080,
+          'relative_to_element_x' => 0,
+          'relative_to_element_y' => 0
         }
       ])
     end

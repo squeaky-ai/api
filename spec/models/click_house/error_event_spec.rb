@@ -29,7 +29,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
       results = ClickHouse.connection.select_all("
         SELECT site_id, recording_id, filename, message, url, viewport_x, viewport_y, device_x, device_y
         FROM error_events
-        WHERE site_id = #{site.id}
+        WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
 
       expect(results).to match_array([
