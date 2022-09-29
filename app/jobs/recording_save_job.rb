@@ -124,7 +124,7 @@ class RecordingSaveJob < ApplicationJob
     )
   end
 
-  def persist_clicks!(recording) # rubocop:disable Metrics/AbcSize
+  def persist_clicks!(recording) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
     items = session.clicks.map do |event|
       {
         text: event['data']['text'],
@@ -135,6 +135,8 @@ class RecordingSaveJob < ApplicationJob
         page_url: event['data']['href'] || '/',
         viewport_x: recording.viewport_x,
         viewport_y: recording.viewport_y,
+        relative_to_element_x: event['data']['relativeToElementX'] || 0,
+        relative_to_element_y: event['data']['relativeToElementY'] || 0,
         site_id: recording.site_id,
         recording_id: recording.id
       }
