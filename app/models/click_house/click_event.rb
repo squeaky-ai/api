@@ -20,8 +20,8 @@ module ClickHouse
             viewport_y: recording.viewport_y,
             device_x: recording.device_x,
             device_y: recording.device_y,
-            relative_to_element_x: event['data']['relativeToElementX'],
-            relative_to_element_y: event['data']['relativeToElementY'],
+            relative_to_element_x: event['data']['relativeToElementX'].to_i,
+            relative_to_element_y: event['data']['relativeToElementY'].to_i,
             timestamp: event['timestamp']
           }
         end
