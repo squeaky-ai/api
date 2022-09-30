@@ -60,12 +60,42 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       before do
-        5.times do |i|
-          create(:click, site:, viewport_x: 1440, clicked_at: 1651153548001)
-        end
+        ClickHouse::ClickEvent.insert do |buffer|
+          5.times do |i|
+            buffer << {
+              uuid: SecureRandom.uuid,
+              site_id: site.id,
+              url: '/',
+              selector: 'html > body',
+              coordinates_x: 10,
+              coordinates_y: 10,
+              viewport_x: 1920,
+              viewport_y: 1080,
+              device_x: 1920,
+              device_y: 1080,
+              relative_to_element_x: 0,
+              relative_to_element_y: 0,
+              timestamp: 1651153548001
+            }
+          end
 
-        3.times do |i|
-          create(:click, selector: 'p#foo', site:, viewport_x: 1440, clicked_at: 1651153548001)
+          3.times do |i|
+            buffer << {
+              uuid: SecureRandom.uuid,
+              site_id: site.id,
+              url: '/',
+              selector: 'p#foo',
+              coordinates_x: 10,
+              coordinates_y: 10,
+              viewport_x: 1920,
+              viewport_y: 1080,
+              device_x: 1920,
+              device_y: 1080,
+              relative_to_element_x: 0,
+              relative_to_element_y: 0,
+              timestamp: 1651153548001
+            }
+          end
         end
       end
 
@@ -129,24 +159,38 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       before do
-        create(
-          :click,
-          site:,
-          viewport_x: 1440,
-          relative_to_element_x: 10,
-          relative_to_element_y: 10,
-          clicked_at: 1651153548001
-        )
-
-        create(
-          :click,
-          selector: 'p#foo',
-          site:, 
-          viewport_x: 1440, 
-          relative_to_element_x: 10,
-          relative_to_element_y: 10,
-          clicked_at: 1651153548001
-        )
+        ClickHouse::ClickEvent.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            url: '/',
+            selector: 'html > body',
+            coordinates_x: 10,
+            coordinates_y: 10,
+            viewport_x: 1920,
+            viewport_y: 1080,
+            device_x: 1920,
+            device_y: 1080,
+            relative_to_element_x: 10,
+            relative_to_element_y: 10,
+            timestamp: 1651153548001
+          }
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            url: '/',
+            selector: 'p#foo',
+            coordinates_x: 10,
+            coordinates_y: 10,
+            viewport_x: 1920,
+            viewport_y: 1080,
+            device_x: 1920,
+            device_y: 1080,
+            relative_to_element_x: 10,
+            relative_to_element_y: 10,
+            timestamp: 1651153548001
+          }
+        end
       end
 
       subject do
@@ -210,27 +254,21 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
   
-      let!(:recording) do
-        create(:recording, viewport_x: 1440, connected_at: 1651153548000, disconnected_at: 1651153550000, site:)
-      end
-  
       before do
-        create(
-          :page,
-          recording:,
-          url: '/',
-          entered_at: 1651153548000,
-          exited_at: 1651153550000
-        )
-  
-        create(
-          :event,
-          recording:,
-          site_id: site.id,
-          data: { x: 10, y: 10, source: 3 },
-          event_type: 3, 
-          timestamp: 1651153548001
-        )
+        ClickHouse::ScrollEvent.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            url: '/',
+            x: 10,
+            y: 10,
+            viewport_x: 1920,
+            viewport_y: 1080,
+            device_x: 1920,
+            device_y: 1080,
+            timestamp: 1651153548001
+          }
+        end
       end
   
       subject do
@@ -284,55 +322,45 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       end
     end
 
-    context 'when there is data for the scrolls' do
+    context 'when there is data for the cursors' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
 
-      let!(:recording) do
-        create(:recording, viewport_x: 1440, connected_at: 1651153548000, disconnected_at: 1651153550000, site:)
-      end
-
       before do
-        create(
-          :page,
-          recording:,
-          url: '/',
-          entered_at: 1651153548000,
-          exited_at: 1651153550000
-        )
-
-        create(
-          :event,
-          recording:,
-          site_id: site.id,
-          data: {
-            source: 1,
-            positions: [
+        ClickHouse::CursorEvent.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            url: '/',
+            coordinates: [
               {
-                absoluteX: 1353,
-                absoluteY: 660
+                absolute_x: 1353,
+                absolute_y: 660
               },
               {
-                absoluteX: 1353,
-                absoluteY: 661
+                absolute_x: 1353,
+                absolute_y: 661
               },
               {
-                absoluteX: 1353,
-                absoluteY: 670
+                absolute_x: 1353,
+                absolute_y: 670
               },
               {
-                absoluteX: 1353,
-                absoluteY: 675
+                absolute_x: 1353,
+                absolute_y: 675
               },
               {
-                absoluteX: 1353,
-                absoluteY: 676
+                absolute_x: 1353,
+                absolute_y: 676
               }
-            ]
-          },
-          event_type: 3, 
-          timestamp: 1651153548001
-        )
+            ].to_json,
+            viewport_x: 1920,
+            viewport_y: 1080,
+            device_x: 1920,
+            device_y: 1080,
+            timestamp: 1651153548001
+          }
+        end
       end
 
       subject do
