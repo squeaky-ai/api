@@ -24,6 +24,7 @@ module Resolvers
         private
 
         def total_recordings_for_page
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT COUNT(*) total_recordings_count
             FROM recordings
@@ -45,6 +46,7 @@ module Resolvers
         end
 
         def browsers(page, size) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+          # TODO: Replace with ClickHouse
           Recording
             .joins(:pages)
             .where(

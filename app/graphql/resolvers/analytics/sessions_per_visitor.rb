@@ -18,6 +18,7 @@ module Resolvers
       private
 
       def get_average_count(from_date, to_date)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT visitor_id, COUNT(visitor_id)
           FROM recordings

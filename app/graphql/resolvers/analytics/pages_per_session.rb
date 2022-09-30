@@ -16,6 +16,7 @@ module Resolvers
       end
 
       def get_average_count(from_date, to_date)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT count(pages.id)
           FROM recordings
