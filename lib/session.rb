@@ -15,6 +15,8 @@ class Session # rubocop:disable Metrics/ClassLength
               :external_attributes,
               :errors,
               :events,
+              :scrolls,
+              :cursors,
               :site_id,
               :visitor_id,
               :session_id
@@ -29,6 +31,8 @@ class Session # rubocop:disable Metrics/ClassLength
     @custom_tracking = []
     @external_attributes = {}
     @errors = []
+    @scrolls = []
+    @cursors = []
 
     @site_id = message[:site_id]
     @visitor_id = message[:visitor_id]
@@ -255,12 +259,9 @@ class Session # rubocop:disable Metrics/ClassLength
     data = event['value']
 
     @events.push(data)
-
-    if data['type'] == Event::INCREMENTAL_SNAPSHOT &&
-       data['data']['source'] == Event::IncrementalSource::MOUSE_INTERACTION &&
-       data['data']['type'] == Event::MouseInteractions::CLICK
-      @clicks.push(data)
-    end
+    @clicks.push(data) if Event.click?(data)
+    @scrolls.push(data) if Event.scroll?(data)
+    @cursors.push(data) if Event.cursor?(data)
   end
 
   def handle_sentiment(event)

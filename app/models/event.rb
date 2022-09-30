@@ -51,4 +51,20 @@ class Event < ApplicationRecord
     TOUCH_END = 9
     TOUCH_CANCEL = 10
   end
+
+  def self.click?(data)
+    data['type'] == INCREMENTAL_SNAPSHOT &&
+      data['data']['source'] == IncrementalSource::MOUSE_INTERACTION &&
+      data['data']['type'] == MouseInteractions::CLICK
+  end
+
+  def self.scroll?(data)
+    data['type'] == INCREMENTAL_SNAPSHOT &&
+      data['data']['source'] == IncrementalSource::SCROLL
+  end
+
+  def self.cursor?(data)
+    data['type'] == INCREMENTAL_SNAPSHOT &&
+      data['data']['source'] == IncrementalSource::MOUSE_MOVE
+  end
 end

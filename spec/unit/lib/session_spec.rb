@@ -327,4 +327,16 @@ RSpec.describe Session do
       expect(instance.activity_duration).to eq 11166
     end
   end
+
+  describe '#scrolls' do
+    it 'returns the scrolls' do
+      expect(instance.scrolls.size).to eq 40
+    end
+  end
+
+  describe '#cursors' do
+    it 'returns the cursors' do
+      expect(instance.cursors.size).to eq 21
+    end
+  end
 end

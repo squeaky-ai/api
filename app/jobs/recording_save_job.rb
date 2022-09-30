@@ -146,6 +146,7 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_clickhouse_data!(recording)
+    # TODO: Add Cursor and Mouse
     [
       ClickHouse::Recording,
       ClickHouse::ClickEvent,
