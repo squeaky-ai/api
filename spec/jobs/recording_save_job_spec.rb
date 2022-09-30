@@ -126,6 +126,8 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM custom_events WHERE site_id = #{site.id}") }.from(0).to(1)
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM error_events WHERE site_id = #{site.id}") }.from(0).to(1)
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM cursor_events WHERE site_id = #{site.id}") }.from(0).to(21)
+        .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}") }.from(0).to(40)
         .and change { ClickHouse.connection.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}") }.from(0).to(1)
     end
 

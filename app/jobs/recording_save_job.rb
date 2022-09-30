@@ -146,13 +146,14 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_clickhouse_data!(recording)
-    # TODO: Add Cursor and Mouse
     [
       ClickHouse::Recording,
       ClickHouse::ClickEvent,
       ClickHouse::CustomEvent,
       ClickHouse::ErrorEvent,
-      ClickHouse::PageEvent
+      ClickHouse::PageEvent,
+      ClickHouse::CursorEvent,
+      ClickHouse::ScrollEvent
     ].each { |model| model.create_from_session(recording, session) }
   end
 
