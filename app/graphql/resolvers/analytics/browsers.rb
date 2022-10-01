@@ -29,6 +29,7 @@ module Resolvers
       private
 
       def browsers(page, size)
+        # TODO: Replace with ClickHouse
         Recording
           .where(
             'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?',

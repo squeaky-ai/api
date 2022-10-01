@@ -18,6 +18,7 @@ module Resolvers
       private
 
       def get_average_duration(from_date, to_date)
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT AVG(disconnected_at - connected_at) as duration
           FROM recordings

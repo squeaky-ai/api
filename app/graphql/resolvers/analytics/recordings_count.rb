@@ -6,6 +6,7 @@ module Resolvers
       type Types::Analytics::RecordingsCount, null: false
 
       def resolve_with_timings
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT COUNT(recordings) total_count, COUNT(CASE recordings.viewed WHEN TRUE THEN NULL ELSE 1 END) new_count
           FROM recordings

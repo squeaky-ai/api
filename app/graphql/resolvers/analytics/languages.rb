@@ -26,6 +26,7 @@ module Resolvers
       end
 
       def languages
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT DISTINCT LOWER(locale) locale, COUNT(*) locale_count
           FROM recordings

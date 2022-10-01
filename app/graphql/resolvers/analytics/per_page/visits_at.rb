@@ -7,6 +7,7 @@ module Resolvers
         type [Types::Analytics::VisitAt, { null: true }], null: false
 
         def resolve_with_timings # rubocop:disable Metrics/AbcSize
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT to_char(to_timestamp(disconnected_at / 1000), 'Dy,HH24') day_hour, COUNT(*)
             FROM recordings

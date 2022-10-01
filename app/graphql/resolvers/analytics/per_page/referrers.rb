@@ -30,6 +30,7 @@ module Resolvers
         private
 
         def referrers(page, size) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+          # TODO: Replace with ClickHouse
           Recording
             .joins(:pages)
             .where(

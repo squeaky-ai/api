@@ -6,6 +6,7 @@ module Resolvers
       type [Types::Analytics::Dimension, { null: true }], null: false
 
       def resolve_with_timings
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT DISTINCT(ROUND(device_x, -1)) grouped_device_x, count(*) count
           FROM recordings

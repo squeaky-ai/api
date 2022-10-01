@@ -19,6 +19,7 @@ module Resolvers
         private
 
         def countries
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
             FROM recordings

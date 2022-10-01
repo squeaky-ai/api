@@ -7,6 +7,7 @@ module Resolvers
         type [Types::Analytics::Device, { null: false }], null: false
 
         def resolve_with_timings
+          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT
               COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
