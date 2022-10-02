@@ -42,8 +42,8 @@ class HeatmapsService
         viewport_x #{device_expression} AND
         toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
         url = :page_url AND
-        relative_to_element_x IS NOT NULL AND
-        relative_to_element_y IS NOT NULL
+        relative_to_element_x != 0 AND
+        relative_to_element_y != 0
     SQL
 
     execute_query(sql)
