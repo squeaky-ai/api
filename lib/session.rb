@@ -211,6 +211,8 @@ class Session # rubocop:disable Metrics/ClassLength
 
   def extract_and_set_events(events) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
     events.each do |event|
+      next if ignore_event?(event['value'])
+
       case event['key']
       when 'recording'
         handle_recording_event(event)
@@ -318,5 +320,14 @@ class Session # rubocop:disable Metrics/ClassLength
   rescue Zlib::DataError => e
     Rails.logger.warn "Failed to deflate zlib #{e}"
     nil
+  end
+
+  def ignore_event?(event)
+    return true if event['data'].nil?
+    # We don't want our own errors appearing in peoples feeds as it
+    # makes us look bad
+    return true if event['data']['stack']&.include?('cdn.squeaky.ai')
+
+    false
   end
 end

@@ -289,7 +289,7 @@ RSpec.describe Session do
     end
 
     it 'skips bad events' do
-      expect(instance.events.size).to eq 1
+      expect(instance.events.size).to eq 0
     end
 
     it 'logs a warning' do
