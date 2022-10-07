@@ -27,7 +27,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
       subject
 
       results = ClickHouse.connection.select_all("
-        SELECT site_id, recording_id, filename, message, url, viewport_x, viewport_y, device_x, device_y
+        SELECT site_id, recording_id, filename, message, url, viewport_x, viewport_y, device_x, device_y, stack, line_number, col_number
         FROM error_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -42,7 +42,10 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
           'message' => 'Error: Oh no',
           'url' => '/examples/static/',
           'viewport_x' => 1920, 
-          'viewport_y' => 1080
+          'viewport_y' => 1080,
+          'stack' => 'onclick@http://localhost:8081/examples/static/#:74:16',
+          'line_number' => 74,
+          'col_number' => 25
         }
       ])
     end
