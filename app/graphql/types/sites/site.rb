@@ -69,6 +69,8 @@ module Types
       field :superuser_access_enabled, Boolean, null: false
       field :routes, [String, { null: true }], null: false
       field :consent, resolver: Resolvers::Sites::Consent
+      field :errors, resolver: Resolvers::Errors::Errors
+      field :errors_counts, resolver: Resolvers::Errors::Counts
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
