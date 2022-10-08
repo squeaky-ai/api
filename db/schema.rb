@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_07_101552) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -258,6 +258,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_101552) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_sentiments_on_recording_id"
+  end
+
+  create_table "site_bundles", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "site_bundles_sites", force: :cascade do |t|
+    t.boolean "primary", null: false
+    t.bigint "site_bundle_id"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_bundle_id"], name: "index_site_bundles_sites_on_site_bundle_id"
+    t.index ["site_id"], name: "index_site_bundles_sites_on_site_id"
   end
 
   create_table "sites", force: :cascade do |t|

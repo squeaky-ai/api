@@ -210,4 +210,15 @@ FactoryBot.define do
 
     site { association :site }
   end
+
+  factory :site_bundle do
+    name { 'bundle' }
+  end
+
+  factory :site_bundles_site do
+    primary { false }
+
+    site { association :site }
+    site_bundle { association :site_bundle }
+  end
 end
