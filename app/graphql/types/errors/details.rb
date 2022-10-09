@@ -12,6 +12,8 @@ module Types
       field :filename, String, null: false
       field :line_number, Integer, null: false
       field :col_number, Integer, null: false
+      field :recording_ids, [Integer, { null: false }], null: false
+      field :recordings, resolver: Resolvers::Errors::Recordings
     end
   end
 end

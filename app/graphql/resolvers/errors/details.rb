@@ -27,7 +27,8 @@ module Resolvers
             any(line_number) line_number,
             any(col_number) col_number,
             any(filename) filename,
-            groupUniqArray(url) pages
+            groupUniqArray(url) pages,
+            groupUniqArray(recording_id) recording_ids
           FROM error_events
           WHERE site_id = ? AND message = ?
           GROUP BY message;
