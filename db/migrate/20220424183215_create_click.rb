@@ -2,7 +2,7 @@
 
 class CreateClick < ActiveRecord::Migration[7.0]
   def change
-    drop_view :clicks, materialized: true
+    # drop_view :clicks, materialized: true
 
     create_table :clicks do |t|
       t.string :selector, null: false

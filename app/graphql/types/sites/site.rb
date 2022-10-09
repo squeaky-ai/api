@@ -71,6 +71,7 @@ module Types
       field :consent, resolver: Resolvers::Sites::Consent
       field :errors, resolver: Resolvers::Errors::Errors
       field :errors_counts, resolver: Resolvers::Errors::Counts
+      field :error_details, resolver: Resolvers::Errors::Details
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
