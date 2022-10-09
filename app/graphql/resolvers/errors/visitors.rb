@@ -14,7 +14,12 @@ module Resolvers
       def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
         visitors = Visitor
                     .joins(:recordings)
-                    .where('visitors.id IN (?)', visitor_ids)
+                    .where(
+                      'visitors.id IN (?) AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', 
+                      visitor_ids,
+                      from_date,
+                      to_date
+                    )
                     .order(order(sort))
                     .group('visitors.id')
 

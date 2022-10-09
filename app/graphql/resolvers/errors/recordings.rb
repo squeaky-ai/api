@@ -13,7 +13,13 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
         recordings = Recording
-                     .where('status = ? AND id IN (?)', Recording::ACTIVE, object['recording_ids'])
+                     .where(
+                        'status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND id IN (?)', 
+                        Recording::ACTIVE,
+                        from_date,
+                        to_date,
+                        object['recording_ids']
+                      )
                      .includes(:pages, :visitor)
                      .order(order(sort))
 

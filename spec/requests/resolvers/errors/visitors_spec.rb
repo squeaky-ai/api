@@ -45,7 +45,7 @@ RSpec.describe Resolvers::Errors::Visitors, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:now) { Time.new(2022, 7, 6, 5, 0, 0) }
-    let(:recording) { create(:recording, site:) }
+    let(:recording) { create(:recording, site:, disconnected_at: now.to_i * 1000) }
 
     before do
       ClickHouse::ErrorEvent.insert do |buffer|
