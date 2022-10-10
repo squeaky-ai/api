@@ -12,7 +12,7 @@ module Mutations
       type Types::Users::User
 
       def resolve(id:)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         user = User.find(id)
 

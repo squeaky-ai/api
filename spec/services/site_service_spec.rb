@@ -15,7 +15,7 @@ RSpec.describe SiteService do
 
     context 'when there is no user' do
       it 'raises an error' do
-        expect { subject }.to raise_error(Errors::Unauthorized)
+        expect { subject }.to raise_error(Exceptions::Unauthorized)
       end
 
       it 'does not attempt to cache anything' do

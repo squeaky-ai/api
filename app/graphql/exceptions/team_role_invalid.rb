@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class TeamRoleInvalid < GraphQL::ExecutionError
     def initialize(msg = I18n.t('team.validation.team_role_invalid'))
       super

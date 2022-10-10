@@ -20,7 +20,7 @@ module Mutations
       def resolve(visitor_id:, starred:, **_rest)
         visitor = @site.visitors.find_by(id: visitor_id)
 
-        raise Errors::VisitorNotFound unless visitor
+        raise Exceptions::VisitorNotFound unless visitor
 
         visitor.update(starred:)
 

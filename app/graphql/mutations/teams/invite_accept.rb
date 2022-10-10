@@ -14,10 +14,10 @@ module Mutations
 
       def resolve(token:, password: nil)
         user = User.find_by_invitation_token(token, true)
-        raise Errors::TeamInviteInvalid unless user
+        raise Exceptions::TeamInviteInvalid unless user
 
         team = user.teams.find_by(status: Team::PENDING)
-        raise Errors::TeamInviteExpired unless team
+        raise Exceptions::TeamInviteExpired unless team
 
         # This would be confusing for the user as they've
         # not had the opportunity to set their password yet

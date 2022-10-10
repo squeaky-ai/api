@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class SentimentNotFound < GraphQL::ExecutionError
     def initialize(msg = 'Sentiment response not found')
       super

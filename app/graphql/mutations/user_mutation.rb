@@ -5,7 +5,7 @@ module Mutations
     def ready?(_args = {})
       @user = context[:current_user]
 
-      raise Errors::Unauthorized unless @user
+      raise Exceptions::Unauthorized unless @user
 
       true
     end

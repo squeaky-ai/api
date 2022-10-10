@@ -5,21 +5,19 @@ module Resolvers
     class Details < Resolvers::Base
       type Types::Errors::Details, null: true
 
-      argument :error_id, ID, required: true
-
-      def resolve_with_timings(error_id:)
-        error_details = result(error_id)
+      def resolve_with_timings
+        error_details = result
         return nil unless error_details
 
         {
-          id: error_id.strip,
+          id: object.error_id.strip,
           **error_details
         }
       end
 
       private
 
-      def result(error_id)
+      def result
         sql = <<-SQL
           SELECT
             message,
@@ -27,16 +25,17 @@ module Resolvers
             any(line_number) line_number,
             any(col_number) col_number,
             any(filename) filename,
-            groupUniqArray(url) pages,
-            groupUniqArray(recording_id) recording_ids
+            groupUniqArray(url) pages
           FROM error_events
-          WHERE site_id = ? AND message = ?
+          WHERE site_id = ? AND message = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
           GROUP BY message;
         SQL
 
         variables = [
-          object.id,
-          Base64.decode64(error_id)
+          object.site.id,
+          Base64.decode64(object.error_id),
+          object.range.from,
+          object.range.to
         ]
 
         query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])

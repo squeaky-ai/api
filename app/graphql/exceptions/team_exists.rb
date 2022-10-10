@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class TeamExists < GraphQL::ExecutionError
     def initialize(msg = I18n.t('team.validation.team_exists'))
       super

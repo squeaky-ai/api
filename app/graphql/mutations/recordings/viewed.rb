@@ -19,7 +19,7 @@ module Mutations
       def resolve(recording_id:, **_rest)
         recording = @site.recordings.find_by(id: recording_id)
 
-        raise Errors::RecordingNotFound unless recording
+        raise Exceptions::RecordingNotFound unless recording
 
         unless superuser_viewing?
           recording.update(viewed: true)

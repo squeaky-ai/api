@@ -71,25 +71,33 @@ module Types
       field :consent, resolver: Resolvers::Sites::Consent
       field :errors, resolver: Resolvers::Errors::Errors
       field :errors_counts, resolver: Resolvers::Errors::Counts
-      field :error_details, resolver: Resolvers::Errors::Details
+      field :error, Types::Errors::Error, null: false do
+        argument :error_id, ID, required: true
+        argument :from_date, GraphQL::Types::ISO8601Date, required: true
+        argument :to_date, GraphQL::Types::ISO8601Date, required: true
+      end
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
       def analytics(from_date:, to_date:)
-        build_nested_args(from_date, to_date)
+        build_nested_args(from_date:, to_date:)
       end
 
       def nps(from_date:, to_date:)
-        build_nested_args(from_date, to_date)
+        build_nested_args(from_date:, to_date:)
       end
 
       def sentiment(from_date:, to_date:)
-        build_nested_args(from_date, to_date)
+        build_nested_args(from_date:, to_date:)
       end
 
       def heatmaps(**kwargs)
         h = { site: object, **kwargs }
         Struct.new(*h.keys).new(*h.values)
+      end
+
+      def error(error_id:, from_date:, to_date:)
+        build_nested_args(from_date:, to_date:, error_id:)
       end
 
       def magic_erasure_enabled
@@ -100,14 +108,14 @@ module Types
 
       private
 
-      def build_nested_args(from_date, to_date)
+      def build_nested_args(from_date:, to_date:, **kwargs)
         # Because most things extend the site, they can access the
         # site model and all it's methods using object.x. The data
         # here is converted to a struct so that the attrbibutes can
         # be accessed like methods and not symbols to keep it
         # consistent.
         range = DateRange.new(from_date, to_date)
-        h = { site: object, range: }
+        h = { site: object, range:, **kwargs }
         Struct.new(*h.keys).new(*h.values)
       end
     end

@@ -18,16 +18,16 @@ module Mutations
       end
 
       def resolve(team_id:, role:, **_rest)
-        raise Errors::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
+        raise Exceptions::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         team = @site.member(team_id)
 
-        raise Errors::TeamNotFound unless team
+        raise Exceptions::TeamNotFound unless team
 
         # The owners role can't be changed here, it must be transferred
-        raise Errors::Forbidden if team.owner?
+        raise Exceptions::Forbidden if team.owner?
         # Admins can't change the roles of other admins
-        raise Errors::Forbidden if team.admin? && @user.admin_for?(@site)
+        raise Exceptions::Forbidden if team.admin? && @user.admin_for?(@site)
 
         team.update(role:)
 

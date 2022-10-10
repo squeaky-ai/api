@@ -27,7 +27,7 @@ RSpec.describe Mutations::UserMutation do
       end
 
       it 'raises an Unauthorized error' do
-        expect { subject.ready?({}) }.to raise_error(Errors::Unauthorized)
+        expect { subject.ready?({}) }.to raise_error(Exceptions::Unauthorized)
       end
     end
   end

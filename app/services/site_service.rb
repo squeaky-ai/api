@@ -3,7 +3,7 @@
 class SiteService
   def self.find_by_id(current_user, site_id, expires_in: 1.minute)
     # Raise before we attempt to cache
-    raise Errors::Unauthorized unless current_user
+    raise Exceptions::Unauthorized unless current_user
 
     Rails.cache.fetch("data_cache:SiteService::#{current_user.id}::#{site_id}", expires_in:) do
       # We don't show pending sites to the user in the UI

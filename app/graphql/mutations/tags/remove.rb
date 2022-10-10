@@ -21,7 +21,7 @@ module Mutations
         tag = @site.tags.find_by_id(tag_id)
         recording = @site.recordings.find_by_id(recording_id)
 
-        raise Errors::RecordingNotFound unless recording
+        raise Exceptions::RecordingNotFound unless recording
 
         recording.tags.delete(tag) if tag
 

@@ -5,9 +5,8 @@ require 'rails_helper'
 errors_recordings_query = <<-GRAPHQL
   query($site_id: ID!, $error_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      errorDetails(errorId: $error_id) {
-        id
-        recordings(fromDate: $from_date, toDate: $to_date) {
+      error(errorId: $error_id, fromDate: $from_date, toDate: $to_date) {
+        recordings {
           items {
             id
           }
@@ -35,9 +34,9 @@ RSpec.describe Resolvers::Errors::Recordings, type: :request do
       graphql_request(errors_recordings_query, variables, user)
     end
 
-    it 'returns nil' do
-      response = subject['data']['site']['errorDetails']
-      expect(response).to eq(nil)
+    it 'returns no items' do
+      response = subject['data']['site']['error']['recordings']['items']
+      expect(response).to eq([])
     end
   end
 
@@ -77,7 +76,7 @@ RSpec.describe Resolvers::Errors::Recordings, type: :request do
     end
 
     it 'returns the recordings' do
-      response = subject['data']['site']['errorDetails']['recordings']
+      response = subject['data']['site']['error']['recordings']
       expect(response['items']).to eq([
         {
           'id' => recording.id.to_s

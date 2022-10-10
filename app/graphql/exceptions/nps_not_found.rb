@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class NpsNotFound < GraphQL::ExecutionError
     def initialize(msg = 'NPS response not found')
       super

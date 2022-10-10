@@ -18,11 +18,11 @@ module Mutations
       end
 
       def resolve(email:, role:, **_rest)
-        raise Errors::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
+        raise Exceptions::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         user = User.find_by(email:)
 
-        raise Errors::TeamExists if user&.member_of?(@site)
+        raise Exceptions::TeamExists if user&.member_of?(@site)
 
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 

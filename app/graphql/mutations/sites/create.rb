@@ -30,7 +30,7 @@ module Mutations
         formatted_uri = Site.format_uri(url)
         # This is quite important! The last thing we want
         # is nil://nil being in there and being unique!
-        raise Errors::SiteInvalidUri unless formatted_uri
+        raise Exceptions::SiteInvalidUri unless formatted_uri
 
         formatted_uri
       end

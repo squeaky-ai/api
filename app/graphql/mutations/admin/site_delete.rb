@@ -12,7 +12,7 @@ module Mutations
       type Types::Admin::Site
 
       def resolve(id:)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         site = Site.find(id)
 

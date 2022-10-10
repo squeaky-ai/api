@@ -6,7 +6,7 @@ module Resolvers
       type [Types::Sites::Site, { null: true }], null: false
 
       def resolve_with_timings
-        raise Errors::Unauthorized unless context[:current_user]
+        raise Exceptions::Unauthorized unless context[:current_user]
 
         # We don't show pending sites to the user in the UI
         team = { status: Team::ACCEPTED }

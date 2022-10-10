@@ -22,7 +22,7 @@ module Mutations
       type Types::Blog::Post
 
       def resolve(**args)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         post = Blog.find(args[:id])
         post.assign_attributes(args.except(:id))

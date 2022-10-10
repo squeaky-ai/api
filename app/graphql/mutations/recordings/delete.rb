@@ -19,7 +19,7 @@ module Mutations
       def resolve(recording_id:, **_rest)
         recording = @site.recordings.find_by(id: recording_id)
 
-        raise Errors::RecordingNotFound unless recording
+        raise Exceptions::RecordingNotFound unless recording
 
         ActiveRecord::Base.transaction do
           # Manually update the counter cache for soft deleted

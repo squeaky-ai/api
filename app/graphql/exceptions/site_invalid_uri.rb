@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class SiteInvalidUri < GraphQL::ExecutionError
     def initialize(msg = I18n.t('site.validation.uri_invalid'))
       super

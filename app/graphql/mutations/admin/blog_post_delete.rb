@@ -12,7 +12,7 @@ module Mutations
       type Types::Blog::Post
 
       def resolve(id:)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         Blog.find_by(id:)&.destroy
 

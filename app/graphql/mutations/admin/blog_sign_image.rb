@@ -12,7 +12,7 @@ module Mutations
       type Types::Admin::BlogSignImage
 
       def resolve(filename:)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         s3_bucket = Aws::S3::Resource.new(region: 'eu-west-1').bucket('cdn.squeaky.ai')
 

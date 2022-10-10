@@ -29,7 +29,7 @@ RSpec.describe Mutations::SiteMutation do
       end
 
       it 'raises an Unauthorized error' do
-        expect { subject.ready?({}) }.to raise_error(Errors::Unauthorized)
+        expect { subject.ready?({}) }.to raise_error(Exceptions::Unauthorized)
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Mutations::SiteMutation do
       end
 
       it 'raises an SiteNotFound error' do
-        expect { subject.ready?({}) }.to raise_error(Errors::SiteNotFound)
+        expect { subject.ready?({}) }.to raise_error(Exceptions::SiteNotFound)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Mutations::SiteMutation do
           end
 
           it 'raises an SiteForbidden error' do
-            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteForbidden)
+            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Exceptions::SiteForbidden)
           end
         end
       end
@@ -118,7 +118,7 @@ RSpec.describe Mutations::SiteMutation do
           end
 
           it 'raises an SiteForbidden error' do
-            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteForbidden)
+            expect { subject.ready?({ site_id: site.id }) }.to raise_error(Exceptions::SiteForbidden)
           end
         end
       end
@@ -153,7 +153,7 @@ RSpec.describe Mutations::SiteMutation do
         end
 
         it 'raises an error' do
-          expect { subject.ready?({ site_id: site.id }) }.to raise_error(Errors::SiteNotFound)
+          expect { subject.ready?({ site_id: site.id }) }.to raise_error(Exceptions::SiteNotFound)
         end
       end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Errors
+module Exceptions
   class Forbidden < GraphQL::ExecutionError
     def initialize(msg = I18n.t('auth.validation.forbidden'))
       super

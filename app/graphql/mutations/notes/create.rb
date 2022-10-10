@@ -21,7 +21,7 @@ module Mutations
       def resolve(recording_id:, body:, timestamp: nil, **_rest)
         recording = @site.recordings.find_by(id: recording_id)
 
-        raise Errors::RecordingNotFound unless recording
+        raise Exceptions::RecordingNotFound unless recording
 
         Note.create(recording:, user: @user, body:, timestamp:)
       end

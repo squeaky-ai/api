@@ -12,7 +12,7 @@ module Mutations
       type Types::Common::GenericSuccess
 
       def resolve(key:)
-        raise Errors::Unauthorized unless context[:current_user]&.superuser?
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         client = Aws::S3::Client.new(region: 'eu-west-1')
 

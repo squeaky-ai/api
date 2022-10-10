@@ -20,7 +20,7 @@ module Mutations
       def resolve(recording_id:, bookmarked:, **_rest)
         recording = @site.recordings.find_by(id: recording_id)
 
-        raise Errors::RecordingNotFound unless recording
+        raise Exceptions::RecordingNotFound unless recording
 
         recording.update(bookmarked:)
 

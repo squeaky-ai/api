@@ -19,7 +19,7 @@ module Mutations
       def resolve(sentiment_id:, **_rest)
         sentiment = @site.sentiments.find_by(id: sentiment_id)
 
-        raise Errors::SentimentNotFound unless sentiment
+        raise Exceptions::SentimentNotFound unless sentiment
 
         sentiment.destroy
 

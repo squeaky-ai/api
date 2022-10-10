@@ -5,9 +5,8 @@ require 'rails_helper'
 errors_visitors_query = <<-GRAPHQL
   query($site_id: ID!, $error_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      errorDetails(errorId: $error_id) {
-        id
-        visitors(fromDate: $from_date, toDate: $to_date) {
+      error(errorId: $error_id, fromDate: $from_date, toDate: $to_date) {
+        visitors {
           items {
             id
           }
@@ -35,9 +34,9 @@ RSpec.describe Resolvers::Errors::Visitors, type: :request do
       graphql_request(errors_visitors_query, variables, user)
     end
 
-    it 'returns nil' do
-      response = subject['data']['site']['errorDetails']
-      expect(response).to eq(nil)
+    it 'returns no items' do
+      response = subject['data']['site']['error']['visitors']['items']
+      expect(response).to eq([])
     end
   end
 
@@ -77,8 +76,8 @@ RSpec.describe Resolvers::Errors::Visitors, type: :request do
     end
 
     it 'returns the visitors' do
-      response = subject['data']['site']['errorDetails']['visitors']
-      expect(response['items']).to eq([
+      response = subject['data']['site']['error']['visitors']['items']
+      expect(response).to eq([
         {
           'id' => recording.visitor_id.to_s
         }

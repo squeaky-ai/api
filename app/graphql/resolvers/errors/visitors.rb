@@ -8,20 +8,13 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
-      argument :from_date, GraphQL::Types::ISO8601Date, required: true
-      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
+      def resolve_with_timings(page:, size:, sort:)
         visitors = Visitor
-                    .joins(:recordings)
-                    .where(
-                      'visitors.id IN (?) AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', 
-                      visitor_ids,
-                      from_date,
-                      to_date
-                    )
-                    .order(order(sort))
-                    .group('visitors.id')
+                   .joins(:recordings)
+                   .where('recordings.id IN (?)', recording_ids)
+                   .order(order(sort))
+                   .group('visitors.id')
 
         visitors = visitors.page(page).per(size)
 
@@ -37,14 +30,22 @@ module Resolvers
 
       private
 
-      def visitor_ids
+      def recording_ids # rubocop:disable Metrics/AbcSize
         sql = <<-SQL
-          SELECT DISTINCT visitor_id
-          FROM recordings
-          WHERE id IN (?)
+          SELECT DISTINCT recording_id
+          FROM error_events
+          WHERE site_id = ? AND message = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
         SQL
 
-        Sql.execute(sql, [object['recording_ids']]).map { |v| v['visitor_id'] }
+        variables = [
+          object.site.id,
+          Base64.decode64(object.error_id),
+          object.range.from,
+          object.range.to
+        ]
+
+        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        ClickHouse.connection.select_all(query).map { |x| x['recording_id'] }
       end
 
       def order(sort)

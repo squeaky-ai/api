@@ -8,18 +8,10 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
-      argument :from_date, GraphQL::Types::ISO8601Date, required: true
-      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
+      def resolve_with_timings(page:, size:, sort:)
         recordings = Recording
-                     .where(
-                        'status = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND id IN (?)', 
-                        Recording::ACTIVE,
-                        from_date,
-                        to_date,
-                        object['recording_ids']
-                      )
+                     .where('id IN (?)', recording_ids)
                      .includes(:pages, :visitor)
                      .order(order(sort))
 
@@ -36,6 +28,24 @@ module Resolvers
       end
 
       private
+
+      def recording_ids # rubocop:disable Metrics/AbcSize
+        sql = <<-SQL
+          SELECT DISTINCT recording_id
+          FROM error_events
+          WHERE site_id = ? AND message = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          object.site.id,
+          Base64.decode64(object.error_id),
+          object.range.from,
+          object.range.to
+        ]
+
+        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        ClickHouse.connection.select_all(query).map { |x| x['recording_id'] }
+      end
 
       def order(sort)
         sorts = {

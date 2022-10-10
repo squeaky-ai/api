@@ -20,7 +20,7 @@ module Mutations
         old_owner = @site.owner
         new_owner = @site.member(team_id)
 
-        raise Errors::TeamNotFound unless new_owner
+        raise Exceptions::TeamNotFound unless new_owner
 
         ActiveRecord::Base.transaction do
           old_owner.update(role: Team::ADMIN)
