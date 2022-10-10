@@ -23,6 +23,7 @@ heatmaps_items_query = <<-GRAPHQL
           ... on HeatmapsCursor {
             x
             y
+            count
           }
         }
       }
@@ -378,27 +379,22 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       it 'returns the data' do
         response = subject['data']['site']['heatmaps']['items']
 
-        expect(response).to match(
+        expect(response).to match_array(
           [
             {
-              'x' => 1353,
-              'y' => 660
+              'count' => 2, 
+              'x' => 1360,
+              'y' => 664
             },
             {
-              'x' => 1353,
-              'y' => 661
+              'count' => 2, 
+              'x' => 1360,
+              'y' => 680
             },
             {
-              'x' => 1353,
-              'y' => 670
-            },
-            {
-              'x' => 1353,
-              'y' => 675
-            },
-            {
-              'x' => 1353,
-              'y' => 676
+              'count' => 1, 
+              'x' => 1360,
+              'y' => 672
             }
           ]
         )

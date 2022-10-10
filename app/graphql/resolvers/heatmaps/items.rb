@@ -5,14 +5,16 @@ module Resolvers
     class Items < Resolvers::Base
       type [Types::Heatmaps::Item, { null: true }], null: false
 
-      def resolve_with_timings
+      argument :cluster, Integer, required: false, default_value: 8
+
+      def resolve_with_timings(cluster:)
         case object.type
         when 'ClickCount'
           click_counts
         when 'ClickPosition'
           click_positions
         when 'Cursor'
-          cursors
+          cursors(cluster)
         when 'Scroll'
           scrolls
         end
@@ -53,17 +55,16 @@ module Resolvers
         end
       end
 
-      def cursors
-        heatmaps_service.cursors.flat_map do |x|
-          positions = JSON.parse(x['coordinates'])
-          positions.map.with_index do |pos, index|
-            {
-              id: "#{x['uuid']}_#{index}",
-              type: 'cursor',
-              x: pos['absolute_x'] || pos['x'],
-              y: pos['absolute_y'] || pos['y']
-            }
-          end
+      def cursors(cluster)
+        uuid = SecureRandom.uuid
+        heatmaps_service.cursors(cluster).map.with_index do |x, index|
+          {
+            id: "#{uuid}_#{index}", # Not interested in caching this anyway
+            type: 'cursor',
+            x: x['x'],
+            y: x['y'],
+            count: x['count']
+          }
         end
       end
 

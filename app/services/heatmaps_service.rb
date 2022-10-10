@@ -49,21 +49,34 @@ class HeatmapsService
     execute_query(sql)
   end
 
-  def cursors
+  def cursors(cluster)
     sql = <<-SQL
       SELECT
-        uuid,
-        coordinates
-      FROM
-        cursor_events
-      WHERE
-        site_id = :site_id AND
-        viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
-        url = :page_url
+        ceil(tupleElement(coords, 1) / :cluster) * :cluster as x,
+        ceil(tupleElement(coords, 2) / :cluster) * :cluster as y,
+        COUNT(*) count
+      FROM (
+        SELECT (
+          arrayJoin(
+            JSONExtract(
+              coordinates,
+              'Array(Tuple(absolute_x Nullable(Int16), absolute_y Nullable(Int16)))'
+            )
+          )
+        ) as coords
+        FROM
+          cursor_events
+        WHERE
+          site_id = :site_id AND
+          viewport_x #{device_expression} AND
+          toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+          url = :page_url
+      )
+      GROUP BY x, y
+      ORDER BY count DESC;
     SQL
 
-    execute_query(sql)
+    execute_query(sql, cluster:)
   end
 
   def scrolls
@@ -93,8 +106,8 @@ class HeatmapsService
     Recording.device_expression(device)
   end
 
-  def execute_query(sql)
-    variables = { site_id:, from_date:, to_date:, page_url: }
+  def execute_query(sql, **variables)
+    variables = { site_id:, from_date:, to_date:, page_url:, **variables }
     query = ActiveRecord::Base.sanitize_sql_array([sql, variables])
 
     ClickHouse.connection.select_all(query)
