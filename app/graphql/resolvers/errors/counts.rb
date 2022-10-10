@@ -9,7 +9,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(error_id: nil, from_date:, to_date:)
+      def resolve_with_timings(from_date:, to_date:, error_id: nil)
         date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
 
         items = ClickHouse.connection.select_all(
@@ -56,7 +56,7 @@ module Resolvers
           Base64.decode64(error_id)
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        ActiveRecord::Base.sanitize_sql_array([sql, *variables])
       end
 
       def query_without_error_id(date_format, from_date, to_date)
@@ -80,7 +80,7 @@ module Resolvers
           to_date
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        ActiveRecord::Base.sanitize_sql_array([sql, *variables])
       end
     end
   end
