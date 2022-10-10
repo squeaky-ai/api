@@ -34,6 +34,7 @@ class Site < ApplicationRecord
 
   # The plural sounds weird
   alias_attribute :team, :teams
+  alias_attribute :bundled, :bundled?
 
   default_scope { order(name: :asc) }
 
@@ -97,5 +98,13 @@ class Site < ApplicationRecord
 
   def sentiment_enabled?
     feedback&.sentiment_enabled || false
+  end
+
+  def bundled?
+    !site_bundles_site.nil?
+  end
+
+  def bundled_with
+    site_bundle&.sites || []
   end
 end

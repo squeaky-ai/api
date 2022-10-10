@@ -13,7 +13,7 @@ module Resolvers
       def resolve_with_timings(page:, size:, search:, sort:)
         sites = ::Site
                 .unscoped
-                .includes(%i[teams users plan billing])
+                .includes(%i[teams users plan billing site_bundles_site])
                 .page(page)
                 .per(size)
                 .order(order(sort))
