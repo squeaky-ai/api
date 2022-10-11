@@ -49,7 +49,7 @@ class HeatmapsService
     execute_query(sql)
   end
 
-  def cursors(cluster)
+  def cursors(cluster = 16)
     sql = <<-SQL
       SELECT
         ceil(tupleElement(coords, 1) / :cluster) * :cluster as x,

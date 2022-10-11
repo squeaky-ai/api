@@ -45,7 +45,7 @@ module Resolvers
         client = Aws::S3::Client.new
         file = client.get_object(key:, bucket: 'events.squeaky.ai')
 
-        JSON.parse(file.body.read)
+        Oj.load(file.body.read)
       end
 
       def s3_pagination(files)

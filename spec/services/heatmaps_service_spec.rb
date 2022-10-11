@@ -65,8 +65,8 @@ RSpec.describe HeatmapsService do
           viewport_y: 1080,
           device_x: 1920,
           device_y: 1080,
-          relative_to_element_x: 0,
-          relative_to_element_y: 0,
+          relative_to_element_x: 5,
+          relative_to_element_y: 5,
           timestamp: 1664543666818
         }
       end
@@ -78,8 +78,8 @@ RSpec.describe HeatmapsService do
           {
             'uuid' => anything,
             'selector' => 'p#foo',
-            'relative_to_element_x' => 0,
-            'relative_to_element_y' => 0
+            'relative_to_element_x' => 5,
+            'relative_to_element_y' => 5
           }
         ]
       )
@@ -115,8 +115,9 @@ RSpec.describe HeatmapsService do
       expect(instance.cursors).to match_array(
         [
           {
-            'uuid' => anything, 
-            'coordinates' => '[{"x":10,"y":10,"absolute_x":10,"absolute_y":10}]'
+            'count' => 1,
+            'x' => 16,
+            'y' => 16
           }
         ]
       )
