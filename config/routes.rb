@@ -25,6 +25,10 @@ Rails.application.routes.draw do
       post 'stripe', to: 'stripe#index'
     end
 
+    resources :sites do
+      get '/heatmaps/cursors', to: 'sites/heatmaps#cursors'
+    end
+
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do
@@ -44,5 +48,5 @@ Rails.application.routes.draw do
   end
 
   root to: 'application#not_found'
-  match '*anything', to: 'application#not_found', via: %i[get post]
+  # match '*anything', to: 'application#not_found', via: %i[get post]
 end
