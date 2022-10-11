@@ -3,7 +3,7 @@
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   scope 'api' do
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
@@ -27,6 +27,9 @@ Rails.application.routes.draw do
 
     resources :sites do
       get '/heatmaps/cursors', to: 'sites/heatmaps#cursors'
+      get '/heatmaps/click_counts', to: 'sites/heatmaps#click_counts'
+      get '/heatmaps/click_positions', to: 'sites/heatmaps#click_positions'
+      get '/heatmaps/scrolls', to: 'sites/heatmaps#scrolls'
     end
 
     # Custom devise routes that are more suited to the front end

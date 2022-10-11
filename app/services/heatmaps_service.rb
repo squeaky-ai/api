@@ -31,7 +31,6 @@ class HeatmapsService
   def click_positions
     sql = <<-SQL
       SELECT
-        uuid,
         selector,
         relative_to_element_x,
         relative_to_element_y
@@ -52,8 +51,8 @@ class HeatmapsService
   def cursors(cluster = 16)
     sql = <<-SQL
       SELECT
-        ceil(tupleElement(coords, 1) / :cluster) * :cluster as x,
-        ceil(tupleElement(coords, 2) / :cluster) * :cluster as y,
+        toInt16(ceil(tupleElement(coords, 1) / :cluster) * :cluster) as x,
+        toInt16(ceil(tupleElement(coords, 2) / :cluster) * :cluster) as y,
         COUNT(*) count
       FROM (
         SELECT (
@@ -82,8 +81,7 @@ class HeatmapsService
   def scrolls
     sql = <<-SQL
       SELECT
-        MAX(y) max,
-        recording_id id
+        MAX(y) y
       FROM
         scroll_events
       WHERE

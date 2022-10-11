@@ -76,7 +76,6 @@ RSpec.describe HeatmapsService do
       expect(instance.click_positions).to match_array(
         [
           {
-            'uuid' => anything,
             'selector' => 'p#foo',
             'relative_to_element_x' => 5,
             'relative_to_element_y' => 5
@@ -147,8 +146,7 @@ RSpec.describe HeatmapsService do
       expect(instance.scrolls).to match_array(
         [
           {
-            'id' => anything,
-            'max' => 10
+            'y' => 10
           }
         ]
       )
