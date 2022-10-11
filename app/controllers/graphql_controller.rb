@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  def execute
+  def execute # rubocop:disable Metrics/AbcSize
     variables = prepare_variables(params[:variables])
 
-    render json: SqueakySchema.execute(
+    response = SqueakySchema.execute(
       params[:query],
       variables:,
       operation_name: params[:operationName],
       context: { current_user:, request: }
     )
+
+    # There are mega gains to be had from using Oj
+    # here instead of whatever serializer rails uses
+    # by default
+    render json: Oj.dump(response.to_h)
   rescue StandardError => e
     raise e unless Rails.env.development?
 
