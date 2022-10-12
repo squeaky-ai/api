@@ -13,7 +13,7 @@ module Resolvers
       argument :sort, Types::Admin::UserSort, required: false, default_value: 'created_at__desc'
 
       def resolve_with_timings(page:, size:, search:, sort:)
-        users = User
+        users = ::User
                 .includes(:sites)
                 .page(page)
                 .per(size)
