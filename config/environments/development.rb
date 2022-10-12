@@ -73,4 +73,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.web_host = 'http://localhost:3333'
+
+  config.squeaky_site_id = 1
 end

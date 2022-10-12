@@ -90,4 +90,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.web_host = ENV.fetch('WEB_HOST', 'https://squeaky.ai')
+
+  config.squeaky_site_id = 82
 end

@@ -65,7 +65,7 @@ module Resolvers
         Visitor
           .where(
             "site_id = ? AND external_attributes->>'id'::text IN (?)",
-            SQUEAKY_SITE_ID,
+            Rails.application.config.squeaky_site_id,
             user_ids.map(&:to_s)
           )
       end

@@ -6,6 +6,7 @@ module Types
       graphql_name 'Admin'
 
       field :site, resolver: Resolvers::Admin::Site
+      field :user, resolver: Resolvers::Admin::User
       field :users, resolver: Resolvers::Admin::Users
       field :users_count, resolver: Resolvers::Admin::UsersCount
       field :users_stored, resolver: Resolvers::Admin::UsersStored
