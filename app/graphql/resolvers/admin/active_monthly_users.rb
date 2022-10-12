@@ -8,7 +8,7 @@ module Resolvers
       def resolve_with_timings
         now = Time.now
         now -= 30.days
-        User.where('last_activity_at > ?', now).count
+        ::User.where('last_activity_at > ?', now).count
       end
     end
   end
