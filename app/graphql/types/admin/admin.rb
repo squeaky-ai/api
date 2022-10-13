@@ -10,6 +10,7 @@ module Types
       field :users, resolver: Resolvers::Admin::Users
       field :users_count, resolver: Resolvers::Admin::UsersCount
       field :users_stored, resolver: Resolvers::Admin::UsersStored
+      field :users_partners, resolver: Resolvers::Admin::UsersPartners
       field :sites, resolver: Resolvers::Admin::Sites
       field :sites_count, resolver: Resolvers::Admin::SitesCount
       field :sites_stored, resolver: Resolvers::Admin::SitesStored

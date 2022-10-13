@@ -221,4 +221,9 @@ FactoryBot.define do
     site { association :site }
     site_bundle { association :site_bundle }
   end
+
+  factory :partner do
+    name { 'partner' }
+    slug { 'partner' }
+  end
 end

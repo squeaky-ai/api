@@ -14,7 +14,7 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, search:, sort:)
         users = ::User
-                .includes(:sites)
+                .includes(:sites, :partner)
                 .page(page)
                 .per(size)
                 .order(order(sort))

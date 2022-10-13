@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_13_191724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,9 +42,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
     t.string "meta_image", null: false
     t.string "meta_description", null: false
     t.string "slug", null: false
-    t.string "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "body", null: false
     t.string "scripts", default: [], null: false, array: true
   end
 
@@ -113,9 +113,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
 
   create_table "event_groups", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "site_id"
     t.index ["site_id"], name: "index_event_groups_on_site_id"
   end
 
@@ -126,8 +126,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
     t.bigint "recording_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "site_id"
     t.index ["recording_id", "timestamp"], name: "index_events_on_recording_id_and_timestamp"
     t.index ["recording_id"], name: "index_events_on_recording_id"
+    t.index ["site_id"], name: "index_events_on_site_id"
   end
 
   create_table "feedback", force: :cascade do |t|
@@ -192,19 +194,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
     t.index ["site_id"], name: "index_pages_on_site_id"
   end
 
+  create_table "partners", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_partners_on_user_id"
+  end
+
   create_table "plans", force: :cascade do |t|
     t.integer "tier", null: false
     t.integer "max_monthly_recordings"
     t.integer "data_storage_months"
     t.integer "response_time_hours"
     t.string "support", default: [], null: false, array: true
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "sso_enabled", default: false, null: false
     t.boolean "audit_trail_enabled", default: false, null: false
     t.boolean "private_instance_enabled", default: false, null: false
     t.string "notes"
-    t.bigint "site_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_plans_on_site_id"
   end
 
@@ -289,6 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_074012) do
     t.boolean "superuser_access_enabled", default: false
     t.string "routes", default: [], null: false, array: true
     t.boolean "ingest_enabled", default: true, null: false
+    t.boolean "consent_enabled", default: false, null: false
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end

@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :billings, dependent: :destroy
 
   has_one :communication, dependent: :destroy
+  has_one :partner, dependent: :destroy
 
   # In admin/users.rb we assign the visitor
   # based on linked data but only for Squeaky

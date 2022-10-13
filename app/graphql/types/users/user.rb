@@ -11,6 +11,7 @@ module Types
       field :full_name, String, null: true
       field :email, String, null: false
       field :superuser, Boolean, null: false
+      field :partner, Types::Users::Partner, null: true
       field :communication, Types::Users::Communication, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
