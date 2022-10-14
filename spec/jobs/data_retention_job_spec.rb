@@ -8,7 +8,7 @@ RSpec.describe DataRetentionJob, type: :job do
   subject { described_class.perform_now }
 
   context 'when there are no jobs to delete' do
-    it 'does not delete any recordings' do
+    it 'does not enqueue anything' do
       expect { subject }.not_to change { Recording.all.count }
     end
   end
@@ -26,8 +26,9 @@ RSpec.describe DataRetentionJob, type: :job do
       create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 10.days)
     end
 
-    it 'deletes the ones that are older than the plan date' do
-      expect { subject }.to change { site.recordings.size }.from(5).to(2)
+    it 'enqueues ones that need deleting' do
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.exactly(3).times
     end
   end
 
@@ -46,8 +47,8 @@ RSpec.describe DataRetentionJob, type: :job do
       create(:recording, site:, created_at: now - 1.year)
     end
 
-    it 'deletes the ones that are older than the plan date' do
-      expect { subject }.not_to change { site.recordings.size }
+    it 'does not enqueue anything' do
+      expect(RecordingDeleteJob).not_to have_been_enqueued
     end
   end
 end
