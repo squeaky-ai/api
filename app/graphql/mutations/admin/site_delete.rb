@@ -17,7 +17,7 @@ module Mutations
         site = Site.find(id)
 
         if site
-          SiteCleanupJob.perform_later([site.id])
+          site.destroy_all_recordings!
           site.destroy
         end
 

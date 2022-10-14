@@ -23,29 +23,14 @@ module Resolvers
       # S3 related stuff
 
       def list_events_from_s3(page)
-        files = list_files_in_s3
+        files = RecordingEventsService.list(recording: object)
 
         return if files.empty?
 
         {
-          items: get_events_file(files[page - 1]),
+          items: RecordingEventsService.get(recording: object, filename: files[page - 1]),
           pagination: s3_pagination(files)
         }
-      end
-
-      def list_files_in_s3
-        client = Aws::S3::Client.new
-        prefix = "#{object.site.uuid}/#{object.visitor.visitor_id}/#{object.session_id}"
-
-        files = client.list_objects_v2(prefix:, bucket: 'events.squeaky.ai')
-        files.contents.map { |c| c[:key] }.filter { |c| c.end_with?('.json') }
-      end
-
-      def get_events_file(key)
-        client = Aws::S3::Client.new
-        file = client.get_object(key:, bucket: 'events.squeaky.ai')
-
-        Oj.load(file.body.read)
       end
 
       def s3_pagination(files)

@@ -53,11 +53,12 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     before do
-      create(:team, site: site, role: Team::MEMBER)
-      create(:team, site: site, role: Team::MEMBER)
-      create(:team, site: site, role: Team::MEMBER)
-      
-      allow(SiteCleanupJob).to receive(:perform_later)
+      create(:team, site:, role: Team::MEMBER)
+      create(:team, site:, role: Team::MEMBER)
+      create(:team, site:, role: Team::MEMBER)
+
+      create(:recording, site:)
+      create(:recording, site:)
 
       site.reload
     end
@@ -75,9 +76,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
       expect { subject }.to change { Team.where(site_id: site.id).size }.from(4).to(0)
     end
 
-    it 'kicks off a job to clean up the data' do
+    it 'kicks off some jobs to clean up the recordings' do
       subject
-      expect(SiteCleanupJob).to have_received(:perform_later).with([site.id])
+      expect(RecordingDeleteJob).to have_been_enqueued.twice
     end
   end
 

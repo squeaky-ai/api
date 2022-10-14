@@ -16,11 +16,12 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   before do
-    create(:team, site: site, role: Team::MEMBER)
-    create(:team, site: site, role: Team::ADMIN)
-    create(:team, site: site, role: Team::OWNER)
+    create(:team, site:, role: Team::MEMBER)
+    create(:team, site:, role: Team::ADMIN)
+    create(:team, site:, role: Team::OWNER)
 
-    allow(SiteCleanupJob).to receive(:perform_later)
+    create(:recording, site:)
+    create(:recording, site:)
   end
 
   subject do
@@ -46,8 +47,8 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
     expect { subject }.not_to change { User.count }
   end
 
-  it 'kicks off a job to clean up the data' do
+  it 'kicks off some jobs to clean up the recordings' do
     subject
-    expect(SiteCleanupJob).to have_received(:perform_later).with([site.id])
+    expect(RecordingDeleteJob).to have_been_enqueued.twice
   end
 end

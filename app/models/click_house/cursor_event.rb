@@ -32,5 +32,9 @@ module ClickHouse
       Rails.logger.error "Failed to insert events to clickhouse: #{e} - #{session.cursors.to_json}"
       raise
     end
+
+    def self.delete_from_recording(recording:)
+      Sql.execute_clickhouse("DELETE FROM #{table_name} WHERE recording_id = ?", [recording.id])
+    end
   end
 end

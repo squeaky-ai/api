@@ -7,11 +7,11 @@ class Recording < ApplicationRecord
   belongs_to :visitor, counter_cache: true
 
   has_many :notes, dependent: :destroy
-  has_many :events
-  has_many :pages
+  has_many :events # DO NOT turn on dependent: :destroy
+  has_many :pages, dependent: :destroy
 
-  has_one :nps
-  has_one :sentiment
+  has_one :nps, dependent: :destroy
+  has_one :sentiment, dependent: :destroy
 
   has_and_belongs_to_many :tags
 

@@ -106,4 +106,12 @@ class Site < ApplicationRecord
   def bundled_with
     site_bundle&.sites || []
   end
+
+  def destroy_all_recordings!
+    # This will enqueue all recordings and it's associated
+    # data to be deleted asynchronously
+    recordings.select(:id).find_each do |recording|
+      RecordingDeleteJob.perform_later(recording.id)
+    end
+  end
 end
