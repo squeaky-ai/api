@@ -11,7 +11,8 @@ class RecordingDeleteJob < ApplicationJob
 
     delete_recording_events
     delete_postgres_events
-    # delete_clickhouse_events TODO when on clickhouse:22.9
+    # delete_clickhouse_events TODO: when on clickhouse:22.9
+    delete_recording
   end
 
   private
@@ -37,5 +38,9 @@ class RecordingDeleteJob < ApplicationJob
       ClickHouse::Recording,
       ClickHouse::ScrollEvent
     ].each { |c| c.delete_from_recording(recording) }
+  end
+
+  def delete_recording
+    recording.destroy
   end
 end

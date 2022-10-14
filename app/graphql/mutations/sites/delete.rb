@@ -20,8 +20,7 @@ module Mutations
         @site.team.each { |t| SiteMailer.destroyed(t.user.email, @site).deliver_now unless t.owner? }
         # Send an email to us so we have a record of it
         AdminMailer.site_destroyed(@site).deliver_now
-        # Finally destroy the site
-        SiteCleanupJob.perform_later([@site.id])
+        @site.destroy_all_recordings!
         @site.destroy
 
         nil

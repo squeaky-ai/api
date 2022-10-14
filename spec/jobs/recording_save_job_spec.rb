@@ -5,6 +5,11 @@ require 'securerandom'
 
 RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
+  
+  before do
+    allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
+    allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
+  end
 
   let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
   let(:events_fixture) { require_fixture('events.json', compress: true) }
@@ -17,11 +22,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       'session_id' => SecureRandom.base36,
       'visitor_id' => SecureRandom.base36
     }
-  end
-
-  before do
-    allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-    allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
   end
 
   context 'when the recording is new' do
