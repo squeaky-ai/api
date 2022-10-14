@@ -19,7 +19,6 @@ class Site < ApplicationRecord
   has_many :nps, through: :recordings
   has_many :sentiments, through: :recordings
   has_many :tags
-  has_many :clicks
   has_many :event_captures, dependent: :destroy
   has_many :event_groups
 
