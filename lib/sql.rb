@@ -7,4 +7,9 @@ class Sql
     query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
     ActiveRecord::Base.connection.exec_query(query)
   end
+
+  def self.execute_clickhouse(sql, variables = [])
+    query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+    ClickHouse.connection.execute(query)
+  end
 end

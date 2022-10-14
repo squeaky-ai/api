@@ -43,7 +43,7 @@ class RecordingSaveJob < ApplicationJob
       visitor = persist_visitor!
       recording = persist_recording!(visitor)
 
-      persist_events!(visitor)
+      persist_events!(recording)
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
@@ -72,14 +72,12 @@ class RecordingSaveJob < ApplicationJob
     Recording.create_from_session(session, visitor, site, recording_status)
   end
 
-  def persist_events!(visitor)
-    client = Aws::S3::Client.new
-
+  def persist_events!(recording)
     session.events.each_slice(250).with_index do |slice, index|
-      client.put_object(
+      RecordingEventsService.create(
+        recording:,
         body: slice.map { |s| { **s, id: SecureRandom.uuid } }.to_json,
-        bucket: 'events.squeaky.ai',
-        key: "#{site.uuid}/#{visitor.visitor_id}/#{session.session_id}/#{index}.json"
+        filename: "#{index}.json"
       )
     end
   end
