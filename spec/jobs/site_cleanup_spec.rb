@@ -28,10 +28,6 @@ RSpec.describe SiteCleanupJob, type: :job do
       recording_4 = create(:recording)
       recording_5 = create(:recording)
       recording_6 = create(:recording)
-      # Three clicks that are for this site
-      3.times { create(:click, site_id:) }
-      # Three that are not
-      3.times { create(:click) }
       # Three sets of events that are for this site
       3.times { create(:event, recording: recording_1) }
       3.times { create(:event, recording: recording_2) }
@@ -49,7 +45,6 @@ RSpec.describe SiteCleanupJob, type: :job do
     it 'deletes the site data' do
       expect { subject }.to change { Recording.all.count }.by(-3)
                         .and change { Page.all.count }.by(-3)
-                        .and change { Click.all.count }.by(-3)
                         .and change { Event.all.count }.by(-9)
     end
   end
