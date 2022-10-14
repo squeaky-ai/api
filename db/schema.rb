@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_14_072815) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_14_193126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,24 +46,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_14_072815) do
     t.datetime "updated_at", null: false
     t.string "body", null: false
     t.string "scripts", default: [], null: false, array: true
-  end
-
-  create_table "clicks", force: :cascade do |t|
-    t.string "selector", null: false
-    t.integer "coordinates_x", null: false
-    t.integer "coordinates_y", null: false
-    t.string "page_url", null: false
-    t.bigint "clicked_at", null: false
-    t.integer "viewport_x", null: false
-    t.integer "viewport_y", null: false
-    t.bigint "site_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "text"
-    t.bigint "recording_id"
-    t.integer "relative_to_element_x"
-    t.integer "relative_to_element_y"
-    t.index ["site_id"], name: "index_clicks_on_site_id"
   end
 
   create_table "communications", force: :cascade do |t|

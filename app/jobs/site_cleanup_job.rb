@@ -8,8 +8,6 @@ class SiteCleanupJob < ApplicationJob
   def perform(site_id)
     return unless site_id
 
-    delete_postgres_clicks(site_id)
-
     Recording.where(site_id:).find_each do |recording|
       logger.info "deleting recording #{recording.id}"
       # Delete these first as they can cause the job to
@@ -26,10 +24,6 @@ class SiteCleanupJob < ApplicationJob
 
   def delete_postgres_events(recording_id)
     Event.where('recording_id = ?', recording_id).delete_all
-  end
-
-  def delete_postgres_clicks(site_id)
-    Click.where('site_id = ?', site_id).delete_all
   end
 
   def delete_postgres_pages(recording_id)

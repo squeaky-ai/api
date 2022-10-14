@@ -87,12 +87,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(nps.email).to eq 'bobby@gmail.com'
     end
 
-    it 'stores the clicks' do
-      subject
-      clicks = site.reload.clicks
-      expect(clicks.size).to eq 3
-    end
-
     it 'cleans up the redis data' do
       subject
       expect(Cache.redis).to have_received(:del)

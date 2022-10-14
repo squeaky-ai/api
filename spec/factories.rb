@@ -123,18 +123,6 @@ FactoryBot.define do
     user { association :user }
   end
 
-  factory :click do
-    selector { 'html > body' }
-    coordinates_x { 1024 }
-    coordinates_y { 720 }
-    page_url { '/' }
-    clicked_at { 1631629334592 }
-    viewport_x { 1280 }
-    viewport_y { 1024 }
-
-    site { association :site }
-  end
-
   factory :blog do
     title { 'Title' }
     tags { ['Tag 1', 'Tag 2'] }

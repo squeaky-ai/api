@@ -47,7 +47,6 @@ class RecordingSaveJob < ApplicationJob
       persist_pageviews!(recording)
       persist_sentiments!(recording)
       persist_nps!(recording)
-      persist_clicks!(recording)
       persist_clickhouse_data!(recording)
       persist_custom_event_names!
     end
@@ -122,27 +121,6 @@ class RecordingSaveJob < ApplicationJob
       email: nps[:email],
       recording:
     )
-  end
-
-  def persist_clicks!(recording) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-    items = session.clicks.map do |event|
-      {
-        text: event['data']['text'],
-        selector: event['data']['selector'] || 'html > body',
-        coordinates_x: event['data']['x'] || 0,
-        coordinates_y: event['data']['y'] || 0,
-        clicked_at: event['timestamp'],
-        page_url: event['data']['href'] || '/',
-        viewport_x: recording.viewport_x,
-        viewport_y: recording.viewport_y,
-        relative_to_element_x: event['data']['relativeToElementX'] || 0,
-        relative_to_element_y: event['data']['relativeToElementY'] || 0,
-        site_id: recording.site_id,
-        recording_id: recording.id
-      }
-    end
-
-    Click.insert_all!(items) unless items.empty?
   end
 
   def persist_clickhouse_data!(recording)
