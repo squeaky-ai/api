@@ -26,6 +26,7 @@ module Types
     field :user_password, mutation: Mutations::Users::Password
     field :user_communication, mutation: Mutations::Users::Communication
     field :user_referral_create, mutation: Mutations::Users::ReferralCreate
+    field :user_referral_delete, mutation: Mutations::Users::ReferralDelete
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update
