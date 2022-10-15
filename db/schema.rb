@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_14_193126) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_15_121711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -241,6 +241,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_14_193126) do
   create_table "recordings_tags", id: false, force: :cascade do |t|
     t.bigint "recording_id", null: false
     t.bigint "tag_id", null: false
+  end
+
+  create_table "referrals", force: :cascade do |t|
+    t.string "url"
+    t.bigint "partner_id"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["partner_id"], name: "index_referrals_on_partner_id"
+    t.index ["site_id"], name: "index_referrals_on_site_id"
+    t.index ["url"], name: "index_referrals_on_url", unique: true
   end
 
   create_table "sentiments", force: :cascade do |t|

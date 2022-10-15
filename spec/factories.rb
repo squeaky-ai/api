@@ -214,4 +214,11 @@ FactoryBot.define do
     name { 'partner' }
     slug { 'partner' }
   end
+
+  factory :referral do
+    url { "https://#{SecureRandom.base36}.com" }
+
+    site { association :site }
+    partner { association :partner }
+  end
 end

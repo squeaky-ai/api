@@ -9,6 +9,7 @@ module Types
     field :admin_blog_post_delete, mutation: Mutations::Admin::BlogPostDelete
     field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
     field :admin_user_delete, mutation: Mutations::Admin::UserDelete
+    field :admin_referral_delete, mutation: Mutations::Admin::ReferralDelete
     field :admin_site_plan_update, mutation: Mutations::Admin::SitePlanUpdate
     field :admin_site_associate_customer, mutation: Mutations::Admin::SiteAssociateCustomer
     field :admin_site_delete, mutation: Mutations::Admin::SiteDelete
@@ -24,6 +25,7 @@ module Types
     field :user_delete, mutation: Mutations::Users::Delete
     field :user_password, mutation: Mutations::Users::Password
     field :user_communication, mutation: Mutations::Users::Communication
+    field :user_referral_create, mutation: Mutations::Users::ReferralCreate
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update
