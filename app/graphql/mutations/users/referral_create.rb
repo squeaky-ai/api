@@ -14,7 +14,18 @@ module Mutations
       def resolve(url:)
         return unless @user.partner
 
-        Referral.create!(url:, partner: @user.partner)
+        Referral.create!(url: uri(url), partner: @user.partner)
+      end
+
+      private
+
+      def uri(url)
+        formatted_uri = Site.format_uri(url)
+        # This is quite important! The last thing we want
+        # is nil://nil being in there and being unique!
+        raise Exceptions::SiteInvalidUri unless formatted_uri
+
+        formatted_uri
       end
     end
   end

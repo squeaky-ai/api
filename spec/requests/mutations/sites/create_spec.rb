@@ -110,6 +110,16 @@ RSpec.describe Mutations::Sites::Create, type: :request do
       it 'generates a uuid' do
         expect(subject['data']['siteCreate']['uuid']).not_to be nil
       end
+
+      context 'when a partner has referred the url' do
+        let!(:partner) { create(:partner, user: create(:user)) }
+        let!(:referral) { create(:referral, partner:, url:) }
+
+        it 'updates the referral to include the site' do
+          site = subject['data']['siteCreate']
+          expect(referral.reload.site_id.to_s).to eq(site['id'])
+        end
+      end
     end
   end
 end

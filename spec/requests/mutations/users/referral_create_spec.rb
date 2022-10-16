@@ -17,14 +17,14 @@ RSpec.describe Mutations::Users::ReferralCreate, type: :request do
     subject do
       variables = { 
         input: {
-          url: 'foo.co.uk'
+          url: 'https://foo.co.uk'
         }
       }
       graphql_request(user_referral_create_mutation, variables, user)
     end
 
     it 'returns nil' do
-      expect(subject['data']['referralCreate']).to eq(nil)
+      expect(subject['data']['userReferralCreate']).to eq(nil)
     end
   end
 
@@ -35,21 +35,21 @@ RSpec.describe Mutations::Users::ReferralCreate, type: :request do
     subject do
       variables = { 
         input: {
-          url: 'foo.co.uk'
+          url: 'https://foo.co.uk'
         }
       }
       graphql_request(user_referral_create_mutation, variables, user)
     end
 
     it 'creates the referral' do
-      expect(subject['data']['referralCreate']).to eq(
-        'url' => 'foo.co.uk'
+      expect(subject['data']['userReferralCreate']).to eq(
+        'url' => 'https://foo.co.uk'
       )
     end
 
     context 'when the url is taken' do
       before do
-        create(:referral, url: 'foo.co.uk', partner:)
+        create(:referral, url: 'https://foo.co.uk', partner:)
       end
 
       it 'raises an error' do

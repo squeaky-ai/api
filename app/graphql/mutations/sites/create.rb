@@ -21,6 +21,9 @@ module Mutations
         # and skip the confirmation steps
         Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site:)
 
+        # Update the referral if it exists
+        Referral.find_by_url(site.url)&.update(site:)
+
         site.reload
       end
 
