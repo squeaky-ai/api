@@ -14,7 +14,11 @@ module Mutations
       def resolve(url:)
         return unless @user.partner
 
-        Referral.create!(url: uri(url), partner: @user.partner)
+        referral = Referral.create(url: uri(url), partner: @user.partner)
+
+        raise GraphQL::ExecutionError, referral.errors.full_messages.first unless referral.valid?
+
+        referral
       end
 
       private

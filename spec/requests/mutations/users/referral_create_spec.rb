@@ -53,7 +53,7 @@ RSpec.describe Mutations::Users::ReferralCreate, type: :request do
       end
 
       it 'raises an error' do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotUnique)
+        expect(subject['errors'][0]['message']).to eq 'Url This site is already registered'
       end
     end
   end
