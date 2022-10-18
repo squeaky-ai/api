@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.1.2'
 
 gem 'aws-sdk-rails', '~> 3'
-gem 'aws-sdk-s3', '~> 1.110'
+gem 'aws-sdk-s3', '~> 1.114'
 gem 'bootsnap', require: false
 gem 'click_house'
 gem 'devise'
@@ -15,10 +15,10 @@ gem 'graphql'
 gem 'graphql_playground-rails'
 gem 'kaminari'
 gem 'oj'
-gem 'pg', '~> 1.3.5'
-gem 'puma', '~> 5.6'
+gem 'pg', '~> 1.4.4'
+gem 'puma', '~> 6.0.0'
 gem 'rack-cors'
-gem 'rails', '~> 7.0.2'
+gem 'rails', '~> 7.0.4'
 gem 'redis'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
@@ -28,7 +28,7 @@ gem 'useragent'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
-  gem 'rspec-rails', '~> 5.1'
+  gem 'rspec-rails', '~> 6.0.1'
 end
 
 group :development do

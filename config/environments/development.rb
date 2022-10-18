@@ -2,7 +2,7 @@
 
 require 'active_support/core_ext/integer/time'
 
-Rails.application.configure do
+Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -41,7 +41,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :test
 
-  config.action_mailer.default_url_options = { protocol: 'http', host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { protocol: 'http', host: 'localhost', port: 3333 }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
