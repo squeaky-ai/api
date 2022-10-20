@@ -3,19 +3,19 @@
 module Sites
   class HeatmapsController < SiteController
     def cursors
-      render json: Oj.dump(heatmaps_instance.cursors.to_a)
+      render json: heatmaps_instance.cursors.to_a
     end
 
     def click_counts
-      render json: Oj.dump(heatmaps_instance.click_counts.to_a)
+      render json: heatmaps_instance.click_counts.to_a
     end
 
     def click_positions
-      render json: Oj.dump(heatmaps_instance.click_positions.to_a)
+      render json: heatmaps_instance.click_positions.to_a
     end
 
     def scrolls
-      render json: Oj.dump(heatmaps_instance.scrolls.to_a)
+      render json: heatmaps_instance.scrolls.to_a
     end
 
     private

@@ -33,7 +33,7 @@ class RecordingEventsService
 
   def get_object(filename)
     object = client.get_object(key: "#{prefix}/#{filename}", bucket:)
-    Oj.load(object.body.read)
+    JSON.parse(object.body.read)
   rescue Aws::S3::Errors::NoSuchKey => e
     Rails.logger.error "Key did not exist: #{prefix}/#{filename} - #{e}"
     nil
