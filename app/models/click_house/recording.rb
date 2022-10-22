@@ -30,7 +30,7 @@ module ClickHouse
           utm_term: recording.utm_term,
           activity_duration: recording.activity_duration,
           inactivity: recording.inactivity.to_json,
-          # active_events_count: recording.active_events_count
+          active_events_count: recording.active_events_count
         }
       end
     rescue ClickHouse::DbException => e
