@@ -51,6 +51,7 @@ FactoryBot.define do
     status { Recording::ACTIVE }
     connected_at { Time.now.to_i * 1000 }
     disconnected_at { (Time.now.to_i + 1000) * 1000 }
+    active_events_count { 0 }
 
     transient do
       page_urls { ['/'] }

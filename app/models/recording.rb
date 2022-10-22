@@ -117,7 +117,8 @@ class Recording < ApplicationRecord
       utm_content: session.utm_content,
       utm_term: session.utm_term,
       activity_duration: session.activity_duration,
-      inactivity: session.inactivity
+      inactivity: session.inactivity,
+      # active_events_count: session.active_events_count
     )
   end
 

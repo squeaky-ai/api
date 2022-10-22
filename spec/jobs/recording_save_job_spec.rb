@@ -58,7 +58,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.utm_term).to eq 'analytics'
       expect(recording.inactivity).to eq []
       expect(recording.activity_duration).to eq 11166
-
+      expect(recording.active_events_count).to eq 67
     end
 
     it 'stores the page' do

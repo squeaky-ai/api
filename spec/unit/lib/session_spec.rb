@@ -339,4 +339,10 @@ RSpec.describe Session do
       expect(instance.cursors.size).to eq 21
     end
   end
+
+  describe '#active_events_count' do
+    it 'returns the count' do
+      expect(instance.active_events_count).to eq 67
+    end
+  end
 end

@@ -6,22 +6,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
   describe '.create_from_session' do
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
-    let(:session) { Session.new(message) }
 
-    let(:message) do
-      {
-        site_id: site.id,
-        visitor_id: recording.visitor_id,
-        session_id: SecureRandom.uuid
-      }
-    end
-    
-    before do
-      events_fixture = require_fixture('events.json', compress: true)
-      allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
-    end
-
-    subject { described_class.create_from_session(recording, session) }
+    subject { described_class.create_from_session(recording, {}) }
 
     it 'creates the recording in ClickHouse' do
       subject
@@ -51,7 +37,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
           utm_content,
           utm_term,
           activity_duration,
-          inactivity
+          inactivity,
+          active_events_count
         FROM recordings
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -81,6 +68,7 @@ RSpec.describe ClickHouse::Recording, type: :model do
         'viewport_x' => recording.viewport_x,
         'viewport_y' => recording.viewport_y,
         'visitor_id' => recording.visitor_id,
+        'active_events_count' => recording.active_events_count
       )
     end
   end
