@@ -65,6 +65,7 @@ module Types
       field :magic_erasure_enabled, Boolean, null: false
       field :css_selector_blacklist, [String, { null: true }], null: false
       field :anonymise_form_inputs, Boolean, null: false
+      field :anonymise_text, Boolean, null: false
       field :superuser_access_enabled, Boolean, null: false
       field :routes, [String, { null: true }], null: false
       field :consent, resolver: Resolvers::Sites::Consent

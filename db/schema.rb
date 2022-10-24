@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_22_162728) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_24_122910) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -296,6 +296,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_22_162728) do
     t.string "routes", default: [], null: false, array: true
     t.boolean "ingest_enabled", default: true, null: false
     t.boolean "consent_enabled", default: false, null: false
+    t.boolean "anonymise_text", default: false, null: false
     t.index ["url"], name: "index_sites_on_url", unique: true
     t.index ["uuid"], name: "index_sites_on_uuid", unique: true
   end
