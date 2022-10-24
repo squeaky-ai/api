@@ -32,4 +32,15 @@ class SiteService
       current_user.sites.find_by(uuid: site_uuid, team:)
     end
   end
+
+  def self.exists?(url, expires_in: 5.minutes)
+    # This is used mostly for checking the CORS. If it's
+    # valid or not the result won't change much within 5
+    # minutes. Strip the protocol and www. and whatnot to
+    # get a key as clean as possible
+    key = URI(url).host.downcase.sub('www.', '')
+    Rails.cache.fetch("data_cache:SiteService::exists::#{key}", expires_in:) do
+      Site.exists?(url: [url, url.sub('www.', '')])
+    end
+  end
 end
