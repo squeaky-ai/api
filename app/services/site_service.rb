@@ -38,9 +38,16 @@ class SiteService
     # valid or not the result won't change much within 5
     # minutes. Strip the protocol and www. and whatnot to
     # get a key as clean as possible
-    key = URI(url).host.downcase.sub('www.', '')
+    uri = URI(url)
+    key = uri.host.downcase.sub('www.', '')
+
     Rails.cache.fetch("data_cache:SiteService::exists::#{key}", expires_in:) do
-      Site.exists?(url: [url, url.sub('www.', '')])
+      # Try both www. and non-www.
+      combinations = [
+        "#{uri.scheme}://#{key}",
+        "#{uri.scheme}://www.#{key}"
+      ]
+      Site.exists?(url: combinations)
     end
   end
 end
