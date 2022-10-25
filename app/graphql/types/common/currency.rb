@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Types
-  module Plans
+  module Common
     class Currency < Types::BaseEnum
-      graphql_name 'PlansCurrency'
+      graphql_name 'Currency'
 
       value 'GBP'
       value 'EUR'

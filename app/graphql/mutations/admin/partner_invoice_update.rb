@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+module Mutations
+  module Admin
+    class PartnerInvoiceUpdate < BaseMutation
+      null true
+
+      graphql_name 'AdminPartnerInvoiceUpdate'
+
+      argument :id, ID, required: true
+      argument :status, Integer, required: true
+
+      type Types::Users::Invoice
+
+      def resolve(id:, status:)
+        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
+
+        invoice = PartnerInvoice.find(id)
+        invoice.update!(status:) if [PartnerInvoice::PENDING, PartnerInvoice::PAID].include?(status)
+
+        invoice
+      end
+    end
+  end
+end

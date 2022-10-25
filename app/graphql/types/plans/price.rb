@@ -6,7 +6,7 @@ module Types
       graphql_name 'PlanPrice'
 
       field :id, String, null: false
-      field :currency, Types::Plans::Currency, null: false
+      field :currency, Types::Common::Currency, null: false
       field :amount, Integer, null: false
       field :interval, String, null: false
     end

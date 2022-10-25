@@ -7,7 +7,7 @@ module Types
 
       field :id, ID, null: false
       field :amount, Integer, null: false
-      field :currency, Types::Plans::Currency, null: false
+      field :currency, Types::Common::Currency, null: false
       field :invoice_web_url, String, null: false
       field :invoice_pdf_url, String, null: false
       field :interval, String, null: false

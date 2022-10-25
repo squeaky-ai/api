@@ -15,6 +15,7 @@ module Types
     field :admin_site_associate_customer, mutation: Mutations::Admin::SiteAssociateCustomer
     field :admin_site_delete, mutation: Mutations::Admin::SiteDelete
     field :admin_site_ingest_update, mutation: Mutations::Admin::SiteIngestUpdate
+    field :admin_partner_invoice_update, mutation: Mutations::Admin::PartnerInvoiceUpdate
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm

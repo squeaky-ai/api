@@ -222,4 +222,13 @@ FactoryBot.define do
     site { association :site }
     partner { association :partner }
   end
+
+  factory :partner_invoice do
+    invoice_number { 'test '}
+    status { 0 }
+    amount { 100 }
+    currency { 'gbp' }
+
+    partner { association :partner }
+  end
 end

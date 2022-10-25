@@ -6,4 +6,7 @@ class Partner < ApplicationRecord
   belongs_to :user
 
   has_many :referrals
+  has_many :partner_invoices
+
+  alias_attribute :invoices, :partner_invoices
 end
