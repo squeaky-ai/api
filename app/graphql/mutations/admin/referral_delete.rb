@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class ReferralDelete < BaseMutation
+    class ReferralDelete < AdminMutation
       null true
 
       graphql_name 'AdminReferralDelete'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Users::Referral
 
       def resolve(id:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         referral = Referral.find(id)
 
         return referral if referral.site

@@ -5,7 +5,7 @@ module Types
     class UserPath < Types::BaseObject
       graphql_name 'AnalyticsUserPath'
 
-      field :path, [String, { null: true }], null: false
+      field :path, [String, { null: false }], null: false
     end
   end
 end

@@ -7,7 +7,7 @@ module Types
 
       field :trend, Integer, null: false
       field :score, Integer, null: false
-      field :responses, [Types::Feedback::NpsScore, { null: true }], null: false
+      field :responses, [Types::Feedback::NpsScore, { null: false }], null: false
     end
   end
 end

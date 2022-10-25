@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class SiteIngestUpdate < BaseMutation
+    class SiteIngestUpdate < AdminMutation
       null true
 
       graphql_name 'AdminSiteIngestUpdate'
@@ -13,8 +13,6 @@ module Mutations
       type Types::Admin::Site
 
       def resolve(site_id:, enabled:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         site = Site.find(site_id)
         site.update(ingest_enabled: enabled)
 

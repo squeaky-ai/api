@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class Sites < Resolvers::Base
-      type [Types::Sites::Site, { null: true }], null: false
+      type [Types::Sites::Site, { null: false }], null: false
 
       def resolve_with_timings
         raise Exceptions::Unauthorized unless context[:current_user]

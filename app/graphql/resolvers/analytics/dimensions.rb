@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Dimensions < Resolvers::Base
-      type [Types::Analytics::Dimension, { null: true }], null: false
+      type [Types::Analytics::Dimension, { null: false }], null: false
 
       def resolve_with_timings
         # TODO: Replace with ClickHouse

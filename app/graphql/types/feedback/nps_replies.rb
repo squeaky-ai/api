@@ -6,7 +6,7 @@ module Types
       graphql_name 'FeedbackNpsReplies'
 
       field :trend, Integer, null: false
-      field :responses, [Types::Feedback::NpsReply, { null: true }], null: false
+      field :responses, [Types::Feedback::NpsReply, { null: false }], null: false
     end
   end
 end

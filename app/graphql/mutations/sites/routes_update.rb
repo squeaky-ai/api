@@ -8,7 +8,7 @@ module Mutations
       graphql_name 'SitesRoutesUpdate'
 
       argument :site_id, ID, required: true
-      argument :routes, [String, { null: true }], required: true
+      argument :routes, [String, { null: false }], required: true
 
       type Types::Sites::Site
 

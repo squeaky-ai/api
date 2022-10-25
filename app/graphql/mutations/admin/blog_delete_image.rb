@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class BlogDeleteImage < BaseMutation
+    class BlogDeleteImage < AdminMutation
       null false
 
       graphql_name 'AdminBlogDeleteImage'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Common::GenericSuccess
 
       def resolve(key:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         client = Aws::S3::Client.new(region: 'eu-west-1')
 
         client.delete_object(bucket: 'cdn.squeaky.ai', key:)

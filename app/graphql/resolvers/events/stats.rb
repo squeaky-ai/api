@@ -3,7 +3,7 @@
 module Resolvers
   module Events
     class Stats < Resolvers::Base
-      type [Types::Events::Stat, { null: true }], null: false
+      type [Types::Events::Stat, { null: false }], null: false
 
       argument :group_ids, [ID], required: true, default_value: []
       argument :capture_ids, [ID], required: true, default_value: []

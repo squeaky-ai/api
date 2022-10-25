@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class UsersStored < Resolvers::Base
-      type [Types::Admin::UsersStored, { null: true }], null: false
+      type [Types::Admin::UsersStored, { null: false }], null: false
 
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminUsersStored', expires_in: 1.hour) do

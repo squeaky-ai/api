@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class UtmCampaigns < Resolvers::Base
-      type [String, { null: true }], null: false
+      type [String, { null: false }], null: false
 
       def resolve_with_timings
         DataCacheService::Sites::UtmCampaigns.new(site: object).call

@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class UsersPartners < Resolvers::Base
-      type [Types::Admin::User, { null: true }], null: false
+      type [Types::Admin::User, { null: false }], null: false
 
       SQUEAKY_SITE_ID = 82
 

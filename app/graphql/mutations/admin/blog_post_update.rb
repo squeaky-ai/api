@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class BlogPostUpdate < BaseMutation
+    class BlogPostUpdate < AdminMutation
       null false
 
       graphql_name 'AdminBlogPostUpdate'
@@ -17,13 +17,11 @@ module Mutations
       argument :meta_description, String, required: false
       argument :slug, String, required: false
       argument :body, String, required: false
-      argument :scripts, [String, { null: true }], required: false
+      argument :scripts, [String, { null: false }], required: false
 
       type Types::Blog::Post
 
       def resolve(**args)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         post = Blog.find(args[:id])
         post.assign_attributes(args.except(:id))
         post.save

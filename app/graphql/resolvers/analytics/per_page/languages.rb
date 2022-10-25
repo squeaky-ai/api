@@ -8,7 +8,7 @@ module Resolvers
   module Analytics
     module PerPage
       class Languages < Resolvers::Base
-        type [Types::Analytics::Language, { null: true }], null: false
+        type [Types::Analytics::Language, { null: false }], null: false
 
         def resolve_with_timings
           # This shouldn't be necessary but the language isn't known until

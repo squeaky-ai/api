@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class Countries < Resolvers::Base
-      type [Types::Recordings::Country, { null: true }], null: false
+      type [Types::Recordings::Country, { null: false }], null: false
 
       def resolve_with_timings
         DataCacheService::Sites::Countries.new(site: object).call

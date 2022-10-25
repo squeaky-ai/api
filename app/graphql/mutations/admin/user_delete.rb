@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class UserDelete < BaseMutation
+    class UserDelete < AdminMutation
       null true
 
       graphql_name 'AdminUserDelete'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Users::User
 
       def resolve(id:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         user = User.find(id)
 
         ActiveRecord::Base.transaction do

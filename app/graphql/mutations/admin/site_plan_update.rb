@@ -2,14 +2,14 @@
 
 module Mutations
   module Admin
-    class SitePlanUpdate < BaseMutation
+    class SitePlanUpdate < AdminMutation
       null true
 
       graphql_name 'AdminSitePlanUpdate'
 
       argument :site_id, ID, required: true
       argument :max_monthly_recordings, Integer, required: false
-      argument :support, [String, { null: true }], required: false
+      argument :support, [String, { null: false }], required: false
       argument :response_time_hours, Integer, required: false
       argument :data_storage_months, Integer, required: false
       argument :sso_enabled, Boolean, required: false
@@ -20,8 +20,6 @@ module Mutations
       type Types::Admin::Site
 
       def resolve(site_id:, **rest)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         site = Site.find(site_id)
         site.plan.update(rest)
 

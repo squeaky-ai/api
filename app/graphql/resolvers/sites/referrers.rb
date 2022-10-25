@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class Referrers < Resolvers::Base
-      type [String, { null: true }], null: false
+      type [String, { null: false }], null: false
 
       def resolve_with_timings
         DataCacheService::Sites::Referrers.new(site: object).call

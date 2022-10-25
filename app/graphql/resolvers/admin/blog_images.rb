@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class BlogImages < Resolvers::Base
-      type [String, { null: true }], null: false
+      type [String, { null: false }], null: false
 
       def resolve_with_timings
         client = Aws::S3::Client.new(region: 'eu-west-1')

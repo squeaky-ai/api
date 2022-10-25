@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class PartnerInvoiceUpdate < BaseMutation
+    class PartnerInvoiceUpdate < AdminMutation
       null true
 
       graphql_name 'AdminPartnerInvoiceUpdate'
@@ -13,8 +13,6 @@ module Mutations
       type Types::Users::Invoice
 
       def resolve(id:, status:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         invoice = PartnerInvoice.find(id)
         invoice.update!(status:) if [PartnerInvoice::PENDING, PartnerInvoice::PAID].include?(status)
 

@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class SiteAssociateCustomer < BaseMutation
+    class SiteAssociateCustomer < AdminMutation
       null true
 
       graphql_name 'AdminSiteAssociateCustomer'
@@ -13,8 +13,6 @@ module Mutations
       type Types::Admin::Site
 
       def resolve(site_id:, customer_id:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         site = Site.find(site_id)
 
         return site if site.billing

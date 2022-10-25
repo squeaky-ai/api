@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class SitesBundles < Resolvers::Base
-      type [Types::Sites::Bundle, { null: true }], null: false
+      type [Types::Sites::Bundle, { null: false }], null: false
 
       def resolve_with_timings
         SiteBundle

@@ -4,7 +4,7 @@ module Resolvers
   module Analytics
     module PerPage
       class VisitsAt < Resolvers::Base
-        type [Types::Analytics::VisitAt, { null: true }], null: false
+        type [Types::Analytics::VisitAt, { null: false }], null: false
 
         def resolve_with_timings # rubocop:disable Metrics/AbcSize
           # TODO: Replace with ClickHouse

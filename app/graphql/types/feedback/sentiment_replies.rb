@@ -6,7 +6,7 @@ module Types
       graphql_name 'FeedbackSentimentReplies'
 
       field :total, Integer, null: false
-      field :responses, [Types::Feedback::SentimentReply, { null: true }], null: false
+      field :responses, [Types::Feedback::SentimentReply, { null: false }], null: false
     end
   end
 end

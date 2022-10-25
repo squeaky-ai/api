@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class SiteDelete < BaseMutation
+    class SiteDelete < AdminMutation
       null true
 
       graphql_name 'AdminSiteDelete'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Admin::Site
 
       def resolve(id:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         site = Site.find(id)
 
         if site

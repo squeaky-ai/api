@@ -9,7 +9,7 @@ module Types
       field :group_range, Integer, null: false
       field :total, Integer, null: false
       field :trend, Integer, null: false
-      field :items, [Types::Analytics::PageView, { null: true }], null: false
+      field :items, [Types::Analytics::PageView, { null: false }], null: false
     end
   end
 end

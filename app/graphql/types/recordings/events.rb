@@ -5,7 +5,7 @@ module Types
     class Events < Types::BaseObject
       graphql_name 'RecordingsEvents'
 
-      field :items, [Types::Recordings::Event, { null: true }], null: false
+      field :items, [Types::Recordings::Event, { null: false }], null: false
       field :pagination, Types::Recordings::EventPagination, null: false
     end
   end

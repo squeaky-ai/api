@@ -3,7 +3,7 @@
 module Resolvers
   module Events
     class Groups < Resolvers::Base
-      type [Types::Events::Group, { null: true }], null: false
+      type [Types::Events::Group, { null: false }], null: false
 
       def resolve_with_timings
         groups = object.event_groups

@@ -3,7 +3,7 @@
 module Resolvers
   module Sites
     class Pages < Resolvers::Base
-      type [Types::Sites::Page, { null: true }], null: false
+      type [Types::Sites::Page, { null: false }], null: false
 
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true

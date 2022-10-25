@@ -7,7 +7,7 @@ module Types
 
       field :score, Float, null: false
       field :trend, Float, null: false
-      field :responses, [Types::Feedback::SentimentRating, { null: true }], null: false
+      field :responses, [Types::Feedback::SentimentRating, { null: false }], null: false
     end
   end
 end

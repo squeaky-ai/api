@@ -6,7 +6,7 @@ module Types
       graphql_name 'EventsCount'
 
       field :date_key, String, null: false
-      field :metrics, [Types::Events::CountMetric, { null: true }], null: false
+      field :metrics, [Types::Events::CountMetric, { null: false }], null: false
     end
   end
 end

@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class UserPaths < Resolvers::Base
-      type [Types::Analytics::UserPath, { null: true }], null: false
+      type [Types::Analytics::UserPath, { null: false }], null: false
 
       argument :page, String, required: true
       argument :position, Types::Analytics::PathPosition, required: true

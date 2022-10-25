@@ -5,7 +5,7 @@ module Types
     class Capture < Types::BaseObject
       graphql_name 'EventsCapture'
 
-      field :items, [Events::CaptureItem, { null: true }], null: false
+      field :items, [Events::CaptureItem, { null: false }], null: false
       field :pagination, Types::Events::CapturePagination, null: false
     end
   end

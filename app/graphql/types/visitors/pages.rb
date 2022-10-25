@@ -5,7 +5,7 @@ module Types
     class Pages < Types::BaseObject
       graphql_name 'VisitorsPages'
 
-      field :items, [Types::Visitors::Page, { null: true }], null: false
+      field :items, [Types::Visitors::Page, { null: false }], null: false
       field :pagination, Types::Visitors::PagePagination, null: false
     end
   end

@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class BlogPostDelete < BaseMutation
+    class BlogPostDelete < AdminMutation
       null true
 
       graphql_name 'AdminBlogPostDelete'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Blog::Post
 
       def resolve(id:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         Blog.find_by(id:)&.destroy
 
         nil

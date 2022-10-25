@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     class Countries < Resolvers::Base
-      type [Types::Analytics::Country, { null: true }], null: false
+      type [Types::Analytics::Country, { null: false }], null: false
 
       def resolve_with_timings
         countries.map do |country|

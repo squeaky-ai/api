@@ -3,7 +3,7 @@
 module Resolvers
   module Feedback
     class NpsRatings < Resolvers::Base
-      type [Types::Feedback::NpsRating, { null: true }], null: false
+      type [Types::Feedback::NpsRating, { null: false }], null: false
 
       def resolve_with_timings
         Nps

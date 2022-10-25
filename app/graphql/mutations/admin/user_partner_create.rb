@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class UserPartnerCreate < BaseMutation
+    class UserPartnerCreate < AdminMutation
       null true
 
       graphql_name 'AdminUserPartnerCreate'
@@ -14,8 +14,6 @@ module Mutations
       type Types::Admin::User
 
       def resolve(id:, name:, slug:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         user = User.find(id)
 
         unless user.partner

@@ -8,7 +8,7 @@ module Types
       field :id, ID, null: false
       field :name, String, null: false
       field :plan, Types::Sites::Plan, null: false
-      field :sites, [Types::Admin::Site, { null: true }], null: false
+      field :sites, [Types::Admin::Site, { null: false }], null: false
     end
   end
 end

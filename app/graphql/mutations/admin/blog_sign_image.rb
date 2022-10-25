@@ -2,7 +2,7 @@
 
 module Mutations
   module Admin
-    class BlogSignImage < BaseMutation
+    class BlogSignImage < AdminMutation
       null false
 
       graphql_name 'AdminBlogSignImage'
@@ -12,8 +12,6 @@ module Mutations
       type Types::Admin::BlogSignImage
 
       def resolve(filename:)
-        raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
-
         s3_bucket = Aws::S3::Resource.new(region: 'eu-west-1').bucket('cdn.squeaky.ai')
 
         presigned_url = s3_bucket.presigned_post(

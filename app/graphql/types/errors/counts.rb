@@ -7,7 +7,7 @@ module Types
 
       field :group_type, String, null: false
       field :group_range, Integer, null: false
-      field :items, [Types::Errors::Count, { null: true }], null: false
+      field :items, [Types::Errors::Count, { null: false }], null: false
     end
   end
 end

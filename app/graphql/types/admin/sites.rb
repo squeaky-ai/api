@@ -5,7 +5,7 @@ module Types
     class Sites < Types::BaseObject
       graphql_name 'AdminSites'
 
-      field :items, [Types::Admin::Site, { null: true }], null: false
+      field :items, [Types::Admin::Site, { null: false }], null: false
       field :pagination, Types::Admin::SitePagination, null: false
     end
   end

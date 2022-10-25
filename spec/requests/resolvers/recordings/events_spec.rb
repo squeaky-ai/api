@@ -42,7 +42,14 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
 
     let(:get_object) do
       data = { href: "http://localhost/", width: 0, height: 0 }
-      events = [Event.new(event_type: Event::META, data: data, timestamp: 1625389200000)]
+      events = [
+        {
+          id: SecureRandom.uuid,
+          type: Event::META, 
+          data:, 
+          timestamp: 1625389200000
+        }
+      ]
       double(body: double(read: events.to_json))
     end
 

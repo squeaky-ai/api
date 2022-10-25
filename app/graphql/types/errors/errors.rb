@@ -5,7 +5,7 @@ module Types
     class Errors < Types::BaseObject
       graphql_name 'Errors'
 
-      field :items, [Types::Errors::Item, { null: true }], null: false
+      field :items, [Types::Errors::Item, { null: false }], null: false
       field :pagination, Types::Errors::Pagination, null: false
     end
   end
