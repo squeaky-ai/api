@@ -124,6 +124,19 @@ FactoryBot.define do
     user { association :user }
   end
 
+  factory :transaction do
+    amount { 0 }
+    currency { 'GBP' }
+    interval { 'month' }
+    invoice_web_url { 'http://invoice-web-url.com' }
+    invoice_pdf_url { 'http://invoice-pdf-url.com' }
+    pricing_id { 'pricing_id' }
+    period_from { Time.now }
+    period_to { Time.now }
+
+    billing { association :billing }
+  end
+
   factory :blog do
     title { 'Title' }
     tags { ['Tag 1', 'Tag 2'] }
@@ -227,7 +240,7 @@ FactoryBot.define do
     invoice_number { 'test '}
     status { 0 }
     amount { 100 }
-    currency { 'gbp' }
+    currency { 'GBP' }
 
     partner { association :partner }
   end
