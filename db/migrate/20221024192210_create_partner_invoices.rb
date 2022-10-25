@@ -9,7 +9,7 @@ class CreatePartnerInvoices < ActiveRecord::Migration[7.0]
       t.date :due_at
       t.date :paid_at
       t.integer :amount, null: false
-      t.currency :string, null: false
+      t.string :currency, null: false
 
       t.belongs_to :partner
  
