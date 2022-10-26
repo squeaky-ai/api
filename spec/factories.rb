@@ -237,7 +237,7 @@ FactoryBot.define do
   end
 
   factory :partner_invoice do
-    invoice_number { 'test '}
+    filename { 'test '}
     status { 0 }
     amount { 100 }
     currency { 'GBP' }

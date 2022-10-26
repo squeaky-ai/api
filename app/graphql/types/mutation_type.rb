@@ -29,6 +29,9 @@ module Types
     field :user_communication, mutation: Mutations::Users::Communication
     field :user_referral_create, mutation: Mutations::Users::ReferralCreate
     field :user_referral_delete, mutation: Mutations::Users::ReferralDelete
+    field :user_invoice_create, mutation: Mutations::Users::InvoiceCreate
+    field :user_invoice_delete, mutation: Mutations::Users::InvoiceDelete
+    field :user_invoice_sign_image, mutation: Mutations::Users::InvoiceSignImage
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update

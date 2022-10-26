@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_24_192210) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_26_155351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -177,16 +177,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_192210) do
   end
 
   create_table "partner_invoices", force: :cascade do |t|
-    t.string "invoice_number", null: false
+    t.string "filename", null: false
     t.integer "status", null: false
     t.date "issued_at"
     t.date "due_at"
     t.date "paid_at"
     t.integer "amount", null: false
-    t.string "currency", null: false
     t.bigint "partner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", null: false
     t.index ["partner_id"], name: "index_partner_invoices_on_partner_id"
   end
 

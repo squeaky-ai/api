@@ -6,7 +6,7 @@ module Types
       graphql_name 'UsersInvoice'
 
       field :id, ID, null: false
-      field :invoice_number, String, null: false
+      field :filename, String, null: false
       field :invoice_url, String, null: false
       field :status, Integer, null: false
       field :amount, Integer, null: false
