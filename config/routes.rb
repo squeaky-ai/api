@@ -25,6 +25,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       post 'stripe', to: 'stripe#index'
     end
 
+    resources :invoices, only: [:show]
+
     resources :sites do
       get '/heatmaps/cursors', to: 'sites/heatmaps#cursors'
       get '/heatmaps/click_counts', to: 'sites/heatmaps#click_counts'
