@@ -6,7 +6,10 @@ analytics_page_views_count_query = <<-GRAPHQL
   query($site_id: ID!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
       analytics(fromDate: $from_date, toDate: $to_date) {
-        pageViewCount
+        pageViewCount {
+          total
+          trend
+        }
       }
     }
   }
@@ -24,7 +27,10 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
 
     it 'returns 0' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViewCount']).to eq 0
+      expect(response['pageViewCount']).to eq(
+        'total' => 0,
+        'trend' => 0
+      )
     end
   end
 
@@ -45,7 +51,10 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
 
     it 'returns the page views count' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViewCount']).to eq 3
+      expect(response['pageViewCount']).to eq(
+        'total' => 3,
+        'trend' => 3
+      )
     end
   end
 
@@ -67,7 +76,10 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
 
     it 'returns the page views counts' do
       response = subject['data']['site']['analytics']
-      expect(response['pageViewCount']).to eq 3
+      expect(response['pageViewCount']).to eq(
+        'total' => 3,
+        'trend' => 3
+      )
     end
   end
 end
