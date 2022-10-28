@@ -41,9 +41,11 @@ module Types
       end
       field :recording, resolver: Resolvers::Recordings::GetOne
       field :recordings, resolver: Resolvers::Recordings::GetMany
+      field :recordings_highlights, resolver: Resolvers::Recordings::Highlights
       field :recording_latest, resolver: Resolvers::Recordings::Latest
       field :visitor, resolver: Resolvers::Visitors::GetOne
       field :visitors, resolver: Resolvers::Visitors::GetMany
+      field :visitors_highlights, resolver: Resolvers::Visitors::Highlights
       field :event_capture, resolver: Resolvers::Events::Capture
       field :event_groups, resolver: Resolvers::Events::Groups
       field :event_stats, resolver: Resolvers::Events::Stats
