@@ -22,7 +22,7 @@ module Resolvers
               to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) x
-          ORDER BY view_count / NULLIF(exit_rate_count, 0) DESC
+          ORDER BY view_count / exit_rate_count DESC
           LIMIT ?
         SQL
 
