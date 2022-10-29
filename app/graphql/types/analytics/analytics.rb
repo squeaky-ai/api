@@ -10,6 +10,10 @@ module Types
       field :page_view_count, resolver: Resolvers::Analytics::PageViewCount
       field :session_durations, resolver: Resolvers::Analytics::SessionDurations
       field :pages_per_session, resolver: Resolvers::Analytics::PagesPerSession
+      field :bounce_rate, resolver: Resolvers::Analytics::BounceRate
+      field :bounce_counts, resolver: Resolvers::Analytics::BounceCount
+      field :bounces, resolver: Resolvers::Analytics::Bounces
+      field :exits, resolver: Resolvers::Analytics::Exits
       field :pages, resolver: Resolvers::Analytics::Pages
       field :browsers, resolver: Resolvers::Analytics::Browsers
       field :languages, resolver: Resolvers::Analytics::Languages
@@ -17,6 +21,7 @@ module Types
       field :dimensions, resolver: Resolvers::Analytics::Dimensions
       field :referrers, resolver: Resolvers::Analytics::Referrers
       field :visitors, resolver: Resolvers::Analytics::Visitors
+      field :recordings, resolver: Resolvers::Analytics::Recordings
       field :visits_at, resolver: Resolvers::Analytics::VisitsAt
       field :page_views, resolver: Resolvers::Analytics::PageViews
       field :sessions_per_visitor, resolver: Resolvers::Analytics::SessionsPerVisitor
