@@ -10,7 +10,9 @@ module Resolvers
       def resolve_with_timings(size:)
         # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT x.url, x.view_count, x.exit_rate_count
+          SELECT
+            x.url url,
+            COALESCE((NULLIF(exit_rate_count, 0)::float / view_count) * 100, 0) percentage
           FROM (
             SELECT
               url,
@@ -22,7 +24,7 @@ module Resolvers
               to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) x
-          ORDER BY view_count / NULLIF(exit_rate_count, 0) DESC NULLS LAST
+          ORDER BY percentage DESC NULLS LAST
           LIMIT ?
         SQL
 
@@ -36,7 +38,7 @@ module Resolvers
         Sql.execute(sql, variables).map do |row|
           {
             url: row['url'],
-            percentage: Maths.percentage(row['exit_rate_count'], row['view_count'])
+            percentage: row['percentage']
           }
         end
       end
