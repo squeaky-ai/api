@@ -3,7 +3,7 @@
 module Resolvers
   module Visitors
     class Highlights < Resolvers::Base
-      type Types::Visitors::Highlights, null: false
+      type 'Types::Visitors::Highlights', null: false
 
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true

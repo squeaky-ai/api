@@ -3,7 +3,7 @@
 module Resolvers
   module Recordings
     class Highlights < Resolvers::Base
-      type Types::Recordings::Highlights, null: false
+      type 'Types::Recordings::Highlights', null: false
 
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
