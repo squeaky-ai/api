@@ -35,13 +35,51 @@ RSpec.describe Resolvers::Analytics::Countries, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          country_code: 'SE'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          country_code: 'FR'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          country_code: 'ZZ'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          country_code: 'GB'
+        }
+      ]
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, country_code: 'GB', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, country_code: 'SE', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'GB', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'FR', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'ZZ', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'GB', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -78,11 +116,39 @@ RSpec.describe Resolvers::Analytics::Countries, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          country_code: 'SE'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
+          country_code: 'FR'
+        }
+      ]
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, country_code: 'GB', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, country_code: 'SE', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, country_code: 'GB', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, country_code: 'FR', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

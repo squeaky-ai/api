@@ -18,13 +18,18 @@ module Resolvers
       private
 
       def countries
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY country_code
-          ORDER BY country_code_code DESC
+          SELECT
+            DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            country_code
+          ORDER BY
+            country_code_code DESC
         SQL
 
         variables = [
@@ -33,7 +38,7 @@ module Resolvers
           object.range.to
         ]
 
-        Sql.execute(sql, variables)
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end
