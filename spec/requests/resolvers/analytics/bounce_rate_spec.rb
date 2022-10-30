@@ -42,26 +42,36 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
     let(:events) do
       [
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1660276690000, 
           exited_at: 1660276750000, 
           bounced_on: true
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659945610000, 
           exited_at: 1659949210000, 
           bounced_on: false
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659945610000, 
           exited_at: 1659945610000, 
           bounced_on: false
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: true
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -71,13 +81,7 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        events.each do |event|
-          buffer << {
-            uuid: SecureRandom.uuid,
-            site_id: site.id,
-            **event
-          }
-        end
+        events.each { |event| buffer << event }
       end
     end
 
@@ -103,31 +107,43 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
     let(:events) do
       [
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1660276690000, 
           exited_at: 1660276750000, 
           bounced_on: true
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659945610000, 
           exited_at: 1659949210000, 
           bounced_on: false
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659945610000, 
           exited_at: 1659945610000, 
           bounced_on: false
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1651658410000, 
           exited_at: 1651662010000, 
           bounced_on: true
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
         },
         {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -137,13 +153,7 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        events.each do |event|
-          buffer << {
-            uuid: SecureRandom.uuid,
-            site_id: site.id,
-            **event
-          }
-        end
+        events.each { |event| buffer << event }
       end
     end
 
