@@ -117,7 +117,7 @@ class Recording < ApplicationRecord
       activity_duration: session.activity_duration,
       inactivity: session.inactivity,
       active_events_count: session.active_events_count,
-      # events_key_prefix: session.events_key_prefix
+      events_key_prefix: session.events_key_prefix
     )
   end
 
