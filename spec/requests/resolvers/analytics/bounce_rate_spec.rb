@@ -39,12 +39,46 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:events) do
+      [
+        {
+          entered_at: 1660276690000, 
+          exited_at: 1660276750000, 
+          bounced_on: true
+        },
+        {
+          entered_at: 1659945610000, 
+          exited_at: 1659949210000, 
+          bounced_on: false
+        },
+        {
+          entered_at: 1659945610000, 
+          exited_at: 1659945610000, 
+          bounced_on: false
+        },
+        {
+          entered_at: 1659603610000, 
+          exited_at: 1659607210000, 
+          bounced_on: true
+        },
+        {
+          entered_at: 1659603610000, 
+          exited_at: 1659607210000, 
+          bounced_on: false
+        }
+      ]
+    end
+
     before do
-      create(:page, entered_at: 1660276690000, exited_at: 1660276750000, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1659945610000, exited_at: 1659949210000, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1659945610000, exited_at: 1659945610000, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1659603610000, exited_at: 1659607210000, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1659603610000, exited_at: 1659607210000, bounced_on: false, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        events.each do |event|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            **event
+          }
+        end
+      end
     end
 
     subject do
@@ -66,13 +100,51 @@ RSpec.describe Resolvers::Analytics::BounceRate, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:events) do
+      [
+        {
+          entered_at: 1660276690000, 
+          exited_at: 1660276750000, 
+          bounced_on: true
+        },
+        {
+          entered_at: 1659945610000, 
+          exited_at: 1659949210000, 
+          bounced_on: false
+        },
+        {
+          entered_at: 1659945610000, 
+          exited_at: 1659945610000, 
+          bounced_on: false
+        },
+        {
+          entered_at: 1651658410000, 
+          exited_at: 1651662010000, 
+          bounced_on: true
+        },
+        {
+          entered_at: 1659603610000, 
+          exited_at: 1659607210000, 
+          bounced_on: false
+        },
+        {
+          entered_at: 1659603610000, 
+          exited_at: 1659607210000, 
+          bounced_on: false
+        }
+      ]
+    end
+
     before do
-      create(:page, entered_at: 1660276690000, exited_at: 1660276750000, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1659945610000, exited_at: 1659949210000, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1659945610000, exited_at: 1659945610000, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1651658410000, exited_at: 1651662010000, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1659603610000, exited_at: 1659607210000, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1659603610000, exited_at: 1659607210000, bounced_on: false, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        events.each do |event|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            **event
+          }
+        end
+      end
     end
 
     subject do

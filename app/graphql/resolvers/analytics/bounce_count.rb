@@ -6,20 +6,19 @@ module Resolvers
       type Types::Analytics::BounceCounts, null: false
 
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
-            (count(*))::numeric view_count,
-            (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count,
-            to_char(to_timestamp(pages.exited_at / 1000)::date, ?) date_key
-          FROM pages
+            count(*) view_count,
+            COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count,
+            formatDateTime(toDate(exited_at / 1000), ?) date_key
+          FROM page_events
           WHERE
-            pages.site_id = ? AND
-            to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
+            site_id = ? AND
+            toDate(exited_at / 1000)::date BETWEEN ? AND ?
           GROUP BY date_key
         SQL
 
-        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to)
+        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to, clickhouse: true)
 
         variables = [
           date_format,
@@ -31,7 +30,7 @@ module Resolvers
         {
           group_type:,
           group_range:,
-          items: Sql.execute(sql, variables)
+          items: Sql::ClickHouse.select_all(sql, variables)
         }
       end
     end

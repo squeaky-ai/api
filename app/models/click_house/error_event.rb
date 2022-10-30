@@ -31,7 +31,7 @@ module ClickHouse
     end
 
     def self.delete_from_recording(recording:)
-      Sql.execute_clickhouse("DELETE FROM #{table_name} WHERE recording_id = ?", [recording.id])
+      Sql::ClickHouse.execute("DELETE FROM #{table_name} WHERE recording_id = ?", [recording.id])
     end
   end
 end

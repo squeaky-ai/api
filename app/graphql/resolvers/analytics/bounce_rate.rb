@@ -18,15 +18,14 @@ module Resolvers
       private
 
       def bounce_rate(start_date, end_date)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
-            (count(*))::numeric view_count,
-            (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
-          FROM pages
+            count(*) view_count,
+            COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count
+          FROM page_events
           WHERE
-            pages.site_id = ? AND
-            to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
+            site_id = ? AND
+            toDate(exited_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
@@ -35,7 +34,7 @@ module Resolvers
           end_date
         ]
 
-        result = Sql.execute(sql, variables).first
+        result = Sql::ClickHouse.select_all(sql, variables).first
 
         Maths.percentage(result['bounce_rate_count'], result['view_count'])
       end
