@@ -35,12 +35,45 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          locale: 'en-gb'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          locale: 'en-gb'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          locale: 'sv-se'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          locale: 'zz-zz'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          locale: 'xx-aa'
+        }
+      ] 
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'sv-se', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'zz-zz', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'xx-aa', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -73,11 +106,39 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          locale: 'en-gb'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          locale: 'en-gb'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          locale: 'sv-se'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
+          locale: 'sv-se'
+        }
+      ] 
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, locale: 'en-gb', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, locale: 'sv-se', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, locale: 'sv-se', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

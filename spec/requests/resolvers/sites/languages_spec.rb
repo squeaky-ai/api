@@ -10,7 +10,7 @@ site_languages_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Sites::Languages, type: :request do
+RSpec.describe Resolvers::Sites::Languages, type: :request, truncate_click_house: true do
   context 'when there are no languages' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -30,9 +30,25 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          locale: 'en-GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          locale: 'sv-SE'
+        }
+      ]
+    end
+
     before do
-      create(:recording, locale: 'en-GB', site: site)
-      create(:recording, locale: 'sv-SE', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -50,10 +66,30 @@ RSpec.describe Resolvers::Sites::Languages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          locale: 'en-GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          locale: 'en-GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          locale: 'sv-SE'
+        }
+      ]
+    end
+
     before do
-      create(:recording, locale: 'en-GB', site: site)
-      create(:recording, locale: 'en-GB', site: site)
-      create(:recording, locale: 'sv-SE', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
