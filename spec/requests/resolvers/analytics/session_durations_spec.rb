@@ -35,9 +35,27 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405638578,
+          disconnected_at: 1628405639578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405636578,
+          disconnected_at: 1628405638578
+        }
+      ]
+    end
+
     before do
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -55,12 +73,39 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    before do
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405638578,
+          disconnected_at: 1628405639578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405636578,
+          disconnected_at: 1628405638578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1627800838578,
+          disconnected_at: 1627800839578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1627800836578,
+          disconnected_at: 1627800837578
+        }
+      ]
+    end
 
-      create(:recording, connected_at: 1627800838578, disconnected_at: 1627800839578, site: site)
-      create(:recording, connected_at: 1627800836578, disconnected_at: 1627800837578, site: site)
+    before do
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -78,10 +123,33 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405638578,
+          disconnected_at: 1628405639578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405636578,
+          disconnected_at: 1628405638578
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1628405636578,
+          disconnected_at: 1728405640578
+        }
+      ]
+    end
+
     before do
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1728405640578, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

@@ -18,11 +18,14 @@ module Resolvers
       private
 
       def get_average_duration(from_date, to_date)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT AVG(disconnected_at - connected_at) as duration
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+          SELECT
+            AVG(disconnected_at - connected_at) as duration
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
@@ -31,8 +34,7 @@ module Resolvers
           to_date
         ]
 
-        result = Sql.execute(sql, variables)
-        result.first['duration'] || 0
+        Sql::ClickHouse.select_value(sql, variables) || 0
       end
     end
   end
