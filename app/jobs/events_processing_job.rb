@@ -7,16 +7,20 @@ class EventsProcessingJob < ApplicationJob
 
   def perform(*args)
     enumerator(args.first || []) do |event|
+      @now = Time.now
+
       logger.info "Processing event #{event.id} for site #{event.site_id}"
 
       next if event.rules.empty?
 
       count = count_for(event)
-      event.update(count: event.count + count, last_counted_at: Time.now)
+      event.update(count: event.count + count, last_counted_at: now)
     end
   end
 
   private
+
+  attr_reader :now
 
   def enumerator(ids, &)
     if ids.empty?
@@ -39,7 +43,7 @@ class EventsProcessingJob < ApplicationJob
       {
         site_id: event.site_id,
         from_date: (event.last_counted_at || event.site.created_at).to_fs(:db),
-        to_date: Time.now.to_fs(:db)
+        to_date: now.to_fs(:db)
       }
     )
 
