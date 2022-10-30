@@ -37,6 +37,10 @@ class Session # rubocop:disable Metrics/ClassLength
     fetch_and_process_events
   end
 
+  def events_key_prefix
+    "#{site_id}/#{visitor_id}/#{session_id}"
+  end
+
   def locale
     recording['locale']
   end

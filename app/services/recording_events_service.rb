@@ -66,6 +66,6 @@ class RecordingEventsService
   end
 
   def prefix
-    "#{recording.site.uuid}/#{recording.visitor.visitor_id}/#{recording.session_id}"
+    recording.events_key_prefix || "#{recording.site.uuid}/#{recording.visitor.visitor_id}/#{recording.session_id}"
   end
 end
