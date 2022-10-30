@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 admin_blog_post_create_mutation = <<-GRAPHQL
   mutation($input: AdminBlogPostCreateInput!) {

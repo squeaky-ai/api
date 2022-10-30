@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'uri'
-require 'securerandom'
-
 class Site < ApplicationRecord
   validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 

@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'uri'
-require 'zlib'
-require 'base64'
-
 # Format the Redis list into something useful
 class Session # rubocop:disable Metrics/ClassLength
   attr_reader :recording,

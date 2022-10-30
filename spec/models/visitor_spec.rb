@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'date'
 require 'rails_helper'
-require 'securerandom'
 
 RSpec.describe Visitor, type: :model do
   describe '#viewed?' do

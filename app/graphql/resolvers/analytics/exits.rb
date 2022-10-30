@@ -24,7 +24,7 @@ module Resolvers
               to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) x
-          ORDER BY percentage DESC NULLS LAST
+          ORDER BY percentage DESC
           LIMIT ?
         SQL
 

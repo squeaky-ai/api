@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'uri'
-
 class Recording < ApplicationRecord
   belongs_to :site
   belongs_to :visitor, counter_cache: true

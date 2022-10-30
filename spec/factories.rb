@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 FactoryBot.define do
   factory :user do
     first_name { 'Jim' }

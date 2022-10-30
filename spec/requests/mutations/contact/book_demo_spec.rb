@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 book_demo_mutation = <<-GRAPHQL
   mutation($input: ContactDemoInput!) {

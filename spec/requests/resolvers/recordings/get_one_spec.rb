@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 site_recording_query = <<-GRAPHQL
   query($site_id: ID!, $recording_id: ID!) {

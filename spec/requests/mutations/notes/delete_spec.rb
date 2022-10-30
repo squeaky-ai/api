@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 note_delete_mutation = <<-GRAPHQL
   mutation($input: NotesDeleteInput!) {

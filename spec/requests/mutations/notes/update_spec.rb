@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 note_update_mutation = <<-GRAPHQL
   mutation($input: NotesUpdateInput!) {

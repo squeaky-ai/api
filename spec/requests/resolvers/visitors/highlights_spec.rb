@@ -40,17 +40,17 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
   end
 
   context 'when there are some visitors' do
-    let!(:active_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.now - 1000) }
-    let!(:active_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.now - 1000) }
-    let!(:active_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.now - 1000) }
-    let!(:active_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.now - 1000) }
-    let!(:active_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.now - 1000) }
+    let!(:active_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
+    let!(:active_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
+    let!(:active_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
+    let!(:active_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
+    let!(:active_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
 
-    let!(:newest_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.now) }
-    let!(:newest_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.now - 1) }
-    let!(:newest_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.now - 2) }
-    let!(:newest_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.now - 3) }
-    let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.now - 4) }
+    let!(:newest_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 30)) }
+    let!(:newest_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 29)) }
+    let!(:newest_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 28)) }
+    let!(:newest_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 27)) }
+    let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 26)) }
 
     before do
       create(:recording, visitor: active_visitor_1, site:)

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'date'
 require 'rails_helper'
-require 'securerandom'
 
 RSpec.describe Recording, type: :model do
   let(:recording_fixture) do

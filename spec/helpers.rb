@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 module Helpers
   def graphql_request(query, variables, user)
     context = { current_user: user, request: request }

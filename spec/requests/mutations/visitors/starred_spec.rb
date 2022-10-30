@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'securerandom'
 
 visitor_starred_mutation = <<-GRAPHQL
   mutation($input: VisitorsStarredInput!) {
