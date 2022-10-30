@@ -6,12 +6,17 @@ module Resolvers
       type [Types::Analytics::Dimension, { null: false }], null: false
 
       def resolve_with_timings
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT DISTINCT(ROUND(device_x, -1)) grouped_device_x, count(*) count
-          FROM recordings
-          WHERE recordings.device_x > 0 AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY grouped_device_x
+          SELECT
+            DISTINCT(ROUND(device_x, -1)) grouped_device_x, count(*) count
+          FROM
+            recordings
+          WHERE
+            device_x > 0 AND
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY 
+            grouped_device_x
         SQL
 
         variables = [
@@ -20,7 +25,7 @@ module Resolvers
           object.range.to
         ]
 
-        results = Sql.execute(sql, variables)
+        results = Sql::ClickHouse.select_all(sql, variables)
 
         results.map do |result|
           {
