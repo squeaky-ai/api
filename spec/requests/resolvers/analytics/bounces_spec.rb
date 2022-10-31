@@ -39,7 +39,7 @@ RSpec.describe Resolvers::Analytics::Bounces, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:events) do
+    let(:pages) do
       [
         {
           uuid: SecureRandom.uuid,
@@ -94,7 +94,7 @@ RSpec.describe Resolvers::Analytics::Bounces, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        events.each { |event| buffer << event }
+        pages.each { |page| buffer << page }
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe Resolvers::Analytics::Bounces, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:events) do
+    let(:pages) do
       [
         {
           uuid: SecureRandom.uuid,
@@ -183,7 +183,7 @@ RSpec.describe Resolvers::Analytics::Bounces, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        events.each { |event| buffer << event }
+        pages.each { |page| buffer << page }
       end
     end
 

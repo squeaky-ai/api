@@ -46,7 +46,7 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
   end
 
   context 'when there are pages' do
-    let(:events) do
+    let(:pages) do
       [
         {
           uuid: SecureRandom.uuid,
@@ -88,7 +88,7 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        events.each { |event| buffer << event }
+        pages.each { |page| buffer << page }
       end
     end
 

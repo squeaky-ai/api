@@ -76,7 +76,7 @@ RSpec.describe Resolvers::Sites::Pages, type: :request do
 
     before do
       ClickHouse::PageEvent.insert do |buffer|
-        pages.each { |event| buffer << event }
+        pages.each { |page| buffer << page }
       end
     end
 
