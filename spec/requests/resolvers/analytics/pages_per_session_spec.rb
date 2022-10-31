@@ -34,10 +34,39 @@ RSpec.describe Resolvers::Analytics::PagesPerSession, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: Time.new(2021, 8, 7).to_i * 1000,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: Time.new(2021, 8, 6).to_i * 1000,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: Time.new(2021, 8, 6).to_i * 1000,
+          url: '/test',
+          recording_id: recording_2.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -54,12 +83,69 @@ RSpec.describe Resolvers::Analytics::PagesPerSession, type: :request do
   context 'when there are some recordings from the previous range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+    let(:recording_4) { create(:recording, site:) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1628405639578,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1628405638578,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1628405638578,
+          url: '/test',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1627800839578,
+          url: '/',
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1627800837578,
+          url: '/',
+          recording_id: recording_4.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1627800837578,
+          url: '/test',
+          recording_id: recording_4.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          exited_at: 1627800837578,
+          url: '/foo',
+          recording_id: recording_4.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, disconnected_at: 1628405639578, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: 1628405638578, site: site, page_urls: ['/', '/test'])
-      create(:recording, disconnected_at: 1627800839578, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: 1627800837578, site: site, page_urls: ['/', '/test', '/foo'])
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -76,11 +162,47 @@ RSpec.describe Resolvers::Analytics::PagesPerSession, type: :request do
   context 'when some of the recordings are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          exited_at: Time.new(2021, 8, 7).to_i * 1000,
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          exited_at: Time.new(2021, 8, 6).to_i * 1000,
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          exited_at: Time.new(2021, 8, 6).to_i * 1000,
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/contact',
+          exited_at: Time.new(2021, 7, 6).to_i * 1000,
+          recording_id: recording_3.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site, page_urls: ['/'])
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site, page_urls: ['/', '/test'])
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site, page_urls: ['/contact'])
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
