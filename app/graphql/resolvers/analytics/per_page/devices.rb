@@ -7,17 +7,18 @@ module Resolvers
         type [Types::Analytics::Device, { null: false }], null: false
 
         def resolve_with_timings
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
             SELECT
-              COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
-              COUNT(device_type) FILTER(WHERE device_type = 'Mobile') mobile_count
-            FROM recordings
-            INNER JOIN pages ON pages.recording_id = recordings.id
+              COUNT(device_type) FILTER(WHERE recordings.device_type = 'Computer') desktop_count,
+              COUNT(device_type) FILTER(WHERE recordings.device_type = 'Mobile') mobile_count
+            FROM
+              recordings
+            INNER JOIN
+              page_events ON page_events.recording_id = recordings.recording_id
             WHERE
               recordings.site_id = ? AND
-              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              pages.url = ?
+              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+              page_events.url = ?
           SQL
 
           variables = [
@@ -27,7 +28,7 @@ module Resolvers
             object.page
           ]
 
-          results = Sql.execute(sql, variables).first
+          results = Sql::ClickHouse.select_all(sql, variables).first
 
           [
             {
