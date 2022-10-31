@@ -29,7 +29,7 @@ GRAPHQL
 RSpec.describe Resolvers::Visitors::Export, type: :request do
   let(:user) { create(:user) }
   let(:site) { create(:site_with_team, owner: user) }
-  let(:visitor) { create(:visitor, external_attributes: { email: 'sfsdf@gmail.com' }) }
+  let(:visitor) { create(:visitor, site_id: site.id, external_attributes: { email: 'sfsdf@gmail.com' }) }
 
   before do  
     recording_1 = create(:recording, site: site, visitor: visitor)

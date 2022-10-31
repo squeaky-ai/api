@@ -40,11 +40,11 @@ RSpec.describe Resolvers::Recordings::Highlights, type: :request do
   end
 
   context 'when there are some recordings' do
-    let!(:eventful_recording_1) { create(:recording, site:, active_events_count: 20 )}
-    let!(:eventful_recording_2) { create(:recording, site:, active_events_count: 16 )}
-    let!(:eventful_recording_3) { create(:recording, site:, active_events_count: 13 )}
-    let!(:eventful_recording_4) { create(:recording, site:, active_events_count: 10 )}
-    let!(:eventful_recording_5) { create(:recording, site:, active_events_count: 3 )}
+    let!(:eventful_recording_1) { create(:recording, site:, disconnected_at: 1667028026074, active_events_count: 20 )}
+    let!(:eventful_recording_2) { create(:recording, site:, disconnected_at: 1667028026074, active_events_count: 16 )}
+    let!(:eventful_recording_3) { create(:recording, site:, disconnected_at: 1667028026074, active_events_count: 13 )}
+    let!(:eventful_recording_4) { create(:recording, site:, disconnected_at: 1667028026074, active_events_count: 10 )}
+    let!(:eventful_recording_5) { create(:recording, site:, disconnected_at: 1667028026074, active_events_count: 3 )}
 
     let!(:long_recording_1) { create(:recording, site:, connected_at: 1667028000074, disconnected_at: 1667028026074 )}
     let!(:long_recording_2) { create(:recording, site:, connected_at: 1667028001074, disconnected_at: 1667028026074 )}
