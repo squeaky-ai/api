@@ -6,9 +6,13 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT COUNT(*) total_recordings_count
-            FROM recordings
-            WHERE site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+            SELECT
+              COUNT(*) total_recordings_count
+            FROM
+              recordings
+            WHERE
+              site_id = ? AND
+              toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
           SQL
 
           variables = [
@@ -17,7 +21,7 @@ module DataCacheService
             to_date
           ]
 
-          Sql.execute(sql, variables).first['total_recordings_count']
+          Sql::ClickHouse.select_value(sql, variables)
         end
       end
     end

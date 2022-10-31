@@ -5,7 +5,7 @@ module Resolvers
     class Browsers < Resolvers::Base
       type Types::Analytics::Browsers, null: false
 
-      argument :page, Integer, required: false, default_value: 0
+      argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
 
       def resolve_with_timings(page:, size:)
@@ -21,7 +21,7 @@ module Resolvers
           items: format_results(results, total_recordings_count),
           pagination: {
             page_size: size,
-            total: results.total_count
+            total: total_browsers_count
           }
         }
       end
@@ -29,27 +29,60 @@ module Resolvers
       private
 
       def browsers(page, size)
-        # TODO: Replace with ClickHouse
-        Recording
-          .where(
-            'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?',
-            object.site.id,
-            object.range.from,
-            object.range.to
-          )
-          .select('DISTINCT(browser) browser, count(*) count')
-          .order('count DESC')
-          .page(page)
-          .per(size)
-          .group('browser')
+        sql = <<-SQL
+          SELECT
+            DISTINCT(browser) browser,
+            COUNT(*) count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            browser
+          ORDER BY
+            count DESC
+          LIMIT ?
+          OFFSET ?
+        SQL
+
+        variables = [
+          object.site.id,
+          object.range.from,
+          object.range.to,
+          size,
+          (size * (page - 1))
+        ]
+
+        Sql::ClickHouse.select_all(sql, variables)
+      end
+
+      def total_browsers_count
+        sql = <<-SQL
+          SELECT
+            COUNT(*) count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          object.site.id,
+          object.range.from,
+          object.range.to
+        ]
+
+        Sql::ClickHouse.select_value(sql, variables)
       end
 
       def format_results(browsers, total_recordings_count)
         browsers.map do |browser|
           {
-            browser: browser.browser,
-            count: browser.count,
-            percentage: Maths.percentage(browser.count.to_f, total_recordings_count)
+            browser: browser['browser'],
+            count: browser['count'],
+            percentage: Maths.percentage(browser['count'].to_f, total_recordings_count)
           }
         end
       end

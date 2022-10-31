@@ -6,6 +6,7 @@ module Resolvers
       type Types::Analytics::Recordings, null: false
 
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             COUNT(*) count,
