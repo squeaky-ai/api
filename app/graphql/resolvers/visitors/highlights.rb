@@ -18,17 +18,32 @@ module Resolvers
       private
 
       def active(from_date, to_date)
+        sql = <<-SQL
+          SELECT
+            DISTINCT(visitor_id) visitor_id,
+            COUNT(*) count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            visitor_id
+          ORDER BY
+            count DESC
+          LIMIT 5
+        SQL
+
+        results = Sql::ClickHouse.select_all(sql, [object.id, from_date, to_date])
+        visitor_ids = results.map { |r| r['visitor_id'] }
+
         Visitor
-          .joins(:recordings)
-          .where(
-            'visitors.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-            object.id,
-            from_date,
-            to_date
-          )
-          .order('visitors.recordings_count DESC')
-          .group(:id)
-          .limit(5)
+          .where(id: visitor_ids)
+          .map do |visitor|
+            result = results.find { |r| r['visitor_id'] == visitor.id }
+            visitor.recording_count = { total: result['count'] || 0, new: 0 } if result
+            visitor
+          end
       end
 
       def newest(from_date, to_date)

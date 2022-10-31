@@ -8,6 +8,11 @@ class Visitor < ApplicationRecord
 
   alias_attribute :viewed, :viewed?
 
+  # This allows us to set the recordings count externally,
+  # like in visitiors/highlights.rb where we have fetched
+  # the counts from ClickHouse
+  attr_writer :recording_count
+
   def locale
     recordings.first.locale
   end
@@ -56,7 +61,7 @@ class Visitor < ApplicationRecord
   end
 
   def recording_count
-    {
+    @recording_count ||= {
       total: visible_recordings.size,
       new: visible_recordings.reject(&:viewed).size
     }

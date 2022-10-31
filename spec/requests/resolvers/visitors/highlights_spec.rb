@@ -52,23 +52,111 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
     let!(:newest_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 27)) }
     let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 26)) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_1.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_2.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_2.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_2.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_2.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_3.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_3.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_3.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_4.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_4.id, 
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          visitor_id: active_visitor_5.id, 
+          disconnected_at: 1667028026074
+        }
+      ]
+    end
+
     before do
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_4, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_4, disconnected_at: 1667028026074, site:)
-      create(:recording, visitor: active_visitor_5, disconnected_at: 1667028026074, site:)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     it 'returns the results' do
