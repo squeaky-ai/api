@@ -6,7 +6,6 @@ module Resolvers
       type [Types::Analytics::VisitAt, { null: false }], null: false
 
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             formatDateTime(toDateTime(disconnected_at / 1000), '%u,%H') day_hour,
