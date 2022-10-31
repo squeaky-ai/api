@@ -19,17 +19,17 @@ module Resolvers
         private
 
         def visits_per_session(start_date, end_date)
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
-            SELECT AVG(p.page_count) visits_per_session
+            SELECT
+              AVG(p.page_count) visits_per_session
             FROM (
               SELECT count(*) page_count
-              FROM pages
+              FROM page_events
               WHERE
-                pages.site_id = ? AND
-                to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ? AND
-                pages.url = ?
-              GROUP BY pages.recording_id
+                site_id = ? AND
+                toDate(exited_at / 1000)::date BETWEEN ? AND ? AND
+                url = ?
+              GROUP BY recording_id
             ) p
           SQL
 
@@ -40,7 +40,7 @@ module Resolvers
             object.page
           ]
 
-          Sql.execute(sql, variables).first['visits_per_session'] || 0
+          Sql::ClickHouse.select_value(sql, variables) || 0
         end
       end
     end
