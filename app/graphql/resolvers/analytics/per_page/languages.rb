@@ -27,17 +27,22 @@ module Resolvers
         end
 
         def languages
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
-            SELECT DISTINCT LOWER(locale) locale, COUNT(*) locale_count
-            FROM recordings
-            INNER JOIN pages on pages.recording_id = recordings.id
+            SELECT
+              DISTINCT LOWER(locale) locale,
+              COUNT(*) locale_count
+            FROM
+              recordings
+            INNER JOIN
+              page_events on page_events.recording_id = recordings.recording_id
             WHERE
               recordings.site_id = ? AND
-              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              pages.url = ?
-            GROUP BY LOWER(recordings.locale)
-            ORDER BY locale_count DESC
+              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+              page_events.url = ?
+            GROUP BY
+              LOWER(recordings.locale)
+            ORDER BY
+              locale_count DESC
           SQL
 
           variables = [
@@ -47,7 +52,7 @@ module Resolvers
             object.page
           ]
 
-          Sql.execute(sql, variables)
+          Sql::ClickHouse.select_all(sql, variables)
         end
       end
     end
