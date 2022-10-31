@@ -129,7 +129,7 @@ RSpec.describe Resolvers::Analytics::PerPage::BounceRate, type: :request do
           url: '/', 
           entered_at: 1660276690000, 
           exited_at: 1660276750000,
-           bounced_on: true
+          bounced_on: true
         },
         {
           uuid: SecureRandom.uuid,

@@ -42,19 +42,83 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsAt, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor_1) { create(:visitor) }
+    let(:visitor_2) { create(:visitor) }
+    let(:recording_1) { create(:recording, site:, visitor: visitor_1) }
+    let(:recording_2) { create(:recording, site:, visitor: visitor_1) }
+    let(:recording_3) { create(:recording, site:, visitor: visitor_1) }
+    let(:recording_4) { create(:recording, site:, visitor: visitor_2) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7, 3, 0, 0).to_i * 1000,
+          recording_id: recording_1.id,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000,
+          recording_id: recording_2.id,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000,
+          recording_id: recording_3.id,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 5, 9, 0, 0).to_i * 1000,
+          recording_id: recording_4.id,
+          visitor_id: visitor_2.id
+        }
+      ]
+    end
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          recording_id: recording_4.id
+        }
+      ]
+    end
 
     before do
-      visitor = create(:visitor)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
 
-      page_1 = create(:page, url: '/')
-      page_2 = create(:page, url: '/')
-      page_3 = create(:page, url: '/')
-      page_4 = create(:page, url: '/test')
-
-      create(:recording, pages: [page_1], disconnected_at: Time.new(2021, 8, 7, 3, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, pages: [page_2], disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, pages: [page_3], disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, pages: [page_4], disconnected_at: Time.new(2021, 8, 5, 9, 0, 0).to_i * 1000, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -72,17 +136,12 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsAt, type: :request do
       expect(response['visitsAt']).to match_array(
         [
           {
-            'count' => 1, 
-            'day' => 'Thu', 
-            'hour' => 8
-          },
-          {
-            'count' => 4,
+            'count' => 2,
             'day' => 'Fri',
             'hour' => 15
           }, 
           {
-            'count' => 2,
+            'count' => 1,
             'day' => 'Sat',
             'hour' => 2
           }

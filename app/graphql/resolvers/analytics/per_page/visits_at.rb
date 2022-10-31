@@ -7,16 +7,20 @@ module Resolvers
         type [Types::Analytics::VisitAt, { null: false }], null: false
 
         def resolve_with_timings # rubocop:disable Metrics/AbcSize
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
-            SELECT to_char(to_timestamp(disconnected_at / 1000), 'Dy,HH24') day_hour, COUNT(*)
-            FROM recordings
-            INNER JOIN pages on pages.recording_id = recordings.id
+            SELECT
+              formatDateTime(toDateTime(recordings.disconnected_at / 1000), '%u,%H') day_hour,
+              COUNT(*) count
+            FROM
+              recordings
+            INNER JOIN
+              page_events on page_events.recording_id = recordings.recording_id
             WHERE
               recordings.site_id = ? AND
-              to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              pages.url = ?
-            GROUP BY day_hour;
+              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
+              page_events.url = ?
+            GROUP BY
+              day_hour;
           SQL
 
           variables = [
@@ -26,14 +30,18 @@ module Resolvers
             object.page
           ]
 
-          results = Sql.execute(sql, variables)
+          results = Sql::ClickHouse.select_all(sql, variables)
 
           results.map do |r|
             day, hour = r['day_hour'].split(',')
 
+            # ClickHouse works Mon-Sun and Rails works Sun-Sat
+            days = Date::ABBR_DAYNAMES.dup
+            days.push(days.shift)
+
             {
-              day: day.strip,
-              hour: hour.to_i,
+              day: days[day.to_i - 1],
+              hour: hour.to_i - 1,
               count: r['count']
             }
           end
