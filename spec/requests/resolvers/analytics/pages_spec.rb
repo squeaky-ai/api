@@ -41,10 +41,42 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1656444914353, 
+          exited_at: 1656444926825, 
+          bounced_on: true, 
+          exited_on: true
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1656444914353, 
+          exited_at: 1656444926825, 
+          bounced_on: false, 
+          exited_on: false
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          entered_at: 1656444914353, 
+          exited_at: 1656444926825, 
+          bounced_on: false, 
+          exited_on: true
+        }
+      ]
+    end
+
     before do
-      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true, site_id: site.id)
-      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false, site_id: site.id)
-      create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -81,10 +113,42 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1656444914353, 
+          exited_at: 1656444926825,
+          bounced_on: true,
+          exited_on: true
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          entered_at: 1656444914353,
+          exited_at: 1656444926825, 
+          bounced_on: false, 
+          exited_on: false
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          entered_at: 1656444914353, 
+          exited_at: 1656444926825, 
+          bounced_on: false, 
+          exited_on: true
+        }
+      ]
+    end
+
     before do
-      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: true, exited_on: true, site_id: site.id)
-      create(:page, url: '/', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: false, site_id: site.id)
-      create(:page, url: '/test', entered_at: 1656444914353, exited_at: 1656444926825, bounced_on: false, exited_on: true, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do

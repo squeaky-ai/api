@@ -6,14 +6,23 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT COUNT(pages.url) all_count, COUNT(DISTINCT(pages.url)) distinct_count
-            FROM pages
-            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
+            SELECT
+              COUNT(url) all_count,
+              COUNT(DISTINCT(url)) distinct_count
+            FROM
+              page_events
+            WHERE
+              site_id = ? AND
+              toDate(exited_at / 1000)::date BETWEEN ? AND ?
           SQL
 
-          variables = [site.id, from_date, to_date]
+          variables = [
+            site.id,
+            from_date,
+            to_date
+          ]
 
-          Sql.execute(sql, variables).first
+          Sql::ClickHouse.select_all(sql, variables).first
         end
       end
     end

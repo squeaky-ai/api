@@ -30,7 +30,6 @@ module Resolvers
       private
 
       def pages(page, size, sort)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             p.url,
@@ -43,12 +42,15 @@ module Resolvers
           FROM (
             SELECT
               url url,
-              (count(*))::numeric view_count,
+              COUNT(*) view_count,
               AVG(exited_at - entered_at) average_duration,
-              (COUNT(exited_on) FILTER(WHERE exited_on = true))::numeric exit_rate_count,
-              (COUNT(exited_on) FILTER(WHERE bounced_on = true))::numeric bounce_rate_count
-            FROM pages
-            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
+              COUNT(exited_on) FILTER(WHERE exited_on = true) exit_rate_count,
+              COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count
+            FROM
+              page_events
+            WHERE
+              site_id = ? AND
+              toDate(exited_at / 1000)::date BETWEEN ? AND ?
             GROUP BY url
           ) p
           ORDER BY #{order(sort)}
@@ -56,7 +58,7 @@ module Resolvers
           OFFSET ?
         SQL
 
-        Sql.execute(
+        Sql::ClickHouse.select_all(
           sql,
           [
             object.site.id,
