@@ -16,13 +16,16 @@ module Resolvers
       end
 
       def get_average_count(from_date, to_date)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT count(pages.id)
-          FROM recordings
-          INNER JOIN pages ON pages.recording_id = recordings.id
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY recordings.id
+          SELECT
+            COUNT(*) count
+          FROM
+            page_events
+          WHERE
+            site_id = ? AND
+            toDate(exited_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            recording_id
         SQL
 
         variables = [
@@ -31,7 +34,7 @@ module Resolvers
           to_date
         ]
 
-        results = Sql.execute(sql, variables)
+        results = Sql::ClickHouse.select_all(sql, variables)
 
         Maths.average(results.map { |r| r['count'] })
       end

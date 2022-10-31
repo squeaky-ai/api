@@ -6,12 +6,16 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT DISTINCT(locale) locale
-            FROM recordings
-            WHERE site_id = ? AND locale IS NOT NULL
+            SELECT
+              DISTINCT(locale) locale
+            FROM
+              recordings
+            WHERE
+              site_id = ? AND
+              locale IS NOT NULL
           SQL
 
-          Sql.execute(sql, site.id).map { |r| Locale.get_language(r['locale']) }
+          Sql::ClickHouse.select_all(sql, site.id).map { |r| Locale.get_language(r['locale']) }
         end
       end
     end

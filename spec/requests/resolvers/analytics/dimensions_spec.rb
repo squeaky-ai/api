@@ -35,9 +35,27 @@ RSpec.describe Resolvers::Analytics::Dimensions, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          device_x: 1920
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          device_x: 2560
+        }
+      ]
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, device_x: 1920, site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, device_x: 2560, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -66,10 +84,33 @@ RSpec.describe Resolvers::Analytics::Dimensions, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          device_x: 1920
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          device_x: 2560
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
+          device_x: 3840
+        }
+      ]
+    end
+
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, device_x: 1920, site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, device_x: 2560, site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, device_x: 3840, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

@@ -38,10 +38,33 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        }
+      ]
+    end
+
     before do
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -62,11 +85,39 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/contact', 
+          exited_at: Time.new(2021, 7, 6).to_i * 1000
+        }
+      ]
+    end
+
     before do
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/contact', exited_at: Time.new(2021, 7, 6).to_i * 1000, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do

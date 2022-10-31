@@ -30,9 +30,25 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          browser: 'Firefox'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          browser: 'Safari'
+        }
+      ]
+    end
+
     before do
-      create(:recording, browser: 'Firefox', site: site)
-      create(:recording, browser: 'Safari', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -50,10 +66,30 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          browser: 'Firefox'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          browser: 'Safari'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          browser: 'Firefox'
+        }
+      ]
+    end
+
     before do
-      create(:recording, browser: 'Firefox', site: site)
-      create(:recording, browser: 'Safari', site: site)
-      create(:recording, browser: 'Firefox', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

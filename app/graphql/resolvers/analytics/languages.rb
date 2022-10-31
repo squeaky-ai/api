@@ -26,13 +26,19 @@ module Resolvers
       end
 
       def languages
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT DISTINCT LOWER(locale) locale, COUNT(*) locale_count
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY LOWER(recordings.locale)
-          ORDER BY locale_count DESC
+          SELECT
+            DISTINCT LOWER(locale) locale,
+            COUNT(*) locale_count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            locale
+          ORDER BY
+            locale_count DESC
         SQL
 
         variables = [
@@ -41,7 +47,7 @@ module Resolvers
           object.range.to
         ]
 
-        Sql.execute(sql, variables)
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end

@@ -15,6 +15,7 @@ module Resolvers
       private
 
       def displays_count
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT COUNT(id)
           FROM recordings

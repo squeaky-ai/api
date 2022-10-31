@@ -39,9 +39,45 @@ RSpec.describe Resolvers::Sites::Pages, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          exited_at: Time.now.to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          exited_at: Time.now.to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          exited_at: Time.now.to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/foo',
+          exited_at: Time.now.to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/bar',
+          exited_at: Time.now.to_i * 1000
+        }
+      ]
+    end
+
     before do
-      create(:recording, page_urls: ['/', '/test'], site:)
-      create(:recording, page_urls: ['/', '/foo', '/bar'], site:)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do

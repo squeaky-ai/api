@@ -37,12 +37,48 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor_1) { create(:visitor) }
+    let(:visitor_2) { create(:visitor) }
+    let(:visitor_3) { create(:visitor) }
+    let(:visitor_4) { create(:visitor) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://google.com',
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://google.com',
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          visitor_id: visitor_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: nil,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          visitor_id: visitor_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://facebook.com',
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          visitor_id: visitor_4.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
-      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
-      create(:recording, referrer: nil, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
-      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -75,12 +111,48 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
   context 'when some of the recordings are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor_1) { create(:visitor) }
+    let(:visitor_2) { create(:visitor) }
+    let(:visitor_3) { create(:visitor) }
+    let(:visitor_4) { create(:visitor) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://google.com', 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: nil, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          visitor_id: visitor_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://facebook.com', 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          visitor_id: visitor_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          referrer: 'http://facebook.com', 
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
+          visitor_id: visitor_4.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, referrer: 'http://google.com', disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
-      create(:recording, referrer: nil, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, site: site)
-      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 8, 6).to_i * 1000, site: site)
-      create(:recording, referrer: 'http://facebook.com', disconnected_at: Time.new(2021, 7, 6).to_i * 1000, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

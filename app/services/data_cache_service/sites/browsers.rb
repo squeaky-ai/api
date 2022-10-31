@@ -6,12 +6,15 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT DISTINCT(browser) browser
-            FROM recordings
-            WHERE site_id = ?
+            SELECT
+              DISTINCT(browser) browser
+            FROM
+              recordings
+            WHERE
+              site_id = ?
           SQL
 
-          Sql.execute(sql, site.id).map { |r| r['browser'] }
+          Sql::ClickHouse.select_all(sql, site.id).map { |r| r['browser'] }
         end
       end
     end

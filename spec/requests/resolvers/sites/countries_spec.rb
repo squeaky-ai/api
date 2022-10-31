@@ -34,9 +34,25 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          country_code: 'SE'
+        }
+      ]
+    end
+
     before do
-      create(:recording, country_code: 'GB', site: site)
-      create(:recording, country_code: 'SE', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -67,10 +83,30 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          country_code: 'GB'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          country_code: 'SE'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          country_code: 'GB'
+        }
+      ]
+    end
+
     before do
-      create(:recording, country_code: 'GB', site: site)
-      create(:recording, country_code: 'SE', site: site)
-      create(:recording, country_code: 'GB', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

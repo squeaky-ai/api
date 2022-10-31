@@ -53,22 +53,22 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
     let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 26)) }
 
     before do
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_1, site:)
-      create(:recording, visitor: active_visitor_2, site:)
-      create(:recording, visitor: active_visitor_2, site:)
-      create(:recording, visitor: active_visitor_2, site:)
-      create(:recording, visitor: active_visitor_2, site:)
-      create(:recording, visitor: active_visitor_3, site:)
-      create(:recording, visitor: active_visitor_3, site:)
-      create(:recording, visitor: active_visitor_3, site:)
-      create(:recording, visitor: active_visitor_4, site:)
-      create(:recording, visitor: active_visitor_4, site:)
-      create(:recording, visitor: active_visitor_5, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_1, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_2, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_3, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_4, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_4, disconnected_at: 1667028026074, site:)
+      create(:recording, visitor: active_visitor_5, disconnected_at: 1667028026074, site:)
     end
 
     it 'returns the results' do

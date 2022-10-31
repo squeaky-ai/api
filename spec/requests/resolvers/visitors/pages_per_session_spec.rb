@@ -31,16 +31,76 @@ RSpec.describe Resolvers::Visitors::PagesPerSession, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create(:visitor, site_id: site.id) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+    let(:visitor_1) { create(:visitor, site_id: site.id) }
+    let(:visitor_2) { create(:visitor, site_id: site.id) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_1.id,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_2.id,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_3.id,
+          visitor_id: visitor_2.id
+        }
+      ]
+    end
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/contact',
+          recording_id: recording_3.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, site: site, page_urls: ['/'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/', '/test'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/contact'])
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
+
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
-      variables = { site_id: site.id, visitor_id: visitor.id }
+      variables = { site_id: site.id, visitor_id: visitor_1.id }
       graphql_request(visitors_pages_per_session_query, variables, user)
     end
 

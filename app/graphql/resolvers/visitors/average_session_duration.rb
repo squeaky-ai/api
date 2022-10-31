@@ -7,12 +7,16 @@ module Resolvers
 
       def resolve_with_timings
         sql = <<-SQL
-          SELECT AVG(disconnected_at - connected_at) average_session_duration
-          FROM recordings
-          WHERE site_id = ? AND visitor_id = ?
+          SELECT
+            AVG(disconnected_at - connected_at) average_session_duration
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            visitor_id = ?
         SQL
 
-        Sql.execute(sql, [object.site_id, object.id]).first['average_session_duration']
+        Sql::ClickHouse.select_value(sql, [object.site_id, object.id])
       end
     end
   end

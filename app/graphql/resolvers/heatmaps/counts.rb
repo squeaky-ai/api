@@ -6,6 +6,7 @@ module Resolvers
       type Types::Heatmaps::Counts, null: false
 
       def resolve_with_timings
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Desktop')}) desktop,

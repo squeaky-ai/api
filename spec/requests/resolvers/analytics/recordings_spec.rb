@@ -45,12 +45,45 @@ RSpec.describe Resolvers::Analytics::Recordings, type: :request do
   end
 
   context 'when there are some recordings' do
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1667028000074,
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1667028001074,
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1667028002074,
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1667028012074,
+          disconnected_at: 1667028026074
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          connected_at: 1667028014074,
+          disconnected_at: 1667028026074
+        }
+      ]
+    end
+
     before do
-      create(:recording, site:, connected_at: 1667028000074, disconnected_at: 1667028026074 )
-      create(:recording, site:, connected_at: 1667028001074, disconnected_at: 1667028026074 )
-      create(:recording, site:, connected_at: 1667028002074, disconnected_at: 1667028026074 )
-      create(:recording, site:, connected_at: 1667028012074, disconnected_at: 1667028026074 )
-      create(:recording, site:, connected_at: 1667028014074, disconnected_at: 1667028026074 )
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     it 'returns the results' do

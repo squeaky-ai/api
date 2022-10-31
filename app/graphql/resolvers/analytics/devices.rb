@@ -6,13 +6,15 @@ module Resolvers
       type [Types::Analytics::Device, { null: false }], null: false
 
       def resolve_with_timings
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
             COUNT(device_type) FILTER(WHERE device_type = 'Mobile') mobile_count
-          FROM recordings
-          WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
@@ -21,7 +23,7 @@ module Resolvers
           object.range.to
         ]
 
-        results = Sql.execute(sql, variables).first
+        results = Sql::ClickHouse.select_all(sql, variables).first
 
         [
           {

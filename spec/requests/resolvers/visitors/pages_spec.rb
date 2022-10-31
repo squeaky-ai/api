@@ -42,7 +42,7 @@ RSpec.describe Resolvers::Visitors::Pages, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create(:visitor) }
+    let(:visitor) { create(:visitor, site_id: site.id) }
 
     before do
       create(:recording, site: site, page_urls: ['/'], visitor: visitor)

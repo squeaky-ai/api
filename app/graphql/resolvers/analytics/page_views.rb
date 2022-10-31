@@ -6,7 +6,7 @@ module Resolvers
       type Types::Analytics::PageViews, null: false
 
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
-        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to)
+        date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to, clickhouse: true)
 
         current_page_views = page_views(date_format, object.range.from, object.range.to)
         previous_page_views = page_views(date_format, object.range.trend_from, object.range.trend_to)
@@ -30,20 +30,17 @@ module Resolvers
       end
 
       def page_views(date_format, from_date, to_date)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
-            v.date_key date_key,
-            SUM(v.total_count) count
-          FROM (
-            SELECT
-              COUNT(pages.id) total_count,
-              to_char(to_timestamp(pages.exited_at / 1000), ?) date_key
-            FROM pages
-            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
-            GROUP BY pages.id
-          ) v
-          GROUP BY v.date_key;
+            COUNT(*) count,
+            formatDateTime(toDate(exited_at / 1000), ?) date_key
+          FROM
+            page_events
+          WHERE
+            site_id = ? AND
+            toDate(exited_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY date_key
+          ORDER BY date_key ASC
         SQL
 
         variables = [
@@ -53,7 +50,7 @@ module Resolvers
           to_date
         ]
 
-        Sql.execute(sql, variables)
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end

@@ -46,12 +46,50 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
   end
 
   context 'when there are pages' do
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          entered_at: 1667028000074, 
+          exited_at: 1667028026074, 
+          bounced_on: true
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          entered_at: 1667028001074, 
+          exited_at: 1667028026074, 
+          bounced_on: false
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          entered_at: 1667028002074, 
+          exited_at: 1667028026074, 
+          bounced_on: false
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          entered_at: 1667028012074, 
+          exited_at: 1667028026074, 
+          bounced_on: true
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          entered_at: 1667028014074, 
+          exited_at: 1667028026074, 
+          bounced_on: false
+        }
+      ]
+    end
+
     before do
-      create(:page, entered_at: 1667028000074, exited_at: 1667028026074, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1667028001074, exited_at: 1667028026074, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1667028002074, exited_at: 1667028026074, bounced_on: false, site_id: site.id)
-      create(:page, entered_at: 1667028012074, exited_at: 1667028026074, bounced_on: true, site_id: site.id)
-      create(:page, entered_at: 1667028014074, exited_at: 1667028026074, bounced_on: false, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     it 'returns the results' do

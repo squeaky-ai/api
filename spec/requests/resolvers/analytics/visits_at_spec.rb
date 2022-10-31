@@ -35,14 +35,42 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor_1) { create(:visitor) }
+    let(:visitor_2) { create(:visitor) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7, 3, 0, 0).to_i * 1000,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, 
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000,
+          visitor_id: visitor_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 5, 9, 0, 0).to_i * 1000,
+          visitor_id: visitor_2.id
+        }
+      ]
+    end
 
     before do
-      visitor = create(:visitor)
-
-      create(:recording, disconnected_at: Time.new(2021, 8, 7, 3, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, site: site, visitor: visitor)
-      create(:recording, disconnected_at: Time.new(2021, 8, 5, 9, 0, 0).to_i * 1000, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

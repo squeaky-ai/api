@@ -41,21 +41,84 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsPerSession, type: :request d
   context 'when there are some pages' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+    let(:recording_4) { create(:recording, site:) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1660276690000,
+          exited_at: 1660276750000, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1660276690001,
+          exited_at: 1660276750001, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659945610000,
+          exited_at: 1659949210000, 
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          entered_at: 1659945610000,
+          exited_at: 1659945610000, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000,
+          exited_at: 1659609098000, 
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000,
+          exited_at: 1659609098000, 
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000,
+          exited_at: 1659609098000, 
+          recording_id: recording_4.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000,
+          exited_at: 1659609098000, 
+          recording_id: recording_4.id
+        }
+      ]
+    end
 
     before do
-      recording_1 = create(:recording, site:)
-      recording_2 = create(:recording, site:)
-      recording_3 = create(:recording, site:)
-      recording_4 = create(:recording, site:)
-
-      create(:page, url: '/', entered_at: 1660276690000, exited_at: 1660276750000, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1660276690001, exited_at: 1660276750001, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659945610000, exited_at: 1659949210000, recording: recording_2, site_id: site.id)
-      create(:page, url: '/test', entered_at: 1659945610000, exited_at: 1659945610000, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_3, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_3, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_4, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_4, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -77,24 +140,101 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsPerSession, type: :request d
   context 'when there are some pages that are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+    let(:recording_4) { create(:recording, site:) }
+    let(:recording_5) { create(:recording, site:) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1660276690000, 
+          exited_at: 1660276750000, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1660276690001, 
+          exited_at: 1660276750001, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659945610000, 
+          exited_at: 1659949210000, 
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          entered_at: 1659945610000, 
+          exited_at: 1659945610000, 
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000, 
+          exited_at: 1659609098000, 
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000, 
+          exited_at: 1659609098000, 
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000, 
+          exited_at: 1659609098000, 
+          recording_id: recording_4.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1659605498000, 
+          exited_at: 1659609098000, 
+          recording_id: recording_4.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1656671498000, 
+          exited_at: 1656675098000, 
+          recording_id: recording_5.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          entered_at: 1656671498000, 
+          exited_at: 1656675098000, 
+          recording_id: recording_5.id
+        }
+      ]
+    end
 
     before do
-      recording_1 = create(:recording, site:)
-      recording_2 = create(:recording, site:)
-      recording_3 = create(:recording, site:)
-      recording_4 = create(:recording, site:)
-      recording_5 = create(:recording, site:)
-
-      create(:page, url: '/', entered_at: 1660276690000, exited_at: 1660276750000, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1660276690001, exited_at: 1660276750001, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659945610000, exited_at: 1659949210000, recording: recording_2, site_id: site.id)
-      create(:page, url: '/test', entered_at: 1659945610000, exited_at: 1659945610000, recording: recording_1, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_3, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_3, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_4, site_id: site.id)
-      create(:page, url: '/', entered_at: 1659605498000, exited_at: 1659609098000, recording: recording_4, site_id: site.id)
-      create(:page, url: '/', entered_at: 1656671498000, exited_at: 1656675098000, recording: recording_5, site_id: site.id)
-      create(:page, url: '/', entered_at: 1656671498000, exited_at: 1656675098000, recording: recording_5, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
