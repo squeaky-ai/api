@@ -53,15 +53,47 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
   context 'when there are some pages' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor) { create(:visitor) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 5).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 5).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        }
+      ]
+    end
 
     before do
-      visitor = create(:visitor)
-
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -85,11 +117,11 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 1,
-            'dateKey' => '217'
+            'dateKey' => '218'
           },
           {
             'count' => 1,
-            'dateKey' => '218'
+            'dateKey' => '219'
           }
         ]
       )
@@ -99,17 +131,59 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
   context 'when some of the pages are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:visitor) { create(:visitor) }
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 5).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 8, 7).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test', 
+          exited_at: Time.new(2021, 7, 5).to_i * 1000
+        }
+      ]
+    end
 
     before do
-      visitor = create(:visitor)
-
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 5).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 6).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 8, 7).to_i * 1000, site_id: site.id)
-      create(:page, url: '/test', exited_at: Time.new(2021, 7, 5).to_i * 1000, site_id: site.id)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -133,11 +207,11 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 2,
-            'dateKey' => '217'
+            'dateKey' => '218'
           }, 
           {
             'count' => 1,
-            'dateKey' => '218'
+            'dateKey' => '219'
           }
         ]
       )
