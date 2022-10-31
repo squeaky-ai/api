@@ -31,14 +31,23 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
 
-      subject do
-        variables = { site_id: site.id }
-        graphql_request(site_last_recording_query, variables, user)
+      let(:recording) do
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.now.to_i * 1000
+        }
       end
 
       before do
-        timestamp = Time.now.to_i * 1000
-        recording = create(:recording, disconnected_at: timestamp, site: site)
+        ClickHouse::Recording.insert do |buffer|
+          buffer << recording
+        end
+      end
+
+      subject do
+        variables = { site_id: site.id }
+        graphql_request(site_last_recording_query, variables, user)
       end
 
       it 'returns the number of days' do
@@ -51,14 +60,23 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
 
-      subject do
-        variables = { site_id: site.id }
-        graphql_request(site_last_recording_query, variables, user)
+      let(:recording) do
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: (Time.now - 5.days).to_i * 1000
+        }
       end
 
       before do
-        timestamp = (Time.now - 5.days).to_i * 1000
-        recording = create(:recording, disconnected_at: timestamp, site: site)
+        ClickHouse::Recording.insert do |buffer|
+          buffer << recording
+        end
+      end
+
+      subject do
+        variables = { site_id: site.id }
+        graphql_request(site_last_recording_query, variables, user)
       end
 
       it 'returns the number of days' do
@@ -72,16 +90,35 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    subject do
-      variables = { site_id: site.id }
-      graphql_request(site_last_recording_query, variables, user)
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: (Time.now - 1.days).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: (Time.now - 2.days).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: (Time.now - 3.days).to_i * 1000
+        }
+      ]
     end
 
     before do
-      3.times do |i|
-        timestamp = (Time.now - (i + 1).days).to_i * 1000
-        recording = create(:recording, disconnected_at: timestamp, site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
       end
+    end
+
+    subject do
+      variables = { site_id: site.id }
+      graphql_request(site_last_recording_query, variables, user)
     end
 
     it 'returns the nearest recordings days' do

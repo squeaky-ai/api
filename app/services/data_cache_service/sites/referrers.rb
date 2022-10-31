@@ -6,12 +6,16 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT DISTINCT(referrer) referrer
-            FROM recordings
-            WHERE site_id = ? AND referrer IS NOT NULL
+            SELECT
+              DISTINCT(referrer) referrer
+            FROM
+              recordings
+            WHERE
+              site_id = ? AND
+              referrer IS NOT NULL
           SQL
 
-          Sql.execute(sql, site.id).map { |r| r['referrer'] }
+          Sql::ClickHouse.select_all(sql, site.id).map { |r| r['referrer'] }
         end
       end
     end

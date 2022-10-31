@@ -6,13 +6,19 @@ module DataCacheService
       def call
         cache do
           sql = <<-SQL
-            SELECT country_code, count(country_code)
-            FROM recordings
-            WHERE site_id = ? AND country_code IS NOT NULL
-            GROUP BY country_code
+            SELECT
+              country_code,
+              count(country_code) count
+            FROM
+              recordings
+            WHERE
+              site_id = ? AND
+              country_code IS NOT NULL
+            GROUP BY
+              country_code
           SQL
 
-          Sql.execute(sql, site.id).map do |r|
+          Sql::ClickHouse.select_all(sql, site.id).map do |r|
             {
               count: r['count'],
               code: r['country_code'],

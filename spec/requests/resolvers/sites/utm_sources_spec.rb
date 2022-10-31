@@ -30,9 +30,25 @@ RSpec.describe Resolvers::Sites::UtmSources, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          utm_source: 'source_1'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          utm_source: 'source_2'
+        }
+      ]
+    end
+
     before do
-      create(:recording, utm_source: 'source_1', site: site)
-      create(:recording, utm_source: 'source_2', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -50,10 +66,30 @@ RSpec.describe Resolvers::Sites::UtmSources, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          utm_source: 'source_1'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          utm_source: 'source_2'
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          utm_source: 'source_1'
+        }
+      ]
+    end
+
     before do
-      create(:recording, utm_source: 'source_1', site: site)
-      create(:recording, utm_source: 'source_2', site: site)
-      create(:recording, utm_source: 'source_1', site: site)
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
