@@ -5,7 +5,7 @@ module Resolvers
     class Referrers < Resolvers::Base
       type Types::Analytics::Referrers, null: false
 
-      argument :page, Integer, required: false, default_value: 0
+      argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
 
       def resolve_with_timings(page:, size:)
@@ -21,7 +21,7 @@ module Resolvers
           items: format_results(response, total_visitors_count),
           pagination: {
             page_size: size,
-            total: response.total_count
+            total: total_referrers_count
           }
         }
       end
@@ -29,27 +29,60 @@ module Resolvers
       private
 
       def referrers(page, size)
-        # TODO: Replace with ClickHouse
-        Recording
-          .where(
-            'site_id = ? AND to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?',
-            object.site.id,
-            object.range.from,
-            object.range.to
-          )
-          .select('DISTINCT(COALESCE(referrer, \'Direct\')) referrer, count(*) count')
-          .order('count DESC')
-          .page(page)
-          .per(size)
-          .group('referrer')
+        sql = <<-SQL
+          SELECT
+            DISTINCT(COALESCE(referrer, 'Direct')) referrer,
+            COUNT(*) count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+          GROUP BY
+            referrer
+          ORDER BY
+            count DESC
+          LIMIT ?
+          OFFSET ?
+        SQL
+
+        variables = [
+          object.site.id,
+          object.range.from,
+          object.range.to,
+          size,
+          (size * (page - 1))
+        ]
+
+        Sql::ClickHouse.select_all(sql, variables)
+      end
+
+      def total_referrers_count
+        sql = <<-SQL
+          SELECT
+            COUNT(*) count
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          object.site.id,
+          object.range.from,
+          object.range.to
+        ]
+
+        Sql::ClickHouse.select_value(sql, variables)
       end
 
       def format_results(referrers, total_visitors_count)
         referrers.map do |referrer|
           {
-            referrer: referrer.referrer,
-            count: referrer.count,
-            percentage: Maths.percentage(referrer.count.to_f, total_visitors_count)
+            referrer: referrer['referrer'],
+            count: referrer['count'],
+            percentage: Maths.percentage(referrer['count'].to_f, total_visitors_count)
           }
         end
       end
