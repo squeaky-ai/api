@@ -100,6 +100,7 @@ module Resolvers
       end
 
       def total_visitors_count
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT COUNT(DISTINCT(visitor_id))
           FROM recordings

@@ -10,7 +10,7 @@ module Resolvers
       def resolve_with_timings(visitor_id:)
         Visitor
           .eager_load(:recordings, :pages)
-          .where('recordings.site_id = ? AND visitors.id = ?', object.id, visitor_id)
+          .where('visitors.site_id = ? AND visitors.id = ?', object.id, visitor_id)
           .first
       end
     end
