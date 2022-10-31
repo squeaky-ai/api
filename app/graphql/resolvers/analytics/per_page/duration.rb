@@ -19,14 +19,15 @@ module Resolvers
         private
 
         def duration(start_date, end_date)
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
-            SELECT AVG(pages.exited_at - pages.entered_at) average
-            FROM pages
+            SELECT
+              AVG(exited_at - entered_at) average
+            FROM
+              page_events
             WHERE
-              pages.site_id = ? AND
-              to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ? AND
-              pages.url = ?
+              site_id = ? AND
+              toDate(exited_at / 1000)::date BETWEEN ? AND ? AND
+              url = ?
           SQL
 
           variables = [
@@ -36,7 +37,7 @@ module Resolvers
             object.page
           ]
 
-          Sql.execute(sql, variables).first['average'] || 0
+          Sql::ClickHouse.select_value(sql, variables) || 0
         end
       end
     end
