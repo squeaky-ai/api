@@ -48,11 +48,67 @@ RSpec.describe Resolvers::Analytics::PerPage::Browsers, type: :request do
   context 'when there are some recordings' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          browser: 'Firefox',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          browser: 'Safari',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000, 
+          browser: 'Chrome',
+          recording_id: recording_3.id
+        }
+      ]
+    end
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          recording_id: recording_3.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, browser: 'Firefox', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Chrome', site: site, page_urls: ['/test'])
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
+
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
@@ -87,12 +143,81 @@ RSpec.describe Resolvers::Analytics::PerPage::Browsers, type: :request do
   context 'when some of the recordings are out of the date range' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+    let(:recording_4) { create(:recording, site:) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          browser: 'Firefox',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          browser: 'Safari',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          browser: 'Safari',
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000, 
+          browser: 'Safari',
+          recording_id: recording_4.id
+        }
+      ]
+    end
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_1.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_2.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_3.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          recording_id: recording_4.id
+        }
+      ]
+    end
 
     before do
-      create(:recording, disconnected_at: Time.new(2021, 8, 7).to_i * 1000, browser: 'Firefox', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 8, 6).to_i * 1000, browser: 'Safari', site: site)
-      create(:recording, disconnected_at: Time.new(2021, 7, 6).to_i * 1000, browser: 'Safari', site: site)
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
+
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do
