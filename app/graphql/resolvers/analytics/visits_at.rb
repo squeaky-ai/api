@@ -31,8 +31,12 @@ module Resolvers
         results.map do |r|
           day, hour = r['day_hour'].split(',')
 
+          # ClickHouse works Mon-Sun and Rails works Sun-Sat
+          days = Date::ABBR_DAYNAMES.dup
+          days.push(days.shift)
+
           {
-            day: Date::ABBR_DAYNAMES[day.to_i],
+            day: days[day.to_i - 1],
             hour: hour.to_i - 1,
             count: r['count']
           }
