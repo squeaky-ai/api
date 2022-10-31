@@ -26,7 +26,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
     it 'inserts all the errors in ClickHouse' do  
       subject
 
-      results = ClickHouse.connection.select_all("
+      results = Sql::ClickHouse.select_all("
         SELECT site_id, recording_id, filename, message, url, viewport_x, viewport_y, device_x, device_y, stack, line_number, col_number
         FROM error_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}

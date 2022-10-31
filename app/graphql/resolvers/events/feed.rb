@@ -98,14 +98,13 @@ module Resolvers
           FROM (#{union_queries(capture_events).join(' ')})
         SQL
 
-        query = ActiveRecord::Base.sanitize_sql_array(
-          [
-            sql,
-            { site_id: object.id, from_date:, to_date: }
-          ]
-        )
+        variables = {
+          site_id: object.id,
+          from_date:,
+          to_date:
+        }
 
-        ClickHouse.connection.select_value(query)
+        Sql::ClickHouse.select_value(sql, variables)
       end
 
       def aggregated_results(capture_events, from_date, to_date, page, size, sort) # rubocop:disable Metrics/ParameterLists
@@ -123,14 +122,15 @@ module Resolvers
           OFFSET :offset
         SQL
 
-        query = ActiveRecord::Base.sanitize_sql_array(
-          [
-            sql,
-            { site_id: object.id, limit: size, offset: (size * (page - 1)), from_date:, to_date: }
-          ]
-        )
+        variables = {
+          site_id: object.id,
+          limit: size,
+          offset: (size * (page - 1)),
+          from_date:,
+          to_date:
+        }
 
-        ClickHouse.connection.select_all(query)
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def recordings(results)

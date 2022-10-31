@@ -26,7 +26,7 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
     it 'inserts all the pages in ClickHouse' do
       subject
 
-      results = ClickHouse.connection.select_all("
+      results = Sql::ClickHouse.select_all("
         SELECT site_id, recording_id, url, viewport_x, viewport_y, device_x, device_y, entered_at, exited_at, exited_on, bounced_on
         FROM page_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}

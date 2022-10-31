@@ -12,7 +12,7 @@ RSpec.describe ClickHouse::Recording, type: :model do
     it 'creates the recording in ClickHouse' do
       subject
 
-      results = ClickHouse.connection.select_one("
+      results = Sql::ClickHouse.select_one("
         SELECT
           recording_id,
           session_id,

@@ -75,15 +75,13 @@ module Resolvers
           FROM (#{union_queries.join(' ')}) results
         SQL
 
-        query = ActiveRecord::Base.sanitize_sql_array(
-          [sql, {
-            site_id: object.id,
-            from_date: "#{from_date} 00:00:00",
-            to_date: "#{to_date} 23:59:59"
-          }]
-        )
+        variables = {
+          site_id: object.id,
+          from_date: "#{from_date} 00:00:00",
+          to_date: "#{to_date} 23:59:59"
+        }
 
-        ClickHouse.connection.select_all(query)
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def format_capture_events(results)

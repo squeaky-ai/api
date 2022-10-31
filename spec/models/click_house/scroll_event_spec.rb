@@ -26,7 +26,7 @@ RSpec.describe ClickHouse::ScrollEvent, type: :model do
     it 'inserts all the scrolls in ClickHouse' do
       subject
 
-      results = ClickHouse.connection.select_value("
+      results = Sql::ClickHouse.select_value("
         SELECT COUNT(*)
         FROM scroll_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}

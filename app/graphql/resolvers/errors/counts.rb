@@ -12,9 +12,7 @@ module Resolvers
       def resolve_with_timings(from_date:, to_date:, error_id: nil)
         date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
 
-        items = ClickHouse.connection.select_all(
-          query(date_format, error_id, from_date, to_date)
-        )
+        items = query(date_format, error_id, from_date, to_date)
 
         {
           group_type:,
@@ -56,7 +54,7 @@ module Resolvers
           Base64.decode64(error_id)
         ]
 
-        ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def query_without_error_id(date_format, from_date, to_date)
@@ -80,7 +78,7 @@ module Resolvers
           to_date
         ]
 
-        ActiveRecord::Base.sanitize_sql_array([sql, *variables])
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end

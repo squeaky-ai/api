@@ -58,8 +58,7 @@ module Resolvers
           (size * (page - 1))
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
-        ClickHouse.connection.select_all(query)
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def total_count(site_id, from_date, to_date)
@@ -75,8 +74,7 @@ module Resolvers
           to_date
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
-        ClickHouse.connection.select_one(query)['count']
+        Sql::ClickHouse.select_value(sql, variables)
       end
 
       def order(sort)

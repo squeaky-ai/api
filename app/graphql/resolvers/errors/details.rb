@@ -38,8 +38,7 @@ module Resolvers
           object.range.to
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
-        ClickHouse.connection.select_one(query)
+        Sql::ClickHouse.select_one(sql, variables)
       end
     end
   end

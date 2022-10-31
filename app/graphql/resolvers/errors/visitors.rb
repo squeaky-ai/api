@@ -30,7 +30,7 @@ module Resolvers
 
       private
 
-      def recording_ids # rubocop:disable Metrics/AbcSize
+      def recording_ids
         sql = <<-SQL
           SELECT DISTINCT recording_id
           FROM error_events
@@ -44,8 +44,7 @@ module Resolvers
           object.range.to
         ]
 
-        query = ActiveRecord::Base.sanitize_sql_array([sql, *variables])
-        ClickHouse.connection.select_all(query).map { |x| x['recording_id'] }
+        Sql::ClickHouse.select_all(sql, variables).map { |x| x['recording_id'] }
       end
 
       def order(sort)

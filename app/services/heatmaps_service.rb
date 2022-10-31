@@ -105,9 +105,14 @@ class HeatmapsService
   end
 
   def execute_query(sql, **variables)
-    variables = { site_id:, from_date:, to_date:, page_url:, **variables }
-    query = ActiveRecord::Base.sanitize_sql_array([sql, variables])
+    variables = {
+      site_id:,
+      from_date:,
+      to_date:,
+      page_url:,
+      **variables
+    }
 
-    ClickHouse.connection.select_all(query)
+    Sql::ClickHouse.select_all(sql, variables)
   end
 end

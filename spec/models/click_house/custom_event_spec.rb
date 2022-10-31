@@ -26,7 +26,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
     it 'inserts all the custom events in ClickHouse' do
       subject
 
-      results = ClickHouse.connection.select_all("
+      results = Sql::ClickHouse.select_all("
         SELECT site_id, recording_id, name, data, url, viewport_x, viewport_y, device_x, device_y
         FROM custom_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}

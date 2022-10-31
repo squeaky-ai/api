@@ -38,19 +38,12 @@ class EventsProcessingJob < ApplicationJob
   def count_for(event)
     query_count = EventsService::Captures.for(event).count
 
-    query = sanitize_query(
-      query_count,
-      {
-        site_id: event.site_id,
-        from_date: (event.last_counted_at || event.site.created_at).to_fs(:db),
-        to_date: now.to_fs(:db)
-      }
-    )
+    variables = {
+      site_id: event.site_id,
+      from_date: (event.last_counted_at || event.site.created_at).to_fs(:db),
+      to_date: now.to_fs(:db)
+    }
 
-    ClickHouse.connection.select_value(query)
-  end
-
-  def sanitize_query(query, *variables)
-    ActiveRecord::Base.sanitize_sql_array([query, *variables])
+    Sql::ClickHouse.select_value(query_count, variables)
   end
 end

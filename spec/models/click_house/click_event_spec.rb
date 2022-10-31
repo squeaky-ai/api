@@ -26,7 +26,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
     it 'inserts all the clicks in ClickHouse' do
       subject
 
-      results = ClickHouse.connection.select_all("
+      results = Sql::ClickHouse.select_all("
         SELECT 
           site_id,
           recording_id,

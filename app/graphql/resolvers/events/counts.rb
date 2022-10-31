@@ -77,14 +77,14 @@ module Resolvers
           FORMAT JSON
         SQL
 
-        query = ActiveRecord::Base.sanitize_sql_array(
-          [
-            sql,
-            { site_id: object.id, from_date:, to_date:, date_format: }
-          ]
-        )
+        variables = {
+          site_id: object.id,
+          from_date:,
+          to_date:,
+          date_format:
+        }
 
-        ClickHouse.connection.select_all(query)
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def aggregate_results(results, group_ids, capture_ids)
