@@ -91,49 +91,6 @@ RSpec.describe EventsProcessingJob, type: :job do
     end
   end
 
-  context 'events already have a count' do
-    let(:now) { Time.new(2022, 7, 6, 12, 0, 0) }
-    let(:site) { create(:site, created_at: now - 1.day) }
-    let(:recording) { create(:recording, site:) }
-
-    let(:rule_1) { { matcher: 'equals', condition: 'or', value: '/' } }
-    let(:rule_2) { { matcher: 'equals', condition: 'or', value: 'Add to cart' } }
-
-    let!(:event_1) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, rules: [rule_1], count: 5) }
-    let!(:event_2) { create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, rules: [rule_2], count: 8) }
-
-    before do
-      allow(Time).to receive(:now).and_return(now)
-
-      timestamp = Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000
-
-      ClickHouse::PageEvent.insert do |buffer|
-        buffer << {
-          uuid: SecureRandom.uuid,
-          site_id: site.id,
-          recording_id: recording.id,
-          url: '/',
-          exited_at: timestamp
-        }
-      end
-
-      ClickHouse::ClickEvent.insert do |buffer|
-        buffer << {
-          uuid: SecureRandom.uuid,
-          site_id: site.id,
-          recording_id: recording.id,
-          text: 'Add to cart',
-          timestamp:
-        }
-      end
-    end
-
-    it 'updates their existing counts' do
-      expect { subject }.to change { event_1.reload.count }.from(5).to(6)
-                       .and change { event_2.reload.count }.from(8).to(9)
-    end
-  end
-
   context 'when specific ids are passed' do
     let(:now) { Time.now }
     let(:site) { create(:site) }

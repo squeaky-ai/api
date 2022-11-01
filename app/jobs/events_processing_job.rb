@@ -14,7 +14,7 @@ class EventsProcessingJob < ApplicationJob
       next if event.rules.empty?
 
       count = count_for(event)
-      event.update(count: event.count + count, last_counted_at: now)
+      event.update(count:, last_counted_at: now)
     end
   end
 
@@ -40,7 +40,7 @@ class EventsProcessingJob < ApplicationJob
 
     variables = {
       site_id: event.site_id,
-      from_date: (event.last_counted_at || event.site.created_at).to_fs(:db),
+      from_date: event.site.created_at.to_fs(:db),
       to_date: now.to_fs(:db)
     }
 
