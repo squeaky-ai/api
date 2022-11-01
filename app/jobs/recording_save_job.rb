@@ -149,7 +149,7 @@ class RecordingSaveJob < ApplicationJob
     end
   end
 
-  def valid?
+  def valid? # rubocop:disable Metrics/CyclomaticComplexity
     return false unless site
 
     return false if blacklisted_visitor?
@@ -161,6 +161,8 @@ class RecordingSaveJob < ApplicationJob
     return false unless session.recording?
 
     return false if session.exists?
+
+    return false if session.pages.empty?
 
     true
   end

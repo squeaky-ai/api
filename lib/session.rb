@@ -177,7 +177,7 @@ class Session # rubocop:disable Metrics/ClassLength
       )
     end
 
-    return unless page_views.any?
+    return [] unless page_views.any?
 
     page_views.last[:exited_at] = disconnected_at
 
