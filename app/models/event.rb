@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Event < ApplicationRecord
-  belongs_to :recording
-
+class Event
   # Event types from rrweb
   DOM_LOADED_CONTENT = 0
   LOAD = 1
@@ -16,10 +14,6 @@ class Event < ApplicationRecord
   ERROR = 100
   CUSTOM_TRACK = 101
   PAGE_VIEW = 102
-
-  def type?(event)
-    event_type == event
-  end
 
   class IncrementalSource
     MUTATION = 0

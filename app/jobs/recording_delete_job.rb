@@ -10,7 +10,6 @@ class RecordingDeleteJob < ApplicationJob
     @site = recording.site
 
     delete_recording_events
-    delete_postgres_events
     # delete_clickhouse_events TODO: when on clickhouse:22.9
     delete_recording
   end
@@ -21,11 +20,6 @@ class RecordingDeleteJob < ApplicationJob
 
   def delete_recording_events
     RecordingEventsService.delete(recording:)
-  end
-
-  def delete_postgres_events
-    # TODO: Remove when there are none left
-    Event.where('recording_id = ?', recording.id).delete_all
   end
 
   def delete_clickhouse_events

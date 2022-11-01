@@ -15,6 +15,7 @@ module Resolvers
       private
 
       def suitable_recording_id # rubocop:disable Metrics/AbcSize
+        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             recording_id
