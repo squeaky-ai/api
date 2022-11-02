@@ -61,8 +61,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor)
-      visitor_2 = create(:visitor)
+      visitor_1 = create(:visitor, site_id: site.id)
+      visitor_2 = create(:visitor, site_id: site.id)
   
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor_1)
       create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site, visitor: visitor_1)
@@ -89,34 +89,12 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     end
   end
 
-  context 'when the recordings are deleted' do
-    let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user) }
-
-    before do
-      visitor = create(:visitor)
-  
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, status: Recording::DELETED, site: site, visitor: visitor)
-    end
-
-    subject do
-      variables = { site_id: site.id }
-      graphql_request(visitors_query, variables, user)
-    end
-
-    it 'returns the count that excludes deleted recordings' do
-      response = subject['data']['site']['visitors']
-      expect(response['items'][0]['recordingCount']['total']).to eq 1
-    end
-  end
-
   context 'when there are no external attributes' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor)
+      visitor = create(:visitor, site_id: site.id)
 
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end
@@ -138,7 +116,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 
     before do
-      visitor = create(:visitor, external_attributes: external_attributes)
+      visitor = create(:visitor, site_id: site.id, external_attributes: external_attributes)
 
       create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
     end

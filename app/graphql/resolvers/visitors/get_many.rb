@@ -3,7 +3,7 @@
 module Resolvers
   module Visitors
     class GetMany < Resolvers::Base
-      type Types::Visitors::Visitors, null: false
+      type 'Types::Visitors::Visitors', null: false
 
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 25
@@ -12,10 +12,10 @@ module Resolvers
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
       def resolve_with_timings(page:, size:, search:, sort:, filters:)
-        visitors = object
-                   .visitors
-                   .includes(:recordings)
-                   .where('recordings.status = ?', Recording::ACTIVE)
+        visitors = Visitor
+                   .joins(:recordings)
+                   .preload(:recordings)
+                   .where(site_id: object.id)
                    .order(order(sort))
 
         # Apply all the filters
