@@ -9,27 +9,36 @@ module Resolvers
       argument :position, Types::Analytics::PathPosition, required: true
 
       def resolve_with_timings(page:, position:)
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT page_urls path
+          SELECT
+            groupArray(url) urls
           FROM (
-            SELECT ARRAY_AGG(pages.url ORDER BY exited_at ASC) page_urls
-            FROM pages
-            WHERE pages.site_id = ? AND to_timestamp(pages.exited_at / 1000)::date BETWEEN ? AND ?
-            GROUP BY pages.recording_id
-          ) page_urls
-          WHERE page_urls @> ?
+            SELECT
+              recording_id,
+              url
+            FROM
+              page_events
+            WHERE
+              site_id = ? AND
+              toDate(exited_at / 1000) BETWEEN ? AND ?
+            ORDER BY
+              exited_at ASC
+          )
+          GROUP BY
+            recording_id
+          HAVING
+            has(urls, ?)
         SQL
 
         variables = [
           object.site.id,
           object.range.from,
           object.range.to,
-          "{#{page}}"
+          page
         ]
 
         format_results(
-          Sql.execute(sql, variables),
+          Sql::ClickHouse.select_all(sql, variables),
           page,
           position
         )
@@ -37,10 +46,9 @@ module Resolvers
 
       private
 
-      def format_results(paths, page, position)
-        paths.map do |path|
-          # The postgres array does not get converted to a ruby array
-          pages_list = path['path'].sub('{', '').sub('}', '').split(',')
+      def format_results(results, page, position)
+        results.map do |result|
+          pages_list = result['urls']
 
           if position == 'Start'
             # Find the first occurance of the page in the array
