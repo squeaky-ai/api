@@ -38,11 +38,44 @@ RSpec.describe Resolvers::Feedback::NpsStats, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create(:visitor) }
+    let(:recording_1) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site: site, visitor: visitor) }
+    let(:recording_2) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site: site, visitor: visitor) }
+    let(:recording_3) { create(:recording, site: site, visitor: visitor) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_1.id,
+          visitor_id: recording_1.visitor_id,
+          disconnected_at: recording_1['disconnected_at']
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_2.id,
+          visitor_id: recording_2.visitor_id,
+          disconnected_at: recording_2['disconnected_at']
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_3.id,
+          visitor_id: recording_3.visitor_id,
+          disconnected_at: recording_3['disconnected_at']
+        }
+      ]
+    end
 
     before do
-      create(:nps, score: 5, created_at: Time.new(2021, 8, 3), recording: create(:recording, created_at: Time.new(2021, 8, 3), site: site, visitor: visitor))
-      create(:nps, score: 3, created_at: Time.new(2021, 8, 3), recording: create(:recording, created_at: Time.new(2021, 8, 3), site: site, visitor: visitor))
-      create(:nps, score: 3, created_at: Time.new(2020, 8, 3), recording: create(:recording, site: site, visitor: visitor))
+      create(:nps, score: 5, created_at: Time.new(2021, 8, 3), recording: recording_1)
+      create(:nps, score: 3, created_at: Time.new(2021, 8, 3), recording: recording_2)
+      create(:nps, score: 3, created_at: Time.new(2020, 8, 3), recording: recording_3)
+
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     subject do

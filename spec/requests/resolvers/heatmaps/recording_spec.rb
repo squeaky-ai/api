@@ -41,8 +41,28 @@ RSpec.describe Resolvers::Heatmaps::Recording, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let!(:recording) do
-      create(:recording, viewport_x: 1440, connected_at: 1651153548000, disconnected_at: 1651153550000, site:)
+    let(:recording) { create(:recording, site:) }
+
+    before do
+      ClickHouse::Recording.insert do |buffer|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          viewport_x: 1440,
+          connected_at: 1651153548000,
+          disconnected_at: 1651153550000,
+          recording_id: recording.id
+        }
+      end
+
+      ClickHouse::PageEvent.insert do |buffer|
+        buffer <<  {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording.id,
+          url: '/'
+        }
+      end
     end
 
     subject do

@@ -12,10 +12,9 @@ module Resolvers
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
 
       def resolve_with_timings(page:, size:, search:, sort:, filters:)
-        visitors = Visitor
-                   .joins(:recordings)
-                   .preload(:recordings)
-                   .where(site_id: object.id)
+        visitors = object
+                   .visitors
+                   .includes(:recordings)
                    .order(order(sort))
 
         # Apply all the filters

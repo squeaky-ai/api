@@ -98,14 +98,16 @@ module Resolvers
       end
 
       def total_visitors_count
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT COUNT(DISTINCT(visitor_id))
-          FROM recordings
-          WHERE site_id = ?
+          SELECT
+            COUNT(DISTINCT(visitor_id))
+          FROM
+            recordings
+          WHERE
+            site_id = ?
         SQL
 
-        Sql.execute(sql, [object.id]).first['count']
+        Sql::ClickHouse.select_value(sql, [object.id])
       end
 
       def aggregate_results(capture_events_with_counts, group_ids, capture_ids)

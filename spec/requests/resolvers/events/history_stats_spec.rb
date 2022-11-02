@@ -66,6 +66,14 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
     before do
       group_1.update(event_captures: [capture_1, capture_2])
 
+      ClickHouse::Recording.insert do |buffer|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording.id
+        }
+      end
+
       ClickHouse::PageEvent.insert do |buffer|
         5.times do |i|
           buffer << {

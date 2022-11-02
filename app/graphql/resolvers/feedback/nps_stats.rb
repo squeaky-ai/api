@@ -15,11 +15,14 @@ module Resolvers
       private
 
       def displays_count
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
-          SELECT COUNT(id)
-          FROM recordings
-          WHERE recordings.site_id = ? AND recordings.created_at::date >= ? AND recordings.created_at::date <= ?
+          SELECT
+            COUNT(uuid)
+          FROM
+            recordings
+          WHERE
+            site_id = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
@@ -28,8 +31,7 @@ module Resolvers
           object.range.to
         ]
 
-        results = Sql.execute(sql, variables)
-        results.first['count']
+        Sql::ClickHouse.select_value(sql, variables)
       end
 
       def ratings_count

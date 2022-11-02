@@ -6,32 +6,29 @@ module Resolvers
       type Types::Heatmaps::Counts, null: false
 
       def resolve_with_timings
-        # TODO: Replace with ClickHouse
         sql = <<-SQL
           SELECT
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Desktop')}) desktop,
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Tablet')}) tablet,
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Mobile')}) mobile
           FROM
-            pages
+            page_events
           LEFT JOIN
-            recordings ON recordings.id = pages.recording_id
+            recordings ON recordings.recording_id = page_events.recording_id
           WHERE
-            recordings.site_id = ? AND
-            recordings.status IN (?) AND
-            pages.url = ? AND
-            to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = ? AND
+            url = ? AND
+            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
         SQL
 
         variables = [
           object.site.id,
-          [::Recording::ACTIVE, ::Recording::DELETED],
           object.page,
           object.from_date,
           object.to_date
         ]
 
-        Sql.execute(sql, variables).first
+        Sql::ClickHouse.select_all(sql, variables).first
       end
 
       private
