@@ -11,7 +11,7 @@ phases:
       - $(aws ecr get-login --no-include-email)
   build:
     commands:
-      - docker build --platform linux/arm64 -t api:latest .
+      - docker build -t api:latest .
       - docker tag api:latest "${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com/api:latest"
       - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com/api:latest"
 
