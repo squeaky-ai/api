@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.1.2'
 
 gem 'aws-sdk-rails', '~> 3'
-gem 'aws-sdk-s3', '~> 1.114'
+gem 'aws-sdk-s3', '~> 1.117'
 gem 'bootsnap', require: false
 gem 'click_house'
 gem 'devise'
@@ -14,6 +14,7 @@ gem 'devise_invitable'
 gem 'graphql'
 gem 'graphql_playground-rails'
 gem 'kaminari'
+gem 'nokogiri'
 gem 'pg', '~> 1.4.4'
 gem 'puma', '~> 6.0.0'
 gem 'rack-cors'
