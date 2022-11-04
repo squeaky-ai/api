@@ -191,7 +191,7 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def active_events_count
-    data_points = %i[clicks pageviews custom_tracking errors scrolls cursors]
+    data_points = %i[clicks pageviews custom_tracking errors cursors]
     data_points.inject(0) { |sum, data_point| sum + send(data_point).size }
   end
 

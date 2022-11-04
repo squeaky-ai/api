@@ -341,7 +341,7 @@ RSpec.describe Session do
 
   describe '#active_events_count' do
     it 'returns the count' do
-      expect(instance.active_events_count).to eq 67
+      expect(instance.active_events_count).to eq 27
     end
   end
 end

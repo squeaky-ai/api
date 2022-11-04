@@ -57,7 +57,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.utm_term).to eq 'analytics'
       expect(recording.inactivity).to eq []
       expect(recording.activity_duration).to eq 11166
-      expect(recording.active_events_count).to eq 67
+      expect(recording.active_events_count).to eq 27
       expect(recording.events_key_prefix).to eq("#{event['site_id']}/#{event['visitor_id']}/#{event['session_id']}")
     end
 
