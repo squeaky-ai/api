@@ -9,11 +9,16 @@ module Mutations
 
       argument :name, String, required: true
       argument :url, String, required: true
+      argument :site_type, Integer, required: false
 
       type Types::Sites::Site
 
-      def resolve(name:, url:)
-        site = Site.create(name:, url: uri(url))
+      def resolve(name:, url:, site_type: Site::WEBSITE)
+        site = Site.create(
+          name:,
+          site_type:,
+          url: uri(url)
+        )
 
         raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 

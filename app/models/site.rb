@@ -36,6 +36,9 @@ class Site < ApplicationRecord
 
   after_create { create_plan(tier: 0) }
 
+  WEB_APP = 0
+  WEBSITE = 1
+
   def owner
     team.find(&:owner?)
   end

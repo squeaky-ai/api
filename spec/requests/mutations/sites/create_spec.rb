@@ -8,6 +8,7 @@ site_create_mutation = <<-GRAPHQL
       id
       name
       url
+      siteType
       ownerName
       plan {
         tier
@@ -90,7 +91,8 @@ RSpec.describe Mutations::Sites::Create, type: :request do
         site = subject['data']['siteCreate']
 
         expect(site['id']).not_to be nil
-        expect(name).to eq site['name']
+        expect(site['name']).to eq name
+        expect(site['siteType']).to eq Site::WEBSITE
         expect(url).to start_with site['url']
       end
 
