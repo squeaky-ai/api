@@ -33,4 +33,25 @@ class SiteMailer < ApplicationMailer
 
     mail(to: user.email, subject: "You've got new feedback from your visitors")
   end
+
+  def tracking_code_instructions(site, first_name, email)
+    @site = site
+    @owner = site.owner.user
+    @first_name = first_name
+
+    @tracking_code = <<~HTML
+      <!-- Squeaky Tracking Code for #{site.url} -->
+      <script>
+        (function(s,q,e,a,u,k,y){
+          s._sqSettings={site_id:'#{@site.uuid}'};
+          u=q.getElementsByTagName('head')[0];
+          k=q.createElement('script');
+          k.src=e+s._sqSettings.site_id;
+          u.appendChild(k);
+        })(window,document,'https://cdn.squeaky.ai/g/0.4.0/script.js?');
+      </script>
+    HTML
+
+    mail(to: email, subject: "Your colleague #{@owner.full_name} needs your help")
+  end
 end

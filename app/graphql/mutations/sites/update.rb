@@ -10,6 +10,7 @@ module Mutations
       argument :site_id, ID, required: true
       argument :name, String, required: false
       argument :url, String, required: false
+      argument :site_type, Integer, required: false
 
       type Types::Sites::Site
 
@@ -17,9 +18,10 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(name: nil, url: nil, **_rest)
+      def resolve(name: nil, url: nil, site_type: nil, **_rest)
         update = {}
         update[:name] = name if name
+        update[:site_type] = site_type if site_type
 
         if url
           update[:url] = uri(url)

@@ -139,4 +139,20 @@ RSpec.describe SiteMailer, type: :mailer do
       expect(subject.from).to eq ['hello@squeaky.ai']
     end
   end
+
+  describe '#tracking_code_instructions' do
+    let(:owner) { create(:user) }
+    let(:site) { create(:site_with_team, owner:) }
+
+    let(:first_name) { 'Bob' }
+    let(:email) { 'bob@developer.com' }
+
+    subject { described_class.tracking_code_instructions(site, first_name, email) }
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq "Your colleague #{owner.full_name} needs your help"
+      expect(subject.to).to eq [email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

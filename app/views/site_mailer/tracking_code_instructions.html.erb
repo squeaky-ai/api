@@ -1,0 +1,42 @@
+<p>Hey <%= @first_name %>,</p>
+
+<p><%= @owner.full_name %> would like your help installing a privacy-friendly analytics tool on <a href="<%= @site.url %>"><%= @site.url %></a>. Below you&apos;ll find the tracking code that you&apos;ll need to add to your site.</p>
+
+<h4>Instructions</h4>
+
+<p>Paste the code below into the <code style="background:#f2f2f2;color:#f96155;display:inline-block;padding:0.05rem 0.25rem;">&lt;head&gt;</code> section of your HTML on every page you wish to analyse on your website <a href="<%= @site.url %>"><%= @site.url %></a>.</p>
+
+<p style="margin: 0 0 .5rem 0;"><b>Tracking Code</b></p>
+<pre style="background:#F7F7F7;border:1px solid #BFBFBF;border-radius: 6px;padding: .5rem;overflow-x: auto;margin: 0 0 2rem 0;"><code style="color:#001A39;"><%= @tracking_code %></code></pre>
+
+<h4>Installation guides</h4>
+<p>If you&apos;re using a specific CMS you can find installation guides using the links below:</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill, 5rem);grid-gap:1.5rem;">
+  <a href="https://squeaky.notion.site/Wordpress-571e94c409f94748a6c40f67b5d79543" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/wordpress.png" height="32" width="32">
+  </a>
+  <a href="#" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/shopify.png" height="32" width="32">
+  </a>
+  <a href="https://squeaky.notion.site/Webflow-ea17dbafc682462d9c5f53a62cc963f9" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/webflow.png" height="32" width="32">
+  </a>
+  <a href="https://squeaky.notion.site/Wix-9b6351ec3cdd48b3ae94f5f8b4f3b8db" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/wix.png" height="32" width="32">
+  </a>
+  <a href="https://squeaky.notion.site/Magento-49302bba0c7a48d3aef93e38e8e79643" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/magento.png" height="32" width="32">
+  </a>
+  <a href="https://squeaky.notion.site/Drupal-401bce8e455246019e9e429641979c53" style="width:5rem;height:5rem;background:#F7F7F7;border-radius: 8px;display:flex;align-items:center;justify-content:center;">
+    <img src="https://cdn.squeaky.ai/mailer/drupal.png" height="32" width="32">
+  </a>
+</div>
+
+<div style="background:#D7D7D7;height:1px;margin:2rem 0;"></div>
+
+<p>Once completed, please let <%= @owner.full_name %> know, and of course, if you encounter any problems don&apos;t hesitate to let me know by responding to this emailing.</p>
+
+<p>Many thanks,</p>
+
+<p>The Squeaky Team</p>

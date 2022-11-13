@@ -81,4 +81,9 @@ class SitePreview < ActionMailer::Preview
 
     SiteMailer.new_feedback(data, user)
   end
+
+  def tracking_code_instructions
+    site = Site.find(1)
+    SiteMailer.tracking_code_instructions(site, 'Bob', 'bob@developer.com')
+  end
 end

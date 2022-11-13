@@ -48,6 +48,7 @@ module Types
     field :superuser_access_update, mutation: Mutations::Sites::SuperuserAccessUpdate
     field :routes_update, mutation: Mutations::Sites::RoutesUpdate
     field :routes_delete, mutation: Mutations::Sites::RoutesDelete
+    field :tracking_code_instructions, mutation: Mutations::Sites::TrackingCodeInstructions
     # Team
     field :team_invite, mutation: Mutations::Teams::Invite
     field :team_delete, mutation: Mutations::Teams::Delete
