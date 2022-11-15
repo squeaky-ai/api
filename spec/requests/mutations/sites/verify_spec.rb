@@ -15,17 +15,8 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
   context 'when the tracking script can be found' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-
-    subject do
-      variables = { 
-        input: {
-          siteId: site.id 
-        }
-      }
-      graphql_request(site_verify_mutation, variables, user)
-    end
-
-    before do
+    
+    let(:body) do
       body = <<-HTML
         <!-- Squeaky Tracking Code for #{site.name} -->
         <script>
@@ -34,7 +25,21 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
           // ...
         </script>
       HTML
-      allow(Net::HTTP).to receive(:get).and_return(body)
+    end
+
+    let(:response) { double(:response, body:) }
+
+    before do
+      allow(HTTParty).to receive(:get).and_return(response)
+    end
+
+    subject do
+      variables = { 
+        input: {
+          siteId: site.id 
+        }
+      }
+      graphql_request(site_verify_mutation, variables, user)
     end
 
     it 'returns the verifiedAt timestamp' do
@@ -45,6 +50,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
   context 'when the tracking script can not be found' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
+    let(:response) { double(:response, body:) }
 
     subject do
       variables = { 
@@ -55,7 +61,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
       graphql_request(site_verify_mutation, variables, user)
     end
 
-    before { allow(Net::HTTP).to receive(:get).and_return('') }
+    before { allow(HTTParty).to receive(:get).and_return(response) }
 
     it 'returns nil' do
       expect(subject['data']['siteVerify']['verifiedAt']).to be_nil
@@ -96,7 +102,7 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     end
 
     before do
-      allow(Net::HTTP).to receive(:get).and_raise(StandardError)
+      allow(HTTParty).to receive(:get).and_raise(StandardError)
     end
 
     it 'returns nil' do

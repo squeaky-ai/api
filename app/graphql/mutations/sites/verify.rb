@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'httparty'
+
 module Mutations
   module Sites
     class Verify < SiteMutation
@@ -26,11 +28,17 @@ module Mutations
       private
 
       def script_tag_exists?
-        uri = URI(@site.url)
-        res = Net::HTTP.get(uri, { 'User-Agent': 'Squeaky.ai (verification check)' })
+        options = {
+          headers: { 'User-Agent': 'Squeaky.ai (verification check)' },
+          follow_redirects: true,
+          timeout: 5
+        }
 
-        res.include?(@site.uuid)
-      rescue StandardError
+        response = HTTParty.get(@site.url, options)
+
+        response.body.include?(@site.uuid)
+      rescue StandardError => e
+        Rails.logger.warn("Failed to verify site #{@site.id} - #{e}")
         false
       end
     end
