@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_08_152806) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_16_183444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -319,6 +319,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_08_152806) do
     t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "linked_data_visible", default: true, null: false
     t.index ["site_id"], name: "index_teams_on_site_id"
     t.index ["user_id"], name: "index_teams_on_user_id"
   end

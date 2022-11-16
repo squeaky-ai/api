@@ -26,7 +26,13 @@ module Mutations
 
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 
-        Team.create(status: Team::PENDING, role:, user:, site: @site)
+        Team.create(
+          status: Team::PENDING,
+          role:,
+          user:,
+          linked_data_visible: role == Team::ADMIN, # Owners and admins have this enabled by default
+          site: @site
+        )
       end
 
       private

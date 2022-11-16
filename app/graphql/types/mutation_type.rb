@@ -57,6 +57,7 @@ module Types
     field :team_invite_resend, mutation: Mutations::Teams::InviteResend
     field :team_invite_accept, mutation: Mutations::Teams::InviteAccept
     field :team_update, mutation: Mutations::Teams::Update
+    field :team_update_role, mutation: Mutations::Teams::UpdateRole
     field :team_transfer, mutation: Mutations::Teams::Transfer
     # Recordings
     field :tag_create, mutation: Mutations::Tags::Create

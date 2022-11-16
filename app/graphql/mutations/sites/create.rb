@@ -24,7 +24,13 @@ module Mutations
 
         # Set the current user as the admin of the site
         # and skip the confirmation steps
-        Team.create(status: Team::ACCEPTED, role: Team::OWNER, user: @user, site:)
+        Team.create(
+          status: Team::ACCEPTED,
+          role: Team::OWNER,
+          user: @user,
+          site:,
+          linked_data_visible: true
+        )
 
         # Update the referral if it exists
         Referral.find_by_url(site.url)&.update(site:)
