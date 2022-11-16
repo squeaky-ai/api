@@ -50,4 +50,8 @@ class SiteService
       Site.exists?(url: combinations)
     end
   end
+
+  def self.delete_cache(current_user, site_id)
+    Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site_id}")
+  end
 end

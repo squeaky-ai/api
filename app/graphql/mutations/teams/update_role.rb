@@ -33,6 +33,10 @@ module Mutations
 
         TeamMailer.became_admin(team.user.email, @site, @user).deliver_now if team.admin?
 
+        # Team stuff is cached so the response could be weird if we
+        # don't clear it
+        SiteService.delete_cache(@user, @site.id)
+
         team
       end
     end

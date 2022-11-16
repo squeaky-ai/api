@@ -25,6 +25,11 @@ module Mutations
         raise Exceptions::Forbidden if team.owner? && !@user.owner_for?(@site)
 
         team.update(linked_data_visible:)
+
+        # Team stuff is cached so the response could be weird if we
+        # don't clear it
+        SiteService.delete_cache(@user, @site.id)
+
         team
       end
     end
