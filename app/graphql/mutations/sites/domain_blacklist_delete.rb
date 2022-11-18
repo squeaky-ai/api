@@ -20,6 +20,8 @@ module Mutations
         @site.domain_blacklist = @site.domain_blacklist.reject { |b| b['value'] == value }
         @site.save
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end

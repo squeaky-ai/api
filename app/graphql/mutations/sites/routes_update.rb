@@ -20,6 +20,9 @@ module Mutations
         @site.routes = routes
         @site.routes_will_change!
         @site.save
+
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end

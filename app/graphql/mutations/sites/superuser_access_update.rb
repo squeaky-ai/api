@@ -19,6 +19,8 @@ module Mutations
       def resolve(enabled:, **_rest)
         @site.update(superuser_access_enabled: enabled)
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end

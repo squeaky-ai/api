@@ -20,6 +20,8 @@ module Mutations
         @site.routes = @site.routes.reject { |r| r == route }
         @site.save
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end

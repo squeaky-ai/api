@@ -15,7 +15,7 @@ module Resolvers
             device_x > 0 AND
             site_id = ? AND
             toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY 
+          GROUP BY
             grouped_device_x
         SQL
 

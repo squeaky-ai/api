@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(team_id:, role:, **_rest)
+      def resolve(team_id:, role:, **_rest) # rubocop:disable Metrics/AbcSize
         raise Exceptions::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         team = @site.member(team_id)

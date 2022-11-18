@@ -34,6 +34,8 @@ module Mutations
 
         raise GraphQL::ExecutionError, @site.errors.full_messages.first unless @site.valid?
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
 

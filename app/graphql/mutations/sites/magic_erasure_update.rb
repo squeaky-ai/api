@@ -19,6 +19,8 @@ module Mutations
       def resolve(enabled:, **_rest)
         @site.update(magic_erasure_enabled: enabled)
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end

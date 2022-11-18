@@ -28,6 +28,8 @@ module Mutations
 
         @site.save
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
 

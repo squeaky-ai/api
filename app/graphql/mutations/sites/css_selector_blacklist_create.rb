@@ -22,6 +22,8 @@ module Mutations
 
         @site.update(css_selector_blacklist: selectors.uniq)
 
+        SiteService.delete_cache(@user, @site.id)
+
         @site
       end
     end
