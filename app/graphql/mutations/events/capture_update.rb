@@ -36,6 +36,10 @@ module Mutations
           last_counted_at: nil
         )
 
+        # Kick the job off to update when we've changed it to make
+        # sure the updates are reflected quickly
+        EventsProcessingJob.perform_later([event.id])
+
         event
       end
     end

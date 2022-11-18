@@ -55,6 +55,10 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
     let(:last_counted_at) { Time.new(2022, 01, 01) }
     let!(:event) { create(:event_capture, site:, name: 'Old Name', count: 5, last_counted_at:) }
 
+    before do
+      allow(EventsProcessingJob).to receive(:perform_later)
+    end
+
     subject do
       variables = {
         input: {
@@ -85,6 +89,11 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
         'lastCountedAt' => nil,
         'rules' => [{ 'value' => '/test', 'matcher' => 'equals', 'condition' => 'or' }]
       )
+    end
+
+    it 'kicks off a job to fetch the counts' do
+      subject
+      expect(EventsProcessingJob).to have_received(:perform_later)
     end
 
     it 'updates the capture' do
