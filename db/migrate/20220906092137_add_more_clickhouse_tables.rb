@@ -3,7 +3,7 @@
 class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
   def up
     ClickHouse.connection.create_table(
-      'page_events', 
+      'page_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(exited_at))'
     ) do |t|
@@ -22,7 +22,7 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     end
 
     ClickHouse.connection.create_table(
-      'click_events', 
+      'click_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|
@@ -42,7 +42,7 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     end
 
     ClickHouse.connection.create_table(
-      'error_events', 
+      'error_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|
@@ -60,7 +60,7 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     end
 
     ClickHouse.connection.create_table(
-      'custom_events', 
+      'custom_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|

@@ -3,7 +3,7 @@
 class AddRecordingsToClickhouse < ActiveRecord::Migration[7.0]
   def up
     ClickHouse.connection.create_table(
-      'recordings', 
+      'recordings',
       engine: 'MergeTree',
       order: '(site_id, toDate(disconnected_at))'
     ) do |t|
@@ -34,7 +34,7 @@ class AddRecordingsToClickhouse < ActiveRecord::Migration[7.0]
       t.String :inactivity
     end
   end
-  
+
   def down
     ClickHouse.connection.drop_table('recordings')
   end

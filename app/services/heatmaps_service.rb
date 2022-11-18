@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HeatmapsService
+class HeatmapsService # rubocop:disable Metrics/ClassLength
   def initialize(site_id:, from_date:, to_date:, page_url:, device:)
     @site_id = site_id
     @from_date = from_date

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob
+class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   queue_as :default
 
   sidekiq_options retry: false

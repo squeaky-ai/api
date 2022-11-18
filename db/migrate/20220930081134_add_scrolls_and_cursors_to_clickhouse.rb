@@ -3,7 +3,7 @@
 class AddScrollsAndCursorsToClickhouse < ActiveRecord::Migration[7.0]
   def up
     ClickHouse.connection.create_table(
-      'scroll_events', 
+      'scroll_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|
@@ -21,7 +21,7 @@ class AddScrollsAndCursorsToClickhouse < ActiveRecord::Migration[7.0]
     end
 
     ClickHouse.connection.create_table(
-      'cursor_events', 
+      'cursor_events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|

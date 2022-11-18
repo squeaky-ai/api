@@ -13,7 +13,7 @@ class CreateVisitors < ActiveRecord::Migration[6.1]
     change_table :recordings do |t|
       t.belongs_to :visitor
     end
-   
+
     add_index :visitors, :visitor_id, unique: true
     remove_column :recordings, :viewer_id
   end

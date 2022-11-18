@@ -3,7 +3,7 @@
 class AddEventsClickhouse < ActiveRecord::Migration[7.0]
   def up
     ClickHouse.connection.create_table(
-      'events', 
+      'events',
       engine: 'MergeTree',
       order: '(site_id, toDate(timestamp))'
     ) do |t|

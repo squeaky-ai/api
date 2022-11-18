@@ -2,7 +2,7 @@
 
 module Types
   module Sites
-    class Site < Types::BaseObject
+    class Site < Types::BaseObject # rubocop:disable Metrics/ClassLength
       graphql_name 'Site'
 
       field :id, ID, null: false

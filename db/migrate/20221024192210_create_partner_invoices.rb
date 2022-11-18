@@ -12,7 +12,7 @@ class CreatePartnerInvoices < ActiveRecord::Migration[7.0]
       t.string :currency, null: false
 
       t.belongs_to :partner
- 
+
       t.timestamps
     end
   end

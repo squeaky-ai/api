@@ -1,14 +1,11 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - bin/*
     - db/**/*
     - spec/**/*
 Metrics/MethodLength:
   CountAsOne: ['hash', 'array', 'heredoc']
   Max: 15
-Metrics/ClassLength:
-  Max: 200
 Layout/LineLength:
   Max: 140
 Style/Documentation:

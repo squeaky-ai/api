@@ -2,7 +2,7 @@
 
 module Resolvers
   module Visitors
-    class GetMany < Resolvers::Base
+    class GetMany < Resolvers::Base # rubocop:disable Metrics/ClassLength
       type 'Types::Visitors::Visitors', null: false
 
       argument :page, Integer, required: false, default_value: 0
