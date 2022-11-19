@@ -9,7 +9,7 @@ class Consent < ApplicationRecord
       name: site.name,
       privacy_policy_url: "#{site.url}/privacy",
       layout: 'bottom_left',
-      consent_method: 'disabled',
+      consent_method: 'widget',
       languages: ['en'],
       languages_default: 'en'
     )
