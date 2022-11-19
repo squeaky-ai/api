@@ -22,7 +22,7 @@ module Mutations
       def resolve(type:, name:, rules:, group_ids:, **_rest)
         groups = EventGroup.where(id: group_ids, site_id: @site.id)
 
-        event = EventCapture.create(
+        event = EventCapture.create!(
           name:,
           rules:,
           event_type: type,
