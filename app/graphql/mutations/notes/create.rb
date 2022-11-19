@@ -23,7 +23,7 @@ module Mutations
 
         raise Exceptions::RecordingNotFound unless recording
 
-        Note.create(recording:, user: @user, body:, timestamp:)
+        Note.create!(recording:, user: @user, body:, timestamp:)
       end
     end
   end

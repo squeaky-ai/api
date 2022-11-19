@@ -45,11 +45,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
       end
     end
-
-    # These routes are designed for development e2e tests and
-    # won't work in other environments
-    post 'test/user', to: 'test#create_user'
-    delete 'test/user', to: 'test#destroy_user'
   end
 
   root to: 'application#not_found'

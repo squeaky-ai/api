@@ -26,7 +26,7 @@ module Mutations
 
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 
-        Team.create(
+        Team.create!(
           status: Team::PENDING,
           role:,
           user:,

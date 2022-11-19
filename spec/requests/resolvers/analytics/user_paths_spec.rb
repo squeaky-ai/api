@@ -149,7 +149,7 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
   
       it 'returns the paths that match' do
         paths = subject['data']['site']['analytics']['userPaths']
-        expect(paths).to eq(
+        expect(paths).to match_array(
           [
             {
               'path' => ['/', '/test']

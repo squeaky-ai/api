@@ -24,7 +24,7 @@ module Mutations
 
         # Set the current user as the admin of the site
         # and skip the confirmation steps
-        Team.create(
+        Team.create!(
           status: Team::ACCEPTED,
           role: Team::OWNER,
           user: @user,

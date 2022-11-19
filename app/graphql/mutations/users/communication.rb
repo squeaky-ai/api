@@ -18,7 +18,7 @@ module Mutations
       type Types::Users::User
 
       def resolve(**args)
-        communication = @user.communication || ::Communication.create(
+        communication = @user.communication || ::Communication.create!(
           user_id: @user.id,
           onboarding_email: true,
           weekly_review_email: true,

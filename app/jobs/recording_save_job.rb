@@ -99,7 +99,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def persist_sentiments!(recording)
     session.sentiments.each do |e|
-      Sentiment.create(
+      Sentiment.create!(
         score: e[:score],
         comment: e[:comment],
         recording:
@@ -112,7 +112,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
     return unless nps
 
-    Nps.create(
+    Nps.create!(
       score: nps[:score],
       comment: nps[:comment],
       contact: nps[:contact],
