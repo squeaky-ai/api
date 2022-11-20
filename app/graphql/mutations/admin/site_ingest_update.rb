@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Admin::Site
 
-      def resolve(site_id:, enabled:)
+      def resolve_with_timings(site_id:, enabled:)
         site = Site.find(site_id)
         site.update(ingest_enabled: enabled)
 

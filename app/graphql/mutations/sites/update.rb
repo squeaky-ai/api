@@ -18,7 +18,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(name: nil, url: nil, site_type: nil, **_rest)
+      def resolve_with_timings(name: nil, url: nil, site_type: nil)
         update = {}
         update[:name] = name if name
         update[:site_type] = site_type if site_type
@@ -30,13 +30,13 @@ module Mutations
           update[:verified_at] = nil
         end
 
-        @site.update(update)
+        site.update(update)
 
-        raise GraphQL::ExecutionError, @site.errors.full_messages.first unless @site.valid?
+        raise GraphQL::ExecutionError, site.errors.full_messages.first unless site.valid?
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
 
       private

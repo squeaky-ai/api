@@ -16,12 +16,12 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(pricing_id:, **_rest)
+      def resolve_with_timings(pricing_id:)
         plan = Plans.find_by_pricing_id(pricing_id)
 
         raise GraphQL::ExecutionError, 'pricing_id is not valid' if plan.nil?
 
-        StripeService::Checkout.new(@user, @site).create_plan(pricing_id)
+        StripeService::Checkout.new(user, site).create_plan(pricing_id)
       end
     end
   end

@@ -16,7 +16,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve(first_name:, last_name:, email:, name:, description:, client_count:) # rubocop:disable Metrics/ParameterLists
+      def resolve_with_timings(first_name:, last_name:, email:, name:, description:, client_count:) # rubocop:disable Metrics/ParameterLists
         ContactMailer.partners(
           first_name:,
           last_name:,

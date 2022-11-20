@@ -9,5 +9,9 @@ module Mutations
 
       true
     end
+
+    protected
+
+    attr_reader :user
   end
 end

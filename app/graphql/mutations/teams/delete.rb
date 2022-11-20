@@ -16,15 +16,15 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(team_id:, **_rest)
-        team = @site.member(team_id)
+      def resolve_with_timings(team_id:)
+        team = site.member(team_id)
 
         return team if team.owner?
-        return team if team.user.id == @user.id
-        return team if team.admin? && @user.admin_for?(@site)
+        return team if team.user.id == user.id
+        return team if team.admin? && user.admin_for?(site)
 
         team.delete
-        TeamMailer.member_removed(team.user.email, @site).deliver_now
+        TeamMailer.member_removed(team.user.email, site).deliver_now
 
         nil
       end

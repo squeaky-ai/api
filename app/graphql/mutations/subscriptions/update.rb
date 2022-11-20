@@ -16,16 +16,16 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(pricing_id:, **_rest)
+      def resolve_with_timings(pricing_id:)
         plan = Plans.find_by_pricing_id(pricing_id)
 
         raise GraphQL::ExecutionError, 'pricing_id is not valid' if plan.nil?
 
-        StripeService::Billing.new(@user, @site).update_plan(pricing_id)
+        StripeService::Billing.new(user, site).update_plan(pricing_id)
 
-        @site.plan.update(tier: plan[:id])
+        site.plan.update(tier: plan[:id])
 
-        @site
+        site
       end
     end
   end

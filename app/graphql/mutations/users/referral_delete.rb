@@ -11,10 +11,10 @@ module Mutations
 
       type Types::Users::Referral
 
-      def resolve(id:)
-        return unless @user.partner
+      def resolve_with_timings(id:)
+        return unless user.partner
 
-        referral = @user.partner.referrals.find(id)
+        referral = user.partner.referrals.find(id)
 
         return referral if referral.site
 

@@ -13,15 +13,15 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve(**args)
-        @user.update_with_password(args)
+      def resolve_with_timings(**args)
+        user.update_with_password(args)
 
         # For some reason devise errors do not cause user.valid? to
         # return false, so we check the length of the errors
-        raise GraphQL::ExecutionError, @user.errors.full_messages.first if @user.errors.size.positive?
+        raise GraphQL::ExecutionError, user.errors.full_messages.first if user.errors.size.positive?
 
-        @user.save
-        @user
+        user.save
+        user
       end
     end
   end

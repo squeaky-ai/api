@@ -15,13 +15,13 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(**_args)
+      def resolve_with_timings
         # Send an email to everyone in the team besides the owner
-        @site.team.each { |t| SiteMailer.destroyed(t.user.email, @site).deliver_now unless t.owner? }
+        site.team.each { |t| SiteMailer.destroyed(t.user.email, site).deliver_now unless t.owner? }
         # Send an email to us so we have a record of it
-        AdminMailer.site_destroyed(@site).deliver_now
-        @site.destroy_all_recordings!
-        @site.destroy
+        AdminMailer.site_destroyed(site).deliver_now
+        site.destroy_all_recordings!
+        site.destroy
 
         nil
       end

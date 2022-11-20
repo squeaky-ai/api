@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Admin::BlogSignImage
 
-      def resolve(filename:)
+      def resolve_with_timings(filename:)
         s3_bucket = Aws::S3::Resource.new(region: 'eu-west-1').bucket('cdn.squeaky.ai')
 
         presigned_url = s3_bucket.presigned_post(

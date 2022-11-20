@@ -13,8 +13,8 @@ module Mutations
 
       type Types::Users::Invoice
 
-      def resolve(currency:, amount:, filename:)
-        return unless @user.partner
+      def resolve_with_timings(currency:, amount:, filename:)
+        return unless user.partner
 
         PartnerInvoice.create!(
           filename:,
@@ -22,7 +22,7 @@ module Mutations
           amount:,
           status: PartnerInvoice::PENDING,
           issued_at: Time.now,
-          partner: @user.partner
+          partner: user.partner
         )
       end
     end

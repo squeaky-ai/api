@@ -13,7 +13,7 @@ module Mutations
 
       type Types::Admin::User
 
-      def resolve(id:, name:, slug:)
+      def resolve_with_timings(id:, name:, slug:)
         user = User.find(id)
 
         unless user.partner

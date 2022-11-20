@@ -11,10 +11,10 @@ module Mutations
 
       type Types::Users::Referral
 
-      def resolve(url:)
-        return unless @user.partner
+      def resolve_with_timings(url:)
+        return unless user.partner
 
-        referral = Referral.create(url: uri(url), partner: @user.partner)
+        referral = Referral.create(url: uri(url), partner: user.partner)
 
         raise GraphQL::ExecutionError, referral.errors.full_messages.first unless referral.valid?
 

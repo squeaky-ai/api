@@ -15,8 +15,8 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(**_rest)
-        StripeService::Checkout.new(@user, @site).create_billing_portal
+      def resolve_with_timings
+        StripeService::Checkout.new(user, site).create_billing_portal
       end
     end
   end

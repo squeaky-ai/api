@@ -17,9 +17,9 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve(**args)
-        communication = @user.communication || ::Communication.create!(
-          user_id: @user.id,
+      def resolve_with_timings(**args)
+        communication = user.communication || ::Communication.create!(
+          user_id: user.id,
           onboarding_email: true,
           weekly_review_email: true,
           monthly_review_email: true,
@@ -32,7 +32,7 @@ module Mutations
         communication.assign_attributes(args)
         communication.save
 
-        @user.reload
+        user.reload
       end
     end
   end

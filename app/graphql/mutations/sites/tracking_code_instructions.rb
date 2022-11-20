@@ -17,8 +17,8 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(first_name:, email:, **_rest)
-        SiteMailer.tracking_code_instructions(@site, first_name, email).deliver_now
+      def resolve_with_timings(first_name:, email:)
+        SiteMailer.tracking_code_instructions(site, first_name, email).deliver_now
         { message: 'Email sent' }
       end
     end

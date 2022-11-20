@@ -16,9 +16,9 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve(team_id:, **_rest)
-        old_owner = @site.owner
-        new_owner = @site.member(team_id)
+      def resolve_with_timings(team_id:)
+        old_owner = site.owner
+        new_owner = site.member(team_id)
 
         raise Exceptions::TeamNotFound unless new_owner
 
@@ -27,9 +27,9 @@ module Mutations
           new_owner.update(role: Team::OWNER)
         end
 
-        TeamMailer.became_owner(new_owner.user.email, @site, @user).deliver_now
+        TeamMailer.became_owner(new_owner.user.email, site, user).deliver_now
 
-        @site
+        site
       end
     end
   end

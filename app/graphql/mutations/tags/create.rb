@@ -17,12 +17,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
-      def resolve(recording_id:, name:, **_rest)
-        recording = @site.recordings.find_by(id: recording_id)
+      def resolve_with_timings(recording_id:, name:)
+        recording = site.recordings.find_by(id: recording_id)
 
         raise Exceptions::RecordingNotFound unless recording
 
-        tag = @site.tags.find_or_create_by(name:)
+        tag = site.tags.find_or_create_by(name:)
 
         recording.tags << tag unless recording.tags.include?(tag)
         recording.save

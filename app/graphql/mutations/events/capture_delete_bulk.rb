@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(event_ids:, **_rest)
-        events = @site.event_captures.where(id: event_ids)
+      def resolve_with_timings(event_ids:)
+        events = site.event_captures.where(id: event_ids)
 
         return [] if events.size.zero?
 

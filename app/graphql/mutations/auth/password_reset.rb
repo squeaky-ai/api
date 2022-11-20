@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve(email:)
+      def resolve_with_timings(email:)
         user = User.send_reset_password_instructions({ email: })
 
         unless user.errors.empty?
