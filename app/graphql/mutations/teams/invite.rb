@@ -17,12 +17,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(email:, role:, **_rest)
+      def resolve_with_timings(email:, role:)
         raise Exceptions::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         user = User.find_by(email:)
 
-        raise Exceptions::TeamExists if user&.member_of?(@site)
+        raise Exceptions::TeamExists if user&.member_of?(site)
 
         user = user.nil? ? send_new_user_invite!(email) : send_existing_user_invite!(user)
 
@@ -31,25 +31,25 @@ module Mutations
           role:,
           user:,
           linked_data_visible: role == Team::ADMIN, # Owners and admins have this enabled by default
-          site: @site
+          site:
         )
       end
 
       private
 
       def send_new_user_invite!(email)
-        User.invite!({ email: }, @user, { site_name: @site.name, new_user: true })
+        User.invite!({ email: }, user, { site_name: site.name, new_user: true })
       end
 
-      def send_existing_user_invite!(user)
-        user.invited_by = @user
-        user.save
-        user.invite_to_team!
+      def send_existing_user_invite!(new_user)
+        new_user.invited_by = user
+        new_user.save
+        new_user.invite_to_team!
 
-        opts = { site_name: @site.name, new_user: false }
-        AuthMailer.invitation_instructions(user, user.raw_invitation_token, opts).deliver_now
+        opts = { site_name: site.name, new_user: false }
+        AuthMailer.invitation_instructions(new_user, new_user.raw_invitation_token, opts).deliver_now
 
-        user
+        new_user
       end
     end
   end

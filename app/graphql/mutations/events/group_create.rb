@@ -16,11 +16,11 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(name:, **_rest)
-        group = @site.event_groups.find_or_create_by(name:)
+      def resolve_with_timings(name:)
+        group = site.event_groups.find_or_create_by(name:)
 
-        @site.event_groups << group unless @site.event_groups.include?(group)
-        @site.save
+        site.event_groups << group unless site.event_groups.include?(group)
+        site.save
 
         group
       end

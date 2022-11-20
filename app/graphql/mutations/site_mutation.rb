@@ -11,6 +11,10 @@ module Mutations
       true
     end
 
+    protected
+
+    attr_reader :site, :user
+
     private
 
     # Regular users can only modify sites that exist and they

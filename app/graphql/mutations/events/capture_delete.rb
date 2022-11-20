@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(event_id:, **_rest)
-        event = @site.event_captures.find_by(id: event_id)
+      def resolve_with_timings(event_id:)
+        event = site.event_captures.find_by(id: event_id)
 
         event&.destroy
 

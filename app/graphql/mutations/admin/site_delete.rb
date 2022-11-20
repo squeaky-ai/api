@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Admin::Site
 
-      def resolve(id:)
+      def resolve_with_timings(id:)
         site = Site.find(id)
 
         if site

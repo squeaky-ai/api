@@ -15,12 +15,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(**_rest)
-        team = @site.team.find { |t| t.user.id == @user.id }
+      def resolve_with_timings
+        team = site.team.find { |t| t.user.id == user.id }
 
         return team if team.owner?
 
-        TeamMailer.member_left(@site.owner.user.email, @site, team.user).deliver_now
+        TeamMailer.member_left(site.owner.user.email, site, team.user).deliver_now
         team.destroy
 
         nil

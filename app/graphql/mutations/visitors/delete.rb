@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(visitor_id:, **_rest)
-        visitor = @site.visitors.find_by(id: visitor_id)
+      def resolve_with_timings(visitor_id:)
+        visitor = site.visitors.find_by(id: visitor_id)
 
         raise Exceptions::VisitorNotFound unless visitor
 

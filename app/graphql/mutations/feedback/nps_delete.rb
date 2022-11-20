@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(nps_id:, **_rest)
-        nps = @site.nps.find_by(id: nps_id)
+      def resolve_with_timings(nps_id:)
+        nps = site.nps.find_by(id: nps_id)
 
         raise Exceptions::NpsNotFound unless nps
 

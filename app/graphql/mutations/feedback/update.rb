@@ -33,11 +33,11 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(**args)
+      def resolve_with_timings(**args)
         feedback = fetch_or_create_feedback
 
-        args.delete(:nps_hide_logo) if args[:nps_hide_logo] && @site.plan.free?
-        args.delete(:sentiment_hide_logo) if args[:sentiment_hide_logo] && @site.plan.free?
+        args.delete(:nps_hide_logo) if args[:nps_hide_logo] && site.plan.free?
+        args.delete(:sentiment_hide_logo) if args[:sentiment_hide_logo] && site.plan.free?
 
         feedback.assign_attributes(args.except(:site_id))
 
@@ -51,7 +51,7 @@ module Mutations
       private
 
       def fetch_or_create_feedback
-        @site.feedback || ::Feedback.create_with_defaults(@site)
+        site.feedback || ::Feedback.create_with_defaults(site)
       end
 
       def force_array_updates(feedback, args)

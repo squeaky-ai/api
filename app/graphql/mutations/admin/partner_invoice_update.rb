@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Users::Invoice
 
-      def resolve(id:, status:)
+      def resolve_with_timings(id:, status:)
         invoice = PartnerInvoice.find(id)
         invoice.update!(status:) if [PartnerInvoice::PENDING, PartnerInvoice::PAID].include?(status)
 

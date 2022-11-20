@@ -17,15 +17,15 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(recording_ids:, viewed:, **_rest)
-        recordings = @site.recordings.where(id: recording_ids)
+      def resolve_with_timings(recording_ids:, viewed:)
+        recordings = site.recordings.where(id: recording_ids)
 
         return [] if recordings.size.zero?
 
         recordings.update_all(viewed:)
         recordings.each { |recording| recording.visitor.update(new: false) } if viewed
 
-        @site.recordings.reload
+        site.recordings.reload
       end
     end
   end

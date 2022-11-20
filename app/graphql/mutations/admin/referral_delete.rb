@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Users::Referral
 
-      def resolve(id:)
+      def resolve_with_timings(id:)
         referral = Referral.find(id)
 
         return referral if referral.site

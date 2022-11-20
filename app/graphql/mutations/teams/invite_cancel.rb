@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(team_id:, **_rest)
-        member = @site.member(team_id)
+      def resolve_with_timings(team_id:)
+        member = site.member(team_id)
 
         if member&.pending?
           member.destroy

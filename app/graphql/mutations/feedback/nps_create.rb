@@ -17,7 +17,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve(site_id:, visitor_id:, session_id:, score:, comment:, contact:, email:) # rubocop:disable Metrics/ParameterLists
+      def resolve_with_timings(site_id:, visitor_id:, session_id:, score:, comment:, contact:, email:) # rubocop:disable Metrics/ParameterLists
         # This is the same structure as regular
         # events that get pushed into the websocket
         # queue

@@ -16,12 +16,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(enabled:, **_rest)
-        @site.update(magic_erasure_enabled: enabled)
+      def resolve_with_timings(enabled:)
+        site.update(magic_erasure_enabled: enabled)
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
     end
   end

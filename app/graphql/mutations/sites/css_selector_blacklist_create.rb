@@ -16,15 +16,15 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(selector:, **_rest)
-        selectors = @site.css_selector_blacklist
+      def resolve_with_timings(selector:)
+        selectors = site.css_selector_blacklist
         selectors.push(selector)
 
-        @site.update(css_selector_blacklist: selectors.uniq)
+        site.update(css_selector_blacklist: selectors.uniq)
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
     end
   end

@@ -17,14 +17,14 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(**_args)
+      def resolve_with_timings
         # The user may want to validate more than once
         # so we store a timestamp rather than a boolean
-        script_tag_exists? ? @site.verify! : @site.unverify!
+        script_tag_exists? ? site.verify! : site.unverify!
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
 
       private
@@ -36,11 +36,11 @@ module Mutations
           timeout: 5
         }
 
-        response = HTTParty.get(@site.url, options)
+        response = HTTParty.get(site.url, options)
 
-        response.body.include?(@site.uuid)
+        response.body.include?(site.uuid)
       rescue StandardError => e
-        Rails.logger.warn("Failed to verify site #{@site.id} - #{e}")
+        Rails.logger.warn("Failed to verify site #{site.id} - #{e}")
         false
       end
     end

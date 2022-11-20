@@ -16,13 +16,13 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(route:, **_rest)
-        @site.routes = @site.routes.reject { |r| r == route }
-        @site.save
+      def resolve_with_timings(route:)
+        site.routes = site.routes.reject { |r| r == route }
+        site.save
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
     end
   end

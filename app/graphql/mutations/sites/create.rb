@@ -13,7 +13,7 @@ module Mutations
 
       type Types::Sites::Site
 
-      def resolve(name:, url:, site_type: Site::WEBSITE)
+      def resolve_with_timings(name:, url:, site_type: Site::WEBSITE)
         site = Site.create(
           name:,
           site_type:,
@@ -27,7 +27,7 @@ module Mutations
         Team.create!(
           status: Team::ACCEPTED,
           role: Team::OWNER,
-          user: @user,
+          user:,
           site:,
           linked_data_visible: true
         )

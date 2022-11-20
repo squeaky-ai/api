@@ -17,15 +17,15 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(text_enabled:, forms_enabled:, **_rest)
-        @site.update(
+      def resolve_with_timings(text_enabled:, forms_enabled:)
+        site.update(
           anonymise_form_inputs: forms_enabled,
           anonymise_text: text_enabled
         )
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
     end
   end

@@ -16,8 +16,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
-      def resolve(tag_ids:, **_rest)
-        @site.tags.where(id: tag_ids)&.each(&:destroy)
+      def resolve_with_timings(tag_ids:)
+        site.tags.where(id: tag_ids)&.each(&:destroy)
 
         []
       end

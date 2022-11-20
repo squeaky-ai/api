@@ -11,10 +11,10 @@ module Mutations
 
       type Types::Users::Invoice
 
-      def resolve(id:)
-        return unless @user.partner
+      def resolve_with_timings(id:)
+        return unless user.partner
 
-        @user.partner.invoices.find(id).destroy!
+        user.partner.invoices.find(id).destroy!
 
         nil
       end

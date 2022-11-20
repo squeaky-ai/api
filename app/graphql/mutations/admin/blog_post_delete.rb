@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Blog::Post
 
-      def resolve(id:)
+      def resolve_with_timings(id:)
         Blog.find_by(id:)&.destroy
 
         nil

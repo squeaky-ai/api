@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve(id:)
+      def resolve_with_timings(id:)
         user = User.find(id)
 
         ActiveRecord::Base.transaction do

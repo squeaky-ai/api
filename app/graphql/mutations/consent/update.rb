@@ -21,10 +21,10 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(**args)
+      def resolve_with_timings(**args)
         consent = fetch_or_create_consent
 
-        consent.assign_attributes(args.except(:site_id))
+        consent.assign_attributes(args)
         consent.languages_will_change! if args[:languages]
         consent.save
 
@@ -34,7 +34,7 @@ module Mutations
       private
 
       def fetch_or_create_consent
-        @site.consent || ::Consent.create_with_defaults(@site)
+        site.consent || ::Consent.create_with_defaults(site)
       end
     end
   end

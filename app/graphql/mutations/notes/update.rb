@@ -19,8 +19,8 @@ module Mutations
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
-      def resolve(recording_id:, note_id:, body: nil, timestamp: nil, **_rest)
-        recording = @site.recordings.find_by(id: recording_id)
+      def resolve_with_timings(recording_id:, note_id:, body: nil, timestamp: nil)
+        recording = site.recordings.find_by(id: recording_id)
 
         raise Exceptions::RecordingNotFound unless recording
 
@@ -43,7 +43,7 @@ module Mutations
         # If the user is an admin or higher they can delete what
         # they want. Otherwise, members can only delete their
         # own notes
-        note.user.id == @user.id || @user.admin_for?(@site) || @user.owner_for?(@site)
+        note.user.id == user.id || user.admin_for?(site) || user.owner_for?(site)
       end
     end
   end

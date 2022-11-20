@@ -19,12 +19,12 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(event_id:, name:, rules:, group_ids:, **_rest)
-        event = @site.event_captures.find_by(id: event_id)
+      def resolve_with_timings(event_id:, name:, rules:, group_ids:)
+        event = site.event_captures.find_by(id: event_id)
 
         return nil unless event
 
-        groups = EventGroup.where(id: group_ids, site_id: @site.id)
+        groups = EventGroup.where(id: group_ids, site_id: site.id)
 
         # Update what can be updated, and then reset the count
         # and last_counted_at as the rules may have changed

@@ -17,13 +17,13 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve(name:, value:, **_rest)
-        @site.ip_blacklist << { name:, value: }
-        @site.save
+      def resolve_with_timings(name:, value:)
+        site.ip_blacklist << { name:, value: }
+        site.save
 
-        SiteService.delete_cache(@user, @site.id)
+        SiteService.delete_cache(user, site.id)
 
-        @site
+        site
       end
     end
   end
