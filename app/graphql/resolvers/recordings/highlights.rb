@@ -29,7 +29,7 @@ module Resolvers
         object
           .recordings
           .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
-          .order(Arel.sql('(disconnected_at - connected_at) DESC'))
+          .order('activity_duration DESC')
           .limit(5)
       end
     end
