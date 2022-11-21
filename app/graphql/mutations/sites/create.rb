@@ -41,6 +41,8 @@ module Mutations
       private
 
       def uri(url)
+        raise Exceptions::SiteInvalidUri if url.include?('localhost')
+
         formatted_uri = Site.format_uri(url)
         # This is quite important! The last thing we want
         # is nil://nil being in there and being unique!

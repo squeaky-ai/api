@@ -36,6 +36,26 @@ RSpec.describe Mutations::Sites::Update, type: :request do
       end
     end
 
+    context 'when the url is localhost' do
+      let(:url) { 'http://localhost:3000' }
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team, owner: user) }
+
+      subject do
+        variables = {
+          input: {
+            siteId: site.id,
+            url:
+          }
+        }
+        graphql_request(site_update_mutation, variables, user)
+      end
+
+      it 'raises an error' do
+        expect(subject['errors'][0]['message']).to eq 'The provided uri is not valid'
+      end
+    end
+
     context 'when the url is invalid' do
       let(:url) { 'fdsdfgdfgdfgdfg' }
       let(:user) { create(:user) }

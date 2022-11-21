@@ -18,7 +18,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(name: nil, url: nil, site_type: nil)
+      def resolve_with_timings(name: nil, url: nil, site_type: nil) # rubocop:disable Metrics/AbcSize
         update = {}
         update[:name] = name if name
         update[:site_type] = site_type if site_type
@@ -42,6 +42,8 @@ module Mutations
       private
 
       def uri(url)
+        raise Exceptions::SiteInvalidUri if url.include?('localhost')
+
         formatted_uri = Site.format_uri(url)
         # This is quite important! The last thing we want
         # is nil://nil being in there and being unique!
