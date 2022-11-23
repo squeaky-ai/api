@@ -137,7 +137,8 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def persist_custom_event_names!
-    session.custom_tracking.each do |event|
+    # No point in trying to create 10 of the same one
+    session.custom_tracking.uniq { |e| e['data']['name'] }.each do |event|
       name = event['data']['name']
 
       event_capture = EventCapture.create(
