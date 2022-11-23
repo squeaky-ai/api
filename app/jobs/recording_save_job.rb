@@ -36,20 +36,24 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   private
 
-  attr_reader :site, :session
+  attr_reader :site, :session, :recording, :visitor
 
   def store_session!
     ActiveRecord::Base.transaction do
-      visitor = persist_visitor!
-      recording = persist_recording!(visitor)
+      # This HAS to go first
+      persist_visitor!
+      # This HAS to go second
+      persist_recording!
 
-      persist_events!(recording)
-      persist_pageviews!(recording)
-      persist_sentiments!(recording)
-      persist_nps!(recording)
-      persist_clickhouse_data!(recording)
-      persist_custom_event_names!
+      # These are not important
+      persist_pageviews!
+      persist_sentiments!
+      persist_nps!
     end
+
+    persist_events!
+    persist_clickhouse_data!
+    persist_custom_event_names!
   end
 
   def perform_post_save_actions!
@@ -61,17 +65,16 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def persist_visitor!
-    visitor = find_or_create_visitor
-    visitor.external_attributes = session.external_attributes
-    visitor.save!
-    visitor
+    @visitor = find_or_create_visitor
+    @visitor.external_attributes = session.external_attributes
+    @visitor.save!
   end
 
-  def persist_recording!(visitor)
-    Recording.create_from_session(session, visitor, site, recording_status)
+  def persist_recording!
+    @recording = Recording.create_from_session!(session, visitor, site, recording_status)
   end
 
-  def persist_events!(recording)
+  def persist_events!
     session.events.each_slice(250).with_index do |slice, index|
       RecordingEventsService.create(
         recording:,
@@ -81,7 +84,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def persist_pageviews!(recording)
+  def persist_pageviews!
     pages = session.pages.map do |e|
       Page.new(
         url: e[:url],
@@ -94,10 +97,10 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
 
     recording.pages << pages
-    recording.save
+    recording.save!
   end
 
-  def persist_sentiments!(recording)
+  def persist_sentiments!
     session.sentiments.each do |e|
       Sentiment.create!(
         score: e[:score],
@@ -107,7 +110,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def persist_nps!(recording)
+  def persist_nps!
     nps = session.nps
 
     return unless nps
@@ -121,7 +124,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     )
   end
 
-  def persist_clickhouse_data!(recording)
+  def persist_clickhouse_data!
     [
       ClickHouse::Recording,
       ClickHouse::ClickEvent,

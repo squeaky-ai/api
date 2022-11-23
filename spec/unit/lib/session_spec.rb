@@ -344,4 +344,26 @@ RSpec.describe Session do
       expect(instance.active_events_count).to eq 27
     end
   end
+
+  describe '#sentiments' do
+    it 'returns the sentiments' do
+      expect(instance.sentiments).to eq([
+        {
+          comment: 'Hello', 
+          score: '2'
+        }
+      ])
+    end
+  end
+
+  describe '#nps' do
+    it 'returns the nps' do
+      expect(instance.nps).to eq(
+        comment: 'Hello',
+        contact: true,
+        email: 'bobby@gmail.com',
+        score: '9'
+      )
+    end
+  end
 end

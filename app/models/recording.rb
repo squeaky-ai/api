@@ -89,8 +89,8 @@ class Recording < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def self.create_from_session(session, visitor, site, status) # rubocop:disable Metrics/AbcSize
-    create(
+  def self.create_from_session!(session, visitor, site, status) # rubocop:disable Metrics/AbcSize
+    create!(
       status:,
       site_id: site.id,
       visitor_id: visitor.id,

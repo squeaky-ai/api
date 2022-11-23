@@ -30,9 +30,16 @@ module Mutations
 
         key = "events::#{site_id}::#{visitor_id}::#{session_id}"
 
-        Cache.redis.lpush(key, event.to_json)
+        Cache.redis.lpush(key, compress_event(event))
 
         { message: 'Sentiment score saved' }
+      end
+
+      private
+
+      def compress_event(event)
+        x = Zlib::Deflate.new.deflate(event.to_json, Zlib::FINISH)
+        Base64.encode64(x)
       end
     end
   end

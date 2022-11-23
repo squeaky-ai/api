@@ -46,6 +46,13 @@ RSpec.describe Mutations::Feedback::NpsCreate, type: :request do
     subject
 
     value = Cache.redis.lrange("events::#{site_id}::#{visitor_id}::#{session_id}", 0, 1)
-    expect(value.first).to eq("{\"key\":\"nps\",\"value\":{\"type\":5,\"data\":{\"score\":5,\"comment\":\"Looks alright\",\"contact\":true,\"email\":\"mshadows@gmail.com\"},\"timestamp\":1656457200000}}")
+
+    encoded_output = <<~TEXT
+      eJwli0EKwyAURK9SZi2lLTUFVz1AL/FJJJH4VfQnJQTvXqWzGXhv5sRqDxiE
+      VKCwk98szAk5UmutMJFQB2WM+U/GyGyDtM8nxrVcyGc3L4JugtDYjOTNKlgm
+      59uMy0JT/Jb33MG1/VEVxLEtQpxg7oMenvr1uPXU+gPvjzAD
+    TEXT
+
+    expect(value.first).to eq(encoded_output)
   end
 end
