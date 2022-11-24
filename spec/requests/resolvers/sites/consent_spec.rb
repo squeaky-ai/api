@@ -34,7 +34,7 @@ RSpec.describe Resolvers::Sites::Consent, type: :request do
     it 'returns the created data' do
       response = subject['data']['site']['consent']
       expect(response).to eq(
-        'consentMethod' => 'widget',
+        'consentMethod' => 'disabled',
         'languages' => ['en'],
         'languagesDefault' => 'en',
         'layout' => 'bottom_left',
