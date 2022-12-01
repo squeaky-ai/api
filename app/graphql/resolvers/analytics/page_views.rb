@@ -33,7 +33,7 @@ module Resolvers
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(exited_at / 1000), ?) date_key
+            formatDateTime(toDateTime(exited_at / 1000), ?) date_key
           FROM
             page_events
           WHERE
