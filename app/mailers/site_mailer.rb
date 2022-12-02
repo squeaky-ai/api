@@ -24,6 +24,13 @@ class SiteMailer < ApplicationMailer
     mail(to: user.email, subject: "You've exceeded your monthly visit limit on #{site.name}")
   end
 
+  def plan_nearing_limit(site, user)
+    @site = site
+    @user = user
+
+    mail(to: user.email, subject: "You'll exceed your monthly visit limit soon for #{site.name}")
+  end
+
   def new_feedback(data, user)
     @site = data[:site]
     @nps = data[:nps]

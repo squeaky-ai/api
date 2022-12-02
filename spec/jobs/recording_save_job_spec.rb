@@ -176,6 +176,20 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
   end
 
+  context 'when the site recording count is nearing the limit' do
+    before do
+      allow(PlanService).to receive(:alert_if_nearing_limit).and_call_original
+      allow_any_instance_of(Plan).to receive(:fractional_usage).and_return(0.90)
+    end
+
+    subject { described_class.perform_now(event) }
+
+    it 'checks if the exceeded email needs to be send' do
+      subject
+      expect(PlanService).to have_received(:alert_if_nearing_limit)
+    end
+  end
+
   context 'when the site was not verified' do
     before do
       site.update(verified_at: nil)

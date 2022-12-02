@@ -69,6 +69,13 @@ class SitePreview < ActionMailer::Preview
     SiteMailer.plan_exceeded(site, data, user)
   end
 
+  def plan_nearing_limit
+    site = Site.first
+    user = site.team.first.user
+
+    SiteMailer.plan_nearing_limit(site, user)
+  end
+
   def new_feedback
     site = Site.find(1)
     user = site.team.first.user

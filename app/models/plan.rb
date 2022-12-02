@@ -46,6 +46,10 @@ class Plan < ApplicationRecord
     self[:support].empty? ? plan_defaults[:support] : self[:support]
   end
 
+  def fractional_usage
+    all_recordings_count / max_monthly_recordings
+  end
+
   private
 
   def all_recordings_count

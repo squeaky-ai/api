@@ -119,6 +119,19 @@ RSpec.describe SiteMailer, type: :mailer do
     end
   end
 
+  describe '#plan_nearing_limit' do
+    let(:user) { create(:user) }
+    let(:site) { create(:site_with_team) }
+
+    subject { described_class.plan_nearing_limit(site, user) }
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq "You'll exceed your monthly visit limit soon for #{site.name}"
+      expect(subject.to).to eq [user.email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+  end
+
   describe '#new_feedback' do
     let(:site) { create(:site_with_team) }
     let(:user) { site.team.first.user }
