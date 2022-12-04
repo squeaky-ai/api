@@ -60,7 +60,7 @@ module Resolvers
       def total_referrers_count
         sql = <<-SQL
           SELECT
-            COUNT(*) count
+            COUNT(DISTINCT COALESCE(referrer, 'Direct')) count
           FROM
             recordings
           WHERE
