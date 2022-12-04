@@ -7,15 +7,16 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
+      argument :sort, Types::Analytics::BrowsersSort, required: false, default_value: 'count__desc'
 
-      def resolve_with_timings(page:, size:)
+      def resolve_with_timings(page:, size:, sort:)
         total_recordings_count = DataCacheService::Recordings::Count.new(
           site: object.site,
           from_date: object.range.from,
           to_date: object.range.to
         ).call
 
-        results = browsers(page, size)
+        results = browsers(page, size, sort)
 
         {
           items: format_results(results, total_recordings_count),
@@ -28,7 +29,7 @@ module Resolvers
 
       private
 
-      def browsers(page, size)
+      def browsers(page, size, sort)
         sql = <<-SQL
           SELECT
             DISTINCT(browser) browser,
@@ -40,8 +41,7 @@ module Resolvers
             toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
           GROUP BY
             browser
-          ORDER BY
-            count DESC
+          ORDER BY #{order(sort)}
           LIMIT ?
           OFFSET ?
         SQL
@@ -55,6 +55,14 @@ module Resolvers
         ]
 
         Sql::ClickHouse.select_all(sql, variables)
+      end
+
+      def order(sort)
+        orders = {
+          'count__desc' => 'count DESC',
+          'count__asc' => 'count ASC'
+        }
+        orders[sort]
       end
 
       def total_browsers_count

@@ -55,6 +55,7 @@ module Resolvers
           visitors = filter_by_status(visitors, filters)
           visitors = filter_by_recordings(visitors, filters)
           visitors = filter_by_language(visitors, filters)
+          visitors = filter_by_browsers(visitors, filters)
           visitors = filter_by_first_visited(visitors, filters)
           visitors = filter_by_last_activity(visitors, filters)
           visitors = filter_by_visited_pages(visitors, filters)
@@ -127,6 +128,14 @@ module Resolvers
         locales = filters.languages.map { |l| Locale.get_locale(l).downcase }
 
         visitors.where('LOWER(recordings.locale) IN (?)', locales)
+      end
+
+      # Adds a filter that lets users show only visitors
+      # who have recordings with given browsers
+      def filter_by_browsers(visitors, filters)
+        return visitors unless filters.browsers.any?
+
+        visitors.where('recordings.browser IN (?)', filters.browsers)
       end
 
       # Allow filtering of visitors that include certain
