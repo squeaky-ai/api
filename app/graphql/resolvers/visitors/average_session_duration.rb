@@ -16,7 +16,7 @@ module Resolvers
             visitor_id = ?
         SQL
 
-        Sql::ClickHouse.select_value(sql, [object.site_id, object.id])
+        Sql::ClickHouse.select_value(sql, [object.site_id, object.id]) || 0
       end
     end
   end
