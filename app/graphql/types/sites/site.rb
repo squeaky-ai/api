@@ -35,6 +35,7 @@ module Types
       field :tags, [Types::Tags::Tag, { null: false }], null: false
       field :heatmaps, Types::Heatmaps::Heatmaps, null: false do
         argument :device, Types::Heatmaps::Device, required: true, default_value: 'Desktop'
+        argument :type, Types::Heatmaps::Type, required: true
         argument :page, String, required: true
         argument :from_date, GraphQL::Types::ISO8601Date, required: true
         argument :to_date, GraphQL::Types::ISO8601Date, required: true

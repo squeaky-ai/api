@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 heatmaps_counts_query = <<-GRAPHQL
-  query($site_id: ID!, $device: HeatmapsDevice!, $page: String!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
+  query($site_id: ID!, $type: HeatmapsType!, $device: HeatmapsDevice!, $page: String!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      heatmaps(device: $device, page: $page, fromDate: $from_date, toDate: $to_date) {
+      heatmaps(device: $device, type: $type, page: $page, fromDate: $from_date, toDate: $to_date) {
         counts {
           desktop
           tablet
@@ -26,6 +26,7 @@ RSpec.describe Resolvers::Heatmaps::Counts, type: :request do
         site_id: site.id,
         device: 'Desktop',
         page: '/',
+        type: 'ClickCount',
         from_date: '2021-08-01', 
         to_date: '2021-08-08' 
       }
@@ -177,6 +178,7 @@ RSpec.describe Resolvers::Heatmaps::Counts, type: :request do
         site_id: site.id,
         device: 'Desktop',
         page: '/',
+        type: 'ClickCount', 
         from_date: '2022-04-23', 
         to_date: '2022-04-30' 
       }
