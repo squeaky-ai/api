@@ -61,7 +61,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     session.clean_up!
 
     PlanService.alert_if_exceeded(site)
-    # PlanService.alert_if_nearing_limit(site) TODO
+    PlanService.alert_if_nearing_limit(site)
     RecordingMailerService.enqueue_if_first_recording(site)
   end
 
