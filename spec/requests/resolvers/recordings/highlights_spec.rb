@@ -53,8 +53,10 @@ RSpec.describe Resolvers::Recordings::Highlights, type: :request do
     let!(:long_recording_5) { create(:recording, site:, connected_at: 1667028014074, disconnected_at: 1667028026074 )}
 
     it 'returns the results' do
-      expect(subject['data']['site']['recordingsHighlights']).to eq(
-        'eventful' => [
+      results = subject['data']['site']['recordingsHighlights']
+
+      expect(results['eventful']).to match_array(
+        [
           {
             'id' => eventful_recording_1.id.to_s
           },
@@ -70,8 +72,11 @@ RSpec.describe Resolvers::Recordings::Highlights, type: :request do
           {
             'id' => eventful_recording_5.id.to_s
           }
-        ],
-        'longest' => [
+        ]
+      )
+
+      expect(results['longest']).to match_array(
+        [
           {
             'id' => long_recording_1.id.to_s
           },

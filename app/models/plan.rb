@@ -47,7 +47,7 @@ class Plan < ApplicationRecord
   end
 
   def fractional_usage
-    all_recordings_count / max_monthly_recordings
+    all_recordings_count.to_f / max_monthly_recordings
   end
 
   private
