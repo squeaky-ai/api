@@ -1,0 +1,133 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe DudaService::Auth do
+  describe '#valid?' do
+    subject { described_class.new(**params).valid? }
+
+    context 'when some of the params are missing' do
+      let(:params) do
+        {
+          sdk_url: 'https://test.com',
+          timestamp: nil,
+          secure_sig: nil,
+          site_name: 'Squeaky',
+          current_user_uuid: SecureRandom.uuid
+        }
+      end
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context 'when the signature is invalid' do
+      let(:site_name) { 'squeaky' }
+      let(:sdk_url) { 'https://test.com' }
+      let(:timestamp) { Time.now.to_i }
+
+      let(:rsa) do
+        key = OpenSSL::PKey::RSA.generate(2048, 3)
+        OpenSSL::PKey::RSA.new(key)
+      end
+
+      let(:secure_sig) { 'definitely_a_fake_token' }
+
+      let(:params) do
+        {
+          sdk_url:,
+          timestamp:,
+          secure_sig:,
+          site_name:,
+          current_user_uuid: SecureRandom.uuid
+        }
+      end
+
+      before do
+        ENV['DUDA_PUBLIC_KEY'] = rsa
+          .public_key
+          .to_s
+          .to_s.sub('-----BEGIN PUBLIC KEY-----', '')
+          .sub('-----END PUBLIC KEY-----', '')
+          .strip
+      end
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context 'when the signature is valid' do
+      let(:site_name) { 'squeaky' }
+      let(:sdk_url) { 'https://test.com' }
+      let(:timestamp) { Time.now.to_i }
+
+      let(:rsa) do
+        key = OpenSSL::PKey::RSA.generate(2048, 3)
+        OpenSSL::PKey::RSA.new(key)
+      end
+
+      let(:secure_sig) { rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s }
+
+      let(:params) do
+        {
+          sdk_url:,
+          timestamp:,
+          secure_sig:,
+          site_name:,
+          current_user_uuid: SecureRandom.uuid
+        }
+      end
+
+      before do
+        ENV['DUDA_PUBLIC_KEY'] = rsa
+          .public_key
+          .to_s
+          .to_s.sub('-----BEGIN PUBLIC KEY-----', '')
+          .sub('-----END PUBLIC KEY-----', '')
+          .strip
+      end
+
+      it 'returns true' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'when the signature is valid but the timestamp is old' do
+      let(:site_name) { 'squeaky' }
+      let(:sdk_url) { 'https://test.com' }
+      let(:timestamp) { Time.now.to_i - 200 } # the limit is 120
+
+      let(:rsa) do
+        key = OpenSSL::PKey::RSA.generate(2048, 3)
+        OpenSSL::PKey::RSA.new(key)
+      end
+
+      let(:secure_sig) { rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s }
+
+      let(:params) do
+        {
+          sdk_url:,
+          timestamp:,
+          secure_sig:,
+          site_name:,
+          current_user_uuid: SecureRandom.uuid
+        }
+      end
+
+      before do
+        ENV['DUDA_PUBLIC_KEY'] = rsa
+          .public_key
+          .to_s
+          .to_s.sub('-----BEGIN PUBLIC KEY-----', '')
+          .sub('-----END PUBLIC KEY-----', '')
+          .strip
+      end
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
+end

@@ -4,7 +4,7 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
-  scope 'api' do
+  scope 'api' do # rubocop:disable Metrics/BlockLength
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
 
@@ -43,6 +43,16 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         # DELETE /api/auth/sign_out
         # -
         delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
+      end
+    end
+
+    scope 'integrations' do
+      scope 'websitebuilder', as: 'duda' do # they do not allow you to have the word duda in there
+        post 'install', to: 'integrations/duda#install'
+        post 'uninstall', to: 'integrations/duda#uninstall'
+        post 'change_plan', to: 'integrations/duda#change_plan'
+        get 'sso', to: 'integrations/duda#sso'
+        post 'webhook', to: 'integrations/duda#webhook'
       end
     end
   end
