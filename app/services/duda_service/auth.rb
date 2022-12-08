@@ -9,10 +9,10 @@ module DudaService
       site_name:,
       current_user_uuid:
     )
-      @sdk_url = sdk_url
+      @sdk_url = CGI.unescape(sdk_url)
       @timestamp = timestamp
-      @secure_sig = secure_sig
-      @site_name = site_name
+      @secure_sig = CGI.unescape(secure_sig)
+      @site_name = CGI.unescape(site_name)
       @current_user_uuid = current_user_uuid
     end
 
@@ -34,7 +34,7 @@ module DudaService
     end
 
     def timestamp_within_bounds?
-      (Time.now.to_i * 1000) - timestamp <= 120
+      (Time.now.to_i * 1000) - timestamp <= 120.seconds
     end
 
     def sig_data_to_verify
@@ -47,7 +47,7 @@ module DudaService
 
     def decryped_public_key
       public_key = OpenSSL::PKey::RSA.new(duda_public_key)
-      public_key.public_decrypt(secure_sig)
+      public_key.public_decrypt(Base64.decode64(secure_sig))
     rescue OpenSSL::OpenSSLError => e
       Rails.logger.error("Failed to decrypt sig - #{e}")
       nil

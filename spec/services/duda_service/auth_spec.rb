@@ -11,7 +11,7 @@ RSpec.describe DudaService::Auth do
         {
           sdk_url: 'https://test.com',
           timestamp: nil,
-          secure_sig: nil,
+          secure_sig: '',
           site_name: 'Squeaky',
           current_user_uuid: SecureRandom.uuid
         }
@@ -68,14 +68,20 @@ RSpec.describe DudaService::Auth do
         OpenSSL::PKey::RSA.new(key)
       end
 
-      let(:secure_sig) { rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s }
+      let(:secure_sig) do
+        CGI.escape(
+          Base64.encode64(
+            rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
+          )
+        )
+      end
 
       let(:params) do
         {
-          sdk_url:,
+          sdk_url: CGI.escape(sdk_url),
           timestamp:,
           secure_sig:,
-          site_name:,
+          site_name: CGI.escape(site_name),
           current_user_uuid: SecureRandom.uuid
         }
       end
@@ -104,14 +110,20 @@ RSpec.describe DudaService::Auth do
         OpenSSL::PKey::RSA.new(key)
       end
 
-      let(:secure_sig) { rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s }
+      let(:secure_sig) do
+        CGI.escape(
+          Base64.encode64(
+            rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
+          )
+        )
+      end
 
       let(:params) do
         {
-          sdk_url:,
+          sdk_url: CGI.escape(sdk_url),
           timestamp:,
           secure_sig:,
-          site_name:,
+          site_name: CGI.escape(site_name),
           current_user_uuid: SecureRandom.uuid
         }
       end
