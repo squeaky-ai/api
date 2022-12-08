@@ -16,21 +16,30 @@ module Integrations
 
     def sso
       Rails.logger.info "Authing Duda with: #{sso_params.to_json}"
-      auth = DudaService::Auth.new(**sso_params)
 
       # If auth is valid then log the user in and redirect
 
-      render json: { status: auth.valid? ? 'OK' : 'Not OK' }
+      render json: { status: duda_auth_service.valid? ? 'OK' : 'Not OK' }
     end
 
     def webhook
       render json: { status: 'OK' }
     end
-  end
 
-  private
+    private
 
-  def sso_params
-    params.permit(:sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid)
+    def sso_params
+      params.permit(:sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid)
+    end
+
+    def duda_auth_service
+      @duda_auth_service ||= DudaService::Auth.new(
+        sdk_url: sso_params['sdk_url'],
+        secure_sig: sso_params['secure_sig'],
+        site_name: sso_params['site_name'],
+        timestamp: sso_params['timestamp'].to_i,
+        current_user_uuid: sso_params['current_user_uuid']
+      )
+    end
   end
 end

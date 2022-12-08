@@ -34,7 +34,7 @@ module DudaService
     end
 
     def timestamp_within_bounds?
-      Time.now.to_i - timestamp <= 120
+      (Time.now.to_i * 1000) - timestamp <= 120
     end
 
     def sig_data_to_verify
