@@ -20,7 +20,7 @@ module DudaService
       return false unless all_params_present?
       return false unless timestamp_within_bounds?
 
-      sig_data_to_verify == decryped_public_key
+      signature_valid?
     end
 
     private
@@ -28,13 +28,30 @@ module DudaService
     attr_reader :sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid
 
     def all_params_present?
-      %i[sdk_url timestamp secure_sig site_name current_user_uuid].all? do |param|
+      all_present = %i[sdk_url timestamp secure_sig site_name current_user_uuid].all? do |param|
         !send(param).nil?
       end
+
+      Rails.logger.warn('Not all params are present') unless all_present
+
+      all_present
     end
 
     def timestamp_within_bounds?
-      (Time.now.to_i * 1000) - timestamp <= 120.seconds
+      now = Time.now.to_i * 1000
+      within_bounds = now - timestamp <= 120.seconds
+
+      Rails.logger.warn("Timestamp not within bounds: #{now} - #{timestamp}") unless within_bounds
+
+      within_bounds
+    end
+
+    def signature_valid?
+      valid = sig_data_to_verify == decryped_public_key
+
+      Rails.logger.warn("Signature is not valid: #{sig_data_to_verify} != #{decryped_public_key}") unless valid
+
+      valid
     end
 
     def sig_data_to_verify
