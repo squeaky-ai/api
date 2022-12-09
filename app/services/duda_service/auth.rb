@@ -11,7 +11,7 @@ module DudaService
     )
       @sdk_url = CGI.unescape(sdk_url)
       @timestamp = timestamp
-      @secure_sig = CGI.unescape(secure_sig)
+      @secure_sig = secure_sig
       @site_name = CGI.unescape(site_name)
       @current_user_uuid = current_user_uuid
     end

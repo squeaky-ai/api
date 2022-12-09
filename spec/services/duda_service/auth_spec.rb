@@ -69,10 +69,8 @@ RSpec.describe DudaService::Auth do
       end
 
       let(:secure_sig) do
-        CGI.escape(
-          Base64.encode64(
-            rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
-          )
+        Base64.encode64(
+          rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
         )
       end
 
@@ -111,10 +109,8 @@ RSpec.describe DudaService::Auth do
       end
 
       let(:secure_sig) do
-        CGI.escape(
-          Base64.encode64(
-            rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
-          )
+        Base64.encode64(
+          rsa.private_encrypt("#{site_name}:#{sdk_url}:#{timestamp}").to_s
         )
       end
 
