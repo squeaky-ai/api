@@ -28,8 +28,8 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:site_response) { double(:site_response, body: site_response_body) }
 
     before do
-      ENV['SQUEAKY_DUDA_USERNAME'] = 'username'
-      ENV['SQUEAKY_DUDA_PASSWORD'] = 'password'
+      ENV['DUDA_USERNAME'] = 'username'
+      ENV['DUDA_PASSWORD'] = 'password'
 
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/sites/multiscreen/#{site_name}", anything)

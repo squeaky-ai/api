@@ -17,8 +17,8 @@ RSpec.describe DudaService::Site do
   let(:instance) { described_class.new(site_name:, api_endpoint:) }
 
   before do
-    ENV['SQUEAKY_DUDA_USERNAME'] = 'username'
-    ENV['SQUEAKY_DUDA_PASSWORD'] = 'password'
+    ENV['DUDA_USERNAME'] = 'username'
+    ENV['DUDA_PASSWORD'] = 'password'
 
     allow(HTTParty).to receive(:get).and_return(response)
   end

@@ -36,7 +36,7 @@ module DudaService
       {
         timeout: 5,
         headers: {
-          Authorization: "Basic #{Base64.encode64("#{ENV.fetch('SQUEAKY_DUDA_USERNAME')}:#{ENV.fetch('SQUEAKY_DUDA_PASSWORD')}")}"
+          Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
         }
       }
     end
