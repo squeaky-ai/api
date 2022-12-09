@@ -39,7 +39,7 @@ module DudaService
 
     def timestamp_within_bounds?
       now = Time.now.to_i * 1000
-      within_bounds = now - timestamp <= 120.seconds
+      within_bounds = now - timestamp <= max_timestamp_difference_ms
 
       Rails.logger.warn("Timestamp not within bounds: #{now} - #{timestamp}") unless within_bounds
 
@@ -68,6 +68,10 @@ module DudaService
     rescue OpenSSL::OpenSSLError => e
       Rails.logger.error("Failed to decrypt sig - #{e}")
       nil
+    end
+
+    def max_timestamp_difference_ms
+      120.seconds * 1000
     end
   end
 end
