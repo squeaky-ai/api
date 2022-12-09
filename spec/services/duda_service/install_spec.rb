@@ -75,8 +75,6 @@ RSpec.describe DudaService::Install do
       let(:installer_account_uuid) { user_uuid }
 
       it 'only creates one user' do
-        subject
-
         expect { subject }.to change { User.all.size }.by(1)
       end
     end

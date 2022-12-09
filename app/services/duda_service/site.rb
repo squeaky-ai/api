@@ -5,8 +5,7 @@ module DudaService
     def initialize(site_name:, api_endpoint:)
       @site_name = site_name
       @api_endpoint = api_endpoint
-
-      @site = HTTParty.get(request_url, request_options).body
+      @site = site_response_body
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise
@@ -39,6 +38,11 @@ module DudaService
           Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
         }
       }
+    end
+
+    def site_response_body
+      response = HTTParty.get(request_url, request_options)
+      JSON.parse(response.body)
     end
   end
 end

@@ -39,14 +39,16 @@ module DudaService
     end
 
     def create_user!(uuid, role)
-      user = User.create!(
+      user = User.new(
         email: "#{uuid}@duda.com",
         provider: 'duda',
         provider_uuid: uuid,
         password: Devise.friendly_token.first(10)
       )
 
+      user.skip_confirmation_notification!
       user.confirm
+      user.save!
 
       Team.create!(
         role:,

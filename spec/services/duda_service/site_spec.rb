@@ -11,7 +11,7 @@ RSpec.describe DudaService::Site do
     {
       'site_default_domain' => 'https://site-domain.com',
       'site_name' => site_name
-    }
+    }.to_json
   end
 
   let(:instance) { described_class.new(site_name:, api_endpoint:) }

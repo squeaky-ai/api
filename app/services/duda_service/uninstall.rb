@@ -7,7 +7,8 @@ module DudaService
     end
 
     def uninstall!
-      site = ::Site.find_by(uuid: site_name)
+      site = ::Site.find_by!(uuid: site_name)
+      site.team.each { |team| team.user.destroy! }
       site.destroy_all_recordings!
       site.destroy!
     end

@@ -27,7 +27,7 @@ RSpec.describe DudaService::Uninstall do
     end
 
     it 'deletes the team members' do
-      expect { subject }.to change { Team.where(site_id: site.id).size }.from(3).to(0)
+      expect { subject }.to change { Team.all.size }.from(3).to(0)
     end
 
     it 'kicks off some jobs to clean up the recordings' do
