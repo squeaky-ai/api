@@ -3,7 +3,92 @@
 require 'rails_helper'
 
 RSpec.describe Integrations::DudaController, type: :controller do
+  describe 'POST /integrations/websitebuilder/install' do
+    let(:account_owner_uuid) { SecureRandom.uuid }
+    let(:installer_account_uuid) { SecureRandom.uuid }
+    let(:site_name) { SecureRandom.uuid }
+    let(:api_endpoint) { 'https://api-endpoint.com' }
+
+    let(:params) do
+      {
+        account_owner_uuid:, 
+        installer_account_uuid:, 
+        site_name:, 
+        api_endpoint:
+      }
+    end
+
+    let(:site_response_body) do
+      {
+        'site_default_domain' => 'https://my-domain.com',
+        'site_name' => site_name
+      }
+    end
+
+    let(:site_response) { double(:site_response, body: site_response_body) }
+
+    before do
+      ENV['SQUEAKY_DUDA_USERNAME'] = 'username'
+      ENV['SQUEAKY_DUDA_PASSWORD'] = 'password'
+
+      allow(HTTParty).to receive(:get)
+        .with("#{api_endpoint}/api/sites/multiscreen/#{site_name}", anything)
+        .and_return(site_response)
+    end
+
+    subject do
+      post :install, params:
+    end
+
+    it 'returns okay' do
+      subject
+
+      expect(response).to have_http_status(200)
+      expect(json_body).to eq('status' => 'OK')
+    end
+
+    it 'creates the site' do
+      expect { subject }.to change { Site.all.count }.by(1)
+    end
+
+    it 'creates the users' do
+      expect { subject }.to change { User.all.count }.by(2)
+    end
+
+    it 'creates the teams' do
+      expect { subject }.to change { Team.all.count }.by(2)
+    end
+  end
+
+  describe 'POST /integrations/websitebuilder/uninstall' do
+    let!(:site) { create(:site) }
+
+    let(:params) do
+      {
+        site_name: site.uuid
+      }
+    end
+
+    subject do
+      post :uninstall, params:
+    end
+
+    it 'returns okay' do
+      subject
+
+      expect(response).to have_http_status(200)
+      expect(json_body).to eq('status' => 'OK')
+    end
+
+    it 'deletes the site' do
+      expect { subject }.to change { Site.all.count }.by(-1)
+    end
+  end
+  
   describe 'GET /integrations/websitebuilder/sso' do
+    let!(:user) { create(:user, provider_uuid: SecureRandom.uuid) }
+    let!(:site) { create(:site_with_team, owner: user) }
+
     let(:site_name) { 'squeaky' }
     let(:sdk_url) { 'https://test.com' }
     let(:timestamp) { Time.now.to_i * 1000 }
@@ -25,7 +110,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
         timestamp:,
         secure_sig:,
         site_name: CGI.escape(site_name),
-        current_user_uuid: SecureRandom.uuid
+        current_user_uuid: user.provider_uuid
       }
     end
 
@@ -42,11 +127,10 @@ RSpec.describe Integrations::DudaController, type: :controller do
       get :sso, params:
     end
 
-    it 'returns okay' do
+    it 'signs the user in and redirects them' do
       subject
 
-      expect(response).to have_http_status(200)
-      expect(json_body).to eq('status' => 'OK')
+      expect(response).to have_http_status(302)
     end
   end
 end

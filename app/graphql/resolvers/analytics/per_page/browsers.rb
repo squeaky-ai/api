@@ -3,7 +3,7 @@
 module Resolvers
   module Analytics
     module PerPage
-      class Browsers < Resolvers::Base
+      class Browsers < Resolvers::Base # rubocop:disable Metrics/ClassLength
         type Types::Analytics::Browsers, null: false
 
         argument :page, Integer, required: false, default_value: 1

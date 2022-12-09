@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_221_119_084_150) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_09_115252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -300,6 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 20_221_119_084_150) do
     t.boolean 'consent_enabled', default: false, null: false
     t.boolean 'anonymise_text', default: true, null: false
     t.integer 'site_type'
+    t.string 'provider'
     t.index ['url'], name: 'index_sites_on_url', unique: true
     t.index ['uuid'], name: 'index_sites_on_uuid', unique: true
   end
@@ -375,6 +376,8 @@ ActiveRecord::Schema[7.0].define(version: 20_221_119_084_150) do
     t.datetime 'updated_at', null: false
     t.boolean 'superuser', default: false
     t.datetime 'last_activity_at'
+    t.string 'provider'
+    t.string 'provider_uuid'
     t.index ['confirmation_token'], name: 'index_users_on_confirmation_token', unique: true
     t.index ['email'], name: 'index_users_on_email', unique: true
     t.index ['invitation_token'], name: 'index_users_on_invitation_token', unique: true

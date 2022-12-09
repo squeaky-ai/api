@@ -21,7 +21,7 @@ module Mutations
         # Send an email to us so we have a record of it
         AdminMailer.site_destroyed(site).deliver_now
         site.destroy_all_recordings!
-        site.destroy
+        site.destroy!
 
         nil
       end
