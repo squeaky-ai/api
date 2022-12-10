@@ -88,7 +88,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
   end
   
   describe 'GET /integrations/websitebuilder/sso' do
-    let!(:user) { create(:user, provider_uuid: SecureRandom.uuid) }
+    let!(:user) { create(:user, provider: 'duda', provider_uuid: SecureRandom.uuid) }
     let!(:site) { create(:site_with_team, owner: user) }
 
     let(:site_name) { 'squeaky' }

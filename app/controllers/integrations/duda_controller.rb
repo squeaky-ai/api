@@ -2,6 +2,8 @@
 
 module Integrations
   class DudaController < ApplicationController
+    after_action :set_same_site_cookie_value
+
     def install
       Rails.logger.info "Installing Duda application with: #{install_params.to_json}"
 
@@ -30,9 +32,6 @@ module Integrations
       # 1. set same site to none
       # 2. create the user if they don't exist
       sign_in(:user, user)
-
-      puts "!! setting cookie, value is: #{response.headers['set-cookie']}"
-      response.headers['Set-Cookie']&.sub('SameSite=Lax', 'SameSite=None; Secure;')
 
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true
     end
@@ -77,6 +76,11 @@ module Integrations
       @duda_uninstall_service ||= DudaService::Uninstall.new(
         site_name: uninstall_params['site_name']
       )
+    end
+
+    def set_same_site_cookie_value
+      # request.session_options[:secure] = true
+      request.session_options[:same_site] = 'None'
     end
   end
 end
