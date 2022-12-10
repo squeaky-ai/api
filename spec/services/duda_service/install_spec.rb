@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe DudaService::Install do
   describe '#install_all!' do
     let(:account_owner_uuid) { SecureRandom.uuid }
-    let(:installer_account_uuid) { SecureRandom.uuid }
     let(:site_name) { SecureRandom.uuid }
+    let(:email) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
 
     let(:uuid) { site_name }
@@ -15,8 +15,9 @@ RSpec.describe DudaService::Install do
     let(:site_response_body) do
       {
         'site_default_domain' => domain,
-        'site_name' => site_name
-      }
+        'site_name' => site_name,
+        'account_name' => email
+      }.to_json
     end
 
     let(:site_response) { double(:site_response, body: site_response_body) }
@@ -33,7 +34,6 @@ RSpec.describe DudaService::Install do
     subject do
       described_class.new(
         account_owner_uuid:,
-        installer_account_uuid:,
         site_name:,
         api_endpoint:
       ).install_all!
@@ -47,36 +47,16 @@ RSpec.describe DudaService::Install do
       expect(site.url).to eq(domain)
     end
 
-    it 'creates an owner with the account owner uuid' do
+    it 'creates the owner and team' do
       subject
 
       site = Site.find_by(uuid: site_name)
       user = User.find_by(provider_uuid: account_owner_uuid)
 
       expect(user).not_to be_nil
+      expect(user.email).to eq(email)
       expect(user.provider).to eq('duda')
       expect(user.owner_for?(site)).to eq(true)
-    end
-
-    it 'creates an other user with the installer owner uuid' do
-      subject
-
-      site = Site.find_by(uuid: site_name)
-      user = User.find_by(provider_uuid: installer_account_uuid)
-
-      expect(user).not_to be_nil
-      expect(user.provider).to eq('duda')
-      expect(user.admin_for?(site)).to eq(true)
-    end
-
-    context 'when the owner and installer are the same person' do
-      let(:user_uuid) { SecureRandom.uuid }
-      let(:account_owner_uuid) { user_uuid }
-      let(:installer_account_uuid) { user_uuid }
-
-      it 'only creates one user' do
-        expect { subject }.to change { User.all.size }.by(1)
-      end
     end
   end
 end

@@ -7,6 +7,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:account_owner_uuid) { SecureRandom.uuid }
     let(:installer_account_uuid) { SecureRandom.uuid }
     let(:site_name) { SecureRandom.uuid }
+    let(:email) { 'email@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
 
     let(:params) do
@@ -21,8 +22,9 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:site_response_body) do
       {
         'site_default_domain' => 'https://my-domain.com',
-        'site_name' => site_name
-      }
+        'site_name' => site_name,
+        'account_name' => email
+      }.to_json
     end
 
     let(:site_response) { double(:site_response, body: site_response_body) }
@@ -51,12 +53,12 @@ RSpec.describe Integrations::DudaController, type: :controller do
       expect { subject }.to change { Site.all.count }.by(1)
     end
 
-    it 'creates the users' do
-      expect { subject }.to change { User.all.count }.by(2)
+    it 'creates the user' do
+      expect { subject }.to change { User.all.count }.by(1)
     end
 
-    it 'creates the teams' do
-      expect { subject }.to change { Team.all.count }.by(2)
+    it 'creates the team' do
+      expect { subject }.to change { Team.all.count }.by(1)
     end
   end
 

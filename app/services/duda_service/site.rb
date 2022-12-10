@@ -23,6 +23,10 @@ module DudaService
       site['site_name']
     end
 
+    def account_email
+      site['account_name']
+    end
+
     private
 
     attr_reader :site, :site_name, :api_endpoint

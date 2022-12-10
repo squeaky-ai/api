@@ -3,14 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe DudaService::Site do
+  let(:email) { 'email@site.com' }
+  let(:domain) { 'https://site-domain.com' }
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
   let(:response) { double(:response, body: response_body) }
 
   let(:response_body) do
     {
-      'site_default_domain' => 'https://site-domain.com',
-      'site_name' => site_name
+      'site_default_domain' => domain,
+      'site_name' => site_name,
+      'account_name' => email
     }.to_json
   end
 
@@ -35,7 +38,7 @@ RSpec.describe DudaService::Site do
     subject { instance.domain }
 
     it 'returns the domain' do
-      expect(subject).to eq('https://site-domain.com')
+      expect(subject).to eq(domain)
     end
   end
 
@@ -44,6 +47,14 @@ RSpec.describe DudaService::Site do
 
     it 'returns the uuid' do
       expect(subject).to eq(site_name)
+    end
+  end
+
+  describe '#account_email' do
+    subject { instance.account_email }
+
+    it 'returns the email' do
+      expect(subject).to eq(email)
     end
   end
 end

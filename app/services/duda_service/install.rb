@@ -4,24 +4,22 @@ module DudaService
   class Install
     def initialize(
       account_owner_uuid:,
-      installer_account_uuid:,
       site_name:,
       api_endpoint:
     )
       @account_owner_uuid = account_owner_uuid
-      @installer_account_uuid = installer_account_uuid
       @site_name = site_name
       @api_endpoint = api_endpoint
     end
 
     def install_all!
       create_site!
-      create_users!
+      create_user!
     end
 
     private
 
-    attr_reader :site, :account_owner_uuid, :installer_account_uuid, :site_name, :api_endpoint, :auth
+    attr_reader :site, :account_owner_uuid, :site_name, :api_endpoint, :auth
 
     def create_site!
       @site = ::Site.create!(
@@ -33,16 +31,11 @@ module DudaService
       )
     end
 
-    def create_users!
-      create_user!(account_owner_uuid, Team::OWNER)
-      create_user!(installer_account_uuid, Team::ADMIN) unless account_owner_uuid == installer_account_uuid
-    end
-
-    def create_user!(uuid, role)
+    def create_user!
       user = User.new(
-        email: "#{uuid}@duda.com",
+        email: duda_site_service.account_email,
         provider: 'duda',
-        provider_uuid: uuid,
+        provider_uuid: account_owner_uuid,
         password: Devise.friendly_token.first(10)
       )
 
@@ -51,11 +44,11 @@ module DudaService
       user.save!
 
       Team.create!(
-        role:,
-        user:,
         site:,
+        user:,
+        role: Team::OWNER,
         status: Team::ACCEPTED,
-        linked_data_visible: role == Team::ADMIN
+        linked_data_visible: true
       )
     end
 

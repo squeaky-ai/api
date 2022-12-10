@@ -26,7 +26,11 @@ module Integrations
       raise ActionController::BadRequest unless duda_auth_service.valid?
 
       user = User.find_by!(provider_uuid: params[:current_user_uuid])
+      # TODO
+      # 1. set same site to none
+      # 2. create the user if they don't exist
       sign_in(:user, user)
+      # response.headers['Set-Cookie'] = 'Secure;SameSite=None'
 
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true
     end
@@ -62,7 +66,6 @@ module Integrations
     def duda_install_service
       @duda_install_service ||= DudaService::Install.new(
         account_owner_uuid: install_params['account_owner_uuid'],
-        installer_account_uuid: install_params['installer_account_uuid'],
         site_name: install_params['site_name'],
         api_endpoint: install_params['api_endpoint']
       )
