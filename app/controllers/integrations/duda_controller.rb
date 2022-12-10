@@ -28,9 +28,6 @@ module Integrations
       raise ActionController::BadRequest unless duda_auth_service.valid?
 
       user = User.find_by!(provider_uuid: params[:current_user_uuid])
-      # TODO
-      # 1. set same site to none
-      # 2. create the user if they don't exist
       sign_in(:user, user)
 
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true
@@ -79,6 +76,7 @@ module Integrations
     end
 
     def set_same_site_cookie_value
+      # This is running in an iframe so must be set this way
       request.session_options[:secure] = true
       request.session_options[:same_site] = 'None'
     end

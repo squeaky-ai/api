@@ -6,21 +6,34 @@ RSpec.describe DudaService::Install do
   describe '#install_all!' do
     let(:account_owner_uuid) { SecureRandom.uuid }
     let(:site_name) { SecureRandom.uuid }
-    let(:email) { 'account@site.com' }
+    let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
 
     let(:uuid) { site_name }
     let(:domain) { 'https://my-domain.com' }
 
+    let(:first_name) { 'Bob' }
+    let(:last_name) { 'Dylan' }
+    let(:email) { 'bob@dylan.com' }
+
     let(:site_response_body) do
       {
         'site_default_domain' => domain,
         'site_name' => site_name,
-        'account_name' => email
+        'account_name' => account_name
+      }.to_json
+    end
+
+    let(:user_response_body) do
+      {
+        'first_name' => first_name,
+        'last_name' => last_name,
+        'email' => email
       }.to_json
     end
 
     let(:site_response) { double(:site_response, body: site_response_body) }
+    let(:user_response) { double(:user_response, body: user_response_body) }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
@@ -29,6 +42,10 @@ RSpec.describe DudaService::Install do
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/sites/multiscreen/#{site_name}", anything)
         .and_return(site_response)
+
+      allow(HTTParty).to receive(:get)
+        .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
+        .and_return(user_response)
     end
 
     subject do
@@ -55,6 +72,8 @@ RSpec.describe DudaService::Install do
 
       expect(user).not_to be_nil
       expect(user.email).to eq(email)
+      expect(user.first_name).to eq(first_name)
+      expect(user.last_name).to eq(last_name)
       expect(user.provider).to eq('duda')
       expect(user.owner_for?(site)).to eq(true)
     end

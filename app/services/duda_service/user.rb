@@ -1,38 +1,34 @@
 # frozen_string_literal: true
 
 module DudaService
-  class Site
-    def initialize(site_name:, api_endpoint:)
-      @site_name = site_name
+  class User
+    def initialize(account_name:, api_endpoint:)
+      @account_name = account_name
       @api_endpoint = api_endpoint
-      @site = site_response_body
+      @user = user_response_body
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise
     end
 
-    def name
-      'TODO'
+    def first_name
+      user['first_name']
     end
 
-    def domain
-      site['site_default_domain']
+    def last_name
+      user['last_name']
     end
 
-    def uuid
-      site['site_name']
-    end
-
-    def account_name
-      site['account_name']
+    def email
+      user['email']
     end
 
     private
 
-    attr_reader :site, :site_name, :api_endpoint
+    attr_reader :user, :account_name, :api_endpoint
 
     def request_url
-      "#{api_endpoint}/api/sites/multiscreen/#{site_name}"
+      "#{api_endpoint}/api/accounts/#{account_name}"
     end
 
     def request_options
@@ -44,7 +40,7 @@ module DudaService
       }
     end
 
-    def site_response_body
+    def user_response_body
       response = HTTParty.get(request_url, request_options)
       JSON.parse(response.body)
     end

@@ -7,8 +7,12 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:account_owner_uuid) { SecureRandom.uuid }
     let(:installer_account_uuid) { SecureRandom.uuid }
     let(:site_name) { SecureRandom.uuid }
-    let(:email) { 'email@site.com' }
+    let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
+
+    let(:first_name) { 'Bob' }
+    let(:last_name) { 'Dylan' }
+    let(:email) { 'bob@dylan.com' }
 
     let(:params) do
       {
@@ -23,11 +27,20 @@ RSpec.describe Integrations::DudaController, type: :controller do
       {
         'site_default_domain' => 'https://my-domain.com',
         'site_name' => site_name,
-        'account_name' => email
+        'account_name' => account_name
+      }.to_json
+    end
+
+    let(:user_response_body) do
+      {
+        'first_name' => first_name,
+        'last_name' => last_name,
+        'email' => email
       }.to_json
     end
 
     let(:site_response) { double(:site_response, body: site_response_body) }
+    let(:user_response) { double(:user_response, body: user_response_body) }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
@@ -36,6 +49,10 @@ RSpec.describe Integrations::DudaController, type: :controller do
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/sites/multiscreen/#{site_name}", anything)
         .and_return(site_response)
+
+      allow(HTTParty).to receive(:get)
+        .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
+        .and_return(user_response)
     end
 
     subject do

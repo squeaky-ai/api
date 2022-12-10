@@ -50,8 +50,8 @@ RSpec.describe DudaService::Site do
     end
   end
 
-  describe '#account_email' do
-    subject { instance.account_email }
+  describe '#account_name' do
+    subject { instance.account_name }
 
     it 'returns the email' do
       expect(subject).to eq(email)
