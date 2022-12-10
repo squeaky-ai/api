@@ -79,7 +79,7 @@ module Integrations
     end
 
     def set_same_site_cookie_value
-      # request.session_options[:secure] = true
+      request.session_options[:secure] = true
       request.session_options[:same_site] = 'None'
     end
   end
