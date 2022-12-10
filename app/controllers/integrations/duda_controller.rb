@@ -30,7 +30,9 @@ module Integrations
       # 1. set same site to none
       # 2. create the user if they don't exist
       sign_in(:user, user)
-      # response.headers['Set-Cookie'] = 'Secure;SameSite=None'
+
+      puts "!! setting cookie, value is: #{response.headers['set-cookie']}"
+      response.headers['Set-Cookie']&.sub('SameSite=Lax', 'SameSite=None; Secure;')
 
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true
     end
