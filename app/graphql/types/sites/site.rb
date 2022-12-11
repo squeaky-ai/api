@@ -12,6 +12,8 @@ module Types
       field :uuid, String, null: false
       field :site_type, Integer, null: false
       field :owner_name, String, null: false
+      field :provider, String, null: true
+      field :provider_uuid, String, null: true
       field :verified_at, GraphQL::Types::ISO8601DateTime, null: true
       field :team, [Types::Teams::Team], null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
