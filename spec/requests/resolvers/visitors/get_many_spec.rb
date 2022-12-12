@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 visitors_query = <<-GRAPHQL
-  query($site_id: ID!, $page: Int, $size: Int, $sort: VisitorsSort) {
+  query($site_id: ID!, $page: Int, $size: Int, $sort: VisitorsSort, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      visitors(page: $page, size: $size, sort: $sort) {
+      visitors(page: $page, size: $size, sort: $sort, fromDate: $from_date, toDate: $to_date) {
         items {
           id
           recordingCount {
@@ -46,7 +46,14 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { site_id: site.id }
+      today = Time.now.strftime('%Y-%m-%d')
+
+      variables = {
+        site_id: site.id, 
+        from_date: today, 
+        to_date: today
+      }
+
       graphql_request(visitors_query, variables, user)
     end
 
@@ -70,7 +77,12 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id }
+      variables = {
+        site_id: site.id, 
+        from_date: '2021-08-08', 
+        to_date: '2021-08-08'
+      }
+
       graphql_request(visitors_query, variables, user)
     end
 
@@ -100,7 +112,12 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id }
+      variables = {
+        site_id: site.id,
+        from_date: '2021-08-08', 
+        to_date: '2021-08-08'
+      }
+
       graphql_request(visitors_query, variables, user)
     end
 
@@ -122,7 +139,12 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     end
 
     subject do
-      variables = { site_id: site.id }
+      variables = {
+        site_id: site.id, 
+        from_date: '2021-08-08', 
+        to_date: '2021-08-08'
+      }
+
       graphql_request(visitors_query, variables, user)
     end
 

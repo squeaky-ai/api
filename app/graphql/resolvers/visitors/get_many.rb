@@ -10,11 +10,18 @@ module Resolvers
       argument :search, String, required: false, default_value: nil
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
       argument :filters, Types::Visitors::Filters, required: false, default_value: nil
+      argument :from_date, GraphQL::Types::ISO8601Date, required: true
+      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, search:, sort:, filters:)
+      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         visitors = object
                    .visitors
                    .includes(:recordings)
+                   .where(
+                     'to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                     from_date,
+                     to_date
+                   )
                    .order(order(sort))
 
         # Apply all the filters
