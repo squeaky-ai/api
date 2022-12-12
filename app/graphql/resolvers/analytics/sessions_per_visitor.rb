@@ -20,15 +20,19 @@ module Resolvers
       def get_average_count(from_date, to_date)
         sql = <<-SQL
           SELECT
-            visitor_id,
-            COUNT(visitor_id) count
-          FROM
-            recordings
-          WHERE
-            site_id = ? AND
-            toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
-          GROUP BY
-            visitor_id
+            AVG(count)
+          FROM (
+            SELECT
+              visitor_id,
+              COUNT(visitor_id) count
+            FROM
+              recordings
+            WHERE
+              site_id = ? AND
+              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+            GROUP BY
+              visitor_id
+          )
         SQL
 
         variables = [
@@ -37,9 +41,7 @@ module Resolvers
           to_date
         ]
 
-        results = Sql::ClickHouse.select_all(sql, variables)
-
-        Maths.average(results.map { |c| c['count'] })
+        Sql::ClickHouse.select_value(sql, variables) || 0
       end
     end
   end
