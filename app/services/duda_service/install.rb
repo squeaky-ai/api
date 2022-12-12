@@ -13,13 +13,16 @@ module DudaService
     end
 
     def install_all!
-      create_site!
-      create_user!
+      ActiveRecord::Base.transaction do
+        create_site!
+        create_user!
+        create_team!
+      end
     end
 
     private
 
-    attr_reader :site, :account_owner_uuid, :site_name, :api_endpoint, :auth
+    attr_reader :site, :user, :account_owner_uuid, :site_name, :api_endpoint, :auth
 
     def create_site!
       @site = ::Site.create!(
@@ -31,8 +34,8 @@ module DudaService
       )
     end
 
-    def create_user!
-      user = ::User.new(
+    def create_user! # rubocop:disable Metrics/AbcSize
+      @user = ::User.where(email: duda_user.email).first_or_initialize(
         first_name: duda_user.first_name,
         last_name: duda_user.last_name,
         email: duda_user.email,
@@ -44,7 +47,9 @@ module DudaService
       user.skip_confirmation_notification!
       user.confirm
       user.save!
+    end
 
+    def create_team!
       Team.create!(
         site:,
         user:,

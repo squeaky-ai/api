@@ -77,5 +77,23 @@ RSpec.describe DudaService::Install do
       expect(user.provider).to eq('duda')
       expect(user.owner_for?(site)).to eq(true)
     end
+
+    context 'when the user exists already' do
+      before do
+        create(:user, first_name:, last_name:, email:)
+      end
+
+      it 'does not recreate the user' do
+        expect { subject }.not_to change { User.all.count }
+      end
+
+      it 'does still create the team' do
+        expect { subject }.to change { Team.all.count }.by(1)
+      end
+
+      it 'does still create the site' do
+        expect { subject }.to change { Site.all.count }.by(1)
+      end
+    end
   end
 end
