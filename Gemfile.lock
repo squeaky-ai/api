@@ -66,6 +66,10 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    async (2.3.0)
+      console (~> 1.10)
+      io-event (~> 1.1)
+      timers (~> 4.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.655.0)
     aws-record (2.8.0)
@@ -113,6 +117,8 @@ GEM
       faraday_middleware
     concurrent-ruby (1.1.10)
     connection_pool (2.3.0)
+    console (1.16.2)
+      fiber-local
     crass (1.0.6)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -159,6 +165,7 @@ GEM
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
     ffi (1.15.5)
+    fiber-local (1.0.0)
     fugit (1.7.2)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -172,6 +179,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    io-event (1.1.4)
     jmespath (1.6.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -304,6 +312,7 @@ GEM
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.0)
+    timers (4.3.5)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     useragent (0.16.10)
@@ -322,6 +331,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  async
   aws-sdk-rails (~> 3)
   aws-sdk-s3 (~> 1.117)
   bootsnap
