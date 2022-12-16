@@ -7,6 +7,7 @@ module DudaService
       @api_endpoint = api_endpoint
       @auth = auth
       @site = site_response_body
+      puts '@@@', @site
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise
