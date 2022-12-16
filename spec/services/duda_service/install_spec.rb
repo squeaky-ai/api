@@ -9,6 +9,15 @@ RSpec.describe DudaService::Install do
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
 
+    let(:auth) do
+      {
+        'type' => 'bearer',
+        'authorization_code' => 'authorization_code',
+        'refresh_token' => 'refresh_token',
+        'expiration_date' => 1671227759134
+      }
+    end
+
     let(:uuid) { site_name }
     let(:domain) { 'https://my-domain.com' }
 
@@ -52,7 +61,8 @@ RSpec.describe DudaService::Install do
       described_class.new(
         account_owner_uuid:,
         site_name:,
-        api_endpoint:
+        api_endpoint:,
+        auth:
       ).install_all!
     end
 
@@ -76,6 +86,19 @@ RSpec.describe DudaService::Install do
       expect(user.last_name).to eq(last_name)
       expect(user.provider).to eq('duda')
       expect(user.owner_for?(site)).to eq(true)
+    end
+
+    it 'creates the auth' do
+      subject
+
+      auth = ProviderAuth.find_by(provider_uuid: account_owner_uuid)
+
+      expect(auth.provider).to eq('duda')
+      expect(auth.auth_type).to eq('bearer')
+      expect(auth.provider_uuid).to eq(account_owner_uuid)
+      expect(auth.access_token).to eq('authorization_code')
+      expect(auth.refresh_token).to eq('refresh_token')
+      expect(auth.expires_at).to eq(1671227759134)
     end
 
     context 'when the user exists already' do

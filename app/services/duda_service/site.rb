@@ -2,9 +2,10 @@
 
 module DudaService
   class Site
-    def initialize(site_name:, api_endpoint:)
+    def initialize(site_name:, api_endpoint:, auth:)
       @site_name = site_name
       @api_endpoint = api_endpoint
+      @auth = auth
       @site = site_response_body
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
@@ -12,11 +13,11 @@ module DudaService
     end
 
     def name
-      'TODO'
+      site['site_business_info']['business_name']
     end
 
     def domain
-      site['site_default_domain']
+      site['site_domain']
     end
 
     def uuid
@@ -29,17 +30,18 @@ module DudaService
 
     private
 
-    attr_reader :site, :site_name, :api_endpoint
+    attr_reader :site, :site_name, :api_endpoint, :auth
 
     def request_url
-      "#{api_endpoint}/api/sites/multiscreen/#{site_name}"
+      "#{api_endpoint}/api/integrationhub/application/site/#{site_name}"
     end
 
     def request_options
       {
         timeout: 5,
         headers: {
-          Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
+          'Authorization' => "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}",
+          'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
         }
       }
     end

@@ -5,11 +5,13 @@ module DudaService
     def initialize(
       account_owner_uuid:,
       site_name:,
-      api_endpoint:
+      api_endpoint:,
+      auth:
     )
       @account_owner_uuid = account_owner_uuid
       @site_name = site_name
       @api_endpoint = api_endpoint
+      @auth = auth
     end
 
     def install_all!
@@ -17,6 +19,7 @@ module DudaService
         create_site!
         create_user!
         create_team!
+        create_auth!
       end
     end
 
@@ -59,8 +62,21 @@ module DudaService
       )
     end
 
+    def create_auth!
+      ProviderAuth.create!(
+        site:,
+        provider: 'duda',
+        provider_uuid: account_owner_uuid,
+        auth_type: 'bearer',
+        access_token: auth['authorization_code'],
+        refresh_token: auth['refresh_token'],
+        api_endpoint:,
+        expires_at: auth['expiration_date']
+      )
+    end
+
     def duda_site
-      @duda_site ||= DudaService::Site.new(site_name:, api_endpoint:)
+      @duda_site ||= DudaService::Site.new(site_name:, api_endpoint:, auth:)
     end
 
     def duda_user

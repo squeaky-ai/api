@@ -44,7 +44,8 @@ module Integrations
     end
 
     def install_params
-      params.permit(:account_owner_uuid, :installer_account_uuid, :site_name, :api_endpoint)
+      auth_params = %i[authorization_code expiration_date refresh_token type]
+      params.permit(:account_owner_uuid, :installer_account_uuid, :site_name, :api_endpoint, auth: auth_params)
     end
 
     def uninstall_params
@@ -65,7 +66,8 @@ module Integrations
       @duda_install_service ||= DudaService::Install.new(
         account_owner_uuid: install_params['account_owner_uuid'],
         site_name: install_params['site_name'],
-        api_endpoint: install_params['api_endpoint']
+        api_endpoint: install_params['api_endpoint'],
+        auth: install_params['auth']
       )
     end
 

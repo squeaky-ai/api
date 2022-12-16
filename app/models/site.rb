@@ -27,6 +27,7 @@ class Site < ApplicationRecord
 
   has_one :consent
   has_one :feedback
+  has_one :provider_auth
 
   # The plural sounds weird
   alias_attribute :team, :teams

@@ -7,17 +7,30 @@ RSpec.describe DudaService::Site do
   let(:domain) { 'https://site-domain.com' }
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
+  let(:name) { 'My Site' }
   let(:response) { double(:response, body: response_body) }
+
+  let(:auth) do
+    {
+      'type' => 'bearer',
+      'authorization_code' => 'authorization_code',
+      'refresh_token' => 'refresh_token',
+      'expiration_date' => 1671227759134
+    }
+  end
 
   let(:response_body) do
     {
-      'site_default_domain' => domain,
+      'site_domain' => domain,
       'site_name' => site_name,
-      'account_name' => email
+      'account_name' => email,
+      'site_business_info' => {
+        'business_name' => name
+      }
     }.to_json
   end
 
-  let(:instance) { described_class.new(site_name:, api_endpoint:) }
+  let(:instance) { described_class.new(site_name:, api_endpoint:, auth:) }
 
   before do
     ENV['DUDA_USERNAME'] = 'username'
@@ -30,7 +43,7 @@ RSpec.describe DudaService::Site do
     subject { instance.name }
 
     it 'returns the name' do
-      expect(subject).to eq('TODO')
+      expect(subject).to eq(name)
     end
   end
 

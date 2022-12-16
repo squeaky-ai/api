@@ -10,6 +10,15 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
 
+    let(:auth) do
+      {
+        'type' => 'bearer',
+        'authorization_code' => 'authorization_code',
+        'refresh_token' => 'refresh_token',
+        'expiration_date' => 1671227759134
+      }
+    end
+
     let(:first_name) { 'Bob' }
     let(:last_name) { 'Dylan' }
     let(:email) { 'bob@dylan.com' }
@@ -19,7 +28,8 @@ RSpec.describe Integrations::DudaController, type: :controller do
         account_owner_uuid:, 
         installer_account_uuid:, 
         site_name:, 
-        api_endpoint:
+        api_endpoint:,
+        auth:
       }
     end
 
