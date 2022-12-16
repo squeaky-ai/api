@@ -7,18 +7,17 @@ module DudaService
       @api_endpoint = api_endpoint
       @auth = auth
       @site = site_response_body
-      puts '@@@', @site
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise
     end
 
     def name
-      site['site_business_info']['business_name']
+      site['site_business_info']['business_name'] || 'Unkown'
     end
 
     def domain
-      site['site_domain']
+      site['site_domain'] || site['site_default_domain']
     end
 
     def uuid
@@ -48,6 +47,7 @@ module DudaService
     end
 
     def site_response_body
+      Rails.logger.info "Making Duda site request to #{request_url} with options #{request_options}"
       response = HTTParty.get(request_url, request_options)
       JSON.parse(response.body)
     end
