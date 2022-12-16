@@ -7,7 +7,7 @@ ruby '3.1.2'
 
 gem 'async'
 gem 'aws-sdk-rails', '~> 3'
-gem 'aws-sdk-s3', '~> 1.117'
+gem 'aws-sdk-s3'
 gem 'bootsnap', require: false
 gem 'click_house'
 gem 'devise'

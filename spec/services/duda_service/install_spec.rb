@@ -29,7 +29,8 @@ RSpec.describe DudaService::Install do
       {
         'site_default_domain' => domain,
         'site_name' => site_name,
-        'account_name' => account_name
+        'account_name' => account_name,
+        'site_business_info' => {}
       }.to_json
     end
 
@@ -49,7 +50,7 @@ RSpec.describe DudaService::Install do
       ENV['DUDA_PASSWORD'] = 'password'
 
       allow(HTTParty).to receive(:get)
-        .with("#{api_endpoint}/api/sites/multiscreen/#{site_name}", anything)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}", anything)
         .and_return(site_response)
 
       allow(HTTParty).to receive(:get)
@@ -70,7 +71,7 @@ RSpec.describe DudaService::Install do
       subject
       site = Site.find_by(uuid: site_name)
       expect(site.uuid).to eq(uuid)
-      expect(site.name).to eq('TODO')
+      expect(site.name).to eq('Unkown')
       expect(site.url).to eq(domain)
     end
 
