@@ -6,14 +6,12 @@ module Types
       graphql_name 'Consent'
 
       field :id, ID, null: false
-
       field :name, String, null: false
       field :privacy_policy_url, String, null: false
       field :layout, String, null: false
       field :consent_method, String, null: false
       field :languages, [String, { null: false }], null: false
       field :languages_default, String, null: true
-      field :translations, resolver: Resolvers::Consent::Translations
     end
   end
 end
