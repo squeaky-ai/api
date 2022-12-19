@@ -27,7 +27,9 @@ class Feedback < ApplicationRecord
       sentiment_layout: 'right_middle',
       sentiment_devices: %w[desktop tablet],
       sentiment_hide_logo: false,
-      sentiment_schedule: 'always'
+      sentiment_schedule: 'always',
+      sentiment_languages: ['en'],
+      sentiment_languages_default: 'en'
     )
   end
 end

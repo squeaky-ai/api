@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_16_130942) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_19_171640) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_130942) do
     t.boolean "nps_hide_logo", default: false, null: false
     t.boolean "sentiment_hide_logo", default: false, null: false
     t.string "sentiment_schedule"
+    t.string "sentiment_languages", default: [], null: false, array: true
+    t.string "sentiment_languages_default"
     t.index ["site_id"], name: "index_feedback_on_site_id"
   end
 

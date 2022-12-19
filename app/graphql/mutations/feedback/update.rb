@@ -26,6 +26,8 @@ module Mutations
       argument :sentiment_devices, [String], required: false
       argument :sentiment_hide_logo, Boolean, required: false
       argument :sentiment_schedule, String, required: false
+      argument :sentiment_languages, [String], required: false
+      argument :sentiment_languages_default, String, required: false
 
       type Types::Feedback::Feedback
 
@@ -58,6 +60,7 @@ module Mutations
         feedback.nps_excluded_pages_will_change! if args[:nps_excluded_pages]
         feedback.sentiment_excluded_pages_will_change! if args[:sentiment_excluded_pages]
         feedback.nps_languages_will_change! if args[:nps_languages]
+        feedback.sentiment_languages_will_change! if args[:sentiment_languages]
       end
     end
   end
