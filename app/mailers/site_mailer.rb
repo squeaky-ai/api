@@ -55,7 +55,7 @@ class SiteMailer < ApplicationMailer
           k=q.createElement('script');
           k.src=e+s._sqSettings.site_id;
           u.appendChild(k);
-        })(window,document,'https://cdn.squeaky.ai/g/0.4.0/script.js?');
+        })(window,document,'https://cdn.squeaky.ai/g/1.0.0/script.js?');
       </script>
     HTML
 
