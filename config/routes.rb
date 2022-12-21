@@ -58,5 +58,5 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   root to: 'application#not_found'
-  # match '*anything', to: 'application#not_found', via: %i[get post]
+  match '*anything', to: 'application#not_found', via: %i[get post]
 end
