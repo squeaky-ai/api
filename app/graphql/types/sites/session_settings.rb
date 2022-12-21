@@ -14,6 +14,9 @@ module Types
       field :ingest_enabled, Boolean, null: false
       field :ip_blacklist, [Types::Sites::IpBlacklist, { null: false }], null: false
       field :invalid_or_exceeded_plan, Boolean, null: false
+      field :magic_erasure_enabled, Boolean, null: false
+      field :consent, Types::Consent::Consent, null: true
+      field :feedback, Types::Feedback::Feedback, null: true
     end
   end
 end

@@ -40,6 +40,10 @@ class SiteService
     # get a key as clean as possible
     uri = URI(url)
     key = uri.host.downcase.sub('www.', '')
+    # Only add the port if it's going to be necessary
+    key += ":#{uri.port}" unless [443, 80, nil].include?(uri.port)
+
+    puts '@@', key
 
     Rails.cache.fetch("data_cache:SiteService::exists::#{key}", expires_in:) do
       # Try both www. and non-www.

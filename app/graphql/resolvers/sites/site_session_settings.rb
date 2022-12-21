@@ -9,7 +9,7 @@ module Resolvers
 
       def resolve_with_timings(site_id:)
         site = ::Site.new(uuid: site_id)
-        DataCacheService::Sites::Settings.new(site:).call
+        DataCacheService::Sites::Settings.new(site:, user: context[:current_user]).call
       end
     end
   end

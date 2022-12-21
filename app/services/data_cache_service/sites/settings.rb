@@ -9,7 +9,7 @@ module DataCacheService
           # scope, however the site is just an in memory instance with a
           # uuid. This should probably be a one off! The fields are also
           # public so be careful what gets exposed
-          s = Site.joins(:plan).find_by(uuid: site.uuid)
+          s = Site.find_by(uuid: site.uuid)
 
           return unless s
 
@@ -22,7 +22,10 @@ module DataCacheService
             anonymise_text: s&.anonymise_text,
             ingest_enabled: s.ingest_enabled,
             ip_blacklist: s.ip_blacklist,
-            invalid_or_exceeded_plan: s.plan.exceeded? || s.plan.invalid?
+            magic_erasure_enabled: s.magic_erasure_enabled_for_user?(user),
+            invalid_or_exceeded_plan: s.plan.exceeded? || s.plan.invalid?,
+            feedback: s.feedback,
+            consent: s.consent
           }
         end
       end

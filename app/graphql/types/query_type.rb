@@ -18,8 +18,6 @@ module Types
 
     # Public
     field :plans, resolver: Resolvers::Sites::Plans
-    field :feedback, resolver: Resolvers::Feedback::Feedback
-    field :consent, resolver: Resolvers::Consent::Consent
     field :partner, resolver: Resolvers::Partners::Partner
 
     # Blog

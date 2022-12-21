@@ -2,8 +2,9 @@
 
 module DataCacheService
   class Base
-    def initialize(site:, from_date: nil, to_date: nil, expires_in: 15.minutes)
+    def initialize(site:, user: nil, from_date: nil, to_date: nil, expires_in: 15.minutes)
       @site = site
+      @user = user
       @expires_in = expires_in
       @from_date = from_date
       @to_date = to_date
@@ -11,7 +12,7 @@ module DataCacheService
 
     protected
 
-    attr_reader :site, :expires_in, :from_date, :to_date
+    attr_reader :site, :user, :expires_in, :from_date, :to_date
 
     def cache(&block)
       block.call unless site
@@ -22,6 +23,7 @@ module DataCacheService
 
     def cache_key
       key = "data_cache::#{self.class}::#{site.uuid}"
+      key += "::#{user.id}" if user
       key += "::from_#{from_date}" if from_date
       key += "::to_#{to_date}" if to_date
       key

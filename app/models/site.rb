@@ -108,6 +108,12 @@ class Site < ApplicationRecord
     site_bundle&.sites || []
   end
 
+  def magic_erasure_enabled_for_user?(current_user)
+    return false unless [Team::OWNER, Team::ADMIN].include?(current_user&.role_for(self))
+
+    magic_erasure_enabled
+  end
+
   def destroy_all_recordings!
     # This will enqueue all recordings and it's associated
     # data to be deleted asynchronously
