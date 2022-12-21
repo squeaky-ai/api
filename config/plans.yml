@@ -20,6 +20,22 @@ default: &default
     support:
       - Email
     response_time_hours: 168
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_1:
     id: 1
@@ -54,6 +70,22 @@ default: &default
     support:
       - Email
     response_time_hours: 72
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_2:
     id: 2
@@ -88,6 +120,22 @@ default: &default
     support:
       - Email
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_3:
     id: 3
@@ -123,6 +171,22 @@ default: &default
       - Email
       - Chat
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_4:
     id: 4
@@ -158,6 +222,22 @@ default: &default
       - Email
       - Chat
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_5:
     id: 5
@@ -194,6 +274,22 @@ default: &default
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_6:
     id: 6
@@ -230,6 +326,22 @@ default: &default
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
   
   plan_7:
     id: 7
@@ -266,6 +378,22 @@ default: &default
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
 development:
   <<: *default
@@ -295,6 +423,22 @@ production:
     support:
       - Email
     response_time_hours: 168
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_1:
     id: 1
@@ -329,6 +473,22 @@ production:
     support:
       - Email
     response_time_hours: 72
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_2:
     id: 2
@@ -364,6 +524,22 @@ production:
       - Email
       - Chat
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_3:
     id: 3
@@ -399,6 +575,22 @@ production:
       - Email
       - Chat
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_4:
     id: 4
@@ -434,6 +626,22 @@ production:
       - Email
       - Chat
     response_time_hours: 24
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_5:
     id: 5
@@ -470,6 +678,22 @@ production:
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_6:
     id: 6
@@ -506,6 +730,22 @@ production:
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_7:
     id: 7
@@ -542,6 +782,22 @@ production:
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_8:
     id: 8
@@ -578,6 +834,22 @@ production:
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment
 
   plan_9:
     id: 9
@@ -614,3 +886,19 @@ production:
       - Chat
       - Phone
     response_time_hours: 0
+    team_member_limit: null
+    features_enabled:
+      - dashboard
+      - visitors
+      - recordings
+      - event_tracking
+      - error_tracking
+      - site_analytics
+      - page_analytics
+      - journeys
+      - heatmaps_click_positions
+      - heatmaps_click_counts
+      - heatmaps_mouse
+      - heatmaps_scroll
+      - nps
+      - sentiment

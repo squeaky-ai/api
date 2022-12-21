@@ -16,12 +16,17 @@ module Mutations
       argument :audit_trail_enabled, Boolean, required: false
       argument :private_instance_enabled, Boolean, required: false
       argument :notes, String, required: false
+      argument :team_member_limit, Integer, required: false
+      argument :features_enabled, [String, { null: false }], required: false
 
       type Types::Admin::Site
 
-      def resolve_with_timings(site_id:, **rest)
+      def resolve_with_timings(site_id:, **args)
         site = Site.find(site_id)
-        site.plan.update(rest)
+        site.plan.update(args)
+
+        site.plan.support_will_change! if args[:support]
+        site.plan.features_enabled_will_change! if args[:features_enabled]
 
         site
       end

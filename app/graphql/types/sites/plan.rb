@@ -17,6 +17,8 @@ module Types
       field :audit_trail_enabled, Boolean, null: false
       field :private_instance_enabled, Boolean, null: false
       field :notes, String, null: true
+      field :team_member_limit, Integer, null: true
+      field :features_enabled, [String, { null: false }], null: false
     end
   end
 end

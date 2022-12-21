@@ -30,6 +30,14 @@ class Plan < ApplicationRecord
     site.billing.status == Billing::INVALID
   end
 
+  def features_enabled
+    self[:features_enabled].presence || plan_defaults[:features_enabled]
+  end
+
+  def team_member_limit
+    self[:team_member_limit] || plan_defaults[:team_member_limit]
+  end
+
   def max_monthly_recordings
     self[:max_monthly_recordings] || plan_defaults[:max_monthly_recordings]
   end

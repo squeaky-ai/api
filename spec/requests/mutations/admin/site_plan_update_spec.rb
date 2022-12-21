@@ -19,6 +19,8 @@ admin_site_plan_update_mutation = <<-GRAPHQL
         responseTimeHours
         dataStorageMonths
         notes
+        teamMemberLimit
+        featuresEnabled
       }
     }
   }
@@ -40,7 +42,9 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
           ssoEnabled: true,
           auditTrailEnabled: true,
           privateInstanceEnabled: true,
-          notes: 'Hello there'
+          notes: 'Hello there',
+          teamMemberLimit: 1,
+          featuresEnabled: ['dashboard']
         }
       }
   
@@ -51,18 +55,20 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
       expect(subject['data']['adminSitePlanUpdate']).to eq(
         'id' => site.id.to_s,
         'plan' => {
-          "auditTrailEnabled" => true,
-          "dataStorageMonths" => 24,
-          "exceeded" => false,
-          "invalid" => false,
-          "maxMonthlyRecordings" => 1000,
-          "name" => "Free",
-          "notes" => "Hello there",
-          "privateInstanceEnabled" => true,
-          "responseTimeHours" => 12,
-          "ssoEnabled" => true,
-          "support" => ["Phone", "Chat"],
-          "tier" => 0
+          'auditTrailEnabled' => true,
+          'dataStorageMonths' => 24,
+          'exceeded' => false,
+          'invalid' => false,
+          'maxMonthlyRecordings' => 1000,
+          'name' => 'Free',
+          'notes' => 'Hello there',
+          'privateInstanceEnabled' => true,
+          'responseTimeHours' => 12,
+          'ssoEnabled' => true,
+          'support' => ['Phone', 'Chat'],
+          'tier' => 0,
+          'teamMemberLimit' => 1,
+          'featuresEnabled' => ['dashboard']
         }
       )
     end
