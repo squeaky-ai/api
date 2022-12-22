@@ -17,7 +17,7 @@ module Mutations
       argument :private_instance_enabled, Boolean, required: false
       argument :notes, String, required: false
       argument :team_member_limit, Integer, required: false
-      argument :features_enabled, [String, { null: false }], required: false
+      argument :features_enabled, [Types::Plans::Feature, { null: false }], required: false
 
       type Types::Admin::Site
 

@@ -13,7 +13,7 @@ module Types
       field :support, [String, { null: false }], null: true
       field :response_time_hours, Integer, null: true
       field :team_member_limit, Integer, null: true
-      field :features_enabled, [String, { null: false }], null: false
+      field :features_enabled, [Types::Plans::Feature, { null: false }], null: false
     end
   end
 end
