@@ -8,7 +8,7 @@ module DataCacheService
           sql = <<-SQL
             SELECT
               country_code,
-              count(country_code) count
+              COUNT(country_code) count
             FROM
               recordings
             WHERE

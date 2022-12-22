@@ -8,10 +8,15 @@ module Resolvers
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminUsersStored', expires_in: 1.hour) do
           sql = <<-SQL
-            SELECT count(*) count, created_at::date date
-            FROM sites
-            GROUP BY date
-            ORDER BY date ASC;
+            SELECT
+              COUNT(*) count,
+              created_at::date date
+            FROM
+              sites
+            GROUP BY
+              date
+            ORDER BY
+              date ASC;
           SQL
 
           Sql.execute(sql)

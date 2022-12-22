@@ -51,7 +51,7 @@ module Resolvers
           sql = <<-SQL
             SELECT
               DISTINCT(COALESCE(recordings.referrer, 'Direct')) referrer,
-              count(*) count
+              COUNT(*) count
             FROM
               recordings
             INNER JOIN
@@ -83,7 +83,7 @@ module Resolvers
         def referrers_total_count
           sql = <<-SQL
             SELECT
-              count(DISTINCT(COALESCE(recordings.referrer, 'Direct'))) count
+              COUNT(DISTINCT(COALESCE(recordings.referrer, 'Direct'))) count
             FROM
               recordings
             INNER JOIN

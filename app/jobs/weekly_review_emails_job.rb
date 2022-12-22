@@ -39,11 +39,17 @@ class WeeklyReviewEmailsJob < ApplicationJob
     sql = <<-SQL
       SELECT site_id
       FROM (
-        SELECT sites.id site_id, count(recordings) recordings_count
-        FROM sites
-        INNER JOIN recordings on recordings.site_id = sites.id
-        WHERE to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
-        GROUP BY sites.id
+        SELECT
+          sites.id site_id,
+          COUNT(recordings) recordings_count
+        FROM
+          sites
+        INNER JOIN
+          recordings on recordings.site_id = sites.id
+        WHERE
+          to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
+        GROUP BY
+          sites.id
       ) c
       WHERE recordings_count > 0;
     SQL

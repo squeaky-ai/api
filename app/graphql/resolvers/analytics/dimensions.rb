@@ -8,7 +8,8 @@ module Resolvers
       def resolve_with_timings
         sql = <<-SQL
           SELECT
-            DISTINCT(ROUND(device_x, -1)) grouped_device_x, count(*) count
+            DISTINCT(ROUND(device_x, -1)) grouped_device_x,
+            COUNT(*) count
           FROM
             recordings
           WHERE

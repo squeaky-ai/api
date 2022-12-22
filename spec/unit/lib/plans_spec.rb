@@ -59,6 +59,23 @@ RSpec.describe Plans do
           support: [
             'Email',
             'Chat'
+          ],
+          team_member_limit: nil,
+          features_enabled: [
+            'dashboard',
+            'visitors',
+            'recordings',
+            'event_tracking',
+            'error_tracking',
+            'site_analytics',
+            'page_analytics',
+            'journeys',
+            'heatmaps_click_positions',
+            'heatmaps_click_counts',
+            'heatmaps_mouse',
+            'heatmaps_scroll',
+            'nps',
+            'sentiment'
           ]
         )
       end

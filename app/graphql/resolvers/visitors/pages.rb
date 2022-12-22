@@ -15,7 +15,7 @@ module Resolvers
         pages = Visitor
                 .find(object.id)
                 .pages
-                .select('url, count(*) count, AVG(exited_at - entered_at) average_time_on_page')
+                .select('url, COUNT(*) count, AVG(exited_at - entered_at) average_time_on_page')
                 .group(:url)
                 .order(order)
                 .page(page)

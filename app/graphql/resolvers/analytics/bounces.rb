@@ -15,9 +15,10 @@ module Resolvers
           FROM (
             SELECT
               url,
-              count(*) view_count,
+              COUNT(*) view_count,
               COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count
-            FROM page_events
+            FROM
+              page_events
             WHERE
               site_id = ? AND
               toDate(exited_at / 1000)::date BETWEEN ? AND ?

@@ -7,15 +7,19 @@ module Resolvers
 
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminRecordingsStored', expires_in: 1.hour) do
-          # TODO: Replace with ClickHouse
           sql = <<-SQL
-            SELECT count(*) count, created_at::date date
-            FROM recordings
-            GROUP BY date
-            ORDER BY date ASC;
+            SELECT
+              COUNT(*) count,
+              toDate(disconnected_at / 1000)::date date
+            FROM
+              recordings
+            GROUP BY
+              date
+            ORDER BY
+              date ASC;
           SQL
 
-          Sql.execute(sql)
+          Sql::ClickHouse.select_all(sql).to_a
         end
       end
     end

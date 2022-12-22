@@ -23,8 +23,10 @@ module Resolvers
             SELECT
               AVG(p.page_count) visits_per_session
             FROM (
-              SELECT count(*) page_count
-              FROM page_events
+              SELECT
+                COUNT(*) page_count
+              FROM
+                page_events
               WHERE
                 site_id = ? AND
                 toDate(exited_at / 1000)::date BETWEEN ? AND ? AND

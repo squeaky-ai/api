@@ -21,7 +21,7 @@ module Resolvers
         def exit_rate(start_date, end_date)
           sql = <<-SQL
             SELECT
-              count(*) view_count,
+              COUNT(*) view_count,
               COUNT(exited_on) FILTER(WHERE exited_on = true) exit_rate_count
             FROM
               page_events

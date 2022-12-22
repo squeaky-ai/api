@@ -8,10 +8,11 @@ module Resolvers
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
         sql = <<-SQL
           SELECT
-            count(*) view_count,
+            COUNT(*) view_count,
             COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count,
             formatDateTime(toDate(exited_at / 1000), ?) date_key
-          FROM page_events
+          FROM
+            page_events
           WHERE
             site_id = ? AND
             toDate(exited_at / 1000)::date BETWEEN ? AND ?

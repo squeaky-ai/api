@@ -9,7 +9,7 @@ module Resolvers
         sql = <<-SQL
           SELECT
             recordings.uuid uuid,
-            count(page_events.uuid) count
+            COUNT(page_events.uuid) count
           FROM
             recordings
           INNER JOIN

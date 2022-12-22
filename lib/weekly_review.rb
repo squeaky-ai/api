@@ -73,7 +73,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def total_recordings
     sql = <<-SQL
-      SELECT count(*)
+      SELECT COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
@@ -84,7 +84,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def new_recordings
     sql = <<-SQL
-      SELECT count(*)
+      SELECT COUNT(*)
       FROM recordings
       WHERE recordings.viewed = FALSE AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
@@ -125,7 +125,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
     sql = <<-SQL
       SELECT AVG(c.count)
       FROM (
-        SELECT count(pages.id)
+        SELECT COUNT(pages.id)
         FROM recordings
         INNER JOIN pages ON pages.recording_id = recordings.id
         WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -156,7 +156,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def busiest_day
     sql = <<-SQL
-      SELECT to_timestamp(recordings.disconnected_at / 1000)::date date, count(*)
+      SELECT to_timestamp(recordings.disconnected_at / 1000)::date date, COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY date
@@ -173,7 +173,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def biggest_referrer_url
     sql = <<-SQL
-      SELECT referrer, count(*)
+      SELECT referrer, COUNT(*)
       FROM recordings
       WHERE referrer IS NOT NULL AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY referrer
@@ -187,7 +187,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def most_popular_country
     sql = <<-SQL
-      SELECT recordings.country_code, count(*)
+      SELECT recordings.country_code, COUNT(*)
       FROM recordings
       WHERE recordings.country_code IS NOT NULL AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY recordings.country_code
@@ -201,7 +201,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def most_popular_browser
     sql = <<-SQL
-      SELECT recordings.browser, count(*)
+      SELECT recordings.browser, COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       GROUP BY recordings.browser
@@ -215,7 +215,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def most_popular_visitor
     sql = <<-SQL
-      SELECT visitors.id, visitors.visitor_id, count(*)
+      SELECT visitors.id, visitors.visitor_id, COUNT(*)
       FROM recordings
       INNER JOIN visitors ON visitors.id = recordings.visitor_id
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -235,7 +235,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def most_popular_page_url
     sql = <<-SQL
-      SELECT pages.url, count(*)
+      SELECT pages.url, COUNT(*)
       FROM pages
       INNER JOIN recordings ON recordings.id = pages.recording_id
       WHERE pages.url != '/' AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?

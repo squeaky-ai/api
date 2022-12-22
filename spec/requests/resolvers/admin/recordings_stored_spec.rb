@@ -13,7 +13,7 @@ recordings_stored_admin_query = <<-GRAPHQL
   }
 GRAPHQL
 
-RSpec.describe Resolvers::Admin::RecordingsStored, type: :request do
+RSpec.describe Resolvers::Admin::RecordingsStored, type: :request, truncate_click_house: true do
   context 'when the user is not a superuser' do
     let(:user) { create(:user) }
 
@@ -27,13 +27,39 @@ RSpec.describe Resolvers::Admin::RecordingsStored, type: :request do
   context 'when the user is a superuser' do
     let(:user) { create(:user, superuser: true) }
 
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 1).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 1).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 1).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 3).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 6).to_i * 1000
+        },
+        {
+          uuid: SecureRandom.uuid,
+          disconnected_at: Time.new(2022, 5, 6).to_i * 1000
+        }
+      ]
+    end
+
     before do
-      create(:recording, created_at: Date.new(2022, 5, 1))
-      create(:recording, created_at: Date.new(2022, 5, 1))
-      create(:recording, created_at: Date.new(2022, 5, 1))
-      create(:recording, created_at: Date.new(2022, 5, 3))
-      create(:recording, created_at: Date.new(2022, 5, 6))
-      create(:recording, created_at: Date.new(2022, 5, 6))
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
     end
 
     it 'returns the count' do
