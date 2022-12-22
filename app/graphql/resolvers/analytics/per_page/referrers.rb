@@ -10,16 +10,10 @@ module Resolvers
         argument :size, Integer, required: false, default_value: 10
 
         def resolve_with_timings(page:, size:)
-          total_visitors_count = DataCacheService::Visitors::Count.new(
-            site: object.site,
-            from_date: object.range.from,
-            to_date: object.range.to
-          ).call
-
           response = referrers(page, size)
 
           {
-            items: format_results(response, total_visitors_count),
+            items: format_results(response),
             pagination: {
               page_size: size,
               total: referrers_total_count
@@ -28,6 +22,30 @@ module Resolvers
         end
 
         private
+
+        def total_visitors_count
+          sql = <<-SQL
+            SELECT
+              COUNT(DISTINCT(visitor_id)) total_visitors_count
+            FROM
+              recordings
+            INNER JOIN
+              page_events ON page_events.recording_id = recordings.recording_id
+            WHERE
+              site_id = ? AND
+              toDate(disconnected_at / 1000)::date BETWEEN ? AND ? AND
+              page_events.url = ?
+          SQL
+
+          variables = [
+            object.site.id,
+            object.range.from,
+            object.range.to,
+            object.page
+          ]
+
+          Sql::ClickHouse.select_value(sql, variables)
+        end
 
         def referrers(page, size)
           sql = <<-SQL
@@ -86,12 +104,14 @@ module Resolvers
           Sql::ClickHouse.select_value(sql, variables)
         end
 
-        def format_results(referrers, total_visitors_count)
+        def format_results(referrers)
+          visitor_count = total_visitors_count
+
           referrers.map do |referrer|
             {
               referrer: referrer['referrer'],
               count: referrer['count'],
-              percentage: Maths.percentage(referrer['count'].to_f, total_visitors_count)
+              percentage: Maths.percentage(referrer['count'].to_f, visitor_count)
             }
           end
         end
