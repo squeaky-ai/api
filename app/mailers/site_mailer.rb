@@ -49,7 +49,7 @@ class SiteMailer < ApplicationMailer
     @tracking_code = <<~HTML
       <!-- Squeaky Tracking Code for #{site.url} -->
       <script>
-        (function(s,q,e,a,u,k,y){
+        (function(s,q,u,e,a,k,y){
           s._sqSettings={site_id:'#{@site.uuid}'};
           u=q.getElementsByTagName('head')[0];
           k=q.createElement('script');
