@@ -49,12 +49,11 @@ class SiteMailer < ApplicationMailer
     @tracking_code = <<~HTML
       <!-- Squeaky Tracking Code for #{site.url} -->
       <script>
-        (function(s,q,u,e,a,k,y){
-          s._sqSettings={site_id:'#{@site.uuid}'};
-          u=q.getElementsByTagName('head')[0];
-          k=q.createElement('script');
-          k.src=e+s._sqSettings.site_id;
-          u.appendChild(k);
+        (function(s,q,u,e,a,k,y){s._sqSettings={site_id:'#{@site.uuid}'};
+          e=q.getElementsByTagName('head')[0];
+          a=q.createElement('script');
+          a.src=u+s._sqSettings.site_id;
+          e.appendChild(a);
         })(window,document,'https://cdn.squeaky.ai/g/1.0.0/script.js?');
       </script>
     HTML
