@@ -45,7 +45,7 @@ RSpec.describe VisitorSerializer do
     subject { described_class.new(visitor).serialize }
 
     it 'serializes the visitor' do
-      expect(subject).to eq(
+      expect(subject).to match(
         id: visitor.id,
         countries: [
           {

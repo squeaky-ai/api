@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe DudaService::Uninstall do
   describe '#uninstall!' do
-    ActiveJob::Base.queue_adapter = :test
 
     let(:site) { create(:site) }
 
@@ -31,6 +30,8 @@ RSpec.describe DudaService::Uninstall do
     end
 
     it 'kicks off some jobs to clean up the recordings' do
+      ActiveJob::Base.queue_adapter = :test
+
       subject
       expect(RecordingDeleteJob).to have_been_enqueued.twice
     end

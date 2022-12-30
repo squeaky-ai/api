@@ -66,12 +66,12 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    async (2.3.0)
+    async (2.3.1)
       console (~> 1.10)
       io-event (~> 1.1)
       timers (~> 4.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.678.0)
+    aws-partitions (1.685.0)
     aws-record (2.9.0)
       aws-sdk-dynamodb (~> 1.18)
     aws-sdk-core (3.168.4)
@@ -120,7 +120,7 @@ GEM
     console (1.16.2)
       fiber-local
     crass (1.0.6)
-    date (3.3.2)
+    date (3.3.3)
     devise (4.8.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -132,7 +132,7 @@ GEM
       devise (>= 4.6)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    erubi (1.11.0)
+    erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
     factory_bot (6.2.1)
@@ -151,7 +151,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    graphql (2.0.15)
+    graphql (2.0.16)
     graphql_playground-rails (2.1.0)
       rails (>= 5.1.0)
     httparty (0.20.0)
@@ -190,10 +190,11 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.16.3)
     msgpack (1.6.0)
     multi_xml (0.6.0)
-    net-imap (0.3.2)
+    net-imap (0.3.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -203,21 +204,16 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10-aarch64-linux)
-      racc (~> 1.4)
-    nokogiri (1.13.10-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.10-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.10-x86_64-linux)
+    nokogiri (1.13.10)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.4.5)
-    puma (6.0.0)
+    puma (6.0.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
-    racc (1.6.1)
-    rack (2.2.4)
+    racc (1.6.2)
+    rack (2.2.5)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-test (2.0.2)
@@ -285,7 +281,7 @@ GEM
       rufus-scheduler (~> 3.2)
       sidekiq (>= 4, < 7)
       tilt (>= 1.4.0)
-    simplecov (0.21.2)
+    simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
@@ -298,6 +294,8 @@ GEM
     timers (4.3.5)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2022.7)
+      tzinfo (>= 1.0.0)
     useragent (0.16.10)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -335,7 +333,7 @@ DEPENDENCIES
   rails (~> 7.0.4)
   redis
   rspec-rails (~> 6.0.1)
-  sidekiq
+  sidekiq (~> 6.5.8)
   sidekiq-scheduler
   simplecov
   stripe
@@ -343,7 +341,7 @@ DEPENDENCIES
   useragent
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.2.0p0
 
 BUNDLED WITH
-   2.3.25
+   2.4.1

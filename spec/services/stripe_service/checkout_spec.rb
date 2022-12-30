@@ -18,17 +18,17 @@ RSpec.describe StripeService::Checkout do
 
     before do
       allow(Stripe::Customer).to receive(:create)
-        .with(
+        .with({
           email: user.email,
           name: user.full_name,
           metadata: {
             site: site.name
           }
-        )
+        })
         .and_return(customer_response)
 
       allow(Stripe::Checkout::Session).to receive(:create)
-        .with(
+        .with({
           customer: customer_id,
           customer_update: {
             address: 'auto', 
@@ -51,7 +51,7 @@ RSpec.describe StripeService::Checkout do
           tax_id_collection: {
             enabled: true
           }
-        )
+        })
         .and_return(payments_response)
     end
 
@@ -108,10 +108,10 @@ RSpec.describe StripeService::Checkout do
 
     before do
       allow(Stripe::BillingPortal::Session).to receive(:create)
-        .with(
+        .with({
           customer: billing.customer_id,
           return_url: "#{Rails.application.config.web_host}/app/sites/#{billing.site.id}/settings/subscription"
-        )
+        })
         .and_return(portal_response)
     end
 

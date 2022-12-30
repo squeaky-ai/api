@@ -45,17 +45,17 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
 
     before do
       allow(Stripe::Customer).to receive(:create)
-        .with(
+        .with({
           email: user.email,
           name: user.full_name,
           metadata: {
             site: site.name
           }
-        )
+        })
         .and_return(customer_response)
 
       allow(Stripe::Checkout::Session).to receive(:create)
-        .with(
+        .with({
           customer: customer_id,
           customer_update: {
             address: 'auto', 
@@ -78,7 +78,7 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
           tax_id_collection: {
             enabled: true
           }
-        )
+        })
         .and_return(payments_response)
     end
 
