@@ -26,7 +26,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
       end
 
@@ -74,7 +74,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -151,7 +151,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -235,7 +235,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -319,7 +319,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -403,7 +403,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -487,7 +487,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .and_return(customer_retrieved_fixture)
 
         allow(Stripe::PaymentMethod).to receive(:list)
-          .with(customer: billing.customer_id, type: 'card')
+          .with({ customer: billing.customer_id, type: 'card' })
           .and_return(list_payments_methods_fixture)
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
@@ -612,7 +612,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         .and_return(customer_retrieved_fixture)
 
       allow(Stripe::PaymentMethod).to receive(:list)
-        .with(customer: billing.customer_id, type: 'card')
+        .with({ customer: billing.customer_id, type: 'card' })
         .and_return(list_payments_methods_fixture)
 
       allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)

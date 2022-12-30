@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.2'
+ruby '3.2.0'
 
 gem 'async'
 gem 'aws-sdk-rails', '~> 3'
@@ -22,7 +22,7 @@ gem 'puma', '~> 6.0.0'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.4'
 gem 'redis'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.5.8'
 gem 'sidekiq-scheduler'
 gem 'stripe'
 gem 'useragent'
