@@ -27,7 +27,7 @@ module Integrations
 
       raise ActionController::BadRequest unless duda_auth_service.valid?
 
-      user = User.find_by!(provider_uuid: params[:current_user_uuid])
+      user = duda_auth_service.fetch_user
       sign_in(:user, user)
 
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true

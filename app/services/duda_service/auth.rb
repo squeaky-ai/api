@@ -23,6 +23,21 @@ module DudaService
       signature_valid?
     end
 
+    def fetch_user
+      # If the user is the account owner then this is the easiest
+      # way to fetch the user
+      user = ::User.find_by(provider_uuid: current_user_uuid)
+      return user if user
+
+      # If the user is not the account owner, then they will have
+      # a different current_user_uuid which will differ from that
+      # of the account holder, but will share the same email. We
+      # can't have multiple accounts with the same user, so everyone
+      # will assume the same user for now
+      site = ::Site.find_by!(provider: 'duda', provider_uuid: site_name)
+      site.users.first
+    end
+
     private
 
     attr_reader :sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid
