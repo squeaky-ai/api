@@ -10,7 +10,7 @@ class RecordingDeleteJob < ApplicationJob
     @site = recording.site
 
     delete_recording_events
-    # delete_clickhouse_events TODO: when on clickhouse:22.9
+    delete_clickhouse_events
     delete_recording
   end
 
@@ -31,7 +31,7 @@ class RecordingDeleteJob < ApplicationJob
       ClickHouse::PageEvent,
       ClickHouse::Recording,
       ClickHouse::ScrollEvent
-    ].each { |c| c.delete_from_recording(recording) }
+    ].each { |c| c.delete_from_recording(recording:) }
   end
 
   def delete_recording

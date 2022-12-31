@@ -41,15 +41,16 @@ RSpec.describe RecordingDeleteJob, type: :job do
       subject
       site.reload
 
+      sleep 1 # TODO: ClickHouse appears to delete async
+      
       expect(site.recordings.size).to eq(0)
-      # TODO: Enable with clickhouse:22.9
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM click_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM custom_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM error_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM cursor_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}")).to eq(0)
-      # expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM click_events WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM cursor_events WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM custom_events WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM error_events WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}")).to eq(0)
+      expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}")).to eq(0)
     end
   end
 end
