@@ -92,11 +92,11 @@ RSpec.describe DudaService::Install do
     it 'creates the auth' do
       subject
 
-      auth = ProviderAuth.find_by(provider_uuid: account_owner_uuid)
+      auth = ProviderAuth.find_by(provider_uuid: site_name)
 
       expect(auth.provider).to eq('duda')
       expect(auth.auth_type).to eq('bearer')
-      expect(auth.provider_uuid).to eq(account_owner_uuid)
+      expect(auth.provider_uuid).to eq(site_name)
       expect(auth.access_token).to eq('authorization_code')
       expect(auth.refresh_token).to eq('refresh_token')
       expect(auth.expires_at).to eq(1671227759134)

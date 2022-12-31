@@ -66,7 +66,7 @@ module DudaService
       ProviderAuth.create!(
         site:,
         provider: 'duda',
-        provider_uuid: account_owner_uuid, # TODO: Should be the site uuid?
+        provider_uuid: site_name,
         auth_type: 'bearer',
         access_token: auth['authorization_code'],
         refresh_token: auth['refresh_token'],
