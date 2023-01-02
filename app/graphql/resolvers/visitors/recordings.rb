@@ -8,14 +8,16 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Recordings::Sort, required: false, default_value: 'connected_at__desc'
+      argument :exclude_recording_ids, [ID], required: false, default_value: []
 
-      def resolve_with_timings(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:, exclude_recording_ids:)
         recordings = object
                      .recordings
                      .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
                      .includes(:pages, :visitor)
                      .order(order(sort))
 
+        recordings = recordings.where('id NOT IN (?)', exclude_recording_ids) unless exclude_recording_ids.empty?
         recordings = recordings.page(page).per(size)
 
         {
