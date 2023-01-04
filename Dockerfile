@@ -2,6 +2,8 @@ FROM arm64v8/ruby:3.2.0-alpine
 
 WORKDIR /app
 
+ENV RUBY_YJIT_ENABLE=1
+
 RUN apk --update add build-base ruby-dev postgresql-dev tzdata gcompat
 
 ENV RAILS_ENV=production
