@@ -52,7 +52,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
     let(:site_response) { double(:site_response, body: site_response_body) }
     let(:user_response) { double(:user_response, body: user_response_body) }
-    let(:script_response) { double(:script_response, body: '{}') }
+    let(:script_response) { double(:script_response, body: '') }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'

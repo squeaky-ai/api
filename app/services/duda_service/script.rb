@@ -11,8 +11,8 @@ module DudaService
 
     def inject_script!
       Rails.logger.info "Making Duda site request to #{request_url} with options #{headers}"
-      response = HTTParty.post(request_url, body:, headers:, timeout:)
-      JSON.parse(response.body)
+      HTTParty.post(request_url, body:, headers:, timeout:)
+      nil
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise

@@ -16,7 +16,7 @@ RSpec.describe DudaService::Script do
     }
   end
 
-  let(:response) { double(:response, body: '{}') }
+  let(:response) { double(:response, body: '') }
 
   let(:instance) { described_class.new(site:, site_name:, api_endpoint:, auth:) }
 
@@ -30,8 +30,8 @@ RSpec.describe DudaService::Script do
   describe '#inject_script!' do
     subject { instance.inject_script! }
 
-    it 'returns the response' do
-      expect(subject).to eq({})
+    it 'returns nil' do
+      expect(subject).to eq(nil)
     end
 
     it 'makes the request to Duda' do

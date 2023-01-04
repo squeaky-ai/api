@@ -21,7 +21,7 @@ module DudaService
     end
 
     def uuid
-      site['site_name']
+     site['site_name']
     end
 
     def account_name
