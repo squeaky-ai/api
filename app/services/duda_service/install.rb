@@ -21,6 +21,8 @@ module DudaService
         create_team!
         create_auth!
       end
+
+      inject_script!
     end
 
     private
@@ -75,12 +77,20 @@ module DudaService
       )
     end
 
+    def inject_script!
+      duda_script.inject_script!
+    end
+
     def duda_site
       @duda_site ||= DudaService::Site.new(site_name:, api_endpoint:, auth:)
     end
 
     def duda_user
       @duda_user ||= DudaService::User.new(account_name: duda_site.account_name, api_endpoint:)
+    end
+
+    def duda_script
+      @duda_script ||= DudaService::Script.new(site:, site_name:, api_endpoint:, auth:)
     end
   end
 end

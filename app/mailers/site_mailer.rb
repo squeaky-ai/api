@@ -45,18 +45,7 @@ class SiteMailer < ApplicationMailer
     @site = site
     @owner = site.owner.user
     @first_name = first_name
-
-    @tracking_code = <<~HTML
-      <!-- Squeaky Tracking Code for #{site.url} -->
-      <script>
-        (function(s,q,u,e,a,k,y){s._sqSettings={site_id:'#{@site.uuid}'};
-          e=q.getElementsByTagName('head')[0];
-          a=q.createElement('script');
-          a.src=u+s._sqSettings.site_id;
-          e.appendChild(a);
-        })(window,document,'https://cdn.squeaky.ai/g/1.0.0/script.js?');
-      </script>
-    HTML
+    @tracking_code = site.tracking_code
 
     mail(to: email, subject: "Your colleague #{@owner.full_name} needs your help")
   end

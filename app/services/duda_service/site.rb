@@ -36,19 +36,20 @@ module DudaService
       "#{api_endpoint}/api/integrationhub/application/site/#{site_name}"
     end
 
-    def request_options
+    def headers
       {
-        timeout: 5,
-        headers: {
-          'Authorization' => "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}",
-          'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
-        }
+        'Authorization' => "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}",
+        'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
       }
     end
 
+    def timeout
+      5
+    end
+
     def site_response_body
-      Rails.logger.info "Making Duda site request to #{request_url} with options #{request_options}"
-      response = HTTParty.get(request_url, request_options)
+      Rails.logger.info "Making Duda site request to #{request_url} with options #{headers}"
+      response = HTTParty.get(request_url, headers:, timeout:)
       JSON.parse(response.body)
     end
   end

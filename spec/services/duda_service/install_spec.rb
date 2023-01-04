@@ -44,6 +44,7 @@ RSpec.describe DudaService::Install do
 
     let(:site_response) { double(:site_response, body: site_response_body) }
     let(:user_response) { double(:user_response, body: user_response_body) }
+    let(:script_response) { double(:script_response, body: '{}') }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
@@ -56,6 +57,10 @@ RSpec.describe DudaService::Install do
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
         .and_return(user_response)
+
+      allow(HTTParty).to receive(:post)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
+        .and_return(script_response)
     end
 
     subject do
@@ -102,6 +107,13 @@ RSpec.describe DudaService::Install do
       expect(auth.expires_at).to eq(1671227759134)
     end
 
+    it 'injects the script' do
+      subject
+
+      expect(HTTParty).to have_received(:post)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
+    end
+
     context 'when the user exists already' do
       before do
         create(:user, first_name:, last_name:, email:)
@@ -117,6 +129,13 @@ RSpec.describe DudaService::Install do
 
       it 'does still create the site' do
         expect { subject }.to change { Site.all.count }.by(1)
+      end
+
+      it 'does still inject the script' do
+        subject
+  
+        expect(HTTParty).to have_received(:post)
+          .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
       end
     end
   end

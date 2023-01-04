@@ -5,13 +5,15 @@ class AddRelativeClicksToElements < ActiveRecord::Migration[7.0]
     ClickHouse.connection.add_column(
       'click_events',
       'relative_to_element_x',
-      :Int16
+      :Int16,
+      if_not_exists: true
     )
 
     ClickHouse.connection.add_column(
       'click_events',
       'relative_to_element_y',
-      :Int16
+      :Int16,
+      if_not_exists: true
     )
   end
 

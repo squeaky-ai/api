@@ -5,7 +5,8 @@ class AddRecordingsToClickhouse < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'recordings',
       engine: 'MergeTree',
-      order: '(site_id, toDate(disconnected_at))'
+      order: '(site_id, toDate(disconnected_at))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id

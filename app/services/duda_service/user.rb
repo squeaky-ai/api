@@ -31,17 +31,18 @@ module DudaService
       "#{api_endpoint}/api/accounts/#{account_name}"
     end
 
-    def request_options
+    def timeout
+      5
+    end
+
+    def headers
       {
-        timeout: 5,
-        headers: {
-          Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
-        }
+        Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
       }
     end
 
     def user_response_body
-      response = HTTParty.get(request_url, request_options)
+      response = HTTParty.get(request_url, headers:, timeout:)
       JSON.parse(response.body)
     end
   end

@@ -5,19 +5,22 @@ class AddStackToErrorEvents < ActiveRecord::Migration[7.0]
     ClickHouse.connection.add_column(
       'error_events',
       'stack',
-      :String
+      :String,
+      if_not_exists: true
     )
 
     ClickHouse.connection.add_column(
       'error_events',
       'col_number',
-      :Int16
+      :Int16,
+      if_not_exists: true
     )
 
     ClickHouse.connection.add_column(
       'error_events',
       'line_number',
-      :Int16
+      :Int16,
+      if_not_exists: true
     )
   end
 

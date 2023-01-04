@@ -52,6 +52,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
     let(:site_response) { double(:site_response, body: site_response_body) }
     let(:user_response) { double(:user_response, body: user_response_body) }
+    let(:script_response) { double(:script_response, body: '{}') }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
@@ -64,6 +65,10 @@ RSpec.describe Integrations::DudaController, type: :controller do
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
         .and_return(user_response)
+
+      allow(HTTParty).to receive(:post)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
+        .and_return(script_response)
     end
 
     subject do

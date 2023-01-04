@@ -5,7 +5,8 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'page_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(exited_at))'
+      order: '(site_id, toDate(exited_at))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
@@ -24,7 +25,8 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'click_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(timestamp))'
+      order: '(site_id, toDate(timestamp))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
@@ -44,7 +46,8 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'error_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(timestamp))'
+      order: '(site_id, toDate(timestamp))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
@@ -62,7 +65,8 @@ class AddMoreClickhouseTables < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'custom_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(timestamp))'
+      order: '(site_id, toDate(timestamp))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id

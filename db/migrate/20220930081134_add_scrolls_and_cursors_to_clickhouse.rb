@@ -5,7 +5,8 @@ class AddScrollsAndCursorsToClickhouse < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'scroll_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(timestamp))'
+      order: '(site_id, toDate(timestamp))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
@@ -23,7 +24,8 @@ class AddScrollsAndCursorsToClickhouse < ActiveRecord::Migration[7.0]
     ClickHouse.connection.create_table(
       'cursor_events',
       engine: 'MergeTree',
-      order: '(site_id, toDate(timestamp))'
+      order: '(site_id, toDate(timestamp))',
+      if_not_exists: true
     ) do |t|
       t.UUID   :uuid
       t.Int64  :site_id
