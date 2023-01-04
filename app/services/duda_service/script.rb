@@ -36,6 +36,7 @@ module DudaService
 
     def headers
       {
+        'Content-Type' => 'application/json',
         'Cache-Control' => 'no-cache',
         'Authorization' => "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}",
         'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
