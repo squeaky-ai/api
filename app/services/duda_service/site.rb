@@ -17,7 +17,7 @@ module DudaService
     end
 
     def domain
-      site['site_domain'] || site['site_default_domain']
+      "https://#{site['site_domain'].presence || site['site_default_domain'].presence}"
     end
 
     def uuid

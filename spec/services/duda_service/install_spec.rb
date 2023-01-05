@@ -19,7 +19,7 @@ RSpec.describe DudaService::Install do
     end
 
     let(:uuid) { site_name }
-    let(:domain) { 'https://my-domain.com' }
+    let(:domain) { 'my-domain.com' }
 
     let(:first_name) { 'Bob' }
     let(:last_name) { 'Dylan' }
@@ -77,7 +77,7 @@ RSpec.describe DudaService::Install do
       site = Site.find_by(uuid: site_name)
       expect(site.uuid).to eq(uuid)
       expect(site.name).to eq('Unknown')
-      expect(site.url).to eq(domain)
+      expect(site.url).to eq("https://#{domain}")
       expect(site.verified_at).not_to be_nil
     end
 

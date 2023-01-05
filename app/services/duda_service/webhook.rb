@@ -23,11 +23,11 @@ module DudaService
 
     def process_domain_updated
       auth = ::ProviderAuth.find_by!(provider: 'duda', provider_uuid: resource_data['site_name'])
-      auth.site.update(url:)
+      auth.site.update(url: domain)
     end
 
-    def url
-      data['domain'].presence || data['subdomain'].presence
+    def domain
+      "https://#{data['domain'].presence || data['subdomain'].presence}"
     end
   end
 end

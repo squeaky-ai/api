@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe DudaService::Site do
   let(:email) { 'email@site.com' }
-  let(:domain) { 'https://site-domain.com' }
+  let(:domain) { 'site-domain.com' }
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
   let(:name) { 'My Site' }
@@ -51,7 +51,7 @@ RSpec.describe DudaService::Site do
     subject { instance.domain }
 
     it 'returns the domain' do
-      expect(subject).to eq(domain)
+      expect(subject).to eq("https://#{domain}")
     end
   end
 
