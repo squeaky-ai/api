@@ -13,7 +13,7 @@ module DudaService
     end
 
     def name
-      site['site_business_info']['business_name'] || 'Unkown'
+      site['site_business_info']['business_name'] || 'Unknown'
     end
 
     def domain
@@ -21,7 +21,7 @@ module DudaService
     end
 
     def uuid
-     site['site_name']
+      site['site_name']
     end
 
     def account_name

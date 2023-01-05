@@ -243,4 +243,8 @@ FactoryBot.define do
 
     partner { association :partner }
   end
+
+  factory :provider_auth do
+    site { association :site }
+  end
 end

@@ -76,7 +76,7 @@ RSpec.describe DudaService::Install do
       subject
       site = Site.find_by(uuid: site_name)
       expect(site.uuid).to eq(uuid)
-      expect(site.name).to eq('Unkown')
+      expect(site.name).to eq('Unknown')
       expect(site.url).to eq(domain)
     end
 

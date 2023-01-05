@@ -168,4 +168,51 @@ RSpec.describe Integrations::DudaController, type: :controller do
       expect(response).to have_http_status(302)
     end
   end
+
+  describe 'POST /integrations/websitebuilder/webhooks' do
+    let(:provider_uuid) { SecureRandom.uuid }
+    let(:event_type) { 'DOMAIN_UPDATED' }
+
+    let(:site) { create(:site, provider: 'duda') }
+
+    let(:data) do
+      {
+        'domain' => nil,
+        'subdomain' => 'https://mysite.com'
+      }
+    end
+
+    let(:resource_data) do
+      {
+        'site_name' => provider_uuid
+      }
+    end
+
+    let(:params) do
+      {
+        'event_type' => event_type,
+        'data' => data,
+        'resource_data' => resource_data
+      }
+    end
+
+    before do
+      create(:provider_auth, site:, provider: 'duda', provider_uuid:)
+    end
+
+    subject do
+      get :webhook, params:
+    end
+
+    it 'updates the site url' do
+      expect { subject }.to change { site.reload.url }.to(data['subdomain'])
+    end
+
+    it 'returns okay' do
+      subject
+
+      expect(response).to have_http_status(200)
+      expect(json_body).to eq('status' => 'OK')
+    end
+  end
 end

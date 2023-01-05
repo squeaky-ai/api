@@ -34,6 +34,10 @@ module Integrations
     end
 
     def webhook
+      Rails.logger.info "Processing Duda webhook with: #{webhook_params.to_json}"
+
+      duda_webhook_service.process!
+
       render json: { status: 'OK' }
     end
 
@@ -52,6 +56,12 @@ module Integrations
       params.permit(:site_name)
     end
 
+    def webhook_params
+      data_params = %i[domain subdomain]
+      resource_data_params = %i[site_name]
+      params.permit(:event_type, data: data_params, resource_data: resource_data_params)
+    end
+
     def duda_auth_service
       @duda_auth_service ||= DudaService::Auth.new(
         sdk_url: sso_params['sdk_url'],
@@ -68,6 +78,14 @@ module Integrations
         site_name: install_params['site_name'],
         api_endpoint: install_params['api_endpoint'],
         auth: install_params['auth']
+      )
+    end
+
+    def duda_webhook_service
+      @duda_webhook_service ||= DudaService::Webhook.new(
+        event_type: webhook_params['event_type'],
+        data: webhook_params['data'].to_h,
+        resource_data: webhook_params['resource_data'].to_h
       )
     end
 
