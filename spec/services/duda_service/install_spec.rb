@@ -78,6 +78,7 @@ RSpec.describe DudaService::Install do
       expect(site.uuid).to eq(uuid)
       expect(site.name).to eq('Unknown')
       expect(site.url).to eq(domain)
+      expect(site.verified_at).not_to be_nil
     end
 
     it 'creates the owner and team' do

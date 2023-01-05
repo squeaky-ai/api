@@ -35,7 +35,8 @@ module DudaService
         url: duda_site.domain,
         uuid: duda_site.uuid,
         site_type: ::Site::WEBSITE,
-        provider: 'duda'
+        provider: 'duda',
+        verified_at: Time.now
       )
     end
 
