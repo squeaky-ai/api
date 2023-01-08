@@ -10,10 +10,14 @@ class Plans
   end
 
   def self.next_tier_name(plan_id)
-    plan = Rails.configuration.plans["plan_#{plan_id + 1}"]
-    return nil unless plan
+    plans = Plans.to_a
+    index = plans.find_index { |plan| plan[:id] == plan_id }
 
-    plan[:name]
+    next_plan = plans[index + 1] if index
+
+    return nil unless next_plan
+
+    next_plan[:name]
   end
 
   def self.to_a

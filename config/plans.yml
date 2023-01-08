@@ -495,29 +495,29 @@ production:
     name: Business
     max_monthly_recordings: 100000
     pricing:
-      - id: price_1Kii3aLJ9zG7aLW8XBLl3UUM
+      - id: price_1MO4kDLJ9zG7aLW8KNEon7TN
         currency: GBP
-        amount: 205
+        amount: 245
         interval: month
       - id: price_1Kii3aLJ9zG7aLW8AiH4F8Mc
         currency: EUR
-        amount: 245
+        amount: 375
         interval: month
       - id: price_1Kii3aLJ9zG7aLW874mLf8qs
         currency: USD
-        amount: 275
+        amount: 295
         interval: month
       - id: price_1KrkUgLJ9zG7aLW8VrNHvsfu
         currency: GBP
-        amount: 1968
+        amount: 2345
         interval: year
       - id: price_1KrkRXLJ9zG7aLW8xxtNMZyY
         currency: EUR
-        amount: 2352
+        amount: 2655
         interval: year
       - id: price_1KrkUILJ9zG7aLW81wfvhHFH
         currency: USD
-        amount: 2640
+        amount: 2832
         interval: year
     data_storage_months: 12
     support:

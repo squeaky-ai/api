@@ -81,4 +81,18 @@ RSpec.describe Plans do
       end
     end
   end
+
+  describe '.next_tier_name' do
+    context 'when the pricing_id is not valid' do
+      it 'returns nil' do
+        expect(described_class.next_tier_name(45234)).to eq nil
+      end
+    end
+
+    context 'when the pricing_id is valid' do
+      it 'returns nil' do
+        expect(described_class.next_tier_name(2)).to eq 'Business'
+      end
+    end
+  end
 end
