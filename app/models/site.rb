@@ -35,7 +35,7 @@ class Site < ApplicationRecord
 
   default_scope { order(name: :asc) }
 
-  after_create { create_plan(tier: 0) }
+  after_create { create_plan(plan_id: Plans.free_plan[:id]) }
 
   WEB_APP = 0
   WEBSITE = 1

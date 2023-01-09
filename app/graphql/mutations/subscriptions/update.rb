@@ -23,7 +23,7 @@ module Mutations
 
         StripeService::Billing.new(user, site).update_plan(pricing_id)
 
-        site.plan.update(tier: plan[:id])
+        site.plan.update(plan_id: plan[:id])
 
         site
       end

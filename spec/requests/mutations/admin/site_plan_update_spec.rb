@@ -7,8 +7,11 @@ admin_site_plan_update_mutation = <<-GRAPHQL
     adminSitePlanUpdate(input: $input) {
       id
       plan {
-        tier
         name
+        planId
+        free
+        enterprise
+        deprecated
         exceeded
         invalid
         support
@@ -65,7 +68,10 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         'responseTimeHours' => 12,
         'ssoEnabled' => true,
         'support' => ['Phone', 'Chat'],
-        'tier' => 0,
+        'planId' => '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f',
+        'free' => true,
+        'enterprise' => false,
+        'deprecated' => false,
         'teamMemberLimit' => 1,
         'featuresEnabled' => ['dashboard']
       }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_200054) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_08_201258) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -204,6 +204,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_200054) do
     t.string "notes"
     t.integer "team_member_limit"
     t.string "features_enabled", default: [], array: true
+    t.string "plan_id"
     t.index ["site_id"], name: "index_plans_on_site_id"
   end
 

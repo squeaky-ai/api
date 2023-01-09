@@ -25,9 +25,9 @@ RSpec.describe CommissionService do
         site_2 = create(:site)
         site_3 = create(:site)
 
-        site_1.plan.update(tier: 0)
-        site_2.plan.update(tier: 0)
-        site_3.plan.update(tier: 0)
+        site_1.plan.update(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        site_2.plan.update(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        site_3.plan.update(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
 
         create(:referral, partner:, site: site_1)
         create(:referral, partner:, site: site_2)
@@ -49,9 +49,9 @@ RSpec.describe CommissionService do
         site_2 = create(:site)
         site_3 = create(:site)
 
-        site_1.plan.update(tier: 0)
-        site_2.plan.update(tier: 1)
-        site_3.plan.update(tier: 3)
+        site_1.plan.update(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        site_2.plan.update(plan_id: '094f6148-22d6-4201-9c5e-20bffb68cc48')
+        site_3.plan.update(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c')
 
         create(:referral, partner:, site: site_1)
         create(:referral, partner:, site: site_2)

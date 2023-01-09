@@ -11,7 +11,7 @@ module Types
       field :invoice_web_url, String, null: false
       field :invoice_pdf_url, String, null: false
       field :interval, String, null: false
-      field :plan, Types::Plans::Plan, null: false
+      field :plan, Types::Plans::Plan, null: true
       field :period_start_at, GraphQL::Types::ISO8601Date, null: false
       field :period_end_at, GraphQL::Types::ISO8601Date, null: false
       field :discount_name, String, null: true

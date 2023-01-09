@@ -64,7 +64,9 @@ RSpec.describe StripeService::Types::InvoicePaid do
     end
 
     it 'sets the sites plan to the one from the billing' do
-      expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
+      expect { subject }.to change { billing.site.reload.plan.plan_id }
+        .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
     end
   end
 end

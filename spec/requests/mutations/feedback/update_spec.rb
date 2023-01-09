@@ -139,7 +139,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
 
     context 'and they are on the free tier' do
       before do
-        site.plan.update(tier: 0)
+        site.plan.update(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
       end
 
       it 'does not update the logo settings' do
@@ -152,7 +152,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
 
     context 'and they are paying' do
       before do
-        site.plan.update(tier: 1)
+        site.plan.update(plan_id: '094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
 
       it 'updates the logo settings' do

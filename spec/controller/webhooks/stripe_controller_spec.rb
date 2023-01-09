@@ -128,7 +128,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
     end
 
@@ -212,7 +214,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(5)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('eacfcc46-82ba-4994-9d01-19696c4e374b')
       end
     end
 
@@ -296,7 +300,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(7)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('9c468200-233d-406b-bd54-09ca0a552221')
       end
     end
 
@@ -380,7 +386,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(5)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('eacfcc46-82ba-4994-9d01-19696c4e374b')
       end
     end
 
@@ -464,7 +472,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
     end
 
@@ -553,7 +563,9 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       end
 
       it 'sets the sites plan to the one from the billing' do
-        expect { subject }.to change { billing.site.reload.plan.tier }.from(0).to(1)
+        expect { subject }.to change { billing.site.reload.plan.plan_id }
+          .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+          .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
     end
   

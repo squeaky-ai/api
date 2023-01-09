@@ -7,7 +7,10 @@ site_plan_query = <<-GRAPHQL
     site(siteId: $site_id) {
       id
       plan {
-        tier
+        planId
+        free
+        enterprise
+        deprecated
         name
         exceeded
         invalid
@@ -35,8 +38,11 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 0,
+        'planId' => '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f',
         'name' => 'Free',
+        'free' => true,
+        'enterprise' => false,
+        'deprecated' => false,
         'exceeded' => false,
         'invalid' => false,
         'maxMonthlyRecordings' => 1000,
@@ -56,7 +62,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     before do
       create(:billing, status: Billing::VALID, site:, user: site.owner.user)
 
-      site.plan.update(tier: 3)
+      site.plan.update(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c')
     end
 
     subject do
@@ -69,7 +75,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 3,
+        'planId' => 'b2054935-4fdf-45d0-929b-853cfe8d4a1c',
+        'free' => false,
+        'enterprise' => false,
+        'deprecated' => false,
         'name' => 'Business',
         'exceeded' => false,
         'invalid' => false,
@@ -91,7 +100,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     before do
       create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
 
-      site.plan.update(tier: 2)
+      site.plan.update(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f')
     end
 
     subject do
@@ -104,7 +113,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 2,
+        'planId' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
+        'free' => false,
+        'enterprise' => false,
+        'deprecated' => true,
         'name' => 'Plus',
         'exceeded' => false,
         'invalid' => true,
@@ -128,7 +140,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
       allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
 
-      site.plan.update(tier: 2)
+      site.plan.update(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f')
     end
 
     subject do
@@ -141,7 +153,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 2,
+        'planId' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
+        'free' => false,
+        'enterprise' => false,
+        'deprecated' => true,
         'name' => 'Plus',
         'exceeded' => true,
         'invalid' => false,
@@ -165,7 +180,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
       allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
 
-      site.plan.update(tier: 2)
+      site.plan.update(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f')
     end
 
     subject do
@@ -178,7 +193,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 2,
+        'planId' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
+        'free' => false,
+        'enterprise' => false,
+        'deprecated' => true,
         'name' => 'Plus',
         'exceeded' => true,
         'invalid' => true,
@@ -199,7 +217,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     before do
       create(:billing, status: Billing::VALID, site:, user: site.owner.user)
 
-      site.plan.update(tier: 5)
+      site.plan.update(plan_id: 'eacfcc46-82ba-4994-9d01-19696c4e374b')
     end
 
     subject do
@@ -212,7 +230,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 5,
+        'planId' => 'eacfcc46-82ba-4994-9d01-19696c4e374b',
+        'free' => false,
+        'enterprise' => true,
+        'deprecated' => false,
         'name' => 'Enterprise Tier 1',
         'exceeded' => false,
         'invalid' => false,
@@ -236,7 +257,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
       create(:billing, status: Billing::VALID, site:, user: site.owner.user)
 
       site.plan.update(
-        tier: 5,
+        plan_id: 'eacfcc46-82ba-4994-9d01-19696c4e374b',
         max_monthly_recordings: 500000,
         data_storage_months: 36,
         support: ['Email', 'Phone']
@@ -253,7 +274,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     it 'returns the default plan for this tier' do
       response = subject['data']['site']['plan']
       expect(response).to eq(
-        'tier' => 5,
+        'planId' => 'eacfcc46-82ba-4994-9d01-19696c4e374b',
+        'free' => false,
+        'enterprise' => true,
+        'deprecated' => false,
         'name' => 'Enterprise Tier 1',
         'exceeded' => false,
         'invalid' => false,

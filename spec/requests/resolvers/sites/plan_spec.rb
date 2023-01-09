@@ -28,7 +28,7 @@ RSpec.describe 'QueryPlan', type: :request do
     expect(response['data']['plans']).to eq(
       [
         {
-          'id' => '0',
+          'id' => '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f',
           'name' => 'Free',
           'maxMonthlyRecordings' => 1000,
           'pricing' => [
@@ -58,7 +58,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 168
         },
         {
-          'id' => '1',
+          'id' => '094f6148-22d6-4201-9c5e-20bffb68cc48',
           'name' => 'Light',
           'maxMonthlyRecordings' => 10000,
           'pricing' => [
@@ -106,7 +106,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 72
         },
         {
-          'id' => '2',
+          'id' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
           'name' => 'Plus',
           'maxMonthlyRecordings' => 50000,
           'pricing' => [
@@ -154,7 +154,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 24
         },
         {
-          'id' => '3',
+          'id' => 'b2054935-4fdf-45d0-929b-853cfe8d4a1c',
           'name' => 'Business',
           'maxMonthlyRecordings' => 100000,
           'pricing' => [
@@ -203,56 +203,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 24
         },
         {
-          'id' => '4',
-          'name' => 'Premium',
-          'maxMonthlyRecordings' => 200000,
-          'pricing' => [
-            {
-              'id' => 'price_1KPOWhLJ9zG7aLW8J2T8etAP',
-              'currency' => 'GBP',
-              'amount' => 410,
-              'interval' => 'month'
-            },
-            {
-              'id' => 'price_1KPOWhLJ9zG7aLW8lDyXxWeS',
-              'currency' => 'EUR',
-              'amount' => 495,
-              'interval' => 'month'
-            },
-            {
-              'id' => 'price_1KPOWhLJ9zG7aLW8RHpK5q60',
-              'currency' => 'USD',
-              'amount' => 560,
-              'interval' => 'month'
-            },
-            {
-              'id' => 'price_1KrRxeLJ9zG7aLW8Hb8iahdY',
-              'currency' => 'GBP',
-              'amount' => 3936,
-              'interval' => 'year'
-            },
-            {
-              'id' => 'price_1KrRwbLJ9zG7aLW8VMNu37Bb',
-              'currency' => 'EUR',
-              'amount' => 4752,
-              'interval' => 'year'
-            },
-            {
-              'id' => 'price_1KrRxHLJ9zG7aLW8GM1b8mTH',
-              'currency' => 'USD',
-              'amount' => 5376,
-              'interval' => 'year'
-            }
-          ],
-          'dataStorageMonths' => 12,
-          'support' => [
-            'Email',
-            'Chat'
-          ],
-          'responseTimeHours' => 24
-        },
-        {
-          'id' => '5',
+          'id' => 'eacfcc46-82ba-4994-9d01-19696c4e374b',
           'name' => 'Enterprise Tier 1',
           'maxMonthlyRecordings' => 250000,
           'pricing' => [
@@ -302,7 +253,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 0
         },
         {
-          'id' => '6',
+          'id' => '131f1b89-d459-4d70-9b67-5cce751de365',
           'name' => 'Enterprise Tier 2',
           'maxMonthlyRecordings' => 500000,
           'pricing' => [
@@ -352,7 +303,7 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 0
         },
         {
-          'id' => '7',
+          'id' => '9c468200-233d-406b-bd54-09ca0a552221',
           'name' => 'Enterprise Tier 3',
           'maxMonthlyRecordings' => 750000,
           'pricing' => [

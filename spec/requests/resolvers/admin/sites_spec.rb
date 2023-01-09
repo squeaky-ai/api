@@ -11,7 +11,7 @@ sites_admin_query = <<-GRAPHQL
           name
           url
           plan {
-            tier
+            planId
             name
           }
           uuid

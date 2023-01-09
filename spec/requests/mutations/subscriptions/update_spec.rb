@@ -7,7 +7,7 @@ subscriptions_update_mutation = <<-GRAPHQL
     subscriptionsUpdate(input: $input) {
       id
       plan {
-        tier
+        planId
         name
       }
     }
@@ -62,14 +62,16 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
       expect(response).to eq(
         'id' => site.id.to_s,
         'plan' => {
-          'tier' => 2,
+          'planId' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
           'name' => 'Plus'
         }
       )
     end
 
     it 'updates the plan' do
-      expect { subject }.to change { site.plan.reload.tier }.from(0).to(2)
+      expect { subject }.to change { site.plan.reload.plan_id }
+        .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        .to('f20c93ec-172f-46c6-914e-6a00dff3ae5f')
     end
 
     it 'calls the service' do

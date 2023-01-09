@@ -3,24 +3,36 @@
 class Plan < ApplicationRecord
   belongs_to :site
 
+  # GraphQL won't look it up with ?
   alias_attribute :invalid, :invalid?
   alias_attribute :exceeded, :exceeded?
+  alias_attribute :free, :free?
+  alias_attribute :enterprise, :enterprise?
+  alias_attribute :deprecated, :deprecated?
 
   def name
     plan_defaults[:name]
   end
 
   def free?
-    tier.zero?
+    plan_id == Plans.free_plan[:id]
   end
 
   def exceeded?
     all_recordings_count >= max_monthly_recordings
   end
 
+  def enterprise?
+    plan_defaults[:enterprise]
+  end
+
+  def deprecated?
+    plan_defaults[:deprecated]
+  end
+
   def invalid?
     # They have no billing so it can't be invalid
-    return false if tier.zero?
+    return false if free?
 
     unless site.billing
       Rails.logger.info "Site #{site.id} is missing billing but is not on the free tier"
@@ -71,6 +83,6 @@ class Plan < ApplicationRecord
   end
 
   def plan_defaults
-    @plan_defaults ||= Rails.configuration.plans.values.find { |plan| plan[:id] == tier }
+    @plan_defaults ||= Plans.find_by_plan_id(plan_id)
   end
 end

@@ -37,7 +37,7 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     let(:customer_id) { SecureRandom.base36 }
-    let(:pricing_id) { 'price_1KPOWhLJ9zG7aLW8lDyXxWeS' }
+    let(:pricing_id) { 'price_1KPOVlLJ9zG7aLW88SC9VKKB' }
     let(:redirect_url) { 'https://stripe.com/fake_redirect_url' }
 
     let(:customer_response) { { 'id' => customer_id } }

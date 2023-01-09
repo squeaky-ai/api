@@ -73,7 +73,7 @@ module StripeService
 
         raise StandardError, "Plan with pricing_id: #{pricing_id} not found" unless plan
 
-        site.plan.update!(tier: plan[:id])
+        site.plan.update!(plan_id: plan[:id])
       end
     end
   end

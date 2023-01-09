@@ -1,348 +1,363 @@
 default: &default
-  plan_0:
-    id: 0
-    name: Free
-    max_monthly_recordings: 1000
-    pricing:
-      - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
-        currency: GBP
-        amount: 0
-        interval: month
-      - id: price_1KQvNFLJ9zG7aLW855a0hFk7
-        currency: EUR
-        amount: 0
-        interval: month
-      - id: price_1KQvNFLJ9zG7aLW8J97ZS43l
-        currency: USD
-        amount: 0
-        interval: month
-    data_storage_months: 3
-    support:
-      - Email
-    response_time_hours: 168
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+  plans:
+    - id: 05bdce28-3ac8-4c40-bd5a-48c039bd3c7f
+      name: Free
+      free: true
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 1000
+      pricing:
+        - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
+          currency: GBP
+          amount: 0
+          interval: month
+        - id: price_1KQvNFLJ9zG7aLW855a0hFk7
+          currency: EUR
+          amount: 0
+          interval: month
+        - id: price_1KQvNFLJ9zG7aLW8J97ZS43l
+          currency: USD
+          amount: 0
+          interval: month
+      data_storage_months: 3
+      support:
+        - Email
+      response_time_hours: 168
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_1:
-    id: 1
-    name: Light
-    max_monthly_recordings: 10000
-    pricing:
-      - id: price_1KPOV6LJ9zG7aLW852tqylTr
-        currency: GBP
-        amount: 38
-        interval: month
-      - id: price_1KPOV6LJ9zG7aLW8xMXyFGGr
-        currency: EUR
-        amount: 45
-        interval: month
-      - id: price_1KPOV6LJ9zG7aLW8tDzfMy0D
-        currency: USD
-        amount: 50
-        interval: month
-      - id: price_1KrQU8LJ9zG7aLW8I0V3YAv4
-        currency: GBP
-        amount: 365
-        interval: year
-      - id: price_1KrQT3LJ9zG7aLW8pQwfiYPY
-        currency: EUR
-        amount: 432
-        interval: year
-      - id: price_1KrQTOLJ9zG7aLW8dKY3BH8e
-        currency: USD
-        amount: 480
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-    response_time_hours: 72
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
+      name: Light
+      free: false
+      deprecated: true
+      enterprise: false
+      max_monthly_recordings: 10000
+      pricing:
+        - id: price_1KPOV6LJ9zG7aLW852tqylTr
+          currency: GBP
+          amount: 38
+          interval: month
+        - id: price_1KPOV6LJ9zG7aLW8xMXyFGGr
+          currency: EUR
+          amount: 45
+          interval: month
+        - id: price_1KPOV6LJ9zG7aLW8tDzfMy0D
+          currency: USD
+          amount: 50
+          interval: month
+        - id: price_1KrQU8LJ9zG7aLW8I0V3YAv4
+          currency: GBP
+          amount: 365
+          interval: year
+        - id: price_1KrQT3LJ9zG7aLW8pQwfiYPY
+          currency: EUR
+          amount: 432
+          interval: year
+        - id: price_1KrQTOLJ9zG7aLW8dKY3BH8e
+          currency: USD
+          amount: 480
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+      response_time_hours: 72
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_2:
-    id: 2
-    name: Plus
-    max_monthly_recordings: 50000
-    pricing:
-      - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
-        currency: GBP
-        amount: 120
-        interval: month
-      - id: price_1KPOVlLJ9zG7aLW892gWiiTU
-        currency: EUR
-        amount: 145
-        interval: month
-      - id: price_1KPOVlLJ9zG7aLW8bw9qLkLF
-        currency: USD
-        amount: 165
-        interval: month
-      - id: price_1KrQWKLJ9zG7aLW8LK9YzE4h
-        currency: GBP
-        amount: 1152
-        interval: year
-      - id: price_1KrQUpLJ9zG7aLW82xVQJCKy
-        currency: EUR
-        amount: 1392
-        interval: year
-      - id: price_1KrQVrLJ9zG7aLW8WMsmZfkl
-        currency: USD
-        amount: 1584
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-    response_time_hours: 24
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: f20c93ec-172f-46c6-914e-6a00dff3ae5f
+      name: Plus
+      free: false
+      deprecated: true
+      enterprise: false
+      max_monthly_recordings: 50000
+      pricing:
+        - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
+          currency: GBP
+          amount: 120
+          interval: month
+        - id: price_1KPOVlLJ9zG7aLW892gWiiTU
+          currency: EUR
+          amount: 145
+          interval: month
+        - id: price_1KPOVlLJ9zG7aLW8bw9qLkLF
+          currency: USD
+          amount: 165
+          interval: month
+        - id: price_1KrQWKLJ9zG7aLW8LK9YzE4h
+          currency: GBP
+          amount: 1152
+          interval: year
+        - id: price_1KrQUpLJ9zG7aLW82xVQJCKy
+          currency: EUR
+          amount: 1392
+          interval: year
+        - id: price_1KrQVrLJ9zG7aLW8WMsmZfkl
+          currency: USD
+          amount: 1584
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+      response_time_hours: 24
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_3:
-    id: 3
-    name: Business
-    max_monthly_recordings: 100000
-    pricing:
-      - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
-        currency: GBP
-        amount: 205
-        interval: month
-      - id: price_1KPOWCLJ9zG7aLW829kU4xrO
-        currency: EUR
-        amount: 245
-        interval: month
-      - id: price_1KPOWCLJ9zG7aLW8jXWVkVsr
-        currency: USD
-        amount: 275
-        interval: month
-      - id: price_1KrRvELJ9zG7aLW8oTujLmg4
-        currency: GBP
-        amount: 1968
-        interval: year
-      - id: price_1KrRuKLJ9zG7aLW8n2g9Fue9
-        currency: EUR
-        amount: 2352
-        interval: year
-      - id: price_1KrRudLJ9zG7aLW8q3rQMsp3
-        currency: USD
-        amount: 2640
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-      - Chat
-    response_time_hours: 24
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: b2054935-4fdf-45d0-929b-853cfe8d4a1c
+      name: Business
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 100000
+      pricing:
+        - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
+          currency: GBP
+          amount: 205
+          interval: month
+        - id: price_1KPOWCLJ9zG7aLW829kU4xrO
+          currency: EUR
+          amount: 245
+          interval: month
+        - id: price_1KPOWCLJ9zG7aLW8jXWVkVsr
+          currency: USD
+          amount: 275
+          interval: month
+        - id: price_1KrRvELJ9zG7aLW8oTujLmg4
+          currency: GBP
+          amount: 1968
+          interval: year
+        - id: price_1KrRuKLJ9zG7aLW8n2g9Fue9
+          currency: EUR
+          amount: 2352
+          interval: year
+        - id: price_1KrRudLJ9zG7aLW8q3rQMsp3
+          currency: USD
+          amount: 2640
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+        - Chat
+      response_time_hours: 24
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_5:
-    id: 5
-    name: Enterprise Tier 1
-    max_monthly_recordings: 250000
-    pricing:
-      - id: price_1KrS2KLJ9zG7aLW8AY5dAe2S
-        currency: GBP
-        amount: 830
-        interval: month
-      - id: price_1KrS2KLJ9zG7aLW8ce9pbVs4
-        currency: EUR
-        amount: 995
-        interval: month
-      - id: price_1KrS2KLJ9zG7aLW86h5GNFoR
-        currency: USD
-        amount: 1125
-        interval: month
-      - id: price_1KrS2KLJ9zG7aLW87ZLHGqgI
-        currency: GBP
-        amount: 7968
-        interval: year
-      - id: price_1KrS2KLJ9zG7aLW8pkQg5f4d
-        currency: EUR
-        amount: 9552
-        interval: year
-      - id: price_1KrS2KLJ9zG7aLW821CsgH60
-        currency: USD
-        amount: 10800
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: eacfcc46-82ba-4994-9d01-19696c4e374b
+      name: Enterprise Tier 1
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 250000
+      pricing:
+        - id: price_1KrS2KLJ9zG7aLW8AY5dAe2S
+          currency: GBP
+          amount: 830
+          interval: month
+        - id: price_1KrS2KLJ9zG7aLW8ce9pbVs4
+          currency: EUR
+          amount: 995
+          interval: month
+        - id: price_1KrS2KLJ9zG7aLW86h5GNFoR
+          currency: USD
+          amount: 1125
+          interval: month
+        - id: price_1KrS2KLJ9zG7aLW87ZLHGqgI
+          currency: GBP
+          amount: 7968
+          interval: year
+        - id: price_1KrS2KLJ9zG7aLW8pkQg5f4d
+          currency: EUR
+          amount: 9552
+          interval: year
+        - id: price_1KrS2KLJ9zG7aLW821CsgH60
+          currency: USD
+          amount: 10800
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_6:
-    id: 6
-    name: Enterprise Tier 2
-    max_monthly_recordings: 500000
-    pricing:
-      - id: price_1KrS70LJ9zG7aLW8Pnf4Wt8N
-        currency: GBP
-        amount: 2085
-        interval: month
-      - id: price_1KrS70LJ9zG7aLW8U5YviqRa
-        currency: EUR
-        amount: 2500
-        interval: month
-      - id: price_1KrS70LJ9zG7aLW8pZ1VFyah
-        currency: USD
-        amount: 2830
-        interval: month
-      - id: price_1KrS70LJ9zG7aLW8m1sgzDWf
-        currency: GBP
-        amount: 20016
-        interval: year
-      - id: price_1KrS70LJ9zG7aLW8G8cD9OUn
-        currency: EUR
-        amount: 24000
-        interval: year
-      - id: price_1KrS70LJ9zG7aLW8NuJwC1aV
-        currency: USD
-        amount: 27168
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
-  
-  plan_7:
-    id: 7
-    name: Enterprise Tier 3
-    max_monthly_recordings: 750000
-    pricing:
-      - id: price_1KrSCdLJ9zG7aLW8mPrReLYX
-        currency: GBP
-        amount: 4170
-        interval: month
-      - id: price_1KrSCdLJ9zG7aLW8QyHZPXsr
-        currency: EUR
-        amount: 5000
-        interval: month
-      - id: price_1KrSCdLJ9zG7aLW8rQePlePo
-        currency: USD
-        amount: 5650
-        interval: month
-      - id: price_1KrSCdLJ9zG7aLW8E3qnKn6T
-        currency: GBP
-        amount: 40032
-        interval: year
-      - id: price_1KrSCdLJ9zG7aLW8kPZnksMP
-        currency: EUR
-        amount: 48000
-        interval: year
-      - id: price_1KrSCdLJ9zG7aLW8CXq63zYe
-        currency: USD
-        amount: 54240
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 131f1b89-d459-4d70-9b67-5cce751de365
+      name: Enterprise Tier 2
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 500000
+      pricing:
+        - id: price_1KrS70LJ9zG7aLW8Pnf4Wt8N
+          currency: GBP
+          amount: 2085
+          interval: month
+        - id: price_1KrS70LJ9zG7aLW8U5YviqRa
+          currency: EUR
+          amount: 2500
+          interval: month
+        - id: price_1KrS70LJ9zG7aLW8pZ1VFyah
+          currency: USD
+          amount: 2830
+          interval: month
+        - id: price_1KrS70LJ9zG7aLW8m1sgzDWf
+          currency: GBP
+          amount: 20016
+          interval: year
+        - id: price_1KrS70LJ9zG7aLW8G8cD9OUn
+          currency: EUR
+          amount: 24000
+          interval: year
+        - id: price_1KrS70LJ9zG7aLW8NuJwC1aV
+          currency: USD
+          amount: 27168
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
+    
+    - id: 9c468200-233d-406b-bd54-09ca0a552221
+      name: Enterprise Tier 3
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 750000
+      pricing:
+        - id: price_1KrSCdLJ9zG7aLW8mPrReLYX
+          currency: GBP
+          amount: 4170
+          interval: month
+        - id: price_1KrSCdLJ9zG7aLW8QyHZPXsr
+          currency: EUR
+          amount: 5000
+          interval: month
+        - id: price_1KrSCdLJ9zG7aLW8rQePlePo
+          currency: USD
+          amount: 5650
+          interval: month
+        - id: price_1KrSCdLJ9zG7aLW8E3qnKn6T
+          currency: GBP
+          amount: 40032
+          interval: year
+        - id: price_1KrSCdLJ9zG7aLW8kPZnksMP
+          currency: EUR
+          amount: 48000
+          interval: year
+        - id: price_1KrSCdLJ9zG7aLW8CXq63zYe
+          currency: USD
+          amount: 54240
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
 development:
   <<: *default
@@ -351,452 +366,471 @@ test:
   <<: *default
 
 production:
-  plan_0:
-    id: 0
-    name: Free
-    max_monthly_recordings: 1000
-    pricing:
-      - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
-        currency: GBP
-        amount: 0
-        interval: month
-      - id: price_1Kii41LJ9zG7aLW8AMLaYkxK
-        currency: EUR
-        amount: 0
-        interval: month
-      - id: price_1Kii41LJ9zG7aLW8MWDPJvRc
-        currency: USD
-        amount: 0
-        interval: month
-    data_storage_months: 3
-    support:
-      - Email
-    response_time_hours: 168
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+  plans:
+    - id: 05bdce28-3ac8-4c40-bd5a-48c039bd3c7f
+      name: Free
+      free: true
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 1000
+      pricing:
+        - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
+          currency: GBP
+          amount: 0
+          interval: month
+        - id: price_1Kii41LJ9zG7aLW8AMLaYkxK
+          currency: EUR
+          amount: 0
+          interval: month
+        - id: price_1Kii41LJ9zG7aLW8MWDPJvRc
+          currency: USD
+          amount: 0
+          interval: month
+      data_storage_months: 3
+      support:
+        - Email
+      response_time_hours: 168
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_1:
-    id: 1
-    name: Light
-    max_monthly_recordings: 10000
-    pricing:
-      - id: price_1Kii3vLJ9zG7aLW8bunMa8I9
-        currency: GBP
-        amount: 38
-        interval: month
-      - id: price_1Kii3vLJ9zG7aLW8XqBlwzv7
-        currency: EUR
-        amount: 45
-        interval: month
-      - id: price_1Kii3vLJ9zG7aLW8CTCDfmaJ
-        currency: USD
-        amount: 50
-        interval: month
-      - id: price_1KrkK3LJ9zG7aLW8tmxtHOHi
-        currency: GBP
-        amount: 384
-        interval: year
-      - id: price_1KrkHlLJ9zG7aLW8TlNkpXOz
-        currency: EUR
-        amount: 432
-        interval: year
-      - id: price_1KrkIiLJ9zG7aLW8pON7HEbu
-        currency: USD
-        amount: 480
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-    response_time_hours: 72
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
+      name: Light
+      free: false
+      deprecated: true
+      enterprise: false
+      max_monthly_recordings: 10000
+      pricing:
+        - id: price_1Kii3vLJ9zG7aLW8bunMa8I9
+          currency: GBP
+          amount: 38
+          interval: month
+        - id: price_1Kii3vLJ9zG7aLW8XqBlwzv7
+          currency: EUR
+          amount: 45
+          interval: month
+        - id: price_1Kii3vLJ9zG7aLW8CTCDfmaJ
+          currency: USD
+          amount: 50
+          interval: month
+        - id: price_1KrkK3LJ9zG7aLW8tmxtHOHi
+          currency: GBP
+          amount: 384
+          interval: year
+        - id: price_1KrkHlLJ9zG7aLW8TlNkpXOz
+          currency: EUR
+          amount: 432
+          interval: year
+        - id: price_1KrkIiLJ9zG7aLW8pON7HEbu
+          currency: USD
+          amount: 480
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+      response_time_hours: 72
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_2:
-    id: 2
-    name: Plus
-    max_monthly_recordings: 50000
-    pricing:
-      - id: price_1Kii3pLJ9zG7aLW8QI29OvbY
-        currency: GBP
-        amount: 120
-        interval: month
-      - id: price_1Kii3oLJ9zG7aLW836KLDHtC
-        currency: EUR
-        amount: 145
-        interval: month
-      - id: price_1Kii3pLJ9zG7aLW8PRU8vDcv
-        currency: USD
-        amount: 165
-        interval: month
-      - id: price_1KrkNcLJ9zG7aLW8GOAbYKnK
-        currency: GBP
-        amount: 1152
-        interval: year
-      - id: price_1KrkLbLJ9zG7aLW8V4HpOVwm
-        currency: EUR
-        amount: 1392
-        interval: year
-      - id: price_1KrkMpLJ9zG7aLW8M1qhd912
-        currency: USD
-        amount: 1584
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-      - Chat
-    response_time_hours: 24
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: f20c93ec-172f-46c6-914e-6a00dff3ae5f
+      name: Plus
+      free: false
+      deprecated: true
+      enterprise: false
+      max_monthly_recordings: 50000
+      pricing:
+        - id: price_1Kii3pLJ9zG7aLW8QI29OvbY
+          currency: GBP
+          amount: 120
+          interval: month
+        - id: price_1Kii3oLJ9zG7aLW836KLDHtC
+          currency: EUR
+          amount: 145
+          interval: month
+        - id: price_1Kii3pLJ9zG7aLW8PRU8vDcv
+          currency: USD
+          amount: 165
+          interval: month
+        - id: price_1KrkNcLJ9zG7aLW8GOAbYKnK
+          currency: GBP
+          amount: 1152
+          interval: year
+        - id: price_1KrkLbLJ9zG7aLW8V4HpOVwm
+          currency: EUR
+          amount: 1392
+          interval: year
+        - id: price_1KrkMpLJ9zG7aLW8M1qhd912
+          currency: USD
+          amount: 1584
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+        - Chat
+      response_time_hours: 24
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_3:
-    id: 3
-    name: Business
-    max_monthly_recordings: 100000
-    pricing:
-      - id: price_1MO4kDLJ9zG7aLW8KNEon7TN
-        currency: GBP
-        amount: 245
-        interval: month
-      - id: price_1Kii3aLJ9zG7aLW8AiH4F8Mc
-        currency: EUR
-        amount: 375
-        interval: month
-      - id: price_1Kii3aLJ9zG7aLW874mLf8qs
-        currency: USD
-        amount: 295
-        interval: month
-      - id: price_1KrkUgLJ9zG7aLW8VrNHvsfu
-        currency: GBP
-        amount: 2345
-        interval: year
-      - id: price_1KrkRXLJ9zG7aLW8xxtNMZyY
-        currency: EUR
-        amount: 2655
-        interval: year
-      - id: price_1KrkUILJ9zG7aLW81wfvhHFH
-        currency: USD
-        amount: 2832
-        interval: year
-    data_storage_months: 12
-    support:
-      - Email
-      - Chat
-    response_time_hours: 24
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: b2054935-4fdf-45d0-929b-853cfe8d4a1c
+      name: Business
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 100000
+      pricing:
+        - id: price_1MO4kDLJ9zG7aLW8KNEon7TN
+          currency: GBP
+          amount: 245
+          interval: month
+        - id: price_1Kii3aLJ9zG7aLW8AiH4F8Mc
+          currency: EUR
+          amount: 375
+          interval: month
+        - id: price_1Kii3aLJ9zG7aLW874mLf8qs
+          currency: USD
+          amount: 295
+          interval: month
+        - id: price_1KrkUgLJ9zG7aLW8VrNHvsfu
+          currency: GBP
+          amount: 2345
+          interval: year
+        - id: price_1KrkRXLJ9zG7aLW8xxtNMZyY
+          currency: EUR
+          amount: 2655
+          interval: year
+        - id: price_1KrkUILJ9zG7aLW81wfvhHFH
+          currency: USD
+          amount: 2832
+          interval: year
+      data_storage_months: 12
+      support:
+        - Email
+        - Chat
+      response_time_hours: 24
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_5:
-    id: 5
-    name: Enterprise Tier 1
-    max_monthly_recordings: 250000
-    pricing: 
-      - id: price_1KrkhlLJ9zG7aLW8MOfX9UBL
-        currency: GBP
-        amount: 830
-        interval: month
-      - id: price_1KrkhlLJ9zG7aLW8AGvYteSV
-        currency: EUR
-        amount: 995
-        interval: month
-      - id: price_1KrkhlLJ9zG7aLW8MkJ7tg1f
-        currency: USD
-        amount: 1125
-        interval: month
-      - id: price_1KrkhlLJ9zG7aLW8mCb9o7lS
-        currency: GBP
-        amount: 7968
-        interval: year
-      - id: price_1KrkhlLJ9zG7aLW8AGvYteSV
-        currency: EUR
-        amount: 9952
-        interval: year
-      - id: price_1KrkhlLJ9zG7aLW8slNvYMBW
-        currency: USD
-        amount: 10800
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: eacfcc46-82ba-4994-9d01-19696c4e374b
+      name: Enterprise Tier 1
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 250000
+      pricing: 
+        - id: price_1KrkhlLJ9zG7aLW8MOfX9UBL
+          currency: GBP
+          amount: 830
+          interval: month
+        - id: price_1KrkhlLJ9zG7aLW8AGvYteSV
+          currency: EUR
+          amount: 995
+          interval: month
+        - id: price_1KrkhlLJ9zG7aLW8MkJ7tg1f
+          currency: USD
+          amount: 1125
+          interval: month
+        - id: price_1KrkhlLJ9zG7aLW8mCb9o7lS
+          currency: GBP
+          amount: 7968
+          interval: year
+        - id: price_1KrkhlLJ9zG7aLW8AGvYteSV
+          currency: EUR
+          amount: 9952
+          interval: year
+        - id: price_1KrkhlLJ9zG7aLW8slNvYMBW
+          currency: USD
+          amount: 10800
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_6:
-    id: 6
-    name: Enterprise Tier 2
-    max_monthly_recordings: 500000
-    pricing: 
-      - id: price_1KrklpLJ9zG7aLW8A94x46Ra
-        currency: GBP
-        amount: 2085
-        interval: month
-      - id: price_1KrklpLJ9zG7aLW8JLlHO6NA
-        currency: EUR
-        amount: 2500
-        interval: month
-      - id: price_1KrklpLJ9zG7aLW8Hq4MkwRv
-        currency: USD
-        amount: 2830
-        interval: month
-      - id: price_1KrklpLJ9zG7aLW8o6sQnXCn
-        currency: GBP
-        amount: 20016
-        interval: year
-      - id: price_1KrklpLJ9zG7aLW8s3SQkjlD
-        currency: EUR
-        amount: 24000
-        interval: year
-      - id: price_1KrklpLJ9zG7aLW8PA3NUSKD
-        currency: USD
-        amount: 27168
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 131f1b89-d459-4d70-9b67-5cce751de365
+      name: Enterprise Tier 2
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 500000
+      pricing: 
+        - id: price_1KrklpLJ9zG7aLW8A94x46Ra
+          currency: GBP
+          amount: 2085
+          interval: month
+        - id: price_1KrklpLJ9zG7aLW8JLlHO6NA
+          currency: EUR
+          amount: 2500
+          interval: month
+        - id: price_1KrklpLJ9zG7aLW8Hq4MkwRv
+          currency: USD
+          amount: 2830
+          interval: month
+        - id: price_1KrklpLJ9zG7aLW8o6sQnXCn
+          currency: GBP
+          amount: 20016
+          interval: year
+        - id: price_1KrklpLJ9zG7aLW8s3SQkjlD
+          currency: EUR
+          amount: 24000
+          interval: year
+        - id: price_1KrklpLJ9zG7aLW8PA3NUSKD
+          currency: USD
+          amount: 27168
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_7:
-    id: 7
-    name: Enterprise Tier 3
-    max_monthly_recordings: 750000
-    pricing: 
-      - id: price_1KrkrALJ9zG7aLW8zsXrfcDC
-        currency: GBP
-        amount: 4170
-        interval: month
-      - id: price_1KrkrALJ9zG7aLW8hDD7LR1O
-        currency: EUR
-        amount: 5000
-        interval: month
-      - id: price_1KrkrALJ9zG7aLW8pUGFpBOx
-        currency: USD
-        amount: 5000
-        interval: month
-      - id: price_1KrkrALJ9zG7aLW8xtWH7Pov
-        currency: GBP
-        amount: 40032
-        interval: year
-      - id: price_1KrkrALJ9zG7aLW8lZVYxkBU
-        currency: EUR
-        amount: 48000
-        interval: year
-      - id: price_1KrkrALJ9zG7aLW88umjMzuN
-        currency: USD
-        amount: 54240
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 9c468200-233d-406b-bd54-09ca0a552221
+      name: Enterprise Tier 3
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 750000
+      pricing: 
+        - id: price_1KrkrALJ9zG7aLW8zsXrfcDC
+          currency: GBP
+          amount: 4170
+          interval: month
+        - id: price_1KrkrALJ9zG7aLW8hDD7LR1O
+          currency: EUR
+          amount: 5000
+          interval: month
+        - id: price_1KrkrALJ9zG7aLW8pUGFpBOx
+          currency: USD
+          amount: 5000
+          interval: month
+        - id: price_1KrkrALJ9zG7aLW8xtWH7Pov
+          currency: GBP
+          amount: 40032
+          interval: year
+        - id: price_1KrkrALJ9zG7aLW8lZVYxkBU
+          currency: EUR
+          amount: 48000
+          interval: year
+        - id: price_1KrkrALJ9zG7aLW88umjMzuN
+          currency: USD
+          amount: 54240
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_8:
-    id: 8
-    name: Enterprise Tier 4
-    max_monthly_recordings: 1500000
-    pricing: 
-      - id: price_1KrkuQLJ9zG7aLW8wx01B3oE
-        currency: GBP
-        amount: 8300
-        interval: month
-      - id: price_1KrkuQLJ9zG7aLW8oG3PpwX2
-        currency: EUR
-        amount: 10000
-        interval: month
-      - id: price_1KrkuQLJ9zG7aLW8QkAszeKm
-        currency: USD
-        amount: 10900
-        interval: month
-      - id: price_1KrkuQLJ9zG7aLW86GwjuVby
-        currency: GBP
-        amount: 79680
-        interval: year
-      - id: price_1KrkuQLJ9zG7aLW8IyPc8mm5
-        currency: EUR
-        amount: 96000
-        interval: year
-      - id: price_1KrkuQLJ9zG7aLW8zTILkvI0
-        currency: USD
-        amount: 104640
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 37fc16ff-a917-4be8-93ab-a8c66dfc174f
+      name: Enterprise Tier 4
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 1500000
+      pricing: 
+        - id: price_1KrkuQLJ9zG7aLW8wx01B3oE
+          currency: GBP
+          amount: 8300
+          interval: month
+        - id: price_1KrkuQLJ9zG7aLW8oG3PpwX2
+          currency: EUR
+          amount: 10000
+          interval: month
+        - id: price_1KrkuQLJ9zG7aLW8QkAszeKm
+          currency: USD
+          amount: 10900
+          interval: month
+        - id: price_1KrkuQLJ9zG7aLW86GwjuVby
+          currency: GBP
+          amount: 79680
+          interval: year
+        - id: price_1KrkuQLJ9zG7aLW8IyPc8mm5
+          currency: EUR
+          amount: 96000
+          interval: year
+        - id: price_1KrkuQLJ9zG7aLW8zTILkvI0
+          currency: USD
+          amount: 104640
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
 
-  plan_9:
-    id: 9
-    name: Enterprise Tier 5
-    max_monthly_recordings: 1500000
-    pricing: 
-      - id: price_1KrkwzLJ9zG7aLW8nvZb4SD7
-        currency: GBP
-        amount: 21000
-        interval: month
-      - id: price_1KrkwzLJ9zG7aLW8vgSy6LCL
-        currency: EUR
-        amount: 25000
-        interval: month
-      - id: price_1KrkwzLJ9zG7aLW8lbrroi6A
-        currency: USD
-        amount: 27000
-        interval: month
-      - id: price_1KrkwzLJ9zG7aLW8HYU751x6
-        currency: GBP
-        amount: 201600
-        interval: year
-      - id: price_1KrkwzLJ9zG7aLW8o4eNXjfH
-        currency: EUR
-        amount: 240000
-        interval: year
-      - id: price_1KrkwzLJ9zG7aLW8mlmy67ZM
-        currency: USD
-        amount: 259200
-        interval: year
-    data_storage_months: -1
-    support:
-      - Email
-      - Chat
-      - Phone
-    response_time_hours: 0
-    team_member_limit: null
-    features_enabled:
-      - dashboard
-      - visitors
-      - recordings
-      - event_tracking
-      - error_tracking
-      - site_analytics
-      - page_analytics
-      - journeys
-      - heatmaps_click_positions
-      - heatmaps_click_counts
-      - heatmaps_mouse
-      - heatmaps_scroll
-      - nps
-      - sentiment
+    - id: 70a4dd2a-dec3-4389-b02d-f459b0ca540b
+      name: Enterprise Tier 5
+      free: false
+      deprecated: false
+      enterprise: true
+      max_monthly_recordings: 1500000
+      pricing: 
+        - id: price_1KrkwzLJ9zG7aLW8nvZb4SD7
+          currency: GBP
+          amount: 21000
+          interval: month
+        - id: price_1KrkwzLJ9zG7aLW8vgSy6LCL
+          currency: EUR
+          amount: 25000
+          interval: month
+        - id: price_1KrkwzLJ9zG7aLW8lbrroi6A
+          currency: USD
+          amount: 27000
+          interval: month
+        - id: price_1KrkwzLJ9zG7aLW8HYU751x6
+          currency: GBP
+          amount: 201600
+          interval: year
+        - id: price_1KrkwzLJ9zG7aLW8o4eNXjfH
+          currency: EUR
+          amount: 240000
+          interval: year
+        - id: price_1KrkwzLJ9zG7aLW8mlmy67ZM
+          currency: USD
+          amount: 259200
+          interval: year
+      data_storage_months: -1
+      support:
+        - Email
+        - Chat
+        - Phone
+      response_time_hours: 0
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment

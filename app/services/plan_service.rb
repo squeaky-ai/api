@@ -29,7 +29,7 @@ class PlanService
 
     data = {
       monthly_recording_count: site.plan.max_monthly_recordings,
-      next_plan_name: Plans.next_tier_name(site.plan.tier)
+      next_plan_name: Plans.next_plan_name(site.plan.plan_id)
     }
 
     SiteMailer.plan_exceeded(site, data, site.owner.user).deliver_now

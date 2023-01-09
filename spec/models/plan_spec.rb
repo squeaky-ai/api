@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Plan, type: :model do
   describe '#name' do
-    let(:instance) { described_class.new(tier: 2) }
+    let(:instance) { described_class.new(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f') }
 
     subject { instance.name }
 
@@ -15,7 +15,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#exceeded?' do
     let(:site) { create(:site_with_team) }
-    let(:instance) { described_class.new(tier: 3) }
+    let(:instance) { described_class.new(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c') }
 
     before do
       allow(instance).to receive(:all_recordings_count).and_return 41234134234
@@ -32,7 +32,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#invalid?' do
     context 'when they are on the free tier' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       subject { instance.invalid? }
 
@@ -43,7 +43,7 @@ RSpec.describe Plan, type: :model do
 
     context 'when they are on a paid tier and the billing is invalid' do
       let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
+      let(:instance) { described_class.new(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c') }
 
       before do
         create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
@@ -60,7 +60,7 @@ RSpec.describe Plan, type: :model do
 
     context 'when they are on a paid tier and the billing is valid' do
       let(:site) { create(:site_with_team) }
-      let(:instance) { described_class.new(tier: 3) }
+      let(:instance) { described_class.new(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c') }
 
       before do
         create(:billing, status: Billing::VALID, site:, user: site.owner.user)
@@ -78,7 +78,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#max_monthly_recordings' do
     context 'when there is no override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       subject { instance.max_monthly_recordings }
 
@@ -88,7 +88,7 @@ RSpec.describe Plan, type: :model do
     end
 
     context 'when there is an override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       before do
         instance.max_monthly_recordings = 9999
@@ -104,7 +104,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#data_storage_months' do
     context 'when there is no override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       subject { instance.data_storage_months }
 
@@ -114,7 +114,7 @@ RSpec.describe Plan, type: :model do
     end
 
     context 'when there is an override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       before do
         instance.data_storage_months = 100
@@ -130,7 +130,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#response_time_hours' do
     context 'when there is no override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       subject { instance.response_time_hours }
 
@@ -140,7 +140,7 @@ RSpec.describe Plan, type: :model do
     end
 
     context 'when there is an override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       before do
         instance.response_time_hours = 1
@@ -156,7 +156,7 @@ RSpec.describe Plan, type: :model do
 
   describe '#support' do
     context 'when there is no override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       subject { instance.support }
 
@@ -166,7 +166,7 @@ RSpec.describe Plan, type: :model do
     end
 
     context 'when there is an override set' do
-      let(:instance) { described_class.new(tier: 0) }
+      let(:instance) { described_class.new(plan_id: '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f') }
 
       before do
         instance.support = ['Email', 'Afternoon Tea']

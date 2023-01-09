@@ -11,7 +11,7 @@ site_create_mutation = <<-GRAPHQL
       siteType
       ownerName
       plan {
-        tier
+        planId
         name
       }
       uuid

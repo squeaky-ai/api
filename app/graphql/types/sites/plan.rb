@@ -5,7 +5,8 @@ module Types
     class Plan < Types::BaseObject
       graphql_name 'SitesPlan'
 
-      field :tier, Integer, null: false
+      field :id, ID, null: false
+      field :plan_id, String, null: false
       field :name, String, null: false
       field :exceeded, Boolean, null: false
       field :invalid, Boolean, null: false
@@ -19,6 +20,9 @@ module Types
       field :notes, String, null: true
       field :team_member_limit, Integer, null: true
       field :features_enabled, [String, { null: false }], null: false
+      field :deprecated, Boolean, null: false
+      field :free, Boolean, null: false
+      field :enterprise, Boolean, null: false
     end
   end
 end

@@ -13,7 +13,10 @@ RSpec.describe Plans do
     context 'when the pricing_id is valid' do
       it 'returns the plan' do
         expect(described_class.find_by_pricing_id('price_1KPOWCLJ9zG7aLW829kU4xrO')).to eq(
-          id: 3,
+          id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c',
+          free: false,
+          enterprise: false,
+          deprecated: false,
           name: 'Business',
           max_monthly_recordings: 100000,
           pricing: [
@@ -82,16 +85,16 @@ RSpec.describe Plans do
     end
   end
 
-  describe '.next_tier_name' do
+  describe '.next_plan_name' do
     context 'when the pricing_id is not valid' do
       it 'returns nil' do
-        expect(described_class.next_tier_name(45234)).to eq nil
+        expect(described_class.next_plan_name(SecureRandom.uuid)).to eq nil
       end
     end
 
     context 'when the pricing_id is valid' do
       it 'returns nil' do
-        expect(described_class.next_tier_name(2)).to eq 'Business'
+        expect(described_class.next_plan_name('f20c93ec-172f-46c6-914e-6a00dff3ae5f')).to eq 'Business'
       end
     end
   end

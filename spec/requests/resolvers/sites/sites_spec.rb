@@ -10,7 +10,7 @@ sites_query = <<-GRAPHQL
       url
       ownerName
       plan {
-        tier
+        planId
         name
       }
       uuid
@@ -65,7 +65,7 @@ RSpec.describe Resolvers::Sites::Sites, type: :request do
             'url' => site.url,
             'ownerName' => "#{user.first_name} #{user.last_name}",
             'plan' => {
-              'tier' => site.plan.tier,
+              'planId' => site.plan.plan_id,
               'name' => site.plan.name
             },
             'uuid' => site.uuid,

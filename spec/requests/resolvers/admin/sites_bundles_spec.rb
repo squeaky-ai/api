@@ -53,7 +53,7 @@ RSpec.describe Resolvers::Admin::SitesBundles, type: :request do
         create(:site_bundles_site, site: site_1, site_bundle: bundle_1, primary: true)
         create(:site_bundles_site, site: site_2, site_bundle: bundle_2, primary: true)
         
-        site_2.plan.update!(tier: 1)
+        site_2.plan.update!(plan_id: '094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
 
       it 'returns all the bundles' do
