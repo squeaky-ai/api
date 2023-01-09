@@ -40,6 +40,59 @@ default: &default
         - nps
         - sentiment
 
+    - id: b5be7346-b896-4e4f-9598-e206efca98a6
+      name: Starter
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 10000
+      pricing:
+        - id: price_1MOJ8aLJ9zG7aLW8ZkyGfKQT
+          currency: GBP
+          amount: 20
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8ZE4xg94K
+          currency: EUR
+          amount: 23.5
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8pN9YbNyA
+          currency: USD
+          amount: 25
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8RgalZo7i
+          currency: GBP
+          amount: 200
+          interval: year
+        - id: price_1MOJ8aLJ9zG7aLW85ZrZlPP4
+          currency: EUR
+          amount: 225
+          interval: year
+        - id: price_1MOJ8aLJ9zG7aLW8h0wbJ6G9
+          currency: USD
+          amount: 240
+          interval: year
+      data_storage_months: 3
+      support:
+        - Email
+        - Chat
+      response_time_hours: 168
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
+
     - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
       name: Light
       free: false
@@ -389,6 +442,59 @@ production:
       data_storage_months: 3
       support:
         - Email
+      response_time_hours: 168
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
+
+    - id: b5be7346-b896-4e4f-9598-e206efca98a6
+      name: Starter
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 10000
+      pricing:
+        - id: price_1MO5CZLJ9zG7aLW8pTl4kWSd
+          currency: GBP
+          amount: 20
+          interval: month
+        - id: price_1MO5CZLJ9zG7aLW8tBIrpBL4
+          currency: EUR
+          amount: 23.5
+          interval: month
+        - id: price_1MO5CZLJ9zG7aLW8jnTqCEfd
+          currency: USD
+          amount: 25
+          interval: month
+        - id: price_1MO5FBLJ9zG7aLW81nWM8Lrx
+          currency: GBP
+          amount: 200
+          interval: year
+        - id: price_1MO5EVLJ9zG7aLW8wJm9gQKV
+          currency: EUR
+          amount: 225
+          interval: year
+        - id: price_1MO5EALJ9zG7aLW8qdueHCfs
+          currency: USD
+          amount: 240
+          interval: year
+      data_storage_months: 3
+      support:
+        - Email
+        - Chat
       response_time_hours: 168
       team_member_limit: null
       features_enabled:

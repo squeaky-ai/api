@@ -9,7 +9,7 @@ module Types
       field :filename, String, null: false
       field :invoice_url, String, null: false
       field :status, Integer, null: false
-      field :amount, Integer, null: false
+      field :amount, Float, null: false
       field :currency, Types::Common::Currency, null: false
       field :issued_at, GraphQL::Types::ISO8601DateTime, null: true
       field :due_at, GraphQL::Types::ISO8601DateTime, null: true

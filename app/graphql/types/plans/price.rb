@@ -7,7 +7,7 @@ module Types
 
       field :id, String, null: false
       field :currency, Types::Common::Currency, null: false
-      field :amount, Integer, null: false
+      field :amount, Float, null: false
       field :interval, String, null: false
     end
   end

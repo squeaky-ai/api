@@ -106,6 +106,55 @@ RSpec.describe 'QueryPlan', type: :request do
           'responseTimeHours' => 72
         },
         {
+          'id' => 'b5be7346-b896-4e4f-9598-e206efca98a6',
+          'name' => 'Starter',
+          'maxMonthlyRecordings' => 10000,
+          'pricing' => [
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW8ZkyGfKQT',
+              'currency' => 'GBP',
+              'amount' => 20,
+              'interval' => 'month'
+            },
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW8ZE4xg94K',
+              'currency' => 'EUR',
+              'amount' => 23.5,
+              'interval' => 'month'
+            },
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW8pN9YbNyA',
+              'currency' => 'USD',
+              'amount' => 25,
+              'interval' => 'month'
+            },
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW8RgalZo7i',
+              'currency' => 'GBP',
+              'amount' => 200,
+              'interval' => 'year'
+            },
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW85ZrZlPP4',
+              'currency' => 'EUR',
+              'amount' => 225,
+              'interval' => 'year'
+            },
+            {
+              'id' => 'price_1MOJ8aLJ9zG7aLW8h0wbJ6G9',
+              'currency' => 'USD',
+              'amount' => 240,
+              'interval' => 'year'
+            }
+          ],
+          'dataStorageMonths' => 3,
+          'support' => [
+            'Email',
+            'Chat'
+          ],
+          'responseTimeHours' => 168
+        },
+        {
           'id' => 'f20c93ec-172f-46c6-914e-6a00dff3ae5f',
           'name' => 'Plus',
           'maxMonthlyRecordings' => 50000,
