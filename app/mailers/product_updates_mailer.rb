@@ -54,4 +54,11 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Product Update: November 2022')
   end
+
+  def pricing_change_2023(user) # rubocop:disable Naming/VariableNumber
+    @user = user
+    @unsubscribable = false
+
+    mail(to: user.email, subject: 'Important: New Squeaky Pricing 2023')
+  end
 end
