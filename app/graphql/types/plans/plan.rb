@@ -17,6 +17,7 @@ module Types
       field :deprecated, Boolean, null: false
       field :free, Boolean, null: false
       field :enterprise, Boolean, null: false
+      field :site_limit, Integer, null: false
     end
   end
 end
