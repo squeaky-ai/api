@@ -47,7 +47,7 @@ default: &default
       deprecated: false
       enterprise: false
       max_monthly_recordings: 10000
-      site_limit: null
+      site_limit: 1
       pricing:
         - id: price_1MOJ8aLJ9zG7aLW8ZkyGfKQT
           currency: GBP
@@ -475,7 +475,7 @@ production:
       deprecated: false
       enterprise: false
       max_monthly_recordings: 10000
-      site_limit: null
+      site_limit: 1
       pricing:
         - id: price_1MO5CZLJ9zG7aLW8pTl4kWSd
           currency: GBP
