@@ -61,4 +61,15 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Important: New Squeaky Pricing 2023')
   end
+
+  def december_2022(user) # rubocop:disable Naming/VariableNumber
+    @user = user
+    @unsubscribable = true
+
+    return if user.sites.empty?
+    return unless user.communication_enabled?(:product_updates_email)
+    return unless user.first_name.present?
+
+    mail(to: user.email, subject: 'Product Update: December 2022')
+  end
 end
