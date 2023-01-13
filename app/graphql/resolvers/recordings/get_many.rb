@@ -79,6 +79,7 @@ module Resolvers
             utm_medium
             utm_term
             utm_content
+            visitor_type
           ]
 
           filter_options.each do |option|
@@ -324,6 +325,14 @@ module Resolvers
         return recordings unless filters.utm_content
 
         recordings.where('recordings.utm_content = ?', filters.utm_content)
+      end
+
+      def filter_by_visitor_type(recordings, filters)
+        return recordings unless filters.visitor_type
+
+        value = filters.visitor_type == 'New'
+
+        recordings.where('visitors.new = ? ', value)
       end
     end
   end
