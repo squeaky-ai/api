@@ -1,0 +1,431 @@
+[
+  {
+    "capabilities": [
+      "Website dashboard",
+      "Visitor profiles",
+      "Session recording",
+      "Site analytics",
+      "Heatmaps (Click)"
+    ],
+    "current": false,
+    "includes_capabilities_from": null,
+    "name": "Free",
+    "options": [],
+    "plan": {
+      "data_storage_months": 3,
+      "deprecated": false,
+      "enterprise": false,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "event_tracking",
+        "error_tracking",
+        "site_analytics",
+        "page_analytics",
+        "journeys",
+        "heatmaps_click_positions",
+        "heatmaps_click_counts",
+        "heatmaps_mouse",
+        "heatmaps_scroll",
+        "nps",
+        "sentiment"
+      ],
+      "free": true,
+      "id": "05bdce28-3ac8-4c40-bd5a-48c039bd3c7f",
+      "max_monthly_recordings": 1000,
+      "name": "Free",
+      "pricing": [
+        {
+          "amount": 0,
+          "currency": "GBP",
+          "id": "price_1KQvNFLJ9zG7aLW8HEgPtppy",
+          "interval": "month"
+        },
+        {
+          "amount": 0,
+          "currency": "EUR",
+          "id": "price_1KQvNFLJ9zG7aLW855a0hFk7",
+          "interval": "month"
+        },
+        {
+          "amount": 0,
+          "currency": "USD",
+          "id": "price_1KQvNFLJ9zG7aLW8J97ZS43l",
+          "interval": "month"
+        }
+      ],
+      "response_time_hours": 168,
+      "site_limit": 1,
+      "support": [
+        "Email"
+      ],
+      "team_member_limit": 1
+    },
+    "show": true,
+    "usage": [
+      "1,000 visits per month",
+      "1 team member",
+      "1 website",
+      "3 months data retention"
+    ]
+  },
+  {
+    "capabilities": [
+      "Heatmaps (Click and Scroll)",
+      "Survey library"
+    ],
+    "current": false,
+    "includes_capabilities_from": "Free",
+    "name": "Starter",
+    "options": [],
+    "plan": {
+      "data_storage_months": 3,
+      "deprecated": false,
+      "enterprise": false,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "event_tracking",
+        "error_tracking",
+        "site_analytics",
+        "page_analytics",
+        "journeys",
+        "heatmaps_click_positions",
+        "heatmaps_click_counts",
+        "heatmaps_mouse",
+        "heatmaps_scroll",
+        "nps",
+        "sentiment"
+      ],
+      "free": false,
+      "id": "b5be7346-b896-4e4f-9598-e206efca98a6",
+      "max_monthly_recordings": 10000,
+      "name": "Starter",
+      "pricing": [
+        {
+          "amount": 20,
+          "currency": "GBP",
+          "id": "price_1MOJ8aLJ9zG7aLW8ZkyGfKQT",
+          "interval": "month"
+        },
+        {
+          "amount": 23.5,
+          "currency": "EUR",
+          "id": "price_1MOJ8aLJ9zG7aLW8ZE4xg94K",
+          "interval": "month"
+        },
+        {
+          "amount": 25,
+          "currency": "USD",
+          "id": "price_1MOJ8aLJ9zG7aLW8pN9YbNyA",
+          "interval": "month"
+        },
+        {
+          "amount": 200,
+          "currency": "GBP",
+          "id": "price_1MOJ8aLJ9zG7aLW8RgalZo7i",
+          "interval": "year"
+        },
+        {
+          "amount": 225,
+          "currency": "EUR",
+          "id": "price_1MOJ8aLJ9zG7aLW85ZrZlPP4",
+          "interval": "year"
+        },
+        {
+          "amount": 240,
+          "currency": "USD",
+          "id": "price_1MOJ8aLJ9zG7aLW8h0wbJ6G9",
+          "interval": "year"
+        }
+      ],
+      "response_time_hours": 168,
+      "site_limit": 1,
+      "support": [
+        "Email",
+        "Chat"
+      ],
+      "team_member_limit": null
+    },
+    "show": true,
+    "usage": [
+      "10,000 visits per month",
+      "Unlimited team members",
+      "1 website",
+      "3 months data retention"
+    ]
+  },
+  {
+    "capabilities": [],
+    "current": false,
+    "includes_capabilities_from": null,
+    "name": "Light",
+    "options": [],
+    "plan": {
+      "data_storage_months": 12,
+      "deprecated": true,
+      "enterprise": false,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "event_tracking",
+        "error_tracking",
+        "site_analytics",
+        "page_analytics",
+        "journeys",
+        "heatmaps_click_positions",
+        "heatmaps_click_counts",
+        "heatmaps_mouse",
+        "heatmaps_scroll",
+        "nps",
+        "sentiment"
+      ],
+      "free": false,
+      "id": "094f6148-22d6-4201-9c5e-20bffb68cc48",
+      "max_monthly_recordings": 10000,
+      "name": "Light",
+      "pricing": [
+        {
+          "amount": 38,
+          "currency": "GBP",
+          "id": "price_1KPOV6LJ9zG7aLW852tqylTr",
+          "interval": "month"
+        },
+        {
+          "amount": 45,
+          "currency": "EUR",
+          "id": "price_1KPOV6LJ9zG7aLW8xMXyFGGr",
+          "interval": "month"
+        },
+        {
+          "amount": 50,
+          "currency": "USD",
+          "id": "price_1KPOV6LJ9zG7aLW8tDzfMy0D",
+          "interval": "month"
+        },
+        {
+          "amount": 365,
+          "currency": "GBP",
+          "id": "price_1KrQU8LJ9zG7aLW8I0V3YAv4",
+          "interval": "year"
+        },
+        {
+          "amount": 432,
+          "currency": "EUR",
+          "id": "price_1KrQT3LJ9zG7aLW8pQwfiYPY",
+          "interval": "year"
+        },
+        {
+          "amount": 480,
+          "currency": "USD",
+          "id": "price_1KrQTOLJ9zG7aLW8dKY3BH8e",
+          "interval": "year"
+        }
+      ],
+      "response_time_hours": 72,
+      "site_limit": null,
+      "support": [
+        "Email"
+      ],
+      "team_member_limit": null
+    },
+    "show": false,
+    "usage": []
+  },
+  {
+    "capabilities": [],
+    "current": false,
+    "includes_capabilities_from": null,
+    "name": "Plus",
+    "options": [],
+    "plan": {
+      "data_storage_months": 12,
+      "deprecated": true,
+      "enterprise": false,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "event_tracking",
+        "error_tracking",
+        "site_analytics",
+        "page_analytics",
+        "journeys",
+        "heatmaps_click_positions",
+        "heatmaps_click_counts",
+        "heatmaps_mouse",
+        "heatmaps_scroll",
+        "nps",
+        "sentiment"
+      ],
+      "free": false,
+      "id": "f20c93ec-172f-46c6-914e-6a00dff3ae5f",
+      "max_monthly_recordings": 50000,
+      "name": "Plus",
+      "pricing": [
+        {
+          "amount": 120,
+          "currency": "GBP",
+          "id": "price_1KPOVlLJ9zG7aLW88SC9VKKB",
+          "interval": "month"
+        },
+        {
+          "amount": 145,
+          "currency": "EUR",
+          "id": "price_1KPOVlLJ9zG7aLW892gWiiTU",
+          "interval": "month"
+        },
+        {
+          "amount": 165,
+          "currency": "USD",
+          "id": "price_1KPOVlLJ9zG7aLW8bw9qLkLF",
+          "interval": "month"
+        },
+        {
+          "amount": 1152,
+          "currency": "GBP",
+          "id": "price_1KrQWKLJ9zG7aLW8LK9YzE4h",
+          "interval": "year"
+        },
+        {
+          "amount": 1392,
+          "currency": "EUR",
+          "id": "price_1KrQUpLJ9zG7aLW82xVQJCKy",
+          "interval": "year"
+        },
+        {
+          "amount": 1584,
+          "currency": "USD",
+          "id": "price_1KrQVrLJ9zG7aLW8WMsmZfkl",
+          "interval": "year"
+        }
+      ],
+      "response_time_hours": 24,
+      "site_limit": null,
+      "support": [
+        "Email"
+      ],
+      "team_member_limit": null
+    },
+    "show": false,
+    "usage": []
+  },
+  {
+    "capabilities": [
+      "Page analytics",
+      "Heatmaps (All)",
+      "Event tracking",
+      "Error tracking",
+      "Custom surveys (up to 5)",
+      "Segments (up to 25)",
+      "Journey mapping"
+    ],
+    "current": false,
+    "includes_capabilities_from": "Starter",
+    "name": "Business",
+    "options": [],
+    "plan": {
+      "data_storage_months": 12,
+      "deprecated": false,
+      "enterprise": false,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "event_tracking",
+        "error_tracking",
+        "site_analytics",
+        "page_analytics",
+        "journeys",
+        "heatmaps_click_positions",
+        "heatmaps_click_counts",
+        "heatmaps_mouse",
+        "heatmaps_scroll",
+        "nps",
+        "sentiment"
+      ],
+      "free": false,
+      "id": "b2054935-4fdf-45d0-929b-853cfe8d4a1c",
+      "max_monthly_recordings": 100000,
+      "name": "Business",
+      "pricing": [
+        {
+          "amount": 205,
+          "currency": "GBP",
+          "id": "price_1KPOWCLJ9zG7aLW8ylslbe5U",
+          "interval": "month"
+        },
+        {
+          "amount": 245,
+          "currency": "EUR",
+          "id": "price_1KPOWCLJ9zG7aLW829kU4xrO",
+          "interval": "month"
+        },
+        {
+          "amount": 275,
+          "currency": "USD",
+          "id": "price_1KPOWCLJ9zG7aLW8jXWVkVsr",
+          "interval": "month"
+        },
+        {
+          "amount": 1968,
+          "currency": "GBP",
+          "id": "price_1KrRvELJ9zG7aLW8oTujLmg4",
+          "interval": "year"
+        },
+        {
+          "amount": 2352,
+          "currency": "EUR",
+          "id": "price_1KrRuKLJ9zG7aLW8n2g9Fue9",
+          "interval": "year"
+        },
+        {
+          "amount": 2640,
+          "currency": "USD",
+          "id": "price_1KrRudLJ9zG7aLW8q3rQMsp3",
+          "interval": "year"
+        }
+      ],
+      "response_time_hours": 24,
+      "site_limit": null,
+      "support": [
+        "Email",
+        "Chat"
+      ],
+      "team_member_limit": null
+    },
+    "show": true,
+    "usage": [
+      "100,000 visits per month",
+      "Unlimited team members",
+      "Unlimited websites",
+      "12 months data retention"
+    ]
+  },
+  {
+    "name": "Enterprise",
+    "plan": null,
+    "show": true,
+    "current": false,
+    "usage": [
+      "Custom visits per month",
+      "Unlimited team members",
+      "Unlimited websites",
+      "Custom months data retention"
+    ],
+    "includes_capabilities_from": "Business",
+    "capabilities": [
+      "Custom surveys (Unlimited)",
+      "Segments (Unlimited)"
+    ],
+    "options": [
+      "Single Sign-On (SSO)",
+      "Audit Trail",
+      "Private Instance",
+      "Enterprise SLA's"
+    ]
+  }
+]
