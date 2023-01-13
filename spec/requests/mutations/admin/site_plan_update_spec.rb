@@ -24,7 +24,6 @@ admin_site_plan_update_mutation = <<-GRAPHQL
         notes
         teamMemberLimit
         featuresEnabled
-        siteLimit
       }
     }
   }
@@ -48,7 +47,6 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         notes: 'Hello there',
         teamMemberLimit: 1,
         featuresEnabled: ['dashboard'],
-        siteLimit: 3
       }
     }
 
@@ -76,7 +74,6 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         'deprecated' => false,
         'teamMemberLimit' => 1,
         'featuresEnabled' => ['dashboard'],
-        'siteLimit' => 3
       }
     )
   end

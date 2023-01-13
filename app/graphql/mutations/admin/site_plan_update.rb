@@ -18,7 +18,6 @@ module Mutations
       argument :notes, String, required: false
       argument :team_member_limit, Integer, required: false
       argument :features_enabled, [Types::Plans::Feature, { null: false }], required: false
-      argument :site_limit, Integer, required: false
 
       type Types::Admin::Site
 
