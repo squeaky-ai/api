@@ -3,9 +3,9 @@
 class PlansDecorator # rubocop:disable Metrics/ClassLength
   include ActionView::Helpers::NumberHelper
 
-  def initialize(site:)
+  def initialize(plans:, site:)
     @site = site
-    @plans = Plans.to_a
+    @plans = plans
   end
 
   def decrorate # rubocop:disable Metrics/AbcSize
@@ -13,6 +13,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Free',
         plan: free_plan,
+        description: 'Simple analytics for small sites and hobbyists.',
         show: true,
         current: active_plan?(free_plan),
         usage: usage(free_plan),
@@ -29,6 +30,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Starter',
         plan: starter_plan,
+        description: 'Meaningful analytics for growing businesses.',
         show: true,
         current: active_plan?(starter_plan),
         usage: usage(starter_plan),
@@ -42,6 +44,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Light',
         plan: light_plan,
+        description: nil,
         show: active_plan?(light_plan),
         current: active_plan?(light_plan),
         usage: [],
@@ -52,6 +55,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Plus',
         plan: plus_plan,
+        description: nil,
         show: active_plan?(plus_plan),
         current: active_plan?(plus_plan),
         usage: [],
@@ -62,6 +66,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Business',
         plan: business_plan,
+        description: 'Comprehensive analytics for customer-obsessed teams.',
         show: true,
         current: active_plan?(business_plan),
         usage: usage(business_plan),
@@ -80,6 +85,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
       {
         name: 'Enterprise',
         plan: nil,
+        description: 'Tailor made insights for large organisations.',
         show: true,
         current: false,
         usage: usage(

@@ -1,6 +1,7 @@
 [
   {
     "name": "Free",
+    "description": "Simple analytics for small sites and hobbyists.",
     "plan": {
       "id": "05bdce28-3ac8-4c40-bd5a-48c039bd3c7f",
       "name": "Free",
@@ -72,6 +73,7 @@
   },
   {
     "name": "Starter",
+    "description": "Meaningful analytics for growing businesses.",
     "plan": {
       "id": "b5be7346-b896-4e4f-9598-e206efca98a6",
       "name": "Starter",
@@ -159,6 +161,7 @@
   },
   {
     "name": "Light",
+    "description": null,
     "plan": {
       "id": "094f6148-22d6-4201-9c5e-20bffb68cc48",
       "name": "Light",
@@ -237,6 +240,7 @@
   },
   {
     "name": "Plus",
+    "description": null,
     "plan": {
       "id": "f20c93ec-172f-46c6-914e-6a00dff3ae5f",
       "name": "Plus",
@@ -315,6 +319,7 @@
   },
   {
     "name": "Business",
+    "description": "Comprehensive analytics for customer-obsessed teams.",
     "plan": {
       "id": "b2054935-4fdf-45d0-929b-853cfe8d4a1c",
       "name": "Business",
@@ -407,6 +412,7 @@
   },
   {
     "name": "Enterprise",
+    "description": "Tailor made insights for large organisations.",
     "plan": null,
     "show": true,
     "current": false,

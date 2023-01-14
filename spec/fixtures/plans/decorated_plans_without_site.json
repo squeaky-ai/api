@@ -10,6 +10,7 @@
     "current": false,
     "includes_capabilities_from": null,
     "name": "Free",
+    "description": "Simple analytics for small sites and hobbyists.",
     "options": [],
     "plan": {
       "data_storage_months": 3,
@@ -78,6 +79,7 @@
     "current": false,
     "includes_capabilities_from": "Free",
     "name": "Starter",
+    "description": "Meaningful analytics for growing businesses.",
     "options": [],
     "plan": {
       "data_storage_months": 3,
@@ -162,6 +164,7 @@
     "current": false,
     "includes_capabilities_from": null,
     "name": "Light",
+    "description": null,
     "options": [],
     "plan": {
       "data_storage_months": 12,
@@ -240,6 +243,7 @@
     "current": false,
     "includes_capabilities_from": null,
     "name": "Plus",
+    "description": null,
     "options": [],
     "plan": {
       "data_storage_months": 12,
@@ -326,6 +330,7 @@
     "current": false,
     "includes_capabilities_from": "Starter",
     "name": "Business",
+    "description": "Comprehensive analytics for customer-obsessed teams.",
     "options": [],
     "plan": {
       "data_storage_months": 12,
@@ -407,6 +412,7 @@
   },
   {
     "name": "Enterprise",
+    "description": "Tailor made insights for large organisations.",
     "plan": null,
     "show": true,
     "current": false,

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PlansDecorator do
-  subject { described_class.new(site:).decrorate }
+  subject { described_class.new(plans: Plans.to_a, site:).decrorate }
 
   describe '#decrorate' do
     context 'when no site is given' do
