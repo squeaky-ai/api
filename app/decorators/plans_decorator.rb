@@ -11,6 +11,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
   def decrorate # rubocop:disable Metrics/AbcSize
     [
       {
+        id: 'free',
         name: 'Free',
         plan: free_plan,
         description: 'Simple analytics for small sites and hobbyists.',
@@ -28,6 +29,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
         options: []
       },
       {
+        id: 'starter',
         name: 'Starter',
         plan: starter_plan,
         description: 'Meaningful analytics for growing businesses.',
@@ -42,6 +44,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
         options: []
       },
       {
+        id: 'light',
         name: 'Light',
         plan: light_plan,
         description: nil,
@@ -53,6 +56,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
         options: []
       },
       {
+        id: 'plus',
         name: 'Plus',
         plan: plus_plan,
         description: nil,
@@ -64,6 +68,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
         options: []
       },
       {
+        id: 'business',
         name: 'Business',
         plan: business_plan,
         description: 'Comprehensive analytics for customer-obsessed teams.',
@@ -83,6 +88,7 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
         options: []
       },
       {
+        id: 'enterprise',
         name: 'Enterprise',
         plan: nil,
         description: 'Tailor made insights for large organisations.',

@@ -1,5 +1,6 @@
 [
   {
+    "id": "free",
     "name": "Free",
     "description": "Simple analytics for small sites and hobbyists.",
     "plan": {
@@ -72,6 +73,7 @@
     "options": []
   },
   {
+    "id": "starter",
     "name": "Starter",
     "description": "Meaningful analytics for growing businesses.",
     "plan": {
@@ -160,6 +162,7 @@
     "options": []
   },
   {
+    "id": "light",
     "name": "Light",
     "description": null,
     "plan": {
@@ -239,6 +242,7 @@
     "options": []
   },
   {
+    "id": "plus",
     "name": "Plus",
     "description": null,
     "plan": {
@@ -318,6 +322,7 @@
     "options": []
   },
   {
+    "id": "business",
     "name": "Business",
     "description": "Comprehensive analytics for customer-obsessed teams.",
     "plan": {
@@ -411,6 +416,7 @@
     "options": []
   },
   {
+    "id": "enterprise",
     "name": "Enterprise",
     "description": "Tailor made insights for large organisations.",
     "plan": null,

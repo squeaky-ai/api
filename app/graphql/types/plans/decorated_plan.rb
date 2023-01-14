@@ -5,6 +5,7 @@ module Types
     class DecoratedPlan < Types::BaseObject
       graphql_name 'DecoratedPlan'
 
+      field :id, String, null: false
       field :name, String, null: false
       field :plan, Types::Plans::Plan, null: true
       field :description, String, null: true

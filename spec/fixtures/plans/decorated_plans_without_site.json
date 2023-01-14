@@ -1,5 +1,6 @@
 [
   {
+    "id": "free",
     "capabilities": [
       "Website dashboard",
       "Visitor profiles",
@@ -72,6 +73,7 @@
     ]
   },
   {
+    "id": "starter",
     "capabilities": [
       "Heatmaps (Click and Scroll)",
       "Survey library"
@@ -160,6 +162,7 @@
     ]
   },
   {
+    "id": "light",
     "capabilities": [],
     "current": false,
     "includes_capabilities_from": null,
@@ -239,6 +242,7 @@
     "usage": []
   },
   {
+    "id": "plus",
     "capabilities": [],
     "current": false,
     "includes_capabilities_from": null,
@@ -318,6 +322,7 @@
     "usage": []
   },
   {
+    "id": "business",
     "capabilities": [
       "Page analytics",
       "Heatmaps (All)",
@@ -411,6 +416,7 @@
     ]
   },
   {
+    "id": "enterprise",
     "name": "Enterprise",
     "description": "Tailor made insights for large organisations.",
     "plan": null,
