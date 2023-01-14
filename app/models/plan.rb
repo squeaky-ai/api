@@ -74,6 +74,10 @@ class Plan < ApplicationRecord
     all_recordings_count.to_f / max_monthly_recordings
   end
 
+  def pricing
+    plan_defaults[:pricing]
+  end
+
   private
 
   def all_recordings_count
