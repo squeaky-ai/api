@@ -6,7 +6,7 @@ module Types
       graphql_name 'UsersPayment'
 
       field :id, ID, null: false
-      field :amount, Integer, null: false
+      field :amount, Float, null: false
       field :currency, Types::Common::Currency, null: false
     end
   end

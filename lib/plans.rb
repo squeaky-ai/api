@@ -2,11 +2,11 @@
 
 class Plans
   def self.find_by_plan_id(plan_id)
-    Plans.to_a(include_deprecated: true).find { |plan| plan[:id] == plan_id }
+    Plans.to_a.find { |plan| plan[:id] == plan_id }
   end
 
   def self.find_by_pricing_id(pricing_id)
-    matching_plan = Plans.to_a(include_deprecated: true).find do |plan|
+    matching_plan = Plans.to_a.find do |plan|
       (plan[:pricing] || []).find { |price| price[:id] == pricing_id }
     end
 
@@ -24,11 +24,8 @@ class Plans
     next_plan[:name]
   end
 
-  def self.to_a(include_deprecated: true) # TODO: This will need to change soon
-    plans = Rails.configuration.plans['plans']
-    return plans if include_deprecated
-
-    plans.reject { |plan| plan[:deprecated] }
+  def self.to_a
+    Rails.configuration.plans['plans']
   end
 
   def self.free_plan

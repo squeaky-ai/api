@@ -55,3 +55,16 @@ en:
     validation:
       account_exists: 'User account already exists'
       account_not_exists: 'User account does not exist'
+  plans:
+    visits_per_month:
+      one: 'visit per month'
+      other: 'visits per month'
+    team_members:
+      one: 'team member'
+      other: 'team members'
+    websites:
+      one: 'website'
+      other: 'websites'
+    data_retention:
+      one: 'month data retention'
+      other: 'months data retention'

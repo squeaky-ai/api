@@ -46,7 +46,7 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         privateInstanceEnabled: true,
         notes: 'Hello there',
         teamMemberLimit: 1,
-        featuresEnabled: ['dashboard']
+        featuresEnabled: ['dashboard'],
       }
     }
 
@@ -73,7 +73,7 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         'enterprise' => false,
         'deprecated' => false,
         'teamMemberLimit' => 1,
-        'featuresEnabled' => ['dashboard']
+        'featuresEnabled' => ['dashboard'],
       }
     )
   end

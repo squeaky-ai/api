@@ -23,6 +23,8 @@ module Types
       field :deprecated, Boolean, null: false
       field :free, Boolean, null: false
       field :enterprise, Boolean, null: false
+      field :site_limit, Integer, null: true
+      field :pricing, [Types::Plans::Price, { null: false }], null: true
     end
   end
 end

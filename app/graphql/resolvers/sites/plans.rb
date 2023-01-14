@@ -3,10 +3,19 @@
 module Resolvers
   module Sites
     class Plans < Resolvers::Base
-      type [Types::Plans::Plan, { null: false }], null: false
+      type [Types::Plans::DecoratedPlan, { null: false }], null: false
 
-      def resolve_with_timings
-        ::Plans.to_a
+      argument :site_id, ID, required: false
+
+      def resolve_with_timings(site_id: nil)
+        ::PlansDecorator.new(plans: ::Plans.to_a, site: fetch_site(site_id)).decrorate
+      end
+
+      def fetch_site(site_id)
+        return unless site_id
+        return unless context[:current_user]
+
+        SiteService.find_by_id(context[:current_user], site_id)
       end
     end
   end

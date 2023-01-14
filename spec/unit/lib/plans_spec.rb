@@ -79,7 +79,8 @@ RSpec.describe Plans do
             'heatmaps_scroll',
             'nps',
             'sentiment'
-          ]
+          ],
+          site_limit: nil
         )
       end
     end

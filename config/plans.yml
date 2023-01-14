@@ -23,6 +23,61 @@ default: &default
       support:
         - Email
       response_time_hours: 168
+      team_member_limit: 1
+      site_limit: 1
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
+
+    - id: b5be7346-b896-4e4f-9598-e206efca98a6
+      name: Starter
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 10000
+      site_limit: 1
+      pricing:
+        - id: price_1MOJ8aLJ9zG7aLW8ZkyGfKQT
+          currency: GBP
+          amount: 20
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8ZE4xg94K
+          currency: EUR
+          amount: 23.5
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8pN9YbNyA
+          currency: USD
+          amount: 25
+          interval: month
+        - id: price_1MOJ8aLJ9zG7aLW8RgalZo7i
+          currency: GBP
+          amount: 200
+          interval: year
+        - id: price_1MOJ8aLJ9zG7aLW85ZrZlPP4
+          currency: EUR
+          amount: 225
+          interval: year
+        - id: price_1MOJ8aLJ9zG7aLW8h0wbJ6G9
+          currency: USD
+          amount: 240
+          interval: year
+      data_storage_months: 3
+      support:
+        - Email
+        - Chat
+      response_time_hours: 168
       team_member_limit: null
       features_enabled:
         - dashboard
@@ -46,6 +101,7 @@ default: &default
       deprecated: true
       enterprise: false
       max_monthly_recordings: 10000
+      site_limit: null
       pricing:
         - id: price_1KPOV6LJ9zG7aLW852tqylTr
           currency: GBP
@@ -98,6 +154,7 @@ default: &default
       deprecated: true
       enterprise: false
       max_monthly_recordings: 50000
+      site_limit: null
       pricing:
         - id: price_1KPOVlLJ9zG7aLW88SC9VKKB
           currency: GBP
@@ -150,6 +207,7 @@ default: &default
       deprecated: false
       enterprise: false
       max_monthly_recordings: 100000
+      site_limit: null
       pricing:
         - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
           currency: GBP
@@ -203,6 +261,7 @@ default: &default
       deprecated: false
       enterprise: true
       max_monthly_recordings: 250000
+      site_limit: null
       pricing:
         - id: price_1KrS2KLJ9zG7aLW8AY5dAe2S
           currency: GBP
@@ -257,6 +316,7 @@ default: &default
       deprecated: false
       enterprise: true
       max_monthly_recordings: 500000
+      site_limit: null
       pricing:
         - id: price_1KrS70LJ9zG7aLW8Pnf4Wt8N
           currency: GBP
@@ -311,6 +371,7 @@ default: &default
       deprecated: false
       enterprise: true
       max_monthly_recordings: 750000
+      site_limit: null
       pricing:
         - id: price_1KrSCdLJ9zG7aLW8mPrReLYX
           currency: GBP
@@ -373,6 +434,7 @@ production:
       deprecated: false
       enterprise: false
       max_monthly_recordings: 1000
+      site_limit: 1
       pricing:
         - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
           currency: GBP
@@ -407,12 +469,67 @@ production:
         - nps
         - sentiment
 
+    - id: b5be7346-b896-4e4f-9598-e206efca98a6
+      name: Starter
+      free: false
+      deprecated: false
+      enterprise: false
+      max_monthly_recordings: 10000
+      site_limit: 1
+      pricing:
+        - id: price_1MO5CZLJ9zG7aLW8pTl4kWSd
+          currency: GBP
+          amount: 20
+          interval: month
+        - id: price_1MO5CZLJ9zG7aLW8tBIrpBL4
+          currency: EUR
+          amount: 23.5
+          interval: month
+        - id: price_1MO5CZLJ9zG7aLW8jnTqCEfd
+          currency: USD
+          amount: 25
+          interval: month
+        - id: price_1MO5FBLJ9zG7aLW81nWM8Lrx
+          currency: GBP
+          amount: 200
+          interval: year
+        - id: price_1MO5EVLJ9zG7aLW8wJm9gQKV
+          currency: EUR
+          amount: 225
+          interval: year
+        - id: price_1MO5EALJ9zG7aLW8qdueHCfs
+          currency: USD
+          amount: 240
+          interval: year
+      data_storage_months: 3
+      support:
+        - Email
+        - Chat
+      response_time_hours: 168
+      team_member_limit: null
+      features_enabled:
+        - dashboard
+        - visitors
+        - recordings
+        - event_tracking
+        - error_tracking
+        - site_analytics
+        - page_analytics
+        - journeys
+        - heatmaps_click_positions
+        - heatmaps_click_counts
+        - heatmaps_mouse
+        - heatmaps_scroll
+        - nps
+        - sentiment
+
     - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
       name: Light
       free: false
       deprecated: true
       enterprise: false
       max_monthly_recordings: 10000
+      site_limit: null
       pricing:
         - id: price_1Kii3vLJ9zG7aLW8bunMa8I9
           currency: GBP
@@ -465,6 +582,7 @@ production:
       deprecated: true
       enterprise: false
       max_monthly_recordings: 50000
+      site_limit: null
       pricing:
         - id: price_1Kii3pLJ9zG7aLW8QI29OvbY
           currency: GBP
@@ -518,6 +636,7 @@ production:
       deprecated: false
       enterprise: false
       max_monthly_recordings: 100000
+      site_limit: null
       pricing:
         - id: price_1MO4kDLJ9zG7aLW8KNEon7TN
           currency: GBP
@@ -571,6 +690,7 @@ production:
       deprecated: false
       enterprise: true
       max_monthly_recordings: 250000
+      site_limit: null
       pricing: 
         - id: price_1KrkhlLJ9zG7aLW8MOfX9UBL
           currency: GBP
@@ -625,6 +745,7 @@ production:
       deprecated: false
       enterprise: true
       max_monthly_recordings: 500000
+      site_limit: null
       pricing: 
         - id: price_1KrklpLJ9zG7aLW8A94x46Ra
           currency: GBP
@@ -679,6 +800,7 @@ production:
       deprecated: false
       enterprise: true
       max_monthly_recordings: 750000
+      site_limit: null
       pricing: 
         - id: price_1KrkrALJ9zG7aLW8zsXrfcDC
           currency: GBP
@@ -733,6 +855,7 @@ production:
       deprecated: false
       enterprise: true
       max_monthly_recordings: 1500000
+      site_limit: null
       pricing: 
         - id: price_1KrkuQLJ9zG7aLW8wx01B3oE
           currency: GBP
@@ -787,6 +910,7 @@ production:
       deprecated: false
       enterprise: true
       max_monthly_recordings: 1500000
+      site_limit: null
       pricing: 
         - id: price_1KrkwzLJ9zG7aLW8nvZb4SD7
           currency: GBP
