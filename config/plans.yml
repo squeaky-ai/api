@@ -55,7 +55,7 @@ default: &default
           interval: month
         - id: price_1MOJ8aLJ9zG7aLW8ZE4xg94K
           currency: EUR
-          amount: 23.5
+          amount: 23
           interval: month
         - id: price_1MOJ8aLJ9zG7aLW8pN9YbNyA
           currency: USD
@@ -483,7 +483,7 @@ production:
           interval: month
         - id: price_1MO5CZLJ9zG7aLW8tBIrpBL4
           currency: EUR
-          amount: 23.5
+          amount: 23
           interval: month
         - id: price_1MO5CZLJ9zG7aLW8jnTqCEfd
           currency: USD
