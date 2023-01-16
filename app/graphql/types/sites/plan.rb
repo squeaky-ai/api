@@ -19,7 +19,7 @@ module Types
       field :private_instance_enabled, Boolean, null: false
       field :notes, String, null: true
       field :team_member_limit, Integer, null: true
-      field :features_enabled, [String, { null: false }], null: false
+      field :features_enabled, [Types::Plans::Feature, { null: false }], null: false
       field :deprecated, Boolean, null: false
       field :free, Boolean, null: false
       field :enterprise, Boolean, null: false

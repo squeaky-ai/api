@@ -5,7 +5,7 @@ default: &default
       free: true
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 1000
+      max_monthly_recordings: 500
       pricing:
         - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
           currency: GBP
@@ -19,27 +19,18 @@ default: &default
           currency: USD
           amount: 0
           interval: month
-      data_storage_months: 3
+      data_storage_months: 1
       support:
         - Email
-      response_time_hours: 168
+      response_time_hours: 336
       team_member_limit: 1
       site_limit: 1
       features_enabled:
         - dashboard
         - visitors
         - recordings
-        - event_tracking
-        - error_tracking
         - site_analytics
-        - page_analytics
-        - journeys
         - heatmaps_click_positions
-        - heatmaps_click_counts
-        - heatmaps_mouse
-        - heatmaps_scroll
-        - nps
-        - sentiment
 
     - id: b5be7346-b896-4e4f-9598-e206efca98a6
       name: Starter
@@ -83,14 +74,8 @@ default: &default
         - dashboard
         - visitors
         - recordings
-        - event_tracking
-        - error_tracking
         - site_analytics
-        - page_analytics
-        - journeys
         - heatmaps_click_positions
-        - heatmaps_click_counts
-        - heatmaps_mouse
         - heatmaps_scroll
         - nps
         - sentiment
@@ -433,7 +418,7 @@ production:
       free: true
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 1000
+      max_monthly_recordings: 500
       site_limit: 1
       pricing:
         - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
@@ -448,26 +433,18 @@ production:
           currency: USD
           amount: 0
           interval: month
-      data_storage_months: 3
+      data_storage_months: 1
       support:
         - Email
-      response_time_hours: 168
-      team_member_limit: null
+      response_time_hours: 336
+      team_member_limit: 1
       features_enabled:
         - dashboard
         - visitors
         - recordings
-        - event_tracking
-        - error_tracking
         - site_analytics
-        - page_analytics
-        - journeys
         - heatmaps_click_positions
-        - heatmaps_click_counts
-        - heatmaps_mouse
-        - heatmaps_scroll
-        - nps
-        - sentiment
+
 
     - id: b5be7346-b896-4e4f-9598-e206efca98a6
       name: Starter
@@ -511,14 +488,8 @@ production:
         - dashboard
         - visitors
         - recordings
-        - event_tracking
-        - error_tracking
         - site_analytics
-        - page_analytics
-        - journeys
         - heatmaps_click_positions
-        - heatmaps_click_counts
-        - heatmaps_mouse
         - heatmaps_scroll
         - nps
         - sentiment
