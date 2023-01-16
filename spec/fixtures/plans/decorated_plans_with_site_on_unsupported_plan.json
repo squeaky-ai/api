@@ -9,7 +9,7 @@
       "free": true,
       "deprecated": false,
       "enterprise": false,
-      "max_monthly_recordings": 1000,
+      "max_monthly_recordings": 500,
       "pricing": [
         {
           "id": "price_1KQvNFLJ9zG7aLW8HEgPtppy",
@@ -30,37 +30,28 @@
           "interval": "month"
         }
       ],
-      "data_storage_months": 3,
+      "data_storage_months": 1,
       "support": [
         "Email"
       ],
-      "response_time_hours": 168,
+      "response_time_hours": 336,
       "team_member_limit": 1,
       "site_limit": 1,
       "features_enabled": [
         "dashboard",
         "visitors",
         "recordings",
-        "event_tracking",
-        "error_tracking",
         "site_analytics",
-        "page_analytics",
-        "journeys",
-        "heatmaps_click_positions",
-        "heatmaps_click_counts",
-        "heatmaps_mouse",
-        "heatmaps_scroll",
-        "nps",
-        "sentiment"
+        "heatmaps_click_positions"
       ]
     },
     "show": true,
     "current": false,
     "usage": [
-      "1,000 visits per month",
+      "500 visits per month",
       "1 team member",
       "1 website",
-      "3 months data retention"
+      "1 month data retention"
     ],
     "includes_capabilities_from": null,
     "capabilities": [
@@ -94,7 +85,7 @@
         {
           "id": "price_1MOJ8aLJ9zG7aLW8ZE4xg94K",
           "currency": "EUR",
-          "amount": 23.5,
+          "amount": 23,
           "interval": "month"
         },
         {
@@ -133,14 +124,8 @@
         "dashboard",
         "visitors",
         "recordings",
-        "event_tracking",
-        "error_tracking",
         "site_analytics",
-        "page_analytics",
-        "journeys",
         "heatmaps_click_positions",
-        "heatmaps_click_counts",
-        "heatmaps_mouse",
         "heatmaps_scroll",
         "nps",
         "sentiment"
@@ -426,7 +411,7 @@
       "Custom visits per month",
       "Unlimited team members",
       "Unlimited websites",
-      "Custom months data retention"
+      "Custom data retention"
     ],
     "includes_capabilities_from": "Business",
     "capabilities": [

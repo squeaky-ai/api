@@ -83,7 +83,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.max_monthly_recordings }
 
       it 'returns the plan default' do
-        expect(subject).to eq 1000
+        expect(subject).to eq 500
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.data_storage_months }
 
       it 'returns the plan default' do
-        expect(subject).to eq 3
+        expect(subject).to eq 1
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.response_time_hours }
 
       it 'returns the plan default' do
-        expect(subject).to eq 168
+        expect(subject).to eq 336
       end
     end
 

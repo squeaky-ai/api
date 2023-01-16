@@ -68,3 +68,4 @@ en:
     data_retention:
       one: 'month data retention'
       other: 'months data retention'
+    data_retention_custom: 'data retention'

@@ -147,10 +147,25 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
 
   def usage(plan)
     [
-      formatted_usage('plans.visits_per_month', plan[:max_monthly_recordings] || 'Custom'),
-      formatted_usage('plans.team_members', plan[:team_member_limit] || 'Unlimited'),
-      formatted_usage('plans.websites', plan[:site_limit] || 'Unlimited'),
-      formatted_usage('plans.data_retention', plan[:data_storage_months] || 'Custom')
+      formatted_usage(
+        'plans.visits_per_month',
+        plan[:max_monthly_recordings] || 'Custom'
+      ),
+
+      formatted_usage(
+        'plans.team_members',
+        plan[:team_member_limit] || 'Unlimited'
+      ),
+
+      formatted_usage(
+        'plans.websites',
+        plan[:site_limit] || 'Unlimited'
+      ),
+
+      formatted_usage(
+        plan[:data_storage_months] ? 'plans.data_retention' : 'plans.data_retention_custom',
+        plan[:data_storage_months] || 'Custom'
+      )
     ]
   end
 

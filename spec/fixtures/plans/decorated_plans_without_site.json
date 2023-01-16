@@ -1,6 +1,59 @@
 [
   {
     "id": "free",
+    "name": "Free",
+    "description": "Simple analytics for small sites and hobbyists.",
+    "plan": {
+      "id": "05bdce28-3ac8-4c40-bd5a-48c039bd3c7f",
+      "name": "Free",
+      "free": true,
+      "deprecated": false,
+      "enterprise": false,
+      "max_monthly_recordings": 500,
+      "pricing": [
+        {
+          "id": "price_1KQvNFLJ9zG7aLW8HEgPtppy",
+          "currency": "GBP",
+          "amount": 0,
+          "interval": "month"
+        },
+        {
+          "id": "price_1KQvNFLJ9zG7aLW855a0hFk7",
+          "currency": "EUR",
+          "amount": 0,
+          "interval": "month"
+        },
+        {
+          "id": "price_1KQvNFLJ9zG7aLW8J97ZS43l",
+          "currency": "USD",
+          "amount": 0,
+          "interval": "month"
+        }
+      ],
+      "data_storage_months": 1,
+      "support": [
+        "Email"
+      ],
+      "response_time_hours": 336,
+      "team_member_limit": 1,
+      "site_limit": 1,
+      "features_enabled": [
+        "dashboard",
+        "visitors",
+        "recordings",
+        "site_analytics",
+        "heatmaps_click_positions"
+      ]
+    },
+    "show": true,
+    "current": false,
+    "usage": [
+      "500 visits per month",
+      "1 team member",
+      "1 website",
+      "1 month data retention"
+    ],
+    "includes_capabilities_from": null,
     "capabilities": [
       "Website dashboard",
       "Visitor profiles",
@@ -8,69 +61,7 @@
       "Site analytics",
       "Heatmaps (Click)"
     ],
-    "current": false,
-    "includes_capabilities_from": null,
-    "name": "Free",
-    "description": "Simple analytics for small sites and hobbyists.",
-    "options": [],
-    "plan": {
-      "data_storage_months": 3,
-      "deprecated": false,
-      "enterprise": false,
-      "features_enabled": [
-        "dashboard",
-        "visitors",
-        "recordings",
-        "event_tracking",
-        "error_tracking",
-        "site_analytics",
-        "page_analytics",
-        "journeys",
-        "heatmaps_click_positions",
-        "heatmaps_click_counts",
-        "heatmaps_mouse",
-        "heatmaps_scroll",
-        "nps",
-        "sentiment"
-      ],
-      "free": true,
-      "id": "05bdce28-3ac8-4c40-bd5a-48c039bd3c7f",
-      "max_monthly_recordings": 1000,
-      "name": "Free",
-      "pricing": [
-        {
-          "amount": 0,
-          "currency": "GBP",
-          "id": "price_1KQvNFLJ9zG7aLW8HEgPtppy",
-          "interval": "month"
-        },
-        {
-          "amount": 0,
-          "currency": "EUR",
-          "id": "price_1KQvNFLJ9zG7aLW855a0hFk7",
-          "interval": "month"
-        },
-        {
-          "amount": 0,
-          "currency": "USD",
-          "id": "price_1KQvNFLJ9zG7aLW8J97ZS43l",
-          "interval": "month"
-        }
-      ],
-      "response_time_hours": 168,
-      "site_limit": 1,
-      "support": [
-        "Email"
-      ],
-      "team_member_limit": 1
-    },
-    "show": true,
-    "usage": [
-      "1,000 visits per month",
-      "1 team member",
-      "1 website",
-      "3 months data retention"
-    ]
+    "options": []
   },
   {
     "id": "starter",
@@ -91,14 +82,8 @@
         "dashboard",
         "visitors",
         "recordings",
-        "event_tracking",
-        "error_tracking",
         "site_analytics",
-        "page_analytics",
-        "journeys",
         "heatmaps_click_positions",
-        "heatmaps_click_counts",
-        "heatmaps_mouse",
         "heatmaps_scroll",
         "nps",
         "sentiment"
@@ -115,7 +100,7 @@
           "interval": "month"
         },
         {
-          "amount": 23.5,
+          "amount": 23,
           "currency": "EUR",
           "id": "price_1MOJ8aLJ9zG7aLW8ZE4xg94K",
           "interval": "month"
@@ -426,7 +411,7 @@
       "Custom visits per month",
       "Unlimited team members",
       "Unlimited websites",
-      "Custom months data retention"
+      "Custom data retention"
     ],
     "includes_capabilities_from": "Business",
     "capabilities": [
