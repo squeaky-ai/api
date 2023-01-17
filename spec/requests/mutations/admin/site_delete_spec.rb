@@ -14,13 +14,13 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
   let!(:user) { create(:user, superuser: true) }
   let(:site) { create(:site_with_team, owner: user) }
 
+  let!(:recording_1) { create(:recording, site:) }
+  let!(:recording_2) { create(:recording, site:) }
+
   before do
     create(:team, site:, role: Team::MEMBER)
     create(:team, site:, role: Team::ADMIN)
     create(:team, site:, role: Team::OWNER)
-
-    create(:recording, site:)
-    create(:recording, site:)
   end
 
   subject do
@@ -48,6 +48,6 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
 
   it 'kicks off some jobs to clean up the recordings' do
     subject
-    expect(RecordingDeleteJob).to have_been_enqueued.twice
+    expect(RecordingDeleteJob).to have_been_enqueued.once.with(match_array([recording_1.id, recording_2.id]))
   end
 end

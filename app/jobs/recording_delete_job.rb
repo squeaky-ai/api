@@ -5,21 +5,26 @@ class RecordingDeleteJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(recording_id)
-    @recording = Recording.find(recording_id)
-    @site = recording.site
+  def perform(recording_ids)
+    @recording_ids = recording_ids
+    @recordings = Recording.where(id: recording_ids)
 
-    delete_recording_events
+    return if @recordings.empty?
+
+    delete_recordings_events
     delete_clickhouse_events
-    delete_recording
+    delete_recordings
   end
 
   private
 
-  attr_reader :recording, :site
+  attr_reader :recording_ids, :recordings
 
-  def delete_recording_events
-    RecordingEventsService.delete(recording:)
+  def delete_recordings_events
+    # TODO: Can this be batched?
+    recordings.each do |recording|
+      RecordingEventsService.delete(recording:)
+    end
   end
 
   def delete_clickhouse_events
@@ -31,10 +36,10 @@ class RecordingDeleteJob < ApplicationJob
       ClickHouse::PageEvent,
       ClickHouse::Recording,
       ClickHouse::ScrollEvent
-    ].each { |c| c.delete_from_recording(recording:) }
+    ].each { |c| c.delete_from_recordings(recording_ids:) }
   end
 
-  def delete_recording
-    recording.destroy
+  def delete_recordings
+    recordings.destroy_all
   end
 end

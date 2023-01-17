@@ -117,9 +117,8 @@ class Site < ApplicationRecord
   def destroy_all_recordings!
     # This will enqueue all recordings and it's associated
     # data to be deleted asynchronously
-    recordings.select(:id).find_each do |recording|
-      RecordingDeleteJob.perform_later(recording.id)
-    end
+    ids = recordings.select(:id).map(&:id)
+    RecordingDeleteJob.perform_later(ids)
   end
 
   def tracking_code

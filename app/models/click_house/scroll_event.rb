@@ -27,8 +27,8 @@ module ClickHouse
       raise
     end
 
-    def self.delete_from_recording(recording:)
-      Sql::ClickHouse.execute("ALTER TABLE #{table_name} DELETE WHERE recording_id = ?", [recording.id])
+    def self.delete_from_recordings(recording_ids:)
+      Sql::ClickHouse.execute("ALTER TABLE #{table_name} DELETE WHERE recording_id IN (?)", [recording_ids])
     end
   end
 end

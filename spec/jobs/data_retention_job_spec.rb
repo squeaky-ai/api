@@ -15,20 +15,19 @@ RSpec.describe DataRetentionJob, type: :job do
 
   context 'when there are some recordings to delete' do
     let(:site) { create(:site) }
+    let(:now) { now = Time.now}
 
-    before do
-      now = Time.now
+    let!(:recording_1) { create(:recording, site:, created_at: now) }
+    let!(:recording_2) { create(:recording, site:, created_at: now) }
+    let!(:recording_3) { create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 1.day) }
+    let!(:recording_4) { create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 5.days) }
+    let!(:recording_5) { create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 10.days) }
 
-      create(:recording, site:, created_at: now)
-      create(:recording, site:, created_at: now)
-      create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 1.day)
-      create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 5.days)
-      create(:recording, site:, created_at: now - site.plan.data_storage_months.months - 10.days)
-    end
 
     it 'enqueues ones that need deleting' do
       subject
-      expect(RecordingDeleteJob).to have_been_enqueued.exactly(3).times
+      expect(RecordingDeleteJob).to have_been_enqueued.exactly(1).times
+        .with(match_array([recording_3.id, recording_4.id, recording_5.id]))
     end
   end
 

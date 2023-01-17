@@ -4,8 +4,10 @@ require 'rails_helper'
 
 RSpec.describe DudaService::Uninstall do
   describe '#uninstall!' do
-
     let(:site) { create(:site) }
+
+    let!(:recording_1) { create(:recording, site:) }
+    let!(:recording_2) { create(:recording, site:) }
 
     subject { described_class.new(site_name: site.uuid).uninstall! }
 
@@ -13,9 +15,6 @@ RSpec.describe DudaService::Uninstall do
       create(:team, site:, role: Team::MEMBER)
       create(:team, site:, role: Team::MEMBER)
       create(:team, site:, role: Team::MEMBER)
-
-      create(:recording, site:)
-      create(:recording, site:)
 
       site.reload
     end
@@ -33,7 +32,7 @@ RSpec.describe DudaService::Uninstall do
       ActiveJob::Base.queue_adapter = :test
 
       subject
-      expect(RecordingDeleteJob).to have_been_enqueued.twice
+      expect(RecordingDeleteJob).to have_been_enqueued.once.with(match_array([recording_1.id, recording_2.id]))
     end
   end
 end
