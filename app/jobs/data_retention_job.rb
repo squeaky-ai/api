@@ -18,7 +18,9 @@ class DataRetentionJob < ApplicationJob
 
       logger.info "site #{site.id} has #{recording_ids.count} to delete"
 
-      RecordingDeleteJob.perform_later(recording_ids)
+      recording_ids.each_slice(500).each do |slice|
+        RecordingDeleteJob.perform_later(slice)
+      end
     end
 
     nil
