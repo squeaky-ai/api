@@ -21,6 +21,9 @@ class DataRetentionJob < ApplicationJob
       recording_ids.each_slice(500).each do |slice|
         RecordingDeleteJob.perform_later(slice)
       end
+
+      # TODO: Having a hard time deleting all the clickhouse data
+      sleep 60 * 5
     end
 
     nil
