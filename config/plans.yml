@@ -54,11 +54,11 @@ default: &default
           interval: month
         - id: price_1MOJ8aLJ9zG7aLW8RgalZo7i
           currency: GBP
-          amount: 200
+          amount: 204
           interval: year
         - id: price_1MOJ8aLJ9zG7aLW85ZrZlPP4
           currency: EUR
-          amount: 225
+          amount: 228
           interval: year
         - id: price_1MOJ8aLJ9zG7aLW8h0wbJ6G9
           currency: USD
@@ -468,11 +468,11 @@ production:
           interval: month
         - id: price_1MO5FBLJ9zG7aLW81nWM8Lrx
           currency: GBP
-          amount: 200
+          amount: 204
           interval: year
         - id: price_1MO5EVLJ9zG7aLW8wJm9gQKV
           currency: EUR
-          amount: 225
+          amount: 228
           interval: year
         - id: price_1MO5EALJ9zG7aLW8qdueHCfs
           currency: USD
@@ -623,11 +623,11 @@ production:
           interval: month
         - id: price_1KrkUgLJ9zG7aLW8VrNHvsfu
           currency: GBP
-          amount: 2345
+          amount: 2352
           interval: year
         - id: price_1KrkRXLJ9zG7aLW8xxtNMZyY
           currency: EUR
-          amount: 2655
+          amount: 2664
           interval: year
         - id: price_1KrkUILJ9zG7aLW81wfvhHFH
           currency: USD
