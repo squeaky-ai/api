@@ -5,7 +5,7 @@ class DataRetentionJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(*_args)
+  def perform(*_args) # rubocop:disable Metrics/AbcSize
     Site.find_each do |site|
       data_retention_months = site.plan.data_storage_months
 
@@ -25,7 +25,7 @@ class DataRetentionJob < ApplicationJob
       # Back off the job if we are deleting a bunch of recordings
       # as the ClickHouse disk will grow and eventually shit
       # itself
-      sleep 60 * 5 if recording_ids.size >= 250
+      sleep 5.minutes if recording_ids.size >= 250
     end
 
     nil
