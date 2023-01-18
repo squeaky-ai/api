@@ -22,8 +22,10 @@ class DataRetentionJob < ApplicationJob
         RecordingDeleteJob.perform_later(slice)
       end
 
-      # TODO: Having a hard time deleting all the clickhouse data
-      sleep 60 * 5 unless recording_ids.empty?
+      # Back off the job if we are deleting a bunch of recordings
+      # as the ClickHouse disk will grow and eventually shit
+      # itself
+      sleep 60 * 5 unless recording_ids >= 250
     end
 
     nil
