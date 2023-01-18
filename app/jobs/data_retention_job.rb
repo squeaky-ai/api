@@ -23,7 +23,7 @@ class DataRetentionJob < ApplicationJob
       end
 
       # TODO: Having a hard time deleting all the clickhouse data
-      sleep 60 * 5
+      sleep 60 * 5 unless recording_ids.empty?
     end
 
     nil
