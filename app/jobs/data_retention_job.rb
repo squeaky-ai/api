@@ -25,7 +25,7 @@ class DataRetentionJob < ApplicationJob
       # Back off the job if we are deleting a bunch of recordings
       # as the ClickHouse disk will grow and eventually shit
       # itself
-      sleep 60 * 5 unless recording_ids >= 250
+      sleep 60 * 5 unless recording_ids.size >= 250
     end
 
     nil
