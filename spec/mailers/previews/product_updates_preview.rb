@@ -36,4 +36,9 @@ class ProductUpdatesPreview < ActionMailer::Preview
     user = User.first
     ProductUpdatesMailer.december_2022(user)
   end
+
+  def pricing_migration_complete
+    user = User.first
+    ProductUpdatesMailer.pricing_migration_complete(user)
+  end
 end

@@ -72,4 +72,11 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Product Update: December 2022')
   end
+
+  def pricing_migration_complete(user)
+    @user = user
+    @unsubscribable = false
+
+    mail(to: user.email, subject: 'Migration complete ✅')
+  end
 end

@@ -97,13 +97,13 @@
         {
           "id": "price_1MOJ8aLJ9zG7aLW8RgalZo7i",
           "currency": "GBP",
-          "amount": 200,
+          "amount": 204,
           "interval": "year"
         },
         {
           "id": "price_1MOJ8aLJ9zG7aLW85ZrZlPP4",
           "currency": "EUR",
-          "amount": 225,
+          "amount": 228,
           "interval": "year"
         },
         {

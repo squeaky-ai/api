@@ -187,4 +187,17 @@ RSpec.describe ProductUpdatesMailer, type: :mailer do
       end
     end
   end
+
+  describe 'pricing_migration_complete' do
+    let(:user) { create(:user) }
+    let(:mail) { described_class.pricing_migration_complete(user) }
+
+    before { create(:site_with_team, owner: user) }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq 'Migration complete ✅'
+      expect(mail.to).to eq [user.email]
+      expect(mail.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

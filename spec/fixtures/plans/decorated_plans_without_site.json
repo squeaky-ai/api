@@ -112,13 +112,13 @@
           "interval": "month"
         },
         {
-          "amount": 200,
+          "amount": 204,
           "currency": "GBP",
           "id": "price_1MOJ8aLJ9zG7aLW8RgalZo7i",
           "interval": "year"
         },
         {
-          "amount": 225,
+          "amount": 228,
           "currency": "EUR",
           "id": "price_1MOJ8aLJ9zG7aLW85ZrZlPP4",
           "interval": "year"
