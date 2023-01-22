@@ -412,7 +412,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_202503) do
     t.integer "recordings_count"
     t.boolean "new", default: true
     t.bigint "site_id"
-    t.index "((external_attributes ->> 'id'::text))", name: "index_visitors_on_external_attributes_id"
+    t.index "site_id, ((external_attributes ->> 'id'::text))", name: "index_visitors_on_external_attributes_id"
     t.index ["site_id"], name: "index_visitors_on_site_id"
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true
   end
