@@ -133,8 +133,7 @@
       "response_time_hours": 168,
       "site_limit": 1,
       "support": [
-        "Email",
-        "Chat"
+        "Email"
       ],
       "team_member_limit": null
     },

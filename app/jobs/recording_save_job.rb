@@ -184,13 +184,9 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     Recording::ACTIVE
   end
 
-  def find_or_create_visitor # rubocop:disable Metrics/AbcSize
+  def find_or_create_visitor
     if session.external_attributes['id']
-      visitor = site
-                .visitors
-                .where("visitors.external_attributes->>'id' = ?", session.external_attributes['id'])
-                .first
-
+      visitor = Visitor.find_by_external_id(site.id, session.external_attributes['id'])
       return visitor if visitor
     end
 

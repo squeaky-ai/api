@@ -115,8 +115,7 @@
       ],
       "data_storage_months": 3,
       "support": [
-        "Email",
-        "Chat"
+        "Email"
       ],
       "response_time_hours": 168,
       "team_member_limit": null,
