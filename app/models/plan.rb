@@ -67,7 +67,7 @@ class Plan < ApplicationRecord
   end
 
   def site_limit
-    self[:site_limit] || plan_defaults[:site_limit]
+    plan_defaults[:site_limit]
   end
 
   def fractional_usage
@@ -76,6 +76,19 @@ class Plan < ApplicationRecord
 
   def pricing
     plan_defaults[:pricing]
+  end
+
+  def change_plan!(plan_id)
+    # Set the plan_id and reset all the overrides
+    update!(
+      plan_id:,
+      features_enabled: [],
+      team_member_limit: nil,
+      max_monthly_recordings: nil,
+      data_storage_months: nil,
+      response_time_hours: nil,
+      support: []
+    )
   end
 
   private

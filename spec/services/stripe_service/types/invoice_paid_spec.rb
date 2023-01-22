@@ -68,5 +68,45 @@ RSpec.describe StripeService::Types::InvoicePaid do
         .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
         .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
     end
+
+    context 'when the plan had overrides set' do
+      before do
+        billing.site.reload.plan.update(
+          features_enabled: ['dashboard'],
+          team_member_limit: 5,
+          max_monthly_recordings: 3000,
+          data_storage_months: 2,
+          response_time_hours: 24,
+          support: ['Chat']
+        )
+      end
+
+      it 'resets them all' do
+        expect { subject }
+          .to change { billing.site.reload.plan.features_enabled }
+          .from(['dashboard'])
+          .to([
+            'dashboard',
+            'visitors',
+            'recordings',
+            'event_tracking',
+            'error_tracking',
+            'site_analytics',
+            'page_analytics',
+            'journeys',
+            'heatmaps_click_positions',
+            'heatmaps_click_counts',
+            'heatmaps_mouse',
+            'heatmaps_scroll',
+            'nps', 
+            'sentiment'
+          ])
+          .and change { billing.site.plan.team_member_limit }.from(5).to(nil)
+          .and change { billing.site.plan.max_monthly_recordings }.from(3000).to(10000)
+          .and change { billing.site.plan.data_storage_months }.from(2).to(12)
+          .and change { billing.site.plan.response_time_hours }.from(24).to(72)
+          .and change { billing.site.plan.support }.from(['Chat']).to(['Email'])
+      end
+    end
   end
 end
