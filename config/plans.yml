@@ -67,7 +67,6 @@ default: &default
       data_storage_months: 3
       support:
         - Email
-        - Chat
       response_time_hours: 168
       team_member_limit: null
       features_enabled:
@@ -481,7 +480,6 @@ production:
       data_storage_months: 3
       support:
         - Email
-        - Chat
       response_time_hours: 168
       team_member_limit: null
       features_enabled:
