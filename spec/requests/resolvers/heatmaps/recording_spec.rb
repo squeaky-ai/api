@@ -61,7 +61,9 @@ RSpec.describe Resolvers::Heatmaps::Recording, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording.id,
-          url: '/'
+          url: '/',
+          entered_at: 1653260400000,
+          exited_at: 1653260404000
         }
       end
     end
@@ -73,7 +75,7 @@ RSpec.describe Resolvers::Heatmaps::Recording, type: :request do
         page: '/',
         type: 'ClickCount',
         from_date: '2022-04-23', 
-        to_date: '2022-04-30' 
+        to_date: '2022-04-30'
       }
       graphql_request(heatmaps_recording_query, variables, user)
     end

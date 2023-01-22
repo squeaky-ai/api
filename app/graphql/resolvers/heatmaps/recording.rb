@@ -5,6 +5,8 @@ module Resolvers
     class Recording < Resolvers::Base
       type 'Types::Recordings::Recording', null: true
 
+      MIN_PAGE_DURATION = 3000
+
       def resolve_with_timings
         ::Recording
           .joins(:pages, :visitor)
@@ -26,6 +28,7 @@ module Resolvers
             recordings.recording_id NOT IN (?) AND
             recordings.site_id = ? AND
             page_events.url = ? AND
+            page_events.exited_at - page_events.entered_at >= #{MIN_PAGE_DURATION} AND
             recordings.viewport_x #{device_expression} AND
             toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
           ORDER BY
