@@ -27,7 +27,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
       subject
 
       results = Sql::ClickHouse.select_all("
-        SELECT site_id, recording_id, name, data, url, viewport_x, viewport_y, device_x, device_y
+        SELECT site_id, recording_id, name, data, url, viewport_x, viewport_y, device_x, device_y, source, visitor_id
         FROM custom_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -40,9 +40,51 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
           'device_x' => 1920, 
           'device_y' => 1080, 
           'name' => 'my-event', 
+          'source' => 'web',
+          'visitor_id' => recording.visitor.id,
           'url' => '/examples/static/', 
           'viewport_x' => 1920, 
           'viewport_y' => 1080
+        }
+      ])
+    end
+  end
+
+  describe '.create_from_api' do
+    let(:site) { create(:site) }
+    let(:visitor) { create(:visitor, site_id: site.id) }
+    
+    let(:event) do
+      {
+        name: 'my-event',
+        data: { foo: 'bar' }
+      }
+    end
+
+    subject { described_class.create_from_api(site, visitor, event) }
+
+    it 'inserts the custom event in ClickHouse' do
+      subject
+
+      results = Sql::ClickHouse.select_all("
+        SELECT site_id, recording_id, name, data, url, viewport_x, viewport_y, device_x, device_y, source, visitor_id
+        FROM custom_events
+        WHERE site_id = #{site.id} AND visitor_id = #{visitor.id}
+      ")
+
+      expect(results).to match_array([
+        {
+          'site_id' => site.id,
+          'recording_id' => 0, 
+          'data' => '{"foo":"bar"}', 
+          'device_x' => 0, 
+          'device_y' => 0, 
+          'name' => 'my-event', 
+          'source' => 'api',
+          'visitor_id' => visitor.id,
+          'url' => '', 
+          'viewport_x' => 0, 
+          'viewport_y' => 0
         }
       ])
     end

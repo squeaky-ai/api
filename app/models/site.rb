@@ -134,4 +134,8 @@ class Site < ApplicationRecord
       </script>
     HTML
   end
+
+  def self.find_by_api_key(api_key)
+    find_by(api_key:)
+  end
 end

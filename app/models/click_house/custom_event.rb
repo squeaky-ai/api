@@ -16,6 +16,11 @@ module ClickHouse
             name: event['data']['name'],
             url: event['data']['href'],
             data: data.to_json,
+            source: 'web',
+            # We don't normally store the visitor_id with events
+            # but custom events are the exception because they can
+            # be populated by the API
+            visitor_id: recording.visitor.id,
             viewport_x: recording.viewport_x,
             viewport_y: recording.viewport_y,
             device_x: recording.device_x,
@@ -26,6 +31,29 @@ module ClickHouse
       end
     rescue ClickHouse::DbException => e
       Rails.logger.error "Failed to insert events to clickhouse: #{e} - #{session.custom_tracking.to_json}"
+      raise
+    end
+
+    def self.create_from_api(site, visitor, event)
+      insert do |buffer|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: nil,
+          name: event[:name],
+          url: nil,
+          data: event[:data].to_json,
+          source: 'api',
+          visitor_id: visitor.id,
+          viewport_x: nil,
+          viewport_y: nil,
+          device_x: nil,
+          device_y: nil,
+          timestamp: Time.now.to_i * 1000
+        }
+      end
+    rescue ClickHouse::DbException => e
+      Rails.logger.error "Failed to insert events to clickhouse: #{e} - #{event.to_json}"
       raise
     end
 

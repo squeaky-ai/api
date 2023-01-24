@@ -34,6 +34,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get '/heatmaps/scrolls', to: 'sites/heatmaps#scrolls'
     end
 
+    resources :events, only: [:create]
+
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do

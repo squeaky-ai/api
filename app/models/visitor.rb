@@ -80,6 +80,6 @@ class Visitor < ApplicationRecord
   end
 
   def self.find_by_external_id(site_id, id)
-    find_by("site_id = ? AND external_attributes->>'id' = ?", site_id, id)
+    find_by("site_id = ? AND external_attributes->>'id' = ?", site_id, id.to_s)
   end
 end
