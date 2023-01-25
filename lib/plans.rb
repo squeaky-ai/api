@@ -13,6 +13,12 @@ class Plans
     matching_plan&.deep_symbolize_keys
   end
 
+  def self.find_by_provider(provider, plan_id)
+    Plans.to_a.find do |plan|
+      (plan[:integrations] || {})[provider.to_sym] == plan_id
+    end
+  end
+
   def self.next_plan_name(plan_id)
     plans = Plans.to_a
     index = plans.find_index { |plan| plan[:id] == plan_id }

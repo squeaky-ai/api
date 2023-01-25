@@ -6,17 +6,20 @@ module DudaService
       account_owner_uuid:,
       site_name:,
       api_endpoint:,
-      auth:
+      auth:,
+      plan_uuid:
     )
       @account_owner_uuid = account_owner_uuid
       @site_name = site_name
       @api_endpoint = api_endpoint
       @auth = auth
+      @plan_uuid = plan_uuid
     end
 
     def install_all!
       ActiveRecord::Base.transaction do
         create_site!
+        create_plan!
         create_user!
         create_team!
         create_auth!
@@ -27,7 +30,7 @@ module DudaService
 
     private
 
-    attr_reader :site, :user, :account_owner_uuid, :site_name, :api_endpoint, :auth
+    attr_reader :site, :user, :account_owner_uuid, :site_name, :api_endpoint, :auth, :plan_uuid
 
     def create_site!
       @site = ::Site.create!(
@@ -38,6 +41,11 @@ module DudaService
         provider: 'duda',
         verified_at: Time.now
       )
+    end
+
+    def create_plan!
+      plan = Plans.find_by_provider('duda', plan_uuid)
+      site.plan.update(plan_id: plan[:id]) if plan
     end
 
     def create_user! # rubocop:disable Metrics/AbcSize

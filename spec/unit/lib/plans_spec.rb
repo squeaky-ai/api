@@ -80,7 +80,10 @@ RSpec.describe Plans do
             'nps',
             'sentiment'
           ],
-          site_limit: nil
+          site_limit: nil,
+          integrations: {
+            duda: 'a808e6dd-fbdc-4faa-8534-d417287e9367'
+          }
         )
       end
     end

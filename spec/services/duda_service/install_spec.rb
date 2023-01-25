@@ -8,6 +8,7 @@ RSpec.describe DudaService::Install do
     let(:site_name) { SecureRandom.uuid }
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
+    let(:plan_uuid) { '304e8866-7b29-4027-bcb3-3828204d9cfd' }
 
     let(:auth) do
       {
@@ -68,7 +69,8 @@ RSpec.describe DudaService::Install do
         account_owner_uuid:,
         site_name:,
         api_endpoint:,
-        auth:
+        auth:,
+        plan_uuid:
       ).install_all!
     end
 
@@ -137,6 +139,16 @@ RSpec.describe DudaService::Install do
   
         expect(HTTParty).to have_received(:post)
           .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
+      end
+    end
+
+    context 'when the site is on a paid plan' do
+      let(:plan_uuid) { '5d6b2b10-9c27-49e5-b3d7-a78b176f80b4' }
+
+      it 'puts them on the correct plan' do
+        subject
+        site = Site.last
+        expect(site.plan.plan_id).to eq('b5be7346-b896-4e4f-9598-e206efca98a6')
       end
     end
   end

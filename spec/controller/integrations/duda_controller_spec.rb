@@ -9,6 +9,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:site_name) { SecureRandom.uuid }
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
+    let(:app_plan_uuid) { '304e8866-7b29-4027-bcb3-3828204d9cfd' }
 
     let(:auth) do
       {
@@ -29,7 +30,8 @@ RSpec.describe Integrations::DudaController, type: :controller do
         installer_account_uuid:, 
         site_name:, 
         api_endpoint:,
-        auth:
+        auth:,
+        app_plan_uuid:
       }
     end
 

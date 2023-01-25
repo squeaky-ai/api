@@ -31,6 +31,8 @@ default: &default
         - recordings
         - site_analytics
         - heatmaps_click_positions
+      integrations:
+        duda: 304e8866-7b29-4027-bcb3-3828204d9cfd
 
     - id: b5be7346-b896-4e4f-9598-e206efca98a6
       name: Starter
@@ -78,6 +80,8 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+      integrations:
+        duda: 5d6b2b10-9c27-49e5-b3d7-a78b176f80b4
 
     - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
       name: Light
@@ -238,6 +242,8 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+      integrations:
+        duda: a808e6dd-fbdc-4faa-8534-d417287e9367
 
     - id: eacfcc46-82ba-4994-9d01-19696c4e374b
       name: Enterprise Tier 1
@@ -443,7 +449,8 @@ production:
         - recordings
         - site_analytics
         - heatmaps_click_positions
-
+      integrations:
+        duda: 304e8866-7b29-4027-bcb3-3828204d9cfd
 
     - id: b5be7346-b896-4e4f-9598-e206efca98a6
       name: Starter
@@ -491,6 +498,8 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+      integrations:
+        duda: 5d6b2b10-9c27-49e5-b3d7-a78b176f80b4
 
     - id: 094f6148-22d6-4201-9c5e-20bffb68cc48
       name: Light
@@ -652,6 +661,8 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+      integrations:
+        duda: a808e6dd-fbdc-4faa-8534-d417287e9367
 
     - id: eacfcc46-82ba-4994-9d01-19696c4e374b
       name: Enterprise Tier 1

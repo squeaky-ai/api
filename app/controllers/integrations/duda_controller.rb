@@ -49,7 +49,7 @@ module Integrations
 
     def install_params
       auth_params = %i[authorization_code expiration_date refresh_token type]
-      params.permit(:account_owner_uuid, :installer_account_uuid, :site_name, :api_endpoint, auth: auth_params)
+      params.permit(:account_owner_uuid, :installer_account_uuid, :site_name, :api_endpoint, :app_plan_uuid, auth: auth_params)
     end
 
     def uninstall_params
@@ -77,7 +77,8 @@ module Integrations
         account_owner_uuid: install_params['account_owner_uuid'],
         site_name: install_params['site_name'],
         api_endpoint: install_params['api_endpoint'],
-        auth: install_params['auth']
+        auth: install_params['auth'],
+        plan_uuid: install_params['app_plan_uuid']
       )
     end
 
