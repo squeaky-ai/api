@@ -8,7 +8,7 @@ RSpec.describe DudaService::Webhook do
       let(:provider_uuid) { SecureRandom.uuid }
       let(:event_type) { 'DOMAIN_UPDATED' }
 
-      let(:site) { create(:site, provider: 'duda') }
+      let(:site) { create(:site, provider: 'duda', uuid: provider_uuid) }
 
       let(:data) do
         {
@@ -21,10 +21,6 @@ RSpec.describe DudaService::Webhook do
         {
           'site_name' => provider_uuid
         }
-      end
-
-      before do
-        create(:provider_auth, site:, provider: 'duda', provider_uuid:)
       end
 
       subject { described_class.new(event_type:, data:, resource_data:).process! }

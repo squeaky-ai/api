@@ -22,8 +22,8 @@ module DudaService
     attr_reader :event_type, :data, :resource_data
 
     def process_domain_updated
-      auth = ::ProviderAuth.find_by!(provider: 'duda', provider_uuid: resource_data['site_name'])
-      auth.site.update(url: domain)
+      site = ::Site.find_by!(uuid: resource_data['site_name'])
+      site.update(url: domain)
     end
 
     def domain

@@ -121,6 +121,35 @@ RSpec.describe Integrations::DudaController, type: :controller do
       expect { subject }.to change { Site.all.count }.by(-1)
     end
   end
+
+  describe 'POST /integrations/websitebuilder/change_plan' do
+    let(:provider_uuid) { SecureRandom.uuid }
+    let!(:site) { create(:site, uuid: provider_uuid) }
+
+    let(:params) do
+      {
+        site_name: site.uuid,
+        app_plan_uuid: '5d6b2b10-9c27-49e5-b3d7-a78b176f80b4'
+      }
+    end
+
+    subject do
+      post :change_plan, params:
+    end
+
+    it 'updates the plan' do
+      expect { subject }.to change { site.reload.plan.plan_id }
+        .from('05bdce28-3ac8-4c40-bd5a-48c039bd3c7f')
+        .to('b5be7346-b896-4e4f-9598-e206efca98a6')
+    end
+
+    it 'returns okay' do
+      subject
+
+      expect(response).to have_http_status(200)
+      expect(json_body).to eq('status' => 'OK')
+    end
+  end
   
   describe 'GET /integrations/websitebuilder/sso' do
     let!(:user) { create(:user, provider: 'duda', provider_uuid: SecureRandom.uuid) }
@@ -175,7 +204,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:provider_uuid) { SecureRandom.uuid }
     let(:event_type) { 'DOMAIN_UPDATED' }
 
-    let(:site) { create(:site, provider: 'duda') }
+    let!(:site) { create(:site, provider: 'duda', uuid: provider_uuid) }
 
     let(:data) do
       {
@@ -196,10 +225,6 @@ RSpec.describe Integrations::DudaController, type: :controller do
         'data' => data,
         'resource_data' => resource_data
       }
-    end
-
-    before do
-      create(:provider_auth, site:, provider: 'duda', provider_uuid:)
     end
 
     subject do

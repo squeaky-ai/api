@@ -34,8 +34,8 @@ module DudaService
       # of the account holder, but will share the same email. We
       # can't have multiple accounts with the same user, so everyone
       # will assume the same user for now
-      provider_auth = ProviderAuth.find_by(provider: 'duda', provider_uuid: site_name)
-      provider_auth.site.users.first
+      site = ::Site.find_by!(uuid: site_name)
+      site.users.first
     end
 
     private

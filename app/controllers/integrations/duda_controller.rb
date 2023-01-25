@@ -19,6 +19,13 @@ module Integrations
     end
 
     def change_plan
+      Rails.logger.info "Changing Duda plan with: #{change_plan_params.to_json}"
+
+      site = ::Site.find_by!(uuid: change_plan_params['site_name'])
+      plan = Plans.find_by_provider('duda', change_plan_params['app_plan_uuid'])
+
+      site.plan.update(plan_id: plan[:id]) if plan
+
       render json: { status: 'OK' }
     end
 
@@ -45,6 +52,10 @@ module Integrations
 
     def sso_params
       params.permit(:sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid)
+    end
+
+    def change_plan_params
+      params.permit(:app_plan_uuid, :site_name)
     end
 
     def install_params
