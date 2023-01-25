@@ -19,7 +19,7 @@ module EventsService
       def results
         <<-SQL
           SELECT
-            uuid, recording_id, '#{event_name}' as event_name, exited_at as timestamp
+            uuid, recording_id, '#{event_name}' as event_name, exited_at as timestamp, '{}' as data, 'web' as source
           FROM
             page_events
           WHERE

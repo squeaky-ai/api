@@ -47,6 +47,8 @@ module Resolvers
             id: result['uuid'],
             event_name: result['event_name'],
             timestamp: result['timestamp'],
+            source: result['source'],
+            data: result['data'],
             recording:,
             visitor: recording.visitor
           }
@@ -115,6 +117,8 @@ module Resolvers
             results.uuid uuid,
             results.recording_id recording_id,
             results.event_name event_name,
+            results.source source,
+            results.data data,
             toDateTime(results.timestamp / 1000) timestamp
           FROM (#{union_queries(capture_events).join(' ')}) results
           ORDER BY #{order(sort)}
