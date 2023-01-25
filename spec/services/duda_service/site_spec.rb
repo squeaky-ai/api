@@ -7,7 +7,6 @@ RSpec.describe DudaService::Site do
   let(:domain) { 'site-domain.com' }
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
-  let(:name) { 'My Site' }
   let(:response) { double(:response, body: response_body) }
 
   let(:auth) do
@@ -23,10 +22,7 @@ RSpec.describe DudaService::Site do
     {
       'site_domain' => domain,
       'site_name' => site_name,
-      'account_name' => email,
-      'site_business_info' => {
-        'business_name' => name
-      }
+      'account_name' => email
     }.to_json
   end
 
@@ -43,7 +39,7 @@ RSpec.describe DudaService::Site do
     subject { instance.name }
 
     it 'returns the name' do
-      expect(subject).to eq(name)
+      expect(subject).to eq('site-domain')
     end
   end
 

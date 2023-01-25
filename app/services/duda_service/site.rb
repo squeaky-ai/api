@@ -13,7 +13,9 @@ module DudaService
     end
 
     def name
-      site['site_business_info']['business_name'] || 'Unknown'
+      url_parts = URI(domain).host.split('.')
+      url_parts.pop
+      url_parts.join('.')
     end
 
     def domain
