@@ -139,19 +139,8 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def persist_custom_event_names!
     # No point in trying to create 10 of the same one
-    session.custom_tracking.uniq { |e| e['data']['name'] }.each do |event|
-      name = event['data']['name']
-
-      event_capture = EventCapture.create(
-        name:,
-        rules: [{ matcher: 'equals', condition: 'or', value: name }],
-        event_type: EventCapture::CUSTOM,
-        site:,
-        event_groups: []
-      )
-
-      logger.info "EventCapture with constrant #{name}:#{site.id} already exists" unless event_capture.valid?
-    end
+    event_names = session.custom_tracking.map { |e| e['data']['name'] }.uniq
+    EventCapture.create_names_for_site!(site, event_names, EventCapture::WEB)
   end
 
   def valid? # rubocop:disable Metrics/CyclomaticComplexity

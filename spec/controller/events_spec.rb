@@ -6,42 +6,19 @@ RSpec.describe EventsController, type: :controller do
   describe 'POST /events' do
     subject { post :create, body:, as: :json }
 
-    context 'when the name is missing' do
-      let(:body) { {}.to_json }
-
-      it 'returns a bad request' do
-        subject
-        expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'name is required')
-      end
-    end
-
-    context 'when the data is missing' do
-      let(:body) do
-        {
-          'name' => 'MyEvent'
-        }.to_json
-      end
-
-      it 'returns a bad request' do
-        subject
-        expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'data is required')
-      end
-    end
-
-    context 'when the user_id is missing' do
+    context 'when no api_key is given' do
       let(:body) do
         {
           'name' => 'MyEvent',
-          'data' => '{}'
+          'data' => '{}',
+          'user_id' => '234234234'
         }.to_json
       end
 
-      it 'returns a bad request' do
+      it 'returns unauthorized' do
         subject
         expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'user_id is required')
+        expect(json_body).to eq('error' => 'Unauthorized')
       end
     end
 
@@ -54,10 +31,71 @@ RSpec.describe EventsController, type: :controller do
         }.to_json
       end
 
+      before do
+        request.headers['X-SQUEAKY-API-KEY'] = SecureRandom.uuid
+      end
+
       it 'returns unauthorized' do
         subject
         expect(response).to have_http_status(401)
         expect(json_body).to eq('error' => 'Unauthorized')
+      end
+    end
+
+    context 'when the name is missing' do
+      let(:site) { create(:site, api_key: SecureRandom.uuid) }
+
+      let(:body) { {}.to_json }
+
+      before do
+        request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+      end
+
+      it 'returns a bad request' do
+        subject
+        expect(response).to have_http_status(400)
+        expect(json_body).to eq('error' => 'name is required')
+      end
+    end
+
+    context 'when the data is missing' do
+      let(:site) { create(:site, api_key: SecureRandom.uuid) }
+
+      let(:body) do
+        {
+          'name' => 'MyEvent'
+        }.to_json
+      end
+
+      before do
+        request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+      end
+
+      it 'returns a bad request' do
+        subject
+        expect(response).to have_http_status(400)
+        expect(json_body).to eq('error' => 'data is required')
+      end
+    end
+
+    context 'when the user_id is missing' do
+      let(:site) { create(:site, api_key: SecureRandom.uuid) }
+
+      let(:body) do
+        {
+          'name' => 'MyEvent',
+          'data' => '{}'
+        }.to_json
+      end
+
+      before do
+        request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+      end
+
+      it 'returns a bad request' do
+        subject
+        expect(response).to have_http_status(400)
+        expect(json_body).to eq('error' => 'user_id is required')
       end
     end
 
@@ -127,6 +165,20 @@ RSpec.describe EventsController, type: :controller do
             'visitor_id' => visitor.id
           }
         ])
+      end
+
+      it 'creates the event capture' do
+        expect { subject }.to change { EventCapture.count }.by(1)
+      end
+
+      context 'when the event capture already exist' do
+        before do
+          create(:event_capture, site:, event_type: EventCapture::CUSTOM, name: 'MyEvent')
+        end
+
+        it 'does not create the event capture' do
+          expect { subject }.not_to change { EventCapture.count }
+        end
       end
     end
 

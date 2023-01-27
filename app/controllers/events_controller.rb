@@ -4,6 +4,8 @@ class EventsController < ApplicationController
   include ActionView::Helpers::SanitizeHelper
 
   def create
+    # They did not provide an API key
+    return render json: { error: 'Unauthorized' }, status: 400 unless api_key
     # All of these field are required
     return render json: { error: params_error }, status: 400 if params_error
     # The site does not match the API key
@@ -13,7 +15,7 @@ class EventsController < ApplicationController
     # The site has ingest disabled and we shouldn't allow it in
     return render json: { error: 'Forbidden' }, status: 403 unless site.ingest_enabled
 
-    ClickHouse::CustomEvent.create_from_api(site, visitor, event)
+    create_event!
 
     render json: { status: 'OK' }, status: 201
   end
@@ -39,8 +41,17 @@ class EventsController < ApplicationController
     }
   end
 
+  def create_event!
+    ClickHouse::CustomEvent.create_from_api(site, visitor, event)
+    EventCapture.create_names_for_site!(site, [event[:name]], EventCapture::API)
+  end
+
+  def api_key
+    request.headers['X-SQUEAKY-API-KEY']
+  end
+
   def site
-    @site ||= Site.find_by_api_key(request.headers['X-SQUEAKY-API-KEY'])
+    @site ||= Site.find_by_api_key(api_key)
   end
 
   def visitor

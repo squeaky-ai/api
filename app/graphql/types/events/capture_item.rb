@@ -12,6 +12,7 @@ module Types
       field :count, Integer, null: false
       field :group_ids, [String, { null: false }], null: false
       field :group_names, [String, { null: false }], null: false
+      field :source, String, null: true
       field :last_counted_at, GraphQL::Types::ISO8601DateTime, null: true
     end
   end

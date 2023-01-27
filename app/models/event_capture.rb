@@ -12,6 +12,9 @@ class EventCapture < ApplicationRecord
   ERROR = 3
   CUSTOM = 4
 
+  WEB = 'web'
+  API = 'api'
+
   def type
     event_type
   end
@@ -22,5 +25,18 @@ class EventCapture < ApplicationRecord
 
   def group_ids
     event_groups.map(&:id)
+  end
+
+  def self.create_names_for_site!(site, names, source)
+    names.each do |name|
+      create(
+        name:,
+        rules: [{ matcher: 'equals', condition: 'or', value: name }],
+        event_type: EventCapture::CUSTOM,
+        site:,
+        source:,
+        event_groups: []
+      )
+    end
   end
 end
