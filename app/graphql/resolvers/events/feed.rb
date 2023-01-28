@@ -18,9 +18,10 @@ module Resolvers
         results = aggregated_results(capture_events, from_date, to_date, page, size, sort)
         results_count = total_results_count(capture_events, from_date, to_date)
         recordings = recordings(results)
+        visitors = visitors(results)
 
         {
-          items: format_results(results, recordings),
+          items: format_results(results, recordings, visitors),
           pagination: {
             page_size: size,
             total: results_count,
@@ -39,9 +40,10 @@ module Resolvers
         sorts[sort]
       end
 
-      def format_results(results, recordings)
+      def format_results(results, recordings, visitors)
         results.map do |result|
           recording = recordings.detect { |r| r.id == result['recording_id'] }
+          visitor = visitors.detect { |v| v.id == result['visitor_id'] }
 
           {
             id: result['uuid'],
@@ -50,7 +52,10 @@ module Resolvers
             source: result['source'],
             data: result['data'],
             recording:,
-            visitor: recording.visitor
+            # Custom events from the API will not have
+            # a recording so the visitor must be fetched
+            # by the visitor id
+            visitor: recording&.visitor || visitor
           }
         end
       end
@@ -119,6 +124,7 @@ module Resolvers
             results.event_name event_name,
             results.source source,
             results.data data,
+            results.visitor_id visitor_id,
             toDateTime(results.timestamp / 1000) timestamp
           FROM (#{union_queries(capture_events).join(' ')}) results
           ORDER BY #{order(sort)}
@@ -144,6 +150,20 @@ module Resolvers
           .recordings
           .where(id: ids)
           .includes(:visitor)
+      end
+
+      def visitors(results)
+        # Only custom events from the api will need to look
+        # visitors up this way as they are the only ones that
+        # do not have a recording
+        ids = results
+              .select { |r| r['source'] == EventCapture::API }
+              .map { |r| r['visitor_id'] }
+              .uniq
+
+        object
+          .visitors
+          .where(id: ids)
       end
     end
   end

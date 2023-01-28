@@ -16,7 +16,7 @@ module ClickHouse
             name: event['data']['name'],
             url: event['data']['href'],
             data: data.to_json,
-            source: 'web',
+            source: EventCapture::WEB,
             # We don't normally store the visitor_id with events
             # but custom events are the exception because they can
             # be populated by the API
@@ -43,7 +43,7 @@ module ClickHouse
           name: event[:name],
           url: nil,
           data: event[:data].to_json,
-          source: 'api',
+          source: EventCapture::API,
           visitor_id: visitor.id,
           viewport_x: nil,
           viewport_y: nil,

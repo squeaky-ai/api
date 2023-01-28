@@ -161,7 +161,7 @@ RSpec.describe EventsController, type: :controller do
             'viewport_y' => 0,
             'device_x' => 0,
             'device_y' => 0,
-            'source' => 'api',
+            'source' => EventCapture::API,
             'visitor_id' => visitor.id
           }
         ])

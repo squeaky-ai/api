@@ -11,7 +11,7 @@ module Types
       field :data, String, null: true
       field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
       field :visitor, Types::Visitors::Visitor, null: false
-      field :recording, Types::Recordings::Recording, null: false
+      field :recording, Types::Recordings::Recording, null: true
     end
   end
 end

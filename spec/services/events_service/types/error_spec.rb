@@ -19,7 +19,9 @@ RSpec.describe EventsService::Types::Error do
       it 'returns the right count' do
         sql = <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event.name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             error_events
           WHERE
@@ -39,7 +41,9 @@ RSpec.describe EventsService::Types::Error do
       it 'returns the right count' do
         sql = <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event.name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             error_events
           WHERE
@@ -59,7 +63,9 @@ RSpec.describe EventsService::Types::Error do
       it 'returns the right count' do
         sql = <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event.name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             error_events
           WHERE
@@ -79,7 +85,9 @@ RSpec.describe EventsService::Types::Error do
       it 'returns the right count' do
         sql = <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event.name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             error_events
           WHERE
@@ -99,7 +107,9 @@ RSpec.describe EventsService::Types::Error do
       it 'returns the right count' do
         sql = <<-SQL
           SELECT
-            COUNT(*) count, '#{event.name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event.name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             error_events
           WHERE

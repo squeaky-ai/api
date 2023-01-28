@@ -6,7 +6,9 @@ module EventsService
       def count
         <<-SQL
           SELECT
-            COUNT(*) count, '#{event_name}' as event_name, '#{event.id}' as event_id
+            COUNT(*) count,
+            '#{event_name}' as event_name,
+            '#{event.id}' as event_id
           FROM
             click_events
           WHERE
@@ -19,7 +21,13 @@ module EventsService
       def results
         <<-SQL
           SELECT
-            uuid, recording_id, '#{event_name}' as event_name, timestamp, '{}' as data, 'web' as source
+            uuid,
+            recording_id,
+            '#{event_name}' as event_name,
+            timestamp,
+            '{}' as data,
+            '#{EventCapture::WEB}' as source,
+            null as visitor_id
           FROM
             click_events
           WHERE
@@ -32,7 +40,9 @@ module EventsService
       def counts
         <<-SQL
           SELECT
-            COUNT(*) count, '#{event.id}' as id, formatDateTime(toDate(timestamp / 1000), :date_format) date_key
+            COUNT(*) count,
+            '#{event.id}' as id,
+            formatDateTime(toDate(timestamp / 1000), :date_format) date_key
           FROM
             click_events
           WHERE
