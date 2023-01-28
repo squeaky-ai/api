@@ -27,7 +27,7 @@ RSpec.describe Resolvers::Admin::RecordingsProcessed, type: :request do
     it 'returns the count' do
       response = graphql_request(recordings_processed_admin_query, {}, user)
 
-      expect(response['data']['admin']['recordingsProcessed']).to eq 0
+      expect(response['data']['admin']['recordingsProcessed']).to eq Sidekiq::Stats.new.processed
     end
   end
 end

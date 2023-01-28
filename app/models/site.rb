@@ -10,8 +10,8 @@ class Site < ApplicationRecord
   has_many :teams, dependent: :destroy
   has_many :users, through: :teams
   has_many :recordings
+  has_many :visitors
   has_many :notes, through: :recordings
-  has_many :visitors, through: :recordings
   has_many :pages, through: :recordings
   has_many :nps, through: :recordings
   has_many :sentiments, through: :recordings
