@@ -35,6 +35,8 @@ module Mutations
         # Update the referral if it exists
         Referral.find_by_url(site.url)&.update(site:)
 
+        fire_squeaky_event(site)
+
         site.reload
       end
 
@@ -49,6 +51,21 @@ module Mutations
         raise Exceptions::SiteInvalidUri unless formatted_uri
 
         formatted_uri
+      end
+
+      def fire_squeaky_event(site)
+        client = SqueakyClient.new
+
+        client.add_event(
+          name: 'SiteCreated',
+          user_id: user.id,
+          data: {
+            name: site.name,
+            created_at: site.created_at.iso8601
+          }
+        )
+      rescue HTTParty::Error => e
+        Rails.logger.error("Failed to send Squeaky event - #{e}")
       end
     end
   end

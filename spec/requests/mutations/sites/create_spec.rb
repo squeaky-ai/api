@@ -53,6 +53,10 @@ RSpec.describe Mutations::Sites::Create, type: :request do
   end
 
   context 'when a site with this url does not exist' do
+    before do
+      allow_any_instance_of(SqueakyClient).to receive(:add_event)
+    end
+  
     context 'when the url is invalid' do
       let(:url) { 'sdfsjkldfjsdklfsd' }
       let(:user) { create(:user) }
