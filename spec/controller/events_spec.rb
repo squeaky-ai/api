@@ -15,10 +15,10 @@ RSpec.describe EventsController, type: :controller do
         }.to_json
       end
 
-      it 'returns unauthorized' do
+      it 'returns forbidden' do
         subject
-        expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'Unauthorized')
+        expect(response).to have_http_status(403)
+        expect(json_body).to eq('error' => 'Forbidden')
       end
     end
 
@@ -37,8 +37,8 @@ RSpec.describe EventsController, type: :controller do
 
       it 'returns unauthorized' do
         subject
-        expect(response).to have_http_status(401)
-        expect(json_body).to eq('error' => 'Unauthorized')
+        expect(response).to have_http_status(403)
+        expect(json_body).to eq('error' => 'Forbidden')
       end
     end
 
@@ -198,10 +198,10 @@ RSpec.describe EventsController, type: :controller do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
       end
 
-      it 'returns forbidden' do
+      it 'returns unauthorized' do
         subject
-        expect(response).to have_http_status(403)
-        expect(json_body).to eq('error' => 'Forbidden')
+        expect(response).to have_http_status(401)
+        expect(json_body).to eq('error' => 'Unauthorized')
       end
     end
   end

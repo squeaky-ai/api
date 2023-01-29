@@ -5,15 +5,15 @@ class EventsController < ApplicationController
 
   def create
     # They did not provide an API key
-    return render json: { error: 'Unauthorized' }, status: 400 unless api_key
+    return render json: { error: 'Forbidden' }, status: 403 unless api_key
     # All of these field are required
     return render json: { error: params_error }, status: 400 if params_error
     # The site does not match the API key
-    return render json: { error: 'Unauthorized' }, status: 401 unless site
+    return render json: { error: 'Forbidden' }, status: 403 unless site
     # The site has not set up data linking for this user
     return render json: { error: 'Data linking is not configured for this user_id' }, status: 400 unless visitor
     # The site has ingest disabled and we shouldn't allow it in
-    return render json: { error: 'Forbidden' }, status: 403 unless site.ingest_enabled
+    return render json: { error: 'Unauthorized' }, status: 401 unless site.ingest_enabled
 
     create_event!
 
