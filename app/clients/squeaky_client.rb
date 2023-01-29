@@ -12,7 +12,7 @@ class SqueakyClient
       name:,
       user_id:,
       data: data.to_json
-    }
+    }.to_json
 
     self.class.post('/api/events', body:, headers:, timeout:)
   end
@@ -21,6 +21,7 @@ class SqueakyClient
 
   def headers
     {
+      'Accept' => 'application/json',
       'Content-Type' => 'application/json',
       'X-SQUEAKY-API-KEY' => ENV.fetch('SQUEAKY_API_KEY')
     }
