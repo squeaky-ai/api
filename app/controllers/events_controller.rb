@@ -8,8 +8,6 @@ class EventsController < ApplicationController
     return render json: { error: params_error }, status: 400 if params_error
     # The site does not match the API key
     return render json: { error: 'Forbidden' }, status: 403 unless site
-    # The site has not set up data linking for this user
-    return render json: { error: 'Data linking is not configured for this user_id' }, status: 400 unless visitor
     # The site has ingest disabled and we shouldn't allow it in
     return render json: { error: 'Unauthorized' }, status: 401 unless ingest_enabled?
 
@@ -27,7 +25,6 @@ class EventsController < ApplicationController
   def params_error
     return 'name is required' unless create_event_params['name']
     return 'data is required' unless create_event_params['data']
-    return 'user_id is required' unless create_event_params['user_id']
 
     nil
   end
@@ -38,7 +35,7 @@ class EventsController < ApplicationController
       data: JSON.parse(create_event_params['data']),
       timestamp: create_event_params['timestamp']&.to_i || (Time.now.to_i * 1000),
       site_id: site.id,
-      visitor_id: visitor.id
+      visitor_id: visitor&.id
     }
   end
 
@@ -60,6 +57,8 @@ class EventsController < ApplicationController
   end
 
   def visitor
+    return unless create_event_params['user_id']
+
     @visitor ||= Visitor.find_by_external_id(site.id, create_event_params['user_id'])
   end
 end

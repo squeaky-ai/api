@@ -16,7 +16,7 @@ module Resolvers
       def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         visitors = object
                    .visitors
-                   .includes(:recordings)
+                   .joins(:recordings)
                    .where(
                      'to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
                      from_date,

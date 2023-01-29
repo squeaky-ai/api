@@ -82,11 +82,11 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'jim@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'ray@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'john@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'robby@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'asd@asdas.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'jim@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'ray@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'john@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'robby@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'asd@asdas.ai' }))
     end
 
     subject do
@@ -118,11 +118,11 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'jim@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'ray@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'john@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'robby@squeaky.ai' }))
-      create(:recording, site: site, visitor: create(:visitor, external_attributes: { email: 'asd@asdas.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'jim@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'ray@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'john@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'robby@squeaky.ai' }))
+      create(:recording, site: site, visitor: create(:visitor, site_id: site.id, external_attributes: { email: 'asd@asdas.ai' }))
     end
 
     subject do

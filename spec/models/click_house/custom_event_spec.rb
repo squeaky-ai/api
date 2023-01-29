@@ -57,11 +57,13 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
     let(:event) do
       {
         name: 'my-event',
-        data: { foo: 'bar' }
+        data: { foo: 'bar' },
+        site_id: site.id,
+        visitor_id: visitor.id
       }
     end
 
-    subject { described_class.create_from_api(site, visitor, event) }
+    subject { described_class.create_from_api(event) }
 
     it 'inserts the custom event in ClickHouse' do
       subject

@@ -70,7 +70,7 @@ FactoryBot.define do
     end
 
     site { association :site }
-    visitor { association :visitor }
+    visitor { association :visitor, site_id: site.id }
   end
 
   factory :page do

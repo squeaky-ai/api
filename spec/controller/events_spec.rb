@@ -80,7 +80,7 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    context 'when the user_id is missing' do
+    context 'when the user_id is not given' do
       let(:site) { create(:site, api_key: SecureRandom.uuid) }
 
       let(:body) do
@@ -95,10 +95,19 @@ RSpec.describe EventsController, type: :controller do
         site.plan.update(features_enabled: ['event_tracking'])
       end
 
-      it 'returns a bad request' do
+      it 'returns created' do
         subject
-        expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'user_id is required')
+        expect(response).to have_http_status(201)
+      end
+
+      it 'does not add the visitor_id field' do
+        subject
+        results = Sql::ClickHouse.select_all("
+          SELECT visitor_id
+          FROM custom_events
+          WHERE site_id = #{site.id}
+        ")
+        expect(results.first['visitor_id']).to eq(0)
       end
     end
 
@@ -118,10 +127,19 @@ RSpec.describe EventsController, type: :controller do
         site.plan.update(features_enabled: ['event_tracking'])
       end
 
-      it 'returns unauthorized' do
+      it 'returns created' do
         subject
-        expect(response).to have_http_status(400)
-        expect(json_body).to eq('error' => 'Data linking is not configured for this user_id')
+        expect(response).to have_http_status(201)
+      end
+
+      it 'does not add the visitor_id field' do
+        subject
+        results = Sql::ClickHouse.select_all("
+          SELECT visitor_id
+          FROM custom_events
+          WHERE site_id = #{site.id}
+        ")
+        expect(results.first['visitor_id']).to eq(0)
       end
     end
 

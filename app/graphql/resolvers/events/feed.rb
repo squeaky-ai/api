@@ -159,6 +159,7 @@ module Resolvers
         ids = results
               .select { |r| r['source'] == EventCapture::API }
               .map { |r| r['visitor_id'] }
+              .reject(&:zero?)
               .uniq
 
         object

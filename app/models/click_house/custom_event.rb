@@ -62,3 +62,7 @@ module ClickHouse
     end
   end
 end
+
+
+ALTER TABLE squeaky_development.custom_events DELETE WHERE uuid = 'f74f3cf7-4840-4d8d-a2a3-8e4aded2aa3d'
+ALTER TABLE squeaky_development.custom_events DELETE WHERE uuid = 'bfcfdea3-2530-483f-9564-5d1d97b0b962'
