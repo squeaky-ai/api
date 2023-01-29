@@ -6,7 +6,7 @@ class TeamMailer < ApplicationMailer
     @site = site
     @user = user
     @token = token
-    mail(to: email, subject: 'You’ve been invited to join Squeaky')
+    mail(to: email, subject: "You've been invited to join Squeaky")
   end
 
   # Used when someone leaves your team
@@ -26,13 +26,13 @@ class TeamMailer < ApplicationMailer
   def became_admin(email, site, user)
     @site = site
     @user = user
-    mail(to: email, subject: "You’ve been made the Admin of #{site.name}")
+    mail(to: email, subject: "You've been made the Admin of #{site.name}")
   end
 
   # When ownership is transfered to a user
   def became_owner(email, site, user)
     @site = site
     @user = user
-    mail(to: email, subject: "You’ve been made Owner of #{site.name}")
+    mail(to: email, subject: "You've been made Owner of #{site.name}")
   end
 end

@@ -52,11 +52,7 @@ RSpec.describe Mutations::Sites::Create, type: :request do
     end
   end
 
-  context 'when a site with this url does not exist' do
-    before do
-      allow_any_instance_of(SqueakyClient).to receive(:add_event)
-    end
-  
+  context 'when a site with this url does not exist' do 
     context 'when the url is invalid' do
       let(:url) { 'sdfsjkldfjsdklfsd' }
       let(:user) { create(:user) }
@@ -134,6 +130,10 @@ RSpec.describe Mutations::Sites::Create, type: :request do
 
       it 'generates a uuid' do
         expect(subject['data']['siteCreate']['uuid']).not_to be nil
+      end
+
+      it 'enqueues the tracking' do
+        expect { subject }.to have_enqueued_job(EventTrackingJob)
       end
 
       context 'when a partner has referred the url' do

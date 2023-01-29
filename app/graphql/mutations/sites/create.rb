@@ -54,9 +54,7 @@ module Mutations
       end
 
       def fire_squeaky_event(site)
-        client = SqueakyClient.new
-
-        client.add_event(
+        EventTrackingJob.perform_later(
           name: 'SiteCreated',
           user_id: user.id,
           data: {
@@ -64,8 +62,6 @@ module Mutations
             created_at: site.created_at.iso8601
           }
         )
-      rescue HTTParty::Error => e
-        Rails.logger.error("Failed to send Squeaky event - #{e}")
       end
     end
   end

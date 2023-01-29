@@ -7,7 +7,7 @@ class SqueakyClient
 
   base_uri 'https://squeaky.ai'
 
-  def add_event(name:, user_id:, data:)
+  def add_event(name:, data:, user_id: nil)
     body = {
       name:,
       user_id:,

@@ -12,7 +12,7 @@ RSpec.describe TeamMailer, type: :mailer do
     let(:mail) { described_class.invite(email, site, user, token) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq 'You’ve been invited to join Squeaky'
+      expect(mail.subject).to eq 'You\'ve been invited to join Squeaky'
       expect(mail.to).to eq [email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
@@ -79,7 +79,7 @@ RSpec.describe TeamMailer, type: :mailer do
     let(:mail) { described_class.became_admin(email, site, user) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq "You’ve been made the Admin of #{site.name}"
+      expect(mail.subject).to eq "You've been made the Admin of #{site.name}"
       expect(mail.to).to eq [email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
@@ -102,7 +102,7 @@ RSpec.describe TeamMailer, type: :mailer do
     let(:mail) { described_class.became_owner(email, site, user) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq "You’ve been made Owner of #{site.name}"
+      expect(mail.subject).to eq "You've been made Owner of #{site.name}"
       expect(mail.to).to eq [email]
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
