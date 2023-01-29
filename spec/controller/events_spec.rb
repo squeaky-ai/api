@@ -49,6 +49,7 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
       end
 
       it 'returns a bad request' do
@@ -69,6 +70,7 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
       end
 
       it 'returns a bad request' do
@@ -90,6 +92,7 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
       end
 
       it 'returns a bad request' do
@@ -112,6 +115,7 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
       end
 
       it 'returns unauthorized' do
@@ -135,6 +139,7 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
       end
 
       it 'returns created' do
@@ -180,6 +185,29 @@ RSpec.describe EventsController, type: :controller do
           expect { subject }.not_to change { EventCapture.count }
         end
       end
+
+      context 'when passing a timestamp' do
+        let(:timestamp) { 1675005855000 }
+
+        let(:body) do
+          {
+            'name' => 'MyEvent',
+            'data' => '{"foo":"bar"}',
+            'user_id' => visitor.external_attributes['id'],
+            'timestamp' => timestamp
+          }.to_json
+        end
+
+        it 'uses the timestamp provided' do
+          subject
+          results = Sql::ClickHouse.select_all("
+            SELECT timestamp
+            FROM custom_events
+            WHERE site_id = #{site.id} AND visitor_id = #{visitor.id}
+          ")
+          expect(results[0]['timestamp']).to eq(timestamp)
+        end
+      end
     end
 
     context 'when ingest is disabled' do
@@ -196,6 +224,31 @@ RSpec.describe EventsController, type: :controller do
 
       before do
         request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: ['event_tracking'])
+      end
+
+      it 'returns unauthorized' do
+        subject
+        expect(response).to have_http_status(401)
+        expect(json_body).to eq('error' => 'Unauthorized')
+      end
+    end
+
+    context 'when the site does not have the feature enabled' do
+      let(:site) { create(:site, api_key: SecureRandom.uuid) }
+      let(:visitor) { create(:visitor, site_id: site.id, external_attributes: { id: '3821371123' }) }
+
+      let(:body) do
+        {
+          'name' => 'MyEvent',
+          'data' => '{}',
+          'user_id' => visitor.external_attributes['id']
+        }.to_json
+      end
+
+      before do
+        request.headers['X-SQUEAKY-API-KEY'] = site.api_key
+        site.plan.update(features_enabled: [])
       end
 
       it 'returns unauthorized' do

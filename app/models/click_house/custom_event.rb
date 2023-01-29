@@ -34,22 +34,22 @@ module ClickHouse
       raise
     end
 
-    def self.create_from_api(site, visitor, event)
+    def self.create_from_api(event)
       insert do |buffer|
         buffer << {
           uuid: SecureRandom.uuid,
-          site_id: site.id,
+          site_id: event[:site_id],
           recording_id: nil,
           name: event[:name],
           url: nil,
           data: event[:data].to_json,
           source: EventCapture::API,
-          visitor_id: visitor.id,
+          visitor_id: event[:visitor_id],
           viewport_x: nil,
           viewport_y: nil,
           device_x: nil,
           device_y: nil,
-          timestamp: Time.now.to_i * 1000
+          timestamp: event[:timestamp]
         }
       end
     rescue ClickHouse::DbException => e

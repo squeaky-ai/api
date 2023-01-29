@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  include ActionView::Helpers::SanitizeHelper
-
   def create
     # They did not provide an API key
     return render json: { error: 'Forbidden' }, status: 403 unless api_key
@@ -13,7 +11,7 @@ class EventsController < ApplicationController
     # The site has not set up data linking for this user
     return render json: { error: 'Data linking is not configured for this user_id' }, status: 400 unless visitor
     # The site has ingest disabled and we shouldn't allow it in
-    return render json: { error: 'Unauthorized' }, status: 401 unless site.ingest_enabled
+    return render json: { error: 'Unauthorized' }, status: 401 unless ingest_enabled?
 
     create_event!
 
@@ -23,7 +21,7 @@ class EventsController < ApplicationController
   private
 
   def create_event_params
-    params.permit(:name, :user_id, :data)
+    params.permit(:name, :user_id, :data, :timestamp)
   end
 
   def params_error
@@ -37,17 +35,24 @@ class EventsController < ApplicationController
   def event
     {
       name: create_event_params['name'],
-      data: JSON.parse(create_event_params['data'])
+      data: JSON.parse(create_event_params['data']),
+      timestamp: create_event_params['timestamp']&.to_i || (Time.now.to_i * 1000),
+      site_id: site.id,
+      visitor_id: visitor.id
     }
   end
 
   def create_event!
-    ClickHouse::CustomEvent.create_from_api(site, visitor, event)
+    ClickHouse::CustomEvent.create_from_api(event)
     EventCapture.create_names_for_site!(site, [event[:name]], EventCapture::API)
   end
 
   def api_key
     request.headers['X-SQUEAKY-API-KEY']
+  end
+
+  def ingest_enabled?
+    site.ingest_enabled && site.plan.features_enabled.include?('event_tracking')
   end
 
   def site
