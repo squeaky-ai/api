@@ -205,8 +205,6 @@ RSpec.describe EventsController, type: :controller do
       end
 
       context 'when passing a timestamp' do
-        let(:timestamp) { 1675005855000 }
-
         let(:body) do
           {
             'name' => 'MyEvent',
@@ -216,14 +214,62 @@ RSpec.describe EventsController, type: :controller do
           }.to_json
         end
 
-        it 'uses the timestamp provided' do
-          subject
-          results = Sql::ClickHouse.select_all("
-            SELECT timestamp
-            FROM custom_events
-            WHERE site_id = #{site.id} AND visitor_id = #{visitor.id}
-          ")
-          expect(results[0]['timestamp']).to eq(timestamp)
+        before do
+          allow(Time).to receive(:now).and_return(Time.at(1675202020))
+        end
+
+        context 'that is not a number' do
+          let(:timestamp) { 'sdfdsfdsfs' }
+
+          it 'returns bad request' do
+            subject
+            expect(response).to have_http_status(400)
+            expect(json_body).to eq('error' => 'timestamp should be a millisecond precision unix integer, e.g. 1675202020000')
+          end
+        end
+
+        context 'that is a date in a different formwat' do
+          let(:timestamp) { '2023-01-31' }
+
+          it 'returns bad request' do
+            subject
+            expect(response).to have_http_status(400)
+            expect(json_body).to eq('error' => 'timestamp should be a millisecond precision unix integer, e.g. 1675202020000')
+          end
+        end
+
+        context 'that is a low number' do
+          let(:timestamp) { 3455 }
+
+          it 'returns bad request' do
+            subject
+            expect(response).to have_http_status(400)
+            expect(json_body).to eq('error' => 'timestamp should be a millisecond precision unix integer, e.g. 1675202020000')
+          end
+        end
+
+        context 'that is older than the site created date' do
+          let(:timestamp) { (site.created_at.to_i * 1000) - 5000 }
+
+          it 'returns bad request' do
+            subject
+            expect(response).to have_http_status(400)
+            expect(json_body).to eq('error' => 'timestamp should be a millisecond precision unix integer, e.g. 1675202020000')
+          end
+        end
+
+        context 'that is older than the site created date' do
+          let(:timestamp) { (site.created_at.to_i * 1000) + 5000 }
+
+          it 'uses the timestamp provided' do
+            subject
+            results = Sql::ClickHouse.select_all("
+              SELECT timestamp
+              FROM custom_events
+              WHERE site_id = #{site.id} AND visitor_id = #{visitor.id}
+            ")
+            expect(results[0]['timestamp']).to eq(timestamp)
+          end
         end
       end
     end
