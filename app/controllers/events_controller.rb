@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
+  include PublicApiAuth
+
   def create
-    # They did not provide an API key
-    return render json: { error: 'Forbidden' }, status: 403 unless api_key
     # All of these field are required
     return render json: { error: params_error }, status: 400 if params_error
-    # The site does not match the API key
-    return render json: { error: 'Forbidden' }, status: 403 unless site
     # The site has ingest disabled and we shouldn't allow it in
     return render json: { error: 'Unauthorized' }, status: 401 unless ingest_enabled?
 
@@ -55,16 +53,8 @@ class EventsController < ApplicationController
     EventCapture.create_names_for_site!(site, [event[:name]], EventCapture::API)
   end
 
-  def api_key
-    request.headers['X-SQUEAKY-API-KEY']
-  end
-
   def ingest_enabled?
     site.ingest_enabled && site.plan.features_enabled.include?('event_tracking')
-  end
-
-  def site
-    @site ||= Site.find_by_api_key(api_key)
   end
 
   def visitor

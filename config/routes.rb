@@ -35,6 +35,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
 
     resources :events, only: [:create]
+    resources :visitors, only: [:create]
 
     # Custom devise routes that are more suited to the front end
     scope 'auth' do
