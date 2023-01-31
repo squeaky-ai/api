@@ -7,6 +7,7 @@ module Types
 
       field :id, ID, null: false
       field :name, String, null: false
+      field :name_alias, String, null: true
       field :type, Integer, null: false
       field :rules, [Events::Rule, { null: false }], null: false
       field :count, Integer, null: false
