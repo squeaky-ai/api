@@ -14,11 +14,11 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
-        visitors = object
-                   .visitors
-                   .joins(:recordings)
+        visitors = Visitor
+                   .left_outer_joins(:recordings)
                    .where(
-                     'to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+                     'visitors.site_id = ? AND visitors.updated_at::date BETWEEN ? AND ?',
+                     object.id,
                      from_date,
                      to_date
                    )

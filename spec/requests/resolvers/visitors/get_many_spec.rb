@@ -63,17 +63,13 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     end
   end
 
-  context 'when there are some recordings' do
+  context 'when there are some visitors' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor, site_id: site.id)
-      visitor_2 = create(:visitor, site_id: site.id)
-  
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor_1)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405638578, site: site, visitor: visitor_1)
-      create(:recording, connected_at: 1628405636578, disconnected_at: 1628405640578, site: site, visitor: visitor_2)
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
     end
 
     subject do
@@ -106,9 +102,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor, site_id: site.id)
-
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
     end
 
     subject do
@@ -133,9 +127,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 
     before do
-      visitor = create(:visitor, site_id: site.id, external_attributes: external_attributes)
-
-      create(:recording, connected_at: 1628405638578, disconnected_at: 1628405639578, site: site, visitor: visitor)
+      create(:visitor, site_id: site.id, external_attributes: external_attributes, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
     end
 
     subject do

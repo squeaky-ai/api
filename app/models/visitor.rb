@@ -14,7 +14,7 @@ class Visitor < ApplicationRecord
   attr_writer :recording_count
 
   def locale
-    recordings.first.locale
+    recordings.first&.locale
   end
 
   def language
@@ -48,12 +48,12 @@ class Visitor < ApplicationRecord
 
   def first_viewed_at
     first_event = recordings.min_by(&:connected_at)
-    first_event.connected_at
+    first_event&.connected_at
   end
 
   def last_activity_at
     last_event = recordings.max_by(&:disconnected_at)
-    last_event.disconnected_at
+    last_event&.disconnected_at
   end
 
   def visible_recordings
