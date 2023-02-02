@@ -32,7 +32,7 @@ module DudaService
     end
 
     def deep_link_domain
-      "https://#{branding['dashboard_domain']}/home/site/#{uuid}?appstore&appId=#{ENV.fetch('DUDA_APP_UUID')}"
+      "#{branding['dashboard_domain']}/home/site/#{uuid}?appstore&appId=#{ENV.fetch('DUDA_APP_UUID')}"
     end
 
     private

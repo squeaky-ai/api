@@ -9,7 +9,7 @@ RSpec.describe DudaService::Install do
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
     let(:plan_uuid) { '304e8866-7b29-4027-bcb3-3828204d9cfd' }
-    let(:dashboard_domain) { 'dashboard_domain.com' }
+    let(:dashboard_domain) { 'https://dashboard_domain.com' }
 
     let(:auth) do
       {
@@ -121,7 +121,7 @@ RSpec.describe DudaService::Install do
       expect(auth.access_token).to eq('authorization_code')
       expect(auth.refresh_token).to eq('refresh_token')
       expect(auth.expires_at).to eq(1671227759134)
-      expect(auth.deep_link_url).to eq("https://#{dashboard_domain}/home/site/#{site_name}?appstore&appId=#{ENV['DUDA_APP_UUID']}")
+      expect(auth.deep_link_url).to eq("#{dashboard_domain}/home/site/#{site_name}?appstore&appId=#{ENV['DUDA_APP_UUID']}")
     end
 
     it 'injects the script' do

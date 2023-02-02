@@ -10,7 +10,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
     let(:app_plan_uuid) { '304e8866-7b29-4027-bcb3-3828204d9cfd' }
-    let(:dashboard_domain) { 'dashboard_domain.com' }
+    let(:dashboard_domain) { 'https://dashboard_domain.com' }
 
     let(:auth) do
       {
