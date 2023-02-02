@@ -7,6 +7,7 @@ module DudaService
       @api_endpoint = api_endpoint
       @auth = auth
       @site = site_response_body
+      @branding = branding_response_body
     rescue HTTParty::Error => e
       Rails.logger.error("Failed to get response from Duda API - #{e}")
       raise
@@ -30,13 +31,13 @@ module DudaService
       site['account_name']
     end
 
+    def deep_link_domain
+      "https://#{branding['dashboard_domain']}/home/site/#{uuid}?appstore&appId=#{ENV.fetch('DUDA_APP_UUID')}"
+    end
+
     private
 
-    attr_reader :site, :site_name, :api_endpoint, :auth
-
-    def request_url
-      "#{api_endpoint}/api/integrationhub/application/site/#{site_name}"
-    end
+    attr_reader :site, :branding, :site_name, :api_endpoint, :auth
 
     def headers
       {
@@ -50,8 +51,16 @@ module DudaService
     end
 
     def site_response_body
-      Rails.logger.info "Making Duda site request to #{request_url} with options #{headers}"
-      response = HTTParty.get(request_url, headers:, timeout:)
+      make_request("#{api_endpoint}/api/integrationhub/application/site/#{site_name}")
+    end
+
+    def branding_response_body
+      make_request("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/branding")
+    end
+
+    def make_request(url)
+      Rails.logger.info "Making Duda site request to #{url} with options #{headers}"
+      response = HTTParty.get(url, headers:, timeout:)
       JSON.parse(response.body)
     end
   end

@@ -9,6 +9,7 @@ RSpec.describe DudaService::Install do
     let(:account_name) { 'account@site.com' }
     let(:api_endpoint) { 'https://api-endpoint.com' }
     let(:plan_uuid) { '304e8866-7b29-4027-bcb3-3828204d9cfd' }
+    let(:dashboard_domain) { 'dashboard_domain.com' }
 
     let(:auth) do
       {
@@ -35,6 +36,12 @@ RSpec.describe DudaService::Install do
       }.to_json
     end
 
+    let(:branding_response_body) do
+      {
+        'dashboard_domain' => dashboard_domain
+      }.to_json
+    end
+
     let(:user_response_body) do
       {
         'first_name' => first_name,
@@ -44,16 +51,22 @@ RSpec.describe DudaService::Install do
     end
 
     let(:site_response) { double(:site_response, body: site_response_body) }
+    let(:branding_response) { double(:branding_response, body: branding_response_body) }
     let(:user_response) { double(:user_response, body: user_response_body) }
     let(:script_response) { double(:script_response, body: '') }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
       ENV['DUDA_PASSWORD'] = 'password'
+      ENV['DUDA_APP_UUID'] = SecureRandom.uuid
 
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}", anything)
         .and_return(site_response)
+
+      allow(HTTParty).to receive(:get)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/branding", anything)
+        .and_return(branding_response)
 
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
@@ -108,6 +121,7 @@ RSpec.describe DudaService::Install do
       expect(auth.access_token).to eq('authorization_code')
       expect(auth.refresh_token).to eq('refresh_token')
       expect(auth.expires_at).to eq(1671227759134)
+      expect(auth.deep_link_url).to eq("https://#{dashboard_domain}/home/site/#{site_name}?appstore&appId=#{ENV['DUDA_APP_UUID']}")
     end
 
     it 'injects the script' do

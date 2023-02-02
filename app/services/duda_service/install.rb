@@ -82,7 +82,8 @@ module DudaService
         access_token: auth['authorization_code'],
         refresh_token: auth['refresh_token'],
         api_endpoint:,
-        expires_at: auth['expiration_date']
+        expires_at: auth['expiration_date'],
+        deep_link_url: duda_site.deep_link_domain
       )
     end
 
