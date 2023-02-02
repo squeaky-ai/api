@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_31_162017) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_02_085912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -415,6 +415,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_162017) do
     t.integer "recordings_count"
     t.boolean "new", default: true
     t.bigint "site_id"
+    t.string "source"
     t.index "site_id, ((external_attributes ->> 'id'::text))", name: "index_visitors_on_external_attributes_id"
     t.index ["site_id"], name: "index_visitors_on_site_id"
     t.index ["visitor_id"], name: "index_visitors_on_visitor_id", unique: true

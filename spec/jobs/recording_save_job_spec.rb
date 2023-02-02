@@ -23,6 +23,8 @@ RSpec.describe RecordingSaveJob, type: :job do
     }
   end
 
+  subject { described_class.perform_now(event) }
+
   context 'when the recording is new' do
     before do
       allow(Cache.redis).to receive(:del)
@@ -31,8 +33,6 @@ RSpec.describe RecordingSaveJob, type: :job do
 
       allow(RecordingMailerService).to receive(:enqueue_if_first_recording)
     end
-
-    subject { described_class.perform_now(event) }
 
     it 'stores the recording' do
       subject
@@ -142,8 +142,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       site.save
     end
 
-    subject { described_class.perform_now(event) }
-
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
     end
@@ -155,8 +153,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       site.save
     end
 
-    subject { described_class.perform_now(event) }
-
     it 'does not store the recording' do
       expect { subject }.not_to change { site.reload.recordings.size }
     end
@@ -167,8 +163,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(PlanService).to receive(:alert_if_exceeded).and_call_original
       allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
     end
-
-    subject { described_class.perform_now(event) }
 
     it 'checks if the exceeded email needs to be send' do
       subject
@@ -182,8 +176,6 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow_any_instance_of(Plan).to receive(:fractional_usage).and_return(0.90)
     end
 
-    subject { described_class.perform_now(event) }
-
     it 'checks if the exceeded email needs to be send' do
       subject
       expect(PlanService).to have_received(:alert_if_nearing_limit)
@@ -194,8 +186,6 @@ RSpec.describe RecordingSaveJob, type: :job do
     before do
       site.update(verified_at: nil)
     end
-
-    subject { described_class.perform_now(event) }
 
     it 'verifies it' do
       expect { subject }.to change { site.reload.verified_at.nil? }.from(true).to(false)
@@ -212,8 +202,6 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and_return('1')
     end
 
-    subject { described_class.perform_now(event) }
-
     it 'raises an error' do
       expect { subject }.to raise_error(
         StandardError, 
@@ -224,7 +212,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the session already exists' do
     let(:session_id) { SecureRandom.base36 }
-    let(:recording) { create(:recording, site:, session_id: )}
+    let!(:recording) { create(:recording, site:, session_id: )}
 
     let(:event) do
       {
@@ -242,8 +230,6 @@ RSpec.describe RecordingSaveJob, type: :job do
   context 'when one of the event captures already exists' do
     let!(:event_capture) { create(:event_capture, site:, name: 'my-event') }
 
-    subject { described_class.perform_now(event) }
-
     it 'does not save it again' do
       expect { subject }.not_to change { site.reload.event_captures.size }
     end
@@ -258,14 +244,57 @@ RSpec.describe RecordingSaveJob, type: :job do
       allow(Cache.redis).to receive(:expire)
     end
 
-    subject { described_class.perform_now(event) }
-
     it 'stores the recordings activity' do
       subject
       recording = site.reload.recordings.first
 
       expect(recording.inactivity).to eq [['3125', '28410'], ['30426', '55402'], ['66031', '71252']]
       expect(recording.activity_duration).to eq 15770
+    end
+  end
+
+  context 'when the visitor does not exist' do
+    it 'creates one' do
+      expect { subject }.to change { Visitor.count }.by(1)
+    end
+
+    it 'creates with the correct attributes' do
+      subject
+      visitor = Visitor.last
+      expect(visitor.source).to eq(Visitor::WEB)
+      expect(visitor.site_id).to eq(site.id)
+      expect(visitor.visitor_id).to eq(event['visitor_id'])
+    end
+  end
+
+  context 'when the visitor already exists' do
+    before do
+      Visitor.create(visitor_id: event['visitor_id'])
+    end
+
+    it 'does not create a new one' do
+      expect { subject }.not_to change { Visitor.count }
+    end
+  end
+
+  context 'when the visitor exists with an an external attribute' do
+    let(:user_id) { '2234234234' }
+    let!(:visitor) { create(:visitor, site_id: site.id, external_attributes: { id: user_id }) }
+
+    before do
+      allow_any_instance_of(Session).to receive(:external_attributes).and_return(
+        'id' => user_id
+      )
+    end
+
+    it 'does not create a new one' do
+      expect { subject }.not_to change { Visitor.count }
+    end
+
+    it 'uses the correct visitor' do
+      subject
+      recording = site.recordings.last
+      expect(recording.visitor.id).to eq(visitor.id)
     end
   end
 end

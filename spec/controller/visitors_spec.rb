@@ -152,6 +152,7 @@ RSpec.describe VisitorsController, type: :controller do
       it 'has the correct params' do
         subject
         visitor = Visitor.last
+        expect(visitor.source).to eq(Visitor::API)
         expect(visitor.external_attributes).to eq(
           'id' => '1234234234',
           'email' => 'foo@bar.com',

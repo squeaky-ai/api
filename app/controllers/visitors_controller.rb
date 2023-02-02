@@ -41,6 +41,7 @@ class VisitorsController < ApplicationController
     Visitor.create(
       site_id: site.id,
       visitor_id: SecureRandom.base36,
+      source: Visitor::API,
       external_attributes:
     )
   end

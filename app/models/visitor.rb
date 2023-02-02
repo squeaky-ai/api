@@ -8,6 +8,9 @@ class Visitor < ApplicationRecord
 
   alias_attribute :viewed, :viewed?
 
+  WEB = 'web'
+  API = 'api'
+
   # This allows us to set the recordings count externally,
   # like in visitiors/highlights.rb where we have fetched
   # the counts from ClickHouse

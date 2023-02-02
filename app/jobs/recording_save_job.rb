@@ -173,15 +173,16 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     Recording::ACTIVE
   end
 
-  def find_or_create_visitor
+  def find_or_create_visitor # rubocop:disable Metrics/AbcSize
     if session.external_attributes['id']
       visitor = Visitor.find_by_external_id(site.id, session.external_attributes['id'])
       return visitor if visitor
     end
 
-    visitor = Visitor.create_or_find_by(visitor_id: session.visitor_id)
-    visitor.update(site_id: site.id) unless visitor.site_id
-    visitor
+    Visitor.create_or_find_by(visitor_id: session.visitor_id) do |v|
+      v.source = Visitor::WEB
+      v.site_id = site.id unless v.site_id
+    end
   end
 
   def blacklisted_visitor?

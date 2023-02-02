@@ -23,6 +23,7 @@ module Types
       field :pages_per_session, resolver: Resolvers::Visitors::PagesPerSession
       field :export, resolver: Resolvers::Visitors::Export
       field :events, resolver: Resolvers::Visitors::Events
+      field :source, Types::Common::Source, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     end
   end

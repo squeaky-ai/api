@@ -75,7 +75,7 @@ RSpec.describe Resolvers::Visitors::Events, type: :request do
           name: 'my-event',
           visitor_id: visitor.id,
           data: '{}',
-          source: 'API',
+          source: EventCapture::API,
           timestamp: 1675193201982
         }
       end
@@ -100,7 +100,7 @@ RSpec.describe Resolvers::Visitors::Events, type: :request do
           'eventName' => 'my-event',
           'id' => anything,
           'recording' => nil,
-          'source' => 'API',
+          'source' => EventCapture::API,
           'timestamp' => '2023-01-31T19:26:41+00:00'
         }
       ])
