@@ -43,13 +43,13 @@ class OnboardingMailerService
     #
     # When to send:
     # Owner: 24 hours
-    # Admin: 10 minutes,
+    # Admin: Immediately,
     # User: Immediately
     # Readonly: Immediately
 
     waits = {
       Team::OWNER => 24.hours,
-      Team::ADMIN => 10.minutes,
+      Team::ADMIN => 0,
       Team::MEMBER => 0,
       Team::READ_ONLY => 0
     }

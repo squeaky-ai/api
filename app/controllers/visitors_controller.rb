@@ -40,7 +40,7 @@ class VisitorsController < ApplicationController
   def create_visitor!
     Visitor.create(
       site_id: site.id,
-      visitor_id: SecureRandom.base36,
+      visitor_id: SecureRandom.base36[0, 10],
       source: Visitor::API,
       external_attributes:
     )
