@@ -27,7 +27,20 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
       subject
 
       results = Sql::ClickHouse.select_all("
-        SELECT site_id, recording_id, filename, message, url, viewport_x, viewport_y, device_x, device_y, stack, line_number, col_number
+        SELECT
+          site_id,
+          recording_id,
+          visitor_id,
+          filename,
+          message,
+          url,
+          viewport_x,
+          viewport_y,
+          device_x,
+          device_y,
+          stack,
+          line_number,
+          col_number
         FROM error_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -36,6 +49,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
         {
           'site_id' => site.id, 
           'recording_id' => recording.id,
+          'visitor_id' => recording.visitor.id,
           'device_x' => 1920,
           'device_y' => 1080,
           'filename' => 'http://localhost:8081/examples/static/#',

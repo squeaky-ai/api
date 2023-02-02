@@ -11,6 +11,7 @@ module ClickHouse
             uuid: SecureRandom.uuid,
             site_id: recording.site_id,
             recording_id: recording.id,
+            visitor_id: recording.visitor.id,
             filename: event['data']['filename'],
             message: event['data']['message'],
             url: event['data']['href'],

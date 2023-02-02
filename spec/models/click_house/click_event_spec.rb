@@ -30,6 +30,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
         SELECT 
           site_id,
           recording_id,
+          visitor_id,
           url,
           selector,
           text,
@@ -49,6 +50,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
         {
           'site_id' => site.id,
           'recording_id' => recording.id,
+          'visitor_id' => recording.visitor.id,
           'url' => '',
           'selector' => 'html > body > form > div:nth-of-type(2) > input',
           'text' => '',
@@ -64,6 +66,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
         {
           'site_id' => site.id,
           'recording_id' => recording.id,
+          'visitor_id' => recording.visitor.id,
           'url' => '',
           'selector' => 'html > body > form > div > input',
           'text' => '',
@@ -79,6 +82,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
         {
           'site_id' => site.id,
           'recording_id' => recording.id,
+          'visitor_id' => recording.visitor.id,
           'url' => '',
           'selector' => 'html > body > form > div:nth-of-type(3)',
           'text' => '',

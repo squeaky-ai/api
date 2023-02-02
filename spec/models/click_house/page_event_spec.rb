@@ -27,7 +27,19 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
       subject
 
       results = Sql::ClickHouse.select_all("
-        SELECT site_id, recording_id, url, viewport_x, viewport_y, device_x, device_y, entered_at, exited_at, exited_on, bounced_on
+        SELECT
+          site_id,
+          recording_id,
+          visitor_id,
+          url,
+          viewport_x,
+          viewport_y,
+          device_x,
+          device_y,
+          entered_at,
+          exited_at,
+          exited_on,
+          bounced_on
         FROM page_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -36,6 +48,7 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
         {
           'site_id' => site.id,
           'recording_id' => recording.id,
+          'visitor_id' => recording.visitor.id,
           'url' => '/examples/static/',
           'viewport_x' => 1920,
           'viewport_y' => 1080,

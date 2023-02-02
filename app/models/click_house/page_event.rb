@@ -11,6 +11,7 @@ module ClickHouse
             uuid: SecureRandom.uuid,
             site_id: recording.site_id,
             recording_id: recording.id,
+            visitor_id: recording.visitor.id,
             url: event[:url],
             entered_at: event[:entered_at],
             exited_at: event[:exited_at],
