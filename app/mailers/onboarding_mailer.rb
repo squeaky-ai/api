@@ -3,6 +3,7 @@
 class OnboardingMailer < ApplicationMailer
   def welcome(user_id)
     @user = User.find_by(id: user_id)
+    @site = @user&.sites&.first
 
     return unless should_send?
 
@@ -12,6 +13,7 @@ class OnboardingMailer < ApplicationMailer
 
   def getting_started(user_id)
     @user = User.find_by(id: user_id)
+    @site = @user&.sites&.first
 
     return unless should_send?
 
@@ -21,6 +23,7 @@ class OnboardingMailer < ApplicationMailer
 
   def book_demo(user_id)
     @user = User.find_by(id: user_id)
+    @site = @user&.sites&.first
 
     return unless should_send?
 
@@ -30,13 +33,14 @@ class OnboardingMailer < ApplicationMailer
 
   def install_tracking_code(user_id)
     @user = User.find_by(id: user_id)
+    @site = @user&.sites&.first
 
     return unless should_send?
     # They may also have not added a site yet
-    return unless @user.sites.size.positive?
+    return unless @site
     # If they have already verified their site then there
     # is no need to send this one
-    return if @user.sites.first.verified?
+    return if @site.verified?
 
     Stats.count('onboarding_mailer_install_tracking_code')
     mail(to: @user.email, subject: 'How to install your Squeaky tracking code')
@@ -44,10 +48,11 @@ class OnboardingMailer < ApplicationMailer
 
   def tracking_code_not_installed(user_id)
     @user = User.find_by(id: user_id)
+    @site = @user&.sites&.first
 
     return unless should_send?
     # They've already verified their site so there's no need
-    return if @user.sites.first&.verified?
+    return if @site&.verified?
 
     Stats.count('onboarding_mailer_tracking_code_not_installed')
     mail(to: @user.email, subject: 'How can we make Squeaky work for you?')

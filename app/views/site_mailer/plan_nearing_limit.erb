@@ -1,7 +1,7 @@
 <p>Hey <%= @user.first_name %>,</p>
 <p>You&apos;re fast approaching your monthly recording limit for <a href="<%= @site.url %>"><%= @site.url %></a>! When your limit has been reached you will no longer capture any new data until next month, when your allowance is refreshed.</p>
 <p>To ensure you don&apos;t have any gaps in your site and customer data, please upgrade your payment plan or reply to this email to discover the best plan for your business.</p>
-<a href="<%= @web_url %>/app/sites/<%= @site.id %>/settings/subscription" class="button" style="text-decoration: none; margin-bottom: 24px;">View Plans</a>
+<a href="<%= squeaky_url("/app/sites/#{@site.id}>/settings/subscription") %>" class="button" style="text-decoration: none; margin-bottom: 24px;">View Plans</a>
 <p><i>Please Note: You can change your plan at any time.</i></p>
 <p>If you have any question and your Squeaky subscription, you can reply to this email.</p>
 <p>Kind Regards,</p>

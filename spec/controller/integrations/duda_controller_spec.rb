@@ -67,6 +67,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     before do
       ENV['DUDA_USERNAME'] = 'username'
       ENV['DUDA_PASSWORD'] = 'password'
+      ENV['DUDA_APP_UUID'] = SecureRandom.uuid
 
       allow(HTTParty).to receive(:get)
         .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}", anything)

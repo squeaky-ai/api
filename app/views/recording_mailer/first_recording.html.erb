@@ -1,5 +1,5 @@
 <h1>Your first recording is in!</h1>
-<p>You can <a href="<%= @web_url %>/app/sites/<%= @site.id %>/recordings/<%= @first_recording&.id %>">click here</a> to view your first recording, and while you&apos;re waiting for more recordings to come in we&apos;ve got some tips to help you get the most out of your recording data.</p>
+<p>You can <a href="<%= squeaky_url("/app/sites/#{@site.id}/recordings/#{@first_recording&.id}") %>">click here</a> to view your first recording, and while you&apos;re waiting for more recordings to come in we&apos;ve got some tips to help you get the most out of your recording data.</p>
 <table width="100%" style="margin-bottom: 2rem">
   <tr>
     <td style="padding: .5rem 1rem 3rem 0">
@@ -38,7 +38,7 @@
     </td>
   </tr>
 </table>
-<p>Recordings are a great place to start, but really they&apos;re just one representation of your captured data. Now that your first recording is in you&apos;ll have access to other relevant data and features throughout Squeaky, such as <a href="<%= @web_url %>/app/sites/<%= @site.id %>/analytics/site/traffic">Analytics</a> or <a href="<%= @web_url %>/app/sites/<%= @site.id %>/heatmaps/click-positions">Heatmaps</a>.</p>
+<p>Recordings are a great place to start, but really they&apos;re just one representation of your captured data. Now that your first recording is in you&apos;ll have access to other relevant data and features throughout Squeaky, such as <a href="<%= squeaky_url("/app/sites/#{@site.id}/analytics/site/traffic") %>">Analytics</a> or <a href="<%= squeaky_url("/app/sites/#{@site.id}/heatmaps/click-positions") %>">Heatmaps</a>.</p>
 <p>We hope you enjoy diving into your newly gathered data! If you need any help familiarising yourself with Squeaky&apos;s data capture or recordings functionality then you can reply directly to this email and we&apos;ll get back to you as soon as possible.</p>
 <p>Kind Regards,</p>
 <p><b>The Squeaky Team</b></p>

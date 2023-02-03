@@ -6,14 +6,14 @@
   <% @nps.each do |nps| %>
     <div class="card">
       <p style="margin: 0 0 1rem 0;">
-        <b>Visitor:</b> <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors/<%= nps.recording.visitor.id %>"><%= nps.recording.visitor.visitor_id %></a> <b style="margin-left: .5rem">Score:</b> <%= nps.score %>
+        <b>Visitor:</b> <a href="<%= squeaky_url("/app/sites/#{@site.id}/visitors/#{nps.recording.visitor.id}") %>"><%= nps.recording.visitor.visitor_id %></a> <b style="margin-left: .5rem">Score:</b> <%= nps.score %>
       </p>
       <p style="margin: 0 0 1rem 0; color: #707070;">
         <i>"<%= nps.comment %>"</i>
       </p>
       <p style="margin: 0; font-size: 13px;">
         <img src="https://cdn.squeaky.ai/mailer/recording-icon.png" width="16" height="16" style="vertical-align: middle; margin: 0 .25rem 0 0;">
-        <a style="color: #001A39" href="<%= @web_url %>/app/sites/<%= @site.id %>/recordings/<%= nps.recording.id %>"><%= "#{nps.created_at.day.ordinalize} #{nps.created_at.strftime("%B %Y, %I:%M%P")}" %></a>
+        <a style="color: #001A39" href="<%= squeaky_url("/app/sites/#{@site.id}/recordings/#{nps.recording.id}") %>"><%= "#{nps.created_at.day.ordinalize} #{nps.created_at.strftime("%B %Y, %I:%M%P")}" %></a>
       </p>
     </div>
   <% end %>
@@ -25,14 +25,14 @@
   <% @sentiment.each do |sent| %>
     <div class="card">
       <p style="margin: 0 0 1rem 0;">
-        <b>Visitor:</b> <a href="<%= @web_url %>/app/sites/<%= @site.id %>/visitors/<%= sent.recording.visitor.id %>"><%= sent.recording.visitor.visitor_id %></a> <b style="margin-left: .5rem">Rating:</b> <img src="https://cdn.squeaky.ai/mailer/emoji-<%= sent.score + 1 %>.png" height="24" width="24">
+        <b>Visitor:</b> <a href="<%= squeaky_url("/app/sites/#{@site.id}/visitors/#{sent.recording.visitor.id}") %>"><%= sent.recording.visitor.visitor_id %></a> <b style="margin-left: .5rem">Rating:</b> <img src="https://cdn.squeaky.ai/mailer/emoji-<%= sent.score + 1 %>.png" height="24" width="24">
       </p>
       <p style="margin: 0 0 1rem 0; color: #707070;">
         <i>"<%= sent.comment %>"</i>
       </p>
       <p style="margin: 0; font-size: 13px;">
         <img src="https://cdn.squeaky.ai/mailer/recording-icon.png" width="16" height="16" style="margin: 0 .25rem 0 0;">
-        <a style="color: #001A39" href="<%= @web_url %>/app/sites/<%= @site.id %>/recordings/<%= sent.recording.id %>"><%= "#{sent.created_at.day.ordinalize} #{sent.created_at.strftime("%B %Y, %I:%M%P")}" %></a>
+        <a style="color: #001A39" href="<%= squeaky_url("/app/sites/#{@site.id}/recordings/#{sent.recording.id}") %>"><%= "#{sent.created_at.day.ordinalize} #{sent.created_at.strftime("%B %Y, %I:%M%P")}" %></a>
       </p>
     </div>
   <% end %>
