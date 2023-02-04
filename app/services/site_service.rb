@@ -58,5 +58,8 @@ class SiteService
     # prefix so clear them both
     Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site.id}")
     Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site.uuid}")
+    # It will also affect the site settings that are used
+    # for sessions
+    DataCacheService::Sites::Settings.new(site:, user: current_user).delete
   end
 end

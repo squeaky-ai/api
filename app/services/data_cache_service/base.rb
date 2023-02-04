@@ -10,6 +10,10 @@ module DataCacheService
       @to_date = to_date
     end
 
+    def delete
+      Rails.cache.delete(cache_key)
+    end
+
     protected
 
     attr_reader :site, :user, :expires_in, :from_date, :to_date
