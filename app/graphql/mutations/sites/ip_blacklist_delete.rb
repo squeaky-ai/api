@@ -20,7 +20,7 @@ module Mutations
         site.ip_blacklist = site.ip_blacklist.reject { |b| b['value'] == value }
         site.save
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

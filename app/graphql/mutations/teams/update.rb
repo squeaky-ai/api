@@ -28,7 +28,7 @@ module Mutations
 
         # Team stuff is cached so the response could be weird if we
         # don't clear it
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         team
       end

@@ -21,7 +21,7 @@ module Mutations
         site.routes_will_change!
         site.save
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

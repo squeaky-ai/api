@@ -53,7 +53,10 @@ class SiteService
     end
   end
 
-  def self.delete_cache(current_user, site_id)
-    Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site_id}")
+  def self.delete_cache(current_user, site)
+    # The find_by_id and find_by_uuid both use this same
+    # prefix so clear them both
+    Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site.id}")
+    Rails.cache.delete("data_cache:SiteService::#{current_user.id}::#{site.uuid}")
   end
 end

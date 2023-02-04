@@ -28,7 +28,7 @@ module Mutations
 
         site.save
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

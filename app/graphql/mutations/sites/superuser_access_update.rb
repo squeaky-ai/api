@@ -19,7 +19,7 @@ module Mutations
       def resolve_with_timings(enabled:)
         site.update(superuser_access_enabled: enabled)
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

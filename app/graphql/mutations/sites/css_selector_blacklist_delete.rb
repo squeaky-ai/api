@@ -20,7 +20,7 @@ module Mutations
         selectors = site.css_selector_blacklist.reject { |s| s == selector }
         site.update(css_selector_blacklist: selectors.uniq)
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

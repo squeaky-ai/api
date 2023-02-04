@@ -21,7 +21,7 @@ module Mutations
         site.ip_blacklist << { name:, value: }
         site.save
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end

@@ -22,7 +22,7 @@ module Mutations
         # so we store a timestamp rather than a boolean
         script_tag_exists? ? site.verify! : site.unverify!
 
-        SiteService.delete_cache(user, site.id)
+        SiteService.delete_cache(user, site)
 
         site
       end
