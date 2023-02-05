@@ -80,7 +80,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Migration complete ✅')
   end
 
-  def january_2023 (user) # rubocop:disable Naming/VariableNumber
+  def january_2023(user) # rubocop:disable Naming/VariableNumber
     @user = user
     @unsubscribable = true
 
