@@ -61,7 +61,9 @@ module DudaService
     def make_request(url)
       Rails.logger.info "Making Duda site request to #{url} with options #{headers}"
       response = HTTParty.get(url, headers:, timeout:)
-      JSON.parse(response.body)
+      body = JSON.parse(response.body)
+      Rails.logger.info "Got Duda site response: #{response.body}"
+      body
     end
   end
 end
