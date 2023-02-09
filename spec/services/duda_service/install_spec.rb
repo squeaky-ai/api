@@ -42,7 +42,7 @@ RSpec.describe DudaService::Install do
       }.to_json
     end
 
-    let(:user_response_body) do
+    let(:owner_response_body) do
       {
         'first_name' => first_name,
         'last_name' => last_name,
@@ -50,10 +50,10 @@ RSpec.describe DudaService::Install do
       }.to_json
     end
 
-    let(:site_response) { double(:site_response, body: site_response_body) }
-    let(:branding_response) { double(:branding_response, body: branding_response_body) }
-    let(:user_response) { double(:user_response, body: user_response_body) }
-    let(:script_response) { double(:script_response, body: '') }
+    let(:site_response) { double(:site_response, body: site_response_body, code: 200) }
+    let(:branding_response) { double(:branding_response, body: branding_response_body, code: 200) }
+    let(:owner_response) { double(:owner_response, body: owner_response_body, code: 200) }
+    let(:script_response) { double(:script_response, body: '', code: 200) }
 
     before do
       ENV['DUDA_USERNAME'] = 'username'
@@ -69,8 +69,8 @@ RSpec.describe DudaService::Install do
         .and_return(branding_response)
 
       allow(HTTParty).to receive(:get)
-        .with("#{api_endpoint}/api/accounts/#{account_name}", anything)
-        .and_return(user_response)
+        .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/account/details", anything)
+        .and_return(owner_response)
 
       allow(HTTParty).to receive(:post)
         .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)

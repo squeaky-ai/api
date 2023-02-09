@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe DudaService::User do
   let(:account_name) { 'account-name' }
   let(:api_endpoint) { 'https://test-api.com' }
-  let(:response) { double(:response, body: response_body) }
+  let(:response) { double(:response, body: response_body, code: 200) }
 
   let(:first_name) { 'Bob' }
   let(:last_name) { 'Dylan' }

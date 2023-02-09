@@ -62,7 +62,7 @@ module DudaService
       Rails.logger.info "Making Duda site request to #{url} with options #{headers}"
       response = HTTParty.get(url, headers:, timeout:)
       body = JSON.parse(response.body)
-      Rails.logger.info "Got Duda site response: #{response.body}"
+      Rails.logger.info "Got Duda site response: #{response.body} - status: #{response.code}"
       body
     end
   end

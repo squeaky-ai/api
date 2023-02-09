@@ -2,13 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe DudaService::Site do
-  let(:email) { 'email@site.com' }
-  let(:domain) { 'site-domain.com' }
+RSpec.describe DudaService::Owner do
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
   let(:response) { double(:response, body: response_body, code: 200) }
-
+  
   let(:auth) do
     {
       'type' => 'bearer',
@@ -18,11 +16,15 @@ RSpec.describe DudaService::Site do
     }
   end
 
+  let(:first_name) { 'Bob' }
+  let(:last_name) { 'Dylan' }
+  let(:email) { 'bob@dylan.com' }
+
   let(:response_body) do
     {
-      'site_domain' => domain,
-      'site_name' => site_name,
-      'account_name' => email
+      'first_name' => first_name,
+      'last_name' => last_name,
+      'email' => email
     }.to_json
   end
 
@@ -35,32 +37,24 @@ RSpec.describe DudaService::Site do
     allow(HTTParty).to receive(:get).and_return(response)
   end
 
-  describe '#name' do
-    subject { instance.name }
+  describe '#first_name' do
+    subject { instance.first_name }
 
-    it 'returns the name' do
-      expect(subject).to eq('site-domain')
+    it 'returns the first_name' do
+      expect(subject).to eq(first_name)
     end
   end
 
-  describe '#domain' do
-    subject { instance.domain }
+  describe '#last_name' do
+    subject { instance.last_name }
 
-    it 'returns the domain' do
-      expect(subject).to eq("https://#{domain}")
+    it 'returns the last_name' do
+      expect(subject).to eq(last_name)
     end
   end
 
-  describe '#uuid' do
-    subject { instance.uuid }
-
-    it 'returns the uuid' do
-      expect(subject).to eq(site_name)
-    end
-  end
-
-  describe '#account_name' do
-    subject { instance.account_name }
+  describe '#email' do
+    subject { instance.email }
 
     it 'returns the email' do
       expect(subject).to eq(email)

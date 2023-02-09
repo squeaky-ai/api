@@ -49,10 +49,10 @@ module DudaService
     end
 
     def create_user! # rubocop:disable Metrics/AbcSize
-      @user = ::User.where(email: duda_user.email).first_or_initialize(
-        first_name: duda_user.first_name,
-        last_name: duda_user.last_name,
-        email: duda_user.email,
+      @user = ::User.where(email: duda_owner.email).first_or_initialize(
+        first_name: duda_owner.first_name,
+        last_name: duda_owner.last_name,
+        email: duda_owner.email,
         provider: 'duda',
         provider_uuid: account_owner_uuid,
         password: Devise.friendly_token.first(10)
@@ -95,8 +95,8 @@ module DudaService
       @duda_site ||= DudaService::Site.new(site_name:, api_endpoint:, auth:)
     end
 
-    def duda_user
-      @duda_user ||= DudaService::User.new(account_name: duda_site.account_name, api_endpoint:)
+    def duda_owner
+      @duda_owner ||= DudaService::Owner.new(site_name:, api_endpoint:, auth:)
     end
 
     def duda_script
