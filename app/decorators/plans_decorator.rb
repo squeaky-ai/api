@@ -81,7 +81,6 @@ class PlansDecorator # rubocop:disable Metrics/ClassLength
           'Heatmaps (All)',
           'Event tracking',
           'Error tracking',
-          'Custom surveys (up to 5)',
           'Segments (up to 25)',
           'Journey mapping'
         ],
