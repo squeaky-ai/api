@@ -23,11 +23,17 @@ module DudaService
 
     def process_domain_updated
       site = ::Site.find_by!(uuid: resource_data['site_name'])
-      site.update(url: domain)
+      site.update(url: domain, name:)
     end
 
     def domain
       "https://#{data['domain'].presence || data['sub_domain'].presence}"
+    end
+
+    def name
+      url_parts = URI(domain).host.split('.')
+      url_parts.pop
+      url_parts.join('.')
     end
   end
 end

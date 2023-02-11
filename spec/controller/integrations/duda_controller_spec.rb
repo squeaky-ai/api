@@ -254,6 +254,10 @@ RSpec.describe Integrations::DudaController, type: :controller do
       expect { subject }.to change { site.reload.url }.to("https://#{data['sub_domain']}")
     end
 
+    it 'updates the name' do
+      expect { subject }.to change { site.reload.name }.to('mysite')
+    end
+
     it 'returns okay' do
       subject
 
