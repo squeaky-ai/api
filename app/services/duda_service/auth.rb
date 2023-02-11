@@ -34,13 +34,20 @@ module DudaService
       # of the account holder, but will share the same email. We
       # can't have multiple accounts with the same user, so everyone
       # will assume the same user for now
-      site = ::Site.find_by!(uuid: site_name)
       site.users.first
+    end
+
+    def store_sdk_url!
+      site.provider_auth.update(sdk_url:)
     end
 
     private
 
     attr_reader :sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid
+
+    def site
+      @site ||= ::Site.find_by!(uuid: site_name)
+    end
 
     def all_params_present?
       all_present = %i[sdk_url timestamp secure_sig site_name current_user_uuid].all? do |param|

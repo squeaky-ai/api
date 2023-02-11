@@ -11,6 +11,7 @@ module Types
       field :auth_type, String, null: false
       field :api_endpoint, String, null: true
       field :provider_app_uuid, String, null: true
+      field :sdk_url, String, null: true
     end
   end
 end

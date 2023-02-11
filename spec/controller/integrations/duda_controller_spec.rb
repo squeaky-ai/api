@@ -168,7 +168,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let!(:user) { create(:user, provider: 'duda', provider_uuid: SecureRandom.uuid) }
     let!(:site) { create(:site_with_team, owner: user) }
 
-    let(:site_name) { 'squeaky' }
+    let(:site_name) { site.uuid }
     let(:sdk_url) { 'https://test.com' }
     let(:timestamp) { Time.now.to_i * 1000 }
 
@@ -194,6 +194,8 @@ RSpec.describe Integrations::DudaController, type: :controller do
     end
 
     before do
+      create(:provider_auth, site:)
+
       ENV['DUDA_PUBLIC_KEY'] = rsa
         .public_key
         .to_s
@@ -210,6 +212,10 @@ RSpec.describe Integrations::DudaController, type: :controller do
       subject
 
       expect(response).to have_http_status(302)
+    end
+
+    it 'stores the sdk url' do
+      expect { subject }.to change { site.reload.provider_auth.sdk_url }.from(nil).to(sdk_url)
     end
   end
 

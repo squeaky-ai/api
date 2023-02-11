@@ -37,6 +37,9 @@ module Integrations
       user = duda_auth_service.fetch_user
       sign_in(:user, user)
 
+      # Weirdly this comes from the SSO and not the install
+      duda_auth_service.store_sdk_url!
+
       redirect_to "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard", allow_other_host: true
     end
 
