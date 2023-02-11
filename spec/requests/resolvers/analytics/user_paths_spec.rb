@@ -65,20 +65,6 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_4.id,
-          url: '/foo',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 1
-        },
-        {
-          uuid: SecureRandom.uuid,
-          site_id: site.id,
-          recording_id: recording_4.id,
-          url: '/bar',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 2
-        },
-        {
-          uuid: SecureRandom.uuid,
-          site_id: site.id,
-          recording_id: recording_4.id,
           url: '/',
           exited_at: Time.new(2021, 8, 5).to_i * 1000 + 3
         },
@@ -152,13 +138,10 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
         expect(paths).to match_array(
           [
             {
-              'path' => ['/', '/test']
-            },
-            {
               'path' => ['/test', '/test']
             },
             {
-              'path' => ['/foo', '/bar', '/', '/test']
+              'path' => ['/', '/test']
             }
           ]
         )

@@ -11,7 +11,7 @@ module Resolvers
       def resolve_with_timings(page:, position:)
         sql = <<-SQL
           SELECT
-            groupArray(url) urls
+            groupArray(url) path
           FROM (
             SELECT
               recording_id,
@@ -27,43 +27,18 @@ module Resolvers
           GROUP BY
             recording_id
           HAVING
-            has(urls, ?)
+            path[?] = ?
         SQL
 
         variables = [
           object.site.id,
           object.range.from,
           object.range.to,
+          position == 'Start' ? 1 : -1,
           page
         ]
 
-        format_results(
-          Sql::ClickHouse.select_all(sql, variables),
-          page,
-          position
-        )
-      end
-
-      private
-
-      def format_results(results, page, position)
-        results.map do |result|
-          pages_list = result['urls']
-
-          if position == 'Start'
-            # Find the first occurance of the page in the array
-            pages_index = pages_list.index(page)
-            # Return every page from the first occurance of the
-            # selected page until the end
-            { path: pages_list.slice(pages_index, pages_list.size) }
-          else
-            # Find the last occurance of the page in the array
-            pages_index = pages_list.rindex(page)
-            # Return every page leading up to the point where
-            # the last instance of the select page exists
-            { path: pages_list.slice(0, pages_index + 1) }
-          end
-        end
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end
