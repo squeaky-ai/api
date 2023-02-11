@@ -71,7 +71,7 @@ module Integrations
     end
 
     def webhook_params
-      data_params = %i[domain subdomain]
+      data_params = %i[domain sub_domain]
       resource_data_params = %i[site_name]
       params.permit(:event_type, data: data_params, resource_data: resource_data_params)
     end

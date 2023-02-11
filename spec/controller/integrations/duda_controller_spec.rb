@@ -228,7 +228,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     let(:data) do
       {
         'domain' => nil,
-        'subdomain' => 'mysite.com'
+        'sub_domain' => 'mysite.com'
       }
     end
 
@@ -251,7 +251,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
     end
 
     it 'updates the site url' do
-      expect { subject }.to change { site.reload.url }.to("https://#{data['subdomain']}")
+      expect { subject }.to change { site.reload.url }.to("https://#{data['sub_domain']}")
     end
 
     it 'returns okay' do

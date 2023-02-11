@@ -13,7 +13,7 @@ RSpec.describe DudaService::Webhook do
       let(:data) do
         {
           'domain' => nil,
-          'subdomain' => 'mysite.com'
+          'sub_domain' => 'mysite.com'
         }
       end
 
@@ -26,7 +26,7 @@ RSpec.describe DudaService::Webhook do
       subject { described_class.new(event_type:, data:, resource_data:).process! }
 
       it 'updates the sites domain' do
-        expect { subject }.to change { site.reload.url }.to("https://#{data['subdomain']}")
+        expect { subject }.to change { site.reload.url }.to("https://#{data['sub_domain']}")
       end
     end
   end

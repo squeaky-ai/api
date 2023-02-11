@@ -27,7 +27,7 @@ module DudaService
     end
 
     def domain
-      "https://#{data['domain'].presence || data['subdomain'].presence}"
+      "https://#{data['domain'].presence || data['sub_domain'].presence}"
     end
   end
 end
