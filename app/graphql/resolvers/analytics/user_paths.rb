@@ -9,15 +9,6 @@ module Resolvers
       argument :position, Types::Analytics::PathPosition, required: true
 
       def resolve_with_timings(page:, position:)
-        results = paths(page, position)
-        # End should be reversed
-        results = results.map { |r| { path: r['path'].reverse } } if position == 'End'
-        results
-      end
-
-      private
-
-      def paths(page, position)
         sql = <<-SQL
           SELECT
             groupArray(url) path
