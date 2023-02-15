@@ -10,7 +10,8 @@ module DudaService
     end
 
     def inject_script!
-      Duda::Client.new(api_endpoint:).inject_script(site_name:, tracking_code: site.tracking_code)
+      client = Duda::Client.new(api_endpoint:, access_token: auth['authorization_code'])
+      client.inject_script(site_name:, tracking_code: site.tracking_code)
       nil
     end
 
