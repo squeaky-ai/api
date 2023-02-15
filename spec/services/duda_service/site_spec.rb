@@ -31,6 +31,7 @@ RSpec.describe DudaService::Site do
   before do
     ENV['DUDA_USERNAME'] = 'username'
     ENV['DUDA_PASSWORD'] = 'password'
+    ENV['DUDA_APP_UUID'] = SecureRandom.uuid
 
     allow(HTTParty).to receive(:get).and_return(response)
   end

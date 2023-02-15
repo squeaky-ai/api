@@ -121,7 +121,7 @@ RSpec.describe DudaService::Install do
       expect(auth.access_token).to eq('authorization_code')
       expect(auth.refresh_token).to eq('refresh_token')
       expect(auth.expires_at).to eq(1671227759134)
-      expect(auth.deep_link_url).to eq("#{dashboard_domain}/home/site/#{site_name}?appstore&appId=#{ENV['DUDA_APP_UUID']}")
+      expect(auth.deep_link_url).to eq("#{dashboard_domain}/home/site/#{site_name}?appstore&appId=#{Duda::Client.app_uuid}")
     end
 
     it 'injects the script' do

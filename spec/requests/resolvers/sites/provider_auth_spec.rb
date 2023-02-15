@@ -35,6 +35,10 @@ RSpec.describe 'SitesProviderAuth', type: :request do
 
     let!(:auth) { create(:provider_auth, site:, provider: 'duda', provider_uuid: SecureRandom.uuid, auth_type: 'bearer') }
 
+    before do
+      ENV['DUDA_APP_UUID'] = SecureRandom.uuid
+    end
+
     it 'returns the auth' do
       response = graphql_request(sites_provider_auth_query, { site_id: site.id }, user)
 
@@ -42,7 +46,7 @@ RSpec.describe 'SitesProviderAuth', type: :request do
         'apiEndpoint' => nil,
         'authType' => 'bearer',
         'provider' => 'duda',
-        'providerAppUuid' => nil,
+        'providerAppUuid' => ENV['DUDA_APP_UUID'],
         'providerUuid' => auth.provider_uuid
       )
     end

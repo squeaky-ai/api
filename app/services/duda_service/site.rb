@@ -29,7 +29,7 @@ module DudaService
     end
 
     def deep_link_domain
-      "#{branding['dashboard_domain']}/home/site/#{uuid}?appstore&appId=#{ENV.fetch('DUDA_APP_UUID')}"
+      "#{branding['dashboard_domain']}/home/site/#{uuid}?appstore&appId=#{Duda::Client.app_uuid}"
     end
 
     private
@@ -38,7 +38,7 @@ module DudaService
 
     def headers
       {
-        'Authorization' => "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}",
+        'Authorization' => Duda::Client.authorization_header,
         'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
       }
     end

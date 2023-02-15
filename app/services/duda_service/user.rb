@@ -37,7 +37,7 @@ module DudaService
 
     def headers
       {
-        Authorization: "Basic #{Base64.encode64("#{ENV.fetch('DUDA_USERNAME')}:#{ENV.fetch('DUDA_PASSWORD')}")}"
+        Authorization: Duda::Client.authorization_header
       }
     end
 
