@@ -7,9 +7,6 @@ module DudaService
       @api_endpoint = api_endpoint
       @auth = auth
       @owner = owner_response_body
-    rescue HTTParty::Error => e
-      Rails.logger.error("Failed to get response from Duda API - #{e}")
-      raise
     end
 
     def first_name
@@ -43,9 +40,15 @@ module DudaService
       }
     end
 
-    def owner_response_body
+    def owner_response_body # rubocop:disable Metrics/AbcSize
       Rails.logger.info "Making Duda owner request to #{request_url} with options #{headers}"
       response = HTTParty.get(request_url, headers:, timeout:)
+
+      if response.code != 200
+        Rails.logger.error("Failed to fetch duda site owner for #{site_name} - #{response.body}")
+        raise HTTParty::Error, 'Failed to fetch duda site'
+      end
+
       body = JSON.parse(response.body)
       Rails.logger.info "Got Duda owner response: #{response.body} - status: #{response.code}"
       body

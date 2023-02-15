@@ -8,9 +8,6 @@ module DudaService
       @auth = auth
       @site = site_response_body
       @branding = branding_response_body
-    rescue HTTParty::Error => e
-      Rails.logger.error("Failed to get response from Duda API - #{e}")
-      raise
     end
 
     def name
@@ -58,9 +55,15 @@ module DudaService
       make_request("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/branding")
     end
 
-    def make_request(url)
+    def make_request(url) # rubocop:disable Metrics/AbcSize
       Rails.logger.info "Making Duda site request to #{url} with options #{headers}"
       response = HTTParty.get(url, headers:, timeout:)
+
+      if response.code != 200
+        Rails.logger.error("Failed to fetch duda site for #{site_name} - #{response.body}")
+        raise HTTParty::Error, 'Failed to fetch duda site'
+      end
+
       body = JSON.parse(response.body)
       Rails.logger.info "Got Duda site response: #{response.body} - status: #{response.code}"
       body

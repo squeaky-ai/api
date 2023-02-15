@@ -11,11 +11,14 @@ module DudaService
 
     def inject_script!
       Rails.logger.info "Making Duda site request to #{request_url} with options #{headers}"
-      HTTParty.post(request_url, body:, headers:, timeout:)
+      response = HTTParty.post(request_url, body:, headers:, timeout:)
+
+      if response.code != 200
+        Rails.logger.error("Failed to inject script for #{site_name} - #{response.body}")
+        raise HTTParty::Error, 'Failed to inject duda script'
+      end
+
       nil
-    rescue HTTParty::Error => e
-      Rails.logger.error("Failed to get response from Duda API - #{e}")
-      raise
     end
 
     private

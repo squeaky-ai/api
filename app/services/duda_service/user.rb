@@ -41,9 +41,15 @@ module DudaService
       }
     end
 
-    def user_response_body
+    def user_response_body # rubocop:disable Metrics/AbcSize
       Rails.logger.info "Making Duda user request to #{request_url} with options #{headers}"
       response = HTTParty.get(request_url, headers:, timeout:)
+
+      if response.code != 200
+        Rails.logger.error("Failed to fetch duda user for #{account_name} - #{response.body}")
+        raise HTTParty::Error, 'Failed to fetch duda user'
+      end
+
       body = JSON.parse(response.body)
       Rails.logger.info "Got Duda user response: #{response.body} - status: #{response.code}"
       body

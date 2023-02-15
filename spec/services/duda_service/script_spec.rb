@@ -6,6 +6,7 @@ RSpec.describe DudaService::Script do
   let(:site) { create(:site) }
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://api-endpoint.com' }
+  let(:status_code) { 200 }
 
   let(:auth) do
     {
@@ -16,7 +17,7 @@ RSpec.describe DudaService::Script do
     }
   end
 
-  let(:response) { double(:response, body: '') }
+  let(:response) { double(:response, body: '', code: status_code) }
 
   let(:instance) { described_class.new(site:, site_name:, api_endpoint:, auth:) }
 
@@ -39,6 +40,14 @@ RSpec.describe DudaService::Script do
 
       expect(HTTParty).to have_received(:post)
         .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
+    end
+
+    context 'when the status code is not 200' do
+      let(:status_code) { 500 }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error(HTTParty::Error)
+      end
     end
   end
 end
