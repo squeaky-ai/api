@@ -23,9 +23,8 @@ module DudaService
         create_user!
         create_team!
         create_auth!
+        inject_script!
       end
-
-      inject_script!
     end
 
     private
