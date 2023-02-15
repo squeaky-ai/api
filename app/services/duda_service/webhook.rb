@@ -33,7 +33,7 @@ module DudaService
     def name
       url_parts = URI(domain).host.split('.')
       url_parts.pop
-      url_parts.join('.')
+      url_parts.join('.').sub('www.', '')
     end
   end
 end
