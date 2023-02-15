@@ -17,7 +17,7 @@ module Duda
 
     def refresh_access_token(refresh_token:)
       response = HTTParty.post(
-        "#{api_endpoint}/integrationhub/application/#{app_uuid}/token/refresh",
+        "#{api_endpoint}/api/integrationhub/application/#{app_uuid}/token/refresh",
         timeout:,
         headers:,
         body: { 'refreshToken' => refresh_token }.to_json
