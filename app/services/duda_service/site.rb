@@ -6,8 +6,8 @@ module DudaService
       @site_name = site_name
       @api_endpoint = api_endpoint
       @auth = auth
-      @site = site_response_body
-      @branding = branding_response_body
+      @site = duda_client.fetch_site(site_name:)
+      @branding = duda_client.fetch_site_branding(site_name:)
     end
 
     def name
@@ -36,37 +36,8 @@ module DudaService
 
     attr_reader :site, :branding, :site_name, :api_endpoint, :auth
 
-    def headers
-      {
-        'Authorization' => Duda::Client.authorization_header,
-        'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
-      }
-    end
-
-    def timeout
-      5
-    end
-
-    def site_response_body
-      make_request("#{api_endpoint}/api/integrationhub/application/site/#{site_name}")
-    end
-
-    def branding_response_body
-      make_request("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/branding")
-    end
-
-    def make_request(url) # rubocop:disable Metrics/AbcSize
-      Rails.logger.info "Making Duda site request to #{url} with options #{headers}"
-      response = HTTParty.get(url, headers:, timeout:)
-
-      if response.code != 200
-        Rails.logger.error("Failed to fetch duda site for #{site_name} - #{response.body}")
-        raise HTTParty::Error, 'Failed to fetch duda site'
-      end
-
-      body = JSON.parse(response.body)
-      Rails.logger.info "Got Duda site response: #{response.body} - status: #{response.code}"
-      body
+    def duda_client
+      @duda_client ||= Duda::Client.new(api_endpoint:, access_token: auth['authorization_code'])
     end
   end
 end

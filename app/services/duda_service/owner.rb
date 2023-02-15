@@ -6,7 +6,7 @@ module DudaService
       @site_name = site_name
       @api_endpoint = api_endpoint
       @auth = auth
-      @owner = owner_response_body
+      @owner = Duda::Client.new(api_endpoint:, access_token: auth['authorization_code']).fetch_owner(site_name:)
     end
 
     def first_name
@@ -24,34 +24,5 @@ module DudaService
     private
 
     attr_reader :owner, :site_name, :api_endpoint, :auth
-
-    def request_url
-      "#{api_endpoint}/api/integrationhub/application/site/#{site_name}/account/details"
-    end
-
-    def timeout
-      5
-    end
-
-    def headers
-      {
-        Authorization: Duda::Client.authorization_header,
-        'X-DUDA-ACCESS-TOKEN' => "Bearer #{auth['authorization_code']}"
-      }
-    end
-
-    def owner_response_body # rubocop:disable Metrics/AbcSize
-      Rails.logger.info "Making Duda owner request to #{request_url} with options #{headers}"
-      response = HTTParty.get(request_url, headers:, timeout:)
-
-      if response.code != 200
-        Rails.logger.error("Failed to fetch duda site owner for #{site_name} - #{response.body}")
-        raise HTTParty::Error, 'Failed to fetch duda site'
-      end
-
-      body = JSON.parse(response.body)
-      Rails.logger.info "Got Duda owner response: #{response.body} - status: #{response.code}"
-      body
-    end
   end
 end
