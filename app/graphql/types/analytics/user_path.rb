@@ -6,6 +6,7 @@ module Types
       graphql_name 'AnalyticsUserPath'
 
       field :path, [String, { null: false }], null: false
+      field :referrer, String, null: true
     end
   end
 end

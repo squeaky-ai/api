@@ -8,6 +8,7 @@ analytics_user_paths_query = <<-GRAPHQL
       analytics(fromDate: $from_date, toDate: $to_date) {
         userPaths(page: $page, position: $position) {
           path
+          referrer
         }
       }
     }
@@ -108,12 +109,15 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
         expect(paths).to match_array(
           [
             {
+              'referrer' => nil,
               'path' => ['/', '/test']
             },
             {
+              'referrer' => nil,
               'path' => ['/']
             },
             {
+              'referrer' => nil,
               'path' => ['/', '/test', '/foo']
             }
           ]
@@ -138,9 +142,63 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
         expect(paths).to match_array(
           [
             {
+              'referrer' => nil,
               'path' => ['/test', '/test']
             },
             {
+              'referrer' => nil,
+              'path' => ['/', '/test']
+            }
+          ]
+        )
+      end
+    end
+
+    context 'when there are some referrers' do
+      let(:recordings) do
+        [
+          {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording_1.id,
+            referrer: 'https://google.com'
+          },
+          {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording_3.id,
+            referrer: 'https://squeaky.ai'
+          }
+        ]
+      end
+
+      subject do
+        variables = { 
+          site_id: site.id, 
+          from_date: '2021-08-01', 
+          to_date: '2021-08-08',
+          page: '/test',
+          position: 'End'
+        }
+        graphql_request(analytics_user_paths_query, variables, user)
+      end
+
+      before do
+        ClickHouse::Recording.insert do |buffer|
+          recordings.each { |recording| buffer << recording }
+        end
+      end
+
+      it 'returns the paths with the referrers' do
+        paths = subject['data']['site']['analytics']['userPaths']
+        expect(paths).to match_array(
+          [
+            {
+              'referrer' => 'https://squeaky.ai',
+              'path' => ['/test', '/test']
+            },
+            {
+              'referrer' => 'https://google.com',
               'path' => ['/', '/test']
             }
           ]
