@@ -71,7 +71,11 @@ module Resolvers
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
         sql = <<-SQL
-          SELECT results.event_id event_id, results.count count, results.event_name
+          SELECT
+            results.event_id event_id,
+            results.unique_triggers,
+            results.count count,
+            results.event_name
           FROM (#{union_queries.join(' ')}) results
         SQL
 
@@ -85,30 +89,15 @@ module Resolvers
       end
 
       def format_capture_events(results)
-        visitor_count = total_visitors_count
-
         results.map do |result|
           {
             id: result['event_id'],
             name: result['event_name'],
             count: result['count'],
-            average_events_per_visitor: (result['count'] / visitor_count).round(2),
-            unique_triggers: 0 # TODO
+            average_events_per_visitor: 0, # TODO
+            unique_triggers: result['unique_triggers']
           }
         end
-      end
-
-      def total_visitors_count
-        sql = <<-SQL
-          SELECT
-            COUNT(DISTINCT(visitor_id))
-          FROM
-            recordings
-          WHERE
-            site_id = ?
-        SQL
-
-        Sql::ClickHouse.select_value(sql, [object.id])
       end
 
       def aggregate_results(capture_events_with_counts, group_ids, capture_ids)
@@ -128,7 +117,7 @@ module Resolvers
           name: capture[:name],
           count: capture[:count],
           type: 'capture',
-          average_events_per_visitor: capture[:average_events_per_visitor],
+          average_events_per_visitor: 0, # TODO
           unique_triggers: capture[:unique_triggers]
         }
       end
@@ -143,15 +132,15 @@ module Resolvers
         captures = capture_events_with_counts.filter { |c| capture_ids.include?(c[:id]) }
 
         count = captures.map { |c| c[:count] }.sum
-        average_events_per_visitor = captures.map { |c| c[:average_events_per_visitor] }.sum
+        unique_triggers = captures.map { |c| c[:unique_triggers] }.sum
 
         {
           event_or_group_id: group.id,
           name: group.name,
           type: 'group',
           count:,
-          average_events_per_visitor:,
-          unique_triggers: 0 # TODO
+          average_events_per_visitor: 0, # TODO
+          unique_triggers:
         }
       end
     end

@@ -9,6 +9,7 @@ event_history_stats_query = <<-GRAPHQL
         name
         type
         count
+        uniqueTriggers
         averageEventsPerVisitor 
       }
     }
@@ -81,7 +82,8 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            visitor_id: recording.visitor_id
           }
         end
 
@@ -91,7 +93,8 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/test',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            visitor_id: recording.visitor_id
           }
         end
 
@@ -101,7 +104,8 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/something_else',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000
+            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            visitor_id: recording.visitor_id
           }
         end
       end
@@ -123,26 +127,29 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
       expect(response).to match_array (
         [
           {
-            'averageEventsPerVisitor' => 8.0,
+            'averageEventsPerVisitor' => 0.0,
+            'uniqueTriggers' => 2,
             'count' => 8,
             'name' => 'Group 1',
             'type' => 'group'
           },
-          
           {
             'averageEventsPerVisitor' => 0.0,
+            'uniqueTriggers' => 0,
             'count' => 0,
             'name' => 'Group 2',
             'type' => 'group'
           },
           {
-            'averageEventsPerVisitor' => 5.0,
+            'averageEventsPerVisitor' => 0.0,
+            'uniqueTriggers' => 1,
             'count' => 5,
             'name' => 'Capture 1',
             'type' => 'capture'
           },
           {
-            'averageEventsPerVisitor' => 3.0,
+            'averageEventsPerVisitor' => 0.0,
+            'uniqueTriggers' => 1,
             'count' => 3,
             'name' => 'Capture 2',
             'type' => 'capture'

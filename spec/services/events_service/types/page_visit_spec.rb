@@ -20,6 +20,7 @@ RSpec.describe EventsService::Types::PageVisit do
         sql = <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
             '#{event.id}' as event_id
           FROM
@@ -42,6 +43,7 @@ RSpec.describe EventsService::Types::PageVisit do
         sql = <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
             '#{event.id}' as event_id
           FROM
@@ -64,6 +66,7 @@ RSpec.describe EventsService::Types::PageVisit do
         sql = <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
             '#{event.id}' as event_id
           FROM
@@ -86,6 +89,7 @@ RSpec.describe EventsService::Types::PageVisit do
         sql = <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
             '#{event.id}' as event_id
           FROM
@@ -108,6 +112,7 @@ RSpec.describe EventsService::Types::PageVisit do
         sql = <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
             '#{event.id}' as event_id
           FROM

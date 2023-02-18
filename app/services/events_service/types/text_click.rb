@@ -7,6 +7,7 @@ module EventsService
         <<-SQL
           SELECT
             COUNT(*) count,
+            COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event_name}' as event_name,
             '#{event.id}' as event_id
           FROM
