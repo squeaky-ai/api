@@ -92,7 +92,8 @@ module Resolvers
             id: result['event_id'],
             name: result['event_name'],
             count: result['count'],
-            average_events_per_visitor: (result['count'] / visitor_count).round(2)
+            average_events_per_visitor: (result['count'] / visitor_count).round(2),
+            unique_triggers: 0 # TODO
           }
         end
       end
@@ -127,7 +128,8 @@ module Resolvers
           name: capture[:name],
           count: capture[:count],
           type: 'capture',
-          average_events_per_visitor: capture[:average_events_per_visitor]
+          average_events_per_visitor: capture[:average_events_per_visitor],
+          unique_triggers: capture[:unique_triggers]
         }
       end
 
@@ -148,7 +150,8 @@ module Resolvers
           name: group.name,
           type: 'group',
           count:,
-          average_events_per_visitor:
+          average_events_per_visitor:,
+          unique_triggers: 0 # TODO
         }
       end
     end

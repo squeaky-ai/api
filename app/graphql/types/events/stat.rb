@@ -10,6 +10,7 @@ module Types
       field :type, Types::Events::Type, null: false
       field :count, Integer, null: false
       field :average_events_per_visitor, Float, null: false
+      field :unique_triggers, Integer, null: false
     end
   end
 end
