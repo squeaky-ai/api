@@ -94,7 +94,7 @@ module Resolvers
             id: result['event_id'],
             name: result['event_name'],
             count: result['count'],
-            average_events_per_visitor: 0, # TODO
+            average_events_per_visitor: result['count'].to_f / result['unique_triggers'],
             unique_triggers: result['unique_triggers']
           }
         end
@@ -117,12 +117,12 @@ module Resolvers
           name: capture[:name],
           count: capture[:count],
           type: 'capture',
-          average_events_per_visitor: 0, # TODO
+          average_events_per_visitor: capture[:average_events_per_visitor],
           unique_triggers: capture[:unique_triggers]
         }
       end
 
-      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize
+      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         # Find the group that matches this id
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group
@@ -133,13 +133,14 @@ module Resolvers
 
         count = captures.map { |c| c[:count] }.sum
         unique_triggers = captures.map { |c| c[:unique_triggers] }.sum
+        average_events_per_visitor = Maths.average(captures.map { |c| c[:average_events_per_visitor] })
 
         {
           event_or_group_id: group.id,
           name: group.name,
           type: 'group',
           count:,
-          average_events_per_visitor: 0, # TODO
+          average_events_per_visitor:,
           unique_triggers:
         }
       end

@@ -127,7 +127,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
       expect(response).to match_array (
         [
           {
-            'averageEventsPerVisitor' => 0.0,
+            'averageEventsPerVisitor' => 4.0,
             'uniqueTriggers' => 2,
             'count' => 8,
             'name' => 'Group 1',
@@ -141,14 +141,14 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             'type' => 'group'
           },
           {
-            'averageEventsPerVisitor' => 0.0,
+            'averageEventsPerVisitor' => 5.0,
             'uniqueTriggers' => 1,
             'count' => 5,
             'name' => 'Capture 1',
             'type' => 'capture'
           },
           {
-            'averageEventsPerVisitor' => 0.0,
+            'averageEventsPerVisitor' => 3.0,
             'uniqueTriggers' => 1,
             'count' => 3,
             'name' => 'Capture 2',
