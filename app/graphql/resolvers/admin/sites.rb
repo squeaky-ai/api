@@ -45,9 +45,9 @@ module Resolvers
       def search_by(sites, search)
         return sites unless search.presence
 
-        query = "%#{search}%"
+        query = "%#{search.downcase}%"
 
-        sites.where('name ILIKE :query', query:)
+        sites.where('LOWER(name) LIKE :query', query:)
       end
     end
   end
