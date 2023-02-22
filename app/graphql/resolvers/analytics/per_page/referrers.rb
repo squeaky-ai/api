@@ -73,7 +73,7 @@ module Resolvers
             object.range.from,
             object.range.to,
             object.page,
-            object.size,
+            size,
             (page - 1) * size
           ]
 
