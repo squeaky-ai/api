@@ -20,7 +20,7 @@ module Resolvers
       def countries
         sql = <<-SQL
           SELECT
-            DISTINCT(COALESCE(country_code, \'Unknown\')) country_code, COUNT(*) country_code_code
+            DISTINCT(COALESCE(country_code, 'Unknown')) country_code, COUNT(*) country_code_code
           FROM
             recordings
           WHERE
