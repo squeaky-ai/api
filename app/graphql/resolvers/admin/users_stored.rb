@@ -12,7 +12,7 @@ module Resolvers
               COUNT(*) count,
               created_at::date date
             FROM
-              sites
+              users
             GROUP BY
               date
             ORDER BY
