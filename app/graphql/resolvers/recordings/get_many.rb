@@ -179,16 +179,7 @@ module Resolvers
       def filter_by_visited_pages(recordings, filters)
         return recordings unless filters.visited_pages.any?
 
-        sql = <<-SQL
-          ? IN (
-            SELECT url
-            FROM pages
-            WHERE pages.recording_id = recordings.id
-          )
-        SQL
-
-        filters.visited_pages.each { |page| recordings = recordings.where(sql, page) }
-        recordings
+        recordings.where('pages.url IN (?)', filters.visited_pages)
       end
 
       # Allow filtering of recordings that exclude certain
@@ -196,16 +187,7 @@ module Resolvers
       def filter_by_unvisited_pages(recordings, filters)
         return recordings unless filters.unvisited_pages.any?
 
-        sql = <<-SQL
-          ? NOT IN (
-            SELECT url
-            FROM pages
-            WHERE pages.recording_id = recordings.id
-          )
-        SQL
-
-        filters.unvisited_pages.each { |page| recordings = recordings.where(sql, page) }
-        recordings
+        recordings.where('pages.url NOT IN (?)', filters.unvisited_pages)
       end
 
       # Add a filter that lets users show only recordings
