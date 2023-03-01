@@ -17,6 +17,7 @@ module Types
     field :admin_site_ingest_update, mutation: Mutations::Admin::SiteIngestUpdate
     field :admin_site_team_delete, mutation: Mutations::Admin::SiteTeamDelete
     field :admin_site_team_update_role, mutation: Mutations::Admin::SiteTeamUpdateRole
+    field :admin_site_bundles_create, mutation: Mutations::Admin::SiteBundlesCreate
     field :admin_partner_invoice_update, mutation: Mutations::Admin::PartnerInvoiceUpdate
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
