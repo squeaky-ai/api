@@ -17,12 +17,14 @@ RSpec.describe EventsProcessingJob, type: :job do
     let(:rule_3) { { matcher: 'equals', condition: 'or', value: 'html > body' } }
     let(:rule_4) { { matcher: 'equals', condition: 'or', value: 'Oh no!' } }
     let(:rule_5) { { matcher: 'equals', condition: 'or', value: 'my-event' } }
+    let(:rule_6) { { matcher: 'equals', condition: 'or', value: 'google', field: 'utm_source' } }
 
     let!(:event_1) { create(:event_capture, site:, event_type: EventCapture::PAGE_VISIT, rules: [rule_1]) }
     let!(:event_2) { create(:event_capture, site:, event_type: EventCapture::TEXT_CLICK, rules: [rule_2]) }
     let!(:event_3) { create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, rules: [rule_3]) }
     let!(:event_4) { create(:event_capture, site:, event_type: EventCapture::ERROR, rules: [rule_4]) }
     let!(:event_5) { create(:event_capture, site:, event_type: EventCapture::CUSTOM, rules: [rule_5]) }
+    let!(:event_6) { create(:event_capture, site:, event_type: EventCapture::UTM_PARAMETERS, rules: [rule_6]) }
 
     before do
       allow(Time).to receive(:now).and_return(now)
@@ -75,6 +77,16 @@ RSpec.describe EventsProcessingJob, type: :job do
           timestamp:
         }
       end
+
+      ClickHouse::Recording.insert do |buffer|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording.id,
+          utm_source: 'google',
+          disconnected_at: timestamp
+        }
+      end
     end
 
     it 'changes the counts' do
@@ -88,6 +100,8 @@ RSpec.describe EventsProcessingJob, type: :job do
                        .and change { event_4.last_counted_at }.from(nil).to(now)
                        .and change { event_5.reload.count }.from(0).to(1)
                        .and change { event_5.last_counted_at }.from(nil).to(now)
+                       .and change { event_6.reload.count }.from(0).to(1)
+                       .and change { event_6.last_counted_at }.from(nil).to(now)
     end
   end
 

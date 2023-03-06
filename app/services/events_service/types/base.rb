@@ -34,6 +34,15 @@ module EventsService
         escape_quotes(event.name)
       end
 
+      def field
+        # Not required for all event types as most are hard coded
+        field = rule['field']
+
+        raise StandardError, 'Trying to access a field that does not exist' unless field
+
+        field
+      end
+
       def rule_expression
         # SQL helper for constructing the correct where
         # syntax for the rule matcher type. This should

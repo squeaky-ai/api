@@ -3,7 +3,7 @@
 module EventsService
   class Captures
     class << self
-      def for(event)
+      def for(event) # rubocop:disable Metrics/MethodLength
         case event.event_type
         when EventCapture::PAGE_VISIT
           EventsService::Types::PageVisit.new(event)
@@ -15,6 +15,8 @@ module EventsService
           EventsService::Types::Error.new(event)
         when EventCapture::CUSTOM
           EventsService::Types::Custom.new(event)
+        when EventCapture::UTM_PARAMETERS
+          EventsService::Types::UtmParameters.new(event)
         else
           raise NotImplementedError, "Unsure how to handle #{event.event_type}"
         end

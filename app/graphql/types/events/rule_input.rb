@@ -8,6 +8,7 @@ module Types
       argument :matcher, Events::Match, required: true
       argument :condition, Events::Condition, required: true
       argument :value, String, required: true
+      argument :field, String, required: false
     end
   end
 end

@@ -8,6 +8,7 @@ module Types
       field :matcher, Events::Match, null: false
       field :condition, Events::Condition, null: false
       field :value, String, null: false
+      field :field, String, null: false
     end
   end
 end

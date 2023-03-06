@@ -11,6 +11,7 @@ class EventCapture < ApplicationRecord
   SELECTOR_CLICK = 2
   ERROR = 3
   CUSTOM = 4
+  UTM_PARAMETERS = 5
 
   WEB = 'web'
   API = 'api'

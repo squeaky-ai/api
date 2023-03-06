@@ -48,6 +48,14 @@ RSpec.describe EventsService::Captures do
       end
     end
 
+    context 'when it is a utm_parameter' do
+      let(:event) { create(:event_capture, event_type: EventCapture::UTM_PARAMETERS) }
+
+      it 'returns the correct class' do
+        expect(subject).to be_instance_of(EventsService::Types::UtmParameters)
+      end
+    end
+
     context 'when it is not known' do
       let(:event) { create(:event_capture, event_type: 45645456) }
 
