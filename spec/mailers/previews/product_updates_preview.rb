@@ -46,4 +46,9 @@ class ProductUpdatesPreview < ActionMailer::Preview
     user = User.first
     ProductUpdatesMailer.january_2023(user)
   end
+
+  def february_2023
+    user = User.first
+    ProductUpdatesMailer.february_2023(user)
+  end
 end
