@@ -40,14 +40,14 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405638578,
-          disconnected_at: 1628405639578
+          disconnected_at: 1628405639578,
+          activity_duration: 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1628405638578
+          disconnected_at: 1628405638578,
+          activity_duration: 4000
         }
       ]
     end
@@ -65,7 +65,7 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
 
     it 'returns the average session time' do
       response = subject['data']['site']['analytics']
-      expect(response['sessionDurations']).to eq({ 'average' => '1500', 'trend' => '1500' })
+      expect(response['sessionDurations']).to eq({ 'average' => '2500', 'trend' => '2500' })
     end
   end
 
@@ -78,26 +78,26 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405638578,
-          disconnected_at: 1628405639578
+          disconnected_at: 1628405639578,
+          activity_duration: 1750
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1628405638578
+          disconnected_at: 1628405638578,
+          activity_duration: 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1627800838578,
-          disconnected_at: 1627800839578
+          disconnected_at: 1627800838578,
+          activity_duration: 2000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1627800836578,
-          disconnected_at: 1627800837578
+          disconnected_at: 1627800837578,
+          activity_duration: 1300
         }
       ]
     end
@@ -115,7 +115,7 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
 
     it 'returns the average session time' do
       response = subject['data']['site']['analytics']
-      expect(response['sessionDurations']).to eq({ 'average' => '1250', 'trend' => '250' })
+      expect(response['sessionDurations']).to eq({ 'average' => '1512', 'trend' => '-137' })
     end
   end
 
@@ -128,20 +128,20 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405638578,
-          disconnected_at: 1628405639578
+          disconnected_at: 1628405639578,
+          activity_duration: 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1628405638578
+          disconnected_at: 1628405638578,
+          activity_duration: 3000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1728405640578
+          disconnected_at: 1728405640578,
+          activity_duration: 2750
         }
       ]
     end
@@ -159,7 +159,7 @@ RSpec.describe Resolvers::Analytics::SessionDurations, type: :request do
 
     it 'returns the average session time' do
       response = subject['data']['site']['analytics']
-      expect(response['sessionDurations']).to eq({ 'average' => '1500', 'trend' => '1500' })
+      expect(response['sessionDurations']).to eq({ 'average' => '2000', 'trend' => '2000' })
     end
   end
 end

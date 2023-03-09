@@ -39,22 +39,19 @@ RSpec.describe Resolvers::Visitors::AverageSessionDuration, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405638578,
-          disconnected_at: 1628405639578,
+          activity_duration: 3750,
           visitor_id: visitor_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1628405638578,
+          activity_duration: 1000,
           visitor_id: visitor_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          connected_at: 1628405636578,
-          disconnected_at: 1628405640578,
+          activity_duration: 1500,
           visitor_id: visitor_2.id
         }
       ]
@@ -73,7 +70,7 @@ RSpec.describe Resolvers::Visitors::AverageSessionDuration, type: :request do
 
     it 'returns the average session time for this visitor' do
       response = subject['data']['site']['visitor']
-      expect(response['averageSessionDuration']).to eq 1500
+      expect(response['averageSessionDuration']).to eq 2375
     end
   end
 end

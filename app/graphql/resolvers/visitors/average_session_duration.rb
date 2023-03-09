@@ -8,7 +8,7 @@ module Resolvers
       def resolve_with_timings
         sql = <<-SQL
           SELECT
-            AVG(disconnected_at - connected_at) average_session_duration
+            AVG(activity_duration) average_session_duration
           FROM
             recordings
           WHERE
