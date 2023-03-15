@@ -17,6 +17,7 @@ module Mutations
       argument :meta_description, String, required: false
       argument :slug, String, required: false
       argument :body, String, required: false
+      argument :covering_enabled, Boolean, required: false
       argument :scripts, [String, { null: false }], required: false
 
       type Types::Blog::Post

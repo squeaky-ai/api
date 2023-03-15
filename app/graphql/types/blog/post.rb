@@ -16,6 +16,7 @@ module Types
       field :slug, String, null: false
       field :body, String, null: false
       field :scripts, [String, { null: false }], null: false
+      field :covering_enabled, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     end
