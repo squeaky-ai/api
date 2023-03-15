@@ -11,7 +11,7 @@ module Types
       field :plan, Types::Sites::Plan
       field :uuid, String, null: false
       field :site_type, Integer, null: false
-      field :owner_name, String, null: false
+      field :owner_name, String, null: true
       field :provider, String, null: true
       field :provider_uuid, String, null: true
       field :provider_auth, Types::Sites::ProviderAuth, null: true
