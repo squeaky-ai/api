@@ -28,7 +28,7 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
         slug: '/category/hello',
         body: 'Hello',
         scripts: ['script_1'],
-        covering_enabled: true
+        coveringEnabled: true
       }
     }
 

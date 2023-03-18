@@ -13,12 +13,14 @@ module DataExportSerializers
         status: visitor.viewed ? 'Viewed' : 'New',
         first_viewed_at: visitor.first_viewed_at&.iso8601,
         last_activity_at: visitor.last_activity_at&.iso8601,
-        language: visitor.language,
         user_id: linked_data_value(:id),
         name: linked_data_value(:name),
         email: linked_data_value(:email),
-        country_codes: visitor.countries.map { |c| c[:code] }.join('|'),
-        recording_count: visitor.recordings_count
+        languages: visitor.languages.uniq.join('|'),
+        browsers: visitor.browsers.uniq.join('|'),
+        country_codes: visitor.countries.map { |c| c[:code] }.uniq.join('|'),
+        recording_count: visitor.recordings_count,
+        source: visitor.source
       }
     end
 

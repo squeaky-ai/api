@@ -47,15 +47,17 @@ RSpec.describe DataExportSerializers::VisitorSerializer do
       expect(subject).to match(
         id: visitor.id,
         status: 'New',
+        browsers: 'Firefox|Safari',
         country_codes: 'GB|SE',
         first_viewed_at: '2022-12-15T16:51:18Z',
-        language: 'English (GB)',
+        languages: 'English (GB)',
         last_activity_at: '2022-12-15T16:51:23Z',
         email: 'bobby@dylan.com', 
         user_id: 5,
         name: 'Bob Dylan',
         recording_count: 2,
-        visitor_id: 'd5cipqbhmsi01sc8'
+        visitor_id: 'd5cipqbhmsi01sc8',
+        source: nil
       )
     end
   end

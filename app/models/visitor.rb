@@ -39,6 +39,14 @@ class Visitor < ApplicationRecord
     end
   end
 
+  def browsers
+    recordings.filter(&:browser).map(&:browser)
+  end
+
+  def languages
+    recordings.filter(&:language).map(&:language)
+  end
+
   def linked_data
     return nil if external_attributes.empty?
 
