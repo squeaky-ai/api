@@ -84,6 +84,7 @@ module Types
         argument :to_date, GraphQL::Types::ISO8601Date, required: true
       end
       field :api_key, String, null: true
+      field :data_exports, [Types::Exports::DataExport, { null: false }], null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 

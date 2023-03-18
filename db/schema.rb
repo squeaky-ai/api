@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_15_104507) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_16_153533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_104507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_consents_on_site_id"
+  end
+
+  create_table "data_exports", force: :cascade do |t|
+    t.string "filename", null: false
+    t.integer "export_type", null: false
+    t.bigint "exported_at"
+    t.string "start_date", null: false
+    t.string "end_date", null: false
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_data_exports_on_site_id"
   end
 
   create_table "event_captures", force: :cascade do |t|

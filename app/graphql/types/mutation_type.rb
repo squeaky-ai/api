@@ -106,5 +106,8 @@ module Types
     field :event_capture_delete, mutation: Mutations::Events::CaptureDelete
     field :event_capture_delete_bulk, mutation: Mutations::Events::CaptureDeleteBulk
     field :event_add_to_group, mutation: Mutations::Events::AddToGroup
+    # Exports
+    field :data_export_create, mutation: Mutations::Exports::DataExportCreate
+    field :data_export_delete, mutation: Mutations::Exports::DataExportDelete
   end
 end
