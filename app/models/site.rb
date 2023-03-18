@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Site < ApplicationRecord
+class Site < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :url, uniqueness: { message: I18n.t('site.validation.site_in_use') }
 
   # Generate a uuid for the site when it's created
@@ -18,6 +18,7 @@ class Site < ApplicationRecord
   has_many :tags
   has_many :event_captures, dependent: :destroy
   has_many :event_groups
+  has_many :data_exports, dependent: :destroy
 
   has_one :plan, dependent: :destroy
   has_one :billing, dependent: :destroy

@@ -27,7 +27,8 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
         metaDescription: 'Meta',
         slug: '/category/hello',
         body: 'Hello',
-        scripts: ['script_1']
+        scripts: ['script_1'],
+        covering_enabled: true
       }
     }
 

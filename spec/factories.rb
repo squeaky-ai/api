@@ -247,4 +247,14 @@ FactoryBot.define do
   factory :provider_auth do
     site { association :site }
   end
+
+  factory :data_export do
+    filename { 'test.csv' }
+    export_type { 0 }
+    exported_at { nil }
+    start_date { Date.today.iso8601 }
+    end_date { Date.today.iso8601 }
+
+    site { association :site }
+  end
 end
