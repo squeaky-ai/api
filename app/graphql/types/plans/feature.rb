@@ -19,6 +19,7 @@ module Types
       value 'heatmaps_scroll'
       value 'nps'
       value 'sentiment'
+      value 'data_export'
     end
   end
 end

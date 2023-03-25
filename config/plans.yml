@@ -80,6 +80,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
       integrations:
         duda: 5d6b2b10-9c27-49e5-b3d7-a78b176f80b4
 
@@ -135,6 +136,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: f20c93ec-172f-46c6-914e-6a00dff3ae5f
       name: Plus
@@ -188,6 +190,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: b2054935-4fdf-45d0-929b-853cfe8d4a1c
       name: Business
@@ -242,6 +245,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
       integrations:
         duda: a808e6dd-fbdc-4faa-8534-d417287e9367
 
@@ -299,6 +303,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: 131f1b89-d459-4d70-9b67-5cce751de365
       name: Enterprise Tier 2
@@ -354,6 +359,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
     
     - id: 9c468200-233d-406b-bd54-09ca0a552221
       name: Enterprise Tier 3
@@ -409,6 +415,7 @@ default: &default
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
 development:
   <<: *default
@@ -498,6 +505,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
       integrations:
         duda: 5d6b2b10-9c27-49e5-b3d7-a78b176f80b4
 
@@ -553,6 +561,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: f20c93ec-172f-46c6-914e-6a00dff3ae5f
       name: Plus
@@ -607,6 +616,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: b2054935-4fdf-45d0-929b-853cfe8d4a1c
       name: Business
@@ -661,6 +671,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
       integrations:
         duda: a808e6dd-fbdc-4faa-8534-d417287e9367
 
@@ -718,6 +729,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: 131f1b89-d459-4d70-9b67-5cce751de365
       name: Enterprise Tier 2
@@ -773,6 +785,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: 9c468200-233d-406b-bd54-09ca0a552221
       name: Enterprise Tier 3
@@ -828,6 +841,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: 37fc16ff-a917-4be8-93ab-a8c66dfc174f
       name: Enterprise Tier 4
@@ -883,6 +897,7 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
 
     - id: 70a4dd2a-dec3-4389-b02d-f459b0ca540b
       name: Enterprise Tier 5
@@ -938,3 +953,4 @@ production:
         - heatmaps_scroll
         - nps
         - sentiment
+        - data_export
