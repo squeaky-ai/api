@@ -2,7 +2,7 @@
 
 module Helpers
   def graphql_request(query, variables, user)
-    context = { current_user: user, request: request }
+    context = { current_user: user, request: request, timezone: 'UTC' }
     SqueakySchema.execute(query, context: context, variables: variables)
   end
 

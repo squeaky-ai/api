@@ -9,26 +9,28 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         {
-          eventful: eventful(from_date, to_date),
-          longest: longest(from_date, to_date)
+          eventful: eventful(range),
+          longest: longest(range)
         }
       end
 
       private
 
-      def eventful(from_date, to_date)
+      def eventful(range)
         object
           .recordings
-          .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+          .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', range.from, range.to)
           .order('active_events_count DESC')
           .limit(5)
       end
 
-      def longest(from_date, to_date)
+      def longest(range)
         object
           .recordings
-          .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', from_date, to_date)
+          .where('to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?', range.from, range.to)
           .order('activity_duration DESC')
           .limit(5)
       end

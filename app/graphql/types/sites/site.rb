@@ -88,6 +88,10 @@ module Types
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
 
+      def magic_erasure_enabled
+        object.magic_erasure_enabled_for_user?(context[:current_user])
+      end
+
       def analytics(from_date:, to_date:)
         build_nested_args(from_date:, to_date:)
       end
@@ -100,17 +104,13 @@ module Types
         build_nested_args(from_date:, to_date:)
       end
 
-      def heatmaps(**kwargs)
-        h = { site: object, **kwargs }
-        Struct.new(*h.keys).new(*h.values)
-      end
-
       def error(error_id:, from_date:, to_date:)
         build_nested_args(from_date:, to_date:, error_id:)
       end
 
-      def magic_erasure_enabled
-        object.magic_erasure_enabled_for_user?(context[:current_user])
+      def heatmaps(**kwargs)
+        h = { site: object, **kwargs }
+        Struct.new(*h.keys).new(*h.values)
       end
 
       private
@@ -121,7 +121,7 @@ module Types
         # here is converted to a struct so that the attrbibutes can
         # be accessed like methods and not symbols to keep it
         # consistent.
-        range = DateRange.new(from_date, to_date)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
         h = { site: object, range:, **kwargs }
         Struct.new(*h.keys).new(*h.values)
       end

@@ -110,7 +110,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
   end
 
   def average_session_duration_trend
-    range = DateRange.new(@from_date, @to_date)
+    range = DateRange.new(from_date: @from_date, to_date: @to_date)
 
     current_week = average_session_duration[:raw]
     previous_week = average_session_duration(range.trend_from, range.trend_to)[:raw]
@@ -143,7 +143,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
   end
 
   def pages_per_session_trend
-    range = DateRange.new(@from_date, @to_date)
+    range = DateRange.new(from_date: @from_date, to_date: @to_date)
 
     current_week = pages_per_session[:raw]
     previous_week = pages_per_session(range.trend_from, range.trend_to)[:raw]
@@ -256,7 +256,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
   end
 
   def feedback_nps_trend
-    range = DateRange.new(@from_date, @to_date)
+    range = DateRange.new(from_date: @from_date, to_date: @to_date)
 
     current_week = feedback_nps[:score]
     previous_week = Nps.get_score_between(@site_id, range.trend_from, range.trend_to)
@@ -284,7 +284,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
   end
 
   def feedback_sentiment_trend
-    range = DateRange.new(@from_date, @to_date)
+    range = DateRange.new(from_date: @from_date, to_date: @to_date)
 
     current_week = feedback_sentiment[:score]
     previous_week = feedback_sentiment(range.trend_from, range.trend_to)[:score]

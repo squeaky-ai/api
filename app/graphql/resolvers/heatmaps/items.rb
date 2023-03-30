@@ -21,10 +21,11 @@ module Resolvers
       private
 
       def heatmaps_instance
+        range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
+
         @heatmaps_instance ||= HeatmapsService.new(
           site_id: object.site.id,
-          from_date: object.from_date,
-          to_date: object.to_date,
+          range:,
           page_url: object.page,
           device: object.device
         )

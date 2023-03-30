@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class DateRange
-  def initialize(from_date, to_date)
+  def initialize(from_date:, to_date:, timezone: 'UTC')
     @from_date = from_date
     @to_date = to_date
+    @timezone = timezone
   end
+
+  attr_reader :timezone
 
   def from
     @from_date

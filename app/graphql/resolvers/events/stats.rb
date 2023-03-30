@@ -11,6 +11,8 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         # Get a list of all the capture events including ones
         # that are included inside groups. This will be flattened
         # list where all the grouped captures appear along side the
@@ -21,7 +23,7 @@ module Resolvers
 
         # Perform a chungus union query to get back all the results in
         # a single request
-        results = aggregated_results(capture_events, from_date, to_date)
+        results = aggregated_results(capture_events, range)
         # Format the events so that they use the correct keys for
         # the response including the the visitor counts
         capture_events_with_counts = format_capture_events(results)
@@ -61,7 +63,7 @@ module Resolvers
         object.event_captures.where(id: capture_ids)
       end
 
-      def aggregated_results(capture_events, from_date, to_date)
+      def aggregated_results(capture_events, range)
         union_queries = capture_events.map.with_index do |event, index|
           query = EventsService::Captures.for(event).count
 
@@ -81,8 +83,8 @@ module Resolvers
 
         variables = {
           site_id: object.id,
-          from_date: "#{from_date} 00:00:00",
-          to_date: "#{to_date} 23:59:59"
+          from_date: "#{range.from} 00:00:00",
+          to_date: "#{range.to} 23:59:59"
         }
 
         Sql::ClickHouse.select_all(sql, variables)

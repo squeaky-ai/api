@@ -13,14 +13,16 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
+      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists, Metrics/AbcSize
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         visitors = Visitor
                    .left_outer_joins(:recordings)
                    .where(
                      'visitors.site_id = ? AND visitors.updated_at::date BETWEEN ? AND ?',
                      object.id,
-                     from_date,
-                     to_date
+                     range.from,
+                     range.to
                    )
                    .order(order(sort))
 

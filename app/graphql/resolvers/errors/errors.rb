@@ -12,13 +12,15 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
-        error_results = results(object.id, from_date, to_date, size, page, sort)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
+        error_results = results(object.id, range, size, page, sort)
 
         {
           items: format_items(error_results),
           pagination: {
             page_size: size,
-            total: total_count(object.id, from_date, to_date),
+            total: total_count(object.id, range),
             sort:
           }
         }
@@ -35,7 +37,7 @@ module Resolvers
         end
       end
 
-      def results(site_id, from_date, to_date, size, page, sort) # rubocop:disable Metrics/ParameterLists
+      def results(site_id, range, size, page, sort)
         sql = <<-SQL
           SELECT
             message,
@@ -52,8 +54,8 @@ module Resolvers
 
         variables = [
           site_id,
-          from_date,
-          to_date,
+          range.from,
+          range.to,
           size,
           (size * (page - 1))
         ]
@@ -61,7 +63,7 @@ module Resolvers
         Sql::ClickHouse.select_all(sql, variables)
       end
 
-      def total_count(site_id, from_date, to_date)
+      def total_count(site_id, range)
         sql = <<-SQL
           SELECT COUNT(DISTINCT message) count
           FROM error_events
@@ -70,8 +72,8 @@ module Resolvers
 
         variables = [
           site_id,
-          from_date,
-          to_date
+          range.from,
+          range.to
         ]
 
         Sql::ClickHouse.select_value(sql, variables)

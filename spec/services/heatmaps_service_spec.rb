@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe HeatmapsService do
   let(:site) { create(:site) }
   let(:recording) { create(:recording, site:) }
+  let(:range) { DateRange.new(from_date: '2022-09-23', to_date: '2022-09-30') }
 
   let(:instance) do
     described_class.new(
       site_id: site.id,
-      from_date: '2022-09-23',
-      to_date: '2022-09-30',
+      range:,
       page_url: '/', 
       device: 'Desktop'
     )

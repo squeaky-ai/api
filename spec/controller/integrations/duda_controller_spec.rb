@@ -111,7 +111,8 @@ RSpec.describe Integrations::DudaController, type: :controller do
   end
 
   describe 'POST /integrations/websitebuilder/uninstall' do
-    let!(:site) { create(:site) }
+    let(:user) { create(:user) }
+    let!(:site) { create(:site_with_team, owner: user) }
 
     let(:params) do
       {

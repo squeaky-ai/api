@@ -14,9 +14,11 @@ module Resolvers
       argument :capture_ids, [ID], required: true
 
       def resolve_with_timings(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:) # rubocop:disable Metrics/ParameterLists
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         capture_events = event_captures(group_ids, capture_ids)
-        results = aggregated_results(capture_events, from_date, to_date, page, size, sort)
-        results_count = total_results_count(capture_events, from_date, to_date)
+        results = aggregated_results(capture_events, range, page, size, sort)
+        results_count = total_results_count(capture_events, range)
         recordings = recordings(results)
         visitors = visitors(results)
 
@@ -99,7 +101,7 @@ module Resolvers
         end
       end
 
-      def total_results_count(capture_events, from_date, to_date)
+      def total_results_count(capture_events, range)
         sql = <<-SQL
           SELECT COUNT(*) count
           FROM (#{union_queries(capture_events).join(' ')})
@@ -107,14 +109,14 @@ module Resolvers
 
         variables = {
           site_id: object.id,
-          from_date:,
-          to_date:
+          from_date: range.from,
+          to_date: range.to
         }
 
         Sql::ClickHouse.select_value(sql, variables)
       end
 
-      def aggregated_results(capture_events, from_date, to_date, page, size, sort) # rubocop:disable Metrics/ParameterLists
+      def aggregated_results(capture_events, range, page, size, sort)
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
         sql = <<-SQL
@@ -136,8 +138,8 @@ module Resolvers
           site_id: object.id,
           limit: size,
           offset: (size * (page - 1)),
-          from_date:,
-          to_date:
+          from_date: range.from,
+          to_date: range.to
         }
 
         Sql::ClickHouse.select_all(sql, variables)
