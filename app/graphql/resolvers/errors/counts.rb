@@ -37,24 +37,25 @@ module Resolvers
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(timestamp / 1000), ?) date_key
+            formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
           FROM
             error_events
           WHERE
-            site_id = ? AND
-            toDate(timestamp / 1000) BETWEEN ? AND ? AND
-            message = ?
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezome) BETWEEN :from_date AND :to_date AND
+            message = :message
           GROUP BY date_key
           FORMAT JSON
         SQL
 
-        variables = [
-          date_format,
-          object.id,
-          range.from,
-          range.to,
-          Base64.decode64(error_id)
-        ]
+        variables = {
+          date_format:,
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to,
+          message: Base64.decode64(error_id)
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end
@@ -63,22 +64,23 @@ module Resolvers
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(timestamp / 1000), ?) date_key
+            formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
           FROM
             error_events
           WHERE
-            site_id = ? AND
-            toDate(timestamp / 1000) BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
           GROUP BY date_key
           FORMAT JSON
         SQL
 
-        variables = [
-          date_format,
-          object.id,
-          range.from,
-          range.to
-        ]
+        variables = {
+          date_format:,
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end

@@ -28,7 +28,7 @@ RSpec.describe EventsService::Types::Custom do
           WHERE
             site_id = :site_id AND
             name = 'my-event' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -51,7 +51,7 @@ RSpec.describe EventsService::Types::Custom do
           WHERE
             site_id = :site_id AND
             name != 'my-event' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -74,7 +74,7 @@ RSpec.describe EventsService::Types::Custom do
           WHERE
             site_id = :site_id AND
             name LIKE '%other%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -97,7 +97,7 @@ RSpec.describe EventsService::Types::Custom do
           WHERE
             site_id = :site_id AND
             name NOT LIKE '%other%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -120,7 +120,7 @@ RSpec.describe EventsService::Types::Custom do
           WHERE
             site_id = :site_id AND
             name LIKE 'my-event%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

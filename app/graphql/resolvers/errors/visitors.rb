@@ -34,15 +34,19 @@ module Resolvers
         sql = <<-SQL
           SELECT DISTINCT recording_id
           FROM error_events
-          WHERE site_id = ? AND message = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+          WHERE
+            site_id = :site_id AND
+            message = :message AND
+            toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
-        variables = [
-          object.site.id,
-          Base64.decode64(object.error_id),
-          object.range.from,
-          object.range.to
-        ]
+        variables = {
+          site_id: object.site.id,
+          message: Base64.decode64(object.error_id),
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to
+        }
 
         Sql::ClickHouse.select_all(sql, variables).map { |x| x['recording_id'] }
       end

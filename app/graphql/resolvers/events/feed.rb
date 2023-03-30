@@ -110,7 +110,8 @@ module Resolvers
         variables = {
           site_id: object.id,
           from_date: range.from,
-          to_date: range.to
+          to_date: range.to,
+          timezone: range.timezone
         }
 
         Sql::ClickHouse.select_value(sql, variables)
@@ -127,7 +128,7 @@ module Resolvers
             results.source source,
             results.data data,
             results.visitor_id visitor_id,
-            toDateTime(results.timestamp / 1000) timestamp
+            toDateTime(results.timestamp / 1000, :timezone) timestamp
           FROM (#{union_queries(capture_events).join(' ')}) results
           ORDER BY #{order(sort)}
           LIMIT :limit
@@ -138,6 +139,7 @@ module Resolvers
           site_id: object.id,
           limit: size,
           offset: (size * (page - 1)),
+          timezone: range.timezone,
           from_date: range.from,
           to_date: range.to
         }

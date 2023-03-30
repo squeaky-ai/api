@@ -28,7 +28,7 @@ RSpec.describe EventsService::Types::PageVisit do
           WHERE
             site_id = :site_id AND
             url = '/' AND
-            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -51,7 +51,7 @@ RSpec.describe EventsService::Types::PageVisit do
           WHERE
             site_id = :site_id AND
             url != '/' AND
-            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -74,7 +74,7 @@ RSpec.describe EventsService::Types::PageVisit do
           WHERE
             site_id = :site_id AND
             url LIKE '%foo%' AND
-            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -97,7 +97,7 @@ RSpec.describe EventsService::Types::PageVisit do
           WHERE
             site_id = :site_id AND
             url NOT LIKE '%foo%' AND
-            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -120,7 +120,7 @@ RSpec.describe EventsService::Types::PageVisit do
           WHERE
             site_id = :site_id AND
             url LIKE '/test%' AND
-            toDateTime(exited_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

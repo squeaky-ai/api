@@ -17,7 +17,7 @@ module Resolvers
 
       private
 
-      def bounce_rate(start_date, end_date)
+      def bounce_rate(from_date, to_date)
         sql = <<-SQL
           SELECT
             COUNT(*) view_count,
@@ -25,15 +25,16 @@ module Resolvers
           FROM
             page_events
           WHERE
-            site_id = ? AND
-            toDate(exited_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
-        variables = [
-          object.site.id,
-          start_date,
-          end_date
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date:,
+          to_date:
+        }
 
         result = Sql::ClickHouse.select_all(sql, variables).first
 

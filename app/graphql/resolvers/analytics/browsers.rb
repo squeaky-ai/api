@@ -37,22 +37,23 @@ module Resolvers
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             browser
           ORDER BY #{order(sort)}
-          LIMIT ?
-          OFFSET ?
+          LIMIT :limit
+          OFFSET :offset
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to,
-          size,
-          (size * (page - 1))
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to,
+          limit: size,
+          offset: (size * (page - 1))
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end
@@ -72,15 +73,16 @@ module Resolvers
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to
+        }
 
         Sql::ClickHouse.select_value(sql, variables)
       end

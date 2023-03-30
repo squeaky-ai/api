@@ -49,25 +49,25 @@ module Resolvers
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000)::date BETWEEN ? AND ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
             GROUP BY url
           ) p
           ORDER BY #{order(sort)}
-          LIMIT ?
-          OFFSET ?
+          LIMIT :limit
+          OFFSET :offset
         SQL
 
-        Sql::ClickHouse.select_all(
-          sql,
-          [
-            object.site.id,
-            object.range.from,
-            object.range.to,
-            size,
-            (page - 1) * size
-          ]
-        )
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to,
+          limit: size,
+          offset: (page - 1) * size
+        }
+
+        Sql::ClickHouse.select_all(sql, variables)
       end
 
       def order(sort)

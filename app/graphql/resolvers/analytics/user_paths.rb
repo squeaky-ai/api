@@ -38,24 +38,25 @@ module Resolvers
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000) BETWEEN ? AND ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000, :timezone) BETWEEN :from_date AND :to_date
             ORDER BY
               exited_at ASC
           )
           GROUP BY
             recording_id
           HAVING
-            path[?] = ?
+            path[:position] = :page
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to,
-          position == 'Start' ? 1 : -1,
-          page
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to,
+          position: position == 'Start' ? 1 : -1,
+          page:
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end

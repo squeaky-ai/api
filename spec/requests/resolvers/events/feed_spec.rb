@@ -127,7 +127,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
             'sessionId' => recording_1.session_id,
           },
           'source' => 'web',
-          'timestamp' => '2023-01-22T00:00:00+00:00',
+          'timestamp' => '2023-01-22T00:00:00Z',
           'visitor' => {
             'id' => recording_1.visitor.id.to_s,
             'starred' => false,
@@ -144,7 +144,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
             'sessionId' => recording_2.session_id,
           },
           'source' => 'web',
-          'timestamp' => '2023-01-22T00:00:00+00:00',
+          'timestamp' => '2023-01-22T00:00:00Z',
           'visitor' => {
             'id' => recording_2.visitor.id.to_s,
             'starred' => false,
@@ -212,7 +212,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
           'eventName' => event_capture.name,
           'recording' => nil,
           'source' => 'api',
-          'timestamp' => '2023-01-22T00:00:00+00:00',
+          'timestamp' => '2023-01-22T00:00:00Z',
           'visitor' => {
             'id' => visitor.id.to_s,
             'starred' => false,
@@ -225,7 +225,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
           'eventName' => event_capture.name,
           'recording' => nil,
           'source' => 'api',
-          'timestamp' => '2023-01-22T00:00:00+00:00',
+          'timestamp' => '2023-01-22T00:00:00Z',
           'visitor' => {
             'id' => visitor.id.to_s,
             'starred' => false,

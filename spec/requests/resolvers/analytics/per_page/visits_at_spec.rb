@@ -138,12 +138,12 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsAt, type: :request do
           {
             'count' => 2,
             'day' => 'Fri',
-            'hour' => 15
+            'hour' => 14
           }, 
           {
             'count' => 1,
             'day' => 'Sat',
-            'hour' => 2
+            'hour' => 1
           }
         ]
       )

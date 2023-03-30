@@ -83,6 +83,7 @@ module Resolvers
 
         variables = {
           site_id: object.id,
+          timezone: range.timezone,
           from_date: "#{range.from} 00:00:00",
           to_date: "#{range.to} 23:59:59"
         }

@@ -39,23 +39,24 @@ module Resolvers
             source source,
             data data,
             visitor_id visitor_id,
-            toDateTime(timestamp / 1000) timestamp
+            toDateTime(timestamp / 1000, :timezone) timestamp
           FROM
             custom_events
           WHERE
-            site_id = ? AND
-            visitor_id = ?
+            site_id = :site_id AND
+            visitor_id = :visitor_id
           ORDER BY #{order(sort)}
-          LIMIT ?
-          OFFSET ?
+          LIMIT :limit
+          OFFSET :offset
         SQL
 
-        variables = [
-          object.site_id,
-          object.id,
-          size,
-          (size * (page - 1))
-        ]
+        variables = {
+          site_id: object.site_id,
+          visitor_id: object.id,
+          timezone: context[:timezone],
+          limit: size,
+          offset: (size * (page - 1))
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end

@@ -15,7 +15,7 @@ module EventsService
           WHERE
             site_id = :site_id AND
             name #{rule_expression} AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
       end
 
@@ -34,7 +34,7 @@ module EventsService
           WHERE
             site_id = :site_id AND
             name #{rule_expression} AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDate(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
       end
 
@@ -43,13 +43,13 @@ module EventsService
           SELECT
             COUNT(*) count,
             '#{event.id}' as id,
-            formatDateTime(toDate(timestamp / 1000), :date_format) date_key
+            formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
           FROM
             custom_events
           WHERE
             site_id = :site_id AND
             name #{rule_expression} AND
-            toDate(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDate(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
           GROUP BY date_key
         SQL
       end

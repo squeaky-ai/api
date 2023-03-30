@@ -45,20 +45,23 @@ module Resolvers
             COUNT(DISTINCT recording_id) recording_count,
             MAX(timestamp) last_occurance
           FROM error_events
-          WHERE site_id = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+          WHERE
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY message
           ORDER BY #{order(sort)}
-          LIMIT ?
-          OFFSET ?
+          LIMIT :limit
+          OFFSET :offset
         SQL
 
-        variables = [
-          site_id,
-          range.from,
-          range.to,
-          size,
-          (size * (page - 1))
-        ]
+        variables = {
+          site_id:,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to,
+          limit: size,
+          offset: (size * (page - 1))
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end
@@ -67,14 +70,17 @@ module Resolvers
         sql = <<-SQL
           SELECT COUNT(DISTINCT message) count
           FROM error_events
-          WHERE site_id = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+          WHERE
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
-        variables = [
-          site_id,
-          range.from,
-          range.to
-        ]
+        variables = {
+          site_id:,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
 
         Sql::ClickHouse.select_value(sql, variables)
       end

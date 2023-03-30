@@ -14,17 +14,18 @@ module Resolvers
             recordings
           WHERE
             device_x > 0 AND
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             grouped_device_x
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to
+        }
 
         results = Sql::ClickHouse.select_all(sql, variables)
 

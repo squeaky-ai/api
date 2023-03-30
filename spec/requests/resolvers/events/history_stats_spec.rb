@@ -82,7 +82,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -93,7 +93,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/test',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -104,7 +104,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/something_else',
-            exited_at: (Time.new(2022, 6, 2) + i.days).to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -124,7 +124,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
 
     it 'returns the results' do
       response = subject['data']['site']['eventStats']
-      expect(response).to match_array (
+      expect(response).to match_array(
         [
           {
             'averageEventsPerVisitor' => 4.0,

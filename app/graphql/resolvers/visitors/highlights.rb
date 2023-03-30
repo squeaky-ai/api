@@ -27,8 +27,8 @@ module Resolvers
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             visitor_id
           ORDER BY
@@ -36,7 +36,14 @@ module Resolvers
           LIMIT 5
         SQL
 
-        results = Sql::ClickHouse.select_all(sql, [object.id, range.from, range.to])
+        variables = {
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
+
+        results = Sql::ClickHouse.select_all(sql, variables)
         visitor_ids = results.map { |r| r['visitor_id'] }
 
         Visitor

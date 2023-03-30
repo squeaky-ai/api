@@ -18,7 +18,7 @@ class HeatmapsService
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url
       GROUP BY selector
       ORDER BY count DESC
@@ -38,7 +38,7 @@ class HeatmapsService
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url AND
         relative_to_element_x != 0 AND
         relative_to_element_y != 0
@@ -67,7 +67,7 @@ class HeatmapsService
         WHERE
           site_id = :site_id AND
           viewport_x #{device_expression} AND
-          toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+          toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
           url = :page_url
       )
       GROUP BY x, y
@@ -86,7 +86,7 @@ class HeatmapsService
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url
       GROUP BY
         recording_id
@@ -106,6 +106,7 @@ class HeatmapsService
   def execute_query(sql, **variables)
     variables = {
       site_id:,
+      timezone: range.timezone,
       from_date: range.from,
       to_date: range.to,
       page_url:,

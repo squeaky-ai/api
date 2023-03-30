@@ -9,24 +9,25 @@ module Resolvers
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(disconnected_at / 1000), ?) date_key
+            formatDateTime(toDate(disconnected_at / 1000, :timezone), :date_format) date_key
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             date_key
         SQL
 
         date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to, clickhouse: true)
 
-        variables = [
-          date_format,
-          object.site.id,
-          object.range.from,
-          object.range.to
-        ]
+        variables = {
+          date_format:,
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to
+        }
 
         {
           group_type:,

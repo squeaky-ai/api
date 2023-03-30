@@ -101,7 +101,7 @@ RSpec.describe Resolvers::Visitors::Events, type: :request do
           'id' => anything,
           'recording' => nil,
           'source' => EventCapture::API,
-          'timestamp' => '2023-01-31T19:26:41+00:00'
+          'timestamp' => '2023-01-31T19:26:41Z'
         }
       ])
     end

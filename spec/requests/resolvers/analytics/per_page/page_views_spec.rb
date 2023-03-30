@@ -117,11 +117,11 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 1,
-            'dateKey' => '218'
+            'dateKey' => '217'
           },
           {
             'count' => 1,
-            'dateKey' => '219'
+            'dateKey' => '218'
           }
         ]
       )
@@ -207,11 +207,11 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 2,
-            'dateKey' => '218'
+            'dateKey' => '217'
           }, 
           {
             'count' => 1,
-            'dateKey' => '219'
+            'dateKey' => '218'
           }
         ]
       )

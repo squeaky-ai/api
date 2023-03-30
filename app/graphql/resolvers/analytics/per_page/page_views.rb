@@ -34,24 +34,25 @@ module Resolvers
           sql = <<-SQL
             SELECT
               COUNT(*) count,
-              formatDateTime(toDateTime(exited_at / 1000), ?) date_key
+              formatDateTime(toDateTime(exited_at / 1000, :timezone), :date_format) date_key
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000)::date BETWEEN ? AND ? AND
-              url = ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
+              url = :url
             GROUP BY date_key
             ORDER BY date_key ASC
           SQL
 
-          variables = [
-            date_format,
-            object.site.id,
-            from_date,
-            to_date,
-            object.page
-          ]
+          variables = {
+            date_format:,
+            site_id: object.site.id,
+            timezone: object.range.timezone,
+            from_date:,
+            to_date:,
+            url: object.page
+          }
 
           Sql::ClickHouse.select_all(sql, variables)
         end
