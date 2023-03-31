@@ -83,6 +83,7 @@ module Resolvers
           site_id: object.id,
           from_date: range.from,
           to_date: range.to,
+          timezone: range.timezone,
           date_format:
         }
 
