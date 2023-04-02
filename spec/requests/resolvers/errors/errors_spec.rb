@@ -11,7 +11,9 @@ errors_query = <<-GRAPHQL
           message
           errorCount
           recordingCount
-          lastOccurance
+          lastOccurance {
+            iso8601
+          }
         }
         pagination {
           pageSize
@@ -86,7 +88,9 @@ RSpec.describe Resolvers::Errors::Errors, type: :request do
         {
           'id' => 'RXJyb3I6IE9oIG5vIQ==',
           'errorCount' => 1,
-          'lastOccurance' => '1657080000000',
+          'lastOccurance' => {
+            'iso8601' => '2022-07-06T04:00:00Z'
+          },
           'message' => 'Error: Oh no!',
           'recordingCount' => 1
         }

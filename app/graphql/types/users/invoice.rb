@@ -23,7 +23,6 @@ module Types
         DateFormatter.format(date: object.due_at, timezone: context[:timezone])
       end
 
-
       def paid_at
         DateFormatter.format(date: object.paid_at, timezone: context[:timezone])
       end

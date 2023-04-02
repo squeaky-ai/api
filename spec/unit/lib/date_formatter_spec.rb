@@ -12,7 +12,8 @@ RSpec.describe DateFormatter do
     it 'returns the values' do
       expect(subject).to eq(
         iso8601: '2023-04-02T00:00:00+01:00',
-        nice_date: 'Sun, 2 Apr 2023 00:00'
+        nice_date: 'Sun, 2 Apr 2023',
+        nice_date_time: 'Sun, 2 Apr 2023 00:00'
       )  
     end
   end
@@ -24,7 +25,8 @@ RSpec.describe DateFormatter do
     it 'returns the values' do
       expect(subject).to eq(
         iso8601: '2023-04-02T09:12:03+01:00',
-        nice_date: 'Sun, 2 Apr 2023 09:12'
+        nice_date: 'Sun, 2 Apr 2023',
+        nice_date_time: 'Sun, 2 Apr 2023 09:12'
       )  
     end
   end
@@ -36,7 +38,8 @@ RSpec.describe DateFormatter do
     it 'returns the values' do
       expect(subject).to eq(
         iso8601: '2023-04-02T09:12:03+01:00',
-        nice_date: 'Sun, 2 Apr 2023 09:12'
+        nice_date: 'Sun, 2 Apr 2023',
+        nice_date_time: 'Sun, 2 Apr 2023 09:12'
       )  
     end
   end

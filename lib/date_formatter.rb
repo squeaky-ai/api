@@ -16,7 +16,8 @@ class DateFormatter
   def to_date_object
     {
       iso8601: date.iso8601,
-      nice_date: date.strftime('%a, %-d %b %Y %H:%M')
+      nice_date: date.strftime('%a, %-d %b %Y'),
+      nice_date_time: date.strftime('%a, %-d %b %Y %H:%M')
     }
   end
 
