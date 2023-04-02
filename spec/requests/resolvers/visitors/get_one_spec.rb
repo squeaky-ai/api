@@ -15,8 +15,12 @@ visitor_query = <<-GRAPHQL
           total
           unique
         }
-        firstViewedAt
-        lastActivityAt
+        firstViewedAt {
+          iso8601
+        }
+        lastActivityAt {
+          iso8601
+        }
         language
         devices {
           viewportX

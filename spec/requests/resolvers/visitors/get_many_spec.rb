@@ -12,8 +12,12 @@ visitors_query = <<-GRAPHQL
             total
             new
           }
-          firstViewedAt
-          lastActivityAt
+          firstViewedAt {
+            iso8601
+          }
+          lastActivityAt {
+            iso8601
+          }
           language
           devices {
             viewportX

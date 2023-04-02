@@ -6,7 +6,11 @@ module Types
       graphql_name 'FeedbackNpsReply'
 
       field :score, Integer, null: false
-      field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
+      field :timestamp, Types::Common::Dates, null: false
+
+      def timestamp
+        DateFormatter.format(date: object[:timestamp], timezone: context[:timezone])
+      end
     end
   end
 end

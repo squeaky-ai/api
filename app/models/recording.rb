@@ -55,19 +55,11 @@ class Recording < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def duration
-    (self[:disconnected_at] || 0) - (self[:connected_at] || 0)
+    (disconnected_at || 0) - (connected_at || 0)
   end
 
   def language
     Locale.get_language(locale)
-  end
-
-  def connected_at
-    Time.at(self[:connected_at] / 1000).utc
-  end
-
-  def disconnected_at
-    Time.at(self[:disconnected_at] / 1000).utc
   end
 
   def country_name

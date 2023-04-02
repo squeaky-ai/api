@@ -12,7 +12,9 @@ visitor_events_query = <<-GRAPHQL
           items {
             id
             eventName
-            timestamp
+            timestamp {
+              iso8601
+            }
             source
             data
             recording {
@@ -101,7 +103,9 @@ RSpec.describe Resolvers::Visitors::Events, type: :request do
           'id' => anything,
           'recording' => nil,
           'source' => EventCapture::API,
-          'timestamp' => '2023-01-31T19:26:41Z'
+          'timestamp' => {
+            'iso8601' => '2023-01-31T19:26:41Z'
+          }
         }
       ])
     end

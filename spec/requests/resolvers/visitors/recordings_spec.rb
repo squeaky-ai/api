@@ -17,8 +17,12 @@ visitor_recordings_query = <<-GRAPHQL
             pageViews
             pageCount
             sessionId
-            connectedAt
-            disconnectedAt
+            connectedAt {
+              iso8601
+            }
+            disconnectedAt {
+              iso8601
+            }
           }
           pagination {
             pageSize

@@ -15,7 +15,9 @@ sites_admin_query = <<-GRAPHQL
             name
           }
           uuid
-          verifiedAt
+          verifiedAt {
+            iso8601
+          }
           team {
             id
             role

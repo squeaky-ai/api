@@ -17,8 +17,12 @@ blog_post_query = <<-GRAPHQL
       metaDescription
       slug
       body
-      createdAt
-      updatedAt
+      createdAt {
+        iso8601
+      }
+      updatedAt {
+        iso8601
+      }
     }
   }
 GRAPHQL

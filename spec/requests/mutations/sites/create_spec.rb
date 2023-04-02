@@ -15,7 +15,9 @@ site_create_mutation = <<-GRAPHQL
         name
       }
       uuid
-      verifiedAt
+      verifiedAt {
+        iso8601
+      }
       team {
         id
         role

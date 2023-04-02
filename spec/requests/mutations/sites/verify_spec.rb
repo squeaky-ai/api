@@ -6,7 +6,9 @@ site_verify_mutation = <<-GRAPHQL
   mutation($input: SitesVerifyInput!) {
     siteVerify(input: $input) {
       id
-      verifiedAt
+      verifiedAt {
+        iso8601
+      }
     }
   }
 GRAPHQL

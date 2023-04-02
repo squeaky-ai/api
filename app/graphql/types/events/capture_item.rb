@@ -14,7 +14,11 @@ module Types
       field :group_ids, [String, { null: false }], null: false
       field :group_names, [String, { null: false }], null: false
       field :source, String, null: true
-      field :last_counted_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :last_counted_at, Types::Common::Dates, null: true
+
+      def last_counted_at
+        DateFormatter.format(date: object.last_counted_at, timezone: context[:timezone])
+      end
     end
   end
 end
