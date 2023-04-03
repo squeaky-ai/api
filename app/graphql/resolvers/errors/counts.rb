@@ -42,7 +42,7 @@ module Resolvers
             error_events
           WHERE
             site_id = :site_id AND
-            toDate(timestamp / 1000, :timezome) BETWEEN :from_date AND :to_date AND
+            toDate(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date AND
             message = :message
           GROUP BY date_key
           FORMAT JSON
