@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-class HeatmapsService # rubocop:disable Metrics/ClassLength
-  def initialize(site_id:, from_date:, to_date:, page_url:, device:)
+class HeatmapsService
+  def initialize(site_id:, range:, page_url:, device:)
     @site_id = site_id
-    @from_date = from_date
-    @to_date = to_date
+    @range = range
     @page_url = page_url
     @device = device
   end
@@ -19,7 +18,7 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url
       GROUP BY selector
       ORDER BY count DESC
@@ -39,7 +38,7 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url AND
         relative_to_element_x != 0 AND
         relative_to_element_y != 0
@@ -68,7 +67,7 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
         WHERE
           site_id = :site_id AND
           viewport_x #{device_expression} AND
-          toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+          toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
           url = :page_url
       )
       GROUP BY x, y
@@ -87,7 +86,7 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
       WHERE
         site_id = :site_id AND
         viewport_x #{device_expression} AND
-        toDate(timestamp / 1000)::date BETWEEN :from_date AND :to_date AND
+        toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
         url = :page_url
       GROUP BY
         recording_id
@@ -98,7 +97,7 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
 
   private
 
-  attr_reader :site_id, :from_date, :to_date, :page_url, :device
+  attr_reader :site_id, :range, :page_url, :device
 
   def device_expression
     Recording.device_expression(device)
@@ -107,8 +106,9 @@ class HeatmapsService # rubocop:disable Metrics/ClassLength
   def execute_query(sql, **variables)
     variables = {
       site_id:,
-      from_date:,
-      to_date:,
+      timezone: range.timezone,
+      from_date: range.from,
+      to_date: range.to,
       page_url:,
       **variables
     }

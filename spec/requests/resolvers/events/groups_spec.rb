@@ -16,7 +16,9 @@ event_groups_query = <<-GRAPHQL
             matcher
           }
           count
-          lastCountedAt
+          lastCountedAt {
+            iso8601
+          }
         }
       }
     }

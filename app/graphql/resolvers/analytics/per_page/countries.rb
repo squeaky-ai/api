@@ -28,21 +28,22 @@ module Resolvers
             INNER JOIN
               page_events ON page_events.recording_id = recordings.recording_id
             WHERE
-              recordings.site_id = ? AND
-              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ? AND
-              page_events.url = ?
+              recordings.site_id = :site_id AND
+              toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
+              page_events.url = :url
             GROUP BY
               country_code
             ORDER BY
               country_code_code DESC
           SQL
 
-          variables = [
-            object.site.id,
-            object.range.from,
-            object.range.to,
-            object.page
-          ]
+          variables = {
+            site_id: object.site.id,
+            timezone: object.range.timezone,
+            from_date: object.range.from,
+            to_date: object.range.to,
+            url: object.page
+          }
 
           Sql::ClickHouse.select_all(sql, variables)
         end

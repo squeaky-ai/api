@@ -12,13 +12,15 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(page:, size:, sort:, from_date:, to_date:)
-        error_results = results(object.id, from_date, to_date, size, page, sort)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
+        error_results = results(object.id, range, size, page, sort)
 
         {
           items: format_items(error_results),
           pagination: {
             page_size: size,
-            total: total_count(object.id, from_date, to_date),
+            total: total_count(object.id, range),
             sort:
           }
         }
@@ -35,7 +37,7 @@ module Resolvers
         end
       end
 
-      def results(site_id, from_date, to_date, size, page, sort) # rubocop:disable Metrics/ParameterLists
+      def results(site_id, range, size, page, sort)
         sql = <<-SQL
           SELECT
             message,
@@ -43,36 +45,42 @@ module Resolvers
             COUNT(DISTINCT recording_id) recording_count,
             MAX(timestamp) last_occurance
           FROM error_events
-          WHERE site_id = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+          WHERE
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY message
           ORDER BY #{order(sort)}
-          LIMIT ?
-          OFFSET ?
+          LIMIT :limit
+          OFFSET :offset
         SQL
 
-        variables = [
-          site_id,
-          from_date,
-          to_date,
-          size,
-          (size * (page - 1))
-        ]
+        variables = {
+          site_id:,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to,
+          limit: size,
+          offset: (size * (page - 1))
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end
 
-      def total_count(site_id, from_date, to_date)
+      def total_count(site_id, range)
         sql = <<-SQL
           SELECT COUNT(DISTINCT message) count
           FROM error_events
-          WHERE site_id = ? AND toDate(timestamp / 1000)::date BETWEEN ? AND ?
+          WHERE
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
-        variables = [
-          site_id,
-          from_date,
-          to_date
-        ]
+        variables = {
+          site_id:,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
 
         Sql::ClickHouse.select_value(sql, variables)
       end

@@ -9,6 +9,8 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         sql = <<-SQL
           SELECT
             url url,
@@ -16,15 +18,22 @@ module Resolvers
           FROM
             page_events
           WHERE
-            site_id = ? AND
-            toDate(exited_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             url
           ORDER BY
             count DESC
         SQL
 
-        Sql::ClickHouse.select_all(sql, [object.id, from_date, to_date])
+        variables = {
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
+
+        Sql::ClickHouse.select_all(sql, variables)
       end
     end
   end

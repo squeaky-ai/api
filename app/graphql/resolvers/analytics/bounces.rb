@@ -20,20 +20,21 @@ module Resolvers
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000)::date BETWEEN ? AND ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
             GROUP BY url
           ) as x
           ORDER BY percentage DESC
-          LIMIT ?
+          LIMIT :size
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to,
-          size
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to,
+          size:
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end

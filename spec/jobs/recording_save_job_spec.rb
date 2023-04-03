@@ -47,8 +47,8 @@ RSpec.describe RecordingSaveJob, type: :job do
       expect(recording.timezone).to eq 'Europe/London'
       expect(recording.country_code).to eq 'GB'
       expect(recording.session_id).to eq event['session_id']
-      expect(recording.connected_at).to eq Time.at(1637177342265 / 1000).utc
-      expect(recording.disconnected_at).to eq Time.at(1637177353431 / 1000).utc
+      expect(recording.connected_at).to eq 1637177342265
+      expect(recording.disconnected_at).to eq 1637177353431
       expect(recording.pages_count).to eq 1
       expect(recording.utm_source).to eq 'google'
       expect(recording.utm_medium).to eq 'organic'

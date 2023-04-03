@@ -9,15 +9,17 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
         {
-          active: active(from_date, to_date),
-          newest: newest(from_date, to_date)
+          active: active(range),
+          newest: newest(range)
         }
       end
 
       private
 
-      def active(from_date, to_date)
+      def active(range)
         sql = <<-SQL
           SELECT
             DISTINCT(visitor_id) visitor_id,
@@ -25,8 +27,8 @@ module Resolvers
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             visitor_id
           ORDER BY
@@ -34,7 +36,14 @@ module Resolvers
           LIMIT 5
         SQL
 
-        results = Sql::ClickHouse.select_all(sql, [object.id, from_date, to_date])
+        variables = {
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
+
+        results = Sql::ClickHouse.select_all(sql, variables)
         visitor_ids = results.map { |r| r['visitor_id'] }
 
         Visitor
@@ -46,9 +55,9 @@ module Resolvers
           end
       end
 
-      def newest(from_date, to_date)
+      def newest(range)
         Visitor
-          .where('site_id = ? AND created_at BETWEEN ? AND ?', object.id, from_date, to_date)
+          .where('site_id = ? AND created_at BETWEEN ? AND ?', object.id, range.from, range.to)
           .order('created_at DESC')
           .limit(5)
       end

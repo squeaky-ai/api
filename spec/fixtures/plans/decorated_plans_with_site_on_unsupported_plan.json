@@ -130,7 +130,8 @@
         "heatmaps_click_positions",
         "heatmaps_scroll",
         "nps",
-        "sentiment"
+        "sentiment",
+        "data_export"
       ],
       "integrations": {
         "duda": "5d6b2b10-9c27-49e5-b3d7-a78b176f80b4"
@@ -221,7 +222,8 @@
         "heatmaps_mouse",
         "heatmaps_scroll",
         "nps",
-        "sentiment"
+        "sentiment",
+        "data_export"
       ]
     },
     "show": false,
@@ -301,7 +303,8 @@
         "heatmaps_mouse",
         "heatmaps_scroll",
         "nps",
-        "sentiment"
+        "sentiment",
+        "data_export"
       ]
     },
     "show": true,
@@ -382,7 +385,8 @@
         "heatmaps_mouse",
         "heatmaps_scroll",
         "nps",
-        "sentiment"
+        "sentiment",
+        "data_export"
       ],
       "integrations": {
         "duda": "a808e6dd-fbdc-4faa-8534-d417287e9367"

@@ -6,6 +6,7 @@ module Resolvers
       type [Types::Admin::RecordingsStored, { null: false }], null: false
 
       def resolve_with_timings
+        # TODO: Timezone
         Rails.cache.fetch('data_cache:AdminRecordingsStored', expires_in: 1.hour) do
           sql = <<-SQL
             SELECT

@@ -8,7 +8,11 @@ class GraphqlController < ApplicationController
       params[:query],
       variables:,
       operation_name: params[:operationName],
-      context: { current_user:, request: }
+      context: {
+        current_user:,
+        request:,
+        timezone:
+      }
     )
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -29,6 +33,10 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"
     end
+  end
+
+  def timezone
+    request.headers['x-squeaky-timezone'] || 'UTC'
   end
 
   def handle_error_in_development(error)

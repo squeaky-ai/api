@@ -28,7 +28,7 @@ RSpec.describe EventsService::Types::UtmParameters do
           WHERE
             site_id = :site_id AND
             utm_source = 'google' AND
-            toDateTime(disconnected_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(disconnected_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -51,7 +51,7 @@ RSpec.describe EventsService::Types::UtmParameters do
           WHERE
             site_id = :site_id AND
             utm_source != 'google' AND
-            toDateTime(disconnected_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(disconnected_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -74,7 +74,7 @@ RSpec.describe EventsService::Types::UtmParameters do
           WHERE
             site_id = :site_id AND
             utm_source LIKE '%google%' AND
-            toDateTime(disconnected_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(disconnected_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -97,7 +97,7 @@ RSpec.describe EventsService::Types::UtmParameters do
           WHERE
             site_id = :site_id AND
             utm_source NOT LIKE '%google%' AND
-            toDateTime(disconnected_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(disconnected_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -120,7 +120,7 @@ RSpec.describe EventsService::Types::UtmParameters do
           WHERE
             site_id = :site_id AND
             utm_source LIKE 'google%' AND
-            toDateTime(disconnected_at / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(disconnected_at / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

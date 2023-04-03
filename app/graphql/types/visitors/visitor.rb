@@ -9,8 +9,8 @@ module Types
       field :visitor_id, String, null: false
       field :viewed, Boolean, null: true
       field :recording_count, Types::Visitors::RecordingCount, null: true
-      field :first_viewed_at, GraphQL::Types::ISO8601DateTime, null: true
-      field :last_activity_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :first_viewed_at, Types::Common::Dates, null: true
+      field :last_activity_at, Types::Common::Dates, null: true
       field :language, String, null: true
       field :page_views_count, Types::Visitors::PagesCount, null: true
       field :starred, Boolean, null: true
@@ -24,7 +24,19 @@ module Types
       field :export, resolver: Resolvers::Visitors::Export
       field :events, resolver: Resolvers::Visitors::Events
       field :source, Types::Common::Source, null: true
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :created_at, Types::Common::Dates, null: false
+
+      def created_at
+        DateFormatter.format(date: object.created_at, timezone: context[:timezone])
+      end
+
+      def first_viewed_at
+        DateFormatter.format(date: object.first_viewed_at, timezone: context[:timezone])
+      end
+
+      def last_activity_at
+        DateFormatter.format(date: object.last_activity_at, timezone: context[:timezone])
+      end
     end
   end
 end

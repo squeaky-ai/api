@@ -105,15 +105,15 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 2,
-            'dateKey' => '217'
+            'dateKey' => '216'
           },
           {
             'count' => 1,
-            'dateKey' => '218'
+            'dateKey' => '217'
           },
           {
             'count' => 2,
-            'dateKey' => '219'
+            'dateKey' => '218'
           }
         ]
       )
@@ -194,15 +194,15 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'items' =>  [
           {
             'count' => 1,
-            'dateKey' => '217'
+            'dateKey' => '216'
           }, 
           {
             'count' => 3,
-            'dateKey' => '218'
+            'dateKey' => '217'
           },
           {
             'count' => 2,
-            'dateKey' => '219'
+            'dateKey' => '218'
           }
         ]
       )

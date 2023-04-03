@@ -78,7 +78,8 @@ RSpec.describe Plans do
             'heatmaps_mouse',
             'heatmaps_scroll',
             'nps',
-            'sentiment'
+            'sentiment',
+            'data_export'
           ],
           site_limit: nil,
           integrations: {

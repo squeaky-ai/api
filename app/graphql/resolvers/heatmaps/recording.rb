@@ -17,6 +17,8 @@ module Resolvers
       private
 
       def suitable_recording_id # rubocop:disable Metrics/AbcSize
+        range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
+
         sql = <<-SQL
           SELECT
             recording_id
@@ -25,25 +27,26 @@ module Resolvers
           LEFT JOIN
             recordings ON recordings.recording_id = page_events.recording_id
           WHERE
-            recordings.recording_id NOT IN (?) AND
-            recordings.site_id = ? AND
-            page_events.url = ? AND
+            recordings.recording_id NOT IN (:recording_ids) AND
+            recordings.site_id = :site_id AND
+            page_events.url = :url AND
             page_events.exited_at - page_events.entered_at >= #{MIN_PAGE_DURATION} AND
             recordings.viewport_x #{device_expression} AND
-            toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+            toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           ORDER BY
             (recordings.disconnected_at - recordings.connected_at) ASC
           LIMIT
             1;
         SQL
 
-        variables = [
-          object.exclude_recording_ids.empty? ? [0] : object.exclude_recording_ids,
-          object.site.id,
-          object.page,
-          object.from_date,
-          object.to_date
-        ]
+        variables = {
+          recording_ids: object.exclude_recording_ids.empty? ? [0] : object.exclude_recording_ids,
+          site_id: object.site.id,
+          url: object.page,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
 
         Sql::ClickHouse.select_all(sql, variables).first&.[]('recording_id')
       end

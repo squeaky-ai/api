@@ -3,6 +3,7 @@
 module DataCacheService
   module Pages
     class Count < DataCacheService::Base
+      # TODO: Timezone
       def call
         cache do
           sql = <<-SQL

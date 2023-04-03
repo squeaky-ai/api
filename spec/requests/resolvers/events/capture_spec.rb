@@ -15,7 +15,9 @@ event_capture_query = <<-GRAPHQL
             value
           }
           count
-          lastCountedAt
+          lastCountedAt {
+            iso8601
+          }
         }
         pagination {
           pageSize

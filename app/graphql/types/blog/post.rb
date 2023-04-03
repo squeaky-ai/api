@@ -17,8 +17,16 @@ module Types
       field :body, String, null: false
       field :scripts, [String, { null: false }], null: false
       field :covering_enabled, Boolean, null: false
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :created_at, Types::Common::Dates, null: false
+      field :updated_at, Types::Common::Dates, null: false
+
+      def created_at
+        DateFormatter.format(date: object.created_at, timezone: context[:timezone])
+      end
+
+      def updated_at
+        DateFormatter.format(date: object.updated_at, timezone: context[:timezone])
+      end
     end
   end
 end

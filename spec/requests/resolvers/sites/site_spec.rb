@@ -14,7 +14,9 @@ site_query = <<-GRAPHQL
         name
       }
       uuid
-      verifiedAt
+      verifiedAt {
+        iso8601
+      }
       team {
         id
         role
@@ -68,7 +70,9 @@ RSpec.describe Resolvers::Sites::Site, type: :request do
             'name' => site.plan.name
           },
           'uuid' => site.uuid,
-          'verifiedAt' => site.verified_at.iso8601,
+          'verifiedAt' => {
+            'iso8601' => site.verified_at.iso8601
+          },
           'team' => [
             {
               'id' => site.team[0].id.to_s,

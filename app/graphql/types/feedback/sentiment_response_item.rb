@@ -12,7 +12,11 @@ module Types
       field :device, Types::Recordings::Device, null: false
       field :session_id, String, null: false
       field :recording_id, String, null: false
-      field :timestamp, GraphQL::Types::ISO8601DateTime, null: false
+      field :timestamp, Types::Common::Dates, null: false
+
+      def timestamp
+        DateFormatter.format(date: object[:timestamp], timezone: context[:timezone])
+      end
     end
   end
 end

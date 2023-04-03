@@ -28,7 +28,7 @@ RSpec.describe EventsService::Types::Error do
           WHERE
             site_id = :site_id AND
             replaceOne(message, 'Error: ', '') = 'Oh no' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -51,7 +51,7 @@ RSpec.describe EventsService::Types::Error do
           WHERE
             site_id = :site_id AND
             replaceOne(message, 'Error: ', '') != 'Oh no' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -74,7 +74,7 @@ RSpec.describe EventsService::Types::Error do
           WHERE
             site_id = :site_id AND
             replaceOne(message, 'Error: ', '') LIKE '%Oh no%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -97,7 +97,7 @@ RSpec.describe EventsService::Types::Error do
           WHERE
             site_id = :site_id AND
             replaceOne(message, 'Error: ', '') NOT LIKE '%Oh no%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end
@@ -120,7 +120,7 @@ RSpec.describe EventsService::Types::Error do
           WHERE
             site_id = :site_id AND
             replaceOne(message, 'Error: ', '') LIKE 'Status code%' AND
-            toDateTime(timestamp / 1000) BETWEEN :from_date AND :to_date
+            toDateTime(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
         SQL
         expect(subject).to eq(sql)
       end

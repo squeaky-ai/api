@@ -11,7 +11,9 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
-        date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
+        date_format, group_type, group_range = Charts.date_groups(range.from, range.to, clickhouse: true)
 
         capture_events = event_captures(group_ids, capture_ids)
 
@@ -19,7 +21,7 @@ module Resolvers
         # so return early
         return respond(group_type, group_range, []) if capture_events.empty?
 
-        results = aggregated_results(capture_events, from_date, to_date, date_format)
+        results = aggregated_results(capture_events, range, date_format)
 
         respond(group_type, group_range, aggregate_results(results, group_ids, capture_ids))
       end
@@ -70,7 +72,7 @@ module Resolvers
         end
       end
 
-      def aggregated_results(capture_events, from_date, to_date, date_format)
+      def aggregated_results(capture_events, range, date_format)
         sql = <<-SQL
           SELECT results.*
           FROM (#{union_queries(capture_events).join(' ')}) results
@@ -79,8 +81,9 @@ module Resolvers
 
         variables = {
           site_id: object.id,
-          from_date:,
-          to_date:,
+          from_date: range.from,
+          to_date: range.to,
+          timezone: range.timezone,
           date_format:
         }
 

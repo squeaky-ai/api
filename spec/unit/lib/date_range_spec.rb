@@ -50,7 +50,7 @@ RSpec.describe DateRange do
 
   it 'exposes the dates' do
     scenarios.each do |scenario|
-      range = DateRange.new(scenario[:in][:from], scenario[:in][:to])
+      range = DateRange.new(from_date: scenario[:in][:from], to_date: scenario[:in][:to])
       expect(range.from).to eq(scenario[:in][:from])
       expect(range.to).to eq(scenario[:in][:to])
     end
@@ -58,7 +58,7 @@ RSpec.describe DateRange do
 
   it 'offsets the dates by their diff' do
     scenarios.each do |scenario|
-      range = DateRange.new(scenario[:in][:from], scenario[:in][:to])
+      range = DateRange.new(from_date: scenario[:in][:from], to_date: scenario[:in][:to])
       expect(range.trend_from).to eq(scenario[:out][:from])
       expect(range.trend_to).to eq(scenario[:out][:to])
     end

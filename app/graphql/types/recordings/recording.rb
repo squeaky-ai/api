@@ -22,8 +22,8 @@ module Types
       field :country_code, String, null: true
       field :country_name, String, null: true
       field :device, Types::Recordings::Device, null: false
-      field :connected_at, GraphQL::Types::ISO8601DateTime, null: true
-      field :disconnected_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :connected_at, Types::Common::Dates, null: true
+      field :disconnected_at, Types::Common::Dates, null: true
       field :tags, [Types::Tags::Tag, { null: false }], null: false
       field :notes, [Types::Notes::Note, { null: false }], null: false
       field :events, resolver: Resolvers::Recordings::Events
@@ -32,6 +32,14 @@ module Types
       field :sentiment, Types::Feedback::SentimentResponseItem, null: true
       field :activity_duration, GraphQL::Types::BigInt, null: true
       field :inactivity, [[GraphQL::Types::BigInt, { null: false }], { null: false }], null: false
+
+      def connected_at
+        DateFormatter.format(date: object.connected_at, timezone: context[:timezone])
+      end
+
+      def disconnected_at
+        DateFormatter.format(date: object.disconnected_at, timezone: context[:timezone])
+      end
     end
   end
 end

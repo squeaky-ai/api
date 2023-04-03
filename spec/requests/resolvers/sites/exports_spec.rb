@@ -8,9 +8,15 @@ site_data_exports_query = <<-GRAPHQL
       dataExports {
         filename
         exportType
-        exportedAt
-        startDate
-        endDate
+        exportedAt {
+          iso8601
+        }
+        startDate {
+          iso8601
+        }
+        endDate {
+          iso8601
+        }
       }
     }
   }
@@ -51,15 +57,23 @@ RSpec.describe 'SitesExports', type: :request do
           'exportType' => 0,
           'exportedAt' => nil,
           'filename' => 'test.csv',
-          'startDate' => '2023-03-16',
-          'endDate' => '2023-03-16'
+          'startDate' => {
+            'iso8601' => '2023-03-16T00:00:00Z'
+          },
+          'endDate' => {
+            'iso8601' => '2023-03-16T00:00:00Z'
+          }
         },
         {
           'exportType' => 1,
           'exportedAt' => nil,
           'filename' => 'test.csv',
-          'startDate' => '2023-03-16',
-          'endDate' => '2023-03-16'
+          'startDate' => {
+            'iso8601' => '2023-03-16T00:00:00Z'
+          },
+          'endDate' => {
+            'iso8601' => '2023-03-16T00:00:00Z'
+          }
         }
       ])
     end

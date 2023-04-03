@@ -64,7 +64,7 @@ RSpec.describe Resolvers::Recordings::DaysSinceLastRecording, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: (Time.now - 5.days).to_i * 1000
+          disconnected_at: (Time.now.utc - 5.days).to_i * 1000
         }
       end
 

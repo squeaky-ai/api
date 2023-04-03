@@ -10,9 +10,11 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:, error_id: nil)
-        date_format, group_type, group_range = Charts.date_groups(from_date, to_date, clickhouse: true)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
-        items = query(date_format, error_id, from_date, to_date)
+        date_format, group_type, group_range = Charts.date_groups(range.from, range.to, clickhouse: true)
+
+        items = query(date_format, error_id, range)
 
         {
           group_type:,
@@ -23,60 +25,62 @@ module Resolvers
 
       private
 
-      def query(date_format, error_id, from_date, to_date)
+      def query(date_format, error_id, range)
         if error_id.nil?
-          query_without_error_id(date_format, from_date, to_date)
+          query_without_error_id(date_format, range)
         else
-          query_with_error_id(date_format, error_id, from_date, to_date)
+          query_with_error_id(date_format, error_id, range)
         end
       end
 
-      def query_with_error_id(date_format, error_id, from_date, to_date)
+      def query_with_error_id(date_format, error_id, range)
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(timestamp / 1000), ?) date_key
+            formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
           FROM
             error_events
           WHERE
-            site_id = ? AND
-            toDate(timestamp / 1000) BETWEEN ? AND ? AND
-            message = ?
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezome) BETWEEN :from_date AND :to_date AND
+            message = :message
           GROUP BY date_key
           FORMAT JSON
         SQL
 
-        variables = [
-          date_format,
-          object.id,
-          from_date,
-          to_date,
-          Base64.decode64(error_id)
-        ]
+        variables = {
+          date_format:,
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to,
+          message: Base64.decode64(error_id)
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end
 
-      def query_without_error_id(date_format, from_date, to_date)
+      def query_without_error_id(date_format, range)
         sql = <<-SQL
           SELECT
             COUNT(*) count,
-            formatDateTime(toDate(timestamp / 1000), ?) date_key
+            formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
           FROM
             error_events
           WHERE
-            site_id = ? AND
-            toDate(timestamp / 1000) BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(timestamp / 1000, :timezone) BETWEEN :from_date AND :to_date
           GROUP BY date_key
           FORMAT JSON
         SQL
 
-        variables = [
-          date_format,
-          object.id,
-          from_date,
-          to_date
-        ]
+        variables = {
+          date_format:,
+          site_id: object.id,
+          timezone: range.timezone,
+          from_date: range.from,
+          to_date: range.to
+        }
 
         Sql::ClickHouse.select_all(sql, variables)
       end

@@ -7,8 +7,16 @@ module Types
 
       field :id, ID, null: false
       field :url, String, null: false
-      field :entered_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :exited_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :entered_at, Types::Common::Dates, null: false
+      field :exited_at, Types::Common::Dates, null: false
+
+      def entered_at
+        DateFormatter.format(date: object.entered_at, timezone: context[:timezone])
+      end
+
+      def exited_at
+        DateFormatter.format(date: object.exited_at, timezone: context[:timezone])
+      end
     end
   end
 end

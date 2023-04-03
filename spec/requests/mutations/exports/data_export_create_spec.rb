@@ -7,9 +7,15 @@ data_export_create_mutation = <<-GRAPHQL
     dataExportCreate(input: $input) {
       filename
       exportType
-      exportedAt
-      startDate
-      endDate
+      exportedAt {
+        iso8601
+      }
+      startDate {
+        iso8601
+      }
+      endDate {
+        iso8601
+      }
     }
   }
 GRAPHQL

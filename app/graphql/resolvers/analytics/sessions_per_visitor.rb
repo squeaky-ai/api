@@ -28,18 +28,19 @@ module Resolvers
             FROM
               recordings
             WHERE
-              site_id = ? AND
-              toDate(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
+              site_id = :site_id AND
+              toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
             GROUP BY
               visitor_id
           )
         SQL
 
-        variables = [
-          object.site.id,
-          from_date,
-          to_date
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date:,
+          to_date:
+        }
 
         Sql::ClickHouse.select_value(sql, variables) || 0
       end

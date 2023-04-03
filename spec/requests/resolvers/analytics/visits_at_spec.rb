@@ -85,17 +85,17 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
           {
             'count' => 1,
             'day' => 'Thu', 
-            'hour' => 8
+            'hour' => 7
           },
           {
             'count' => 2,
             'day' => 'Fri', 
-            'hour' => 15
+            'hour' => 14
           },
           {
             'count' => 1, 
             'day' => 'Sat',
-            'hour' => 2
+            'hour' => 1
           }
         ]
       )

@@ -13,7 +13,9 @@ event_capture_create_mutation = <<-GRAPHQL
         value
       }
       count
-      lastCountedAt
+      lastCountedAt {
+        iso8601
+      }
     }
   }
 GRAPHQL

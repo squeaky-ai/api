@@ -99,7 +99,8 @@ RSpec.describe StripeService::Types::InvoicePaid do
             'heatmaps_mouse',
             'heatmaps_scroll',
             'nps', 
-            'sentiment'
+            'sentiment',
+            'data_export'
           ])
           .and change { billing.site.plan.team_member_limit }.from(5).to(nil)
           .and change { billing.site.plan.max_monthly_recordings }.from(3000).to(10000)

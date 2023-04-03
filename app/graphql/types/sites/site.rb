@@ -15,7 +15,7 @@ module Types
       field :provider, String, null: true
       field :provider_uuid, String, null: true
       field :provider_auth, Types::Sites::ProviderAuth, null: true
-      field :verified_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :verified_at, Types::Common::Dates, null: true
       field :team, [Types::Teams::Team], null: false
       field :days_since_last_recording, resolver: Resolvers::Recordings::DaysSinceLastRecording
       field :notes, Types::Notes::Notes, resolver: Resolvers::Notes::Notes
@@ -85,8 +85,12 @@ module Types
       end
       field :api_key, String, null: true
       field :data_exports, [Types::Exports::DataExport, { null: false }], null: false
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :created_at, Types::Common::Dates, null: false
+      field :updated_at, Types::Common::Dates, null: true
+
+      def magic_erasure_enabled
+        object.magic_erasure_enabled_for_user?(context[:current_user])
+      end
 
       def analytics(from_date:, to_date:)
         build_nested_args(from_date:, to_date:)
@@ -100,17 +104,25 @@ module Types
         build_nested_args(from_date:, to_date:)
       end
 
+      def error(error_id:, from_date:, to_date:)
+        build_nested_args(from_date:, to_date:, error_id:)
+      end
+
       def heatmaps(**kwargs)
         h = { site: object, **kwargs }
         Struct.new(*h.keys).new(*h.values)
       end
 
-      def error(error_id:, from_date:, to_date:)
-        build_nested_args(from_date:, to_date:, error_id:)
+      def created_at
+        DateFormatter.format(date: object.created_at, timezone: context[:timezone])
       end
 
-      def magic_erasure_enabled
-        object.magic_erasure_enabled_for_user?(context[:current_user])
+      def updated_at
+        DateFormatter.format(date: object.exited_at, timezone: context[:timezone])
+      end
+
+      def verified_at
+        DateFormatter.format(date: object.verified_at, timezone: context[:timezone])
       end
 
       private
@@ -121,7 +133,7 @@ module Types
         # here is converted to a struct so that the attrbibutes can
         # be accessed like methods and not symbols to keep it
         # consistent.
-        range = DateRange.new(from_date, to_date)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
         h = { site: object, range:, **kwargs }
         Struct.new(*h.keys).new(*h.values)
       end

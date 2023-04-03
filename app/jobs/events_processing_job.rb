@@ -41,7 +41,8 @@ class EventsProcessingJob < ApplicationJob
     variables = {
       site_id: event.site_id,
       from_date: event.site.created_at.to_fs(:db),
-      to_date: now.to_fs(:db)
+      to_date: now.to_fs(:db),
+      timezone: 'UTC'
     }
 
     Sql::ClickHouse.select_value(query_count, variables)

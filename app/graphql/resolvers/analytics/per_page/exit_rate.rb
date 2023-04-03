@@ -26,17 +26,18 @@ module Resolvers
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000)::date BETWEEN ? AND ? AND
-              url = ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
+              url = :url
           SQL
 
-          variables = [
-            object.site.id,
-            start_date,
-            end_date,
-            object.page
-          ]
+          variables = {
+            site_id: object.site.id,
+            timezone: object.range.timezone,
+            from_date: start_date,
+            to_date: end_date,
+            url: object.page
+          }
 
           result = Sql::ClickHouse.select_all(sql, variables).first
 

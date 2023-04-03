@@ -18,7 +18,9 @@ nps_response_query = <<-GRAPHQL
             }
             sessionId
             recordingId
-            timestamp
+            timestamp {
+              iso8601
+            }
           }
           pagination {
             pageSize
@@ -82,7 +84,7 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
 
     it 'returns in descending order' do
       response = subject['data']['site']['nps']
-      items = response['responses']['items'].map { |i| i['timestamp'] }
+      items = response['responses']['items'].map { |i| i['timestamp']['iso8601'] }
       expect(items).to eq(['2021-08-03T23:00:00Z', '2021-08-02T23:00:00Z'])
     end
   end
@@ -110,7 +112,7 @@ RSpec.describe Resolvers::Feedback::NpsResponse, type: :request do
 
     it 'returns in ascending order' do
       response = subject['data']['site']['nps']
-      items = response['responses']['items'].map { |i| i['timestamp'] }
+      items = response['responses']['items'].map { |i| i['timestamp']['iso8601'] }
       expect(items).to eq(['2021-08-02T23:00:00Z', '2021-08-03T23:00:00Z'])
     end
   end

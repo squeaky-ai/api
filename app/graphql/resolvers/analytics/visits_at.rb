@@ -8,22 +8,23 @@ module Resolvers
       def resolve_with_timings # rubocop:disable Metrics/AbcSize
         sql = <<-SQL
           SELECT
-            formatDateTime(toDateTime(disconnected_at / 1000), '%u,%H') day_hour,
+            formatDateTime(toDateTime(disconnected_at / 1000, :timezone), '%u,%H') day_hour,
             COUNT(*) count
           FROM
             recordings
           WHERE
-            site_id = ? AND
-            toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+            site_id = :site_id AND
+            toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
           GROUP BY
             day_hour;
         SQL
 
-        variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to
-        ]
+        variables = {
+          site_id: object.site.id,
+          timezone: object.range.timezone,
+          from_date: object.range.from,
+          to_date: object.range.to
+        }
 
         results = Sql::ClickHouse.select_all(sql, variables)
 
