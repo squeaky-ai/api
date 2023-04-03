@@ -95,7 +95,7 @@ class WeeklyReview # rubocop:disable Metrics/ClassLength
 
   def average_session_duration(from_date = @from_date, to_date = @to_date)
     sql = <<-SQL
-      SELECT AVG(disconnected_at - connected_at) average_session_duration
+      SELECT AVG(activity_duration) average_session_duration
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
