@@ -68,14 +68,14 @@ module Resolvers
           FROM
             custom_events
           WHERE
-            site_id = ? AND
-            visitor_id = ?
+            site_id = :site_id AND
+            visitor_id = :visitor_id
         SQL
 
-        variables = [
-          object.site_id,
-          object.id
-        ]
+        variables = {
+          site_id: object.site_id,
+          visitor_id: object.id
+        }
 
         Sql::ClickHouse.select_value(sql, variables)
       end

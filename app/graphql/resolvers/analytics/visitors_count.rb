@@ -11,17 +11,23 @@ module Resolvers
             COUNT(v.id) total_count,
             COUNT(v.id) FILTER(WHERE v.new IS TRUE) new_count
           FROM (
-            SELECT visitors.id, visitors.new
-            FROM visitors
-            WHERE visitors.site_id = ? AND visitors.created_at::date BETWEEN ? AND ?
+            SELECT
+              visitors.id, visitors.new
+            FROM
+              visitors
+            WHERE
+              visitors.site_id = :site_id AND visitors.created_at::date AT TIME ZONE :timezone BETWEEN :from_date AND :to_date
             GROUP BY visitors.id
           ) v;
         SQL
 
         variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to
+          {
+            site_id: object.site.id,
+            timezone: object.range.timezone,
+            from_date: object.range.from,
+            to_date: object.range.to
+          }
         ]
 
         results = Sql.execute(sql, variables).first

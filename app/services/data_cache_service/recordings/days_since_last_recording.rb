@@ -11,13 +11,17 @@ module DataCacheService
             FROM
               recordings
             WHERE
-              site_id = ?
+              site_id = :site_id
             ORDER BY
               disconnected_at DESC
             LIMIT 1;
           SQL
 
-          last_recorded_at = Sql::ClickHouse.select_value(sql, site.id)
+          variables = {
+            site_id: site.id
+          }
+
+          last_recorded_at = Sql::ClickHouse.select_value(sql, variables)
 
           return -1 unless last_recorded_at
 

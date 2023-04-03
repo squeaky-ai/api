@@ -11,10 +11,14 @@ module DataCacheService
             FROM
               recordings
             WHERE
-              site_id = ?
+              site_id = :site_id
           SQL
 
-          Sql::ClickHouse.select_all(sql, site.id).map { |r| r['browser'] }
+          variables = {
+            site_id: site.id
+          }
+
+          Sql::ClickHouse.select_all(sql, variables).map { |r| r['browser'] }
         end
       end
     end

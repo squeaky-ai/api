@@ -12,11 +12,15 @@ module DataCacheService
             FROM
               page_events
             WHERE
-              site_id = ? AND
-              toDate(exited_at / 1000)::date BETWEEN ? AND ?
+              site_id = :site_id AND
+              toDate(exited_at / 1000)::date BETWEEN :from_date AND :to_date
           SQL
 
-          variables = [site.id, from_date, to_date]
+          variables = {
+            site_id: site.id,
+            from_date:,
+            to_date:
+          }
 
           Sql::ClickHouse.select_value(sql, variables)
         end

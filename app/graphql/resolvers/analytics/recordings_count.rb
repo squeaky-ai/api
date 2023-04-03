@@ -14,16 +14,19 @@ module Resolvers
           FROM
             recordings
           WHERE
-            recordings.site_id = ? AND
-            to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ? AND
-            recordings.status IN (?)
+            recordings.site_id = :site_id AND
+            to_timestamp(disconnected_at / 1000)::date AT TIME ZONE :timezone BETWEEN :from_date AND :to_date AND
+            recordings.status = :status
         SQL
 
         variables = [
-          object.site.id,
-          object.range.from,
-          object.range.to,
-          [Recording::ACTIVE]
+          {
+            site_id: object.site.id,
+            timezone: object.range.timezone,
+            from_date: object.range.from,
+            to_date: object.range.to,
+            status: Recording::ACTIVE
+          }
         ]
 
         results = Sql.execute(sql, variables).first

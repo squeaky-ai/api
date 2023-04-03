@@ -12,13 +12,17 @@ module DataCacheService
             FROM
               recordings
             WHERE
-              site_id = ? AND
+              site_id = :site_id AND
               country_code IS NOT NULL
             GROUP BY
               country_code
           SQL
 
-          Sql::ClickHouse.select_all(sql, site.id).map do |r|
+          variables = {
+            site_id: site.id
+          }
+
+          Sql::ClickHouse.select_all(sql, variables).map do |r|
             {
               count: r['count'],
               code: r['country_code'],

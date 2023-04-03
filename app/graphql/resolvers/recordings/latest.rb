@@ -12,13 +12,17 @@ module Resolvers
           FROM
             recordings
           WHERE
-            site_id = ?
+            site_id = :site_id
           ORDER BY
             disconnected_at DESC
           LIMIT 1
         SQL
 
-        id = Sql::ClickHouse.select_value(sql, [object.id])
+        variables = {
+          site_id: object.id
+        }
+
+        id = Sql::ClickHouse.select_value(sql, variables)
 
         Recording.find(id) if id
       end

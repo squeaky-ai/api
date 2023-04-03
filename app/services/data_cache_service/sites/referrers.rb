@@ -11,11 +11,15 @@ module DataCacheService
             FROM
               recordings
             WHERE
-              site_id = ? AND
+              site_id = :site_id AND
               referrer IS NOT NULL
           SQL
 
-          Sql::ClickHouse.select_all(sql, site.id).map { |r| r['referrer'] }
+          variables = {
+            site_id: site.id
+          }
+
+          Sql::ClickHouse.select_all(sql, variables).map { |r| r['referrer'] }
         end
       end
     end

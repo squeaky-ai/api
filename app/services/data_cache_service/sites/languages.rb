@@ -11,11 +11,15 @@ module DataCacheService
             FROM
               recordings
             WHERE
-              site_id = ? AND
+              site_id = :site_id AND
               locale IS NOT NULL
           SQL
 
-          Sql::ClickHouse.select_all(sql, site.id).map { |r| Locale.get_language(r['locale']) }
+          variables = {
+            site_id: site.id
+          }
+
+          Sql::ClickHouse.select_all(sql, variables).map { |r| Locale.get_language(r['locale']) }
         end
       end
     end
