@@ -27,7 +27,7 @@ module Types
       end
 
       def last_activity_at
-        DateFormatter.format(date: object.issued_at, timezone: context[:timezone])
+        DateFormatter.format(date: object.last_activity_at, timezone: context[:timezone])
       end
     end
   end
