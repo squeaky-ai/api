@@ -35,7 +35,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: start_date,
             to_date: end_date,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables) || 0

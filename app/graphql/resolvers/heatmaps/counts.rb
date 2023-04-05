@@ -25,7 +25,7 @@ module Resolvers
 
         variables = {
           site_id: object.site.id,
-          url: object.page,
+          url: Paths.replace_route_with_wildcard(object.page),
           timezone: range.timezone,
           from_date: range.from,
           to_date: range.to

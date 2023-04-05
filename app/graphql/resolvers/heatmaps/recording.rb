@@ -42,7 +42,7 @@ module Resolvers
         variables = {
           recording_ids: object.exclude_recording_ids.empty? ? [0] : object.exclude_recording_ids,
           site_id: object.site.id,
-          url: object.page,
+          url: Paths.replace_route_with_wildcard(object.page),
           timezone: range.timezone,
           from_date: range.from,
           to_date: range.to

@@ -109,7 +109,7 @@ class HeatmapsService
       timezone: range.timezone,
       from_date: range.from,
       to_date: range.to,
-      page_url:,
+      page_url: Paths.replace_route_with_wildcard(page_url),
       **variables
     }
 

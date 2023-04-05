@@ -43,7 +43,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables)
@@ -74,7 +74,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page,
+            url: Paths.replace_route_with_wildcard(object.page),
             limit: size,
             offset: (size * (page - 1))
           }
@@ -109,7 +109,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables)
