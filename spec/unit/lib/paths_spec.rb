@@ -39,6 +39,36 @@ RSpec.describe Paths do
     end
   end
 
+  describe '.format_path_with_routes' do
+    let(:path) { '/foo/bar' }
+
+    subject { described_class.format_path_with_routes(path, routes) }
+
+    context 'when there are no routes' do
+      let(:routes) { [] }
+
+      it 'returns the expected path' do
+        expect(subject).to eq('/foo/bar')
+      end
+    end
+
+    context 'when there are routes but none match' do
+      let(:routes) { ['/teapot/:teabag'] }
+
+      it 'returns the expected path' do
+        expect(subject).to eq('/foo/bar')
+      end
+    end
+
+    context 'when there are routes and they match' do
+      let(:routes) { ['/foo/:foo'] }
+
+      it 'returns the expected path' do
+        expect(subject).to eq('/foo/:foo')
+      end
+    end
+  end
+
   describe '.format_pages_with_routes' do
     let(:pages) do
       [

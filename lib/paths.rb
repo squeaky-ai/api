@@ -11,10 +11,20 @@ class Paths
     route.split('/').map { |r| r.start_with?(':') ? '%' : r }.join('/')
   end
 
+  def self.format_path_with_routes(path, routes)
+    return path if routes.empty?
+
+    new.format_path_with_routes(path, routes)
+  end
+
   def self.format_pages_with_routes(pages, routes)
     return pages if routes.empty?
 
     new.format_pages_with_routes(pages, routes)
+  end
+
+  def format_path_with_routes(path, routes)
+    matching_route_for_page(routes, { 'url' => path }) || path
   end
 
   def format_pages_with_routes(pages, routes)

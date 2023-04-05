@@ -11,19 +11,24 @@ module Resolvers
       def resolve_with_timings(page:, position:)
         paths = paths(position, page)
         referrers = referrers(paths)
+        routes = object.site.routes
 
-        format_results(paths, referrers)
+        format_results(paths, referrers, routes)
       end
 
       private
 
-      def format_results(paths, referrers)
+      def format_results(paths, referrers, routes)
         paths.map do |path|
           {
-            path: path['path'],
+            path: map_paths_to_routes(path, routes),
             referrer: referrers.find { |r| r['recording_id'] == path['recording_id'] }&.[]('referrer')
           }
         end
+      end
+
+      def map_paths_to_routes(path, routes)
+        path['path'].map { |x| Paths.format_path_with_routes(x, routes) }
       end
 
       def paths(position, page)
@@ -55,7 +60,7 @@ module Resolvers
           from_date: object.range.from,
           to_date: object.range.to,
           position: position == 'Start' ? 1 : -1,
-          page:
+          page: Paths.replace_route_with_wildcard(page)
         }
 
         Sql::ClickHouse.select_all(sql, variables)
