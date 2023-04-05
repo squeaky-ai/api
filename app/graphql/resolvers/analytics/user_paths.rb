@@ -51,7 +51,7 @@ module Resolvers
           GROUP BY
             recording_id
           HAVING
-            path[:position] = :page
+            like(path[:position], :page)
         SQL
 
         variables = {
