@@ -38,4 +38,122 @@ RSpec.describe Paths do
       end
     end
   end
+
+  describe '.format_pages_with_routes' do
+    let(:pages) do
+      [
+        {
+          'url' => '/',
+          'count' => 5
+        },
+        {
+          'url' => '/foo',
+          'count' => 2
+        },
+        {
+          'url' => '/bar',
+          'count' => 2
+        },
+        {
+          'url' => '/foo/bar',
+          'count' => 6
+        },
+        {
+          'url' => '/foo/baz',
+          'count' => 2
+        }
+      ]
+    end
+
+    subject { described_class.format_pages_with_routes(pages, routes) }
+
+    context 'when there are no routes' do
+      let(:routes) { [] }
+
+      it 'returns the expected pages' do
+        expect(subject).to eq(
+          [
+            {
+              'url' => '/',
+              'count' => 5
+            },
+            {
+              'url' => '/foo',
+              'count' => 2
+            },
+            {
+              'url' => '/bar',
+              'count' => 2
+            },
+            {
+              'url' => '/foo/bar',
+              'count' => 6
+            },
+            {
+              'url' => '/foo/baz',
+              'count' => 2
+            }
+          ]
+        )
+      end
+    end
+
+    context 'when there are routes but none match' do
+      let(:routes) { ['/teapot/:teabag'] }
+
+      it 'returns the expected pages' do
+        expect(subject).to eq(
+          [
+            {
+              'url' => '/',
+              'count' => 5
+            },
+            {
+              'url' => '/foo',
+              'count' => 2
+            },
+            {
+              'url' => '/bar',
+              'count' => 2
+            },
+            {
+              'url' => '/foo/bar',
+              'count' => 6
+            },
+            {
+              'url' => '/foo/baz',
+              'count' => 2
+            }
+          ]
+        )
+      end
+    end
+
+    context 'when there are routes and they match' do
+      let(:routes) { ['/foo/:foo'] }
+
+      it 'returns the expected pages' do
+        expect(subject).to eq(
+          [
+            {
+              'url' => '/',
+              'count' => 5
+            },
+            {
+              'url' => '/foo',
+              'count' => 2
+            },
+            {
+              'url' => '/bar',
+              'count' => 2
+            },
+            {
+              'url' => '/foo/:foo',
+              'count' => 8
+            },
+          ]
+        )
+      end
+    end
+  end
 end
