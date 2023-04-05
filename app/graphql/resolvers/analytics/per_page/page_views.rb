@@ -40,7 +40,7 @@ module Resolvers
             WHERE
               site_id = :site_id AND
               toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-              url = :url
+              like(url, :url)
             GROUP BY date_key
             ORDER BY date_key ASC
           SQL

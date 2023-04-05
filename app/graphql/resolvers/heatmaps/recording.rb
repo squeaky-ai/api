@@ -29,7 +29,7 @@ module Resolvers
           WHERE
             recordings.recording_id NOT IN (:recording_ids) AND
             recordings.site_id = :site_id AND
-            page_events.url = :url AND
+            like(page_events.url, :url) AND
             page_events.exited_at - page_events.entered_at >= #{MIN_PAGE_DURATION} AND
             recordings.viewport_x #{device_expression} AND
             toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date

@@ -19,7 +19,7 @@ class HeatmapsService
         site_id = :site_id AND
         viewport_x #{device_expression} AND
         toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-        url = :page_url
+        like(url, :page_url)
       GROUP BY selector
       ORDER BY count DESC
     SQL
@@ -39,7 +39,7 @@ class HeatmapsService
         site_id = :site_id AND
         viewport_x #{device_expression} AND
         toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-        url = :page_url AND
+        like(url, :page_url) AND
         relative_to_element_x != 0 AND
         relative_to_element_y != 0
     SQL
@@ -68,7 +68,7 @@ class HeatmapsService
           site_id = :site_id AND
           viewport_x #{device_expression} AND
           toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-          url = :page_url
+          like(url, :page_url)
       )
       GROUP BY x, y
       ORDER BY count DESC;
@@ -87,7 +87,7 @@ class HeatmapsService
         site_id = :site_id AND
         viewport_x #{device_expression} AND
         toDate(timestamp / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-        url = :page_url
+        like(url, :page_url)
       GROUP BY
         recording_id
     SQL

@@ -18,7 +18,7 @@ module Resolvers
             WHERE
               recordings.site_id = :site_id AND
               toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-              page_events.url = :url
+              like(page_events.url, :url)
             GROUP BY
               day_hour;
           SQL
