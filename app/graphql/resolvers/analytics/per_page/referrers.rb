@@ -34,7 +34,7 @@ module Resolvers
             WHERE
               site_id = :site_id AND
               toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-              page_events.url = :url
+              like(page_events.url, :url)
           SQL
 
           variables = {
@@ -42,7 +42,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables)
@@ -60,7 +60,7 @@ module Resolvers
             WHERE
               recordings.site_id = :site_id AND
               toDate(recordings.disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-              page_events.url = :url
+              like(page_events.url, :url)
             GROUP BY
               recordings.referrer
             ORDER BY
@@ -74,7 +74,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page,
+            url: Paths.replace_route_with_wildcard(object.page),
             limit: size,
             offset: (page - 1) * size
           }
@@ -101,7 +101,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: object.range.from,
             to_date: object.range.to,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables)

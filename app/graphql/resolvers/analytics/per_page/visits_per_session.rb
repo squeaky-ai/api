@@ -30,7 +30,7 @@ module Resolvers
               WHERE
                 site_id = :site_id AND
                 toDate(exited_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date AND
-                url = :url
+                like(url, :url)
               GROUP BY recording_id
             ) p
           SQL
@@ -40,7 +40,7 @@ module Resolvers
             timezone: object.range.timezone,
             from_date: start_date,
             to_date: end_date,
-            url: object.page
+            url: Paths.replace_route_with_wildcard(object.page)
           }
 
           Sql::ClickHouse.select_value(sql, variables) || 0

@@ -9,6 +9,14 @@ module Resolvers
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
       def resolve_with_timings(from_date:, to_date:)
+        pages = pages(from_date, to_date)
+
+        Paths.format_pages_with_routes(pages, object.routes)
+      end
+
+      private
+
+      def pages(from_date, to_date)
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         sql = <<-SQL

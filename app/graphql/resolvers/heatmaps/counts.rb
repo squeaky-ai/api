@@ -19,13 +19,13 @@ module Resolvers
             recordings ON recordings.recording_id = page_events.recording_id
           WHERE
             site_id = :site_id AND
-            url = :url AND
+            like(url, :url) AND
             toDate(disconnected_at / 1000, :timezone)::date BETWEEN :from_date AND :to_date
         SQL
 
         variables = {
           site_id: object.site.id,
-          url: object.page,
+          url: Paths.replace_route_with_wildcard(object.page),
           timezone: range.timezone,
           from_date: range.from,
           to_date: range.to
