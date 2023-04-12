@@ -1,4 +1,4 @@
-FROM arm64v8/ruby:3.2.0-alpine
+FROM arm64v8/ruby:3.2.2-alpine
 
 WORKDIR /app
 
