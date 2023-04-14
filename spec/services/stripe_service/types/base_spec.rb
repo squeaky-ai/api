@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe StripeService::Types::Base do
-  class Instance < described_class; end
+  class Instance < StripeService::Types::Base; end
 
   let(:event) { double(:event) }
   let(:instance) { Instance.new(event) }
