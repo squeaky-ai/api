@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class WeeklyReview # rubocop:disable Metrics/ClassLength

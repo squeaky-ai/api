@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class CreateVisitors < ActiveRecord::Migration[6.1]

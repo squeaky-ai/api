@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class CreateTeams < ActiveRecord::Migration[6.1]

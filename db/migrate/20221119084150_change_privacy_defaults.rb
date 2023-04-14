@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class ChangePrivacyDefaults < ActiveRecord::Migration[7.0]

@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 # Format the Redis list into something useful

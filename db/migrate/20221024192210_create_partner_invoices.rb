@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class CreatePartnerInvoices < ActiveRecord::Migration[7.0]

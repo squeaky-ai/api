@@ -5,7 +5,6 @@
 # typed: false
 
 module ::Spring; end
-module Devise::SessionsController; end
 module Sidekiq::Process; end
 module Sidekiq::SortedEntry; end
 module Sidekiq::Stats; end

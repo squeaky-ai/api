@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class Recording < ApplicationRecord # rubocop:disable Metrics/ClassLength

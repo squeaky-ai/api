@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength

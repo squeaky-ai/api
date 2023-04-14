@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 # Helper class for mapping locales to languages

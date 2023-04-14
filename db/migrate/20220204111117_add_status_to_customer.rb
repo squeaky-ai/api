@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class AddStatusToCustomer < ActiveRecord::Migration[7.0]

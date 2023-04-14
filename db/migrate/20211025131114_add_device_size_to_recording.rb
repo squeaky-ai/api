@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class AddDeviceSizeToRecording < ActiveRecord::Migration[6.1]
