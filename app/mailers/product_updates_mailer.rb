@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 class ProductUpdatesMailer < ApplicationMailer
-  def q2_2022(user) # rubocop:disable Naming/VariableNumber
+  def q2_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -12,7 +12,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: Q2 2022')
   end
 
-  def july_2022(user) # rubocop:disable Naming/VariableNumber
+  def july_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -23,7 +23,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: July 2022')
   end
 
-  def august_2022(user) # rubocop:disable Naming/VariableNumber
+  def august_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -34,7 +34,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: August 2022')
   end
 
-  def september_2022(user) # rubocop:disable Naming/VariableNumber
+  def september_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -45,7 +45,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: September-October 2022')
   end
 
-  def november_2022(user) # rubocop:disable Naming/VariableNumber
+  def november_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -56,14 +56,14 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: November 2022')
   end
 
-  def pricing_change_2023(user) # rubocop:disable Naming/VariableNumber
+  def pricing_change_2023(user)
     @user = user
     @unsubscribable = false
 
     mail(to: user.email, subject: 'Important: New Squeaky Pricing 2023')
   end
 
-  def december_2022(user) # rubocop:disable Naming/VariableNumber
+  def december_2022(user)
     @user = user
     @unsubscribable = true
 
@@ -81,7 +81,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Migration complete ✅')
   end
 
-  def january_2023(user) # rubocop:disable Naming/VariableNumber
+  def january_2023(user)
     @user = user
     @unsubscribable = true
 
@@ -92,7 +92,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: January 2023')
   end
 
-  def february_2023(user) # rubocop:disable Naming/VariableNumber
+  def february_2023(user)
     @user = user
     @unsubscribable = true
 
@@ -103,7 +103,7 @@ class ProductUpdatesMailer < ApplicationMailer
     mail(to: user.email, subject: 'Product Update: February 2023')
   end
 
-  def march_2023(user) # rubocop:disable Naming/VariableNumber
+  def march_2023(user)
     @user = user
     @unsubscribable = true
 

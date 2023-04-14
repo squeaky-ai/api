@@ -6,7 +6,7 @@ class DataRetentionJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(*_args) # rubocop:disable Metrics/AbcSize
+  def perform(*_args)
     Site.find_each do |site|
       data_retention_months = site.plan.data_storage_months
 

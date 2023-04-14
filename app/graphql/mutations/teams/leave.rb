@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         team = site.team.find { |t| t.user.id == user.id }
 
         return team if team.owner?

@@ -18,7 +18,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(team_id:, role:) # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings(team_id:, role:)
         raise Exceptions::TeamRoleInvalid unless [Team::READ_ONLY, Team::MEMBER, Team::ADMIN].include?(role)
 
         team = site.member(team_id)

@@ -157,7 +157,7 @@ class Session
     activity.activity_duration
   end
 
-  def pages # rubocop:disable Metrics/AbcSize
+  def pages
     page_views = []
 
     pageviews.each do |page|
@@ -215,7 +215,7 @@ class Session
     @activity ||= Events::Activity.new(events)
   end
 
-  def extract_and_set_events(events) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
+  def extract_and_set_events(events) # rubocop:disable Metrics/CyclomaticComplexity
     events.each do |event|
       next if ignore_event?(event['value'])
 

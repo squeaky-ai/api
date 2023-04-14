@@ -11,7 +11,7 @@ module Resolvers
       argument :sort, Types::Feedback::SentimentResponseSort, required: false, default_value: 'timestamp__desc'
       argument :filters, Types::Feedback::SentimentResponseFilters, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength
         query = Sentiment
                 .joins(recording: :visitor)
                 .where(
@@ -76,7 +76,7 @@ module Resolvers
         query.where('score = ?', filters[:rating])
       end
 
-      def map_results(results) # rubocop:disable Metrics/AbcSize
+      def map_results(results)
         results.map do |r|
           useragent = UserAgent.parse(r.useragent)
 

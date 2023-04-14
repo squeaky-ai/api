@@ -6,7 +6,7 @@ class WeeklyReviewEmailsJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(*args) # rubocop:disable Metrics/AbcSize
+  def perform(*args)
     from_date, to_date = date_range(args)
     site_ids = suitable_sites(from_date, to_date)
 

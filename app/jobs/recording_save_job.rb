@@ -174,7 +174,7 @@ class RecordingSaveJob < ApplicationJob
     Recording::ACTIVE
   end
 
-  def find_or_create_visitor # rubocop:disable Metrics/AbcSize
+  def find_or_create_visitor
     if session.external_attributes['id']
       visitor = Visitor.find_by_external_id(site.id, session.external_attributes['id'])
       return visitor if visitor

@@ -82,7 +82,7 @@ class Recording < ApplicationRecord
     end
   end
 
-  def self.create_from_session!(session, visitor, site, status) # rubocop:disable Metrics/AbcSize
+  def self.create_from_session!(session, visitor, site, status)
     create!(
       status:,
       site_id: site.id,

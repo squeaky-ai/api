@@ -8,7 +8,7 @@ class WeeklyReview
     @to_date = to_date
   end
 
-  def to_h # rubocop:disable Metrics/AbcSize
+  def to_h
     {
       total_visitors:,
       new_visitors:,

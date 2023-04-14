@@ -6,7 +6,7 @@ module Resolvers
     class NpsScores < Resolvers::Base
       type Types::Feedback::NpsScores, null: false
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         responses = Nps.get_scores_between(object.site.id, object.range.from, object.range.to)
         previous_responses = Nps.get_scores_between(object.site.id, object.range.trend_from, object.range.trend_to)
 

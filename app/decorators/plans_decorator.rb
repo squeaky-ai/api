@@ -9,7 +9,7 @@ class PlansDecorator
     @plans = plans
   end
 
-  def decrorate # rubocop:disable Metrics/AbcSize
+  def decrorate
     [
       {
         id: 'free',

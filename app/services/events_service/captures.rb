@@ -4,7 +4,7 @@
 module EventsService
   class Captures
     class << self
-      def for(event) # rubocop:disable Metrics/MethodLength
+      def for(event)
         case event.event_type
         when EventCapture::PAGE_VISIT
           EventsService::Types::PageVisit.new(event)

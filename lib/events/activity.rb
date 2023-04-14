@@ -46,7 +46,7 @@ module Events
       inactivity.last.push(events.last['delay']) if inactivity.last&.size == 1
     end
 
-    def process_event(event) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    def process_event(event) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       if event == @next_user_interaction_event
         @next_user_interaction_event = nil
         @skipping_speed = 0

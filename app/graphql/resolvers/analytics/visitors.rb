@@ -6,7 +6,7 @@ module Resolvers
     class Visitors < Resolvers::Base
       type Types::Analytics::Visitors, null: false
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         sql = <<-SQL
           SELECT
             COUNT(*) all_count,

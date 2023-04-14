@@ -50,7 +50,7 @@ module Resolvers
           Sql::ClickHouse.select_value(sql, variables)
         end
 
-        def browsers(page, size, sort) # rubocop:disable Metrics/AbcSize
+        def browsers(page, size, sort)
           sql = <<-SQL
             SELECT
               DISTINCT(browser) browser,

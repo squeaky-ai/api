@@ -48,7 +48,7 @@ module DudaService
       site.plan.update(plan_id: plan[:id]) if plan
     end
 
-    def create_user! # rubocop:disable Metrics/AbcSize
+    def create_user!
       @user = ::User.where(email: duda_owner.email).first_or_initialize(
         first_name: duda_owner.first_name,
         last_name: duda_owner.last_name,

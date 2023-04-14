@@ -3,7 +3,7 @@
 
 module ClickHouse
   class PageEvent < Base
-    def self.create_from_session(recording, session) # rubocop:disable Metrics/AbcSize
+    def self.create_from_session(recording, session)
       return if session.pages.empty?
 
       insert do |buffer|

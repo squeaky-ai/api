@@ -6,7 +6,7 @@ module Resolvers
     class BounceCount < Resolvers::Base
       type Types::Analytics::BounceCounts, null: false
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         sql = <<-SQL
           SELECT
             COUNT(*) view_count,
