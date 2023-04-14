@@ -3,7 +3,7 @@
 
 module Resolvers
   module Recordings
-    class GetMany < Resolvers::Base # rubocop:disable Metrics/ClassLength
+    class GetMany < Resolvers::Base
       type Types::Recordings::Recordings, null: false
 
       argument :page, Integer, required: false, default_value: 0

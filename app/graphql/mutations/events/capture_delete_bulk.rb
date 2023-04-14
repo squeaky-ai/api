@@ -20,7 +20,7 @@ module Mutations
       def resolve_with_timings(event_ids:)
         events = site.event_captures.where(id: event_ids)
 
-        return [] if events.size.zero?
+        return [] if events.empty?
 
         events.each(&:destroy)
 

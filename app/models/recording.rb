@@ -1,7 +1,7 @@
 # typed: false
 # frozen_string_literal: true
 
-class Recording < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Recording < ApplicationRecord
   belongs_to :site
   belongs_to :visitor, counter_cache: true
 

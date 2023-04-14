@@ -4,7 +4,7 @@
 module ClickHouse
   class Recording < Base
     def self.create_from_session(recording, _session) # rubocop:disable Metrics/AbcSize
-      insert do |buffer| # rubocop:disable Metrics/BlockLength
+      insert do |buffer|
         buffer << {
           uuid: SecureRandom.uuid,
           recording_id: recording.id,

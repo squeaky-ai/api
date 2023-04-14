@@ -4,8 +4,8 @@
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
-Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
-  scope 'api' do # rubocop:disable Metrics/BlockLength
+Rails.application.routes.draw do
+  scope 'api' do
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
 
@@ -39,14 +39,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :events, only: [:create]
     resources :visitors, only: [:create]
 
-    # Custom devise routes that are more suited to the front end
     scope 'auth' do
       devise_scope :user do
-        # POST /api/auth/sign_in
-        # body: { "email": string, "password": string }
         post 'sign_in', to: 'auth/sessions#create', as: :user_session
-        # DELETE /api/auth/sign_out
-        # -
         delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
       end
     end

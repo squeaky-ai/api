@@ -3,7 +3,7 @@
 
 module Resolvers
   module Events
-    class Feed < Resolvers::Base # rubocop:disable Metrics/ClassLength
+    class Feed < Resolvers::Base
       type 'Types::Events::Feed', null: false
 
       argument :page, Integer, required: false, default_value: 0

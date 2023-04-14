@@ -1,7 +1,7 @@
 # typed: false
 # frozen_string_literal: true
 
-class PlansDecorator # rubocop:disable Metrics/ClassLength
+class PlansDecorator
   include ActionView::Helpers::NumberHelper
 
   def initialize(plans:, site:)

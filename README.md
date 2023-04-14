@@ -34,6 +34,11 @@ $ bundle exec rails db:migrate
 $ bundle exec rspec
 ```
 
+### Run the typechecker
+```shell
+$ bundle exec srb tc
+```
+
 ### Importing recordings
 Create a local recording and import it from Redis:
 ```shell
