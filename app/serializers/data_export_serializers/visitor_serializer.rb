@@ -17,8 +17,8 @@ module DataExportSerializers
         user_id: linked_data_value(:id),
         name: linked_data_value(:name),
         email: linked_data_value(:email),
-        languages: visitor.languages.uniq.join('|'),
-        browsers: visitor.browsers.uniq.join('|'),
+        languages: visitor.languages.uniq.sort.join('|'),
+        browsers: visitor.browsers.uniq.sort.join('|'),
         country_codes: visitor.countries.map { |c| c[:code] }.uniq.join('|'),
         recording_count: visitor.recordings_count,
         source: visitor.source

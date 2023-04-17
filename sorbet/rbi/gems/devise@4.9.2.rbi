@@ -1425,6 +1425,8 @@ Devise::CONTROLLERS = T.let(T.unsafe(nil), Hash)
 # source://devise//lib/devise.rb#24
 module Devise::Controllers; end
 
+class Devise::SessionsController; end
+
 # Those helpers are convenience methods added to ApplicationController.
 #
 # source://devise//lib/devise/controllers/helpers.rb#6
