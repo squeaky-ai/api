@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 task :mailer, [:action] => :environment do |_task, args|

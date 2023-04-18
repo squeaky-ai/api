@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 class SoftDeleteRecordings < ActiveRecord::Migration[6.1]

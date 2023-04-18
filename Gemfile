@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
@@ -25,7 +24,6 @@ gem 'rails', '~> 7.0.4'
 gem 'redis'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
-gem 'sorbet-runtime'
 gem 'stripe'
 gem 'useragent'
 
@@ -37,8 +35,6 @@ end
 
 group :development do
   gem 'listen', '~> 3.7'
-  gem 'sorbet'
-  gem 'tapioca', require: false
 end
 
 group :test do

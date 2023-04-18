@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 task :recording_export, [:site_id] => :environment do |_task, args|

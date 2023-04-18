@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 class AddCounterCache < ActiveRecord::Migration[6.1]

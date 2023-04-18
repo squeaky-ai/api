@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 namespace :click_house do

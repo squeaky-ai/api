@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 class DeleteOldModels < ActiveRecord::Migration[7.0]

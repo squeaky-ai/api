@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 class CreateTransactions < ActiveRecord::Migration[7.0]

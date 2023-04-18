@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 class AddPages < ActiveRecord::Migration[6.1]

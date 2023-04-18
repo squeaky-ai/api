@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 # TODO: I think we should convert the locale to

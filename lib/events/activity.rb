@@ -1,4 +1,3 @@
-# typed: false
 # frozen_string_literal: true
 
 # This is adapted from the rrweb library so that the inactivity
