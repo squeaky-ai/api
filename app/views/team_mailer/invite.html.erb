@@ -1,4 +1,4 @@
 <h1>You&apos;ve been invited to join<% if !@user.confirmed_at.nil? %> a site on<% end %> Squeaky</h1>
 <p><%= @user.full_name %> has invited you to the <%= @site.name %> team on Squeaky.  Please click the button below to sign-up.</p>
-<a href="<%= squeaky_url("/auth/accept?token=#{@token}") %>" class="button" style="text-decoration: none;">Accept Invitation</a>
+<a href="<%= squeaky_url(path: "/auth/accept?token=#{@token}") %>" class="button" style="text-decoration: none;">Accept Invitation</a>
 <p class="small">If you believe you have received this email in error you can safely ignore it.</p>

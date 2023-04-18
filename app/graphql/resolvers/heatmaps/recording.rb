@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Resolvers
@@ -16,7 +17,7 @@ module Resolvers
 
       private
 
-      def suitable_recording_id # rubocop:disable Metrics/AbcSize
+      def suitable_recording_id
         range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
 
         sql = <<-SQL

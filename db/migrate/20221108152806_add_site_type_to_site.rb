@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class AddSiteTypeToSite < ActiveRecord::Migration[7.0]

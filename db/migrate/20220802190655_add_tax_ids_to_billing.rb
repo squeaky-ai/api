@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class AddTaxIdsToBilling < ActiveRecord::Migration[7.0]

@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class PlanService
@@ -18,7 +19,7 @@ class PlanService
     @site = site
   end
 
-  def alert_if_exceeded # rubocop:disable Metrics/AbcSize
+  def alert_if_exceeded
     return unless site.plan.exceeded?
     return if been_alerted_of_plan_exceeded?
 

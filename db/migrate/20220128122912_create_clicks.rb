@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class CreateClicks < ActiveRecord::Migration[7.0]

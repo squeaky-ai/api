@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Resolvers
@@ -5,7 +6,7 @@ module Resolvers
     class Recordings < Resolvers::Base
       type Types::Analytics::Recordings, null: false
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         sql = <<-SQL
           SELECT
             COUNT(*) count,

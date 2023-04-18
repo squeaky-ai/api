@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Mutations
@@ -20,7 +21,7 @@ module Mutations
       def resolve_with_timings(recording_ids:, viewed:)
         recordings = site.recordings.where(id: recording_ids)
 
-        return [] if recordings.size.zero?
+        return [] if recordings.empty?
 
         recordings.update_all(viewed:)
         recordings.each { |recording| recording.visitor.update(new: false) } if viewed

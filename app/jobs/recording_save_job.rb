@@ -1,6 +1,7 @@
+# typed: false
 # frozen_string_literal: true
 
-class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
+class RecordingSaveJob < ApplicationJob
   queue_as :default
 
   sidekiq_options retry: false
@@ -173,7 +174,7 @@ class RecordingSaveJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     Recording::ACTIVE
   end
 
-  def find_or_create_visitor # rubocop:disable Metrics/AbcSize
+  def find_or_create_visitor
     if session.external_attributes['id']
       visitor = Visitor.find_by_external_id(site.id, session.external_attributes['id'])
       return visitor if visitor

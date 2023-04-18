@@ -34,11 +34,21 @@ $ bundle exec rails db:migrate
 $ bundle exec rspec
 ```
 
+### Run the typechecker
+```shell
+$ bundle exec srb tc
+```
+
 ### Importing recordings
 Create a local recording and import it from Redis:
 ```shell
 $ rails c
 irb> RecordingSaveJob.perform_now('site_id' => '<site_uuid>', 'visitor_id' => '<visitor_id>', 'session_id' => '<session_id>')
+```
+
+### Running the stripe webhook locally
+```shell
+$ stripe listen --forward-to localhost:3333/api/webhooks/stripe
 ```
 
 ### Usage

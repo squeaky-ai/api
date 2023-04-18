@@ -1,8 +1,9 @@
+# typed: false
 # frozen_string_literal: true
 
 module Resolvers
   module Visitors
-    class GetMany < Resolvers::Base # rubocop:disable Metrics/ClassLength
+    class GetMany < Resolvers::Base
       type 'Types::Visitors::Visitors', null: false
 
       argument :page, Integer, required: false, default_value: 0
@@ -13,7 +14,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists, Metrics/AbcSize
+      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         visitors = Visitor

@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Resolvers
@@ -125,7 +126,7 @@ module Resolvers
         }
       end
 
-      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/CyclomaticComplexity
         # Find the group that matches this id
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group

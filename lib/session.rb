@@ -1,7 +1,8 @@
+# typed: false
 # frozen_string_literal: true
 
 # Format the Redis list into something useful
-class Session # rubocop:disable Metrics/ClassLength
+class Session
   attr_reader :recording,
               :pageviews,
               :sentiments,
@@ -156,7 +157,7 @@ class Session # rubocop:disable Metrics/ClassLength
     activity.activity_duration
   end
 
-  def pages # rubocop:disable Metrics/AbcSize
+  def pages
     page_views = []
 
     pageviews.each do |page|
@@ -214,7 +215,7 @@ class Session # rubocop:disable Metrics/ClassLength
     @activity ||= Events::Activity.new(events)
   end
 
-  def extract_and_set_events(events) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
+  def extract_and_set_events(events) # rubocop:disable Metrics/CyclomaticComplexity
     events.each do |event|
       next if ignore_event?(event['value'])
 

@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 class CreateConsents < ActiveRecord::Migration[7.0]

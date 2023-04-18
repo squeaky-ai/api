@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Mutations
@@ -19,7 +20,7 @@ module Mutations
       def resolve_with_timings(recording_ids:)
         recordings = site.recordings.where(id: recording_ids)
 
-        return [] if recordings.size.zero?
+        return [] if recordings.empty?
 
         ActiveRecord::Base.transaction do
           recordings.each do |recording|

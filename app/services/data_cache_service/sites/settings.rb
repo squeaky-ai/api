@@ -1,9 +1,10 @@
+# typed: false
 # frozen_string_literal: true
 
 module DataCacheService
   module Sites
     class Settings < DataCacheService::Base
-      def call # rubocop:disable Metrics/AbcSize
+      def call
         cache do
           # Weird that we're fetching the site when the site is already in
           # scope, however the site is just an in memory instance with a

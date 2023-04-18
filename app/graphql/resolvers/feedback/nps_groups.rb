@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Resolvers
@@ -5,7 +6,7 @@ module Resolvers
     class NpsGroups < Resolvers::Base
       type Types::Feedback::NpsGroups, null: false
 
-      def resolve_with_timings # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings
         sql = <<-SQL
           SELECT nps.score
           FROM nps

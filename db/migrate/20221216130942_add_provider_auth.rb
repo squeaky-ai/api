@@ -1,6 +1,7 @@
+# typed: false
 # frozen_string_literal: true
 
-class ProviderAuth < ActiveRecord::Migration[7.0]
+class AddProviderAuth < ActiveRecord::Migration[7.0]
   def change
     create_table :provider_auth do |t|
       t.string :provider

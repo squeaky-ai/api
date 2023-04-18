@@ -1,8 +1,9 @@
+# typed: false
 # frozen_string_literal: true
 
 module Types
   module Sites
-    class Site < Types::BaseObject # rubocop:disable Metrics/ClassLength
+    class Site < Types::BaseObject
       graphql_name 'Site'
 
       field :id, ID, null: false

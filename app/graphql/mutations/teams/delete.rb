@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Mutations
@@ -16,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(team_id:) # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings(team_id:)
         team = site.member(team_id)
 
         return team if team.owner?

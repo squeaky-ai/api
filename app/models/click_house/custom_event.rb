@@ -1,8 +1,9 @@
+# typed: false
 # frozen_string_literal: true
 
 module ClickHouse
   class CustomEvent < Base
-    def self.create_from_session(recording, session) # rubocop:disable Metrics/AbcSize
+    def self.create_from_session(recording, session)
       return if session.custom_tracking.empty?
 
       insert do |buffer|

@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module Mutations
@@ -18,7 +19,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(name: nil, url: nil, site_type: nil) # rubocop:disable Metrics/AbcSize
+      def resolve_with_timings(name: nil, url: nil, site_type: nil)
         update = {}
         update[:name] = name if name
         update[:site_type] = site_type if site_type

@@ -1,13 +1,14 @@
+# typed: false
 # frozen_string_literal: true
 
-class WeeklyReview # rubocop:disable Metrics/ClassLength
+class WeeklyReview
   def initialize(site_id, from_date, to_date)
     @site_id = site_id
     @from_date = from_date
     @to_date = to_date
   end
 
-  def to_h # rubocop:disable Metrics/AbcSize
+  def to_h
     {
       total_visitors:,
       new_visitors:,
