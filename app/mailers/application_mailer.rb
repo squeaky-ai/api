@@ -14,9 +14,10 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   # Weird syntax isn't it
-  helper_method def squeaky_url(path = '')
+  helper_method def squeaky_url(path: '', skip_deeplink: false)
     # If it's not a site email or the site has
     # no provider then send them to Squeaky
+    return "#{web_url}#{path}" if skip_deeplink
     return "#{web_url}#{path}" unless @site&.provider
 
     # If they have a provider then we should send
