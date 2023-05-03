@@ -39,7 +39,9 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
           entered_at,
           exited_at,
           exited_on,
-          bounced_on
+          bounced_on,
+          duration,
+          activity_duration
         FROM page_events
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -57,7 +59,9 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
           'entered_at' => 1637177342265,
           'exited_at' => 1637177353431,
           'exited_on' => 1,
-          'bounced_on' => 1
+          'bounced_on' => 1,
+          'duration' => 11166,
+          'activity_duration' => 11166
         }
       ])
     end

@@ -10,7 +10,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 50
 Metrics/ClassLength:
-  Max: 250
+  Max: 275
 Metrics/MethodLength:
   CountAsOne: ['hash', 'array', 'heredoc']
   Max: 25
