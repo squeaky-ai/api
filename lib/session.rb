@@ -156,7 +156,7 @@ class Session
     activity.activity_duration
   end
 
-  def pages
+  def pages # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize
     page_views = []
 
     pageviews.each do |page|
@@ -180,6 +180,11 @@ class Session
     return [] unless page_views.any?
 
     page_views.last[:exited_at] = disconnected_at
+
+    page_views.each do |pv|
+      pv[:duration] = pv[:exited_at] - pv[:entered_at]
+      pv[:activity_duration] = activity_duration_between_timestamps(pv[:entered_at], pv[:exited_at])
+    end
 
     # Mark the page as being bounced on if there was
     # only a single page view
@@ -334,5 +339,20 @@ class Session
     return true if event['data']['stack']&.include?('cdn.squeaky.ai')
 
     false
+  end
+
+  # Given two timestamps, how much of that time
+  # was actually active
+  def activity_duration_between_timestamps(from_timestamp, to_timestamp)
+    total_duration = to_timestamp - from_timestamp
+
+    inactivity.each do |(from_inactive, to_inactive)|
+      # Only take inactivity that is between the two timestamps
+      next unless [from_inactive, to_inactive].all? { |t| t.between?(from_timestamp, to_timestamp) }
+
+      total_duration -= to_inactive - from_inactive
+    end
+
+    total_duration
   end
 end

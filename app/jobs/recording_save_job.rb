@@ -93,6 +93,8 @@ class RecordingSaveJob < ApplicationJob
         exited_at: e[:exited_at],
         bounced_on: e[:bounced_on],
         exited_on: e[:exited_on],
+        duration: e[:duration],
+        activity_duration: e[:activity_duration],
         site_id: site.id
       )
     end

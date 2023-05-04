@@ -17,6 +17,8 @@ module ClickHouse
             exited_at: event[:exited_at],
             bounced_on: event[:bounced_on] ? 1 : 0,
             exited_on: event[:exited_on] ? 1 : 0,
+            duration: event[:duration],
+            activity_duration: event[:activity_duration],
             viewport_x: recording.viewport_x,
             viewport_y: recording.viewport_y,
             device_x: recording.device_x,

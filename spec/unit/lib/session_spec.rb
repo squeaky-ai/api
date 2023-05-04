@@ -205,10 +205,63 @@ RSpec.describe Session do
           url: '/examples/static/',
           entered_at: 1637177342265,
           exited_at: 1637177353431,
+          duration: 11166,
+          activity_duration: 11166,
           bounced_on: true,
           exited_on: true
         }
       ])
+    end
+
+    context 'when there is some inactivity' do
+      let(:inactivity) do 
+        [
+          [1637177342365, 1637177342465],
+          [1637177353531, 1637177353631],
+        ]
+      end
+      let(:events_activity) { instance_double(Events::Activity, inactivity:) }
+
+      let(:pageviews) do
+        [
+          {
+            'path' => '/examples/static/',
+            'timestamp' => 1637177342265
+          },
+          {
+            'path' => '/examples/static/1',
+            'timestamp' => 1637177345265
+          }
+        ]
+      end
+
+      before do
+        allow(instance).to receive(:pageviews).and_return(pageviews)
+        allow(Events::Activity).to receive(:new).and_return(events_activity)
+      end
+
+      it 'returns the pages' do
+        expect(instance.pages).to eq([
+          {
+            url: '/examples/static/',
+            entered_at: 1637177342265,
+            exited_at: 1637177345265,
+            duration: 3000,
+            activity_duration: 2900,
+            bounced_on: false,
+            exited_on: false
+          },
+          {
+            url: '/examples/static/1',
+            entered_at: 1637177345265,
+            exited_at: 1637177353431,
+            duration: 8166,
+            activity_duration: 8166,
+            bounced_on: false,
+            exited_on: true
+          }
+        ])
+      end
     end
   end
 
