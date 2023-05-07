@@ -216,8 +216,8 @@ RSpec.describe Session do
     context 'when there is some inactivity' do
       let(:inactivity) do 
         [
-          [1637177342365, 1637177342465],
-          [1637177353531, 1637177353631],
+          [100, 200],
+          [18000, 18100],
         ]
       end
       let(:events_activity) { instance_double(Events::Activity, inactivity:) }

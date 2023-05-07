@@ -344,11 +344,14 @@ class Session
   # Given two timestamps, how much of that time
   # was actually active
   def activity_duration_between_timestamps(from_timestamp, to_timestamp)
+    timestamp_offset = events.first['timestamp']
     total_duration = to_timestamp - from_timestamp
 
     inactivity.each do |(from_inactive, to_inactive)|
       # Only take inactivity that is between the two timestamps
-      next unless [from_inactive, to_inactive].all? { |t| t.between?(from_timestamp, to_timestamp) }
+      next unless [from_inactive, to_inactive].all? do |t|
+        t.between?(from_timestamp - timestamp_offset, to_timestamp - timestamp_offset)
+      end
 
       total_duration -= to_inactive - from_inactive
     end
