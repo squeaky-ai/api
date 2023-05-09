@@ -1,5 +1,18 @@
-<h1>The team account for <%= @site.name %> has been deleted</h1>
-<p><%= @site.owner.user.full_name %> has deleted <%= @site.name %>, and its associated team, from Squeaky.</p>
-<p>If you believe this may have occured in error, please contact <%= @site.owner.user.first_name %> directly.</p>
-<a href="<%= squeaky_url %>" class="button" style="text-decoration: none;">Visit Squeaky</a>
-<p class="small">If you believe you have received this email in error you can safely ignore it.</p>
+<% if @team.owner? %>
+  <p>Hi <%= @team.user.first_name %>,</p>
+  <p>We&apos;re just getting in touch as we noticed that you recently deleted <%= @site.name %> from Squeaky.</p>
+  <p>To ensure we&apos;re continuously improving Squeaky for all our users, we&apos;d really appreciate any feedback you might have regarding your decision to delete your site. If you have a couple of minutes spare, we&apos;d love it if you could answer our short site deletion survey using the button below:</p>
+
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSf64hh0WgN3gVa-lGe44SmqPwec_vV8ISngy2HdTw0XJZO4eA/viewform?usp=sf_link" class="button" style="text-decoration: none; margin: 0 0 2rem 0;">Site Deletion Survey</a>
+
+  <p>Your feedback will be anonymous and will only be used to help us serve our customers better.</p>
+  <p>If you have any additional comments, or would like try Squeaky again in the future, please don&apos;t hesitate to reach out to our support team at hello@squeaky.ai.</p>
+  <p>Kind Regards,</p>
+  <p><b>The Squeaky Team</b></p>
+<% else %>
+  <h1>The team account for <%= @site.name %> has been deleted</h1>
+  <p><%= @site.owner.user.full_name %> has deleted <%= @site.name %>, and its associated team, from Squeaky.</p>
+  <p>If you believe this may have occured in error, please contact <%= @site.owner.user.first_name %> directly.</p>
+  <a href="<%= squeaky_url %>" class="button" style="text-decoration: none;">Visit Squeaky</a>
+  <p class="small">If you believe you have received this email in error you can safely ignore it.</p>
+<% end %>

@@ -4,14 +4,40 @@ require 'rails_helper'
 
 RSpec.describe SiteMailer, type: :mailer do
   describe 'destroyed' do
-    let(:user) { create(:user) }
-    let(:site) { create(:site_with_team) }
-    let(:mail) { described_class.destroyed(user.email, site) }
+    context 'when the team member is the owner' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team) }
+      let!(:team) { create(:team, user:, site:, role: Team::OWNER) }
 
-    it 'renders the headers' do
-      expect(mail.subject).to eq "The team account for #{site.name} has been deleted"
-      expect(mail.to).to eq [user.email]
-      expect(mail.from).to eq ['hello@squeaky.ai']
+      let(:mail) { described_class.destroyed(team, site) }
+
+      it 'renders the headers' do
+        expect(mail.subject).to eq 'Help us to improve Squeaky'
+        expect(mail.to).to eq [user.email]
+        expect(mail.from).to eq ['hello@squeaky.ai']
+      end
+
+      it 'includes a link to the survey' do
+        expect(mail.body).to include('Site Deletion Survey')
+      end
+    end
+
+    context 'when the team member is not an owner' do
+      let(:user) { create(:user) }
+      let(:site) { create(:site_with_team) }
+      let!(:team) { create(:team, user:, site:, role: Team::ADMIN) }
+
+      let(:mail) { described_class.destroyed(team, site) }
+
+      it 'renders the headers' do
+        expect(mail.subject).to eq "The team account for #{site.name} has been deleted"
+        expect(mail.to).to eq [user.email]
+        expect(mail.from).to eq ['hello@squeaky.ai']
+      end
+
+      it 'renders a message saying the site was deleted' do
+        expect(mail.body).to include("The team account for #{site.name} has been deleted")
+      end
     end
   end
 

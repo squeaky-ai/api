@@ -2,6 +2,12 @@
 
 # Preview all emails at http://localhost:4000/rails/mailers/site
 class SitePreview < ActionMailer::Preview
+  def destroyed
+    site = Site.first
+
+    SiteMailer.destroyed(site.owner, site)
+  end
+
   def weekly_review
     site = Site.first
     user = site.team.first.user

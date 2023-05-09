@@ -86,17 +86,18 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:team_user1) { create(:user) }
-    let(:team_user2) { create(:user) }
+    let(:user_1) { create(:user) }
+    let(:user_2) { create(:user) }
+
+    let!(:team_1) { create(:team, user:, site: site, role: Team::OWNER) }
+    let!(:team_2) { create(:team, user: user_1, site: site, role: Team::ADMIN) }
+    let!(:team_3) { create(:team, user: user_2, site: site, role: Team::MEMBER) }
 
     before do
       stub = double
       allow(stub).to receive(:deliver_now)
       allow(SiteMailer).to receive(:destroyed).and_return(stub)
       allow(AdminMailer).to receive(:site_destroyed).and_return(stub)
-
-      create(:team, user: team_user1, site: site, role: Team::ADMIN)
-      create(:team, user: team_user2, site: site, role: Team::MEMBER)
     end
 
     subject do
@@ -110,8 +111,10 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
 
     it 'sends the email to the team members' do
       subject
-      expect(SiteMailer).to have_received(:destroyed).with(team_user1.email, site)
-      expect(SiteMailer).to have_received(:destroyed).with(team_user2.email, site)
+
+      expect(SiteMailer).to have_received(:destroyed).with(team_1, site)
+      expect(SiteMailer).to have_received(:destroyed).with(team_2, site)
+      expect(SiteMailer).to have_received(:destroyed).with(team_3, site)
       expect(AdminMailer).to have_received(:site_destroyed).with(site)
     end
   end

@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class SiteMailer < ApplicationMailer
-  def destroyed(email, site)
+  def destroyed(team, site)
     @site = site
-    mail(to: email, subject: "The team account for #{site.name} has been deleted")
+    @team = team
+    subject = team.owner? ? 'Help us to improve Squeaky' : "The team account for #{site.name} has been deleted"
+
+    mail(to: team.user.email, subject:)
   end
 
   def weekly_review(site, data, user)
