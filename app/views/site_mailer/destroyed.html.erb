@@ -3,12 +3,14 @@
   <p>We&apos;re just getting in touch as we noticed that you recently deleted <b><%= @site.name %></b> from Squeaky.</p>
   <p>We&apos;re continuously improving Squeaky for all our users, and would really appreciate any feedback you might have regarding your decision to delete your site. If you have a couple of minutes spare, the button below will take you to a short survey:</p>
 
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSf64hh0WgN3gVa-lGe44SmqPwec_vV8ISngy2HdTw0XJZO4eA/viewform?usp=sf_link" class="button" style="text-decoration: none; margin: 0 0 2rem 0;">Site Deletion Survey</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSf64hh0WgN3gVa-lGe44SmqPwec_vV8ISngy2HdTw0XJZO4eA/viewform?usp=sf_link" class="button" style="text-decoration: none; margin: 0 0 2rem 0;">
+    2-Minute Feedback Survey
+  </a>
 
   <p>Your feedback will be anonymous and will only be used to help us serve our customers better.</p>
   <p>If you have any additional comments, or would like try Squeaky again in the future, please don&apos;t hesitate to reach out to our support team at <a href="mailto:hello@squeaky.ai">hello@squeaky.ai</a>.</p>
   <p>Kind Regards,</p>
-  <p><b>The Squeaky Team</b></p>
+  <p>Chris Pattison<br />CEO & Cofounder</p>
 <% else %>
   <h1>The team account for <%= @site.name %> has been deleted</h1>
   <p><%= @site.owner.user.full_name %> has deleted <%= @site.name %>, and its associated team, from Squeaky.</p>

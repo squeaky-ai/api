@@ -4,7 +4,7 @@ class SiteMailer < ApplicationMailer
   def destroyed(team, site)
     @site = site
     @team = team
-    subject = team.owner? ? 'Help us to improve Squeaky' : "The team account for #{site.name} has been deleted"
+    subject = team.owner? ? 'Site deletion follow-up' : "The team account for #{site.name} has been deleted"
 
     mail(to: team.user.email, subject:)
   end

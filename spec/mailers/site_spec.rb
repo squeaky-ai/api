@@ -12,13 +12,13 @@ RSpec.describe SiteMailer, type: :mailer do
       let(:mail) { described_class.destroyed(team, site) }
 
       it 'renders the headers' do
-        expect(mail.subject).to eq 'Help us to improve Squeaky'
+        expect(mail.subject).to eq 'Site deletion follow-up'
         expect(mail.to).to eq [user.email]
         expect(mail.from).to eq ['hello@squeaky.ai']
       end
 
       it 'includes a link to the survey' do
-        expect(mail.body).to include('Site Deletion Survey')
+        expect(mail.body).to include('2-Minute Feedback Survey')
       end
     end
 
