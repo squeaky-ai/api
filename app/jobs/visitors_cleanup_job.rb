@@ -7,7 +7,7 @@ class VisitorsCleanupJob < ApplicationJob
 
   def perform(*_args)
     Visitor.find_each do |visitor|
-      visitor.destroy if visitor.recordings.count.zero?
+      visitor.destroy if visitor.source != 'api' && visitor.recordings.count.zero?
     end
   end
 end
