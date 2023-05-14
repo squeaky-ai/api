@@ -5,6 +5,13 @@ class Plans
     Plans.to_a.find { |plan| plan[:id] == plan_id }
   end
 
+  def self.name_for(plan_id:)
+    plan = Plans.find_by_plan_id(plan_id)
+    return unless plan
+
+    plan[:name]
+  end
+
   def self.find_by_pricing_id(pricing_id)
     matching_plan = Plans.to_a.find do |plan|
       (plan[:pricing] || []).find { |price| price[:id] == pricing_id }

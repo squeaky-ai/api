@@ -24,6 +24,7 @@ module Types
       field :recordings_count, resolver: Resolvers::Admin::RecordingsCount
       field :visitors_count, resolver: Resolvers::Admin::VisitorsCount
       field :recordings_stored, resolver: Resolvers::Admin::RecordingsStored
+      field :ad_tracking, resolver: Resolvers::Admin::AdTracking
     end
   end
 end
