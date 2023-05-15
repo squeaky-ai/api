@@ -5,10 +5,12 @@ module Resolvers
     class AdTracking < Resolvers::Base
       type [Types::Admin::AdTracking, { null: false }], null: false
 
+      argument :page, Integer, required: false, default_value: 1
+      argument :size, Integer, required: false, default_value: 25
       argument :utm_content_ids, [String, { null: false }], required: true, default_value: []
 
-      def resolve_with_timings(utm_content_ids:)
-        ad_tracking = fetch_ad_tracking(utm_content_ids)
+      def resolve_with_timings(utm_content_ids:, page:, size:)
+        ad_tracking = fetch_ad_tracking(utm_content_ids, page, size)
 
         format_response(ad_tracking)
       end
@@ -32,7 +34,7 @@ module Resolvers
         end
       end
 
-      def fetch_ad_tracking(utm_content_ids)
+      def fetch_ad_tracking(utm_content_ids, page, size)
         sql = <<-SQL
           SELECT
             visitors.visitor_id visitor_id,
@@ -61,10 +63,17 @@ module Resolvers
           WHERE
             recordings.site_id = ? AND
             #{content_query(utm_content_ids)}
+          LIMIT ?
+          OFFSET ?
         SQL
 
-        variables = [Rails.application.config.squeaky_site_id]
-        variables << utm_content_ids unless utm_content_ids.empty?
+        variables = [
+          Rails.application.config.squeaky_site_id,
+          size,
+          (size * (page - 1))
+        ]
+
+        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
 
         Sql.execute(sql, variables)
       end
