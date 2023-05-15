@@ -74,6 +74,8 @@ module Resolvers
           WHERE
             recordings.site_id = ? AND
             #{content_query(utm_content_ids)}
+          ORDER BY
+            COALESCE(sites.id, users.id)
           LIMIT ?
           OFFSET ?
         SQL
