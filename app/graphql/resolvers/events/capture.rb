@@ -8,11 +8,22 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 0
       argument :size, Integer, required: false, default_value: 20
       argument :sort, Types::Events::CaptureSort, required: false, default_value: 'count__desc'
+      argument :search, String, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:)
+      def resolve_with_timings(page:, size:, sort:, search:)
         events = object
                  .event_captures
-                 .includes(:event_groups) # So we can map &:name for #group_names
+                 .left_outer_joins(:event_groups) # So we can map &:name for #group_names
+                 .preload(:event_groups)
+
+        if search
+          events = events.where(
+            'LOWER(event_captures.name) LIKE :search OR LOWER(event_groups.name) LIKE :search',
+            { search: "%#{search.downcase}%" }
+          )
+        end
+
+        events = events
                  .order(order(sort))
                  .page(page)
                  .per(size)
