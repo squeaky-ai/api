@@ -5,7 +5,7 @@ module Resolvers
     class AdTracking < Resolvers::Base
       type [Types::Admin::AdTracking, { null: false }], null: false
 
-      argument :utm_content_ids, [String, { null: false }], required: true
+      argument :utm_content_ids, [String, { null: false }], required: true, default_value: []
 
       def resolve_with_timings(utm_content_ids:)
         ad_tracking = fetch_ad_tracking(utm_content_ids)
@@ -50,24 +50,29 @@ module Resolvers
             recordings
           INNER JOIN
             visitors ON visitors.id = recordings.visitor_id
-          INNER JOIN
+          LEFT OUTER JOIN
             users ON users.id::text = visitors.external_attributes->>'id'::text
-          INNER JOIN
+          LEFT OUTER JOIN
             teams ON teams.user_id = users.id
-          INNER JOIN
+          LEFT OUTER JOIN
             sites ON sites.id = teams.site_id
-          INNER JOIN
+          LEFT OUTER JOIN
             plans ON plans.site_id = sites.id
           WHERE
-            recordings.utm_content IN (?) AND recordings.site_id = ?
+            recordings.site_id = ? AND
+            #{content_query(utm_content_ids)}
         SQL
 
-        variables = [
-          utm_content_ids,
-          Rails.application.config.squeaky_site_id
-        ]
+        variables = [Rails.application.config.squeaky_site_id]
+        variables << utm_content_ids unless utm_content_ids.empty?
 
         Sql.execute(sql, variables)
+      end
+
+      def content_query(utm_content_ids)
+        return 'recordings.utm_content IS NOT null' if utm_content_ids.empty?
+
+        'recordings.utm_content IN (?)'
       end
     end
   end
