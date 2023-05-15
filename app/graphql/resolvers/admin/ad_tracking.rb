@@ -3,7 +3,7 @@
 module Resolvers
   module Admin
     class AdTracking < Resolvers::Base
-      type [Types::Admin::AdTracking, { null: false }], null: false
+      type Types::Admin::AdTracking, null: false
 
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 25
@@ -11,8 +11,12 @@ module Resolvers
 
       def resolve_with_timings(utm_content_ids:, page:, size:)
         ad_tracking = fetch_ad_tracking(utm_content_ids, page, size)
+        ad_tracking_count = fetch_ad_tracking_count(utm_content_ids)
 
-        format_response(ad_tracking)
+        {
+          items: format_response(ad_tracking),
+          pagination: format_pagination(ad_tracking_count, size)
+        }
       end
 
       private
@@ -32,6 +36,13 @@ module Resolvers
             utm_content: a['utm_content']
           }
         end
+      end
+
+      def format_pagination(ad_tracking_count, size)
+        {
+          page_size: size,
+          total: ad_tracking_count
+        }
       end
 
       def fetch_ad_tracking(utm_content_ids, page, size)
@@ -76,6 +87,36 @@ module Resolvers
         variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
 
         Sql.execute(sql, variables)
+      end
+
+      def fetch_ad_tracking_count(utm_content_ids)
+        sql = <<-SQL
+          SELECT
+            COUNT(*) count
+          FROM
+            recordings
+          INNER JOIN
+            visitors ON visitors.id = recordings.visitor_id
+          LEFT OUTER JOIN
+            users ON users.id::text = visitors.external_attributes->>'id'::text
+          LEFT OUTER JOIN
+            teams ON teams.user_id = users.id
+          LEFT OUTER JOIN
+            sites ON sites.id = teams.site_id
+          LEFT OUTER JOIN
+            plans ON plans.site_id = sites.id
+          WHERE
+            recordings.site_id = ? AND
+            #{content_query(utm_content_ids)}
+        SQL
+
+        variables = [
+          Rails.application.config.squeaky_site_id
+        ]
+
+        variables << utm_content_ids unless utm_content_ids.empty?
+
+        Sql.execute(sql, variables).first['count']
       end
 
       def content_query(utm_content_ids)
