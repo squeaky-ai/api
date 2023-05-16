@@ -80,7 +80,7 @@ module Resolvers
             recordings.site_id = ? AND
             #{content_query(utm_content_ids)} AND
             visitors.created_at::date BETWEEN ? AND ?
-          ORDER BY #{order(sort)}
+          ORDER BY #{order(sort)} NULLS LAST
           LIMIT ?
           OFFSET ?
         SQL
