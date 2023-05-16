@@ -8,10 +8,14 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 25
       argument :utm_content_ids, [String, { null: false }], required: true, default_value: []
+      argument :from_date, GraphQL::Types::ISO8601Date, required: true
+      argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(utm_content_ids:, page:, size:)
-        ad_tracking = fetch_ad_tracking(utm_content_ids, page, size)
-        ad_tracking_count = fetch_ad_tracking_count(utm_content_ids)
+      def resolve_with_timings(utm_content_ids:, page:, size:, from_date:, to_date:)
+        range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
+
+        ad_tracking = fetch_ad_tracking(utm_content_ids, page, size, range)
+        ad_tracking_count = fetch_ad_tracking_count(utm_content_ids, range)
 
         {
           items: format_response(ad_tracking),
@@ -45,7 +49,7 @@ module Resolvers
         }
       end
 
-      def fetch_ad_tracking(utm_content_ids, page, size)
+      def fetch_ad_tracking(utm_content_ids, page, size, range)
         sql = <<-SQL
           SELECT
             visitors.visitor_id visitor_id,
@@ -73,7 +77,8 @@ module Resolvers
             plans ON plans.site_id = sites.id
           WHERE
             recordings.site_id = ? AND
-            #{content_query(utm_content_ids)}
+            #{content_query(utm_content_ids)} AND
+            visitors.created_at::date BETWEEN ? AND ?
           ORDER BY
             COALESCE(sites.id, users.id)
           LIMIT ?
@@ -82,6 +87,8 @@ module Resolvers
 
         variables = [
           Rails.application.config.squeaky_site_id,
+          range.from,
+          range.to,
           size,
           (size * (page - 1))
         ]
@@ -91,7 +98,7 @@ module Resolvers
         Sql.execute(sql, variables)
       end
 
-      def fetch_ad_tracking_count(utm_content_ids)
+      def fetch_ad_tracking_count(utm_content_ids, range)
         sql = <<-SQL
           SELECT
             COUNT(*) count
@@ -109,14 +116,17 @@ module Resolvers
             plans ON plans.site_id = sites.id
           WHERE
             recordings.site_id = ? AND
-            #{content_query(utm_content_ids)}
+            #{content_query(utm_content_ids)} AND
+            visitors.created_at::date BETWEEN ? AND ?
         SQL
 
         variables = [
-          Rails.application.config.squeaky_site_id
+          Rails.application.config.squeaky_site_id,
+          range.from,
+          range.to
         ]
 
-        variables << utm_content_ids unless utm_content_ids.empty?
+        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
 
         Sql.execute(sql, variables).first['count']
       end

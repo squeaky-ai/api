@@ -23,7 +23,7 @@ class Site < ApplicationRecord
   has_one :plan, dependent: :destroy
   has_one :billing, dependent: :destroy
 
-  has_one :site_bundles_site
+  has_one :site_bundles_site, dependent: :destroy
   has_one :site_bundle, through: :site_bundles_site
 
   has_one :consent
