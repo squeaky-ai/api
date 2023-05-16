@@ -8,13 +8,14 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 25
       argument :utm_content_ids, [String, { null: false }], required: true, default_value: []
+      argument :sort, Types::Admin::AdTrackingSort, required: false, default_value: 'user_created_at__desc'
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(utm_content_ids:, page:, size:, from_date:, to_date:)
+      def resolve_with_timings(utm_content_ids:, page:, size:, sort:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
-        ad_tracking = fetch_ad_tracking(utm_content_ids, page, size, range)
+        ad_tracking = fetch_ad_tracking(utm_content_ids, page, size, range, sort)
         ad_tracking_count = fetch_ad_tracking_count(utm_content_ids, range)
 
         {
@@ -49,7 +50,7 @@ module Resolvers
         }
       end
 
-      def fetch_ad_tracking(utm_content_ids, page, size, range)
+      def fetch_ad_tracking(utm_content_ids, page, size, range, sort)
         sql = <<-SQL
           SELECT
             visitors.visitor_id visitor_id,
@@ -79,8 +80,7 @@ module Resolvers
             recordings.site_id = ? AND
             #{content_query(utm_content_ids)} AND
             visitors.created_at::date BETWEEN ? AND ?
-          ORDER BY
-            COALESCE(sites.id, users.id)
+          ORDER BY #{order(sort)}
           LIMIT ?
           OFFSET ?
         SQL
@@ -96,6 +96,18 @@ module Resolvers
         variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
 
         Sql.execute(sql, variables)
+      end
+
+      def order(sort)
+        sorts = {
+          'user_created_at__asc' => 'users.created_at ASC',
+          'user_created_at__desc' => 'users.created_at DESC',
+          'site_created_at__asc' => 'sites.created_at ASC',
+          'site_created_at__desc' => 'sites.created_at DESC',
+          'site_verified_at__asc' => 'sites.verified_at ASC',
+          'site_verified_at__desc' => 'sites.verified_at DESC'
+        }
+        sorts[sort]
       end
 
       def fetch_ad_tracking_count(utm_content_ids, range)
