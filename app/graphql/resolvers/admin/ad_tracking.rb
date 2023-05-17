@@ -52,7 +52,7 @@ module Resolvers
 
       def fetch_ad_tracking(utm_content_ids, page, size, range, sort)
         sql = <<-SQL
-          SELECT
+          SELECT DISTINCT
             visitors.visitor_id visitor_id,
             users.id user_id,
             users.first_name user_first_name,
