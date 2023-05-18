@@ -50,9 +50,12 @@ class Paths
       path_chunks = page['url'].sub(%r{/$}, '').split('/')
 
       if path_chunks.size == route_chunks.size
-        parameter_indexes(route_chunks).each do |index|
-          path_chunks.delete_at(index)
-          route_chunks.delete_at(index)
+        parameter_indexes(route_chunks).each.with_index do |index, i|
+          # Every time we iterate we remove one of the
+          # elements from the array, which makes it get
+          # smaller
+          path_chunks.delete_at(index - i)
+          route_chunks.delete_at(index - i)
         end
 
         route_chunks.join('/') == path_chunks.join('/')

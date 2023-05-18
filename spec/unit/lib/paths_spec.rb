@@ -91,6 +91,14 @@ RSpec.describe Paths do
         {
           'url' => '/foo/baz',
           'count' => 2
+        },
+        {
+          'url' => '/foo/bar/baz',
+          'count' => 5
+        },
+        {
+          'url' => '/foo/bar/baz/whatever_comes_after_baz',
+          'count' => 2
         }
       ]
     end
@@ -121,6 +129,14 @@ RSpec.describe Paths do
             },
             {
               'url' => '/foo/baz',
+              'count' => 2
+            },
+            {
+              'url' => '/foo/bar/baz',
+              'count' => 5
+            },
+            {
+              'url' => '/foo/bar/baz/whatever_comes_after_baz',
               'count' => 2
             }
           ]
@@ -153,6 +169,14 @@ RSpec.describe Paths do
             {
               'url' => '/foo/baz',
               'count' => 2
+            },
+            {
+              'url' => '/foo/bar/baz',
+              'count' => 5
+            },
+            {
+              'url' => '/foo/bar/baz/whatever_comes_after_baz',
+              'count' => 2
             }
           ]
         )
@@ -160,7 +184,12 @@ RSpec.describe Paths do
     end
 
     context 'when there are routes and they match' do
-      let(:routes) { ['/foo/:foo'] }
+      let(:routes) do
+        [
+          '/foo/:foo',
+          '/foo/:foo/:baz'
+        ]
+      end
 
       it 'returns the expected pages' do
         expect(subject).to eq(
@@ -181,6 +210,14 @@ RSpec.describe Paths do
               'url' => '/foo/:foo',
               'count' => 8
             },
+            {
+              'url' => '/foo/:foo/:baz',
+              'count' => 5
+            },
+            {
+              'url' => '/foo/bar/baz/whatever_comes_after_baz',
+              'count' => 2
+            }
           ]
         )
       end
