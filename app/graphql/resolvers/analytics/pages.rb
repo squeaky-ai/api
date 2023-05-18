@@ -43,7 +43,7 @@ module Resolvers
             SELECT
               url url,
               COUNT(*) view_count,
-              AVG(exited_at - entered_at) average_duration,
+              AVG(activity_duration) average_duration,
               COUNT(exited_on) FILTER(WHERE exited_on = true) exit_rate_count,
               COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count
             FROM

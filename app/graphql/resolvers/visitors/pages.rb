@@ -5,57 +5,87 @@ module Resolvers
     class Pages < Resolvers::Base
       type Types::Visitors::Pages, null: false
 
-      argument :page, Integer, required: false, default_value: 0
+      argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Visitors::PagesSort, required: false, default_value: 'views_count__desc'
 
       def resolve_with_timings(page:, size:, sort:)
-        order = order_by(sort)
-
-        pages = Visitor
-                .find(object.id)
-                .pages
-                .select('url, COUNT(*) count, AVG(exited_at - entered_at) average_time_on_page')
-                .group(:url)
-                .order(order)
-                .page(page)
-                .per(size)
+        pages = pages(size, page, sort)
 
         {
-          items: map_results(pages),
-          pagination: pagination(arguments, pages, size)
+          items: pages,
+          pagination: pagination(size, sort)
         }
       end
 
-      def pagination(arguments, pages, size)
+      def pagination(size, sort)
         {
           page_size: size,
-          total: pages.total_count,
-          sort: arguments[:sort]
+          total: pages_count,
+          sort:
         }
       end
 
       private
 
-      def map_results(pages)
-        pages.to_a.map do |page|
-          {
-            page_view: page.url,
-            page_view_count: page.count,
-            average_time_on_page: page.average_time_on_page
-          }
-        end
+      def pages(size, page, sort)
+        sql = <<-SQL
+          SELECT
+            url page_view,
+            COUNT(*) page_view_count,
+            AVG(activity_duration) average_time_on_page
+          FROM
+            page_events
+          WHERE
+            site_id = :site_id AND
+            visitor_id = :visitor_id
+          GROUP BY url
+          ORDER BY #{order_by(sort)}
+          LIMIT :limit
+          OFFSET :offset
+        SQL
+
+        variables = {
+          site_id: object.site_id,
+          visitor_id: object.id,
+          limit: size,
+          offset: (size * (page - 1))
+        }
+
+        Sql::ClickHouse.select_all(sql, variables)
+      end
+
+      def pages_count
+        sql = <<-SQL
+          SELECT COUNT(*)
+          FROM (
+            SELECT COUNT(*)
+            FROM
+              page_events
+            WHERE
+              site_id = :site_id AND
+              visitor_id = :visitor_id
+            GROUP BY url
+          )
+        SQL
+
+        variables = {
+          site_id: object.site_id,
+          visitor_id: object.id
+        }
+
+        Sql::ClickHouse.select_value(sql, variables) || 0
       end
 
       def order_by(sort)
         orders = {
-          'views_count__desc' => 'count DESC',
-          'views_count__asc' => 'count ASC',
+          'views_count__desc' => 'page_view_count DESC',
+          'views_count__asc' => 'page_view_count ASC',
           'average_time_on_page__desc' => 'average_time_on_page DESC',
           'average_time_on_page__asc' => 'average_time_on_page ASC'
         }
 
-        Arel.sql(orders[sort] || orders['views_count__desc'])
+        orders[sort]
       end
     end
   end

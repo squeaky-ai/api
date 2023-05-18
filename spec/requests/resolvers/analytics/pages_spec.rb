@@ -46,7 +46,8 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
+          activity_duration: 1000,
           entered_at: 1656444914353, 
           exited_at: 1656444926825, 
           bounced_on: true, 
@@ -56,6 +57,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 2000,
           entered_at: 1656444914353, 
           exited_at: 1656444926825, 
           bounced_on: false, 
@@ -65,6 +67,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/test', 
+          activity_duration: 3500,
           entered_at: 1656444914353, 
           exited_at: 1656444926825, 
           bounced_on: false, 
@@ -89,7 +92,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 12472,
+            'averageDuration' => 1500,
             'bounceRatePercentage' => 50.0,
             'exitRatePercentage' => 50.0,
             'url' => '/',
@@ -97,7 +100,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
             'viewPercentage' => 66.67
           },
           {
-            'averageDuration' => 12472,
+            'averageDuration' => 3500,
             'bounceRatePercentage' => 0.0,
             'exitRatePercentage' => 100.0,
             'url' => '/test',
@@ -119,6 +122,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 1000,
           entered_at: 1656444914353, 
           exited_at: 1656444926825,
           bounced_on: true,
@@ -128,6 +132,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/',
+          activity_duration: 2000,
           entered_at: 1656444914353,
           exited_at: 1656444926825, 
           bounced_on: false, 
@@ -137,6 +142,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/test', 
+          activity_duration: 3500,
           entered_at: 1656444914353, 
           exited_at: 1656444926825, 
           bounced_on: false, 
@@ -161,7 +167,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
       expect(response['items']).to eq(
         [
           {
-            'averageDuration' => 12472,
+            'averageDuration' => 1500,
             'bounceRatePercentage' => 50.0,
             'exitRatePercentage' => 50.0,
             'url' => '/',
@@ -169,7 +175,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
             'viewPercentage' => 66.67
           },
           {
-            'averageDuration' => 12472,
+            'averageDuration' => 3500,
             'bounceRatePercentage' => 0.0,
             'exitRatePercentage' => 100.0,
             'url' => '/test',

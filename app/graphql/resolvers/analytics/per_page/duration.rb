@@ -21,7 +21,7 @@ module Resolvers
         def duration(start_date, end_date)
           sql = <<-SQL
             SELECT
-              AVG(exited_at - entered_at) average
+              AVG(activity_duration) average
             FROM
               page_events
             WHERE

@@ -48,6 +48,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 1000,
           entered_at: 1660276690000, 
           exited_at: 1660276750000, 
           bounced_on: true
@@ -56,6 +57,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 2000,
           entered_at: 1659945610000, 
           exited_at: 1659949210000, 
           bounced_on: false
@@ -64,6 +66,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/test', 
+          activity_duration: 2000,
           entered_at: 1659945610000, 
           exited_at: 1659945610000, 
           bounced_on: false
@@ -72,6 +75,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 1000,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: true
@@ -80,6 +84,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 5000,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -88,6 +93,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 3000,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -113,7 +119,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
 
     it 'returns the results' do
       response = subject['data']['site']['analytics']['perPage']['averageTimeOnPage']
-      expect(response).to eq('average' => '1830000', 'trend' => '-1770000')
+      expect(response).to eq('average' => '1500', 'trend' => '-1500')
     end
   end
 
@@ -128,6 +134,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 1000,
           entered_at: 1660276690000, 
           exited_at: 1660276750000, 
           bounced_on: true
@@ -137,15 +144,16 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 2000,
           entered_at: 1659945610000, 
           exited_at: 1659949210000, 
           bounced_on: false
         },
         { 
-
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/test', 
+          activity_duration: 3000,
           entered_at: 1659945610000, 
           exited_at: 1659945610000, 
           bounced_on: false
@@ -155,6 +163,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 1000,
           entered_at: 1651658410000, 
           exited_at: 1651662010000, 
           bounced_on: true
@@ -164,6 +173,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 2000,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -173,6 +183,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/', 
+          activity_duration: 3123,
           entered_at: 1659603610000, 
           exited_at: 1659607210000, 
           bounced_on: false
@@ -198,7 +209,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Duration, type: :request do
 
     it 'returns the results' do
       response = subject['data']['site']['analytics']['perPage']['averageTimeOnPage']
-      expect(response).to eq('average' => '1830000', 'trend' => '-1770000')
+      expect(response).to eq('average' => '1500', 'trend' => '-1061')
     end
   end
 end

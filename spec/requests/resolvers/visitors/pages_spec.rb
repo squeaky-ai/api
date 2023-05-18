@@ -44,10 +44,78 @@ RSpec.describe Resolvers::Visitors::Pages, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create(:visitor, site_id: site.id) }
 
+    let(:recording_1) { create(:recording, site:) }
+    let(:recording_2) { create(:recording, site:) }
+    let(:recording_3) { create(:recording, site:) }
+
+    let(:recordings) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_1.id,
+          visitor_id: visitor.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_2.id,
+          visitor_id: visitor.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording_3.id,
+          visitor_id: visitor.id
+        }
+      ]
+    end
+
+    let(:pages) do
+      [
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          activity_duration: 1000,
+          recording_id: recording_1.id,
+          visitor_id: visitor.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/',
+          activity_duration: 2000,
+          recording_id: recording_2.id,
+          visitor_id: visitor.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/test',
+          activity_duration: 1000,
+          recording_id: recording_2.id,
+          visitor_id: visitor.id
+        },
+        {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          url: '/contact',
+          activity_duration: 2300,
+          recording_id: recording_3.id,
+          visitor_id: visitor.id
+        }
+      ]
+    end
+
     before do
-      create(:recording, site: site, page_urls: ['/'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/', '/test'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/contact'])
+      ClickHouse::Recording.insert do |buffer|
+        recordings.each { |recording| buffer << recording }
+      end
+
+      ClickHouse::PageEvent.insert do |buffer|
+        pages.each { |page| buffer << page }
+      end
     end
 
     subject do
@@ -57,7 +125,7 @@ RSpec.describe Resolvers::Visitors::Pages, type: :request do
 
     it 'returns the pages for this visitor' do
       response = subject['data']['site']['visitor']['pages']
-      expect(response['items'].size).to eq 2
+      expect(response['items'].size).to eq 3
     end
 
     it 'returns the correct pagination' do
@@ -65,7 +133,7 @@ RSpec.describe Resolvers::Visitors::Pages, type: :request do
       expect(response['pagination']).to eq(
         'pageSize' => 10,
         'sort' => 'views_count__desc',
-        'total' => 2
+        'total' => 3
       )
     end
   end
