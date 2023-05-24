@@ -5,7 +5,7 @@ module Types
     class SitesProvider < Types::BaseObject
       graphql_name 'AdminSitesProvider'
 
-      field :name, String, null: false
+      field :provider_name, String, null: false
       field :count, Integer, null: false
     end
   end
