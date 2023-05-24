@@ -14,6 +14,7 @@ module Types
       field :sites, resolver: Resolvers::Admin::Sites
       field :sites_count, resolver: Resolvers::Admin::SitesCount
       field :sites_stored, resolver: Resolvers::Admin::SitesStored
+      field :sites_providers, resolver: Resolvers::Admin::SitesProviders
       field :sites_bundles, resolver: Resolvers::Admin::SitesBundles
       field :active_visitors, resolver: Resolvers::Admin::ActiveVisitors
       field :active_monthly_users, resolver: Resolvers::Admin::ActiveMonthlyUsers

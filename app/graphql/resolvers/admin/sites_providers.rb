@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+module Resolvers
+  module Admin
+    class SitesProviders < Resolvers::Base
+      type [Types::Admin::SitesProvider, { null: false }], null: false
+
+      def resolve_with_timings
+        Rails.cache.fetch('data_cache:AdminSitesProviders', expires_in: 1.hour) do
+          sql = <<-SQL
+            SELECT
+              DISTINCT(COALESCE(provider, 'None')) name,
+              COUNT(*) count
+            FROM sites
+            GROUP BY sites.provider
+          SQL
+
+          Sql.execute(sql)
+        end
+      end
+    end
+  end
+end
