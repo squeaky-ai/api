@@ -93,6 +93,7 @@ class Plan < ApplicationRecord
 
   def start_free_trial!
     FreeTrialJob.set(wait: 14.days).perform_later(site_id)
+    FreeTrialMailerService.enqueue(site)
 
     update!(
       max_monthly_recordings: 1500,

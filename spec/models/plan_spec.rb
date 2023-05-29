@@ -184,6 +184,10 @@ RSpec.describe Plan, type: :model do
     let(:site) { create(:site) }
     let(:instance) { site.plan }
 
+    before do
+      allow(FreeTrialMailerService).to receive(:enqueue)
+    end
+
     subject { instance.start_free_trial! }
 
     it 'sets the features and max recordings' do
@@ -201,6 +205,11 @@ RSpec.describe Plan, type: :model do
       subject
 
       expect(FreeTrialJob).to have_been_enqueued.exactly(1).times.with(site.id)
+    end
+
+    it 'enqueues the free trial mailer' do
+      subject
+      expect(FreeTrialMailerService).to have_received(:enqueue)
     end
   end
 
