@@ -37,6 +37,8 @@ module Mutations
 
         fire_squeaky_event(site)
 
+        site.plan.start_free_trial!
+
         site.reload
       end
 

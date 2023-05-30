@@ -91,6 +91,23 @@ class Plan < ApplicationRecord
     )
   end
 
+  def start_free_trial!
+    FreeTrialJob.set(wait: 14.days).perform_later(site_id)
+    FreeTrialMailerService.enqueue(site)
+
+    update!(
+      max_monthly_recordings: 1500,
+      features_enabled: Types::Plans::Feature.values.keys
+    )
+  end
+
+  def end_free_trial!
+    update!(
+      max_monthly_recordings: nil,
+      features_enabled: []
+    )
+  end
+
   private
 
   def all_recordings_count

@@ -1,0 +1,7 @@
+<p>Dear <%= @user.first_name %>,</p>
+<p>It's hard to believe that there are <b>only 2 days left of your free trial</b> of Squeaky&apos;s premium features. We hope you've been enjoying exploring our product and discovering the transformative power of the analytics we offer.</p>
+<p>As your trial period nears its end, it's important to ensure you don&apos;t end up with gaps in your data capture and analysis that might hinder your decision-making capabilities. You can explore our different plans using the link below and upgrade to maintain access to the features you value most:</p>
+<a href="<%= squeaky_url(path: "/app/sites/#{@site.id}/settings/subscription") %>" class="button" style="text-decoration: none; margin-bottom: 2rem;">Explore Subscription Options</a>
+<p>We're here to help you make this as easy a process as possible, so if you have any questions or need any further information on our paid plans, please get in touch.</p>
+<p>Kind Regards,</p>
+<p>Chris Pattison<br>CEO &amp; Cofounder</p>

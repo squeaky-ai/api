@@ -179,4 +179,55 @@ RSpec.describe Plan, type: :model do
       end
     end
   end
+
+  describe '#start_free_trial!' do
+    let(:site) { create(:site) }
+    let(:instance) { site.plan }
+
+    before do
+      allow(FreeTrialMailerService).to receive(:enqueue)
+    end
+
+    subject { instance.start_free_trial! }
+
+    it 'sets the features and max recordings' do
+      expect { subject }.to change { instance.max_monthly_recordings }
+                        .from(500)
+                        .to(1500)
+                        .and change { instance.features_enabled }
+                        .from(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+                        .to(Types::Plans::Feature.values.keys)
+    end
+
+    it 'enqueues the free trial job' do
+      ActiveJob::Base.queue_adapter = :test
+
+      subject
+
+      expect(FreeTrialJob).to have_been_enqueued.exactly(1).times.with(site.id)
+    end
+
+    it 'enqueues the free trial mailer' do
+      subject
+      expect(FreeTrialMailerService).to have_received(:enqueue)
+    end
+  end
+
+  describe '#end_free_trial!' do
+    let(:site) { create(:site) }
+    let(:instance) { site.plan }
+
+    before { instance.start_free_trial! }
+
+    subject { instance.end_free_trial! }
+
+    it 'sets the features and max recordings' do
+      expect { subject }.to change { instance.max_monthly_recordings }
+                        .from(1500)
+                        .to(500)
+                        .and change { instance.features_enabled }
+                        .from(Types::Plans::Feature.values.keys)
+                        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+    end
+  end
 end

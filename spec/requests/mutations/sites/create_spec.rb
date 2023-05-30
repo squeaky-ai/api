@@ -138,6 +138,15 @@ RSpec.describe Mutations::Sites::Create, type: :request do
         expect { subject }.to have_enqueued_job(EventTrackingJob)
       end
 
+      it 'starts the free trial' do
+        site = subject['data']['siteCreate']
+
+        plan = Plan.find_by(site_id: site['id'])
+
+        expect(plan.max_monthly_recordings).to eq(1500)
+        expect(plan.features_enabled).to eq(Types::Plans::Feature.values.keys)
+      end
+
       context 'when a partner has referred the url' do
         let!(:partner) { create(:partner, user: create(:user)) }
         let!(:referral) { create(:referral, partner:, url:) }
