@@ -213,10 +213,22 @@ RSpec.describe Integrations::DudaController, type: :controller do
       subject
 
       expect(response).to have_http_status(302)
+      expect(response.headers['Location']).to eq("https://squeaky.ai/app/sites/#{site.id}/dashboard?free_trial_began=1")
     end
 
     it 'stores the sdk url' do
       expect { subject }.to change { site.reload.provider_auth.sdk_url }.from(nil).to(sdk_url)
+    end
+
+    context 'when the user has previously signed in' do
+      before { user.update(sign_in_count: 1) }
+
+      it 'signs the user in and redirects them' do
+        subject
+  
+        expect(response).to have_http_status(302)
+        expect(response.headers['Location']).to eq("https://squeaky.ai/app/sites/#{site.id}/dashboard")
+      end
     end
   end
 
