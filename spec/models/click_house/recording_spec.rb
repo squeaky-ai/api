@@ -36,6 +36,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
           utm_campaign,
           utm_content,
           utm_term,
+          gad,
+          gclid,
           activity_duration,
           inactivity,
           active_events_count
@@ -65,6 +67,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
         'utm_medium' => recording.utm_medium,
         'utm_source' => recording.utm_source,
         'utm_term' => recording.utm_term,
+        'gad' => recording.gad.to_s,
+        'gclid' => recording.gclid.to_s,
         'viewport_x' => recording.viewport_x,
         'viewport_y' => recording.viewport_y,
         'visitor_id' => recording.visitor_id,

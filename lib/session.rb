@@ -105,6 +105,14 @@ class Session
     recording['utm_term']
   end
 
+  def gad
+    recording['gad']
+  end
+
+  def gclid
+    recording['gclid']
+  end
+
   def connected_at
     return 0 unless events?
 

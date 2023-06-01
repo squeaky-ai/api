@@ -28,6 +28,8 @@ module ClickHouse
           utm_campaign: recording.utm_campaign,
           utm_content: recording.utm_content,
           utm_term: recording.utm_term,
+          gad: recording.gad,
+          gclid: recording.gclid,
           activity_duration: recording.activity_duration,
           inactivity: recording.inactivity.to_json,
           active_events_count: recording.active_events_count

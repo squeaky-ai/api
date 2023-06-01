@@ -32,6 +32,8 @@ RSpec.describe Session do
         'utm_medium' => 'organic',
         'utm_source' => 'google',
         'utm_term' => 'analytics',
+        'gad' => 'gad',
+        'gclid' => 'gclid',
         'viewport_x' => 1813,
         'viewport_y' => 1813
       )
@@ -316,6 +318,18 @@ RSpec.describe Session do
   describe '#utm_term' do
     it 'returns the utm term' do
       expect(instance.utm_term).to eq 'analytics'
+    end
+  end
+
+  describe '#gad' do
+    it 'returns the gad' do
+      expect(instance.gad).to eq 'gad'
+    end
+  end
+
+  describe '#gclid' do
+    it 'returns the gclid' do
+      expect(instance.gclid).to eq 'gclid'
     end
   end
 

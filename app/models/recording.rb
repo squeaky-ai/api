@@ -105,6 +105,8 @@ class Recording < ApplicationRecord
       utm_campaign: session.utm_campaign,
       utm_content: session.utm_content,
       utm_term: session.utm_term,
+      gad: session.gad,
+      gclid: session.gclid,
       activity_duration: session.activity_duration,
       inactivity: session.inactivity,
       active_events_count: session.active_events_count,
