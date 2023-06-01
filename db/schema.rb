@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_03_065312) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_01_075140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -270,6 +270,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_03_065312) do
     t.string "inactivity", default: [], null: false, array: true
     t.integer "active_events_count"
     t.string "events_key_prefix"
+    t.string "gad"
+    t.string "gclid"
     t.index ["disconnected_at"], name: "index_recordings_on_disconnected_at"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"
