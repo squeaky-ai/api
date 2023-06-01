@@ -23,7 +23,7 @@ RSpec.describe Mutations::Admin::BlogPostCreate, type: :request do
         tags: ['Tag 1', 'Tag 2'],
         author: 'lewis',
         draft: true,
-        metaImage: 'https://cdn.squeaky.ai/blog/covers/cat-in-space.jpg',
+        metaImage: 'https://cdn.squeaky.ai/blog/cat-in-space.jpg',
         metaDescription: 'Meta',
         slug: '/category/hello',
         body: 'Hello',
