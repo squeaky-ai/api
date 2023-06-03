@@ -29,8 +29,6 @@ RSpec.describe RecordingDeleteJob, type: :job do
   it 'deletes the recording, visitor and all the clickhouse data' do
     subject
     site.reload
-
-    sleep 1 # TODO: ClickHouse appears to delete async
     
     expect(site.visitors.size).to eq(0)
     expect(site.recordings.size).to eq(0)

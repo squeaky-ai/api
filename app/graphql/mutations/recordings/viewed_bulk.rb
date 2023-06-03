@@ -22,10 +22,37 @@ module Mutations
 
         return [] if recordings.empty?
 
-        recordings.update_all(viewed:)
-        recordings.each { |recording| recording.visitor.update(new: false) } if viewed
+        view_recordings!(recordings, viewed)
+        mark_visitors_as_not_new!(recordings) if viewed
 
         site.recordings.reload
+      end
+
+      private
+
+      def view_recordings!(recordings, viewed)
+        # Update Postgres
+        recordings.update_all(viewed:)
+
+        # Update ClickHouse
+        sql = <<-SQL
+          ALTER TABLE recordings
+          UPDATE viewed = :viewed
+          WHERE site_id = :site_id AND recording_id IN (:recording_ids)
+        SQL
+
+        variables = {
+          viewed:,
+          site_id: site.id,
+          recording_ids: recordings.map(&:id)
+        }
+
+        Sql::ClickHouse.execute(sql, variables)
+      end
+
+      def mark_visitors_as_not_new!(recordings)
+        visitor_ids = recordings.map(&:visitor_id)
+        Visitor.where(id: visitor_ids).update_all(new: false)
       end
     end
   end

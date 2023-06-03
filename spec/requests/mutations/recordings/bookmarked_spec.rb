@@ -39,6 +39,16 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
       let(:recording) { create(:recording, site: site) }
 
+      before do
+        ClickHouse::Recording.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording.id
+          }
+        end
+      end
+
       subject do
         variables = {
           input: { 
@@ -58,12 +68,28 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       it 'updates the recording in the database' do
         expect { subject }.to change { Recording.find_by(id: recording.id).bookmarked }.from(false).to(true)
       end
+
+      it 'updates the clickhouse record' do
+        subject
+        result = Sql::ClickHouse.select_one("SELECT bookmarked FROM recordings WHERE recording_id = #{recording.id}")
+        expect(result).to eq('bookmarked' => true)
+      end
     end
 
     context 'and it is unbookmarked' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
       let(:recording) { create(:recording, bookmarked: true, site: site) }
+
+      before do
+        ClickHouse::Recording.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id,
+            recording_id: recording.id
+          }
+        end
+      end
 
       subject do
         variables = {
@@ -83,6 +109,12 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
 
       it 'updates the recording in the database' do
         expect { subject }.to change { Recording.find_by(id: recording.id).bookmarked }.from(true).to(false)
+      end
+
+      it 'updates the clickhouse record' do
+        subject
+        result = Sql::ClickHouse.select_one("SELECT bookmarked FROM recordings WHERE recording_id = #{recording.id}")
+        expect(result).to eq('bookmarked' => false)
       end
     end
   end

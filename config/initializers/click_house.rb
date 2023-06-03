@@ -3,6 +3,7 @@
 ClickHouse.config do |config|
   config.logger = Rails.logger
   config.assign(Rails.application.config_for('click_house'))
+  config.global_params = { mutations_sync: 1 } if Rails.env.test?
 end
 
 module ClickHouse

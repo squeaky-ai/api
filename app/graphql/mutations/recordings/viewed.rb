@@ -22,7 +22,7 @@ module Mutations
         raise Exceptions::RecordingNotFound unless recording
 
         unless superuser_viewing?
-          recording.update(viewed: true)
+          view_recording!(recording) unless recording.viewed?
           recording.visitor.update(new: false)
         end
 
@@ -33,6 +33,25 @@ module Mutations
 
       def superuser_viewing?
         user.superuser? && !user.member_of?(site)
+      end
+
+      def view_recording!(recording)
+        # Update Postgres
+        recording.update(viewed: true)
+
+        # Update ClickHouse
+        sql = <<-SQL
+          ALTER TABLE recordings
+          UPDATE viewed = true
+          WHERE site_id = :site_id AND recording_id = :recording_id
+        SQL
+
+        variables = {
+          site_id: site.id,
+          recording_id: recording.id
+        }
+
+        Sql::ClickHouse.execute(sql, variables)
       end
     end
   end

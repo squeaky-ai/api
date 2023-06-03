@@ -22,9 +22,31 @@ module Mutations
 
         raise Exceptions::RecordingNotFound unless recording
 
-        recording.update(bookmarked:)
+        bookmark_recording!(recording, bookmarked)
 
         recording
+      end
+
+      private
+
+      def bookmark_recording!(recording, bookmarked)
+        # Update Postgres
+        recording.update(bookmarked:)
+
+        # Update ClickHouse
+        sql = <<-SQL
+          ALTER TABLE recordings
+          UPDATE bookmarked = :bookmarked
+          WHERE site_id = :site_id AND recording_id = :recording_id
+        SQL
+
+        variables = {
+          bookmarked:,
+          site_id: site.id,
+          recording_id: recording.id
+        }
+
+        Sql::ClickHouse.execute(sql, variables)
       end
     end
   end

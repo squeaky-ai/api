@@ -37,6 +37,16 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
     let(:recording) { create(:recording, site: site) }
 
+    before do
+      ClickHouse::Recording.insert do |buffer|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: site.id,
+          recording_id: recording.id
+        }
+      end
+    end
+
     subject do
       variables = {
         input: { 
@@ -58,6 +68,12 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
     it 'marks the visitor as not-new' do
       expect { subject }.to change { recording.visitor.reload.new }.from(true).to(false)
+    end
+
+    it 'updates the clickhouse record' do
+      subject
+      result = Sql::ClickHouse.select_one("SELECT viewed FROM recordings WHERE recording_id = #{recording.id}")
+      expect(result).to eq('viewed' => true)
     end
   end
 
