@@ -16,6 +16,8 @@ module Types
       field :visitor_id, ID, null: false
       field :visitor_visitor_id, String, null: false
       field :utm_content, String, null: false
+      field :gad, String, null: true
+      field :gclid, String, null: true
 
       def site_created_at
         DateFormatter.format(date: object[:site_created_at], timezone: context[:timezone])
