@@ -13,7 +13,8 @@ module Types
       field :user_id, ID, null: true
       field :user_name, String, null: true
       field :user_created_at, Types::Common::Dates, null: true
-      field :visitor_id, String, null: false
+      field :visitor_id, ID, null: false
+      field :visitor_visitor_id, String, null: false
       field :utm_content, String, null: false
 
       def site_created_at

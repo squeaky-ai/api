@@ -30,6 +30,7 @@ module Resolvers
         ad_tracking.map do |a|
           {
             visitor_id: a['visitor_id'],
+            visitor_visitor_id: a['visitor_visitor_id'],
             user_id: a['user_id'],
             user_name: "#{a['user_first_name']} #{a['user_last_name']}",
             user_created_at: a['user_created_at'],
@@ -53,7 +54,8 @@ module Resolvers
       def fetch_ad_tracking(utm_content_ids, page, size, range, sort)
         sql = <<-SQL
           SELECT DISTINCT
-            visitors.visitor_id visitor_id,
+            visitors.id visitor_id,
+            visitors.visitor_id visitor_visitor_id,
             users.id user_id,
             users.first_name user_first_name,
             users.last_name user_last_name,
@@ -63,7 +65,9 @@ module Resolvers
             sites.created_at site_created_at,
             sites.verified_at site_verified_at,
             plans.plan_id site_plan_id,
-            recordings.utm_content utm_content
+            recordings.utm_content utm_content,
+            recordings.gad gad,
+            recordings.gclid gclid
           FROM
             recordings
           INNER JOIN
