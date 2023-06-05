@@ -12,14 +12,41 @@ class AdTrackingService
 
   def results
     sql = <<-SQL
-      SELECT *
-      FROM (
-        #{base_query}
-        ORDER BY #{order} NULLS LAST
+      SELECT DISTINCT
+        visitors.id visitor_id,
+        visitors.visitor_id visitor_visitor_id,
+        visitors.created_at visitor_created_at,
+        users.id user_id,
+        users.first_name user_first_name,
+        users.last_name user_last_name,
+        users.created_at user_created_at,
+        sites.id site_id,
+        sites.name site_name,
+        sites.created_at site_created_at,
+        sites.verified_at site_verified_at,
+        plans.plan_id site_plan_id,
+        recordings.utm_content utm_content,
+        recordings.gad gad,
+        recordings.gclid gclid
+      FROM
+        recordings
+      INNER JOIN
+        visitors ON visitors.id = recordings.visitor_id
+      LEFT OUTER JOIN
+        users ON users.id::text = visitors.external_attributes->>'id'::text
+      LEFT OUTER JOIN
+        teams ON teams.user_id = users.id
+      LEFT OUTER JOIN
+        sites ON sites.id = teams.site_id
+      LEFT OUTER JOIN
+        plans ON plans.site_id = sites.id
+      WHERE
+        visitors.site_id = :site_id AND
+        visitors.created_at::date BETWEEN :from_date AND :to_date AND
+        #{content_query}
+      ORDER BY #{order} NULLS LAST
         #{limit}
         #{offset}
-      ) a
-      WHERE a.visitor_created_at::date BETWEEN :from_date AND :to_date
     SQL
 
     variables = {
@@ -42,9 +69,24 @@ class AdTrackingService
 
   def count
     sql = <<-SQL
-      SELECT COUNT(*)
-      FROM (#{base_query}) a
-      WHERE a.visitor_created_at::date BETWEEN :from_date AND :to_date
+      SELECT
+        COUNT(*)
+      FROM
+        recordings
+      INNER JOIN
+        visitors ON visitors.id = recordings.visitor_id
+      LEFT OUTER JOIN
+        users ON users.id::text = visitors.external_attributes->>'id'::text
+      LEFT OUTER JOIN
+        teams ON teams.user_id = users.id
+      LEFT OUTER JOIN
+        sites ON sites.id = teams.site_id
+      LEFT OUTER JOIN
+        plans ON plans.site_id = sites.id
+      WHERE
+        visitors.site_id = :site_id AND
+        visitors.created_at::date BETWEEN :from_date AND :to_date AND
+        #{content_query}
     SQL
 
     variables = {
@@ -109,41 +151,5 @@ class AdTrackingService
     return "recordings.utm_content IS NOT null OR recordings.gclid != ''" if utm_content_ids.empty?
 
     'recordings.utm_content IN (:utm_content)'
-  end
-
-  def base_query
-    <<-SQL
-      SELECT DISTINCT
-        visitors.id visitor_id,
-        visitors.visitor_id visitor_visitor_id,
-        visitors.created_at visitor_created_at,
-        users.id user_id,
-        users.first_name user_first_name,
-        users.last_name user_last_name,
-        users.created_at user_created_at,
-        sites.id site_id,
-        sites.name site_name,
-        sites.created_at site_created_at,
-        sites.verified_at site_verified_at,
-        plans.plan_id site_plan_id,
-        recordings.utm_content utm_content,
-        recordings.gad gad,
-        recordings.gclid gclid
-      FROM
-        recordings
-      INNER JOIN
-        visitors ON visitors.id = recordings.visitor_id
-      LEFT OUTER JOIN
-        users ON users.id::text = visitors.external_attributes->>'id'::text
-      LEFT OUTER JOIN
-        teams ON teams.user_id = users.id
-      LEFT OUTER JOIN
-        sites ON sites.id = teams.site_id
-      LEFT OUTER JOIN
-        plans ON plans.site_id = sites.id
-      WHERE
-        recordings.site_id = :site_id AND
-        #{content_query}
-    SQL
   end
 end
