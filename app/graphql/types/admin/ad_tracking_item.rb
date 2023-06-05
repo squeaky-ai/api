@@ -15,6 +15,7 @@ module Types
       field :user_created_at, Types::Common::Dates, null: true
       field :visitor_id, ID, null: false
       field :visitor_visitor_id, String, null: false
+      field :visitor_created_at, Types::Common::Dates, null: false
       field :utm_content, String, null: true
       field :gad, String, null: true
       field :gclid, String, null: true

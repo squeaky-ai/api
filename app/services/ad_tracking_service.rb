@@ -19,7 +19,7 @@ class AdTrackingService
         #{limit}
         #{offset}
       ) a
-      WHERE a.user_created_at::date BETWEEN :from_date AND :to_date
+      WHERE a.visitor_created_at::date BETWEEN :from_date AND :to_date
     SQL
 
     variables = {
@@ -44,7 +44,7 @@ class AdTrackingService
     sql = <<-SQL
       SELECT COUNT(*)
       FROM (#{base_query}) a
-      WHERE a.user_created_at::date BETWEEN :from_date AND :to_date
+      WHERE a.visitor_created_at::date BETWEEN :from_date AND :to_date
     SQL
 
     variables = {
@@ -71,6 +71,7 @@ class AdTrackingService
       {
         visitor_id: a['visitor_id'],
         visitor_visitor_id: a['visitor_visitor_id'],
+        visitor_created_at: a['visitor_created_at'],
         user_id: a['user_id'],
         user_name: "#{a['user_first_name']} #{a['user_last_name']}".strip.presence,
         user_created_at: a['user_created_at'],
@@ -115,6 +116,7 @@ class AdTrackingService
       SELECT DISTINCT
         visitors.id visitor_id,
         visitors.visitor_id visitor_visitor_id,
+        visitors.created_at visitor_created_at,
         users.id user_id,
         users.first_name user_first_name,
         users.last_name user_last_name,
