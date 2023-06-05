@@ -29,9 +29,9 @@ class AdTrackingService
         recordings.gad gad,
         recordings.gclid gclid
       FROM
-        recordings
+        visitors
       INNER JOIN
-        visitors ON visitors.id = recordings.visitor_id
+        recordings ON recordings.visitor_id = visitors.id
       LEFT OUTER JOIN
         users ON users.id::text = visitors.external_attributes->>'id'::text
       LEFT OUTER JOIN
@@ -72,9 +72,9 @@ class AdTrackingService
       SELECT
         COUNT(*)
       FROM
-        recordings
+        visitors
       INNER JOIN
-        visitors ON visitors.id = recordings.visitor_id
+        recordings ON recordings.visitor_id = visitors.id
       LEFT OUTER JOIN
         users ON users.id::text = visitors.external_attributes->>'id'::text
       LEFT OUTER JOIN
