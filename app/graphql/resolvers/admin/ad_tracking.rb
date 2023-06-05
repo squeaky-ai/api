@@ -53,6 +53,67 @@ module Resolvers
 
       def fetch_ad_tracking(utm_content_ids, page, size, range, sort)
         sql = <<-SQL
+          SELECT *
+          FROM (
+            #{base_query(utm_content_ids)}
+            ORDER BY #{order(sort)} NULLS LAST
+            LIMIT ?
+            OFFSET ?
+          ) a
+          WHERE a.user_created_at::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          Rails.application.config.squeaky_site_id,
+          size,
+          (size * (page - 1)),
+          range.from,
+          range.to
+        ]
+
+        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
+
+        Sql.execute(sql, variables)
+      end
+
+      def order(sort)
+        sorts = {
+          'user_created_at__asc' => 'users.created_at ASC',
+          'user_created_at__desc' => 'users.created_at DESC',
+          'site_created_at__asc' => 'sites.created_at ASC',
+          'site_created_at__desc' => 'sites.created_at DESC',
+          'site_verified_at__asc' => 'sites.verified_at ASC',
+          'site_verified_at__desc' => 'sites.verified_at DESC'
+        }
+        sorts[sort]
+      end
+
+      def fetch_ad_tracking_count(utm_content_ids, range)
+        sql = <<-SQL
+          SELECT COUNT(*)
+          FROM (#{base_query(utm_content_ids)}) a
+          WHERE a.user_created_at::date BETWEEN ? AND ?
+        SQL
+
+        variables = [
+          Rails.application.config.squeaky_site_id,
+          range.from,
+          range.to
+        ]
+
+        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
+
+        Sql.execute(sql, variables).first['count']
+      end
+
+      def content_query(utm_content_ids)
+        return "recordings.utm_content IS NOT null OR recordings.gclid != ''" if utm_content_ids.empty?
+
+        'recordings.utm_content IN (?)'
+      end
+
+      def base_query(utm_content_ids)
+        <<-SQL
           SELECT DISTINCT
             visitors.id visitor_id,
             visitors.visitor_id visitor_visitor_id,
@@ -82,75 +143,8 @@ module Resolvers
             plans ON plans.site_id = sites.id
           WHERE
             recordings.site_id = ? AND
-            #{content_query(utm_content_ids)} AND
-            visitors.created_at::date BETWEEN ? AND ?
-          ORDER BY #{order(sort)} NULLS LAST
-          LIMIT ?
-          OFFSET ?
+            #{content_query(utm_content_ids)}
         SQL
-
-        variables = [
-          Rails.application.config.squeaky_site_id,
-          range.from,
-          range.to,
-          size,
-          (size * (page - 1))
-        ]
-
-        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
-
-        Sql.execute(sql, variables)
-      end
-
-      def order(sort)
-        sorts = {
-          'user_created_at__asc' => 'users.created_at ASC',
-          'user_created_at__desc' => 'users.created_at DESC',
-          'site_created_at__asc' => 'sites.created_at ASC',
-          'site_created_at__desc' => 'sites.created_at DESC',
-          'site_verified_at__asc' => 'sites.verified_at ASC',
-          'site_verified_at__desc' => 'sites.verified_at DESC'
-        }
-        sorts[sort]
-      end
-
-      def fetch_ad_tracking_count(utm_content_ids, range)
-        sql = <<-SQL
-          SELECT
-            COUNT(*) count
-          FROM
-            recordings
-          INNER JOIN
-            visitors ON visitors.id = recordings.visitor_id
-          LEFT OUTER JOIN
-            users ON users.id::text = visitors.external_attributes->>'id'::text
-          LEFT OUTER JOIN
-            teams ON teams.user_id = users.id
-          LEFT OUTER JOIN
-            sites ON sites.id = teams.site_id
-          LEFT OUTER JOIN
-            plans ON plans.site_id = sites.id
-          WHERE
-            recordings.site_id = ? AND
-            #{content_query(utm_content_ids)} AND
-            visitors.created_at::date BETWEEN ? AND ?
-        SQL
-
-        variables = [
-          Rails.application.config.squeaky_site_id,
-          range.from,
-          range.to
-        ]
-
-        variables.insert(1, utm_content_ids) unless utm_content_ids.empty?
-
-        Sql.execute(sql, variables).first['count']
-      end
-
-      def content_query(utm_content_ids)
-        return "recordings.utm_content IS NOT null OR recordings.gclid != ''" if utm_content_ids.empty?
-
-        'recordings.utm_content IN (?)'
       end
     end
   end
