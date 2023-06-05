@@ -148,7 +148,7 @@ module Resolvers
       end
 
       def content_query(utm_content_ids)
-        return 'recordings.utm_content IS NOT null' if utm_content_ids.empty?
+        return "recordings.utm_content IS NOT null OR recordings.gclid != ''" if utm_content_ids.empty?
 
         'recordings.utm_content IN (?)'
       end
