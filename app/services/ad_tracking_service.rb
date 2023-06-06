@@ -132,7 +132,9 @@ class AdTrackingService
         site_created_at: a['site_created_at'],
         site_verified_at: a['site_verified_at'],
         site_plan_name: Plans.name_for(plan_id: a['site_plan_id']),
-        utm_content: a['utm_content']
+        utm_content: a['utm_content'],
+        gad: a['gad'],
+        gclid: a['gclid']
       }
     end
   end
