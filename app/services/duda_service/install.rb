@@ -25,6 +25,8 @@ module DudaService
         create_auth!
         inject_script!
       end
+
+      site.plan.start_free_trial!
     end
 
     private

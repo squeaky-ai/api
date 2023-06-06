@@ -131,6 +131,16 @@ RSpec.describe DudaService::Install do
         .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
     end
 
+    it 'starts the free trial' do
+      subject
+
+      site = Site.find_by(uuid: site_name)
+      plan = Plan.find_by(site_id: site['id'])
+
+      expect(plan.max_monthly_recordings).to eq(1500)
+      expect(plan.features_enabled).to eq(Types::Plans::Feature.values.keys)
+    end
+
     context 'when the user exists already' do
       before do
         create(:user, first_name:, last_name:, email:)
