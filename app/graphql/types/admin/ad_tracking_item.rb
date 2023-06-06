@@ -19,6 +19,7 @@ module Types
       field :utm_content, String, null: true
       field :gad, String, null: true
       field :gclid, String, null: true
+      field :activity_duration, Integer, null: true
 
       def site_created_at
         DateFormatter.format(date: object[:site_created_at], timezone: context[:timezone])

@@ -29,7 +29,8 @@ class AdTrackingService
           recordings.site_id site_id,
           recordings.utm_content utm_content,
           recordings.gad gad,
-          recordings.gclid gclid
+          recordings.gclid gclid,
+          recordings.activity_duration activity_duration
         FROM
           recordings
         INNER JOIN
@@ -134,7 +135,8 @@ class AdTrackingService
         site_plan_name: Plans.name_for(plan_id: a['site_plan_id']),
         utm_content: a['utm_content'],
         gad: a['gad'],
-        gclid: a['gclid']
+        gclid: a['gclid'],
+        activity_duration: a['activity_duration']
       }
     end
   end
