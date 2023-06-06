@@ -12,37 +12,40 @@ class AdTrackingService
 
   def results
     sql = <<-SQL
-      SELECT DISTINCT
-        visitors.id visitor_id,
-        visitors.visitor_id visitor_visitor_id,
-        visitors.created_at visitor_created_at,
-        users.id user_id,
-        users.first_name user_first_name,
-        users.last_name user_last_name,
-        users.created_at user_created_at,
-        sites.id site_id,
-        sites.name site_name,
-        sites.created_at site_created_at,
-        sites.verified_at site_verified_at,
-        plans.plan_id site_plan_id,
-        recordings.utm_content utm_content,
-        recordings.gad gad,
-        recordings.gclid gclid
-      FROM
-        visitors
-      INNER JOIN
-        recordings ON recordings.visitor_id = visitors.id
-      LEFT OUTER JOIN
-        users ON users.id::text = visitors.external_attributes->>'id'::text
-      LEFT OUTER JOIN
-        teams ON teams.user_id = users.id
-      LEFT OUTER JOIN
-        sites ON sites.id = teams.site_id
-      LEFT OUTER JOIN
-        plans ON plans.site_id = sites.id
+      SELECT *
+      FROM (
+        SELECT DISTINCT
+          visitors.id visitor_id,
+          visitors.visitor_id visitor_visitor_id,
+          visitors.created_at visitor_created_at,
+          users.id user_id,
+          users.first_name user_first_name,
+          users.last_name user_last_name,
+          users.created_at user_created_at,
+          sites.id site_id,
+          sites.name site_name,
+          sites.created_at site_created_at,
+          sites.verified_at site_verified_at,
+          plans.plan_id site_plan_id,
+          recordings.utm_content utm_content,
+          recordings.gad gad,
+          recordings.gclid gclid
+        FROM
+          visitors
+        INNER JOIN
+          recordings ON recordings.visitor_id = visitors.id
+        LEFT OUTER JOIN
+          users ON users.id::text = visitors.external_attributes->>'id'::text
+        LEFT OUTER JOIN
+          teams ON teams.user_id = users.id
+        LEFT OUTER JOIN
+          sites ON sites.id = teams.site_id
+        LEFT OUTER JOIN
+          plans ON plans.site_id = sites.id
+      ) results
       WHERE
-        visitors.site_id = :site_id AND
-        visitors.created_at::date BETWEEN :from_date AND :to_date AND
+        results.site_id = :site_id AND
+        results.visitor_created_at::date BETWEEN :from_date AND :to_date AND
         #{content_query}
       ORDER BY #{order} NULLS LAST
         #{limit}
@@ -71,21 +74,28 @@ class AdTrackingService
     sql = <<-SQL
       SELECT
         COUNT(*)
-      FROM
-        visitors
-      INNER JOIN
-        recordings ON recordings.visitor_id = visitors.id
-      LEFT OUTER JOIN
-        users ON users.id::text = visitors.external_attributes->>'id'::text
-      LEFT OUTER JOIN
-        teams ON teams.user_id = users.id
-      LEFT OUTER JOIN
-        sites ON sites.id = teams.site_id
-      LEFT OUTER JOIN
-        plans ON plans.site_id = sites.id
+      FROM (
+        SELECT
+          sites.id site_id,
+          visitors.created_at visitor_created_at,
+          recordings.utm_content utm_content,
+          recordings.gclid gclid
+        FROM
+          visitors
+        INNER JOIN
+          recordings ON recordings.visitor_id = visitors.id
+        LEFT OUTER JOIN
+          users ON users.id::text = visitors.external_attributes->>'id'::text
+        LEFT OUTER JOIN
+          teams ON teams.user_id = users.id
+        LEFT OUTER JOIN
+          sites ON sites.id = teams.site_id
+        LEFT OUTER JOIN
+          plans ON plans.site_id = sites.id
+      ) results
       WHERE
-        visitors.site_id = :site_id AND
-        visitors.created_at::date BETWEEN :from_date AND :to_date AND
+        results.site_id = :site_id AND
+        results.visitor_created_at::date BETWEEN :from_date AND :to_date AND
         #{content_query}
     SQL
 
@@ -137,19 +147,19 @@ class AdTrackingService
 
   def order
     sorts = {
-      'user_created_at__asc' => 'users.created_at ASC',
-      'user_created_at__desc' => 'users.created_at DESC',
-      'site_created_at__asc' => 'sites.created_at ASC',
-      'site_created_at__desc' => 'sites.created_at DESC',
-      'site_verified_at__asc' => 'sites.verified_at ASC',
-      'site_verified_at__desc' => 'sites.verified_at DESC'
+      'user_created_at__asc' => 'results.user_created_at ASC',
+      'user_created_at__desc' => 'results.user_created_at DESC',
+      'site_created_at__asc' => 'results.site_created_at ASC',
+      'site_created_at__desc' => 'results.site_created_at DESC',
+      'site_verified_at__asc' => 'results.site_verified_at ASC',
+      'site_verified_at__desc' => 'results.site_verified_at DESC'
     }
     sorts[sort]
   end
 
   def content_query
-    return "recordings.utm_content IS NOT null OR recordings.gclid != ''" if utm_content_ids.empty?
+    return "results.utm_content IS NOT null OR results.gclid != ''" if utm_content_ids.empty?
 
-    'recordings.utm_content IN (:utm_content)'
+    'results.utm_content IN (:utm_content)'
   end
 end
