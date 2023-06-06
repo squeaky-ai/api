@@ -22,18 +22,18 @@ class AdTrackingService
           users.first_name user_first_name,
           users.last_name user_last_name,
           users.created_at user_created_at,
-          sites.id site_id,
           sites.name site_name,
           sites.created_at site_created_at,
           sites.verified_at site_verified_at,
           plans.plan_id site_plan_id,
+          recordings.site_id site_id,
           recordings.utm_content utm_content,
           recordings.gad gad,
           recordings.gclid gclid
         FROM
-          visitors
+          recordings
         INNER JOIN
-          recordings ON recordings.visitor_id = visitors.id
+          visitors ON visitors.id = recordings.visitor_id
         LEFT OUTER JOIN
           users ON users.id::text = visitors.external_attributes->>'id'::text
         LEFT OUTER JOIN
@@ -76,14 +76,14 @@ class AdTrackingService
         COUNT(*)
       FROM (
         SELECT
-          sites.id site_id,
           visitors.created_at visitor_created_at,
+          recordings.site_id site_id,
           recordings.utm_content utm_content,
           recordings.gclid gclid
         FROM
-          visitors
+          recordings
         INNER JOIN
-          recordings ON recordings.visitor_id = visitors.id
+          visitors ON visitors.id = recordings.visitor_id
         LEFT OUTER JOIN
           users ON users.id::text = visitors.external_attributes->>'id'::text
         LEFT OUTER JOIN
