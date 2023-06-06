@@ -31,6 +31,10 @@ module Types
       def user_created_at
         DateFormatter.format(date: object[:user_created_at], timezone: context[:timezone])
       end
+
+      def visitor_created_at
+        DateFormatter.format(date: object[:visitor_created_at], timezone: context[:timezone])
+      end
     end
   end
 end
