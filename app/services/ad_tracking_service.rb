@@ -158,7 +158,7 @@ class AdTrackingService
   end
 
   def content_query
-    return "results.utm_content IS NOT null OR results.gclid != ''" if utm_content_ids.empty?
+    return 'results.utm_content IS NOT null OR results.gclid IS NOT NULL' if utm_content_ids.empty?
 
     'results.utm_content IN (:utm_content)'
   end
