@@ -10,6 +10,7 @@ module Types
       field :site_created_at, Types::Common::Dates, null: true
       field :site_verified_at, Types::Common::Dates, null: true
       field :site_plan_name, String, null: true
+      field :site_plan_updated_at, Types::Common::Dates, null: true
       field :user_id, ID, null: true
       field :user_name, String, null: true
       field :user_created_at, Types::Common::Dates, null: true
@@ -35,6 +36,10 @@ module Types
 
       def visitor_created_at
         DateFormatter.format(date: object[:visitor_created_at], timezone: context[:timezone])
+      end
+
+      def site_plan_updated_at
+        DateFormatter.format(date: object[:site_plan_updated_at], timezone: context[:timezone])
       end
     end
   end
