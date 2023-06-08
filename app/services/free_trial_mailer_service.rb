@@ -37,9 +37,9 @@ class FreeTrialMailerService
     # Owners
     #
     # When to send:
-    # Owner: 192 hours (8 days)
+    # Owner: 168 hours (7 days)
 
-    FreeTrialMailer.second(site.id).deliver_later(wait: 192.hours)
+    FreeTrialMailer.second(site.id).deliver_later(wait: 168.hours)
   end
 
   def enqueue_third

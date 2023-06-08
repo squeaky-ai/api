@@ -23,7 +23,7 @@ RSpec.describe FreeTrialMailerService do
       expect(ActionMailer::MailDeliveryJob)
         .to have_been_enqueued
         .with('FreeTrialMailer', 'second', 'deliver_now', { args: [site.id] })
-        .at(now + 192.hours)
+        .at(now + 168.hours)
       expect(ActionMailer::MailDeliveryJob)
         .to have_been_enqueued
         .with('FreeTrialMailer', 'third', 'deliver_now', { args: [site.id] })
