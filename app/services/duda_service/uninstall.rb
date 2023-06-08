@@ -10,6 +10,8 @@ module DudaService
       site = ::Site.find_by!(uuid: site_name)
       return unless site
 
+      fire_squeaky_event(site)
+
       site.team.each do |team|
         # Only delete the duda user if they have no
         # other sites. It could be that someone is
@@ -26,5 +28,17 @@ module DudaService
     private
 
     attr_reader :site_name
+
+    def fire_squeaky_event(site)
+      EventTrackingJob.perform_later(
+        name: 'SiteDeleted',
+        user_id: site.owner.user.id,
+        data: {
+          name: site.name,
+          created_at: site.created_at.iso8601,
+          provider: site.provider
+        }
+      )
+    end
   end
 end

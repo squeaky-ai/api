@@ -13,6 +13,8 @@ module Mutations
         # Save this as the user will be nil
         email = user.email
 
+        fire_squeaky_event
+
         ActiveRecord::Base.transaction do
           # Destroy all sites the user is the owner of
           user.teams.filter(&:owner?).each do |team|
@@ -26,6 +28,18 @@ module Mutations
 
         UserMailer.destroyed(email).deliver_now
         nil
+      end
+
+      private
+
+      def fire_squeaky_event
+        EventTrackingJob.perform_later(
+          name: 'UserDeleted',
+          user_id: user.id,
+          data: {
+            name: user.full_name
+          }
+        )
       end
     end
   end

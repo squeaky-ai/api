@@ -26,6 +26,7 @@ module DudaService
         inject_script!
       end
 
+      fire_squeaky_events
       site.plan.start_free_trial!
     end
 
@@ -102,6 +103,30 @@ module DudaService
 
     def duda_script
       @duda_script ||= DudaService::Script.new(site:, site_name:, api_endpoint:, auth:)
+    end
+
+    def fire_squeaky_events
+      EventTrackingJob.perform_later(
+        name: 'SiteCreated',
+        user_id: user.id,
+        data: {
+          name: site.name,
+          created_at: site.created_at.iso8601,
+          provider: site.provider
+        }
+      )
+
+      # Don't fire it more than once for this user
+      return unless user.new_record?
+
+      EventTrackingJob.perform_later(
+        name: 'UserCreated',
+        user_id: user.id,
+        data: {
+          name: user.full_name,
+          provider: user.provider
+        }
+      )
     end
   end
 end

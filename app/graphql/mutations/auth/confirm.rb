@@ -23,7 +23,22 @@ module Mutations
         # confirm their account
         OnboardingMailerService.enqueue(user)
 
+        fire_squeaky_event(user)
+
         user
+      end
+
+      private
+
+      def fire_squeaky_event(user)
+        EventTrackingJob.perform_later(
+          name: 'UserCreated',
+          user_id: user.id,
+          data: {
+            name: user.full_name,
+            provider: user.provider
+          }
+        )
       end
     end
   end

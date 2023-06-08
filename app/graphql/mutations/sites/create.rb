@@ -61,7 +61,8 @@ module Mutations
           user_id: user.id,
           data: {
             name: site.name,
-            created_at: site.created_at.iso8601
+            created_at: site.created_at.iso8601,
+            provider: site.provider
           }
         )
       end
