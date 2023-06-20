@@ -148,6 +148,16 @@ FactoryBot.define do
     body { 'Hello world' }
   end
 
+  factory :changelog do
+    title { 'Title' }
+    author { 'lewis' }
+    draft { false }
+    meta_image { 'https://cdn.squeaky.ai/image.png' }
+    meta_description { 'Meta Description' }
+    slug { '/category/title' }
+    body { 'Hello world' }
+  end
+
   factory :communication do
     onboarding_email { true }
     weekly_review_email { true }

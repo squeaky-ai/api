@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_03_080747) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_075309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_03_080747) do
     t.string "body", null: false
     t.string "scripts", default: [], null: false, array: true
     t.boolean "covering_enabled", default: true
+  end
+
+  create_table "changelog", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "author", null: false
+    t.boolean "draft", default: true, null: false
+    t.string "meta_image", null: false
+    t.string "meta_description", null: false
+    t.string "slug", null: false
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "communications", force: :cascade do |t|
