@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_075309) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_21_075736) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -428,6 +428,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_075309) do
     t.datetime "last_activity_at"
     t.string "provider"
     t.string "provider_uuid"
+    t.datetime "changelog_last_viewed_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

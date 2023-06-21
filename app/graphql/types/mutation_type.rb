@@ -38,6 +38,7 @@ module Types
     field :user_invoice_create, mutation: Mutations::Users::InvoiceCreate
     field :user_invoice_delete, mutation: Mutations::Users::InvoiceDelete
     field :user_invoice_sign_image, mutation: Mutations::Users::InvoiceSignImage
+    field :users_changelog_viewed, mutation: Mutations::Users::ChangelogViewed
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update
