@@ -146,8 +146,19 @@ class Session
     events.any? { |event| event['type'] == Event::INCREMENTAL_SNAPSHOT && event['data']['source'] }
   end
 
-  def clean_up!
-    Cache.redis.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
+  # 5 clicks within 500ms
+  def rage_clicked?
+    # No point in checking if there's less than 5
+    return false unless clicks.size >= 5
+
+    timestamps = clicks.map { |c| c['timestamp'] }
+
+    timestamps.any? do |timestamp|
+      from = timestamp - 250
+      to = timestamp + 250
+
+      timestamps.filter { |c| c.between?(from, to) }.size >= 5
+    end
   end
 
   def exists?
@@ -206,6 +217,10 @@ class Session
   def active_events_count
     data_points = %i[clicks pageviews custom_tracking errors cursors]
     data_points.inject(0) { |sum, data_point| sum + send(data_point).size }
+  end
+
+  def clean_up!
+    Cache.redis.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
   end
 
   private

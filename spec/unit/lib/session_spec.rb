@@ -433,4 +433,70 @@ RSpec.describe Session do
       )
     end
   end
+
+  describe '#rage_click?' do
+    context 'when there are less than 5 clicks' do
+      it 'returns false' do
+        expect(instance.rage_clicked?).to eq(false)
+      end
+    end
+
+    context 'when there was no range click' do
+      before do
+        allow(instance).to receive(:clicks).and_return([
+          {
+            'timestamp' => 1688155262000
+          },
+          {
+            'timestamp' => 1688155271000
+          },
+          {
+            'timestamp' => 1688155274000
+          },
+          {
+            'timestamp' => 1688155277000
+          },
+          {
+            'timestamp' => 1688155280000
+          },
+          {
+            'timestamp' => 1688155289000
+          }
+        ])
+      end
+
+      it 'returns false' do
+        expect(instance.rage_clicked?).to eq(false)
+      end
+    end
+
+    context 'when there was a range click' do
+      before do
+        allow(instance).to receive(:clicks).and_return([
+          {
+            'timestamp' => 1688155262000
+          },
+          {
+            'timestamp' => 1688155262001
+          },
+          {
+            'timestamp' => 1688155262030
+          },
+          {
+            'timestamp' => 1688155262123
+          },
+          {
+            'timestamp' => 1688155262321
+          },
+          {
+            'timestamp' => 1688155289000
+          }
+        ])
+      end
+
+      it 'returns true' do
+        expect(instance.rage_clicked?).to eq(true)
+      end
+    end
+  end 
 end
