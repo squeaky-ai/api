@@ -474,22 +474,58 @@ RSpec.describe Session do
       before do
         allow(instance).to receive(:clicks).and_return([
           {
-            'timestamp' => 1688155262000
+            'timestamp' => 1688223351821
           },
           {
-            'timestamp' => 1688155262001
+            'timestamp' => 1688223351978
           },
           {
-            'timestamp' => 1688155262030
+            'timestamp' => 1688223352110
           },
           {
-            'timestamp' => 1688155262123
+            'timestamp' => 1688223352237
           },
           {
-            'timestamp' => 1688155262321
+            'timestamp' => 1688223352369
           },
           {
-            'timestamp' => 1688155289000
+            'timestamp' => 1688223352501
+          },
+          {
+            'timestamp' => 1688223352633
+          },
+          {
+            'timestamp' => 1688223352771
+          },
+          {
+            'timestamp' => 1688223352898
+          },
+          {
+            'timestamp' => 1688223353032
+          },
+          {
+            'timestamp' => 1688223353166
+          },
+          {
+            'timestamp' => 1688223353300
+          },
+          {
+            'timestamp' => 1688223353442
+          },
+          {
+            'timestamp' => 1688223353689
+          },
+          {
+            'timestamp' => 1688223353840
+          },
+          {
+            'timestamp' => 1688223357222
+          },
+          {
+            'timestamp' => 1688223361888
+          },
+          {
+            'timestamp' => 1688223364338
           }
         ])
       end
