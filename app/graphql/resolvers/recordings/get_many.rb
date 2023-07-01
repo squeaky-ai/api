@@ -82,6 +82,7 @@ module Resolvers
             utm_term
             utm_content
             visitor_type
+            rage_clicked
           ]
 
           filter_options.each do |option|
@@ -317,6 +318,12 @@ module Resolvers
         value = filters.visitor_type == 'New'
 
         recordings.where('visitors.new = ? ', value)
+      end
+
+      def filter_by_rage_clicked(recordings, filters)
+        return recordings if filters.rage_clicked.nil?
+
+        recordings.where('recordings.rage_clicked = ?', filters.rage_clicked)
       end
     end
   end
