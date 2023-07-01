@@ -32,7 +32,8 @@ module ClickHouse
           gclid: recording.gclid,
           activity_duration: recording.activity_duration,
           inactivity: recording.inactivity.to_json,
-          active_events_count: recording.active_events_count
+          active_events_count: recording.active_events_count,
+          rage_clicked: recording.rage_clicked
         }
       end
     rescue ClickHouse::DbException => e

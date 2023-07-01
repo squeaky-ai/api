@@ -28,6 +28,7 @@ site_recording_query = <<-GRAPHQL
           id
           visitorId
         }
+        rageClicked
       }
     }
   }

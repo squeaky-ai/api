@@ -32,6 +32,7 @@ module Types
       field :sentiment, Types::Feedback::SentimentResponseItem, null: true
       field :activity_duration, GraphQL::Types::BigInt, null: true
       field :inactivity, [[GraphQL::Types::BigInt, { null: false }], { null: false }], null: false
+      field :rage_clicked, Boolean, null: false
 
       def connected_at
         DateFormatter.format(date: object.connected_at, timezone: context[:timezone])

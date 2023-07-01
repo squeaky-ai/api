@@ -5,11 +5,12 @@ module StripeService
   INVOICE_PAID = 'invoice.paid'
   INVOICE_PAYMENT_FAILED = 'invoice.payment_failed'
   CUSTOMER_UPDATED = 'customer.updated'
+  CUSTOMER_SUBSCRIPTION_DELETED = 'customer.subscription.deleted'
   TAX_ID_CREATED = 'customer.tax_id.created'
   TAX_ID_DELETED = 'customer.tax_id.deleted'
 
   class EventFactory
-    def self.for(type, event)
+    def self.for(type, event) # rubocop:disable Metrics/CyclomaticComplexity
       case type
       when CHECKOUT_SESSION_COMPLETED
         Types::CheckoutSessionCompleted.new(event)
@@ -19,6 +20,8 @@ module StripeService
         Types::InvoicePaymentFailed.new(event)
       when CUSTOMER_UPDATED
         Types::CustomerUpdated.new(event)
+      when CUSTOMER_SUBSCRIPTION_DELETED
+        Types::CustomerSubscriptionDeleted.new(event)
       when TAX_ID_CREATED
         Types::TaxIdCreated.new(event)
       when TAX_ID_DELETED

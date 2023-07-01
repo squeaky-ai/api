@@ -57,6 +57,14 @@ RSpec.describe StripeService::EventFactory do
       end
     end
 
+    context 'when the type is CUSTOMER_SUBSCRIPTION_DELETED' do
+      let(:type) { StripeService::CUSTOMER_SUBSCRIPTION_DELETED }
+
+      it 'returns an instance of CustomerSubscriptionDeleted' do
+        expect(subject).to be_instance_of(StripeService::Types::CustomerSubscriptionDeleted)
+      end
+    end
+
     context 'when the type is not handled' do
       let(:type) { double(:unhandled_type) }
 

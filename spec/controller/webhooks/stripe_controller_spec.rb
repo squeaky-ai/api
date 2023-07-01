@@ -659,4 +659,39 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       expect(billing.tax_ids).to eq([])
     end
   end
+
+  context 'when the event type is "customer.subscription.deleted"' do
+    let!(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T', status: Billing::VALID) }
+    let(:payment_id) { SecureRandom.base36 }
+
+    let(:customer_subscription_deleted_fixture) { require_fixture('stripe/customer_subscription_deleted.json') }
+
+    let(:stripe_event) do
+      double(
+        :stripe_event, 
+        type: 'customer.subscription.deleted',
+        data: double(:data, customer_subscription_deleted_fixture)
+      )
+    end
+
+    subject { get :index, body: '{}', as: :json }
+
+    before do
+      allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
+    end
+
+    it 'returns the success message' do
+      subject
+
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to eq 'application/json; charset=utf-8'
+      expect(response.body).to eq({ success: true }.to_json)
+    end
+
+    it 'sets the plan to the free plan' do
+      subject
+
+      expect(billing.site.plan.free?).to eq(true)
+    end
+  end
 end
