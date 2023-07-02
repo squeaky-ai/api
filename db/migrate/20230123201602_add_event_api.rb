@@ -20,7 +20,7 @@ class AddEventApi < ActiveRecord::Migration[7.0]
   end
 
   def down
-    drop_column :sites, :api_key
+    remove_column :sites, :api_key
 
     ClickHouse.connection.drop_column(
       'custom_events',

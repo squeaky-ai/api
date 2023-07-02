@@ -22,8 +22,8 @@ class AddGoogleAddTrackingParams < ActiveRecord::Migration[7.0]
 
 
   def down
-    drop_column :recordings, :gad
-    drop_column :recordings, :gclid
+    remove_column :recordings, :gad
+    remove_column :recordings, :gclid
 
     ClickHouse.connection.drop_column(
       'recordings',

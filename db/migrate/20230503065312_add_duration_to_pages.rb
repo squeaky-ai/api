@@ -21,8 +21,8 @@ class AddDurationToPages < ActiveRecord::Migration[7.0]
   end
 
   def down
-    drop_column :pages, :duration
-    drop_column :pages, :activity_duration
+    remove_column :pages, :duration
+    remove_column :pages, :activity_duration
 
     ClickHouse.connection.drop_column(
       'page_events',

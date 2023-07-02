@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_30_201744) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_02_065610) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -285,6 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_201744) do
     t.string "gad"
     t.string "gclid"
     t.boolean "rage_clicked", default: false
+    t.boolean "u_turned", default: false
     t.index ["disconnected_at"], name: "index_recordings_on_disconnected_at"
     t.index ["session_id"], name: "index_recordings_on_session_id", unique: true
     t.index ["site_id"], name: "index_recordings_on_site_id"

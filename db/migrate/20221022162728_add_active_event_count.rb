@@ -13,7 +13,7 @@ class AddActiveEventCount < ActiveRecord::Migration[7.0]
   end
 
   def down
-    drop_column :recordings, :active_events_count
+    remove_column :recordings, :active_events_count
 
     ClickHouse.connection.drop_column(
       'recordings',
