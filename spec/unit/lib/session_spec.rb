@@ -535,4 +535,96 @@ RSpec.describe Session do
       end
     end
   end 
+
+  describe '#u_turned?' do
+    context 'when there was no u_turn' do
+      context 'because there was not enough pages' do
+        before do
+          allow(instance).to receive(:pages).and_return([
+            {
+              url: '/',
+              duration: 1000
+            },
+            {
+              url: '/foo',
+              duration: 1000
+            }
+          ])
+        end
+
+        it 'returns false' do
+          expect(instance.u_turned?).to eq(false)
+        end
+      end
+
+      context 'because they did not return to previous the page' do
+        before do
+          allow(instance).to receive(:pages).and_return([
+            {
+              url: '/',
+              duration: 1000
+            },
+            {
+              url: '/foo',
+              duration: 1000
+            },
+            {
+              url: '/bar',
+              duration: 1000
+            }
+          ])
+        end
+
+        it 'returns false' do
+          expect(instance.u_turned?).to eq(false)
+        end
+      end
+
+      context 'because they were on the middle page for too long' do
+        before do
+          allow(instance).to receive(:pages).and_return([
+            {
+              url: '/',
+              duration: 1000
+            },
+            {
+              url: '/foo',
+              duration: 8000
+            },
+            {
+              url: '/',
+              duration: 1000
+            }
+          ])
+        end
+
+        it 'returns false' do
+          expect(instance.u_turned?).to eq(false)
+        end
+      end
+    end
+
+    context 'when there was a u_turn' do
+      before do
+        allow(instance).to receive(:pages).and_return([
+          {
+            url: '/',
+            duration: 1000
+          },
+          {
+            url: '/foo',
+            duration: 5000
+          },
+          {
+            url: '/',
+            duration: 1000
+          }
+        ])
+      end
+
+      it 'returns true' do
+        expect(instance.u_turned?).to eq(true)
+      end
+    end
+  end
 end

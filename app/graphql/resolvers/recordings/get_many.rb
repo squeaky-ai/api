@@ -83,6 +83,7 @@ module Resolvers
             utm_content
             visitor_type
             rage_clicked
+            u_turned
           ]
 
           filter_options.each do |option|
@@ -324,6 +325,12 @@ module Resolvers
         return recordings if filters.rage_clicked.nil?
 
         recordings.where('recordings.rage_clicked = ?', filters.rage_clicked)
+      end
+
+      def filter_by_u_turned(recordings, filters)
+        return recordings if filters.u_turned.nil?
+
+        recordings.where('recordings.u_turned = ?', filters.u_turned)
       end
     end
   end

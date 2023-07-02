@@ -26,6 +26,7 @@ module Types
       argument :utm_content, String, required: false
       argument :visitor_type, Types::Common::FiltersVisitorType, required: false
       argument :rage_clicked, Boolean, required: false
+      argument :u_turned, Boolean, required: false
     end
   end
 end

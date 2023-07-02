@@ -161,6 +161,20 @@ class Session
     end
   end
 
+  # Went back to a previous page within 7 seconds
+  def u_turned?
+    pages.each.with_index.any? do |page, index|
+      prev_page = index.zero? ? nil : pages[index - 1] # (index[0] - 1) will wrap around
+      next_page = pages[index + 1]
+
+      if prev_page && next_page
+        prev_page[:url] == next_page[:url] && page[:duration] < 7000
+      else
+        false
+      end
+    end
+  end
+
   def exists?
     exists = Recording.where(session_id: @session_id).exists?
     Stats.count('session_exists') if exists
@@ -175,43 +189,8 @@ class Session
     activity.activity_duration
   end
 
-  def pages # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize
-    page_views = []
-
-    pageviews.each do |page|
-      prev = page_views.last
-      path = page['path']
-      timestamp = page['timestamp']
-
-      next if prev && prev[:url] == path
-
-      prev[:exited_at] = timestamp if prev
-
-      page_views.push(
-        url: path,
-        entered_at: timestamp,
-        exited_at: timestamp,
-        bounced_on: false,
-        exited_on: false
-      )
-    end
-
-    return [] unless page_views.any?
-
-    page_views.last[:exited_at] = disconnected_at
-
-    page_views.each do |pv|
-      pv[:duration] = pv[:exited_at] - pv[:entered_at]
-      pv[:activity_duration] = activity_duration_between_timestamps(pv[:entered_at], pv[:exited_at])
-    end
-
-    # Mark the page as being bounced on if there was
-    # only a single page view
-    page_views.first[:bounced_on] = true if page_views.size == 1
-    # The last page was always the page that they exited on
-    page_views.last[:exited_on] = true
-
-    page_views
+  def pages
+    @pages ||= page_views
   end
 
   def active_events_count
@@ -380,5 +359,44 @@ class Session
     end
 
     total_duration
+  end
+
+  def page_views # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize
+    page_views = []
+
+    pageviews.each do |page|
+      prev = page_views.last
+      path = page['path']
+      timestamp = page['timestamp']
+
+      next if prev && prev[:url] == path
+
+      prev[:exited_at] = timestamp if prev
+
+      page_views.push(
+        url: path,
+        entered_at: timestamp,
+        exited_at: timestamp,
+        bounced_on: false,
+        exited_on: false
+      )
+    end
+
+    return [] unless page_views.any?
+
+    page_views.last[:exited_at] = disconnected_at
+
+    page_views.each do |pv|
+      pv[:duration] = pv[:exited_at] - pv[:entered_at]
+      pv[:activity_duration] = activity_duration_between_timestamps(pv[:entered_at], pv[:exited_at])
+    end
+
+    # Mark the page as being bounced on if there was
+    # only a single page view
+    page_views.first[:bounced_on] = true if page_views.size == 1
+    # The last page was always the page that they exited on
+    page_views.last[:exited_on] = true
+
+    page_views
   end
 end

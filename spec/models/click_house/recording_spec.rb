@@ -41,7 +41,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
           activity_duration,
           inactivity,
           active_events_count,
-          rage_clicked
+          rage_clicked,
+          u_turned
         FROM recordings
         WHERE site_id = #{site.id} AND recording_id = #{recording.id}
       ")
@@ -74,7 +75,8 @@ RSpec.describe ClickHouse::Recording, type: :model do
         'viewport_y' => recording.viewport_y,
         'visitor_id' => recording.visitor_id,
         'active_events_count' => recording.active_events_count,
-        'rage_clicked' => recording.rage_clicked
+        'rage_clicked' => recording.rage_clicked,
+        'u_turned' => recording.u_turned
       )
     end
   end

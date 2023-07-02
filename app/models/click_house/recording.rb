@@ -33,7 +33,8 @@ module ClickHouse
           activity_duration: recording.activity_duration,
           inactivity: recording.inactivity.to_json,
           active_events_count: recording.active_events_count,
-          rage_clicked: recording.rage_clicked
+          rage_clicked: recording.rage_clicked,
+          u_turned: recording.u_turned
         }
       end
     rescue ClickHouse::DbException => e

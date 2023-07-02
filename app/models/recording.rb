@@ -111,7 +111,8 @@ class Recording < ApplicationRecord
       inactivity: session.inactivity,
       active_events_count: session.active_events_count,
       events_key_prefix: session.events_key_prefix,
-      rage_clicked: session.rage_clicked?
+      rage_clicked: session.rage_clicked?,
+      u_turned: session.u_turned?
     )
   end
 
