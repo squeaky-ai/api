@@ -24,18 +24,19 @@ module Types
       field :export, resolver: Resolvers::Visitors::Export
       field :events, resolver: Resolvers::Visitors::Events
       field :source, Types::Common::Source, null: true
+      field :average_recording_duration, GraphQL::Types::BigInt, null: true
       field :created_at, Types::Common::Dates, null: false
 
       def created_at
-        DateFormatter.format(date: object.created_at, timezone: context[:timezone])
+        DateFormatter.format(date: object[:created_at], timezone: context[:timezone])
       end
 
       def first_viewed_at
-        DateFormatter.format(date: object.first_viewed_at, timezone: context[:timezone])
+        DateFormatter.format(date: object[:first_viewed_at], timezone: context[:timezone])
       end
 
       def last_activity_at
-        DateFormatter.format(date: object.last_activity_at, timezone: context[:timezone])
+        DateFormatter.format(date: object[:last_activity_at], timezone: context[:timezone])
       end
     end
   end

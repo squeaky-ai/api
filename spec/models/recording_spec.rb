@@ -88,7 +88,7 @@ RSpec.describe Recording, type: :model do
       end
     end
 
-    context 'when the devise is a mobile' do
+    context 'when the device is a mobile' do
       subject do
         fixture = recording_fixture.dup
         fixture[:device_type] = 'Mobile'

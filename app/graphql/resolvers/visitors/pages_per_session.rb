@@ -7,23 +7,24 @@ module Resolvers
 
       def resolve_with_timings
         sql = <<-SQL
-          SELECT
-            recordings.uuid uuid,
-            COUNT(page_events.uuid) count
-          FROM
-            recordings
-          INNER JOIN
-            page_events ON page_events.recording_id = recordings.recording_id
-          WHERE
-            recordings.site_id = ? AND
-            recordings.visitor_id = ?
-          GROUP BY
-            recordings.uuid
+          SELECT AVG(count)
+          FROM (
+            SELECT
+              recordings.uuid uuid,
+              COUNT(page_events.uuid) count
+            FROM
+              recordings
+            INNER JOIN
+              page_events ON page_events.recording_id = recordings.recording_id
+            WHERE
+              recordings.site_id = ? AND
+              recordings.visitor_id = ?
+            GROUP BY
+              recordings.uuid
+          )
         SQL
 
-        results = Sql::ClickHouse.select_all(sql, [object.site_id, object.id])
-
-        Maths.average(results.map { |r| r['count'] })
+        Sql::ClickHouse.select_value(sql, [object[:site_id], object[:id]])
       end
     end
   end

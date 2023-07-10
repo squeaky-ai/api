@@ -11,9 +11,8 @@ module Resolvers
       argument :exclude_recording_ids, [ID], required: false, default_value: []
 
       def resolve_with_timings(page:, size:, sort:, exclude_recording_ids:)
-        recordings = object
-                     .recordings
-                     .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
+        recordings = Recording
+                     .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object[:id])
                      .includes(:pages, :visitor)
                      .order(order(sort))
 

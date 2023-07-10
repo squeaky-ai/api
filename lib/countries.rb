@@ -6,4 +6,13 @@ class Countries
 
     Rails.configuration.countries[country_code.to_sym] || 'Unknown'
   end
+
+  def self.to_code_and_name(country_codes)
+    country_codes.compact.map do |code|
+      {
+        code:,
+        name: Countries.get_country(code)
+      }
+    end
+  end
 end

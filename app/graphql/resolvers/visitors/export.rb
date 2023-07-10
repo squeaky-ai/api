@@ -6,11 +6,13 @@ module Resolvers
       type 'Types::Visitors::Export', null: false
 
       def resolve_with_timings
+        visitor = Visitor.find(object[:id])
+
         {
-          recordings_count: object.recordings.size,
-          nps_feedback: object.nps,
-          sentiment_feedback: object.sentiments,
-          linked_data: object.linked_data
+          recordings_count: visitor.recordings.size,
+          nps_feedback: visitor.nps,
+          sentiment_feedback: visitor.sentiments,
+          linked_data: visitor.linked_data
         }
       end
     end

@@ -16,8 +16,31 @@ module Resolvers
       def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
+        query = <<-SQL
+          visitors.*,
+          BOOL_OR(recordings.viewed) viewed,
+          MIN(recordings.connected_at) first_viewed_at,
+          MAX(recordings.disconnected_at) last_activity_at,
+          MIN(recordings.locale) locale,
+          SUM(recordings.pages_count) page_views_count,
+          AVG(recordings.activity_duration) average_recording_duration,
+          COUNT(recordings.*) total_recording_count,
+          COUNT(CASE WHEN recordings.viewed THEN 1 ELSE 0 END) new_recording_count,
+          ARRAY_AGG(DISTINCT(recordings.country_code)) country_codes,
+          JSON_AGG(JSON_BUILD_OBJECT(
+            'browser',     recordings.browser,
+            'useragent',   recordings.useragent,
+            'viewport_x',  recordings.viewport_x,
+            'viewport_y',  recordings.viewport_y,
+            'device_x',    recordings.device_x,
+            'device_y',    recordings.device_y,
+            'device_type', recordings.device_type
+          )) devices
+        SQL
+
         visitors = Visitor
                    .left_outer_joins(:recordings)
+                   .select(query)
                    .where(
                      'visitors.site_id = ? AND visitors.updated_at::date BETWEEN ? AND ?',
                      object.id,
@@ -36,7 +59,7 @@ module Resolvers
         visitors = visitors.page(page).per(size).group(:id)
 
         {
-          items: visitors,
+          items: format_visitors(visitors),
           pagination: {
             page_size: size,
             total: visitors.total_count,
@@ -47,14 +70,41 @@ module Resolvers
 
       private
 
+      def format_visitors(visitors)
+        visitors.map do |visitor|
+          {
+            id: visitor.id,
+            visitor_id: visitor.visitor_id,
+            viewed: visitor.viewed,
+            recording_count: {
+              total: visitor.total_recording_count,
+              new: visitor.new_recording_count
+            },
+            first_viewed_at: visitor.first_viewed_at,
+            last_activity_at: visitor.last_activity_at,
+            language: Locale.get_language(visitor.locale),
+            page_views_count: { total: 0, unique: 0 }, # This is expensive for many visitors, don't try it
+            starred: visitor.starred,
+            linked_data: visitor.linked_data,
+            devices: visitor.devices.map { |device| Devices.format(device) },
+            countries: Countries.to_code_and_name(visitor.country_codes),
+            source: visitor.source,
+            average_recording_duration: visitor.average_recording_duration,
+            created_at: visitor.created_at
+          }
+        end
+      end
+
       def order(sort)
         sorts = {
-          'first_viewed_at__asc' => 'MIN(connected_at) ASC',
-          'first_viewed_at__desc' => 'MIN(connected_at) DESC',
-          'last_activity_at__asc' => 'MAX(disconnected_at) ASC',
-          'last_activity_at__desc' => 'MAX(disconnected_at) DESC',
+          'first_viewed_at__asc' => 'MIN(recordings.connected_at) ASC',
+          'first_viewed_at__desc' => 'MIN(recordings.connected_at) DESC',
+          'last_activity_at__asc' => 'MAX(recordings.disconnected_at) ASC',
+          'last_activity_at__desc' => 'MAX(recordings.disconnected_at) DESC',
           'recordings__asc' => 'recordings_count ASC',
-          'recordings__desc' => 'recordings_count DESC'
+          'recordings__desc' => 'recordings_count DESC',
+          'average_recording_duration__asc' => 'AVG(recordings.activity_duration) ASC',
+          'average_recording_duration__desc' => 'AVG(recordings.activity_duration) DESC'
         }
         sorts[sort]
       end
