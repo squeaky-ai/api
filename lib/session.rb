@@ -255,7 +255,9 @@ class Session
   end
 
   def handle_pageview_event(event)
-    path = URI(event['value']['data']['href']).path
+    # Strip out some stuff from the href that causes errors
+    href = event['value']['data']['href'].gsub(/\[|\]/, '__')
+    path = URI(href).path
 
     # This is so we can show page views for single
     # page apps in the slider and sidebar as they
