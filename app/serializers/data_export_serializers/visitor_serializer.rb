@@ -6,19 +6,19 @@ module DataExportSerializers
       @visitor = visitor
     end
 
-    def serialize
+    def serialize # rubocop:disable Metrics/AbcSize
       {
         id: visitor.id,
         visitor_id: visitor.visitor_id,
-        status: viewed? ? 'Viewed' : 'New',
-        first_viewed_at:,
-        last_activity_at:,
+        status: visitor.viewed? ? 'Viewed' : 'New',
+        first_viewed_at: Time.at(visitor.first_viewed_at / 1000).utc.iso8601,
+        last_activity_at: Time.at(visitor.last_activity_at / 1000).utc.iso8601,
         user_id: linked_data_value(:id),
         name: linked_data_value(:name),
         email: linked_data_value(:email),
-        languages: languages.uniq.sort.join('|'),
-        browsers: browsers.uniq.sort.join('|'),
-        country_codes: country_codes.join('|'),
+        languages: visitor.languages.uniq.sort.join('|'),
+        browsers: visitor.browsers.uniq.sort.join('|'),
+        country_codes: visitor.country_codes.join('|'),
         recording_count: visitor.recordings_count,
         source: visitor.source
       }
@@ -36,44 +36,6 @@ module DataExportSerializers
 
     def linked_data
       @linked_data ||= JSON.parse(visitor.linked_data, symbolize_names: true) if visitor.linked_data
-    end
-
-    def viewed?
-      recordings.filter(&:viewed).size.positive?
-    end
-
-    def recordings
-      @recordings ||= Recording.where('visitor_id = ?', visitor.id)
-    end
-
-    def first_viewed_at
-      first_event = recordings.min_by(&:connected_at)
-      timestamp = first_event&.connected_at
-
-      return unless timestamp
-
-      Time.at(timestamp / 1000).utc.iso8601
-    end
-
-    def last_activity_at
-      last_event = recordings.max_by(&:disconnected_at)
-      timestamp = last_event&.disconnected_at
-
-      return unless timestamp
-
-      Time.at(timestamp / 1000).utc.iso8601
-    end
-
-    def browsers
-      recordings.filter(&:browser).map(&:browser)
-    end
-
-    def languages
-      recordings.filter(&:language).map(&:language)
-    end
-
-    def country_codes
-      recordings.map(&:country_code).compact.uniq
     end
   end
 end

@@ -23,4 +23,28 @@ class Visitor < ApplicationRecord
   def self.find_by_external_id(site_id, id)
     find_by("site_id = ? AND external_attributes->>'id' = ?", site_id, id.to_s)
   end
+
+  def viewed?
+    recordings.filter(&:viewed).size.positive?
+  end
+
+  def first_viewed_at
+    recordings.min_by(&:connected_at)&.connected_at
+  end
+
+  def last_activity_at
+    recordings.max_by(&:disconnected_at)&.disconnected_at
+  end
+
+  def browsers
+    recordings.filter(&:browser).map(&:browser)
+  end
+
+  def languages
+    recordings.filter(&:language).map(&:language)
+  end
+
+  def country_codes
+    recordings.map(&:country_code).compact.uniq
+  end
 end

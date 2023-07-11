@@ -6,7 +6,7 @@ module Resolvers
       type 'Types::Visitors::Export', null: false
 
       def resolve_with_timings
-        visitor = Visitor.find(object[:id])
+        visitor = Visitor.find(object.id)
 
         {
           recordings_count: visitor.recordings.size,

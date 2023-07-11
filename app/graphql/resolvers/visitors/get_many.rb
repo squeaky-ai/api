@@ -72,7 +72,7 @@ module Resolvers
 
       def format_visitors(visitors)
         visitors.map do |visitor|
-          {
+          hash = {
             id: visitor.id,
             visitor_id: visitor.visitor_id,
             viewed: visitor.viewed,
@@ -92,6 +92,8 @@ module Resolvers
             average_recording_duration: visitor.average_recording_duration,
             created_at: visitor.created_at
           }
+
+          Struct.new(*hash.keys).new(*hash.values)
         end
       end
 

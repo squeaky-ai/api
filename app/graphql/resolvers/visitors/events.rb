@@ -51,8 +51,8 @@ module Resolvers
         SQL
 
         variables = {
-          site_id: object[:site_id],
-          visitor_id: object[:id],
+          site_id: object.site_id,
+          visitor_id: object.id,
           timezone: context[:timezone],
           limit: size,
           offset: (size * (page - 1))
@@ -73,8 +73,8 @@ module Resolvers
         SQL
 
         variables = {
-          site_id: object[:site_id],
-          visitor_id: object[:id]
+          site_id: object.site_id,
+          visitor_id: object.id
         }
 
         Sql::ClickHouse.select_value(sql, variables)

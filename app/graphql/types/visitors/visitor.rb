@@ -28,15 +28,15 @@ module Types
       field :created_at, Types::Common::Dates, null: false
 
       def created_at
-        DateFormatter.format(date: object[:created_at], timezone: context[:timezone])
+        DateFormatter.format(date: object.created_at, timezone: context[:timezone])
       end
 
       def first_viewed_at
-        DateFormatter.format(date: object[:first_viewed_at], timezone: context[:timezone])
+        DateFormatter.format(date: object.first_viewed_at, timezone: context[:timezone])
       end
 
       def last_activity_at
-        DateFormatter.format(date: object[:last_activity_at], timezone: context[:timezone])
+        DateFormatter.format(date: object.last_activity_at, timezone: context[:timezone])
       end
     end
   end

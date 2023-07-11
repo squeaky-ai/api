@@ -17,8 +17,8 @@ module Resolvers
         SQL
 
         variables = {
-          site_id: object[:site_id],
-          visitor_id: object[:id]
+          site_id: object.site_id,
+          visitor_id: object.id
         }
 
         Sql::ClickHouse.select_value(sql, variables) || 0

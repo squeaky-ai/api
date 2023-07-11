@@ -12,7 +12,7 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:, exclude_recording_ids:)
         recordings = Recording
-                     .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object[:id])
+                     .where('status = ? AND visitor_id = ?', Recording::ACTIVE, object.id)
                      .includes(:pages, :visitor)
                      .order(order(sort))
 
