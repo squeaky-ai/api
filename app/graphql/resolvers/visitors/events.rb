@@ -51,8 +51,8 @@ module Resolvers
         SQL
 
         variables = {
-          site_id: object.site_id,
-          visitor_id: object.id,
+          site_id: object[:site_id],
+          visitor_id: object[:id],
           timezone: context[:timezone],
           limit: size,
           offset: (size * (page - 1))
@@ -73,8 +73,8 @@ module Resolvers
         SQL
 
         variables = {
-          site_id: object.site_id,
-          visitor_id: object.id
+          site_id: object[:site_id],
+          visitor_id: object[:id]
         }
 
         Sql::ClickHouse.select_value(sql, variables)
@@ -98,9 +98,7 @@ module Resolvers
       def recordings(results)
         ids = results.map { |r| r['recording_id'] }.uniq
 
-        object
-          .recordings
-          .where(id: ids)
+        Recording.where(id: ids)
       end
 
       def pagination(arguments, total_count, size)

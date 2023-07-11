@@ -11,6 +11,8 @@ module Types
       value 'last_activity_at__asc', 'Least recently active'
       value 'recordings__desc', 'Most amount of recordings'
       value 'recordings__asc', 'Least amount of recordings'
+      value 'average_recording_duration__desc', 'Highest average session duration'
+      value 'average_recording_duration__asc', 'Lowest average session duration'
     end
   end
 end

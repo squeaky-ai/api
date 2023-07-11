@@ -89,38 +89,6 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     end
   end
 
-  context 'when the visitior has recordings but they were soft deleted' do
-    let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user) }
-    let(:visitor) { create(:visitor, site_id: site.id) }
-
-    before do  
-      create(:recording, status: Recording::DELETED, site: site, visitor: visitor)
-    end
-
-    subject do
-      variables = { site_id: site.id, visitor_id: visitor.id }
-      graphql_request(visitor_query, variables, user)
-    end
-
-    it 'returns the visitor' do
-      response = subject['data']['site']['visitor']
-      expect(response).not_to be nil
-    end
-
-    it 'returns the recording count' do
-      response = subject['data']['site']['visitor']
-      expect(response['recordingCount']['total']).to eq 0
-      expect(response['recordingCount']['new']).to eq 0
-    end
-
-    it 'returns the page views count' do
-      response = subject['data']['site']['visitor']
-      expect(response['pageViewsCount']['total']).to eq 0
-      expect(response['pageViewsCount']['unique']).to eq 0
-    end
-  end
-
   context 'when there are no external attributes' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }

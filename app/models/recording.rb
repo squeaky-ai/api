@@ -26,16 +26,15 @@ class Recording < ApplicationRecord
   end
 
   def device
-    {
-      browser_name: browser,
-      browser_details: "#{browser} Version #{user_agent.version}",
-      viewport_x:,
-      viewport_y:,
-      device_x:,
-      device_y:,
-      device_type:,
-      useragent:
-    }
+    Devices.format(
+      'browser' => browser,
+      'viewport_x' => viewport_x,
+      'viewport_y' => viewport_y,
+      'device_x' => device_x,
+      'device_y' => device_y,
+      'device_type' => device_type,
+      'useragent' => useragent
+    )
   end
 
   def page_count
