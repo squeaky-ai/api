@@ -12,7 +12,7 @@ class Visitor < ApplicationRecord
   # This allows us to set the recordings count externally,
   # like in visitiors/highlights.rb where we have fetched
   # the counts from ClickHouse
-  attr_writer :recording_count
+  attr_accessor :recording_count
 
   def linked_data
     return nil if external_attributes.empty?
