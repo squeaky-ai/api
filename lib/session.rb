@@ -146,7 +146,7 @@ class Session
     events.any? { |event| event['type'] == Event::INCREMENTAL_SNAPSHOT && event['data']['source'] }
   end
 
-  # 5 clicks within 750ms
+  # 5 clicks within 1s
   def rage_clicked?
     # No point in checking if there's less than 5
     return false if clicks.size < 5
@@ -154,8 +154,8 @@ class Session
     timestamps = clicks.map { |c| c['timestamp'] }
 
     timestamps.any? do |timestamp|
-      from = timestamp - 375
-      to = timestamp + 375
+      from = timestamp
+      to = timestamp + 1000
 
       timestamps.filter { |c| c.between?(from, to) }.size >= 5
     end
