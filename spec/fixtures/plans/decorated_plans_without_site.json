@@ -69,6 +69,7 @@
   {
     "id": "starter",
     "capabilities": [
+      "Page analytics",
       "Heatmaps (Click and Scroll)",
       "Survey library"
     ],
@@ -78,7 +79,7 @@
     "description": "Meaningful analytics for growing businesses.",
     "options": [],
     "plan": {
-      "data_storage_months": 3,
+      "data_storage_months": 6,
       "deprecated": false,
       "enterprise": false,
       "features_enabled": [
@@ -86,6 +87,7 @@
         "visitors",
         "recordings",
         "site_analytics",
+        "page_analytics",
         "heatmaps_click_positions",
         "heatmaps_scroll",
         "nps",
@@ -94,7 +96,7 @@
       ],
       "free": false,
       "id": "b5be7346-b896-4e4f-9598-e206efca98a6",
-      "max_monthly_recordings": 10000,
+      "max_monthly_recordings": 25000,
       "name": "Starter",
       "pricing": [
         {
@@ -146,10 +148,10 @@
     },
     "show": true,
     "usage": [
-      "10,000 visits per month",
+      "25,000 visits per month",
       "Unlimited team members",
       "1 website",
-      "3 months data retention"
+      "6 months data retention"
     ]
   },
   {
@@ -317,7 +319,6 @@
   {
     "id": "business",
     "capabilities": [
-      "Page analytics",
       "Heatmaps (All)",
       "Event tracking",
       "Error tracking",
@@ -352,7 +353,7 @@
       ],
       "free": false,
       "id": "b2054935-4fdf-45d0-929b-853cfe8d4a1c",
-      "max_monthly_recordings": 100000,
+      "max_monthly_recordings": 125000,
       "name": "Business",
       "pricing": [
         {
@@ -405,7 +406,7 @@
     },
     "show": true,
     "usage": [
-      "100,000 visits per month",
+      "125,000 visits per month",
       "Unlimited team members",
       "Unlimited websites",
       "12 months data retention"

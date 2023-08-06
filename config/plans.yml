@@ -39,7 +39,7 @@ default: &default
       free: false
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 10000
+      max_monthly_recordings: 25000
       site_limit: 1
       pricing:
         - id: price_1MOJ8aLJ9zG7aLW8ZkyGfKQT
@@ -66,7 +66,7 @@ default: &default
           currency: USD
           amount: 240
           interval: year
-      data_storage_months: 3
+      data_storage_months: 6
       support:
         - Email
       response_time_hours: 168
@@ -76,6 +76,7 @@ default: &default
         - visitors
         - recordings
         - site_analytics
+        - page_analytics
         - heatmaps_click_positions
         - heatmaps_scroll
         - nps
@@ -197,7 +198,7 @@ default: &default
       free: false
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 100000
+      max_monthly_recordings: 125000
       site_limit: null
       pricing:
         - id: price_1KPOWCLJ9zG7aLW8ylslbe5U
@@ -464,7 +465,7 @@ production:
       free: false
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 10000
+      max_monthly_recordings: 25000
       site_limit: 1
       pricing:
         - id: price_1MO5CZLJ9zG7aLW8pTl4kWSd
@@ -491,7 +492,7 @@ production:
           currency: USD
           amount: 240
           interval: year
-      data_storage_months: 3
+      data_storage_months: 6
       support:
         - Email
       response_time_hours: 168
@@ -501,6 +502,7 @@ production:
         - visitors
         - recordings
         - site_analytics
+        - page_analytics
         - heatmaps_click_positions
         - heatmaps_scroll
         - nps
@@ -623,7 +625,7 @@ production:
       free: false
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 100000
+      max_monthly_recordings: 125000
       site_limit: null
       pricing:
         - id: price_1MO4kDLJ9zG7aLW8KNEon7TN

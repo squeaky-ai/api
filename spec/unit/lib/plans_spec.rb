@@ -18,7 +18,7 @@ RSpec.describe Plans do
           enterprise: false,
           deprecated: false,
           name: 'Business',
-          max_monthly_recordings: 100000,
+          max_monthly_recordings: 125000,
           pricing: [
             {
               id: 'price_1KPOWCLJ9zG7aLW8ylslbe5U',

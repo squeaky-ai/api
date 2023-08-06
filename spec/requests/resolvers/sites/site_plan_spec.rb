@@ -82,7 +82,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'name' => 'Business',
         'exceeded' => false,
         'invalid' => false,
-        'maxMonthlyRecordings' => 100000,
+        'maxMonthlyRecordings' => 125000,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
         'support' => [

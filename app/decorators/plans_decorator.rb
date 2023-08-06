@@ -38,6 +38,7 @@ class PlansDecorator
         usage: usage(starter_plan),
         includes_capabilities_from: 'Free',
         capabilities: [
+          'Page analytics',
           'Heatmaps (Click and Scroll)',
           'Survey library'
         ],
@@ -77,7 +78,6 @@ class PlansDecorator
         usage: usage(business_plan),
         includes_capabilities_from: 'Starter',
         capabilities: [
-          'Page analytics',
           'Heatmaps (All)',
           'Event tracking',
           'Error tracking',
