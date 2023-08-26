@@ -24,7 +24,7 @@ module Integrations
       site = ::Site.find_by!(uuid: change_plan_params['site_name'])
       plan = Plans.find_by_provider('duda', change_plan_params['app_plan_uuid'])
 
-      site.plan.update(plan_id: plan[:id]) if plan
+      site.plan.change_plan!(plan[:id]) if plan
 
       render json: { status: 'OK' }
     end
