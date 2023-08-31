@@ -46,7 +46,7 @@ class RecordingEventsService
     payload = { objects: objects.map { |f| { key: "#{prefix}/#{f}" } } }
     response = client.delete_objects(bucket:, delete: payload)
 
-    raise StandardError "Failed to delete S3 events: #{response.errors.map(&:message).join(', ')}" unless response.errors.empty?
+    raise StandardError, "Failed to delete S3 events: #{response.errors.map(&:message).join(', ')}" unless response.errors.empty?
 
     nil
   end
