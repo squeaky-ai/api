@@ -17,8 +17,8 @@ module Resolvers
           SUM(recordings.pages_count) page_views_count,
           AVG(recordings.activity_duration) average_recording_duration,
           COUNT(DISTINCT recordings.id) total_recording_count,
-          COUNT(CASE WHEN recordings.viewed THEN 1 ELSE 0 END) new_recording_count,
-          COUNT(pages.*) total_page_views,
+          COUNT(DISTINCT CASE WHEN recordings.viewed THEN NULL ELSE recordings.id END) new_recording_count,
+          COUNT(DISTINCT pages.id) total_page_views,
           COUNT(DISTINCT(pages.url)) unique_page_views,
           ARRAY_AGG(DISTINCT(recordings.country_code)) country_codes,
           JSON_AGG(JSON_BUILD_OBJECT(
