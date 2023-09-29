@@ -41,13 +41,13 @@ module DudaService
       site.provider_auth.update(sdk_url:)
     end
 
-    private
-
-    attr_reader :sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid
-
     def site
       @site ||= ::Site.find_by!(uuid: site_name)
     end
+
+    private
+
+    attr_reader :sdk_url, :timestamp, :secure_sig, :site_name, :current_user_uuid
 
     def all_params_present?
       all_present = %i[sdk_url timestamp secure_sig site_name current_user_uuid].all? do |param|

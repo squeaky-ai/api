@@ -42,7 +42,7 @@ module Integrations
       # Weirdly this comes from the SSO and not the install
       duda_auth_service.store_sdk_url!
 
-      squeaky_dashboard_url = "https://squeaky.ai/app/sites/#{user.sites.first.id}/dashboard"
+      squeaky_dashboard_url = "https://squeaky.ai/app/sites/#{duda_auth_service.site.id}/dashboard"
       squeaky_dashboard_url += '?free_trial_began=1' if first_time_user
 
       redirect_to squeaky_dashboard_url, allow_other_host: true
