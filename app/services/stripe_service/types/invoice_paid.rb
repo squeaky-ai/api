@@ -74,6 +74,7 @@ module StripeService
         raise StandardError, "Plan with pricing_id: #{pricing_id} not found" unless plan
 
         site.plan.change_plan!(plan[:id])
+        SiteMailer.business_plan_features(site).deliver_now if Plans.business_plan?(plan)
       end
     end
   end

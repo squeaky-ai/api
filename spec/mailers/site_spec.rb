@@ -194,4 +194,17 @@ RSpec.describe SiteMailer, type: :mailer do
       expect(subject.from).to eq ['hello@squeaky.ai']
     end
   end
+
+  describe '#business_plan_features' do
+    let(:owner) { create(:user) }
+    let(:site) { create(:site_with_team, owner:) }
+
+    subject { described_class.business_plan_features(site) }
+
+    it 'renders the headers' do
+      expect(subject.subject).to eq 'The added benefits of your new Business Plan...'
+      expect(subject.to).to eq [owner.email]
+      expect(subject.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

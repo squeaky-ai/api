@@ -138,12 +138,14 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
   describe 'POST /integrations/websitebuilder/change_plan' do
     let(:provider_uuid) { SecureRandom.uuid }
-    let!(:site) { create(:site, uuid: provider_uuid) }
+    let!(:user) { create(:user, provider: 'duda', provider_uuid: provider_uuid) }
+    let!(:site) { create(:site_with_team, owner: user) }
+    let(:app_plan_uuid) { '5d6b2b10-9c27-49e5-b3d7-a78b176f80b4' }
 
     let(:params) do
       {
         site_name: site.uuid,
-        app_plan_uuid: '5d6b2b10-9c27-49e5-b3d7-a78b176f80b4'
+        app_plan_uuid:
       }
     end
 
@@ -162,6 +164,22 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
       expect(response).to have_http_status(200)
       expect(json_body).to eq('status' => 'OK')
+    end
+
+    context 'when it changes to the business plan' do
+      let(:app_plan_uuid) { 'a808e6dd-fbdc-4faa-8534-d417287e9367' }
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(SiteMailer).to receive(:business_plan_features).and_return(stub)
+      end
+
+      it 'sends the business plan features email' do
+        subject
+
+        expect(SiteMailer).to have_received(:business_plan_features).with(site)
+      end
     end
   end
   

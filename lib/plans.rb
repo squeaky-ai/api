@@ -37,6 +37,10 @@ class Plans
     next_plan[:name]
   end
 
+  def self.business_plan?(plan)
+    plan[:name] == 'Business' # TODO: this will surely be a problem one day
+  end
+
   def self.to_a
     Rails.configuration.plans['plans']
   end

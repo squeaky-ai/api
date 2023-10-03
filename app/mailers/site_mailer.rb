@@ -52,4 +52,11 @@ class SiteMailer < ApplicationMailer
 
     mail(to: email, subject: "Your colleague #{@owner.full_name} needs your help")
   end
+
+  def business_plan_features(site)
+    @site = site
+    @owner = site.owner.user
+
+    mail(to: @owner.email, subject: 'The added benefits of your new Business Plan...')
+  end
 end

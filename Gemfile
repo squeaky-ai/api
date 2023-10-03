@@ -5,7 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.2'
 
-gem 'async'
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3'
 gem 'bootsnap', require: false
@@ -18,9 +17,9 @@ gem 'httparty'
 gem 'kaminari'
 gem 'nokogiri'
 gem 'pg', '~> 1.4.4'
-gem 'puma', '~> 6.0.0'
+gem 'puma'
 gem 'rack-cors'
-gem 'rails', '~> 7.0.4'
+gem 'rails', '~> 7.0.8'
 gem 'redis'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
