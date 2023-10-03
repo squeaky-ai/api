@@ -24,7 +24,10 @@ module Integrations
       site = ::Site.find_by!(uuid: change_plan_params['site_name'])
       plan = Plans.find_by_provider('duda', change_plan_params['app_plan_uuid'])
 
-      site.plan.change_plan!(plan[:id]) if plan
+      if plan
+        site.plan.change_plan!(plan[:id])
+        SiteMailer.business_plan_features(site).deliver_now if Plans.business_plan?(plan)
+      end
 
       render json: { status: 'OK' }
     end

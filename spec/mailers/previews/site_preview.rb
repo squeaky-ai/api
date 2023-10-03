@@ -99,4 +99,9 @@ class SitePreview < ActionMailer::Preview
     site = Site.find(1)
     SiteMailer.tracking_code_instructions(site, 'Bob', 'bob@developer.com')
   end
+
+  def business_plan_features
+    site = Site.first
+    SiteMailer.business_plan_features(site)
+  end
 end

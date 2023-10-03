@@ -69,6 +69,24 @@ RSpec.describe StripeService::Types::InvoicePaid do
         .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
     end
 
+    context 'when upgrading to the business plan' do
+      let(:business_plan) { Plans.find_by_plan_id('b2054935-4fdf-45d0-929b-853cfe8d4a1c') }
+
+      before do
+        stub = double
+        allow(stub).to receive(:deliver_now)
+        allow(SiteMailer).to receive(:business_plan_features).and_return(stub)
+
+        allow(Plans).to receive(:find_by_pricing_id).and_return(business_plan)
+      end
+
+      it 'sends the business plan features email' do
+        subject
+
+        expect(SiteMailer).to have_received(:business_plan_features).with(billing.site)
+      end
+    end
+
     context 'when the plan had overrides set' do
       before do
         billing.site.reload.plan.update(

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Format the Redis list into something useful
-class Session
+class Session # rubocop:disable Metrics/ClassLength
   attr_reader :recording,
               :pageviews,
               :sentiments,
