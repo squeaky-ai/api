@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'async'
-
 # Execute raw sql when the overhead of ActiveRecord
 # does not make sense
 class Sql
@@ -33,19 +31,19 @@ class Sql
     end
 
     def execute
-      Async { ::ClickHouse.connection.execute(query) }.wait
+      ::ClickHouse.connection.execute(query)
     end
 
     def select_all
-      Async { ::ClickHouse.connection.select_all(query) }.wait
+      ::ClickHouse.connection.select_all(query)
     end
 
     def select_value
-      Async { ::ClickHouse.connection.select_value(query) }.wait
+      ::ClickHouse.connection.select_value(query)
     end
 
     def select_one
-      Async { ::ClickHouse.connection.select_one(query) }.wait
+      ::ClickHouse.connection.select_one(query)
     end
 
     private
