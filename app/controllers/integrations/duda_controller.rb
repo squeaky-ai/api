@@ -27,6 +27,8 @@ module Integrations
       if plan
         site.plan.change_plan!(plan[:id])
         SiteMailer.business_plan_features(site).deliver_now if Plans.business_plan?(plan)
+      else
+        Rails.logger.error "No matching plan: #{change_plan_params}"
       end
 
       render json: { status: 'OK' }

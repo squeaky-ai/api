@@ -60,30 +60,28 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
 
-      expect(response['visitors']).to eq(
-        'groupType' => 'daily',
-        'groupRange' => 7,
-        'items' => [
-          {
-            'allCount' => 1, 
-            'dateKey' => '217',
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '218', 
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '219', 
-            'existingCount' => 1, 
-            'newCount' => 0
-          }
-        ]
-      )
+      expect(response['visitors']['groupType']).to eq('daily')
+      expect(response['visitors']['groupRange']).to eq(7)
+      expect(response['visitors']['items']).to match([
+        {
+          'allCount' => 1, 
+          'dateKey' => '217',
+          'existingCount' => 0, 
+          'newCount' => 1
+        }, 
+        {
+          'allCount' => 1, 
+          'dateKey' => '218', 
+          'existingCount' => 0, 
+          'newCount' => 1
+        }, 
+        {
+          'allCount' => 1, 
+          'dateKey' => '219', 
+          'existingCount' => 1, 
+          'newCount' => 0
+        }
+      ])
     end
   end
 
@@ -108,30 +106,28 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     it 'returns the visitors' do
       response = subject['data']['site']['analytics']
 
-      expect(response['visitors']).to eq(
-        'groupType' => 'daily',
-        'groupRange' => 7,
-        'items' => [
-          {
-            'allCount' => 1, 
-            'dateKey' => '216', 
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '217', 
-            'existingCount' => 0, 
-            'newCount' => 1
-          }, 
-          {
-            'allCount' => 1, 
-            'dateKey' => '218', 
-            'existingCount' => 0, 
-            'newCount' => 1
-          }
-        ]
-      )
+      expect(response['visitors']['groupType']).to eq('daily')
+      expect(response['visitors']['groupRange']).to eq(7)
+      expect(response['visitors']['items']).to match([
+        {
+          'allCount' => 1, 
+          'dateKey' => '216', 
+          'existingCount' => 0, 
+          'newCount' => 1
+        }, 
+        {
+          'allCount' => 1, 
+          'dateKey' => '217', 
+          'existingCount' => 0, 
+          'newCount' => 1
+        }, 
+        {
+          'allCount' => 1, 
+          'dateKey' => '218', 
+          'existingCount' => 0, 
+          'newCount' => 1
+        }
+      ])
     end
   end
 end

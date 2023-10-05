@@ -47,7 +47,11 @@ module DudaService
 
     def create_plan!
       plan = Plans.find_by_provider('duda', plan_uuid)
-      site.plan.update(plan_id: plan[:id]) if plan
+      if plan
+        site.plan.change_plan!(plan[:id])
+      else
+        Rails.logger.error "No matching plan: #{plan_uuid}"
+      end
     end
 
     def create_user!

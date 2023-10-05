@@ -19,7 +19,7 @@ module Mutations
         SiteBundlesSite.create!(site:, site_bundle:, primary: false)
 
         # The child site should inherit the primary plan
-        site.plan.update(plan_id: site_bundle.primary_site.plan.plan_id)
+        site.plan.change_plan!(site_bundle.primary_site.plan.plan_id)
 
         site_bundle.reload
       end
