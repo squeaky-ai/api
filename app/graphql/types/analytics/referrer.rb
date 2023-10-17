@@ -6,6 +6,7 @@ module Types
       graphql_name 'AnalyticsReferrer'
 
       field :referrer, String, null: true
+      field :duration, GraphQL::Types::BigInt, null: false
       field :count, Integer, null: false
       field :percentage, Float, null: false
     end

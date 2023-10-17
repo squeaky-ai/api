@@ -9,6 +9,7 @@ analytics_referrers_query = <<-GRAPHQL
         referrers {
           items {
             referrer
+            duration
             count
             percentage
           }
@@ -49,6 +50,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
           site_id: site.id,
           referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          activity_duration: 5000,
           visitor_id: visitor_1.id
         },
         {
@@ -56,6 +58,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
           site_id: site.id,
           referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          activity_duration: 3000,
           visitor_id: visitor_2.id
         },
         {
@@ -63,6 +66,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
           site_id: site.id,
           referrer: nil,
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
+          activity_duration: 2000,
           visitor_id: visitor_3.id
         },
         {
@@ -70,6 +74,7 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
           site_id: site.id,
           referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
+          activity_duration: 9000,
           visitor_id: visitor_4.id
         }
       ]
@@ -91,16 +96,19 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
       expect(response['items']).to match_array([
         {
           'referrer' => 'http://google.com',
+          'duration' => '4000',
           'percentage' => 50,
           'count' => 2
         },
         {
           'referrer' => 'http://facebook.com',
+          'duration' => '9000',
           'percentage' => 25,
           'count' => 1
         },
         {
           'referrer' => 'Direct',
+          'duration' => '2000',
           'percentage' => 25,
           'count' => 1
         }
@@ -121,28 +129,28 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://google.com', 
+          referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           visitor_id: visitor_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: nil, 
+          referrer: nil,
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           visitor_id: visitor_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           visitor_id: visitor_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           visitor_id: visitor_4.id
         }
@@ -165,16 +173,19 @@ RSpec.describe Resolvers::Analytics::Referrers, type: :request do
       expect(response['items']).to match_array([
         {
           'referrer' => 'http://google.com',
+          'duration' => '0',
           'percentage' => 33.33,
           'count' => 1
         },
         {
           'referrer' => 'http://facebook.com',
+          'duration' => '0',
           'percentage' => 33.33,
           'count' => 1
         },
         {
           'referrer' => 'Direct',
+          'duration' => '0',
           'percentage' => 33.33,
           'count' => 1
         }
