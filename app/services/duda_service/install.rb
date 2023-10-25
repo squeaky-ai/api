@@ -27,7 +27,7 @@ module DudaService
       end
 
       fire_squeaky_events
-      site.plan.start_free_trial!
+      site.plan.start_free_trial! if site.plan.free?
     end
 
     private

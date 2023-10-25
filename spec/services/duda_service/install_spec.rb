@@ -160,7 +160,7 @@ RSpec.describe DudaService::Install do
 
       it 'does still inject the script' do
         subject
-  
+
         expect(HTTParty).to have_received(:post)
           .with("#{api_endpoint}/api/integrationhub/application/site/#{site_name}/sitewidehtml", anything)
       end
@@ -173,6 +173,12 @@ RSpec.describe DudaService::Install do
         subject
         site = Site.last
         expect(site.plan.plan_id).to eq('b5be7346-b896-4e4f-9598-e206efca98a6')
+      end
+
+      it 'does not trigger the free trial job' do
+        subject
+        site = Site.last
+        expect(site.plan.max_monthly_recordings).to eq(25_000)
       end
     end
   end
