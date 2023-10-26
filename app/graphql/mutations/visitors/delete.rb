@@ -21,6 +21,7 @@ module Mutations
 
         raise Exceptions::VisitorNotFound unless visitor
 
+        visitor.destroy_all_recordings!
         visitor.destroy!
 
         nil

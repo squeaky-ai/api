@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Visitor < ApplicationRecord
-  has_many :recordings, dependent: :destroy
+  has_many :recordings
   has_many :pages, through: :recordings
   has_many :nps, through: :recordings
   has_many :sentiments, through: :recordings
@@ -46,5 +46,10 @@ class Visitor < ApplicationRecord
 
   def country_codes
     recordings.map(&:country_code).compact.uniq
+  end
+
+  def destroy_all_recordings!
+    recording_ids = recordings.select(:id).map(&:id)
+    RecordingDeleteJob.perform_later(recording_ids) unless recording_ids.empty?
   end
 end

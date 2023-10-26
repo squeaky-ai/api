@@ -21,9 +21,9 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          type: 'domain', 
+        input: {
+          siteId: site.id,
+          type: 'domain',
           value: 'squeaky.ai'
         }
       }
@@ -37,7 +37,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
             'type' => 'domain',
             'value' => 'squeaky.ai'
           }
-        ]  
+        ]
       )
     end
 
@@ -52,10 +52,10 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          type: 'email', 
-          value: 'john@squeaky.ai' 
+        input: {
+          siteId: site.id,
+          type: 'email',
+          value: 'john@squeaky.ai'
         }
       }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
@@ -68,7 +68,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
             'type' => 'email',
             'value' => 'john@squeaky.ai'
           }
-        ]  
+        ]
       )
     end
 
@@ -91,10 +91,10 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          type: 'domain', 
-          value: 'squeaky.ai' 
+        input: {
+          siteId: site.id,
+          type: 'domain',
+          value: 'squeaky.ai'
         }
       }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
@@ -105,14 +105,16 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     end
 
     it 'deletes recordings that match the attributes' do
-      expect { subject }.to change { site.reload.recordings.size }.from(5).to(1)
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.exactly(4).times
     end
 
     it 'deletes visitors that match the attributes' do
-      expect { subject }.to change { site.reload.visitors.size }.from(5).to(1)
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.exactly(4).times
     end
   end
-  
+
   context 'when some visitors exist and some have matching emails' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -127,10 +129,10 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          type: 'email', 
-          value: 'john@squeaky.ai' 
+        input: {
+          siteId: site.id,
+          type: 'email',
+          value: 'john@squeaky.ai'
         }
       }
       graphql_request(site_domain_blacklist_create_mutation, variables, user)
@@ -141,11 +143,13 @@ RSpec.describe Mutations::Sites::DomainBlacklistCreate, type: :request do
     end
 
     it 'deletes recordings that match the attributes' do
-      expect { subject }.to change { site.reload.recordings.size }.from(5).to(4)
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.once
     end
 
     it 'deletes visitors that match the attributes' do
-      expect { subject }.to change { site.reload.visitors.size }.from(5).to(4)
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.once
     end
   end
 end

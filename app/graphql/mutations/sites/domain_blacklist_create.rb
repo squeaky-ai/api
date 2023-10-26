@@ -38,17 +38,22 @@ module Mutations
       def delete_visitors_by_domain(domain)
         visitors = site.visitors.where("external_attributes->>'email' LIKE ?", "%@#{domain}")
 
-        visitor_ids = visitors.map(&:id)
-
-        Visitor.destroy(visitor_ids)
+        delete_visitors(visitors.map(&:id))
       end
 
       def delete_visitors_by_email(email)
         visitors = site.visitors.where("external_attributes->>'email' = ?", email)
 
-        visitor_ids = visitors.map(&:id)
+        delete_visitors(visitors.map(&:id))
+      end
 
-        Visitor.destroy(visitor_ids)
+      def delete_visitors(visitor_ids)
+        visitor_ids.each do |id|
+          visitor = Visitor.find(id)
+
+          visitor.destroy_all_recordings!
+          visitor.destroy!
+        end
       end
     end
   end

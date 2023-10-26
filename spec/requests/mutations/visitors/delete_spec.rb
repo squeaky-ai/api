@@ -16,10 +16,10 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          visitorId: SecureRandom.base36 
+          siteId: site.id,
+          visitorId: SecureRandom.base36
         }
       }
       graphql_request(visitor_delete_mutation, variables, user)
@@ -37,10 +37,10 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     let!(:recording) { create(:recording, site: site) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          visitorId: recording.visitor.id 
+          siteId: site.id,
+          visitorId: recording.visitor.id
         }
       }
       graphql_request(visitor_delete_mutation, variables, user)
@@ -56,7 +56,8 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
     end
 
     it 'deletes the recordings' do
-      expect { subject }.to change { site.recordings.size }.from(1).to(0)
+      subject
+      expect(RecordingDeleteJob).to have_been_enqueued.once.with(match_array([recording.id]))
     end
   end
 end
