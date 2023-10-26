@@ -52,6 +52,7 @@ module Resolvers
           sql = <<-SQL
             SELECT
               DISTINCT(COALESCE(recordings.referrer, 'Direct')) referrer,
+              AVG(recordings.activity_duration) as duration,
               COUNT(*) count
             FROM
               recordings
@@ -113,6 +114,7 @@ module Resolvers
           referrers.map do |referrer|
             {
               referrer: referrer['referrer'],
+              duration: referrer['duration'],
               count: referrer['count'],
               percentage: Maths.percentage(referrer['count'].to_f, visitor_count)
             }
