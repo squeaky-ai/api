@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve_with_timings
         SiteBundle
-          .includes(site_bundles_sites: :site)
+          .includes(site_bundles_sites: { site: %i[teams users plan billing] })
           .all
       end
     end
