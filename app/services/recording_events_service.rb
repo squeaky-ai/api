@@ -33,7 +33,7 @@ class RecordingEventsService
 
   def get_object(filename)
     object = client.get_object(key: "#{prefix}/#{filename}", bucket:)
-    JSON.parse(object.body.read)
+    inflate(object.body.read)
   rescue Aws::S3::Errors::NoSuchKey => e
     Rails.logger.error "Key did not exist: #{prefix}/#{filename} - #{e}"
     nil
@@ -51,10 +51,10 @@ class RecordingEventsService
     nil
   end
 
-  def create_object(body, filename)
+  def create_object(payload, filename)
     client.put_object(
-      body:,
       bucket:,
+      body: delfate(payload),
       key: "#{prefix}/#{filename}"
     )
 
@@ -69,5 +69,24 @@ class RecordingEventsService
 
   def prefix
     recording.events_key_prefix || "#{recording.site.uuid}/#{recording.visitor.visitor_id}/#{recording.session_id}"
+  end
+
+  def delfate(payload)
+    deflate = Zlib::Deflate.new.deflate(payload, Zlib::FINISH)
+    Base64.strict_encode64(deflate)
+  end
+
+  def inflate(payload)
+    # TODO: Remove once all events are compressed
+    return JSON.parse!(payload) if payload.include?('{')
+
+    zstream = Zlib::Inflate.new
+
+    str = Base64.strict_decode64(payload)
+    str = zstream.inflate(str)
+    zstream.finish
+    zstream.close
+
+    JSON.parse!(str)
   end
 end

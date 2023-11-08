@@ -256,7 +256,7 @@ class Session # rubocop:disable Metrics/ClassLength
 
   def handle_pageview_event(event)
     # Strip out some stuff from the href that causes errors
-    href = event['value']['data']['href'].gsub(/\[|\]/, '__')
+    href = event['value']['data']['href'].gsub(/\[|\]/, '__').split('#').first
     path = URI(href).path
 
     # This is so we can show page views for single
