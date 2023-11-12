@@ -10,14 +10,16 @@ class Partner < ApplicationRecord
 
   has_many :sites, through: :referrals
 
-  alias_attribute :invoices, :partner_invoices
-
   def all_time_commission
     commission.all_time_commission
   end
 
   def pay_outs
     commission.pay_outs
+  end
+
+  def invoices
+    partner_invoices
   end
 
   private

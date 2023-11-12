@@ -23,10 +23,15 @@ class EventChannel < ApplicationCable::Channel
   end
 
   def event(data)
-    Cache.redis.lpush("events::#{session_key}", data['payload'].to_json)
+    Cache.redis.lpush("events::#{session_key}", compress_payload(data))
   end
 
   private
+
+  def compress_payload(payload)
+    deflate = Zlib::Deflate.new.deflate(payload.to_json, Zlib::FINISH)
+    Base64.strict_encode64(deflate)
+  end
 
   def incr_active_user_count!
     Cache.redis.zincrby('active_user_count', 1, current_visitor[:site_id])

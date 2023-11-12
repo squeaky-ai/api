@@ -33,18 +33,24 @@ module ApplicationCable
     end
 
     def origin_valid?(site)
-      site.url.sub('www.', '') == request.origin.sub('www.', '')
+      return true if site.url.sub('www.', '') == request.origin.sub('www.', '')
+
+      Rails.logger.info "#{site.name} - origins did not match"
+      false
     end
 
     def ip_address_valid?(site)
       return true unless site.ip_blacklist.any? { |x| x['value'] == request.ip }
 
-      Rails.logger.info "#{request.ip} was blacklisted by site #{site.id}"
+      Rails.logger.info "#{site.name} - #{request.ip} was blacklisted"
       false
     end
 
     def allow_connection?(site)
-      site.ingest_enabled && !site.plan.exceeded? && !site.plan.invalid?
+      return true if site.ingest_enabled && !site.plan.exceeded? && !site.plan.invalid?
+
+      Rails.logger.info "#{site.name} - not allowed to connect"
+      false
     end
   end
 end

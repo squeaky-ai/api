@@ -30,16 +30,16 @@ class Site < ApplicationRecord
   has_one :feedback
   has_one :provider_auth, dependent: :destroy
 
-  # The plural sounds weird
-  alias_attribute :team, :teams
-  alias_attribute :bundled, :bundled?
-
   default_scope { order(name: :asc) }
 
   after_create { create_plan(plan_id: Plans.free_plan[:id]) }
 
   WEB_APP = 0
   WEBSITE = 1
+
+  def team
+    teams
+  end
 
   def owner
     team.find(&:owner?)

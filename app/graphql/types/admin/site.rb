@@ -7,7 +7,7 @@ module Types
 
       field :ingest_enabled, Boolean, null: false
       field :recording_counts, resolver: Resolvers::Admin::SiteRecordingsCounts
-      field :bundled, Boolean, null: false
+      field :bundled, Boolean, null: false, method: :bundled?
       field :bundled_with, [Types::Admin::Site, { null: false }], null: false
     end
   end

@@ -6,8 +6,8 @@ class SiteService
     raise Exceptions::Unauthorized unless current_user
 
     # We don't show pending sites to the user in the UI
-    team = { status: Team::ACCEPTED }
-    site = current_user.sites.includes(%i[teams users]).find_by(id: site_id, team:)
+    teams = { status: Team::ACCEPTED }
+    site = current_user.sites.includes(%i[teams users]).find_by(id: site_id, teams:)
 
     if current_user.superuser? && !site
       # Superusers can access sites if the owner of the site gives
@@ -26,8 +26,8 @@ class SiteService
     return nil unless current_user
 
     Rails.cache.fetch("data_cache:SiteService::#{current_user.id}::#{site_uuid}", expires_in:) do
-      team = { status: Team::ACCEPTED }
-      current_user.sites.find_by(uuid: site_uuid, team:)
+      teams = { status: Team::ACCEPTED }
+      current_user.sites.find_by(uuid: site_uuid, teams:)
     end
   end
 

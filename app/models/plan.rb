@@ -3,13 +3,6 @@
 class Plan < ApplicationRecord
   belongs_to :site
 
-  # GraphQL won't look it up with ?
-  alias_attribute :invalid, :invalid?
-  alias_attribute :exceeded, :exceeded?
-  alias_attribute :free, :free?
-  alias_attribute :enterprise, :enterprise?
-  alias_attribute :deprecated, :deprecated?
-
   def name
     plan_defaults[:name]
   end

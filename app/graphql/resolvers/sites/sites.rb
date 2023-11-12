@@ -9,8 +9,8 @@ module Resolvers
         raise Exceptions::Unauthorized unless context[:current_user]
 
         # We don't show pending sites to the user in the UI
-        team = { status: Team::ACCEPTED }
-        context[:current_user].sites.where(team:).includes(%i[teams users])
+        teams = { status: Team::ACCEPTED }
+        context[:current_user].sites.where(teams:).includes(%i[teams users])
       end
     end
   end
