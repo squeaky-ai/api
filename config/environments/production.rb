@@ -92,4 +92,7 @@ Rails.application.configure do
   config.web_host = ENV.fetch('WEB_HOST', 'https://squeaky.ai')
 
   config.squeaky_site_id = 82
+
+  # This is CRAZY noisy in production
+  ActionCable.server.config.logger = Logger.new(nil)
 end
