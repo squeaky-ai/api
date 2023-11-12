@@ -16,6 +16,7 @@ module ApplicationCable
       reject_unauthorized_connection unless site
       reject_unauthorized_connection unless origin_valid?(site)
       reject_unauthorized_connection unless ip_address_valid?(site)
+      reject_unauthorized_connection unless allow_connection?(site)
 
       visitor
     end
@@ -40,6 +41,10 @@ module ApplicationCable
 
       Rails.logger.info "#{request.ip} was blacklisted by site #{site.id}"
       false
+    end
+
+    def allow_connection?(site)
+      site.ingest_enabled && !site.plan.exceeded? && !site.plan.invalid?
     end
   end
 end

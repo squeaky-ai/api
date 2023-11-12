@@ -58,4 +58,42 @@ RSpec.describe ApplicationCable::Connection, :type => :channel do
       expect(connect "/api/in#{params}", headers: { origin: origin }).not_to be nil
     end
   end
+
+  describe 'when the params exist, so does the site, but the ingest is disabled' do
+    let(:origin) { 'http://my-domain.com' }
+    let(:site) { create(:site, url: origin, ingest_enabled: false) }
+    let(:params) { "?site_id=#{site.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
+
+    it 'rejects the connection' do
+      expect { connect "/api/in#{params}", headers: { origin: origin } }.to have_rejected_connection
+    end
+  end
+
+  describe 'when the params exist, so does the site, but they have exceeded their plan' do
+    let(:origin) { 'http://my-domain.com' }
+    let(:site) { create(:site, url: origin) }
+    let(:params) { "?site_id=#{site.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
+
+    before do
+      allow_any_instance_of(Plan).to receive(:exceeded?).and_return(true)
+    end
+
+    it 'rejects the connection' do
+      expect { connect "/api/in#{params}", headers: { origin: origin } }.to have_rejected_connection
+    end
+  end
+
+  describe 'when the params exist, so does the site, but they have not paid their bill' do
+    let(:origin) { 'http://my-domain.com' }
+    let(:site) { create(:site, url: origin) }
+    let(:params) { "?site_id=#{site.uuid}&visitor_id=#{SecureRandom.base36}&session_id=#{SecureRandom.base36}" }
+
+    before do
+      allow_any_instance_of(Plan).to receive(:invalid?).and_return(true)
+    end
+
+    it 'rejects the connection' do
+      expect { connect "/api/in#{params}", headers: { origin: origin } }.to have_rejected_connection
+    end
+  end
 end
