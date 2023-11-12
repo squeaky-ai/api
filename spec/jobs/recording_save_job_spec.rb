@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
-  
+
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
@@ -126,7 +126,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'writes the events to S3' do
-      subject 
+      subject
 
       expect(s3_client).to have_received(:put_object).with(
         body: anything,
@@ -204,7 +204,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
     it 'raises an error' do
       expect { subject }.to raise_error(
-        StandardError, 
+        StandardError,
         "RecordingSaveJob lock hit for job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}"
       )
     end

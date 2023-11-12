@@ -45,7 +45,7 @@ class RecordingSaveJob < ApplicationJob
       # This HAS to go second
       persist_recording!
 
-      # These are not important
+      # The order of these is not important
       persist_pageviews!
       persist_sentiments!
       persist_nps!
