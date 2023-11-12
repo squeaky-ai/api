@@ -60,7 +60,11 @@ RSpec.describe EventChannel, :type => :channel do
 
       subscribe
 
-      expect { subscription.unsubscribe_from_channel }.to have_enqueued_job(RecordingSaveJob).with(current_visitor)
+      expect { subscription.unsubscribe_from_channel }.to have_enqueued_job(RecordingSaveJob).with(
+        'site_id' => current_visitor[:site_id],
+        'visitor_id' => current_visitor[:visitor_id],
+        'session_id' => current_visitor[:session_id]
+      )
     end
   end
 

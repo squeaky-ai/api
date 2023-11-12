@@ -17,7 +17,7 @@ class EventChannel < ApplicationCable::Channel
 
     # 30 minutes should give it enough time for us
     # to consider a user truly gone
-    RecordingSaveJob.set(wait: 30.minutes).perform_later(current_visitor)
+    RecordingSaveJob.set(wait: 30.minutes).perform_later(current_visitor.transform_keys(&:to_s))
 
     Cache.redis.expire("events::#{session_key}", 3600)
   end
