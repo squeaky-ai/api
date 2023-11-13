@@ -21,11 +21,6 @@ class DataRetentionJob < ApplicationJob
       recording_ids.each_slice(500).each do |slice|
         RecordingDeleteJob.perform_later(slice)
       end
-
-      # Back off the job if we are deleting a bunch of recordings
-      # as the ClickHouse disk will grow and eventually shit
-      # itself
-      sleep 5.minutes if recording_ids.size >= 250
     end
 
     nil
