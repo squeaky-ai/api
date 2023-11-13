@@ -19,11 +19,11 @@ class EventChannel < ApplicationCable::Channel
     # to consider a user truly gone
     RecordingSaveJob.set(wait: 30.minutes).perform_later(current_visitor.transform_keys(&:to_s))
 
-    Cache.redis.expire("events::#{session_key}", 3600)
+    Cache.redis.expire(session_key, 3600)
   end
 
   def event(data)
-    Cache.redis.lpush("events::#{session_key}", compress_payload(data))
+    Cache.redis.lpush(session_key, compress_payload(data))
   end
 
   private
@@ -45,6 +45,7 @@ class EventChannel < ApplicationCable::Channel
 
   def session_key
     [
+      'events',
       current_visitor[:site_id],
       current_visitor[:visitor_id],
       current_visitor[:session_id]
@@ -54,6 +55,13 @@ class EventChannel < ApplicationCable::Channel
   def delete_existing_job!
     queue = Sidekiq::ScheduledSet.new
 
-    queue.each { |job| job.delete if job.jid == session_key }
+    queue.each do |job|
+      # I can't find anyway of setting the job_id to something
+      # that I could look up later, so this is the only way for
+      # now
+      session_id = job.args.first['arguments'].first['session_id']
+
+      job.delete if session_id == current_visitor[:session_id]
+    end
   end
 end

@@ -3,7 +3,7 @@
 class RecordingSaveJob < ApplicationJob
   queue_as :default
 
-  sidekiq_options retry: false
+  sidekiq_options retry: 0
 
   before_perform do |job|
     args = job.arguments.first
