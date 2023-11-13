@@ -52,7 +52,7 @@ class EventChannel < ApplicationCable::Channel
   end
 
   def delete_existing_job!
-    queue = Sidekiq::Queue.new('default')
+    queue = Sidekiq::ScheduledSet.new
 
     queue.each { |job| job.delete if job.jid == session_key }
   end
