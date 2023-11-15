@@ -10,9 +10,6 @@ sites_admin_query = <<-GRAPHQL
         plan {
           name
         }
-        sites {
-          name
-        }
       }
     }
   }
@@ -52,7 +49,7 @@ RSpec.describe Resolvers::Admin::SitesBundles, type: :request do
 
         create(:site_bundles_site, site: site_1, site_bundle: bundle_1, primary: true)
         create(:site_bundles_site, site: site_2, site_bundle: bundle_2, primary: true)
-        
+
         site_2.plan.update!(plan_id: '094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
 
@@ -65,22 +62,12 @@ RSpec.describe Resolvers::Admin::SitesBundles, type: :request do
             'plan' => {
               'name' => 'Free'
             },
-            'sites' => [
-              {
-                'name' => 'Site 1'
-              }
-            ]
           },
           {
             'name' => 'bundle_2',
             'plan' => {
               'name' => 'Light'
-            },
-            'sites' => [
-              {
-                'name' => 'Site 2'
-              }
-            ]
+            }
           }
         ])
       end
