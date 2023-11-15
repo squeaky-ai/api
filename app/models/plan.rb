@@ -12,7 +12,7 @@ class Plan < ApplicationRecord
   end
 
   def exceeded?
-    all_recordings_count >= max_monthly_recordings
+    current_month_recordings_count >= max_monthly_recordings
   end
 
   def enterprise?
@@ -64,7 +64,7 @@ class Plan < ApplicationRecord
   end
 
   def fractional_usage
-    all_recordings_count.to_f / max_monthly_recordings
+    current_month_recordings_count.to_f / max_monthly_recordings
   end
 
   def pricing
@@ -101,17 +101,16 @@ class Plan < ApplicationRecord
     )
   end
 
-  private
-
-  def all_recordings_count
-    @all_recordings_count ||= site.recordings
-                                  .where(
-                                    'created_at > ? AND created_at < ?',
-                                    Time.now.beginning_of_month,
-                                    Time.now.end_of_month
-                                  )
-                                  .count
+  def current_month_recordings_count
+    # This causes n+1 in the admin app
+    @current_month_recordings_count ||= site.recordings.where(
+      'created_at > ? AND created_at < ?',
+      Time.now.beginning_of_month,
+      Time.now.end_of_month
+    ).count
   end
+
+  private
 
   def plan_defaults
     @plan_defaults ||= Plans.find_by_plan_id(plan_id)

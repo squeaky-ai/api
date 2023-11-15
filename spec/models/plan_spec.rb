@@ -18,7 +18,7 @@ RSpec.describe Plan, type: :model do
     let(:instance) { described_class.new(plan_id: 'b2054935-4fdf-45d0-929b-853cfe8d4a1c') }
 
     before do
-      allow(instance).to receive(:all_recordings_count).and_return 41234134234
+      allow(instance).to receive(:current_month_recordings_count).and_return 41234134234
 
       site.update(plan: instance)
     end
@@ -47,7 +47,7 @@ RSpec.describe Plan, type: :model do
 
       before do
         create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
-        
+
         site.update(plan:instance)
       end
 
@@ -64,7 +64,7 @@ RSpec.describe Plan, type: :model do
 
       before do
         create(:billing, status: Billing::VALID, site:, user: site.owner.user)
-        
+
         site.update(plan: instance)
       end
 

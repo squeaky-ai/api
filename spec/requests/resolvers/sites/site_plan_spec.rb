@@ -137,7 +137,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     before do
       create(:billing, status: Billing::VALID, site:, user: site.owner.user)
 
-      allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
+      allow_any_instance_of(Plan).to receive(:current_month_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
 
       site.plan.update(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f')
@@ -177,7 +177,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
     before do
       create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
 
-      allow_any_instance_of(Plan).to receive(:all_recordings_count).and_return(50001)
+      allow_any_instance_of(Plan).to receive(:current_month_recordings_count).and_return(50001)
       allow_any_instance_of(Plan).to receive(:max_monthly_recordings).and_return(50000)
 
       site.plan.update(plan_id: 'f20c93ec-172f-46c6-914e-6a00dff3ae5f')
