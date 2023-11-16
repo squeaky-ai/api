@@ -59,9 +59,9 @@ class EventChannel < ApplicationCable::Channel
       # I can't find anyway of setting the job_id to something
       # that I could look up later, so this is the only way for
       # now
-      session_id = job.args.first['arguments'].first['session_id']
+      existing_job = job.args.first.to_s.include?(current_visitor[:session_id])
 
-      job.delete if session_id == current_visitor[:session_id]
+      job.delete if existing_job
     end
   end
 end
