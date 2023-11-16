@@ -39,6 +39,8 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = "wss://example.com/cable"
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
+  config.action_cable.logger = ActiveSupport::Logger.new($stdout)
+  config.action_cable.logger.level = Logger::WARN
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -92,7 +94,4 @@ Rails.application.configure do
   config.web_host = ENV.fetch('WEB_HOST', 'https://squeaky.ai')
 
   config.squeaky_site_id = 82
-
-  # This is CRAZY noisy in production
-  ActionCable.server.config.logger = Logger.new(nil)
 end
