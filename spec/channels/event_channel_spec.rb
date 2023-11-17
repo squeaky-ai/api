@@ -66,6 +66,21 @@ RSpec.describe EventChannel, :type => :channel do
         'session_id' => current_visitor[:session_id]
       )
     end
+
+    context 'when there is a job enqueued already' do
+      before do
+        Sidekiq::ScheduledSet.new.each(&:delete)
+        RecordingSaveJob.set(wait: 30.minutes).perform_later(current_visitor.transform_keys(&:to_s))
+      end
+
+      it 'deletes any existing jobs' do
+        stub_connection current_visitor: current_visitor
+
+        subscribe
+
+        expect { subscription.unsubscribe_from_channel }.not_to change { Sidekiq::ScheduledSet.new.size }
+      end
+    end
   end
 
   describe '#event' do

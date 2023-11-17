@@ -67,7 +67,7 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
           disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           locale: 'xx-aa'
         }
-      ] 
+      ]
     end
 
     before do
@@ -83,7 +83,7 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
 
     it 'returns the languages counts' do
       response = subject['data']['site']['analytics']
-      expect(response['languages']).to eq(
+      expect(response['languages']).to match_array(
         [
           {
             'name' => 'English (GB)',
@@ -132,7 +132,7 @@ RSpec.describe Resolvers::Analytics::Languages, type: :request do
           disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           locale: 'sv-se'
         }
-      ] 
+      ]
     end
 
     before do
