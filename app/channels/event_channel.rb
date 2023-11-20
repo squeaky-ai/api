@@ -56,12 +56,14 @@ class EventChannel < ApplicationCable::Channel
     queue = Sidekiq::ScheduledSet.new
 
     queue.each do |job|
+      args = job.args.first.to_h
+
+      next unless args['job_class'] == 'RecordingSaveJob'
+
       # I can't find anyway of setting the job_id to something
       # that I could look up later, so this is the only way for
       # now
-      existing_job = job.args.first.to_s.include?(current_visitor[:session_id])
-
-      job.delete if existing_job
+      args['arguments'].to_s.include?(current_visitor[:session_id])
     end
   end
 end
