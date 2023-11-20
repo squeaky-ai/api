@@ -14,9 +14,9 @@ module Types
       field :response_time_hours, Integer, null: true
       field :team_member_limit, Integer, null: true
       field :features_enabled, [Types::Plans::Feature, { null: false }], null: false
-      field :deprecated, Boolean, null: false, method: :deprecated?
-      field :free, Boolean, null: false, method: :free?
-      field :enterprise, Boolean, null: false, method: :enterprise
+      field :deprecated, Boolean, null: false
+      field :free, Boolean, null: false
+      field :enterprise, Boolean, null: false
       field :site_limit, Integer, null: true
     end
   end
