@@ -93,11 +93,12 @@ class EventChannel < ApplicationCable::Channel
     connected_visitors = Cache.redis.hgetall('active_visitors')
 
     connected_visitors.each do |session_key, last_pinged_at|
-      diff = Time.now.to_i > last_pinged_at.to_i
+      diff = Time.now.to_i - last_pinged_at.to_i
 
       next unless diff > 30
 
       puts "Debug #{session_key} has been inactive for more than 30 seconds"
+      # Terminate session
     end
   end
 end
