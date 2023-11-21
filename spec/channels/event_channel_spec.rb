@@ -3,17 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe EventChannel, :type => :channel do
-  let(:current_visitor) do
-    hash = {
-      site_id: SecureRandom.uuid,
-      visitor_id: SecureRandom.base36,
-      session_id: SecureRandom.base36
-    }
+  let(:site_uuid) { SecureRandom.uuid }
+  let(:visitor_id) { SecureRandom.base36 }
+  let(:session_id) { SecureRandom.base36 }
 
-    Struct.new(*hash.keys).new(*hash.values)
+  let(:current_visitor) do
+    "#{site_uuid}::#{visitor_id}::#{session_id}"
   end
 
-  let(:events_key) { "events::#{current_visitor.site_id}::#{current_visitor.visitor_id}::#{current_visitor.session_id}" }
+  let(:events_key) { "events::#{current_visitor}" }
 
   before(:each) do
     Cache.redis.del('active_visitors')
@@ -23,7 +21,7 @@ RSpec.describe EventChannel, :type => :channel do
   describe '#subscribed' do
     before do
       # Add 5 users to the global count
-      Cache.redis.zincrby('active_user_count', 5, current_visitor.site_id)
+      Cache.redis.zincrby('active_user_count', 5, site_uuid)
       # Add 2 users to the visitors count
       Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
       Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
@@ -32,7 +30,7 @@ RSpec.describe EventChannel, :type => :channel do
     it 'increments the global active user count' do
       stub_connection current_visitor: current_visitor
 
-      expect { subscribe }.to change { Cache.redis.zscore('active_user_count', current_visitor.site_id).to_i }.from(5).to(6)
+      expect { subscribe }.to change { Cache.redis.zscore('active_user_count', site_uuid).to_i }.from(5).to(6)
     end
 
     it 'increments the visitors count' do
@@ -49,7 +47,7 @@ RSpec.describe EventChannel, :type => :channel do
 
       subscribe
 
-      expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.zscore('active_user_count', current_visitor.site_id).to_i }.from(1).to(0)
+      expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.zscore('active_user_count', site_uuid).to_i }.from(1).to(0)
     end
 
     it 'decrements the visitors count' do
@@ -79,19 +77,20 @@ RSpec.describe EventChannel, :type => :channel do
       subscribe
 
       expect { subscription.unsubscribe_from_channel }.to have_enqueued_job(RecordingSaveJob).with(
-        'site_id' => current_visitor.site_id,
-        'visitor_id' => current_visitor.visitor_id,
-        'session_id' => current_visitor.session_id
+        'site_id' => site_uuid,
+        'visitor_id' => visitor_id,
+        'session_id' => session_id
       )
     end
 
     context 'when there is a job enqueued already' do
       before do
         Sidekiq::ScheduledSet.new.each(&:delete)
+
         RecordingSaveJob.set(wait: 30.minutes).perform_later(
-          'site_id' => current_visitor.site_id,
-          'visitor_id' => current_visitor.visitor_id,
-          'session_id' => current_visitor.session_id
+          'site_id' => site_uuid,
+          'visitor_id' => visitor_id,
+          'session_id' => session_id
         )
       end
 
@@ -129,7 +128,7 @@ RSpec.describe EventChannel, :type => :channel do
 
       sleep 1 # We're only using second precision for the timeouts
 
-      expect { perform :ping }.to change { Cache.redis.hget('active_visitors', events_key) }
+      expect { perform :ping }.to change { Cache.redis.hget('active_visitors', current_visitor) }
     end
   end
 end

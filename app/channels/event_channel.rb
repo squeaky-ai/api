@@ -3,8 +3,6 @@
 class EventChannel < ApplicationCable::Channel
   periodically :check_ping, every: 10.seconds
 
-  delegate :site_id, :visitor_id, :session_id, to: :current_visitor
-
   def subscribed
     Rails.logger.info "User connected #{current_visitor}"
 
@@ -23,7 +21,7 @@ class EventChannel < ApplicationCable::Channel
     # 30 minutes should give it enough time for us
     # to consider a user truly gone
     RecordingSaveJob.set(wait: 30.minutes).perform_later(
-      'site_id' => site_id,
+      'site_id' => site_uuid,
       'visitor_id' => visitor_id,
       'session_id' => session_id
     )
@@ -44,7 +42,7 @@ class EventChannel < ApplicationCable::Channel
     # Maintain our own "last_pinged_at" field so that
     # we can cut users off after a certain amount of
     # inactivity
-    Cache.redis.hset('active_visitors', session_key, Time.now.to_i)
+    Cache.redis.hset('active_visitors', current_visitor, Time.now.to_i)
   end
 
   private
@@ -56,22 +54,34 @@ class EventChannel < ApplicationCable::Channel
 
   def incr_active_user_counts!
     Cache.redis.multi do |transaction|
-      transaction.hset('active_visitors', session_key, Time.now.to_i)
-      transaction.zincrby('active_user_count', 1, site_id)
+      transaction.hset('active_visitors', current_visitor, Time.now.to_i)
+      transaction.zincrby('active_user_count', 1, site_uuid)
     end
   end
 
   def decr_active_user_counts!
-    count = Cache.redis.zscore('active_user_count', site_id)
+    count = Cache.redis.zscore('active_user_count', site_uuid)
 
     Cache.redis.multi do |transaction|
-      transaction.hdel('active_visitors', session_key)
-      transaction.zincrby('active_user_count', -1, site_id) if count.positive?
+      transaction.hdel('active_visitors', current_visitor)
+      transaction.zincrby('active_user_count', -1, site_uuid) if count.positive?
     end
   end
 
   def session_key
-    ['events', site_id, visitor_id, session_id].join('::')
+    "events::#{current_visitor}"
+  end
+
+  def site_uuid
+    @site_uuid ||= current_visitor.split('::')[0]
+  end
+
+  def visitor_id
+    @visitor_id ||= current_visitor.split('::')[1]
+  end
+
+  def session_id
+    @session_id ||= current_visitor.split('::')[2]
   end
 
   def delete_existing_job!
@@ -92,13 +102,15 @@ class EventChannel < ApplicationCable::Channel
   def check_ping
     connected_visitors = Cache.redis.hgetall('active_visitors')
 
-    connected_visitors.each do |session_key, last_pinged_at|
+    connected_visitors.each do |visitor_key, last_pinged_at|
       diff = Time.now.to_i - last_pinged_at.to_i
 
-      next unless diff > 30
+      next unless diff > 30 # seconds
 
-      puts "Debug #{session_key} has been inactive for more than 30 seconds"
-      # Terminate session
+      # Terminate this visitors' connection as they have
+      # timed out (more than likely dropped already but
+      # did not get picked up by the disconnect)
+      ActionCable.server.remote_connections.where(current_visitor: visitor_key).disconnect(reconnect: false)
     end
   end
 end

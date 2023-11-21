@@ -11,24 +11,14 @@ module ApplicationCable
     private
 
     def find_authorized_visitor
-      site = Site.find_by(uuid: visitor.site_id)
+      site = Site.find_by(uuid: site_uuid)
 
       reject_unauthorized_connection unless site
       reject_unauthorized_connection unless origin_valid?(site)
       reject_unauthorized_connection unless ip_address_valid?(site)
       reject_unauthorized_connection unless allow_connection?(site)
 
-      visitor
-    end
-
-    def visitor
-      hash = {
-        site_id: request.params.fetch(:site_id),
-        visitor_id: request.params.fetch(:visitor_id),
-        session_id: request.params.fetch(:session_id)
-      }
-
-      Struct.new(*hash.keys).new(*hash.values)
+      "#{site_uuid}::#{visitor_id}::#{session_id}"
     rescue KeyError
       Rails.logger.warn 'Visitor did not have the correct payload'
       reject_unauthorized_connection
@@ -53,6 +43,18 @@ module ApplicationCable
 
       Rails.logger.info "#{site.name} - not allowed to connect"
       false
+    end
+
+    def site_uuid
+      request.params.fetch(:site_id)
+    end
+
+    def visitor_id
+      request.params.fetch(:visitor_id)
+    end
+
+    def session_id
+      request.params.fetch(:session_id)
     end
   end
 end
