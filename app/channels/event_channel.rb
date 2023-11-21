@@ -44,7 +44,7 @@ class EventChannel < ApplicationCable::Channel
     # Maintain our own "last_pinged_at" field so that
     # we can cut users off after a certain amount of
     # inactivity
-    Cache.redis.hset(site_active_user_count_key, visitor_id, Time.now.to_i)
+    Cache.redis.hset('active_visitors', session_key, Time.now.to_i)
   end
 
   private
@@ -56,17 +56,17 @@ class EventChannel < ApplicationCable::Channel
 
   def incr_active_user_counts!
     Cache.redis.multi do |transaction|
-      transaction.hset(site_active_user_count_key, visitor_id, Time.now.to_i)
-      transaction.zincrby(global_active_user_count_key, 1, site_id)
+      transaction.hset('active_visitors', session_key, Time.now.to_i)
+      transaction.zincrby('active_user_count', 1, site_id)
     end
   end
 
   def decr_active_user_counts!
-    count = Cache.redis.zscore(global_active_user_count_key, site_id)
+    count = Cache.redis.zscore('active_user_count', site_id)
 
     Cache.redis.multi do |transaction|
-      transaction.hdel(site_active_user_count_key, visitor_id)
-      transaction.zincrby(global_active_user_count_key, -1, site_id) if count.positive?
+      transaction.hdel('active_visitors', session_key)
+      transaction.zincrby('active_user_count', -1, site_id) if count.positive?
     end
   end
 
@@ -82,8 +82,6 @@ class EventChannel < ApplicationCable::Channel
 
       next unless args['job_class'] == 'RecordingSaveJob'
 
-      puts "DEBUG is there a job already for #{session_id} in #{args['arguments']}?"
-
       # I can't find anyway of setting the job_id to something
       # that I could look up later, so this is the only way for
       # now
@@ -91,24 +89,15 @@ class EventChannel < ApplicationCable::Channel
     end
   end
 
-  def global_active_user_count_key
-    'active_user_count'
-  end
-
-  def site_active_user_count_key
-    "active_user_count::#{site_id}"
-  end
-
   def check_ping
-    Rails.logger.info 'Checking which visitors need terminating'
-    # puts '!!!!', ActionCable.server.remote_connections.where(current_visitor: 'dfgfgfgd').disconnected(reconnect: false)
+    connected_visitors = Cache.redis.hgetall('active_visitors')
 
-    # connected_visitors = Cache.redis.hgetall(site_active_user_count_key)
+    connected_visitors.each do |session_key, last_pinged_at|
+      diff = Time.now.to_i > last_pinged_at.to_i
 
-    # connected_visitors.each do |visitor_id, last_pinged_at|
-    #   diff = Time.now.to_i > last_pinged_at.to_i
+      next unless diff > 30
 
-    #   puts "Should kill #{visitor_id}" if diff > 10
-    # end
+      puts "Debug #{session_key} has been inactive for more than 30 seconds"
+    end
   end
 end

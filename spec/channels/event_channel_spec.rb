@@ -15,13 +15,18 @@ RSpec.describe EventChannel, :type => :channel do
 
   let(:events_key) { "events::#{current_visitor.site_id}::#{current_visitor.visitor_id}::#{current_visitor.session_id}" }
 
+  before(:each) do
+    Cache.redis.del('active_visitors')
+    Cache.redis.del('active_user_count')
+  end
+
   describe '#subscribed' do
     before do
       # Add 5 users to the global count
       Cache.redis.zincrby('active_user_count', 5, current_visitor.site_id)
-      # Add 2 users to the site level count
-      Cache.redis.hset("active_user_count::#{current_visitor.site_id}", SecureRandom.uuid, Time.now.to_i)
-      Cache.redis.hset("active_user_count::#{current_visitor.site_id}", SecureRandom.uuid, Time.now.to_i)
+      # Add 2 users to the visitors count
+      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
+      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
     end
 
     it 'increments the global active user count' do
@@ -30,10 +35,10 @@ RSpec.describe EventChannel, :type => :channel do
       expect { subscribe }.to change { Cache.redis.zscore('active_user_count', current_visitor.site_id).to_i }.from(5).to(6)
     end
 
-    it 'increments the site level active user count' do
+    it 'increments the visitors count' do
       stub_connection current_visitor: current_visitor
 
-      expect { subscribe }.to change { Cache.redis.hlen("active_user_count::#{current_visitor.site_id}") }.from(2).to(3)
+      expect { subscribe }.to change { Cache.redis.hlen('active_visitors') }.from(2).to(3)
     end
   end
 
@@ -47,12 +52,12 @@ RSpec.describe EventChannel, :type => :channel do
       expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.zscore('active_user_count', current_visitor.site_id).to_i }.from(1).to(0)
     end
 
-    it 'decrements the site level active user count' do
+    it 'decrements the visitors count' do
       stub_connection current_visitor: current_visitor
 
       subscribe
 
-      expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.hlen("active_user_count::#{current_visitor.site_id}") }.from(1).to(0)
+      expect { subscription.unsubscribe_from_channel }.to change { Cache.redis.hlen('active_visitors') }.from(1).to(0)
     end
 
     it 'sets the expiry on the events' do
@@ -124,7 +129,7 @@ RSpec.describe EventChannel, :type => :channel do
 
       sleep 1 # We're only using second precision for the timeouts
 
-      expect { perform :ping }.to change { Cache.redis.hget("active_user_count::#{current_visitor.site_id}", current_visitor.visitor_id) }
+      expect { perform :ping }.to change { Cache.redis.hget('active_visitors', events_key) }
     end
   end
 end
