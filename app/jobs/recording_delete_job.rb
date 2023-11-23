@@ -56,8 +56,8 @@ class RecordingDeleteJob < ApplicationJob
       WHERE visitor_id IN (?)
     SQL
 
-    visitor_ids_with_recordings = Sql.execute(sql, [visitor_ids]).map { |v| v['visitor_id'] }
-    visitor_ids_to_delete = visitor_ids.filter { |v| !visitor_ids_with_recordings.include?(v) }
+    visitor_ids_with_recordings = Sql.execute(sql, [visitor_ids]).pluck('visitor_id')
+    visitor_ids_to_delete = visitor_ids.filter { |v| visitor_ids_with_recordings.exclude?(v) }
 
     Visitor.where(id: visitor_ids_to_delete).destroy_all
   end

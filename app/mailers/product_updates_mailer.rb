@@ -6,7 +6,7 @@ class ProductUpdatesMailer < ApplicationMailer
     @unsubscribable = true
 
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: Q2 2022')
   end
@@ -17,7 +17,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: July 2022')
   end
@@ -28,7 +28,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: August 2022')
   end
@@ -39,7 +39,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: September-October 2022')
   end
@@ -50,7 +50,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: November 2022')
   end
@@ -68,7 +68,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: December 2022')
   end
@@ -86,7 +86,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: January 2023')
   end
@@ -97,7 +97,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: February 2023')
   end
@@ -108,7 +108,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Product Update: March 2023')
   end
@@ -119,7 +119,7 @@ class ProductUpdatesMailer < ApplicationMailer
 
     return if user.sites.empty?
     return unless user.communication_enabled?(:product_updates_email)
-    return unless user.first_name.present?
+    return if user.first_name.blank?
 
     mail(to: user.email, subject: 'Introducing Squeaky\'s New Changelog and Public Roadmap')
   end

@@ -176,7 +176,7 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def exists?
-    exists = Recording.where(session_id: @session_id).exists?
+    exists = Recording.exists?(session_id: @session_id)
     Stats.count('session_exists') if exists
     exists
   end

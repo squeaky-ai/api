@@ -6,7 +6,7 @@ module Resolvers
       type Integer, null: false
 
       def resolve_with_timings
-        Visitor.all.count
+        Visitor.count
       end
     end
   end

@@ -49,7 +49,7 @@ class Visitor < ApplicationRecord
   end
 
   def destroy_all_recordings!
-    recording_ids = recordings.select(:id).map(&:id)
+    recording_ids = recordings.pluck(:id)
     RecordingDeleteJob.perform_later(recording_ids) unless recording_ids.empty?
   end
 end

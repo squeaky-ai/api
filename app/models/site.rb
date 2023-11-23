@@ -85,7 +85,7 @@ class Site < ApplicationRecord
   end
 
   def page_urls
-    pages.select(:url).all.map(&:url).uniq
+    pages.pluck(:url).uniq
   end
 
   def active_user_count
@@ -118,7 +118,7 @@ class Site < ApplicationRecord
   def destroy_all_recordings!
     # This will enqueue all recordings and it's associated
     # data to be deleted asynchronously
-    ids = recordings.select(:id).map(&:id)
+    ids = recordings.pluck(:id)
     RecordingDeleteJob.perform_later(ids)
   end
 
