@@ -44,7 +44,7 @@ module Resolvers
         }
 
         results = Sql::ClickHouse.select_all(sql, variables)
-        visitor_ids = results.map { |r| r['visitor_id'] }
+        visitor_ids = results.pluck('visitor_id')
 
         Visitor
           .where(id: visitor_ids)

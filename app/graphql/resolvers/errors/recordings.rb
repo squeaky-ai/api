@@ -47,7 +47,7 @@ module Resolvers
           to_date: object.range.to
         }
 
-        Sql::ClickHouse.select_all(sql, variables).map { |x| x['recording_id'] }
+        Sql::ClickHouse.select_all(sql, variables).pluck('recording_id')
       end
 
       def order(sort)

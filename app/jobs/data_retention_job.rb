@@ -31,6 +31,6 @@ class DataRetentionJob < ApplicationJob
   def recording_ids_outside_retention_period(site, months)
     cut_off_date = Time.now - months
     ids = Sql.execute('SELECT id FROM recordings WHERE site_id = ? AND created_at < ?', [site, cut_off_date])
-    ids.map { |r| r['id'] }
+    ids.pluck('id')
   end
 end

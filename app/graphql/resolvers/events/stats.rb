@@ -46,7 +46,7 @@ module Resolvers
         # This is the much cheaper way of fetching the
         # capture ids from the group ids as there are
         # no joins necessary
-        ids = Sql.execute(sql, [group_ids]).map { |id| id['event_capture_id'] }
+        ids = Sql.execute(sql, [group_ids]).pluck('event_capture_id')
 
         # Someone may have selected a capture that is
         # in a group so they should be flattened
@@ -125,7 +125,7 @@ module Resolvers
         }
       end
 
-      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/CyclomaticComplexity
+      def aggregate_group(id, groups, capture_events_with_counts)
         # Find the group that matches this id
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group
@@ -134,9 +134,9 @@ module Resolvers
         # are in the list of capture_ids
         captures = capture_events_with_counts.filter { |c| capture_ids.include?(c[:id]) }
 
-        count = captures.map { |c| c[:count] }.sum
-        unique_triggers = captures.map { |c| c[:unique_triggers] }.sum
-        average_events_per_visitor = Maths.average(captures.map { |c| c[:average_events_per_visitor] })
+        count = captures.pluck(:count).sum
+        unique_triggers = captures.pluck(:unique_triggers).sum
+        average_events_per_visitor = Maths.average(captures.pluck(:average_events_per_visitor))
 
         {
           event_or_group_id: group.id,

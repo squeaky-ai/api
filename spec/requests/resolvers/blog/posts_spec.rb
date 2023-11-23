@@ -74,33 +74,33 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
       expect(response['posts']).to match_array([
         {
           'author' =>  {
-            'image' =>  'https://cdn.squeaky.ai/blog/lewis.jpg', 
+            'image' =>  'https://cdn.squeaky.ai/blog/lewis.jpg',
             'name' => 'Lewis Monteith'
-          }, 
-          'body' => 'Hello world', 
-          'category' => 'Category 1', 
-          'draft' => false, 
-          'metaDescription' => 'Meta Description', 
-          'metaImage' => 'https://cdn.squeaky.ai/image.png', 
-          'slug' => '/category/title', 
-          'tags' => ['Tag 1', 'Tag 2'], 
-          'title' => 'Title', 
-          'createdAt' => anything, 
+          },
+          'body' => 'Hello world',
+          'category' => 'Category 1',
+          'draft' => false,
+          'metaDescription' => 'Meta Description',
+          'metaImage' => 'https://cdn.squeaky.ai/image.png',
+          'slug' => '/category/title',
+          'tags' => ['Tag 1', 'Tag 2'],
+          'title' => 'Title',
+          'createdAt' => anything,
           'updatedAt' => anything
-        }, 
+        },
         {
           'author' => {
-            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg', 
+            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg',
             'name' => 'Lewis Monteith'
-          }, 
-          'body' => 'Hello world', 
-          'category' => 'Category 2', 
-          'draft' => false, 
-          'metaDescription' => 'Meta Description', 
-          'metaImage' => 'https://cdn.squeaky.ai/image.png', 
-          'slug' => '/category/title', 
-          'tags' => ['Tag 2', 'Tag 3'], 
-          'title' => 'Title', 
+          },
+          'body' => 'Hello world',
+          'category' => 'Category 2',
+          'draft' => false,
+          'metaDescription' => 'Meta Description',
+          'metaImage' => 'https://cdn.squeaky.ai/image.png',
+          'slug' => '/category/title',
+          'tags' => ['Tag 2', 'Tag 3'],
+          'title' => 'Title',
           'createdAt' => anything,
           'updatedAt' => anything
         }
@@ -113,13 +113,13 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
       before do
         create(:blog, draft: true)
       end
-  
+
       subject do
         variables = {
           category: nil,
           tags: []
         }
-  
+
         graphql_request(blog_posts_query, variables, nil)
       end
 
@@ -135,13 +135,13 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
       before do
         create(:blog, draft: true)
       end
-  
+
       subject do
         variables = {
           category: nil,
           tags: []
         }
-  
+
         graphql_request(blog_posts_query, variables, user)
       end
 
@@ -157,13 +157,13 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
       before do
         create(:blog, draft: true)
       end
-  
+
       subject do
         variables = {
           category: nil,
           tags: []
         }
-  
+
         graphql_request(blog_posts_query, variables, user)
       end
 
@@ -208,7 +208,7 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
 
     it 'only returns posts with that category' do
       response = subject['data']['blogPosts']
-      categories = response['posts'].map { |post| post['category'] }
+      categories = response['posts'].pluck('category')
 
       expect(response['posts'].size).to eq(1)
       expect(categories).to eq(['Category 1'])
@@ -232,7 +232,7 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
 
     it 'only returns posts that have those tags' do
       response = subject['data']['blogPosts']
-      tags = response['posts'].map { |post| post['tags'] }.flatten
+      tags = response['posts'].pluck('tags').flatten
 
       expect(response['posts'].size).to eq(1)
       expect(tags).to eq(['Tag 1'])
@@ -257,8 +257,8 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
 
     it 'only returns posts that have those tags and category' do
       response = subject['data']['blogPosts']
-      category = response['posts'].map { |post| post['category'] }.uniq
-      tags = response['posts'].map { |post| post['tags'] }.flatten
+      category = response['posts'].pluck('category').uniq
+      tags = response['posts'].pluck('tags').flatten
 
       expect(response['posts'].size).to eq(1)
       expect(tags).to eq(['Tag 1', 'Tag 2'])

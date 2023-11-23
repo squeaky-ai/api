@@ -19,7 +19,7 @@ module DataCacheService
             site_id: site.id
           }
 
-          Sql::ClickHouse.select_all(sql, variables).map { |r| r['referrer'] }
+          Sql::ClickHouse.select_all(sql, variables).pluck('referrer')
         end
       end
     end

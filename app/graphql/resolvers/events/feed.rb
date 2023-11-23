@@ -73,7 +73,7 @@ module Resolvers
         # This is the much cheaper way of fetching the
         # capture ids from the group ids as there are
         # no joins necessary
-        ids = Sql.execute(sql, [group_ids]).map { |id| id['event_capture_id'] }
+        ids = Sql.execute(sql, [group_ids]).pluck('event_capture_id')
 
         # Someone may have selected a capture that is
         # in a group so they should be flattened
@@ -148,7 +148,7 @@ module Resolvers
       end
 
       def recordings(results)
-        ids = results.map { |r| r['recording_id'] }.uniq
+        ids = results.pluck('recording_id').uniq
 
         object
           .recordings
@@ -162,7 +162,7 @@ module Resolvers
         # do not have a recording
         ids = results
               .select { |r| r['source'] == EventCapture::API }
-              .map { |r| r['visitor_id'] }
+              .pluck('visitor_id')
               .reject(&:zero?)
               .uniq
 

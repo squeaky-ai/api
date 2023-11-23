@@ -28,7 +28,7 @@ class Nps < ApplicationRecord
   end
 
   def self.calculate_scores(scores)
-    values = scores.map { |s| s[:score] }
+    values = scores.pluck(:score)
     total = scores.size
 
     return 0 if total.zero?

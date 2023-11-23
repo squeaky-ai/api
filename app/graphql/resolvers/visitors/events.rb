@@ -96,7 +96,7 @@ module Resolvers
       end
 
       def recordings(results)
-        ids = results.map { |r| r['recording_id'] }.uniq
+        ids = results.pluck('recording_id').uniq
 
         Recording.where(id: ids)
       end

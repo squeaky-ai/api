@@ -79,9 +79,7 @@ module Resolvers
             recording_id IN (?)
         SQL
 
-        variables = [
-          paths.map { |path| path['recording_id'] }
-        ]
+        variables = [paths.pluck('recording_id')]
 
         Sql::ClickHouse.select_all(sql, variables)
       end

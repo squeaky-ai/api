@@ -151,7 +151,7 @@ class Session # rubocop:disable Metrics/ClassLength
     # No point in checking if there's less than 5
     return false if clicks.size < 5
 
-    timestamps = clicks.map { |c| c['timestamp'] }
+    timestamps = clicks.pluck('timestamp')
 
     timestamps.any? do |timestamp|
       from = timestamp

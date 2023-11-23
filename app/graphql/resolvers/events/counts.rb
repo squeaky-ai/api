@@ -47,7 +47,7 @@ module Resolvers
         # This is the much cheaper way of fetching the
         # capture ids from the group ids as there are
         # no joins necessary
-        ids = Sql.execute(sql, [group_ids]).map { |id| id['event_capture_id'] }
+        ids = Sql.execute(sql, [group_ids]).pluck('event_capture_id')
 
         # Someone may have selected a capture that is
         # in a group so they should be flattened
@@ -91,7 +91,7 @@ module Resolvers
       end
 
       def aggregate_results(results, group_ids, capture_ids)
-        date_keys = results.map { |r| r['date_key'] }.uniq
+        date_keys = results.pluck('date_key').uniq
         groups = object.event_groups.where(id: group_ids).includes(:event_captures)
 
         date_keys.map do |date_key|
@@ -131,7 +131,7 @@ module Resolvers
 
         format_group_metric(
           id: "#{date_key}::#{group.id}",
-          count: group_metrics.map { |g| g['count'] }.sum
+          count: group_metrics.pluck('count').sum
         )
       end
     end

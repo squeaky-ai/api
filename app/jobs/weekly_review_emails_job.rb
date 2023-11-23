@@ -54,6 +54,6 @@ class WeeklyReviewEmailsJob < ApplicationJob
       WHERE recordings_count > 0;
     SQL
 
-    Sql.execute(sql, [from_date, to_date]).map { |x| x['site_id'] }
+    Sql.execute(sql, [from_date, to_date]).pluck('site_id')
   end
 end
