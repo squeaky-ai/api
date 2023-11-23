@@ -45,7 +45,7 @@ class EventsController < ApplicationController
   end
 
   def current_unix_timestamp_ms
-    Time.now.to_i * 1000
+    Time.current.to_i * 1000
   end
 
   def create_event!

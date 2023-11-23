@@ -70,7 +70,7 @@ class Site < ApplicationRecord
 
     Stats.count('site_verified')
 
-    update!(verified_at: Time.now)
+    update!(verified_at: Time.current)
   end
 
   def unverify!

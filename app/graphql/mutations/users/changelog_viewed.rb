@@ -10,7 +10,7 @@ module Mutations
       type Types::Users::User
 
       def resolve_with_timings
-        user.update(changelog_last_viewed_at: Time.now)
+        user.update(changelog_last_viewed_at: Time.current)
         user
       end
     end

@@ -215,7 +215,7 @@ RSpec.describe EventsController, type: :controller do
         end
 
         before do
-          allow(Time).to receive(:now).and_return(Time.at(1675202020))
+          allow(Time).to receive(:current).and_return(Time.at(1675202020))
         end
 
         context 'that is not a number' do

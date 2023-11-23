@@ -6,7 +6,7 @@ class UserCleanupJob < ApplicationJob
   sidekiq_options retry: false
 
   def perform(*_args)
-    now = Time.now
+    now = Time.current
 
     count = 0
 

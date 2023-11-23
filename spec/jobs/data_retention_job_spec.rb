@@ -15,7 +15,7 @@ RSpec.describe DataRetentionJob, type: :job do
 
   context 'when there are some recordings to delete' do
     let(:site) { create(:site) }
-    let(:now) { now = Time.now}
+    let(:now) { now = Time.current}
 
     let!(:recording_1) { create(:recording, site:, created_at: now) }
     let!(:recording_2) { create(:recording, site:, created_at: now) }
@@ -35,7 +35,7 @@ RSpec.describe DataRetentionJob, type: :job do
     let(:site) { create(:site) }
 
     before do
-      now = Time.now
+      now = Time.current
 
       site.plan.update(data_storage_months: -1)
 

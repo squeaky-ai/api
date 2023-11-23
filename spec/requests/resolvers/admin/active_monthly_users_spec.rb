@@ -35,7 +35,7 @@ RSpec.describe Resolvers::Admin::ActiveMonthlyUsers, type: :request do
     let(:user) { create(:user, superuser: true) }
 
     before do
-      now = Time.now
+      now = Time.current
 
       create(:user, last_activity_at: now - 5.days)
       create(:user, last_activity_at: now - 15.days)

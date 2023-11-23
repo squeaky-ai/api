@@ -53,7 +53,7 @@ RSpec.describe PlanService do
       it 'should expire at the end of the month' do
         subject
         ttl = Cache.redis.ttl("plan_exeeded_alerted::#{site.id}")
-        expect(ttl + Time.now.to_i).to be_within(10).of(Time.now.end_of_month.to_i)
+        expect(ttl + Time.current.to_i).to be_within(10).of(Time.current.end_of_month.to_i)
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.describe PlanService do
 
     context 'when there are multiple jobs running at once' do
       let(:site) { create(:site_with_team) }
-      
+
       before do
         allow(site.plan).to receive(:exceeded?).and_return(true)
       end
@@ -141,7 +141,7 @@ RSpec.describe PlanService do
       it 'should expire at the end of the month' do
         subject
         ttl = Cache.redis.ttl("plan_nearing_limit_alerted::#{site.id}")
-        expect(ttl + Time.now.to_i).to be_within(10).of(Time.now.end_of_month.to_i)
+        expect(ttl + Time.current.to_i).to be_within(10).of(Time.current.end_of_month.to_i)
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe PlanService do
 
     context 'when there are multiple jobs running at once' do
       let(:site) { create(:site_with_team) }
-      
+
       before do
         allow(site.plan).to receive(:fractional_usage).and_return(0.86)
       end

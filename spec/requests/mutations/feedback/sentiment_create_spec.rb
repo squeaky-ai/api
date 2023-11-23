@@ -18,7 +18,7 @@ RSpec.describe Mutations::Feedback::SentimentCreate, type: :request do
   let(:time_now) { Time.new(2022, 6, 29) }
 
   before do
-    allow(Time).to receive(:now).and_return(time_now)
+    allow(Time).to receive(:current).and_return(time_now)
   end
 
   subject do

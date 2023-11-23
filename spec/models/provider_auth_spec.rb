@@ -25,7 +25,7 @@ RSpec.describe ProviderAuth, type: :model do
       let(:app_uuid) { SecureRandom.uuid }
       let(:instance) { create(:provider_auth, provider: 'duda') }
 
-      let(:expiration_date) { Time.now.to_i }
+      let(:expiration_date) { Time.current.to_i }
       let(:authorization_code) { SecureRandom.uuid }
 
       let(:response) { double(:response, body: response_body, code: 200) }

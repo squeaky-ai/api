@@ -26,7 +26,7 @@ module Mutations
           value: {
             type: 5,
             data: { score:, comment:, contact:, email: },
-            timestamp: Time.now.to_i * 1000
+            timestamp: Time.current.to_i * 1000
           }
         }
 

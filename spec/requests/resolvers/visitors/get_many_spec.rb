@@ -50,11 +50,11 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
       variables = {
-        site_id: site.id, 
-        from_date: today, 
+        site_id: site.id,
+        from_date: today,
         to_date: today
       }
 
@@ -78,8 +78,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
     subject do
       variables = {
-        site_id: site.id, 
-        from_date: '2021-08-08', 
+        site_id: site.id,
+        from_date: '2021-08-08',
         to_date: '2021-08-08'
       }
 
@@ -112,7 +112,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     subject do
       variables = {
         site_id: site.id,
-        from_date: '2021-08-08', 
+        from_date: '2021-08-08',
         to_date: '2021-08-08'
       }
 
@@ -136,8 +136,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
 
     subject do
       variables = {
-        site_id: site.id, 
-        from_date: '2021-08-08', 
+        site_id: site.id,
+        from_date: '2021-08-08',
         to_date: '2021-08-08'
       }
 

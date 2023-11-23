@@ -17,7 +17,7 @@ class NewFeedbackJob < ApplicationJob
   private
 
   def feedback_data
-    now = Time.now
+    now = Time.current
 
     Site.find_each.map do |site|
       nps = site.nps.where('nps.created_at > ?', now - 1.hour).to_a

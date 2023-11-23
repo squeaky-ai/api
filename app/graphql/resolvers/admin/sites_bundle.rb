@@ -43,7 +43,7 @@ module Resolvers
         variables = [
           {
             deleted: Recording::DELETED,
-            start_date: Time.now.beginning_of_month,
+            start_date: Time.current.beginning_of_month,
             site_ids:
           }
         ]

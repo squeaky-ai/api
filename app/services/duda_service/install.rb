@@ -41,7 +41,7 @@ module DudaService
         uuid: duda_site.uuid,
         site_type: ::Site::WEBSITE,
         provider: 'duda',
-        verified_at: Time.now
+        verified_at: Time.current
       )
     end
 

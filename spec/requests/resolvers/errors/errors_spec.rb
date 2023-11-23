@@ -31,12 +31,12 @@ RSpec.describe Resolvers::Errors::Errors, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
-      variables = { 
+      variables = {
         site_id: site.id,
-        from_date: today, 
-        to_date: today 
+        from_date: today,
+        to_date: today
       }
       graphql_request(errors_query, variables, user)
     end
@@ -73,10 +73,10 @@ RSpec.describe Resolvers::Errors::Errors, type: :request do
     subject do
       today = now.strftime('%Y-%m-%d')
 
-      variables = { 
+      variables = {
         site_id: site.id,
-        from_date: today, 
-        to_date: today 
+        from_date: today,
+        to_date: today
       }
       graphql_request(errors_query, variables, user)
     end

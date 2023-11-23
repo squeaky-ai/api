@@ -6,7 +6,7 @@ RSpec.describe UserCleanupJob, type: :job do
   include ActiveJob::TestHelper
 
   subject { described_class.perform_now }
-  
+
   context 'when there are no users to delete' do
     it 'does not delete anyone' do
       expect { subject }.not_to change { User.all.count }
@@ -15,7 +15,7 @@ RSpec.describe UserCleanupJob, type: :job do
 
   context 'when there are some users to delete' do
     before do
-      now = Time.now
+      now = Time.current
 
       # Invited and unconfirmed
       create(:user, invitation_created_at: now, confirmed_at: nil, created_at: now - 24.hours)

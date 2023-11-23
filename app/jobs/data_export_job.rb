@@ -10,7 +10,7 @@ class DataExportJob < ApplicationJob
 
     store_data_export!
 
-    data_export.update(exported_at: Time.now.to_i * 1000)
+    data_export.update(exported_at: Time.current.to_i * 1000)
   end
 
   private

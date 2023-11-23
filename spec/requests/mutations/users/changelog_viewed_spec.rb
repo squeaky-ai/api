@@ -5,7 +5,7 @@ require 'rails_helper'
 changelog_viewed_mutation = <<-GRAPHQL
   mutation($input: UserChangelogViewedInput!) {
     usersChangelogViewed(input: $input) {
-      id 
+      id
       changelogLastViewedAt {
         iso8601
       }
@@ -14,11 +14,11 @@ changelog_viewed_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Users::ChangelogViewed, type: :request do
-  let(:now) { Time.now }
+  let(:now) { Time.current }
   let(:user) { create(:user) }
 
   before do
-    allow(Time).to receive(:now).and_return(now)
+    allow(Time).to receive(:current).and_return(now)
   end
 
   subject do
@@ -46,7 +46,7 @@ RSpec.describe Mutations::Users::ChangelogViewed, type: :request do
         'iso8601' => now.iso8601
       )
     end
-  
+
     it 'updates the user record' do
       expect { subject }.to change { user.changelog_last_viewed_at }.from(now - 10.minutes).to(now)
     end

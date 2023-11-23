@@ -17,7 +17,7 @@ module Mutations
         presigned_url = s3_bucket.presigned_post(
           key: "blog/#{filename}",
           success_action_status: '201',
-          signature_expiration: (Time.now.utc + 15.minutes)
+          signature_expiration: (Time.current.utc + 15.minutes)
         )
 
         {

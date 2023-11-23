@@ -42,7 +42,7 @@ class EventChannel < ApplicationCable::Channel
     # Maintain our own "last_pinged_at" field so that
     # we can cut users off after a certain amount of
     # inactivity
-    Cache.redis.hset('active_visitors', current_visitor, Time.now.to_i)
+    Cache.redis.hset('active_visitors', current_visitor, Time.current.to_i)
   end
 
   private
@@ -54,7 +54,7 @@ class EventChannel < ApplicationCable::Channel
 
   def incr_active_user_counts!
     Cache.redis.multi do |transaction|
-      transaction.hset('active_visitors', current_visitor, Time.now.to_i)
+      transaction.hset('active_visitors', current_visitor, Time.current.to_i)
       transaction.zincrby('active_user_count', 1, site_uuid)
     end
   end
@@ -103,7 +103,7 @@ class EventChannel < ApplicationCable::Channel
     connected_visitors = Cache.redis.hgetall('active_visitors')
 
     connected_visitors.each do |visitor_key, last_pinged_at|
-      diff = Time.now.to_i - last_pinged_at.to_i
+      diff = Time.current.to_i - last_pinged_at.to_i
 
       next unless diff > 30 # seconds
 

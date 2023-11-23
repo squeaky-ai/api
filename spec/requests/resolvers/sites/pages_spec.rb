@@ -15,7 +15,7 @@ GRAPHQL
 
 RSpec.describe Resolvers::Sites::Pages, type: :request do
   context 'when there are no pages' do
-    let(:now) { Time.now }
+    let(:now) { Time.current }
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
@@ -35,7 +35,7 @@ RSpec.describe Resolvers::Sites::Pages, type: :request do
   end
 
   context 'when there are some pages' do
-    let(:now) { Time.now }
+    let(:now) { Time.current }
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
@@ -45,31 +45,31 @@ RSpec.describe Resolvers::Sites::Pages, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/',
-          exited_at: Time.now.to_i * 1000
+          exited_at: Time.current.to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/',
-          exited_at: Time.now.to_i * 1000
+          exited_at: Time.current.to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/test',
-          exited_at: Time.now.to_i * 1000
+          exited_at: Time.current.to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/foo',
-          exited_at: Time.now.to_i * 1000
+          exited_at: Time.current.to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           url: '/bar',
-          exited_at: Time.now.to_i * 1000
+          exited_at: Time.current.to_i * 1000
         }
       ]
     end

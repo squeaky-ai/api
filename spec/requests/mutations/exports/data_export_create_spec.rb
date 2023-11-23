@@ -27,14 +27,14 @@ RSpec.describe Mutations::Exports::DataExportCreate, type: :request do
   let(:now) { Time.new(2023, 3, 16, 12, 0, 0) }
 
   before do
-    allow(Time).to receive(:now).and_return(now)
+    allow(Time).to receive(:current).and_return(now)
     allow(DataExportJob).to receive(:perform_later)
   end
 
   subject do
     variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         exportType: DataExport::RECORDINGS,
         startDate: '2023-03-09',
         endDate: '2023-03-16'

@@ -24,7 +24,7 @@ module Mutations
           start_date:,
           end_date:,
           export_type:,
-          filename: "#{DataExport.name_for_type(export_type)}-#{Time.now.to_i}.csv"
+          filename: "#{DataExport.name_for_type(export_type)}-#{Time.current.to_i}.csv"
         )
 
         DataExportJob.perform_later(data_export.id)

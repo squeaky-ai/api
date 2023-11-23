@@ -23,6 +23,6 @@ task :recording_export, [:site_id] => :environment do |_task, args|
   client.put_object(
     body: csv_string,
     bucket: 'misc.squeaky.ai',
-    key: "#{args[:site_id]}/#{Time.now.to_i}.csv"
+    key: "#{args[:site_id]}/#{Time.current.to_i}.csv"
   )
 end

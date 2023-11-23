@@ -6,16 +6,16 @@ RSpec.describe FreeTrialMailerService do
   describe '.enqueue' do
     ActiveJob::Base.queue_adapter = :test
 
-    let(:now) { Time.now }
+    let(:now) { Time.current }
     let(:site) { create(:site_with_team) }
 
-    before { allow(Time).to receive(:now).and_return(now) }
+    before { allow(Time).to receive(:current).and_return(now) }
 
     subject { described_class.enqueue(site) }
 
     it 'enqueues the emails' do
       subject
-      
+
       expect(ActionMailer::MailDeliveryJob)
         .to have_been_enqueued
         .with('FreeTrialMailer', 'first', 'deliver_now', { args: [site.id] })

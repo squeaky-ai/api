@@ -70,6 +70,6 @@ class PlanService
 
   def add_lock(prefix)
     Cache.redis.set("#{prefix}::#{site.id}", '1')
-    Cache.redis.expireat("#{prefix}::#{site.id}", Time.now.end_of_month.to_i)
+    Cache.redis.expireat("#{prefix}::#{site.id}", Time.current.end_of_month.to_i)
   end
 end

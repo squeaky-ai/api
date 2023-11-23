@@ -46,14 +46,14 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
-      variables = { 
+      variables = {
         site_id: site.id,
-        size: 15, 
-        page: 0, 
-        from_date: today, 
-        to_date: today 
+        size: 15,
+        page: 0,
+        from_date: today,
+        to_date: today
       }
       graphql_request(site_recordings_query, variables, user)
     end
@@ -80,13 +80,13 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
-      variables = { 
-        site_id: site.id, 
-        size: 15, 
-        page: 0, 
-        from_date: today, 
+      variables = {
+        site_id: site.id,
+        size: 15,
+        page: 0,
+        from_date: today,
         to_date: today
       }
 
@@ -117,13 +117,13 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
-      variables = { 
-        site_id: site.id, 
+      variables = {
+        site_id: site.id,
         size: 15,
-        page: 0, 
-        from_date: today, 
+        page: 0,
+        from_date: today,
         to_date: today
       }
 
@@ -148,13 +148,13 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     before { 15.times.map { create(:recording, site: site) } }
 
     subject do
-      today = Time.now.strftime('%Y-%m-%d')
+      today = Time.current.strftime('%Y-%m-%d')
 
-      variables = { 
-        site_id: site.id, 
-        size: 10, 
-        page: 2, 
-        from_date: today, 
+      variables = {
+        site_id: site.id,
+        size: 10,
+        page: 2,
+        from_date: today,
         to_date: today
       }
 
@@ -184,17 +184,17 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        today = Time.now.strftime('%Y-%m-%d')
+        today = Time.current.strftime('%Y-%m-%d')
 
-        variables = { 
-          site_id: site.id, 
-          size: 5, 
-          page: 0, 
-          sort: 'connected_at__desc', 
-          from_date: today, 
+        variables = {
+          site_id: site.id,
+          size: 5,
+          page: 0,
+          sort: 'connected_at__desc',
+          from_date: today,
           to_date: today
         }
-  
+
         graphql_request(site_recordings_query, variables, user)
       end
 
@@ -223,14 +223,14 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        today = Time.now.strftime('%Y-%m-%d')
+        today = Time.current.strftime('%Y-%m-%d')
 
-        variables = { 
-          site_id: site.id, 
-          size: 5, 
-          page: 0, 
-          sort: 'connected_at__asc', 
-          from_date: today, 
+        variables = {
+          site_id: site.id,
+          size: 5,
+          page: 0,
+          sort: 'connected_at__asc',
+          from_date: today,
           to_date: today
         }
 

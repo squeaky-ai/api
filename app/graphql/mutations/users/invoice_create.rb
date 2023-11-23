@@ -21,7 +21,7 @@ module Mutations
           currency:,
           amount:,
           status: PartnerInvoice::PENDING,
-          issued_at: Time.now,
+          issued_at: Time.current,
           partner: user.partner
         )
       end

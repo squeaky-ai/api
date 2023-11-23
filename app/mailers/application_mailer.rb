@@ -42,7 +42,7 @@ class ApplicationMailer < ActionMailer::Base
       name: "#{self.class}##{action_name}",
       data: {
         to: headers['to'].to_s,
-        sent_at: Time.now.iso8601
+        sent_at: Time.current.iso8601
       }
     )
   end

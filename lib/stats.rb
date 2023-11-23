@@ -2,9 +2,9 @@
 
 class Stats
   def self.timer(name, &block)
-    start = Time.now
+    start = Time.current
     response = block.call
-    duration = Time.now - start
+    duration = Time.current - start
 
     Rails.logger.info("stats::timer::#{name} - #{duration}")
 

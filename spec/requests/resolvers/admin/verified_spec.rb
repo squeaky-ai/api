@@ -28,7 +28,7 @@ RSpec.describe Resolvers::Admin::Verified, type: :request do
     let(:user) { create(:user, superuser: true) }
 
     before do
-      now = Time.now
+      now = Time.current
 
       create(:site, verified_at: nil)
       create(:site, verified_at: nil)

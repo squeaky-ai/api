@@ -105,8 +105,8 @@ class Plan < ApplicationRecord
     # This causes n+1 in the admin app
     @current_month_recordings_count ||= site.recordings.where(
       'created_at > ? AND created_at < ?',
-      Time.now.beginning_of_month,
-      Time.now.end_of_month
+      Time.current.beginning_of_month,
+      Time.current.end_of_month
     ).count
   end
 

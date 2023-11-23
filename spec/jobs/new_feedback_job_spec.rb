@@ -30,14 +30,14 @@ RSpec.describe NewFeedbackJob, type: :job do
 
     it 'does not send any mail' do
       subject
-      
+
       expect(SiteMailer).not_to have_received(:new_feedback)
     end
   end
 
   context 'when there has been feedback' do
     before do
-      now = Time.now
+      now = Time.current
 
       site_1 = create(:site_with_team)
       site_2 = create(:site_with_team)
@@ -92,7 +92,7 @@ RSpec.describe NewFeedbackJob, type: :job do
 
     it 'sends the emails with the correct data' do
       subject
-      
+
       expect(SiteMailer).to have_received(:new_feedback).with(@output[0], @output[0][:site].team[0].user)
       expect(SiteMailer).to have_received(:new_feedback).with(@output[0], @output[0][:site].team[1].user)
       expect(SiteMailer).to have_received(:new_feedback).with(@output[1], @output[1][:site].team[0].user)

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EventsService::Types::UtmParameters do
   describe '#count' do
-    let(:now) { Time.now }
+    let(:now) { Time.current }
 
     let(:site) { create(:site, created_at: now) }
     let(:event) { create(:event_capture, site:, event_type: EventCapture::UTM_PARAMETERS) }

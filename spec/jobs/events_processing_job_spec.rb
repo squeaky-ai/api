@@ -27,7 +27,7 @@ RSpec.describe EventsProcessingJob, type: :job do
     let!(:event_6) { create(:event_capture, site:, event_type: EventCapture::UTM_PARAMETERS, rules: [rule_6]) }
 
     before do
-      allow(Time).to receive(:now).and_return(now)
+      allow(Time).to receive(:current).and_return(now)
 
       timestamp = Time.new(2022, 7, 6, 5, 0, 0).to_i * 1000
 
@@ -106,7 +106,7 @@ RSpec.describe EventsProcessingJob, type: :job do
   end
 
   context 'when specific ids are passed' do
-    let(:now) { Time.now }
+    let(:now) { Time.current }
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
 
@@ -118,11 +118,11 @@ RSpec.describe EventsProcessingJob, type: :job do
     let!(:event_3) { create(:event_capture, site:, event_type: EventCapture::SELECTOR_CLICK, rules: ['...']) }
 
     before do
-      allow(Time).to receive(:now).and_return(now)
+      allow(Time).to receive(:current).and_return(now)
 
       allow(EventsService::Captures).to receive(:for).and_call_original
 
-      timestamp = Time.now.to_i * 1000
+      timestamp = Time.current.to_i * 1000
 
       ClickHouse::PageEvent.insert do |buffer|
         buffer << {

@@ -23,8 +23,8 @@ RSpec.describe EventChannel, :type => :channel do
       # Add 5 users to the global count
       Cache.redis.zincrby('active_user_count', 5, site_uuid)
       # Add 2 users to the visitors count
-      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
-      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.now.to_i)
+      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.current.to_i)
+      Cache.redis.hset('active_visitors', SecureRandom.uuid, Time.current.to_i)
     end
 
     it 'increments the global active user count' do

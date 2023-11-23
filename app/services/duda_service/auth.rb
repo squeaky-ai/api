@@ -60,7 +60,7 @@ module DudaService
     end
 
     def timestamp_within_bounds?
-      now = Time.now.to_i * 1000
+      now = Time.current.to_i * 1000
       within_bounds = now - timestamp <= max_timestamp_difference_ms
 
       Rails.logger.warn("Timestamp not within bounds: #{now} - #{timestamp}") unless within_bounds

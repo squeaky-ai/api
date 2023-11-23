@@ -6,7 +6,7 @@ FactoryBot.define do
     last_name  { 'Morrison' }
     email { "#{SecureRandom.base36}@email.com" }
     password { 'sdfsfsdfsdfsdf' }
-    confirmed_at { Time.now }
+    confirmed_at { Time.current }
   end
 
   factory :team do
@@ -21,7 +21,7 @@ FactoryBot.define do
     name { 'Morrison Hotel' }
     url { "https://#{SecureRandom.base36}.com" }
     uuid { SecureRandom.uuid }
-    verified_at { Time.now }
+    verified_at { Time.current }
 
     transient do
       team_count { 1 }
@@ -31,7 +31,7 @@ FactoryBot.define do
     factory :site_with_team do
       after(:create) do |site, evaluator|
         create_list(:team, evaluator.team_count, site: site, user: evaluator.owner)
-      end      
+      end
     end
   end
 
@@ -47,8 +47,8 @@ FactoryBot.define do
     device_x { 1920 }
     device_y { 1080 }
     status { Recording::ACTIVE }
-    connected_at { Time.now.to_i * 1000 }
-    disconnected_at { (Time.now.to_i * 1000) + 1000 }
+    connected_at { Time.current.to_i * 1000 }
+    disconnected_at { (Time.current.to_i * 1000) + 1000 }
     active_events_count { 0 }
     activity_duration { 0 }
 
@@ -57,10 +57,10 @@ FactoryBot.define do
     end
 
     after(:create) do |recording, evaluator|
-      evaluator.page_urls.each_with_index do |url, index| 
+      evaluator.page_urls.each_with_index do |url, index|
         create(
           :page,
-          url:, 
+          url:,
           recording:,
           site_id: recording.site_id,
           entered_at: (recording.connected_at.to_i + index) * 1000,
@@ -130,8 +130,8 @@ FactoryBot.define do
     invoice_web_url { 'http://invoice-web-url.com' }
     invoice_pdf_url { 'http://invoice-pdf-url.com' }
     pricing_id { 'pricing_id' }
-    period_from { Time.now }
-    period_to { Time.now }
+    period_from { Time.current }
+    period_to { Time.current }
 
     billing { association :billing }
   end
@@ -165,7 +165,7 @@ FactoryBot.define do
     product_updates_email { true }
     marketing_and_special_offers_email { true }
     knowledge_sharing_email { true }
-    feedback_email { true } 
+    feedback_email { true }
 
     user { association :user }
   end
@@ -188,7 +188,7 @@ FactoryBot.define do
   factory :event do
     data { {} }
     event_type { 1 }
-    timestamp { Time.now.to_i * 1000 }
+    timestamp { Time.current.to_i * 1000 }
 
     recording { association :recording }
   end

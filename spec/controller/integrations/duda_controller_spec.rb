@@ -27,9 +27,9 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
     let(:params) do
       {
-        account_owner_uuid:, 
-        installer_account_uuid:, 
-        site_name:, 
+        account_owner_uuid:,
+        installer_account_uuid:,
+        site_name:,
         api_endpoint:,
         auth:,
         app_plan_uuid:
@@ -182,14 +182,14 @@ RSpec.describe Integrations::DudaController, type: :controller do
       end
     end
   end
-  
+
   describe 'GET /integrations/websitebuilder/sso' do
     let!(:user) { create(:user, provider: 'duda', provider_uuid: SecureRandom.uuid) }
     let!(:site) { create(:site_with_team, owner: user) }
 
     let(:site_name) { site.uuid }
     let(:sdk_url) { 'https://test.com' }
-    let(:timestamp) { Time.now.to_i * 1000 }
+    let(:timestamp) { Time.current.to_i * 1000 }
 
     let(:rsa) do
       key = OpenSSL::PKey::RSA.generate(2048, 3)
@@ -243,7 +243,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
       it 'signs the user in and redirects them' do
         subject
-  
+
         expect(response).to have_http_status(302)
         expect(response.headers['Location']).to eq("https://squeaky.ai/app/sites/#{site.id}/dashboard")
       end

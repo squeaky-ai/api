@@ -7,11 +7,11 @@ RSpec.describe RecordingMailerService do
     ActiveJob::Base.queue_adapter = :test
 
     context 'when the recording is the first' do
-      let(:now) { Time.now }
+      let(:now) { Time.current }
       let(:site) { create(:site_with_team) }
 
       before do
-        allow(Time).to receive(:now).and_return(now)
+        allow(Time).to receive(:current).and_return(now)
 
         create(:recording, site:)
       end
@@ -33,11 +33,11 @@ RSpec.describe RecordingMailerService do
     end
 
     context 'when the recording is not the first' do
-      let(:now) { Time.now }
+      let(:now) { Time.current }
       let(:site) { create(:site_with_team) }
 
       before do
-        allow(Time).to receive(:now).and_return(now)
+        allow(Time).to receive(:current).and_return(now)
 
         create(:recording, site:)
         create(:recording, site:)

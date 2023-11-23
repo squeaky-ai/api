@@ -7,7 +7,7 @@ class EventsProcessingJob < ApplicationJob
 
   def perform(*args)
     enumerator(args.first || []) do |event|
-      @now = Time.now
+      @now = Time.current
 
       logger.info "Processing event #{event.id} for site #{event.site_id}"
 

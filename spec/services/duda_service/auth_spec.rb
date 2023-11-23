@@ -25,7 +25,7 @@ RSpec.describe DudaService::Auth do
     context 'when the signature is invalid' do
       let(:site_name) { 'squeaky' }
       let(:sdk_url) { 'https://test.com' }
-      let(:timestamp) { Time.now.to_i }
+      let(:timestamp) { Time.current.to_i }
 
       let(:rsa) do
         key = OpenSSL::PKey::RSA.generate(2048, 3)
@@ -61,7 +61,7 @@ RSpec.describe DudaService::Auth do
     context 'when the signature is valid' do
       let(:site_name) { 'squeaky' }
       let(:sdk_url) { 'https://test.com' }
-      let(:timestamp) { Time.now.to_i * 1000 }
+      let(:timestamp) { Time.current.to_i * 1000 }
 
       let(:rsa) do
         key = OpenSSL::PKey::RSA.generate(2048, 3)
@@ -101,7 +101,7 @@ RSpec.describe DudaService::Auth do
     context 'when the signature is valid but the timestamp is old' do
       let(:site_name) { 'squeaky' }
       let(:sdk_url) { 'https://test.com' }
-      let(:timestamp) { (Time.now.to_i * 1000) - 160000 } # the limit is 120s / 120000ms
+      let(:timestamp) { (Time.current.to_i * 1000) - 160000 } # the limit is 120s / 120000ms
 
       let(:rsa) do
         key = OpenSSL::PKey::RSA.generate(2048, 3)
