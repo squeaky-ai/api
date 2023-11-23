@@ -11,7 +11,7 @@ class CommissionService
     transactions.map do |transaction|
       {
         id: transaction.id,
-        amount: transaction.amount * COMMISSION_RATE,
+        amount: discounted_amount(transaction) * COMMISSION_RATE,
         currency: transaction.currency,
         site_id: transaction.billing.site_id
       }
@@ -50,5 +50,11 @@ class CommissionService
 
   def transactions
     @transactions ||= billings.flat_map(&:transactions).reject { |transaction| transaction.amount.negative? }
+  end
+
+  def discounted_amount(transaction)
+    return transaction.amount unless transaction.discount_percentage
+
+    (transaction.discount_percentage.to_f / 100) * transaction.amount
   end
 end
