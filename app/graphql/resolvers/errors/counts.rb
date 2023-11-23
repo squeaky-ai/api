@@ -34,7 +34,7 @@ module Resolvers
       end
 
       def query_with_error_id(date_format, error_id, range)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key
@@ -61,7 +61,7 @@ module Resolvers
       end
 
       def query_without_error_id(date_format, range)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             formatDateTime(toDate(timestamp / 1000, :timezone), :date_format) date_key

@@ -8,7 +8,7 @@ module Resolvers
       def resolve_with_timings
         range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Desktop')}) desktop,
             COUNT(recordings.viewport_x) FILTER(WHERE recordings.viewport_x #{device_expression('Tablet')}) tablet,

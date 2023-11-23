@@ -6,7 +6,7 @@ module Resolvers
       type [Types::Analytics::Device, { null: false }], null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(device_type) FILTER(WHERE device_type = 'Computer') desktop_count,
             COUNT(device_type) FILTER(WHERE device_type = 'Mobile') mobile_count

@@ -19,7 +19,7 @@ module Resolvers
         private
 
         def duration(start_date, end_date)
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               AVG(activity_duration) average
             FROM

@@ -19,7 +19,7 @@ module Resolvers
       def pages(from_date, to_date)
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             url url,
             count(*) count

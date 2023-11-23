@@ -36,7 +36,7 @@ module Resolvers
       private
 
       def all_event_ids(group_ids, capture_ids)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT event_capture_id
           FROM event_captures_groups
           WHERE event_group_id
@@ -72,7 +72,7 @@ module Resolvers
 
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             results.event_id event_id,
             results.unique_triggers,

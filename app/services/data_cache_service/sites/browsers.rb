@@ -5,7 +5,7 @@ module DataCacheService
     class Browsers < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(browser) browser
             FROM

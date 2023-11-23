@@ -26,7 +26,7 @@ module Resolvers
       end
 
       def languages
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             DISTINCT LOWER(locale) locale,
             COUNT(*) locale_count

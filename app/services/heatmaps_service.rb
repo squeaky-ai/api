@@ -9,7 +9,7 @@ class HeatmapsService
   end
 
   def click_counts
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT
         DISTINCT(selector) AS selector,
         COUNT(*) count
@@ -28,7 +28,7 @@ class HeatmapsService
   end
 
   def click_positions
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT
         selector,
         relative_to_element_x,
@@ -48,7 +48,7 @@ class HeatmapsService
   end
 
   def cursors(cluster = 16)
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT
         toInt16(ceil(tupleElement(coords, 1) / :cluster) * :cluster) as x,
         toInt16(ceil(tupleElement(coords, 2) / :cluster) * :cluster) as y,
@@ -78,7 +78,7 @@ class HeatmapsService
   end
 
   def scrolls
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT
         MAX(y) y
       FROM

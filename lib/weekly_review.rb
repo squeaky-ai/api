@@ -41,7 +41,7 @@ class WeeklyReview
   private
 
   def total_visitors
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT COUNT(v.visitor_id)
       FROM (
         SELECT DISTINCT(recordings.visitor_id)
@@ -56,7 +56,7 @@ class WeeklyReview
   end
 
   def new_visitors
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT COUNT(v.visitor_id)
       FROM (
         SELECT DISTINCT(recordings.visitor_id)
@@ -72,7 +72,7 @@ class WeeklyReview
   end
 
   def total_recordings
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
@@ -83,7 +83,7 @@ class WeeklyReview
   end
 
   def new_recordings
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT COUNT(*)
       FROM recordings
       WHERE recordings.viewed = FALSE AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
@@ -94,7 +94,7 @@ class WeeklyReview
   end
 
   def average_session_duration(from_date = @from_date, to_date = @to_date)
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT AVG(activity_duration) average_session_duration
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
@@ -122,7 +122,7 @@ class WeeklyReview
   end
 
   def pages_per_session(from_date = @from_date, to_date = @to_date)
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT AVG(c.count)
       FROM (
         SELECT COUNT(pages.id)
@@ -155,7 +155,7 @@ class WeeklyReview
   end
 
   def busiest_day
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT to_timestamp(recordings.disconnected_at / 1000)::date date, COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -172,7 +172,7 @@ class WeeklyReview
   end
 
   def biggest_referrer_url
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT referrer, COUNT(*)
       FROM recordings
       WHERE referrer IS NOT NULL AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -186,7 +186,7 @@ class WeeklyReview
   end
 
   def most_popular_country
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT recordings.country_code, COUNT(*)
       FROM recordings
       WHERE recordings.country_code IS NOT NULL AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -200,7 +200,7 @@ class WeeklyReview
   end
 
   def most_popular_browser
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT recordings.browser, COUNT(*)
       FROM recordings
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
@@ -214,7 +214,7 @@ class WeeklyReview
   end
 
   def most_popular_visitor
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT visitors.id, visitors.visitor_id, COUNT(*)
       FROM recordings
       INNER JOIN visitors ON visitors.id = recordings.visitor_id
@@ -234,7 +234,7 @@ class WeeklyReview
   end
 
   def most_popular_page_url
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT pages.url, COUNT(*)
       FROM pages
       INNER JOIN recordings ON recordings.id = pages.recording_id
@@ -268,7 +268,7 @@ class WeeklyReview
   end
 
   def feedback_sentiment(from_date = @from_date, to_date = @to_date)
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT AVG(sentiments.score)
       FROM sentiments
       INNER JOIN recordings ON recordings.id = sentiments.recording_id

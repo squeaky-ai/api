@@ -6,7 +6,7 @@ module Resolvers
       type Types::Admin::SiteRecordingsCounts, null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             (COUNT(*)) as total_all,
             (COUNT(*) FILTER(WHERE recordings.status = :deleted)) as deleted_all,

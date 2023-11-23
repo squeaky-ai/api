@@ -38,7 +38,7 @@ module Resolvers
       end
 
       def results(site_id, range, size, page, sort)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             message,
             COUNT(*) error_count,
@@ -67,7 +67,7 @@ module Resolvers
       end
 
       def total_count(site_id, range)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT COUNT(DISTINCT message) count
           FROM error_events
           WHERE

@@ -37,7 +37,7 @@ module Resolvers
       end
 
       def all_event_ids(group_ids, capture_ids)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT event_capture_id
           FROM event_captures_groups
           WHERE event_group_id
@@ -73,7 +73,7 @@ module Resolvers
       end
 
       def aggregated_results(capture_events, range, date_format)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT results.*
           FROM (#{union_queries(capture_events).join(' ')}) results
           FORMAT JSON

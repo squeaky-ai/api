@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminRecordingsCount', expires_in: 1.hour) do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(*)
             FROM

@@ -36,7 +36,7 @@ class WeeklyReviewEmailsJob < ApplicationJob
   end
 
   def suitable_sites(from_date, to_date)
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT site_id
       FROM (
         SELECT

@@ -8,7 +8,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 5
 
       def resolve_with_timings(size:)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             x.url url,
             COALESCE((NULLIF(exit_rate_count, 0) / view_count) * 100, 0) percentage

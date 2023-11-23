@@ -6,7 +6,7 @@ module Resolvers
       type 'Types::Recordings::Recording', null: true
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             recording_id
           FROM

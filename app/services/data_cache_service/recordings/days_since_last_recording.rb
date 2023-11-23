@@ -5,7 +5,7 @@ module DataCacheService
     class DaysSinceLastRecording < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               disconnected_at
             FROM

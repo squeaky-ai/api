@@ -18,7 +18,7 @@ module Resolvers
       private
 
       def bounce_rate(from_date, to_date)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) view_count,
             COUNT(exited_on) FILTER(WHERE bounced_on = true) bounce_rate_count

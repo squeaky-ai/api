@@ -30,7 +30,7 @@ module Resolvers
       private
 
       def browsers(page, size, sort)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             DISTINCT(browser) browser,
             COUNT(*) count
@@ -67,7 +67,7 @@ module Resolvers
       end
 
       def total_browsers_count
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count
           FROM

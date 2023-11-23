@@ -19,7 +19,7 @@ module Resolvers
         private
 
         def exit_rate(start_date, end_date)
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(*) view_count,
               COUNT(exited_on) FILTER(WHERE exited_on = true) exit_rate_count

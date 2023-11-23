@@ -5,7 +5,7 @@ module DataCacheService
     class Languages < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(locale) locale
             FROM

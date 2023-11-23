@@ -29,7 +29,7 @@ module Resolvers
       private
 
       def pages(size, page, sort)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             url page_view,
             COUNT(*) page_view_count,
@@ -56,7 +56,7 @@ module Resolvers
       end
 
       def pages_count
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT COUNT(*)
           FROM (
             SELECT COUNT(*)

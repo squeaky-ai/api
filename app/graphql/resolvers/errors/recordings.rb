@@ -30,7 +30,7 @@ module Resolvers
       private
 
       def recording_ids
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT DISTINCT recording_id
           FROM error_events
           WHERE

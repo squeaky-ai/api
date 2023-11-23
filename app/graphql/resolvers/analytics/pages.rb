@@ -30,7 +30,7 @@ module Resolvers
       private
 
       def pages(page, size, sort)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             p.url,
             p.view_count,

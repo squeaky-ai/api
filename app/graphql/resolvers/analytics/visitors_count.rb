@@ -6,7 +6,7 @@ module Resolvers
       type Types::Analytics::VisitorsCount, null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(v.id) total_count,
             COUNT(v.id) FILTER(WHERE v.new IS TRUE) new_count

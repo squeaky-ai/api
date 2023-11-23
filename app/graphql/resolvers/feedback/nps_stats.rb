@@ -15,7 +15,7 @@ module Resolvers
       private
 
       def displays_count
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(uuid)
           FROM
@@ -36,7 +36,7 @@ module Resolvers
       end
 
       def ratings_count
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT COUNT(nps.id)
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id

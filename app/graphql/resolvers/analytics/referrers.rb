@@ -29,7 +29,7 @@ module Resolvers
       private
 
       def referrers(page, size)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             DISTINCT(COALESCE(referrer, 'Direct')) referrer,
             AVG(activity_duration) as duration,
@@ -60,7 +60,7 @@ module Resolvers
       end
 
       def total_referrers_count
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(DISTINCT COALESCE(referrer, 'Direct')) count
           FROM

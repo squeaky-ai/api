@@ -147,7 +147,7 @@ module Resolvers
       def filter_by_start_url(recordings, filters)
         return recordings unless filters.start_url
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ? IN (
             SELECT url
             FROM pages
@@ -165,7 +165,7 @@ module Resolvers
       def filter_by_exit_url(recordings, filters)
         return recordings unless filters.exit_url
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ? IN (
             SELECT url
             FROM pages

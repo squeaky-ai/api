@@ -63,7 +63,7 @@ module Resolvers
       end
 
       def all_event_ids(group_ids, capture_ids)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT event_capture_id
           FROM event_captures_groups
           WHERE event_group_id
@@ -102,7 +102,7 @@ module Resolvers
       end
 
       def total_results_count(capture_events, range)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT COUNT(*) count
           FROM (#{union_queries(capture_events).join(' ')})
         SQL
@@ -120,7 +120,7 @@ module Resolvers
       def aggregated_results(capture_events, range, page, size, sort)
         # Wrap the union queries in another query that peforms
         # the limiting, sorting etc
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             results.uuid uuid,
             results.recording_id recording_id,

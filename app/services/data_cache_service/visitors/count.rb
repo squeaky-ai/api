@@ -6,7 +6,7 @@ module DataCacheService
       # TODO: Timezone
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(DISTINCT(visitor_id)) total_visitors_count
             FROM

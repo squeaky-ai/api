@@ -7,7 +7,7 @@ module Resolvers
         type [Types::Analytics::Dimension, { null: false }], null: false
 
         def resolve_with_timings
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(ROUND(device_x, -1)) grouped_device_x,
               COUNT(*) count

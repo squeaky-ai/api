@@ -19,7 +19,7 @@ module Resolvers
       def suitable_recording_id
         range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             recording_id
           FROM

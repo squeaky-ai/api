@@ -34,7 +34,7 @@ module Mutations
         recording.update(bookmarked:)
 
         # Update ClickHouse
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ALTER TABLE recordings
           UPDATE bookmarked = :bookmarked
           WHERE site_id = :site_id AND recording_id = :recording_id

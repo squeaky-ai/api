@@ -18,7 +18,7 @@ module Resolvers
       private
 
       def result
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             message,
             any(stack) stack,

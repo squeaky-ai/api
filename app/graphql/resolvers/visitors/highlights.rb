@@ -20,7 +20,7 @@ module Resolvers
       private
 
       def active(range)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             DISTINCT(visitor_id) visitor_id,
             COUNT(*) count

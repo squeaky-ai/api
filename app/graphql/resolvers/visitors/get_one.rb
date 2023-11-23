@@ -8,7 +8,7 @@ module Resolvers
       argument :visitor_id, GraphQL::Types::ID, required: true
 
       def resolve_with_timings(visitor_id:)
-        query = <<-SQL
+        query = <<-SQL.squish
           visitors.*,
           BOOL_OR(recordings.viewed) viewed,
           MIN(recordings.connected_at) first_viewed_at,

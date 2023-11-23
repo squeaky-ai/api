@@ -7,7 +7,7 @@ module Resolvers
         type [Types::Analytics::VisitAt, { null: false }], null: false
 
         def resolve_with_timings
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               formatDateTime(toDateTime(recordings.disconnected_at / 1000, :timezone), '%u,%H') day_hour,
               COUNT(*) count

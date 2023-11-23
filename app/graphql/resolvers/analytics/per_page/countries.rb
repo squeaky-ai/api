@@ -19,7 +19,7 @@ module Resolvers
         private
 
         def countries
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(COALESCE(country_code, 'Unknown')) country_code,
               COUNT(*) country_code_code

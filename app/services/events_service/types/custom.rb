@@ -4,7 +4,7 @@ module EventsService
   module Types
     class Custom < Base
       def count
-        <<-SQL
+        <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
@@ -20,7 +20,7 @@ module EventsService
       end
 
       def results
-        <<-SQL
+        <<-SQL.squish
           SELECT
             uuid,
             recording_id,
@@ -39,7 +39,7 @@ module EventsService
       end
 
       def counts
-        <<-SQL
+        <<-SQL.squish
           SELECT
             COUNT(*) count,
             '#{event.id}' as id,

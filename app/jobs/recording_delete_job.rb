@@ -50,7 +50,7 @@ class RecordingDeleteJob < ApplicationJob
     # I messed with the idea of joining recordings
     # to visitors but I think this is the quickest
     # way to work out if a visitor has no recordings
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT DISTINCT(visitor_id)
       FROM recordings
       WHERE visitor_id IN (?)

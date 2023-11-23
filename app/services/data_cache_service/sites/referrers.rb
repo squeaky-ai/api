@@ -5,7 +5,7 @@ module DataCacheService
     class Referrers < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(referrer) referrer
             FROM

@@ -32,7 +32,7 @@ module Resolvers
       end
 
       def paths(position, page)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             recording_id,
             groupArray(url) path
@@ -69,7 +69,7 @@ module Resolvers
       def referrers(paths)
         return [] if paths.to_a.empty?
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             recording_id,
             referrer

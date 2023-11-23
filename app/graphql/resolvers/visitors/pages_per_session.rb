@@ -6,7 +6,7 @@ module Resolvers
       type Float, null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT AVG(count)
           FROM (
             SELECT

@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminSitesStored', expires_in: 1.hour) do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               (COUNT(*)) as all_count,
               (COUNT(*) FILTER(WHERE verified_at IS NOT NULL)) as verified_count,

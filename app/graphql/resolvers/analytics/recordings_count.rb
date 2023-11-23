@@ -6,7 +6,7 @@ module Resolvers
       type Types::Analytics::RecordingsCount, null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) total,
             SUM(IF(viewed, 0, 1)) new

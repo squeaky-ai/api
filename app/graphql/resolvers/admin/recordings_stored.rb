@@ -8,7 +8,7 @@ module Resolvers
       def resolve_with_timings
         # TODO: Timezone
         Rails.cache.fetch('data_cache:AdminRecordingsStored', expires_in: 1.hour) do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(*) count,
               toDate(disconnected_at / 1000)::date date

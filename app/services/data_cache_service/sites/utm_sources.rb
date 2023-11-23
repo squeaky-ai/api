@@ -5,7 +5,7 @@ module DataCacheService
     class UtmSources < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               DISTINCT(utm_source) utm_source
             FROM

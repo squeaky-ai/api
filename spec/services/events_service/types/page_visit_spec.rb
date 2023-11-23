@@ -17,7 +17,7 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
@@ -40,7 +40,7 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
@@ -63,7 +63,7 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
@@ -86,7 +86,7 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
@@ -109,7 +109,7 @@ RSpec.describe EventsService::Types::PageVisit do
       end
 
       it 'returns the right count' do
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,

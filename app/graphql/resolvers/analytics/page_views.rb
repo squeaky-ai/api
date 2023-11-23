@@ -30,7 +30,7 @@ module Resolvers
       end
 
       def page_views(date_format, from_date, to_date)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*) count,
             formatDateTime(toDateTime(exited_at / 1000, :timezone), :date_format) date_key

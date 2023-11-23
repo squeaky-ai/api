@@ -31,7 +31,7 @@ module Resolvers
       end
 
       def events(page, size, sort)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             uuid uuid,
             recording_id recording_id,
@@ -62,7 +62,7 @@ module Resolvers
       end
 
       def events_counts
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             COUNT(*)
           FROM

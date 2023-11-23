@@ -19,7 +19,7 @@ module Resolvers
         private
 
         def visits_per_session(start_date, end_date)
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               AVG(p.page_count) visits_per_session
             FROM (

@@ -30,7 +30,7 @@ module Resolvers
       end
 
       def fetch_recording_counts(site_ids)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             (COUNT(*)) as total_all,
             (COUNT(*) FILTER(WHERE recordings.status = :deleted)) as deleted_all,
@@ -52,7 +52,7 @@ module Resolvers
       end
 
       def fetch_recording_counts_by_month(site_ids)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             site_id,
             COUNT(recording_id) count,

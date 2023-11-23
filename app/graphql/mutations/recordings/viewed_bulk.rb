@@ -35,7 +35,7 @@ module Mutations
         recordings.update_all(viewed:)
 
         # Update ClickHouse
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ALTER TABLE recordings
           UPDATE viewed = :viewed
           WHERE site_id = :site_id AND recording_id IN (:recording_ids)

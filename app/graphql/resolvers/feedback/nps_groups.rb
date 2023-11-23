@@ -6,7 +6,7 @@ module Resolvers
       type Types::Feedback::NpsGroups, null: false
 
       def resolve_with_timings
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT nps.score
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id

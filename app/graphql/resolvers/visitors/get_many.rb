@@ -16,7 +16,7 @@ module Resolvers
       def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
-        query = <<-SQL
+        query = <<-SQL.squish
           visitors.*,
           BOOL_OR(recordings.viewed) viewed,
           MIN(recordings.connected_at) first_viewed_at,
@@ -204,7 +204,7 @@ module Resolvers
       def filter_by_visited_pages(visitors, filters)
         return visitors unless filters.visited_pages.any?
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ? IN (
             SELECT pages.url
             FROM pages
@@ -222,7 +222,7 @@ module Resolvers
       def filter_by_unvisited_pages(visitors, filters)
         return visitors unless filters.unvisited_pages.any?
 
-        sql = <<-SQL
+        sql = <<-SQL.squish
           ? NOT IN (
             SELECT pages.url
             FROM pages

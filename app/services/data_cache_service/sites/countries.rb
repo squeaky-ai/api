@@ -5,7 +5,7 @@ module DataCacheService
     class Countries < DataCacheService::Base
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               country_code,
               COUNT(country_code) count

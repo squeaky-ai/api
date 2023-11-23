@@ -18,7 +18,7 @@ module Resolvers
       private
 
       def get_replies(from_date, to_date)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT nps.score, nps.created_at
           FROM nps
           INNER JOIN recordings ON recordings.id = nps.recording_id

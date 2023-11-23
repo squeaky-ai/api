@@ -16,7 +16,7 @@ module Resolvers
       end
 
       def get_average_count(from_date, to_date)
-        sql = <<-SQL
+        sql = <<-SQL.squish
           SELECT
             AVG(count)
           FROM (

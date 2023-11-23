@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve_with_timings
         Rails.cache.fetch('data_cache:AdminUsersStored', expires_in: 1.hour) do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(*) count,
               created_at::date date

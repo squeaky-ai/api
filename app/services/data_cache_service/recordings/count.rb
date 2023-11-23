@@ -6,7 +6,7 @@ module DataCacheService
       # TODO: Timezone
       def call
         cache do
-          sql = <<-SQL
+          sql = <<-SQL.squish
             SELECT
               COUNT(*) total_recordings_count
             FROM
