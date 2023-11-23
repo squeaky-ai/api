@@ -8,7 +8,7 @@ module Types
       field :id, ID, null: false
       field :amount, Float, null: false
       field :currency, Types::Common::Currency, null: false
-      field :site_id, ID, null: false
+      field :site_id, ID, null: true
     end
   end
 end
