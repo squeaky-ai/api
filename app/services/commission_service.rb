@@ -12,7 +12,8 @@ class CommissionService
       {
         id: transaction.id,
         amount: transaction.amount * COMMISSION_RATE,
-        currency: transaction.currency
+        currency: transaction.currency,
+        site_id: transaction.billing.site_id
       }
     end
   end
