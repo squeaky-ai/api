@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ClickHouse
-  class Base < ActiveRecord::Base
+  class Base < ApplicationRecord
     self.abstract_class = true
 
     class << self

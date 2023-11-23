@@ -32,7 +32,7 @@ module Mutations
 
       def view_recordings!(recordings, viewed)
         # Update Postgres
-        recordings.update_all(viewed:)
+        recordings.update_all(viewed:) # rubocop:disable Rails/SkipsModelValidations
 
         # Update ClickHouse
         sql = <<-SQL.squish
@@ -52,7 +52,7 @@ module Mutations
 
       def mark_visitors_as_not_new!(recordings)
         visitor_ids = recordings.map(&:visitor_id)
-        Visitor.where(id: visitor_ids).update_all(new: false)
+        Visitor.where(id: visitor_ids).update_all(new: false) # rubocop:disable Rails/SkipsModelValidations
       end
     end
   end

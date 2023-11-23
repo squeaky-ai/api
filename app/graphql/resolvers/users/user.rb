@@ -7,7 +7,7 @@ module Resolvers
 
       def resolve_with_timings
         user = context[:current_user]
-        user&.touch :last_activity_at
+        user&.touch :last_activity_at # rubocop:disable Rails/SkipsModelValidations
         user
       end
     end
