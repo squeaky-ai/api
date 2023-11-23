@@ -1,12 +1,16 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
 
 AllCops:
   NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - db/**/*
 
 Layout/LineLength:
   Max: 140
+  Exclude:
+    - spec/**/*
 
 Metrics/AbcSize:
   Max: 30
