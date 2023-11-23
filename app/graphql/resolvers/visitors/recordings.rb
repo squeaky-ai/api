@@ -16,7 +16,7 @@ module Resolvers
                      .includes(:pages, :visitor)
                      .order(order(sort))
 
-        recordings = recordings.where('id NOT IN (?)', exclude_recording_ids) unless exclude_recording_ids.empty?
+        recordings = recordings.where.not(id: exclude_recording_ids) unless exclude_recording_ids.empty?
         recordings = recordings.page(page).per(size)
 
         {

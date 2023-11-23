@@ -5,13 +5,13 @@ class EventsController < ApplicationController
 
   def create
     # All of these field are required
-    return render json: { error: params_error }, status: 400 if params_error
+    return render json: { error: params_error }, status: :bad_request if params_error
     # The site has ingest disabled and we shouldn't allow it in
-    return render json: { error: 'Unauthorized' }, status: 401 unless ingest_enabled?
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless ingest_enabled?
 
     create_event!
 
-    render json: { status: 'OK' }, status: 201
+    render json: { status: 'OK' }, status: :created
   end
 
   private

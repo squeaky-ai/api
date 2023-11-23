@@ -12,7 +12,7 @@ module Mutations
       type Types::Teams::Team
 
       def resolve_with_timings(id:)
-        team = Team.find_by!(id:)
+        team = Team.find(id)
         team.destroy unless team.role == Team::OWNER
 
         nil

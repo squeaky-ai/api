@@ -10,9 +10,9 @@ module PublicApiAuth
   private
 
   def authorize
-    return render json: { error: 'Forbidden' }, status: 403 unless api_key
+    return render json: { error: 'Forbidden' }, status: :forbidden unless api_key
 
-    return render json: { error: 'Forbidden' }, status: 403 unless site
+    render json: { error: 'Forbidden' }, status: :forbidden unless site
   end
 
   def api_key

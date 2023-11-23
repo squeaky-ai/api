@@ -9,8 +9,8 @@ module ClickHouse
         ClickHouse.connection
       end
 
-      def insert(*argv, &)
-        agent.insert(table_name, *argv, &)
+      def insert(*, &)
+        agent.insert(table_name, *, &)
       end
 
       def select_one

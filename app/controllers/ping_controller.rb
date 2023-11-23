@@ -8,6 +8,6 @@ class PingController < ApplicationController
     render plain: 'PONG'
   rescue StandardError => e
     logger.fatal(e)
-    render plain: 'NOT PONG!', status: 500
+    render plain: 'NOT PONG!', status: :internal_server_error
   end
 end

@@ -191,7 +191,7 @@ module Resolvers
       def filter_by_unvisited_pages(recordings, filters)
         return recordings unless filters.unvisited_pages.any?
 
-        recordings.where('pages.url NOT IN (?)', filters.unvisited_pages)
+        recordings.where.not(pages: { url: filters.unvisited_pages })
       end
 
       # Add a filter that lets users show only recordings

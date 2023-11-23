@@ -10,13 +10,9 @@ class Partner < ApplicationRecord
 
   has_many :sites, through: :referrals
 
-  def all_time_commission
-    commission.all_time_commission
-  end
+  delegate :all_time_commission, to: :commission
 
-  def pay_outs
-    commission.pay_outs
-  end
+  delegate :pay_outs, to: :commission
 
   def invoices
     partner_invoices

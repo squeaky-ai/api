@@ -5,15 +5,15 @@ class VisitorsController < ApplicationController
 
   def create
     # All of these field are required
-    return render json: { error: params_error }, status: 400 if params_error
+    return render json: { error: params_error }, status: :bad_request if params_error
     # The site has ingest disabled and we shouldn't allow it in
-    return render json: { error: 'Unauthorized' }, status: 401 unless ingest_enabled?
+    return render json: { error: 'Unauthorized' }, status: :unauthorized unless ingest_enabled?
     # Visitor already exists with this user id
-    return render json: { error: 'Visitor already exists' }, status: 409 if visitor_exists?
+    return render json: { error: 'Visitor already exists' }, status: :conflict if visitor_exists?
 
     create_visitor!
 
-    render json: { status: 'OK' }, status: 201
+    render json: { status: 'OK' }, status: :created
   end
 
   private

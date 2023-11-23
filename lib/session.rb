@@ -181,13 +181,9 @@ class Session # rubocop:disable Metrics/ClassLength
     exists
   end
 
-  def inactivity
-    activity.inactivity
-  end
+  delegate :inactivity, to: :activity
 
-  def activity_duration
-    activity.activity_duration
-  end
+  delegate :activity_duration, to: :activity
 
   def pages
     @pages ||= page_views

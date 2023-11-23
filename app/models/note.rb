@@ -4,7 +4,5 @@ class Note < ApplicationRecord
   belongs_to :recording
   belongs_to :user
 
-  def session_id
-    recording.session_id
-  end
+  delegate :session_id, to: :recording
 end

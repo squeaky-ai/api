@@ -3,9 +3,7 @@
 class SiteBundle < ApplicationRecord
   has_many :site_bundles_sites, dependent: :destroy
 
-  def plan
-    primary_site.plan
-  end
+  delegate :plan, to: :primary_site
 
   def sites
     site_bundles_sites.map(&:site)

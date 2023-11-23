@@ -7,7 +7,7 @@ module Mutations
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
 
-    def resolve(*args, **kwargs)
+    def resolve(*, **kwargs)
       unless respond_to?(:resolve_with_timings)
         raise GraphQL::RequiredImplementationMissingError, "#{self.class.name}#resolve should execute the field's logic"
       end
@@ -18,7 +18,7 @@ module Mutations
         # around
         kwargs.delete(:site_id) if kwargs[:site_id] && site_mutation?
 
-        resolve_with_timings(*args, **kwargs)
+        resolve_with_timings(*, **kwargs)
       end
     end
 
