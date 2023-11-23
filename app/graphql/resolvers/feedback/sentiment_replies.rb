@@ -7,16 +7,16 @@ module Resolvers
 
       def resolve_with_timings
         results = Sentiment
-                  .joins(:recording)
-                  .where(
-                    'recordings.site_id = ? AND
+          .joins(:recording)
+          .where(
+            'recordings.site_id = ? AND
                      sentiments.created_at::date >= ? AND
                      sentiments.created_at::date <= ?',
-                    object.site.id,
-                    object.range.from,
-                    object.range.to
-                  )
-                  .select('sentiments.score')
+            object.site.id,
+            object.range.from,
+            object.range.to
+          )
+          .select('sentiments.score')
 
         {
           total: results.size,

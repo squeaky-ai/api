@@ -43,7 +43,7 @@ RSpec.describe Mutations::Admin::SiteDelete, type: :request do
   end
 
   it 'does not delete the users' do
-    expect { subject }.not_to change { User.count }
+    expect { subject }.not_to(change { User.count })
   end
 
   it 'kicks off some jobs to clean up the recordings' do

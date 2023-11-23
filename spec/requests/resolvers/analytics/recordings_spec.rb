@@ -24,14 +24,14 @@ RSpec.describe Resolvers::Analytics::Recordings, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
+    variables = {
       site_id: site.id,
       from_date: '2022-10-23',
-      to_date: '2022-10-30' 
+      to_date: '2022-10-30'
     }
     graphql_request(analytics_recordings_query, variables, user)
   end
-  
+
   context 'when there are no recordings' do
     it 'returns an empty array' do
       response = subject['data']['site']['analytics']

@@ -26,9 +26,9 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: 4234
         }
       }
@@ -44,13 +44,13 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
   context 'when the user is not the owner of the site' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let(:team) { create(:team, user:, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team.id 
+          siteId: site.id,
+          teamId: team.id
         }
       }
       graphql_request(team_transfer_mutation, variables, user)
@@ -66,16 +66,16 @@ RSpec.describe Mutations::Teams::Transfer, type: :request do
     let(:site) { create(:site) }
 
     let(:old_owner) { create(:user) }
-    let(:old_owner_team) { create(:team, user: old_owner, site: site, role: Team::OWNER) }
+    let(:old_owner_team) { create(:team, user: old_owner, site:, role: Team::OWNER) }
 
     let(:new_owner) { create(:user) }
-    let(:new_owner_team) { create(:team, user: new_owner, site: site, role: Team::ADMIN) }
+    let(:new_owner_team) { create(:team, user: new_owner, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: new_owner_team.id 
+          siteId: site.id,
+          teamId: new_owner_team.id
         }
       }
       graphql_request(team_transfer_mutation, variables, old_owner_team.user)

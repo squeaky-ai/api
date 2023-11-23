@@ -17,10 +17,10 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          pricingId: 'teapot' 
+          siteId: site.id,
+          pricingId: 'teapot'
         }
       }
       graphql_request(subscriptions_create_mutation, variables, user)
@@ -46,47 +46,47 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
     before do
       allow(Stripe::Customer).to receive(:create)
         .with({
-          email: user.email,
-          name: user.full_name,
-          metadata: {
-            site: site.name
-          }
-        })
+                email: user.email,
+                name: user.full_name,
+                metadata: {
+                  site: site.name
+                }
+              })
         .and_return(customer_response)
 
       allow(Stripe::Checkout::Session).to receive(:create)
         .with({
-          customer: customer_id,
-          customer_update: {
-            address: 'auto', 
-            name: 'auto'
-          },
-          allow_promotion_codes: true,
-          billing_address_collection: 'required',
-          metadata: {
-            site: site.name
-          },
-          success_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=1",
-          cancel_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=0",
-          mode: 'subscription',
-          line_items: [
-            {
-              quantity: 1,
-              price: pricing_id
-            }
-          ],
-          tax_id_collection: {
-            enabled: true
-          }
-        })
+                customer: customer_id,
+                customer_update: {
+                  address: 'auto',
+                  name: 'auto'
+                },
+                allow_promotion_codes: true,
+                billing_address_collection: 'required',
+                metadata: {
+                  site: site.name
+                },
+                success_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=1",
+                cancel_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=0",
+                mode: 'subscription',
+                line_items: [
+                  {
+                    quantity: 1,
+                    price: pricing_id
+                  }
+                ],
+                tax_id_collection: {
+                  enabled: true
+                }
+              })
         .and_return(payments_response)
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          pricingId: pricing_id 
+          siteId: site.id,
+          pricingId: pricing_id
         }
       }
       graphql_request(subscriptions_create_mutation, variables, user)

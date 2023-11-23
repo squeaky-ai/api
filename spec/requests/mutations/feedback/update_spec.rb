@@ -66,7 +66,7 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'sentimentAccentColor' => '#000',
         'sentimentExcludedPages' => [],
         'sentimentLayout' => 'bottom_left',
-        'sentimentDevices' => ['desktop', 'tablet', 'mobile'],
+        'sentimentDevices' => %w[desktop tablet mobile],
         'sentimentHideLogo' => false
       )
     end
@@ -110,13 +110,13 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
         'sentimentAccentColor' => '#fff',
         'sentimentExcludedPages' => [],
         'sentimentLayout' => 'top_right',
-        'sentimentDevices' => ['tablet', 'mobile'],
+        'sentimentDevices' => %w[tablet mobile],
         'sentimentHideLogo' => false
       )
     end
 
     it 'does not create a new record' do
-      expect { subject }.not_to change { site.reload.feedback.nil? }
+      expect { subject }.not_to(change { site.reload.feedback.nil? })
     end
   end
 
@@ -145,8 +145,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
       it 'does not update the logo settings' do
         subject
         feedback = site.reload.feedback
-        expect(site.reload.feedback.nps_hide_logo).to eq(false)
-        expect(site.reload.feedback.sentiment_hide_logo).to eq(false)
+        expect(feedback.nps_hide_logo).to eq(false)
+        expect(feedback.sentiment_hide_logo).to eq(false)
       end
     end
 
@@ -158,8 +158,8 @@ RSpec.describe Mutations::Feedback::Update, type: :request do
       it 'updates the logo settings' do
         subject
         feedback = site.reload.feedback
-        expect(site.reload.feedback.nps_hide_logo).to eq(true)
-        expect(site.reload.feedback.sentiment_hide_logo).to eq(true)
+        expect(feedback.nps_hide_logo).to eq(true)
+        expect(feedback.sentiment_hide_logo).to eq(true)
       end
     end
   end

@@ -59,27 +59,27 @@ RSpec.describe Plans do
           ],
           data_storage_months: 12,
           response_time_hours: 24,
-          support: [
-            'Email',
-            'Chat'
+          support: %w[
+            Email
+            Chat
           ],
           team_member_limit: nil,
-          features_enabled: [
-            'dashboard',
-            'visitors',
-            'recordings',
-            'event_tracking',
-            'error_tracking',
-            'site_analytics',
-            'page_analytics',
-            'journeys',
-            'heatmaps_click_positions',
-            'heatmaps_click_counts',
-            'heatmaps_mouse',
-            'heatmaps_scroll',
-            'nps',
-            'sentiment',
-            'data_export'
+          features_enabled: %w[
+            dashboard
+            visitors
+            recordings
+            event_tracking
+            error_tracking
+            site_analytics
+            page_analytics
+            journeys
+            heatmaps_click_positions
+            heatmaps_click_counts
+            heatmaps_mouse
+            heatmaps_scroll
+            nps
+            sentiment
+            data_export
           ],
           site_limit: nil,
           integrations: {

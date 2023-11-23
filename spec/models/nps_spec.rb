@@ -7,8 +7,8 @@ RSpec.describe Nps, type: :model do
     context 'when there are no values' do
       let(:site) { create(:site) }
 
-      let(:from_date) { Time.new(2022, 2, 2) }
-      let(:to_date) { Time.new(2022, 2, 9) }
+      let(:from_date) { Time.new(2022, 2, 2).utc }
+      let(:to_date) { Time.new(2022, 2, 9).utc }
 
       subject { described_class.get_scores_between(site.id, from_date, to_date) }
 
@@ -21,14 +21,14 @@ RSpec.describe Nps, type: :model do
       let(:site) { create(:site) }
       let(:visitor) { create(:visitor) }
 
-      let(:from_date) { Time.new(2022, 2, 2) }
-      let(:to_date) { Time.new(2022, 2, 9) }
+      let(:from_date) { Time.new(2022, 2, 2).utc }
+      let(:to_date) { Time.new(2022, 2, 9).utc }
 
       before do
-        create(:nps, score: 9, created_at: Time.new(2022, 2, 3), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 4), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 5), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 10), recording: create(:recording, site: site, visitor: visitor))
+        create(:nps, score: 9, created_at: Time.new(2022, 2, 3).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 4).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 5).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 10).utc, recording: create(:recording, site:, visitor:))
       end
 
       subject { described_class.get_scores_between(site.id, from_date, to_date) }
@@ -58,8 +58,8 @@ RSpec.describe Nps, type: :model do
     context 'when there are no values' do
       let(:site) { create(:site) }
 
-      let(:from_date) { Time.new(2022, 2, 2) }
-      let(:to_date) { Time.new(2022, 2, 9) }
+      let(:from_date) { Time.new(2022, 2, 2).utc }
+      let(:to_date) { Time.new(2022, 2, 9).utc }
 
       subject { described_class.get_score_between(site.id, from_date, to_date) }
 
@@ -72,20 +72,20 @@ RSpec.describe Nps, type: :model do
       let(:site) { create(:site) }
       let(:visitor) { create(:visitor) }
 
-      let(:from_date) { Time.new(2022, 2, 2) }
-      let(:to_date) { Time.new(2022, 2, 9) }
+      let(:from_date) { Time.new(2022, 2, 2).utc }
+      let(:to_date) { Time.new(2022, 2, 9).utc }
 
       before do
-        create(:nps, score: 9, created_at: Time.new(2022, 2, 3), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 4), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 5), recording: create(:recording, site: site, visitor: visitor))
-        create(:nps, score: 3, created_at: Time.new(2022, 2, 10), recording: create(:recording, site: site, visitor: visitor))
+        create(:nps, score: 9, created_at: Time.new(2022, 2, 3).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 4).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 5).utc, recording: create(:recording, site:, visitor:))
+        create(:nps, score: 3, created_at: Time.new(2022, 2, 10).utc, recording: create(:recording, site:, visitor:))
       end
 
       subject { described_class.get_score_between(site.id, from_date, to_date) }
 
       it 'returns the score' do
-        expect(subject).to eq -33.34
+        expect(subject).to eq(-33.34)
       end
     end
   end

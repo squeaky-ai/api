@@ -204,11 +204,11 @@ class Session # rubocop:disable Metrics/ClassLength
     key = "events::#{@site_id}::#{@visitor_id}::#{@session_id}"
 
     events = Cache
-             .redis
-             .lrange(key, 0, -1)
-             .map { |e| parse_event_and_ignore_errors(e) }
-             .filter { |e| !e.nil? }
-             .sort_by { |e| e['value']['timestamp'] }
+      .redis
+      .lrange(key, 0, -1)
+      .map { |e| parse_event_and_ignore_errors(e) }
+      .filter { |e| !e.nil? }
+      .sort_by { |e| e['value']['timestamp'] }
 
     extract_and_set_events(events)
   end

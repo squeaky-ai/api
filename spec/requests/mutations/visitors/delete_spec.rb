@@ -34,7 +34,7 @@ RSpec.describe Mutations::Visitors::Delete, type: :request do
   context 'when the visitor exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let!(:recording) { create(:recording, site: site) }
+    let!(:recording) { create(:recording, site:) }
 
     subject do
       variables = {

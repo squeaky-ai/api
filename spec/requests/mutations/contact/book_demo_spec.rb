@@ -11,7 +11,7 @@ book_demo_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Contact::BookDemo, type: :request do
- subject do
+  subject do
     variables = {
       input: {
         firstName: 'Bob',

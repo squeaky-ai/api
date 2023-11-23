@@ -17,21 +17,21 @@ RSpec.describe Mutations::Sites::RoutesUpdate, type: :request do
     let(:site) { create(:site_with_team, owner: user, routes: ['foo']) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          routes: ['bar', 'baz']
+          siteId: site.id,
+          routes: %w[bar baz]
         }
       }
       graphql_request(site_routes_update_mutation, variables, user)
     end
 
     it 'returns the updated site' do
-      expect(subject['data']['routesUpdate']['routes']).to eq(['bar', 'baz'])
+      expect(subject['data']['routesUpdate']['routes']).to eq(%w[bar baz])
     end
 
     it 'updates the record' do
-      expect { subject }.to change { site.reload.routes }.from(['foo']).to(['bar', 'baz'])
+      expect { subject }.to change { site.reload.routes }.from(['foo']).to(%w[bar baz])
     end
   end
 end

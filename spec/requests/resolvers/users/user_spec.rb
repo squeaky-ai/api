@@ -25,7 +25,7 @@ RSpec.describe Resolvers::Users::User, type: :request do
   context 'when there is a current_user' do
     let(:user) { create(:user) }
 
-    subject {  response = graphql_request(user_query, {}, user) }
+    subject { graphql_request(user_query, {}, user) }
 
     it 'returns the user' do
       expect(subject['data']['user']).to eq(

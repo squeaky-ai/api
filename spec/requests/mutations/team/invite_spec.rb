@@ -25,11 +25,11 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
     let(:email) { 'paulmccartney@msn.com' }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           siteId: site.id,
-          email:, 
-          role: Team::ADMIN 
+          email:,
+          role: Team::ADMIN
         }
       }
       graphql_request(team_invite_mutation, variables, user)
@@ -42,7 +42,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
 
     it 'creates them an account' do
       subject
-      invited_user = User.find_by(email: email)
+      invited_user = User.find_by(email:)
       expect(invited_user).not_to be nil
       expect(invited_user.invitation_sent_at).not_to be nil
     end
@@ -59,18 +59,18 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       let(:invited_user) { create(:user) }
 
       subject do
-        variables = { 
+        variables = {
           input: {
-            siteId: site.id, 
-            email: invited_user.email, 
-            role: Team::ADMIN 
+            siteId: site.id,
+            email: invited_user.email,
+            role: Team::ADMIN
           }
         }
         graphql_request(team_invite_mutation, variables, user)
       end
 
       before do
-        create(:team, user: invited_user, site: site, role: Team::ADMIN)
+        create(:team, user: invited_user, site:, role: Team::ADMIN)
       end
 
       it 'returns an error' do
@@ -78,11 +78,11 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       end
 
       it 'does not add them a second time' do
-        expect { subject }.not_to change { site.team.size }
+        expect { subject }.not_to(change { site.team.size })
       end
 
       it 'does not send an email' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
       end
     end
 
@@ -98,9 +98,9 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       end
 
       subject do
-        variables = { 
+        variables = {
           input: {
-            siteId: site.id, 
+            siteId: site.id,
             email: invited_user.email,
             role: Team::ADMIN
           }
@@ -119,7 +119,7 @@ RSpec.describe Mutations::Teams::Invite, type: :request do
       end
 
       it 'does not change the users password' do
-        expect { subject }.not_to change { User.find(invited_user.id).encrypted_password }
+        expect { subject }.not_to(change { User.find(invited_user.id).encrypted_password })
       end
 
       it 'sends the email' do

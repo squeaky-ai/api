@@ -35,7 +35,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
   context 'when the note does not exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     subject do
       variables = {
@@ -54,7 +54,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
     end
 
     it 'does not delete anything' do
-      expect { subject }.not_to change { recording.reload.notes.size }
+      expect { subject }.not_to(change { recording.reload.notes.size })
     end
   end
 
@@ -63,10 +63,10 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       context 'and they are deleting their own note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let!(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create(:recording, site: site) }
-        let!(:note) { create(:note, recording_id: recording.id, user: user) }
-  
+        let!(:team) { create(:team, site:, user:, role: Team::MEMBER) }
+        let(:recording) { create(:recording, site:) }
+        let!(:note) { create(:note, recording_id: recording.id, user:) }
+
         subject do
           variables = {
             input: {
@@ -77,12 +77,12 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
           }
           graphql_request(note_delete_mutation, variables, user)
         end
-  
+
         it 'returns nil' do
           response = subject['data']['noteDelete']
           expect(response).to eq nil
         end
-  
+
         it 'deletes the note' do
           expect { subject }.to change { recording.reload.notes.size }.from(1).to(0)
         end
@@ -91,10 +91,10 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
       context 'and they are deleting someone elses note' do
         let(:user) { create(:user) }
         let(:site) { create(:site_with_team) }
-        let!(:team) { create(:team, site: site, user: user, role: Team::MEMBER) }
-        let(:recording) { create(:recording, site: site) }
+        let!(:team) { create(:team, site:, user:, role: Team::MEMBER) }
+        let(:recording) { create(:recording, site:) }
         let!(:note) { create(:note, recording_id: recording.id) }
-  
+
         subject do
           variables = {
             input: {
@@ -105,14 +105,14 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
           }
           graphql_request(note_delete_mutation, variables, user)
         end
-  
+
         it 'returns the unmodified note' do
           response = subject['data']['noteDelete']
           expect(response).not_to eq nil
         end
-  
+
         it 'does not delete the note' do
-          expect { subject }.not_to change { recording.reload.notes.size }
+          expect { subject }.not_to(change { recording.reload.notes.size })
         end
       end
     end
@@ -120,11 +120,11 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
     context 'and the user is an admin' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team) }
-      let(:recording) { create(:recording, site: site) }
+      let(:recording) { create(:recording, site:) }
       let!(:note) { create(:note, recording_id: recording.id) }
 
       before do
-        create(:team, user: user, site: site, role: Team::ADMIN)
+        create(:team, user:, site:, role: Team::ADMIN)
       end
 
       subject do
@@ -151,7 +151,7 @@ RSpec.describe Mutations::Notes::Delete, type: :request do
     context 'and the user is the owner' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create(:recording, site: site) }
+      let(:recording) { create(:recording, site:) }
       let!(:note) { create(:note, recording_id: recording.id) }
 
       subject do

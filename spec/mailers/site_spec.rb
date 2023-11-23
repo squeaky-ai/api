@@ -81,15 +81,15 @@ RSpec.describe SiteMailer, type: :mailer do
           score: 33.33
         },
         feedback_nps_trend: {
-          direction: 'up', 
+          direction: 'up',
           trend: '33.33'
         },
         feedback_sentiment: {
-          enabled: true, 
+          enabled: true,
           score: 4.33
         },
         feedback_sentiment_trend: {
-          direction: 'up', 
+          direction: 'up',
           trend: '4.33'
         }
       }

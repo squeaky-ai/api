@@ -20,10 +20,10 @@ RSpec.describe Mutations::Sites::DomainBlacklistDelete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          value: '@squeaky.ai' 
+          siteId: site.id,
+          value: '@squeaky.ai'
         }
       }
       graphql_request(site_domain_blacklist_delete_mutation, variables, user)
@@ -34,7 +34,7 @@ RSpec.describe Mutations::Sites::DomainBlacklistDelete, type: :request do
     end
 
     it 'does not update the record' do
-      expect { subject }.not_to change { site.reload.ip_blacklist.size }
+      expect { subject }.not_to(change { site.reload.ip_blacklist.size })
     end
   end
 
@@ -48,10 +48,10 @@ RSpec.describe Mutations::Sites::DomainBlacklistDelete, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          value: '@squeaky.ai' 
+          siteId: site.id,
+          value: '@squeaky.ai'
         }
       }
       graphql_request(site_domain_blacklist_delete_mutation, variables, user)

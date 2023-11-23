@@ -18,10 +18,10 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: 234234, 
-          bookmarked: false 
+        input: {
+          siteId: site.id,
+          recordingId: 234234,
+          bookmarked: false
         }
       }
       graphql_request(recording_bookmarked_mutation, variables, user)
@@ -37,7 +37,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     context 'and it is bookmarked' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create(:recording, site: site) }
+      let(:recording) { create(:recording, site:) }
 
       before do
         ClickHouse::Recording.insert do |buffer|
@@ -51,10 +51,10 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
 
       subject do
         variables = {
-          input: { 
+          input: {
             siteId: site.id,
             recordingId: recording.id,
-            bookmarked: true 
+            bookmarked: true
           }
         }
         graphql_request(recording_bookmarked_mutation, variables, user)
@@ -79,7 +79,7 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
     context 'and it is unbookmarked' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:recording) { create(:recording, bookmarked: true, site: site) }
+      let(:recording) { create(:recording, bookmarked: true, site:) }
 
       before do
         ClickHouse::Recording.insert do |buffer|
@@ -94,8 +94,8 @@ RSpec.describe Mutations::Recordings::Bookmarked, type: :request do
       subject do
         variables = {
           input: {
-            siteId: site.id, 
-            recordingId: recording.id, 
+            siteId: site.id,
+            recordingId: recording.id,
             bookmarked: false
           }
         }

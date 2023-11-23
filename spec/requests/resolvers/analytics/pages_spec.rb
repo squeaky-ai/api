@@ -48,29 +48,29 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           site_id: site.id,
           url: '/',
           activity_duration: 1000,
-          entered_at: 1656444914353, 
-          exited_at: 1656444926825, 
-          bounced_on: true, 
+          entered_at: 1656444914353,
+          exited_at: 1656444926825,
+          bounced_on: true,
           exited_on: true
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           activity_duration: 2000,
-          entered_at: 1656444914353, 
-          exited_at: 1656444926825, 
-          bounced_on: false, 
+          entered_at: 1656444914353,
+          exited_at: 1656444926825,
+          bounced_on: false,
           exited_on: false
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           activity_duration: 3500,
-          entered_at: 1656444914353, 
-          exited_at: 1656444926825, 
-          bounced_on: false, 
+          entered_at: 1656444914353,
+          exited_at: 1656444926825,
+          bounced_on: false,
           exited_on: true
         }
       ]
@@ -106,7 +106,7 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
             'url' => '/test',
             'viewCount' => 1,
             'viewPercentage' => 33.33
-         }
+          }
         ]
       )
     end
@@ -121,9 +121,9 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           activity_duration: 1000,
-          entered_at: 1656444914353, 
+          entered_at: 1656444914353,
           exited_at: 1656444926825,
           bounced_on: true,
           exited_on: true
@@ -134,18 +134,18 @@ RSpec.describe Resolvers::Analytics::Pages, type: :request do
           url: '/',
           activity_duration: 2000,
           entered_at: 1656444914353,
-          exited_at: 1656444926825, 
-          bounced_on: false, 
+          exited_at: 1656444926825,
+          bounced_on: false,
           exited_on: false
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           activity_duration: 3500,
-          entered_at: 1656444914353, 
-          exited_at: 1656444926825, 
-          bounced_on: false, 
+          entered_at: 1656444914353,
+          exited_at: 1656444926825,
+          bounced_on: false,
           exited_on: true
         }
       ]

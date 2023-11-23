@@ -51,7 +51,7 @@ RSpec.describe Resolvers::Admin::SitesBundle, type: :request do
       let(:bundle_id) { bundle.id }
 
       before do
-        create(:site_bundles_site, site: site, site_bundle: bundle, primary: true)
+        create(:site_bundles_site, site:, site_bundle: bundle, primary: true)
 
         site.plan.update!(plan_id: '094f6148-22d6-4201-9c5e-20bffb68cc48')
       end

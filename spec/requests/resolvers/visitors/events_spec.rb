@@ -2,36 +2,36 @@
 
 require 'rails_helper'
 
-visitor_events_query = <<-GRAPHQL
-  query($site_id: ID!, $visitor_id: ID!, $page: Int, $size: Int, $sort: EventsFeedSort) {
-    site(siteId: $site_id) {
-      id
-      visitor(visitorId: $visitor_id) {
+visitor_events_query = <<~GRAPHQL
+    query($site_id: ID!, $visitor_id: ID!, $page: Int, $size: Int, $sort: EventsFeedSort) {
+      site(siteId: $site_id) {
         id
-        events(page: $page, size: $size, sort: $sort) {
-          items {
-            id
-            eventName
-            timestamp {
-              iso8601
-            }
-            source
-            data
-            recording {
+        visitor(visitorId: $visitor_id) {
+          id
+          events(page: $page, size: $size, sort: $sort) {
+            items {
               id
-              sessionId
-              bookmarked
+              eventName
+              timestamp {
+                iso8601
+              }
+              source
+              data
+              recording {
+                id
+                sessionId
+                bookmarked
+              }
             }
-          }
-          pagination {
-            pageSize
-            total
-            sort
+            pagination {
+              pageSize
+              total
+              sort
+            }
           }
         }
       }
-    }
-}
+  }
 GRAPHQL
 
 RSpec.describe Resolvers::Visitors::Events, type: :request do

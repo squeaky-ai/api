@@ -7,7 +7,7 @@ RSpec.describe DateFormatter do
 
   context 'when the date is a Date' do
     let(:date) { Date.new(2023, 4, 2) }
-    let(:timezone) { 'Europe/London'}
+    let(:timezone) { 'Europe/London' }
 
     it 'returns the values' do
       expect(subject).to eq(
@@ -15,13 +15,13 @@ RSpec.describe DateFormatter do
         nice_date: 'Sun, 2 Apr 2023',
         nice_date_time: 'Sun, 2 Apr 2023 00:00',
         short_date: 'Apr 2'
-      )  
+      )
     end
   end
 
   context 'when the date is a DateTime' do
     let(:date) { DateTime.new(2023, 4, 2, 8, 12, 3) }
-    let(:timezone) { 'Europe/London'}
+    let(:timezone) { 'Europe/London' }
 
     it 'returns the values' do
       expect(subject).to eq(
@@ -29,13 +29,13 @@ RSpec.describe DateFormatter do
         nice_date: 'Sun, 2 Apr 2023',
         nice_date_time: 'Sun, 2 Apr 2023 09:12',
         short_date: 'Apr 2'
-      )  
+      )
     end
   end
 
   context 'when the date is a millisecond precision integer' do
     let(:date) { DateTime.new(2023, 4, 2, 8, 12, 3).to_i * 1000 }
-    let(:timezone) { 'Europe/London'}
+    let(:timezone) { 'Europe/London' }
 
     it 'returns the values' do
       expect(subject).to eq(
@@ -43,7 +43,7 @@ RSpec.describe DateFormatter do
         nice_date: 'Sun, 2 Apr 2023',
         nice_date_time: 'Sun, 2 Apr 2023 09:12',
         short_date: 'Apr 2'
-      )  
+      )
     end
   end
 end

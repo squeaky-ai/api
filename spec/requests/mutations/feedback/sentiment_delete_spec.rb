@@ -34,8 +34,8 @@ RSpec.describe Mutations::Feedback::SentimentDelete, type: :request do
   context 'when the feedback does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
-    let!(:sentiment) { create(:sentiment, recording: recording) }
+    let(:recording) { create(:recording, site:) }
+    let!(:sentiment) { create(:sentiment, recording:) }
 
     subject do
       variables = {

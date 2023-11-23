@@ -17,10 +17,10 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagId: 23423423 
+          siteId: site.id,
+          tagId: 23423423
         }
       }
       graphql_request(tag_delete_mutation, variables, user)
@@ -38,10 +38,10 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     let!(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagId: tag.id.to_s 
+          siteId: site.id,
+          tagId: tag.id.to_s
         }
       }
       graphql_request(tag_delete_mutation, variables, user)
@@ -60,7 +60,7 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
   context 'when a tag exists and is joined to a recording' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:tag) { create(:tag, site_id: site.id) }
 
     before do
@@ -69,10 +69,10 @@ RSpec.describe Mutations::Tags::Delete, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagId: tag.id.to_s 
+          siteId: site.id,
+          tagId: tag.id.to_s
         }
       }
       graphql_request(tag_delete_mutation, variables, user)

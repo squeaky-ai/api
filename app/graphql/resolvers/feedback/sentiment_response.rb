@@ -12,16 +12,16 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength
         query = Sentiment
-                .joins(recording: :visitor)
-                .where(
-                  'recordings.site_id = ? AND
+          .joins(recording: :visitor)
+          .where(
+            'recordings.site_id = ? AND
                     sentiments.created_at::date >= ? AND
                     sentiments.created_at::date <= ?',
-                  object.site.id,
-                  object.range.from,
-                  object.range.to
-                )
-                .select('
+            object.site.id,
+            object.range.from,
+            object.range.to
+          )
+          .select('
                   sentiments.*,
                   recordings.session_id,
                   recordings.viewport_x,
@@ -37,8 +37,8 @@ module Resolvers
         query = filter_by_rating(filters, query) if filters
 
         results = query.order(sort_by(sort))
-                       .page(page)
-                       .per(size)
+          .page(page)
+          .per(size)
 
         {
           items: map_results(results),

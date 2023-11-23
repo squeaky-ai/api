@@ -100,7 +100,7 @@ RSpec.describe Session do
         {
           'data' => {
             'foo' => 'bar',
-            'href' => '/examples/static/', 'name'=>'my-event'
+            'href' => '/examples/static/', 'name' => 'my-event'
           },
           'timestamp' => 1637177342311,
           'type' => 101
@@ -120,7 +120,7 @@ RSpec.describe Session do
             'stack' => 'onclick@http://localhost:8081/examples/static/#:74:16',
             'filename' => 'http://localhost:8081/examples/static/#',
             'href' => '/examples/static/'
-          }, 
+          },
           'timestamp' => 1637177342309,
           'type' => 100
         }
@@ -216,10 +216,10 @@ RSpec.describe Session do
     end
 
     context 'when there is some inactivity' do
-      let(:inactivity) do 
+      let(:inactivity) do
         [
           [100, 200],
-          [18000, 18100],
+          [18000, 18100]
         ]
       end
       let(:events_activity) { instance_double(Events::Activity, inactivity:) }
@@ -416,7 +416,7 @@ RSpec.describe Session do
     it 'returns the sentiments' do
       expect(instance.sentiments).to eq([
         {
-          comment: 'Hello', 
+          comment: 'Hello',
           score: '2'
         }
       ])
@@ -534,7 +534,7 @@ RSpec.describe Session do
         expect(instance.rage_clicked?).to eq(true)
       end
     end
-  end 
+  end
 
   describe '#u_turned?' do
     context 'when there was no u_turn' do

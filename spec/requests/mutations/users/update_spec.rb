@@ -26,11 +26,11 @@ RSpec.describe Mutations::Users::Update, type: :request do
   end
 
   subject do
-    update = { 
+    update = {
       input: {
-        firstName: first_name, 
-        lastName: last_name, 
-        email: 
+        firstName: first_name,
+        lastName: last_name,
+        email:
       }
     }
     graphql_request(user_update_mutation, update, user)
@@ -71,7 +71,7 @@ RSpec.describe Mutations::Users::Update, type: :request do
     end
 
     subject do
-      update = { 
+      update = {
         input: {
           firstName: first_name,
           lastName: last_name

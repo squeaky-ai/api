@@ -21,7 +21,7 @@ RSpec.describe Mutations::Sites::ApiKeyCreate, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
           siteId: site.id
         }
@@ -47,7 +47,7 @@ RSpec.describe Mutations::Sites::ApiKeyCreate, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
           siteId: site.id
         }

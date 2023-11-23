@@ -38,7 +38,7 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
       input: {
         siteId: site.id,
         maxMonthlyRecordings: 1000,
-        support: ['Phone', 'Chat'],
+        support: %w[Phone Chat],
         responseTimeHours: 12,
         dataStorageMonths: 24,
         ssoEnabled: true,
@@ -46,7 +46,7 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         privateInstanceEnabled: true,
         notes: 'Hello there',
         teamMemberLimit: 1,
-        featuresEnabled: ['dashboard'],
+        featuresEnabled: ['dashboard']
       }
     }
 
@@ -67,13 +67,13 @@ RSpec.describe Mutations::Admin::SitePlanUpdate, type: :request do
         'privateInstanceEnabled' => true,
         'responseTimeHours' => 12,
         'ssoEnabled' => true,
-        'support' => ['Phone', 'Chat'],
+        'support' => %w[Phone Chat],
         'planId' => '05bdce28-3ac8-4c40-bd5a-48c039bd3c7f',
         'free' => true,
         'enterprise' => false,
         'deprecated' => false,
         'teamMemberLimit' => 1,
-        'featuresEnabled' => ['dashboard'],
+        'featuresEnabled' => ['dashboard']
       }
     )
   end

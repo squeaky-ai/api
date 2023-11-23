@@ -41,8 +41,8 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id)
-      visitor_2 = create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 7).utc, site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 6).utc, site_id: site.id)
     end
 
     subject do
@@ -66,8 +66,8 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor_1 = create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id)
-      visitor_2 = create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 7).utc, site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 6).utc, site_id: site.id)
     end
 
     subject do
@@ -91,7 +91,7 @@ RSpec.describe Resolvers::Analytics::VisitorsCount, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id)
+      visitor = create(:visitor, created_at: Time.new(2021, 8, 7).utc, site_id: site.id)
 
       visitor.update(new: false)
     end

@@ -161,10 +161,10 @@ module Resolvers
         # visitors up this way as they are the only ones that
         # do not have a recording
         ids = results
-              .select { |r| r['source'] == EventCapture::API }
-              .pluck('visitor_id')
-              .reject(&:zero?)
-              .uniq
+          .select { |r| r['source'] == EventCapture::API }
+          .pluck('visitor_id')
+          .reject(&:zero?)
+          .uniq
 
         object
           .visitors

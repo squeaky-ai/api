@@ -14,7 +14,8 @@ RSpec.describe Recording, type: :model do
   describe '#user_agent' do
     subject do
       fixture = recording_fixture.dup
-      fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+      fixture[:useragent] =
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
       described_class.new(fixture).user_agent
     end
 
@@ -24,11 +25,11 @@ RSpec.describe Recording, type: :model do
   end
 
   describe '#page_count' do
-    let (:instance) { described_class.new(recording_fixture) }
-    
+    let(:instance) { described_class.new(recording_fixture) }
+
     subject do
       site = create(:site)
-      recording = create(:recording, site: site, page_urls: ['/', '/contact', '/test'])
+      recording = create(:recording, site:, page_urls: ['/', '/contact', '/test'])
 
       recording.reload.page_count
     end
@@ -103,11 +104,12 @@ RSpec.describe Recording, type: :model do
     context 'when the browser is set' do
       subject do
         fixture = recording_fixture.dup
-        fixture[:useragent] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+        fixture[:useragent] =
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
         fixture[:browser] = 'Safari'
         described_class.new(fixture).device
       end
-  
+
       it 'returns the browser' do
         expect(subject[:browser_name]).to eq 'Safari'
       end

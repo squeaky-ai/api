@@ -32,56 +32,56 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
           site_id: site.id,
           recording_id: recording_1.id,
           url: '/',
-          exited_at: Time.new(2021, 8, 7).to_i * 1000 + 1
+          exited_at: (Time.new(2021, 8, 7).to_i * 1000) + 1
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_1.id,
           url: '/test',
-          exited_at: Time.new(2021, 8, 7).to_i * 1000 + 2
+          exited_at: (Time.new(2021, 8, 7).to_i * 1000) + 2
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_2.id,
           url: '/',
-          exited_at: Time.new(2021, 8, 6).to_i * 1000 + 1
+          exited_at: (Time.new(2021, 8, 6).to_i * 1000) + 1
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_3.id,
           url: '/test',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 1
+          exited_at: (Time.new(2021, 8, 5).to_i * 1000) + 1
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_3.id,
           url: '/test',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 2
+          exited_at: (Time.new(2021, 8, 5).to_i * 1000) + 2
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_4.id,
           url: '/',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 3
+          exited_at: (Time.new(2021, 8, 5).to_i * 1000) + 3
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_4.id,
           url: '/test',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 4
+          exited_at: (Time.new(2021, 8, 5).to_i * 1000) + 4
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
           recording_id: recording_4.id,
           url: '/foo',
-          exited_at: Time.new(2021, 8, 5).to_i * 1000 + 5
+          exited_at: (Time.new(2021, 8, 5).to_i * 1000) + 5
         }
       ]
     end
@@ -94,16 +94,16 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
 
     context 'when using the start position' do
       subject do
-        variables = { 
-          site_id: site.id, 
-          from_date: '2021-08-01', 
+        variables = {
+          site_id: site.id,
+          from_date: '2021-08-01',
           to_date: '2021-08-08',
           page: '/',
           position: 'Start'
         }
         graphql_request(analytics_user_paths_query, variables, user)
       end
-  
+
       it 'returns the paths that match' do
         paths = subject['data']['site']['analytics']['userPaths']
         expect(paths).to match_array(
@@ -124,19 +124,19 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
         )
       end
     end
-  
+
     context 'when using the end position' do
       subject do
-        variables = { 
-          site_id: site.id, 
-          from_date: '2021-08-01', 
+        variables = {
+          site_id: site.id,
+          from_date: '2021-08-01',
           to_date: '2021-08-08',
           page: '/test',
           position: 'End'
         }
         graphql_request(analytics_user_paths_query, variables, user)
       end
-  
+
       it 'returns the paths that match' do
         paths = subject['data']['site']['analytics']['userPaths']
         expect(paths).to match_array(
@@ -173,9 +173,9 @@ RSpec.describe Resolvers::Analytics::UserPaths, type: :request do
       end
 
       subject do
-        variables = { 
-          site_id: site.id, 
-          from_date: '2021-08-01', 
+        variables = {
+          site_id: site.id,
+          from_date: '2021-08-01',
           to_date: '2021-08-08',
           page: '/test',
           position: 'End'

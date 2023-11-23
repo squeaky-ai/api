@@ -49,7 +49,7 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6, 16, 0, 0).to_i * 1000,
           visitor_id: visitor_1.id
         },
         {
@@ -84,16 +84,16 @@ RSpec.describe Resolvers::Analytics::VisitsAt, type: :request do
         [
           {
             'count' => 1,
-            'day' => 'Thu', 
+            'day' => 'Thu',
             'hour' => 7
           },
           {
             'count' => 2,
-            'day' => 'Fri', 
+            'day' => 'Fri',
             'hour' => 14
           },
           {
-            'count' => 1, 
+            'count' => 1,
             'day' => 'Sat',
             'hour' => 1
           }

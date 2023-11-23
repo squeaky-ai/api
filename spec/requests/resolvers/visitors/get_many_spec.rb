@@ -72,8 +72,8 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
-      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, '+00:00'))
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, '+00:00'))
     end
 
     subject do
@@ -106,7 +106,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
+      create(:visitor, site_id: site.id, updated_at: Time.new(2021, 8, 8, 0, 0, 0, '+00:00'))
     end
 
     subject do
@@ -131,7 +131,7 @@ RSpec.describe Resolvers::Visitors::GetMany, type: :request do
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
 
     before do
-      create(:visitor, site_id: site.id, external_attributes: external_attributes, updated_at: Time.new(2021, 8, 8, 0, 0, 0, "+00:00"))
+      create(:visitor, site_id: site.id, external_attributes:, updated_at: Time.new(2021, 8, 8, 0, 0, 0, '+00:00'))
     end
 
     subject do

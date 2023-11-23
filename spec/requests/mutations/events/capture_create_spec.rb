@@ -32,7 +32,7 @@ RSpec.describe Mutations::Events::CaptureCreate, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           type: EventCapture::PAGE_VISIT,
           name: 'My event',
           rules: [

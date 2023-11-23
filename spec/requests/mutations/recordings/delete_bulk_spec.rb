@@ -17,8 +17,8 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
+        input: {
+          siteId: site.id,
           recordingIds: ['23423423423']
         }
       }
@@ -32,7 +32,7 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     end
 
     it 'does not update the recordings count' do
-      expect { subject }.not_to change { site.reload.recordings.size }
+      expect { subject }.not_to(change { site.reload.recordings.size })
     end
   end
 
@@ -40,14 +40,14 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let!(:recording_1) { create(:recording, site: site) }
-    let!(:recording_2) { create(:recording, site: site) }
-    let!(:recording_3) { create(:recording, site: site) }
+    let!(:recording_1) { create(:recording, site:) }
+    let!(:recording_2) { create(:recording, site:) }
+    let!(:recording_3) { create(:recording, site:) }
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
+        input: {
+          siteId: site.id,
           recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131']
         }
       }
@@ -66,8 +66,12 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
 
     it 'updates the counter cache' do
       expect { subject }.to change { recording_1.visitor.reload.recordings_count }.from(1).to(0)
-        .and change { recording_2.visitor.reload.recordings_count }.from(1).to(0)
-        .and change { recording_3.visitor.reload.recordings_count }.by(0)
+        .and change {
+               recording_2.visitor.reload.recordings_count
+             }.from(1).to(0)
+        .and change {
+               recording_3.visitor.reload.recordings_count
+             }.by(0)
     end
   end
 end

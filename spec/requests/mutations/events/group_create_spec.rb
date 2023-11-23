@@ -20,7 +20,7 @@ RSpec.describe Mutations::Events::GroupCreate, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           name:
         }
       }
@@ -43,7 +43,7 @@ RSpec.describe Mutations::Events::GroupCreate, type: :request do
     let(:name) { 'Plant' }
 
     before do
-      site.event_groups << EventGroup.new(name: name, site_id: site.id)
+      site.event_groups << EventGroup.new(name:, site_id: site.id)
       site.save
     end
 
@@ -63,7 +63,7 @@ RSpec.describe Mutations::Events::GroupCreate, type: :request do
     end
 
     it 'does note create the record' do
-      expect { subject }.not_to change { site.reload.event_groups.size }
+      expect { subject }.not_to(change { site.reload.event_groups.size })
     end
   end
 end

@@ -16,20 +16,20 @@ RSpec.describe Mutations::Users::ReferralDelete, type: :request do
     let(:partner) { create(:partner, user:) }
     let!(:referral) { create(:referral, partner:, site: nil) }
 
-    subject do      
+    subject do
       variables = {
         input: {
           id: referral.id
         }
       }
-  
+
       graphql_request(user_referral_delete_mutation, variables, user)
     end
 
     it 'returns nil' do
       expect(subject['data']['userReferralDelete']).to eq(nil)
     end
-  
+
     it 'deletes the record' do
       subject
       expect { referral.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -47,7 +47,7 @@ RSpec.describe Mutations::Users::ReferralDelete, type: :request do
           id: referral.id
         }
       }
-  
+
       graphql_request(user_referral_delete_mutation, variables, user)
     end
 
@@ -56,9 +56,9 @@ RSpec.describe Mutations::Users::ReferralDelete, type: :request do
         'id' => referral.id.to_s
       )
     end
-  
+
     it 'does not delete the record' do
-      expect { subject }.not_to change { referral.reload }
+      expect { subject }.not_to(change { referral.reload })
     end
   end
 end

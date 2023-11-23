@@ -14,13 +14,13 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
   context 'when the team member is the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let!(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let!(:team) { create(:team, user:, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: site.owner.id 
+          siteId: site.id,
+          teamId: site.owner.id
         }
       }
       graphql_request(team_delete_mutation, variables, user)
@@ -31,20 +31,20 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     end
 
     it 'does not remove the team member' do
-      expect { subject }.not_to change { site.team.size }
+      expect { subject }.not_to(change { site.team.size })
     end
   end
 
   context 'when the team member is themselves' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let!(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let!(:team) { create(:team, user:, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team.id 
+          siteId: site.id,
+          teamId: team.id
         }
       }
       graphql_request(team_delete_mutation, variables, user)
@@ -55,21 +55,21 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     end
 
     it 'does not remove the team member' do
-      expect { subject }.not_to change { site.team.size }
+      expect { subject }.not_to(change { site.team.size })
     end
   end
 
   context 'when an admin tries to remove another admin' do
     let(:user) { create(:user) }
     let!(:site) { create(:site_with_team) }
-    let!(:team1) { create(:team, user: user, site: site, role: Team::ADMIN) }
-    let!(:team2) { create(:team, site: site, role: Team::ADMIN) }
+    let!(:team1) { create(:team, user:, site:, role: Team::ADMIN) }
+    let!(:team2) { create(:team, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team2.id 
+          siteId: site.id,
+          teamId: team2.id
         }
       }
       graphql_request(team_delete_mutation, variables, user)
@@ -80,20 +80,20 @@ RSpec.describe Mutations::Teams::Delete, type: :request do
     end
 
     it 'does not remove the team member' do
-      expect { subject }.not_to change { site.team.size }
+      expect { subject }.not_to(change { site.team.size })
     end
   end
 
   context 'when the team member can be deleted' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let!(:team) { create(:team, site: site, role: Team::MEMBER) }
+    let!(:team) { create(:team, site:, role: Team::MEMBER) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team.id 
+          siteId: site.id,
+          teamId: team.id
         }
       }
       graphql_request(team_delete_mutation, variables, user)

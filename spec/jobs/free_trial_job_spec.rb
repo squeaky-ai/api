@@ -23,7 +23,7 @@ RSpec.describe FreeTrialJob, type: :job do
       site.plan.start_free_trial!
     end
 
-    it 'ends the trial' do     
+    it 'ends the trial' do
       expect { subject }.to change { site.reload.plan.max_monthly_recordings }
         .from(1500)
         .to(500)
@@ -42,11 +42,11 @@ RSpec.describe FreeTrialJob, type: :job do
     end
 
     it 'does not change the monthly recordings' do
-      expect { subject }.not_to change { site.reload.plan.max_monthly_recordings }
+      expect { subject }.not_to(change { site.reload.plan.max_monthly_recordings })
     end
 
     it 'does not change the features' do
-      expect { subject }.not_to change { site.reload.plan.features_enabled }
+      expect { subject }.not_to(change { site.reload.plan.features_enabled })
     end
   end
 end

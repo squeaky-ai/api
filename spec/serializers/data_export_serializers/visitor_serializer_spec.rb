@@ -18,16 +18,16 @@ RSpec.describe DataExportSerializers::VisitorSerializer do
 
     before do
       create(
-        :recording, 
-        visitor:, 
+        :recording,
+        visitor:,
         country_code: 'GB',
         connected_at: 1671123078086,
-        disconnected_at: 1671123080086,
+        disconnected_at: 1671123080086
       )
 
       create(
-        :recording, 
-        visitor:, 
+        :recording,
+        visitor:,
         country_code: 'SE',
         device_type: 'Mobile',
         browser: 'Safari',
@@ -37,7 +37,7 @@ RSpec.describe DataExportSerializers::VisitorSerializer do
         viewport_y: 420,
         useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Safari/605.1.15',
         connected_at: 1671123081086,
-        disconnected_at: 1671123083086,
+        disconnected_at: 1671123083086
       )
     end
 
@@ -52,7 +52,7 @@ RSpec.describe DataExportSerializers::VisitorSerializer do
         first_viewed_at: '2022-12-15T16:51:18Z',
         languages: 'English (GB)',
         last_activity_at: '2022-12-15T16:51:23Z',
-        email: 'bobby@dylan.com', 
+        email: 'bobby@dylan.com',
         user_id: 5,
         name: 'Bob Dylan',
         recording_count: 2,

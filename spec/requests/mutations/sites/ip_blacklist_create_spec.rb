@@ -20,11 +20,11 @@ RSpec.describe Mutations::Sites::IpBlacklistCreate, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          name: 'Test', 
-          value: '0.0.0.0' 
+          siteId: site.id,
+          name: 'Test',
+          value: '0.0.0.0'
         }
       }
       graphql_request(site_ip_blacklist_create_mutation, variables, user)
@@ -37,7 +37,7 @@ RSpec.describe Mutations::Sites::IpBlacklistCreate, type: :request do
             'name' => 'Test',
             'value' => '0.0.0.0'
           }
-        ]  
+        ]
       )
     end
 

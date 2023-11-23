@@ -79,7 +79,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
           site_id: site.id,
           url: '/test',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
-        },
+        }
       ]
     end
 
@@ -102,7 +102,7 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         'groupRange' => 7,
         'total' => 5,
         'trend' => 5,
-        'items' =>  [
+        'items' => [
           {
             'count' => 2,
             'dateKey' => '216'
@@ -130,43 +130,43 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 5).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 7, 5).to_i * 1000
         }
       ]
@@ -185,17 +185,17 @@ RSpec.describe Resolvers::Analytics::PageViews, type: :request do
 
     it 'returns the page views' do
       response = subject['data']['site']['analytics']
-      
+
       expect(response['pageViews']).to eq(
         'groupType' => 'daily',
         'groupRange' => 7,
         'total' => 6,
         'trend' => 6,
-        'items' =>  [
+        'items' => [
           {
             'count' => 1,
             'dateKey' => '216'
-          }, 
+          },
           {
             'count' => 3,
             'dateKey' => '217'

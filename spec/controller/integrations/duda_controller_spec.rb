@@ -138,7 +138,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
   describe 'POST /integrations/websitebuilder/change_plan' do
     let(:provider_uuid) { SecureRandom.uuid }
-    let!(:user) { create(:user, provider: 'duda', provider_uuid: provider_uuid) }
+    let!(:user) { create(:user, provider: 'duda', provider_uuid:) }
     let!(:site) { create(:site_with_team, owner: user) }
     let(:app_plan_uuid) { '5d6b2b10-9c27-49e5-b3d7-a78b176f80b4' }
 

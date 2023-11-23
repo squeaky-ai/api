@@ -115,7 +115,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Devices, type: :request do
           site_id: site.id,
           url: '/test',
           recording_id: recording_4.id
-        },
+        }
       ]
     end
 
@@ -169,14 +169,14 @@ RSpec.describe Resolvers::Analytics::PerPage::Devices, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           device_type: 'Computer',
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           device_type: 'Mobile',
           recording_id: recording_2.id
         },
@@ -222,7 +222,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Devices, type: :request do
           site_id: site.id,
           url: '/',
           recording_id: recording_4.id
-        },
+        }
       ]
     end
 

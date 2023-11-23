@@ -29,7 +29,7 @@ RSpec.describe RecordingDeleteJob, type: :job do
   it 'deletes the recording, visitor and all the clickhouse data' do
     subject
     site.reload
-    
+
     expect(site.visitors.size).to eq(0)
     expect(site.recordings.size).to eq(0)
     expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM click_events WHERE site_id = #{site.id}")).to eq(0)

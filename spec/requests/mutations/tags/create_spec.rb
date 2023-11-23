@@ -20,9 +20,9 @@ RSpec.describe Mutations::Tags::Create, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
-          recordingId: SecureRandom.uuid, 
-          name: 
+          siteId: site.id,
+          recordingId: SecureRandom.uuid,
+          name:
         }
       }
       graphql_request(tag_create_mutation, variables, user)
@@ -37,14 +37,14 @@ RSpec.describe Mutations::Tags::Create, type: :request do
   context 'when the recording exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:name) { 'Carpet' }
 
     subject do
       variables = {
         input: {
-          siteId: site.id, 
-          recordingId: recording.id, 
+          siteId: site.id,
+          recordingId: recording.id,
           name:
         }
       }
@@ -64,19 +64,19 @@ RSpec.describe Mutations::Tags::Create, type: :request do
   context 'when a tag with that name exists already' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:name) { 'Plant' }
 
     before do
-      recording.tags << Tag.new(name: name, site_id: site.id)
+      recording.tags << Tag.new(name:, site_id: site.id)
       recording.save
     end
 
     subject do
       variables = {
         input: {
-          siteId: site.id, 
-          recordingId: recording.id, 
+          siteId: site.id,
+          recordingId: recording.id,
           name:
         }
       }
@@ -89,7 +89,7 @@ RSpec.describe Mutations::Tags::Create, type: :request do
     end
 
     it 'does note create the record' do
-      expect { subject }.not_to change { recording.reload.tags.size }
+      expect { subject }.not_to(change { recording.reload.tags.size })
     end
   end
 end

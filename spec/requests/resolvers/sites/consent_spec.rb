@@ -56,7 +56,7 @@ RSpec.describe Resolvers::Sites::Consent, type: :request do
     end
 
     it 'does not create it' do
-      expect { subject }.not_to change { Consent.all.count }
+      expect { subject }.not_to(change { Consent.all.count })
     end
 
     it 'returns the existing' do

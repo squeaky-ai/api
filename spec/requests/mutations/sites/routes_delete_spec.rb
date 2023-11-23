@@ -17,10 +17,10 @@ RSpec.describe Mutations::Sites::RoutesDelete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          route: 'foo' 
+          siteId: site.id,
+          route: 'foo'
         }
       }
       graphql_request(site_routes_delete_mutation, variables, user)
@@ -31,7 +31,7 @@ RSpec.describe Mutations::Sites::RoutesDelete, type: :request do
     end
 
     it 'does not update the record' do
-      expect { subject }.not_to change { site.reload.routes.size }
+      expect { subject }.not_to(change { site.reload.routes.size })
     end
   end
 
@@ -45,10 +45,10 @@ RSpec.describe Mutations::Sites::RoutesDelete, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          route: 'foo' 
+          siteId: site.id,
+          route: 'foo'
         }
       }
       graphql_request(site_routes_delete_mutation, variables, user)

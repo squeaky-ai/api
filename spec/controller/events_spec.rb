@@ -200,7 +200,7 @@ RSpec.describe EventsController, type: :controller do
         end
 
         it 'does not create the event capture' do
-          expect { subject }.not_to change { EventCapture.count }
+          expect { subject }.not_to(change { EventCapture.count })
         end
       end
 
@@ -215,7 +215,7 @@ RSpec.describe EventsController, type: :controller do
         end
 
         before do
-          allow(Time).to receive(:current).and_return(Time.at(1675202020))
+          allow(Time).to receive(:current).and_return(Time.at(1675202020).utc)
         end
 
         context 'that is not a number' do

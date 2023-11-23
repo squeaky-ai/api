@@ -15,7 +15,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
     let(:session) { Session.new(message) }
-    
+
     before do
       events_fixture = require_fixture('events.json', compress: true)
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
@@ -23,7 +23,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
 
     subject { described_class.create_from_session(recording, session) }
 
-    it 'inserts all the errors in ClickHouse' do  
+    it 'inserts all the errors in ClickHouse' do
       subject
 
       results = Sql::ClickHouse.select_all("
@@ -47,7 +47,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
 
       expect(results).to match_array([
         {
-          'site_id' => site.id, 
+          'site_id' => site.id,
           'recording_id' => recording.id,
           'visitor_id' => recording.visitor.id,
           'device_x' => 1920,
@@ -55,7 +55,7 @@ RSpec.describe ClickHouse::ErrorEvent, type: :model do
           'filename' => 'http://localhost:8081/examples/static/#',
           'message' => 'Error: Oh no',
           'url' => '/examples/static/',
-          'viewport_x' => 1920, 
+          'viewport_x' => 1920,
           'viewport_y' => 1080,
           'stack' => 'onclick@http://localhost:8081/examples/static/#:74:16',
           'line_number' => 74,

@@ -12,16 +12,16 @@ RSpec.describe NewFeedbackJob, type: :job do
       site_1 = create(:site_with_team)
       site_2 = create(:site_with_team)
       site_3 = create(:site_with_team)
-      site_4 = create(:site_with_team)
+      site_4 = create(:site_with_team) # rubocop:disable Lint/UselessAssignment
 
       create(:team, site: site_1, role: Team::ADMIN)
 
-      recording_1 = create(:recording, site: site_1)
-      recording_2 = create(:recording, site: site_1)
-      recording_3 = create(:recording, site: site_2)
-      recording_4 = create(:recording, site: site_2)
-      recording_5 = create(:recording, site: site_3)
-      recording_6 = create(:recording, site: site_3)
+      create(:recording, site: site_1)
+      create(:recording, site: site_1)
+      create(:recording, site: site_2)
+      create(:recording, site: site_2)
+      create(:recording, site: site_3)
+      create(:recording, site: site_3)
 
       stub = double
       allow(stub).to receive(:deliver_now)
@@ -37,6 +37,7 @@ RSpec.describe NewFeedbackJob, type: :job do
 
   context 'when there has been feedback' do
     before do
+      # rubocop:disable Lint/UselessAssignment
       now = Time.current
 
       site_1 = create(:site_with_team)
@@ -66,6 +67,7 @@ RSpec.describe NewFeedbackJob, type: :job do
       sentiment_4 = create(:sentiment, recording: recording_4, created_at: now - 8.minutes)
       sentiment_5 = create(:sentiment, recording: recording_5, created_at: now - 10.days)
       sentiment_6 = create(:sentiment, recording: recording_6, created_at: now - 25.minutes)
+      # rubocop:enable Lint/UselessAssignment
 
       @output = [
         {

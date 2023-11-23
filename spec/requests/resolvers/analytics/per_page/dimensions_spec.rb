@@ -50,21 +50,21 @@ RSpec.describe Resolvers::Analytics::PerPage::Dimensions, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           device_x: 1920,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           device_x: 2560,
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           device_x: 2560,
           recording_id: recording_3.id
         }
@@ -90,7 +90,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Dimensions, type: :request do
           site_id: site.id,
           url: '/test',
           recording_id: recording_3.id
-        },
+        }
       ]
     end
 
@@ -143,21 +143,21 @@ RSpec.describe Resolvers::Analytics::PerPage::Dimensions, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           device_x: 1920,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           device_x: 2560,
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 7, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           device_x: 3840,
           recording_id: recording_3.id
         }
@@ -183,7 +183,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Dimensions, type: :request do
           site_id: site.id,
           url: '/',
           recording_id: recording_3.id
-        },
+        }
       ]
     end
 

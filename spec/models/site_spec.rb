@@ -52,9 +52,9 @@ RSpec.describe Site, type: :model do
     subject { site.admins }
 
     before do
-      create(:team, site: site, role: Team::MEMBER)
-      create(:team, site: site, role: Team::ADMIN)
-      create(:team, site: site, role: Team::OWNER)
+      create(:team, site:, role: Team::MEMBER)
+      create(:team, site:, role: Team::ADMIN)
+      create(:team, site:, role: Team::OWNER)
     end
 
     it 'returns only the team members that are admins' do
@@ -66,7 +66,7 @@ RSpec.describe Site, type: :model do
   describe '#owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site) }
-    let!(:team) { create(:team, user: user, site: site, role: Team::OWNER) }
+    let!(:team) { create(:team, user:, site:, role: Team::OWNER) }
 
     subject { site.owner }
 
@@ -79,7 +79,7 @@ RSpec.describe Site, type: :model do
     context 'when a member exists' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let(:team) { create(:team, site: site, role: Team::ADMIN) }
+      let(:team) { create(:team, site:, role: Team::ADMIN) }
 
       subject { site.member(team.id) }
 
@@ -117,9 +117,9 @@ RSpec.describe Site, type: :model do
       let(:site) { create(:site_with_team, owner: user) }
 
       before do
-        create(:recording, site: site)
-        create(:recording, site: site)
-        create(:recording, status: Recording::DELETED, site: site)
+        create(:recording, site:)
+        create(:recording, site:)
+        create(:recording, status: Recording::DELETED, site:)
       end
 
       subject { site.recordings_count }
@@ -133,12 +133,12 @@ RSpec.describe Site, type: :model do
   describe '#page_urls' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     before do
-      create(:page, url: '/' , recording: recording)
-      create(:page, url: '/foo', recording: recording)
-      create(:page, url: '/foo', recording: recording)
+      create(:page, url: '/', recording:)
+      create(:page, url: '/foo', recording:)
+      create(:page, url: '/foo', recording:)
     end
 
     subject { site.page_urls }
@@ -152,7 +152,7 @@ RSpec.describe Site, type: :model do
     context 'when there is nothing in Redis' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-  
+
       subject { site.active_user_count }
 
       it 'returns 0' do
@@ -163,11 +163,11 @@ RSpec.describe Site, type: :model do
     context 'when there is something in Redis' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      
+
       before do
         Cache.redis.zincrby('active_user_count', 5, site.uuid)
       end
-  
+
       subject { site.active_user_count }
 
       it 'returns the count' do

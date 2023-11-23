@@ -17,11 +17,11 @@ RSpec.describe Mutations::Users::Update, type: :request do
     let!(:user) { create(:user) }
 
     subject do
-      update = { 
+      update = {
         input: {
           password: new_password,
-          passwordConfirmation: new_password, 
-          currentPassword: old_password 
+          passwordConfirmation: new_password,
+          currentPassword: old_password
         }
       }
       graphql_request(user_password_mutation, update, user)
@@ -32,11 +32,11 @@ RSpec.describe Mutations::Users::Update, type: :request do
     end
 
     it 'does not update the record' do
-      expect { subject }.not_to change { User.find(user.id).encrypted_password }
+      expect { subject }.not_to(change { User.find(user.id).encrypted_password })
     end
 
     it 'does not send the email' do
-      expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+      expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
     end
   end
 
@@ -46,11 +46,11 @@ RSpec.describe Mutations::Users::Update, type: :request do
     let!(:user) { create(:user, password: old_password) }
 
     subject do
-      update = { 
+      update = {
         input: {
-          password: new_password, 
-          passwordConfirmation: new_password, 
-          currentPassword: old_password 
+          password: new_password,
+          passwordConfirmation: new_password,
+          currentPassword: old_password
         }
       }
       graphql_request(user_password_mutation, update, user)
@@ -61,7 +61,7 @@ RSpec.describe Mutations::Users::Update, type: :request do
     end
 
     it 'updates the record' do
-      expect { subject }.to change { User.find(user.id).encrypted_password }
+      expect { subject }.to(change { User.find(user.id).encrypted_password })
     end
 
     it 'sends the email' do

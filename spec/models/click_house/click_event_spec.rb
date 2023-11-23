@@ -15,7 +15,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
     let(:session) { Session.new(message) }
-    
+
     before do
       events_fixture = require_fixture('events.json', compress: true)
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
@@ -27,7 +27,7 @@ RSpec.describe ClickHouse::ClickEvent, type: :model do
       subject
 
       results = Sql::ClickHouse.select_all("
-        SELECT 
+        SELECT
           site_id,
           recording_id,
           visitor_id,

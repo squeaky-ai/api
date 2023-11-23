@@ -15,7 +15,7 @@ RSpec.describe Mutations::Admin::PartnerInvoiceUpdate, type: :request do
   let(:partner) { create(:partner, user: create(:user)) }
   let!(:invoice) { create(:partner_invoice, partner:) }
 
-  subject do      
+  subject do
     variables = {
       input: {
         id: invoice.id,

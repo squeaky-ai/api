@@ -18,7 +18,7 @@ RSpec.describe Mutations::Events::CaptureDelete, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           eventId: 12312321312
         }
       }
@@ -31,10 +31,10 @@ RSpec.describe Mutations::Events::CaptureDelete, type: :request do
     end
 
     it 'does not delete anything' do
-      expect { subject }.not_to change { site.reload.event_captures.size }
+      expect { subject }.not_to(change { site.reload.event_captures.size })
     end
   end
-  
+
   context 'when the capture exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -43,7 +43,7 @@ RSpec.describe Mutations::Events::CaptureDelete, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           eventId: event.id
         }
       }

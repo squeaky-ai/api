@@ -18,10 +18,10 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: SecureRandom.uuid, 
-          tagId: 345345 
+        input: {
+          siteId: site.id,
+          recordingId: SecureRandom.uuid,
+          tagId: 345345
         }
       }
       graphql_request(tag_remove_mutation, variables, user)
@@ -36,14 +36,14 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
   context 'when the tag does not exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: recording.id, 
-          tagId: 23423423 
+        input: {
+          siteId: site.id,
+          recordingId: recording.id,
+          tagId: 23423423
         }
       }
       graphql_request(tag_remove_mutation, variables, user)
@@ -55,14 +55,14 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
     end
 
     it 'does not remove anything' do
-      expect { subject }.not_to change { recording.reload.tags.size }
+      expect { subject }.not_to(change { recording.reload.tags.size })
     end
   end
 
   context 'when the tag exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:tag) { create(:tag, site_id: site.id) }
 
     before do
@@ -72,10 +72,10 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: recording.id, 
-          tagId: tag.id.to_s 
+        input: {
+          siteId: site.id,
+          recordingId: recording.id,
+          tagId: tag.id.to_s
         }
       }
       graphql_request(tag_remove_mutation, variables, user)
@@ -91,7 +91,7 @@ RSpec.describe Mutations::Tags::Remove, type: :request do
     end
 
     it 'does not delete the tag' do
-      expect { subject }.not_to change { site.reload.tags.size }
+      expect { subject }.not_to(change { site.reload.tags.size })
     end
   end
 end

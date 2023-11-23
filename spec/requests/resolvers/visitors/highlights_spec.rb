@@ -22,8 +22,8 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
-      site_id: site.id, 
+    variables = {
+      site_id: site.id,
       from_date: '2022-10-24',
       to_date: '2022-10-30'
     }
@@ -40,114 +40,114 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
   end
 
   context 'when there are some visitors' do
-    let!(:active_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
-    let!(:active_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
-    let!(:active_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
-    let!(:active_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
-    let!(:active_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21)) }
+    let!(:active_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21).utc) }
+    let!(:active_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21).utc) }
+    let!(:active_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21).utc) }
+    let!(:active_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21).utc) }
+    let!(:active_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 21).utc) }
 
-    let!(:newest_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 30)) }
-    let!(:newest_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 29)) }
-    let!(:newest_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 28)) }
-    let!(:newest_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 27)) }
-    let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 26)) }
+    let!(:newest_visitor_1) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 30).utc) }
+    let!(:newest_visitor_2) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 29).utc) }
+    let!(:newest_visitor_3) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 28).utc) }
+    let!(:newest_visitor_4) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 27).utc) }
+    let!(:newest_visitor_5) { create(:visitor, site_id: site.id, created_at: Time.new(2022, 10, 26).utc) }
 
     let(:recordings) do
       [
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_1.id, 
+          visitor_id: active_visitor_1.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_2.id, 
+          visitor_id: active_visitor_2.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_2.id, 
+          visitor_id: active_visitor_2.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_2.id, 
+          visitor_id: active_visitor_2.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_2.id, 
+          visitor_id: active_visitor_2.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_3.id, 
+          visitor_id: active_visitor_3.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_3.id, 
+          visitor_id: active_visitor_3.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_3.id, 
+          visitor_id: active_visitor_3.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_4.id, 
+          visitor_id: active_visitor_4.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_4.id, 
+          visitor_id: active_visitor_4.id,
           disconnected_at: 1667028026074
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          visitor_id: active_visitor_5.id, 
+          visitor_id: active_visitor_5.id,
           disconnected_at: 1667028026074
         }
       ]
@@ -176,7 +176,7 @@ RSpec.describe Resolvers::Visitors::Highlights, type: :request do
           },
           {
             'id' => active_visitor_5.id.to_s
-          }         
+          }
         ],
         'newest' => [
           {

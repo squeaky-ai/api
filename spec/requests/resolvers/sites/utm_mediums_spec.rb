@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::UtmMediums, type: :request do
 
     it 'returns the mediums' do
       response = subject['data']['site']['utmMediums']
-      expect(response).to eq ['medium_1', 'medium_2']
+      expect(response).to eq %w[medium_1 medium_2]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::UtmMediums, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['utmMediums']
-      expect(response).to eq ['medium_1', 'medium_2']
+      expect(response).to eq %w[medium_1 medium_2]
     end
   end
 end

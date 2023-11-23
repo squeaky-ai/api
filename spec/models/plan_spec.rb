@@ -48,7 +48,7 @@ RSpec.describe Plan, type: :model do
       before do
         create(:billing, status: Billing::INVALID, site:, user: site.owner.user)
 
-        site.update(plan:instance)
+        site.update(plan: instance)
       end
 
       subject { instance.invalid? }
@@ -192,11 +192,11 @@ RSpec.describe Plan, type: :model do
 
     it 'sets the features and max recordings' do
       expect { subject }.to change { instance.max_monthly_recordings }
-                        .from(500)
-                        .to(1500)
-                        .and change { instance.features_enabled }
-                        .from(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
-                        .to(Types::Plans::Feature.values.keys)
+        .from(500)
+        .to(1500)
+        .and change { instance.features_enabled }
+        .from(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+        .to(Types::Plans::Feature.values.keys)
     end
 
     it 'enqueues the free trial job' do
@@ -223,11 +223,11 @@ RSpec.describe Plan, type: :model do
 
     it 'sets the features and max recordings' do
       expect { subject }.to change { instance.max_monthly_recordings }
-                        .from(1500)
-                        .to(500)
-                        .and change { instance.features_enabled }
-                        .from(Types::Plans::Feature.values.keys)
-                        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+        .from(1500)
+        .to(500)
+        .and change { instance.features_enabled }
+        .from(Types::Plans::Feature.values.keys)
+        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
     end
   end
 end

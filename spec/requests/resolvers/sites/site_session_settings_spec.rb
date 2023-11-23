@@ -101,7 +101,7 @@ RSpec.describe Resolvers::Sites::SiteSessionSettings, type: :request do
   context 'when the site has consent saved' do
     before do
       Consent.create(
-        site: site,
+        site:,
         name: 'Squeaky',
         consent_method: 'widget',
         layout: 'bottom_left',
@@ -134,19 +134,19 @@ RSpec.describe Resolvers::Sites::SiteSessionSettings, type: :request do
 
     it 'returns the feedback' do
       expect(subject['data']['siteSessionSettings']['feedback']).to eq(
-        'npsAccentColor' => '#0074E0', 
-        'npsContactConsentEnabled' => false, 
-        'npsEnabled' => false, 
+        'npsAccentColor' => '#0074E0',
+        'npsContactConsentEnabled' => false,
+        'npsEnabled' => false,
         'npsFollowUpEnabled' => true,
         'npsLayout' => 'full_width',
         'npsPhrase' => 'My Feedback',
         'npsSchedule' => 'once',
         'npsExcludedPages' => [],
         'sentimentAccentColor' => '#0074E0',
-        'sentimentEnabled' => false, 
-        'sentimentExcludedPages' => [], 
+        'sentimentEnabled' => false,
+        'sentimentExcludedPages' => [],
         'sentimentLayout' => 'right_middle',
-        'sentimentDevices' => ['desktop', 'tablet']
+        'sentimentDevices' => %w[desktop tablet]
       )
     end
   end
@@ -170,7 +170,7 @@ RSpec.describe Resolvers::Sites::SiteSessionSettings, type: :request do
 
     context 'and they are logged in as a user for this site but have a read only role' do
       let(:user) { create(:user) }
-      
+
       before do
         create(:team, site:, user:, role: 0)
       end
@@ -182,7 +182,7 @@ RSpec.describe Resolvers::Sites::SiteSessionSettings, type: :request do
 
     context 'and they are logged in as a user for this site and have a read/write role' do
       let(:user) { create(:user) }
-      
+
       before do
         create(:team, site:, user:, role: 1)
       end

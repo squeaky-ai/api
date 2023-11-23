@@ -9,7 +9,7 @@ RSpec.describe Mutations::UserMutation do
 
       subject do
         context = { current_user: user }
-        described_class.new(object: {}, context: context, field: '')
+        described_class.new(object: {}, context:, field: '')
       end
 
       it 'sets the user as an instance variable' do
@@ -23,7 +23,7 @@ RSpec.describe Mutations::UserMutation do
     context 'when the user does not exist in the context' do
       subject do
         context = { current_user: nil }
-        described_class.new(object: {}, context: context, field: '')
+        described_class.new(object: {}, context:, field: '')
       end
 
       it 'raises an Unauthorized error' do

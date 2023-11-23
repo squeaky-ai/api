@@ -30,7 +30,7 @@ FactoryBot.define do
 
     factory :site_with_team do
       after(:create) do |site, evaluator|
-        create_list(:team, evaluator.team_count, site: site, user: evaluator.owner)
+        create_list(:team, evaluator.team_count, site:, user: evaluator.owner)
       end
     end
   end
@@ -214,7 +214,7 @@ FactoryBot.define do
     nps_phrase { 'My Feedback' }
     nps_schedule { 'once' }
     sentiment_accent_color { '#0074E0' }
-    sentiment_devices { ['desktop', 'tablet'] }
+    sentiment_devices { %w[desktop tablet] }
     sentiment_enabled { false }
     sentiment_excluded_pages { [] }
     sentiment_layout { 'right_middle' }
@@ -246,7 +246,7 @@ FactoryBot.define do
   end
 
   factory :partner_invoice do
-    filename { 'test '}
+    filename { 'test ' }
     status { 0 }
     amount { 100 }
     currency { 'GBP' }
@@ -262,8 +262,8 @@ FactoryBot.define do
     filename { 'test.csv' }
     export_type { 0 }
     exported_at { nil }
-    start_date { Date.today.iso8601 }
-    end_date { Date.today.iso8601 }
+    start_date { Time.zone.today.iso8601 }
+    end_date { Time.zone.today.iso8601 }
 
     site { association :site }
   end

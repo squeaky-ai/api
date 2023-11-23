@@ -20,10 +20,10 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          pricingId: 'teapot' 
+          siteId: site.id,
+          pricingId: 'teapot'
         }
       }
       graphql_request(subscriptions_update_mutation, variables, user)
@@ -42,15 +42,15 @@ RSpec.describe Mutations::Subscriptions::Update, type: :request do
     let(:pricing_id) { 'price_1KPOVlLJ9zG7aLW892gWiiTU' }
 
     before do
-      Billing.create(customer_id:, site: site, user: user)
+      Billing.create(customer_id:, site:, user:)
 
       allow_any_instance_of(StripeService::Billing).to receive(:update_plan)
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           pricingId: pricing_id
         }
       }

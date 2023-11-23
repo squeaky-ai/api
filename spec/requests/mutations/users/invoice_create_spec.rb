@@ -18,7 +18,7 @@ RSpec.describe Mutations::Users::InvoiceCreate, type: :request do
     let(:user) { create(:user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           currency: 'GBP',
           amount: 100,
@@ -38,7 +38,7 @@ RSpec.describe Mutations::Users::InvoiceCreate, type: :request do
     let!(:partner) { create(:partner, user:) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           currency: 'GBP',
           amount: 100,
@@ -50,7 +50,7 @@ RSpec.describe Mutations::Users::InvoiceCreate, type: :request do
 
     it 'creates the invoice' do
       expect(subject['data']['userInvoiceCreate']).to eq(
-       'currency' => 'GBP',
+        'currency' => 'GBP',
         'amount' => 100,
         'filename' => 'file.pdf',
         'status' => 0

@@ -25,7 +25,7 @@ RSpec.describe Resolvers::Analytics::SessionsPerVisitor, type: :request do
       graphql_request(analytics_sessions_per_visitor_query, variables, user)
     end
 
-    it 'returns 0' do     
+    it 'returns 0' do
       response = subject['data']['site']['analytics']
       expect(response['sessionsPerVisitor']).to eq({ 'average' => 0, 'trend' => 0 })
     end
@@ -48,7 +48,7 @@ RSpec.describe Resolvers::Analytics::SessionsPerVisitor, type: :request do
           uuid: SecureRandom.uuid,
           site_id: site.id,
           disconnected_at: Time.new(2021, 8, 8).to_i * 1000,
-          visitor_id: visitor.id,
+          visitor_id: visitor.id
         },
         {
           uuid: SecureRandom.uuid,

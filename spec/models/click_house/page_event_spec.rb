@@ -15,7 +15,7 @@ RSpec.describe ClickHouse::PageEvent, type: :model do
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
     let(:session) { Session.new(message) }
-    
+
     before do
       events_fixture = require_fixture('events.json', compress: true)
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe WeeklyReview do
   describe '#site' do
     let(:site) { create(:site) }
-    let(:from_date) { Date.new(2022, 02, 07) }
-    let(:to_date) { Date.new(2022, 02, 13) }
+    let(:from_date) { Date.new(2022, 0o2, 0o7) }
+    let(:to_date) { Date.new(2022, 0o2, 13) }
 
     let(:instance) { described_class.new(site.id, from_date, to_date) }
 
@@ -19,11 +19,11 @@ RSpec.describe WeeklyReview do
 
   describe '#members' do
     let(:site) { create(:site) }
-    let(:from_date) { Date.new(2022, 02, 07) }
-    let(:to_date) { Date.new(2022, 02, 13) }
+    let(:from_date) { Date.new(2022, 0o2, 0o7) }
+    let(:to_date) { Date.new(2022, 0o2, 13) }
 
-    let(:team_1) { create(:team, site: site, role: Team::MEMBER) }
-    let(:team_2) { create(:team, site: site, role: Team::MEMBER) }
+    let(:team_1) { create(:team, site:, role: Team::MEMBER) }
+    let(:team_2) { create(:team, site:, role: Team::MEMBER) }
 
     let(:instance) { described_class.new(site.id, from_date, to_date) }
 
@@ -36,8 +36,8 @@ RSpec.describe WeeklyReview do
 
   describe '#to_h' do
     let(:site) { create(:site) }
-    let(:from_date) { Date.new(2022, 02, 07) }
-    let(:to_date) { Date.new(2022, 02, 13) }
+    let(:from_date) { Date.new(2022, 0o2, 0o7) }
+    let(:to_date) { Date.new(2022, 0o2, 13) }
 
     let(:visitor_1) { create(:visitor) }
     let(:visitor_2) { create(:visitor) }
@@ -51,13 +51,13 @@ RSpec.describe WeeklyReview do
       create(:feedback, nps_enabled: true, sentiment_enabled: true, site:)
 
       create(
-        :recording, 
+        :recording,
         site:,
         connected_at: 1644331421390,
         disconnected_at: 1644331425390,
         activity_duration: 4000,
-        visitor: visitor_1, 
-        viewed: true, 
+        visitor: visitor_1,
+        viewed: true,
         referrer: 'https://google.com',
         browser: 'Chrome',
         country_code: 'GB',
@@ -65,25 +65,25 @@ RSpec.describe WeeklyReview do
         sentiment: create(:sentiment, score: 4)
       )
       create(
-        :recording, 
-        site:, 
+        :recording,
+        site:,
         connected_at: 1644718421390,
         disconnected_at: 1644718425390,
         activity_duration: 4000,
-        visitor: visitor_2, 
-        viewed: true, 
+        visitor: visitor_2,
+        viewed: true,
         referrer: 'https://google.com',
         browser: 'Firefox',
         country_code: 'SE'
       )
       create(
-        :recording, 
-        site:, 
+        :recording,
+        site:,
         connected_at: 1644718420390,
         disconnected_at: 1644718422390,
         activity_duration: 2000,
-        visitor: visitor_2, 
-        viewed: true, 
+        visitor: visitor_2,
+        viewed: true,
         referrer: nil,
         browser: 'Firefox',
         country_code: 'GB',
@@ -94,26 +94,26 @@ RSpec.describe WeeklyReview do
         sentiment: create(:sentiment, score: 8)
       )
       create(
-        :recording, 
-        site:, 
+        :recording,
+        site:,
         connected_at: 1644718420390,
         disconnected_at: 1644718421390,
         activity_duration: 1000,
-        visitor: visitor_2, 
-        viewed: false, 
+        visitor: visitor_2,
+        viewed: false,
         referrer: nil,
         browser: 'Chrome',
         country_code: 'SE',
         sentiment: create(:sentiment, score: 1)
       )
       create(
-        :recording, 
-        site:, 
+        :recording,
+        site:,
         connected_at: 1644718322390,
         disconnected_at: 1644718325390,
         activity_duration: 3000,
-        visitor: visitor_3, 
-        viewed: false, 
+        visitor: visitor_3,
+        viewed: false,
         referrer: 'https://google.com',
         browser: 'Chrome',
         country_code: 'GB',
@@ -165,15 +165,15 @@ RSpec.describe WeeklyReview do
           score: 33.34
         },
         feedback_nps_trend: {
-          direction: 'up', 
+          direction: 'up',
           trend: '33.34'
         },
         feedback_sentiment: {
-          enabled: true, 
+          enabled: true,
           score: 4.33
         },
         feedback_sentiment_trend: {
-          direction: 'up', 
+          direction: 'up',
           trend: '4.33'
         }
       )

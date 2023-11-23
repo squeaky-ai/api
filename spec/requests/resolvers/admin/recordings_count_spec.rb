@@ -27,13 +27,13 @@ RSpec.describe Resolvers::Admin::RecordingsCount, type: :request, truncate_click
     let(:recordings) do
       [
         {
-          uuid: SecureRandom.uuid,
+          uuid: SecureRandom.uuid
         },
         {
-          uuid: SecureRandom.uuid,
+          uuid: SecureRandom.uuid
         },
         {
-          uuid: SecureRandom.uuid,
+          uuid: SecureRandom.uuid
         }
       ]
     end

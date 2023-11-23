@@ -15,9 +15,9 @@ RSpec.describe Mutations::Sites::MagicErasureUpdate, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
+    variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         enabled: true
       }
     }

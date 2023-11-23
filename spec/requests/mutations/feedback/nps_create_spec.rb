@@ -15,7 +15,7 @@ RSpec.describe Mutations::Feedback::NpsCreate, type: :request do
   let(:visitor_id) { SecureRandom.base36 }
   let(:session_id) { SecureRandom.base36 }
 
-  let(:time_now) { Time.new(2022, 6, 29) }
+  let(:time_now) { Time.new(2022, 6, 29).utc }
 
   before do
     allow(Time).to receive(:current).and_return(time_now)

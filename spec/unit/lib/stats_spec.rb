@@ -10,7 +10,7 @@ RSpec.describe Stats do
 
     subject do
       described_class.timer('name') do
-        sleep(1.seconds)
+        sleep(1.second)
         { my: 'response' }
       end
     end

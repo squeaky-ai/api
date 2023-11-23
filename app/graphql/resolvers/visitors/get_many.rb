@@ -39,15 +39,15 @@ module Resolvers
         SQL
 
         visitors = Visitor
-                   .left_outer_joins(:recordings)
-                   .select(query)
-                   .where(
-                     'visitors.site_id = ? AND visitors.updated_at::date BETWEEN ? AND ?',
-                     object.id,
-                     range.from,
-                     range.to
-                   )
-                   .order(order(sort))
+          .left_outer_joins(:recordings)
+          .select(query)
+          .where(
+            'visitors.site_id = ? AND visitors.updated_at::date BETWEEN ? AND ?',
+            object.id,
+            range.from,
+            range.to
+          )
+          .order(order(sort))
 
         # Apply all the filters
         visitors = filter(visitors, filters)

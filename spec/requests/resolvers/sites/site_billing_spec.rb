@@ -49,7 +49,7 @@ RSpec.describe 'SitesBilling', type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      billing = Billing.create(
+      Billing.create(
         customer_id: 'id',
         status: Billing::VALID,
         card_type: 'visa',
@@ -58,8 +58,8 @@ RSpec.describe 'SitesBilling', type: :request do
         card_number: '1234',
         billing_name: 'Teapot McKettle',
         billing_email: 'email@email.com',
-        user: user, 
-        site: site
+        user:,
+        site:
       )
     end
 
@@ -73,7 +73,7 @@ RSpec.describe 'SitesBilling', type: :request do
         'status' => Billing::VALID,
         'country' => 'NL',
         'expiry' => '5/30',
-        'billingEmail' => 'email@email.com', 
+        'billingEmail' => 'email@email.com',
         'billingName' => 'Teapot McKettle',
         'transactions' => []
       )
@@ -94,8 +94,8 @@ RSpec.describe 'SitesBilling', type: :request do
         card_number: '1234',
         billing_name: 'Teapot McKettle',
         billing_email: 'email@email.com',
-        user: user, 
-        site: site
+        user:,
+        site:
       )
 
       billing.transactions << Transaction.create(
@@ -108,7 +108,7 @@ RSpec.describe 'SitesBilling', type: :request do
         period_from: 1644071095,
         period_to: 1644071104
       )
-      
+
       billing.save
     end
 

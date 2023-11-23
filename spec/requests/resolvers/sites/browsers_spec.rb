@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     it 'returns the browsers' do
       response = subject['data']['site']['browsers']
-      expect(response).to eq ['Firefox', 'Safari']
+      expect(response).to eq %w[Firefox Safari]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::Browsers, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['browsers']
-      expect(response).to eq ['Firefox', 'Safari']
+      expect(response).to eq %w[Firefox Safari]
     end
   end
 end

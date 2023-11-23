@@ -61,13 +61,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/monthly_invoice_paid.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
-  
+
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -79,15 +79,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -95,7 +95,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -107,7 +107,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_address).to eq(nil)
         expect(billing.tax_ids).to eq([])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -140,13 +140,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
 
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -158,15 +158,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -174,7 +174,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -184,16 +184,16 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_name).to eq('Lewis Monteith')
         expect(billing.billing_email).to eq('lewismonteith@gmail.com')
         expect(billing.billing_address).to eq(
-          'city'=> 'Fareham',
+          'city' => 'Fareham',
           'country' => 'GB',
           'line1' => '3 Harting Gardens',
           'line2' => '',
           'postal_code' => 'PO16 8DX',
-          'state' => '',
+          'state' => ''
         )
         expect(billing.tax_ids).to eq([])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -226,13 +226,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid_with_coupon.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
 
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -244,15 +244,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -260,7 +260,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -270,16 +270,16 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_name).to eq('Lewis Monteith')
         expect(billing.billing_email).to eq('lewismonteith@gmail.com')
         expect(billing.billing_address).to eq(
-          'city'=> 'Fareham',
+          'city' => 'Fareham',
           'country' => 'GB',
           'line1' => '3 Harting Gardens',
           'line2' => '',
           'postal_code' => 'PO16 8DX',
-          'state' => '',
+          'state' => ''
         )
         expect(billing.tax_ids).to eq([])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -312,13 +312,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/yearly_invoice_paid_with_fixed_amount_coupon.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
 
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -330,15 +330,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -346,7 +346,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -356,16 +356,16 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_name).to eq('Lewis Monteith')
         expect(billing.billing_email).to eq('lewismonteith@gmail.com')
         expect(billing.billing_address).to eq(
-          'city'=> 'Fareham',
+          'city' => 'Fareham',
           'country' => 'GB',
           'line1' => '3 Harting Gardens',
           'line2' => '',
           'postal_code' => 'PO16 8DX',
-          'state' => '',
+          'state' => ''
         )
         expect(billing.tax_ids).to eq([])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -398,13 +398,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/monthly_invoice_paid_with_address.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
-  
+
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -416,15 +416,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -432,7 +432,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -442,16 +442,16 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_name).to eq('Lewis Monteith')
         expect(billing.billing_email).to eq('lewismonteith@gmail.com')
         expect(billing.billing_address).to eq(
-          'city'=> 'Fareham',
+          'city' => 'Fareham',
           'country' => 'GB',
           'line1' => '3 Harting Gardens',
           'line2' => 'Portchester',
           'postal_code' => 'PO16 8DX',
-          'state' => nil,
+          'state' => nil
         )
         expect(billing.tax_ids).to eq([])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -484,13 +484,13 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       let(:invoice_paid_fixture) { require_fixture('stripe/monthly_invoice_paid_with_address_and_tax.json') }
       let(:customer_retrieved_fixture) { require_fixture('stripe/customer_retrieve.json') }
       let(:list_payments_methods_fixture) { require_fixture('stripe/list_payment_methods.json') }
-  
+
       let(:stripe_event) do
         double(:stripe_event, type: 'invoice.paid', data: double(:data, invoice_paid_fixture))
       end
-  
+
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Customer).to receive(:retrieve)
           .with(billing.customer_id)
@@ -502,15 +502,15 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be valid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::VALID)
       end
@@ -518,7 +518,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
       it 'stores the correct billing data' do
         subject
         billing.reload
-        
+
         expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
         expect(billing.status).to eq(Billing::VALID)
         expect(billing.card_type).to eq('visa')
@@ -528,12 +528,12 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         expect(billing.billing_name).to eq('Lewis Monteith')
         expect(billing.billing_email).to eq('lewismonteith@gmail.com')
         expect(billing.billing_address).to eq(
-          'city'=> 'Fareham',
+          'city' => 'Fareham',
           'country' => 'GB',
           'line1' => '3 Harting Gardens',
           'line2' => 'Portchester',
           'postal_code' => 'PO16 8DX',
-          'state' => nil,
+          'state' => nil
         )
         expect(billing.tax_ids).to eq([
           {
@@ -542,7 +542,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           }
         ])
       end
-  
+
       it 'stores the invoice' do
         expect { subject }.to change { billing.reload.transactions.size }.from(0).to(1)
       end
@@ -568,32 +568,32 @@ RSpec.describe Webhooks::StripeController, type: :controller do
           .to('094f6148-22d6-4201-9c5e-20bffb68cc48')
       end
     end
-  
+
     context 'when the event type is "invoice.payment_failed"' do
       let(:billing) { create(:billing) }
-  
+
       let(:stripe_event) do
         double(
-          :stripe_event, 
+          :stripe_event,
           type: 'invoice.payment_failed',
           data: double(:data, object: { 'customer' => billing.customer_id })
         )
       end
-  
+
       subject { get :index, body: '{}', as: :json }
-  
+
       before do
         allow(Stripe::Event).to receive(:construct_from).and_return(stripe_event)
       end
-  
+
       it 'returns the success message' do
         subject
-  
+
         expect(response).to have_http_status(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(response.body).to eq({ success: true }.to_json)
       end
-  
+
       it 'sets the billing status to be invalid' do
         expect { subject }.to change { billing.reload.status }.from(Billing::NEW).to(Billing::INVALID)
       end
@@ -610,7 +610,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
     let(:stripe_event) do
       double(
-        :stripe_event, 
+        :stripe_event,
         type: 'customer.updated',
         data: double(:data, customer_updated_fixture)
       )
@@ -654,7 +654,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
         'line1' => '',
         'line2' => nil,
         'postal_code' => nil,
-        'state' => nil,
+        'state' => nil
       )
       expect(billing.tax_ids).to eq([])
     end
@@ -668,7 +668,7 @@ RSpec.describe Webhooks::StripeController, type: :controller do
 
     let(:stripe_event) do
       double(
-        :stripe_event, 
+        :stripe_event,
         type: 'customer.subscription.deleted',
         data: double(:data, customer_subscription_deleted_fixture)
       )

@@ -16,7 +16,7 @@ RSpec.describe RecordingEventsService do
 
     context 'when there are some objects' do
       before do
-        3.times.with_index do |index|
+        3.times do |index|
           described_class.create(recording:, body: '{}', filename: "TEST_#{index}.json")
         end
       end
@@ -37,7 +37,7 @@ RSpec.describe RecordingEventsService do
     subject { described_class.get(recording:, filename:) }
 
     context 'when the objects does not exist' do
-      let(:filename) { "TEST_0.json" }
+      let(:filename) { 'TEST_0.json' }
 
       it 'returns nil' do
         expect(subject).to eq(nil)
@@ -87,7 +87,7 @@ RSpec.describe RecordingEventsService do
 
     context 'when the keys do exist' do
       before do
-        3.times.with_index do |index|
+        3.times do |index|
           described_class.create(recording:, body: '{}', filename: "TEST_#{index}.json")
         end
       end

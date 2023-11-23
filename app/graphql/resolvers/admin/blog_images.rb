@@ -9,10 +9,10 @@ module Resolvers
         client = Aws::S3::Client.new(region: 'eu-west-1')
 
         items = client
-                .list_objects_v2(bucket: 'cdn.squeaky.ai', prefix: 'blog')
-                .contents
-                .sort_by { |item| -item[:last_modified].to_i }
-                .map(&:key)
+          .list_objects_v2(bucket: 'cdn.squeaky.ai', prefix: 'blog')
+          .contents
+          .sort_by { |item| -item[:last_modified].to_i }
+          .map(&:key)
 
         items.delete('blog/') # This deletes the folder itself, not anything from S3
         items

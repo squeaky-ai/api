@@ -95,7 +95,7 @@ RSpec.describe Resolvers::Sites::Site, type: :request do
     let(:site) { create(:site_with_team) }
 
     before do
-      create(:team, user: user, site: site, role: Team::MEMBER, status: Team::PENDING)
+      create(:team, user:, site:, role: Team::MEMBER, status: Team::PENDING)
     end
 
     it 'does not return the site' do

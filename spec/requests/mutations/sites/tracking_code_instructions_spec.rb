@@ -16,8 +16,8 @@ RSpec.describe Mutations::Sites::TrackingCodeInstructions, type: :request do
 
   subject do
     variables = {
-      input: { 
-        siteId: site.id, 
+      input: {
+        siteId: site.id,
         firstName: 'Bob',
         email: 'bob@developer.com'
       }

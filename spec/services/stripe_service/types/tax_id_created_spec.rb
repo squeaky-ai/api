@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe StripeService::Types::TaxIdCreated do
   describe '.handle' do
-  let(:tax_id_created_fixture) { require_fixture('stripe/tax_id_created.json') }
+    let(:tax_id_created_fixture) { require_fixture('stripe/tax_id_created.json') }
     let(:billing) { create(:billing, customer_id: 'cus_LYkhU0zACd6T4T') }
 
     let(:event) { tax_id_created_fixture['object'] }

@@ -52,7 +52,7 @@ RSpec.describe Resolvers::Recordings::Latest, type: :request do
   context 'when the recording does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let!(:recording) { create(:recording, site: site) }
+    let!(:recording) { create(:recording, site:) }
 
     before do
       ClickHouse::Recording.insert do |buffer|

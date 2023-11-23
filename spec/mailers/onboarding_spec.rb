@@ -16,7 +16,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user has onboarding communication disabled' do
       before { create(:communication, user:, onboarding_email: false) }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -24,7 +24,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user does not exist' do
       before { user.destroy }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -44,7 +44,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user has onboarding communication disabled' do
       before { create(:communication, user:, onboarding_email: false) }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -52,7 +52,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user does not exist' do
       before { user.destroy }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -72,7 +72,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user has onboarding communication disabled' do
       before { create(:communication, user:, onboarding_email: false) }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -80,7 +80,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user does not exist' do
       before { user.destroy }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -110,7 +110,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user has onboarding communication disabled' do
       before { create(:communication, user:, onboarding_email: false) }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -118,7 +118,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user does not exist' do
       before { user.destroy }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -148,7 +148,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user has onboarding communication disabled' do
       before { create(:communication, user:, onboarding_email: false) }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end
@@ -156,7 +156,7 @@ RSpec.describe OnboardingMailer, type: :mailer do
 
     context 'when the user does not exist' do
       before { user.destroy }
-  
+
       it 'does not send' do
         expect(mail.to).to eq nil
       end

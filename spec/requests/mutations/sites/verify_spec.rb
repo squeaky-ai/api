@@ -17,9 +17,9 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
   context 'when the tracking script can be found' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    
+
     let(:body) do
-      body = <<-HTML
+      <<-HTML
         <!-- Squeaky Tracking Code for #{site.name} -->
         <script>
           // ...
@@ -36,9 +36,9 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_verify_mutation, variables, user)
@@ -55,9 +55,9 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     let(:response) { double(:response, body:) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_verify_mutation, variables, user)
@@ -77,9 +77,9 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     before { site.verify! }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_verify_mutation, variables, user)
@@ -95,9 +95,9 @@ RSpec.describe Mutations::Sites::Verify, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_verify_mutation, variables, user)

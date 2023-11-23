@@ -28,8 +28,8 @@ RSpec.describe Mutations::Notes::Create, type: :request do
         input: {
           siteId: site.id,
           recordingId: SecureRandom.uuid,
-          body: body,
-          timestamp: timestamp
+          body:,
+          timestamp:
         }
       }
       graphql_request(note_create_mutation, variables, user)
@@ -44,7 +44,7 @@ RSpec.describe Mutations::Notes::Create, type: :request do
   context 'when the recording exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:body) { 'Beans on Toast' }
     let(:timestamp) { 3000 }
 
@@ -53,8 +53,8 @@ RSpec.describe Mutations::Notes::Create, type: :request do
         input: {
           siteId: site.id,
           recordingId: recording.id,
-          body: body,
-          timestamp: timestamp
+          body:,
+          timestamp:
         }
       }
       graphql_request(note_create_mutation, variables, user)

@@ -93,7 +93,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
       graphql_request(site_recordings_query, variables, user)
     end
 
-    before { 5.times.map { create(:recording, site: site) } }
+    before { 5.times.map { create(:recording, site:) } }
 
     it 'returns the items' do
       response = subject['data']['site']['recordings']
@@ -131,8 +131,8 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     end
 
     before do
-      5.times.map { create(:recording, site: site) }
-      create(:recording, status: Recording::DELETED, site: site)
+      5.times.map { create(:recording, site:) }
+      create(:recording, status: Recording::DELETED, site:)
     end
 
     it 'returns the items' do
@@ -145,7 +145,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    before { 15.times.map { create(:recording, site: site) } }
+    before { 15.times.map { create(:recording, site:) } }
 
     subject do
       today = Time.current.strftime('%Y-%m-%d')
@@ -198,7 +198,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { 5.times.map { create(:recording, site: site) } }
+      before { 5.times.map { create(:recording, site:) } }
 
       it 'returns the items with the oldest first' do
         items = subject['data']['site']['recordings']['items']
@@ -237,7 +237,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
         graphql_request(site_recordings_query, variables, user)
       end
 
-      before { 5.times.map { create(:recording, site: site) } }
+      before { 5.times.map { create(:recording, site:) } }
 
       it 'returns the items with the newest first' do
         items = subject['data']['site']['recordings']['items']

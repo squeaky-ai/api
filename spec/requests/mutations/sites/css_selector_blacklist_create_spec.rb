@@ -15,9 +15,9 @@ RSpec.describe Mutations::Sites::CssSelectorBlacklistCreate, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
+    variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         selector: 'foo'
       }
     }
@@ -36,22 +36,22 @@ RSpec.describe Mutations::Sites::CssSelectorBlacklistCreate, type: :request do
 
   context 'when there are duplicates' do
     let(:user) { create(:user) }
-    let(:site) { create(:site_with_team, owner: user, css_selector_blacklist: ['foo', 'bar']) }
+    let(:site) { create(:site_with_team, owner: user, css_selector_blacklist: %w[foo bar]) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           selector: 'foo'
         }
       }
-  
+
       graphql_request(site_css_selector_blacklist_create_mutation, variables, user)
     end
 
     it 'dedupes them' do
       subject
-      expect(site.reload.css_selector_blacklist).to eq(['foo', 'bar'])
+      expect(site.reload.css_selector_blacklist).to eq(%w[foo bar])
     end
   end
 end

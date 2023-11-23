@@ -15,7 +15,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
     let(:site) { create(:site) }
     let(:recording) { create(:recording, site:) }
     let(:session) { Session.new(message) }
-    
+
     before do
       events_fixture = require_fixture('events.json', compress: true)
       allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
@@ -35,15 +35,15 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
       expect(results).to match_array([
         {
           'site_id' => site.id,
-          'recording_id' => recording.id, 
-          'data' => '{"foo":"bar"}', 
-          'device_x' => 1920, 
-          'device_y' => 1080, 
-          'name' => 'my-event', 
+          'recording_id' => recording.id,
+          'data' => '{"foo":"bar"}',
+          'device_x' => 1920,
+          'device_y' => 1080,
+          'name' => 'my-event',
           'source' => EventCapture::WEB,
           'visitor_id' => recording.visitor.id,
-          'url' => '/examples/static/', 
-          'viewport_x' => 1920, 
+          'url' => '/examples/static/',
+          'viewport_x' => 1920,
           'viewport_y' => 1080
         }
       ])
@@ -53,7 +53,7 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
   describe '.create_from_api' do
     let(:site) { create(:site) }
     let(:visitor) { create(:visitor, site_id: site.id) }
-    
+
     let(:event) do
       {
         name: 'my-event',
@@ -77,15 +77,15 @@ RSpec.describe ClickHouse::CustomEvent, type: :model do
       expect(results).to match_array([
         {
           'site_id' => site.id,
-          'recording_id' => 0, 
-          'data' => '{"foo":"bar"}', 
-          'device_x' => 0, 
-          'device_y' => 0, 
-          'name' => 'my-event', 
+          'recording_id' => 0,
+          'data' => '{"foo":"bar"}',
+          'device_x' => 0,
+          'device_y' => 0,
+          'name' => 'my-event',
           'source' => EventCapture::API,
           'visitor_id' => visitor.id,
-          'url' => '', 
-          'viewport_x' => 0, 
+          'url' => '',
+          'viewport_x' => 0,
           'viewport_y' => 0
         }
       ])

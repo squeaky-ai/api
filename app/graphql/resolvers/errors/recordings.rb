@@ -11,9 +11,9 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:)
         recordings = Recording
-                     .where('id IN (?)', recording_ids)
-                     .includes(:pages, :visitor)
-                     .order(order(sort))
+          .where('id IN (?)', recording_ids)
+          .includes(:pages, :visitor)
+          .order(order(sort))
 
         recordings = recordings.page(page).per(size)
 

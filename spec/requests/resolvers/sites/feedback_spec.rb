@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Sites::Feedback, type: :request do
         'npsLanguagesDefault' => 'en',
         'npsSchedule' => 'once',
         'sentimentAccentColor' => '#0074E0',
-        'sentimentDevices' => ['desktop', 'tablet'],
+        'sentimentDevices' => %w[desktop tablet],
         'sentimentEnabled' => false,
         'sentimentExcludedPages' => [],
         'sentimentLayout' => 'right_middle'
@@ -74,7 +74,7 @@ RSpec.describe Resolvers::Sites::Feedback, type: :request do
     end
 
     it 'does not create it' do
-      expect { subject }.not_to change { Feedback.all.count }
+      expect { subject }.not_to(change { Feedback.all.count })
     end
 
     it 'returns the existing' do

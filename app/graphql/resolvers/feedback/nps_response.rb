@@ -12,13 +12,13 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:, filters:)
         query = Nps.joins(recording: :visitor)
-                   .where(
-                     'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
-                     object.site.id,
-                     object.range.from,
-                     object.range.to
-                   )
-                   .select('
+          .where(
+            'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
+            object.site.id,
+            object.range.from,
+            object.range.to
+          )
+          .select('
                      nps.*,
                      recordings.session_id,
                      recordings.viewport_x,
@@ -34,9 +34,9 @@ module Resolvers
         query = filter_by_outcome_type(filters, query) if filters
 
         results = query
-                  .order(sort_by(sort))
-                  .page(page)
-                  .per(size)
+          .order(sort_by(sort))
+          .page(page)
+          .per(size)
 
         {
           items: map_results(results),

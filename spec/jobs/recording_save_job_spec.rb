@@ -143,7 +143,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'does not store the recording' do
-      expect { subject }.not_to change { site.reload.recordings.size }
+      expect { subject }.not_to(change { site.reload.recordings.size })
     end
   end
 
@@ -154,7 +154,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'does not store the recording' do
-      expect { subject }.not_to change { site.reload.recordings.size }
+      expect { subject }.not_to(change { site.reload.recordings.size })
     end
   end
 
@@ -212,7 +212,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the session already exists' do
     let(:session_id) { SecureRandom.base36 }
-    let!(:recording) { create(:recording, site:, session_id: )}
+    let!(:recording) { create(:recording, site:, session_id:) }
 
     let(:event) do
       {
@@ -223,7 +223,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'does not store the recording' do
-      expect { subject }.not_to change { site.reload.recordings.size }
+      expect { subject }.not_to(change { site.reload.recordings.size })
     end
   end
 
@@ -231,7 +231,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     let!(:event_capture) { create(:event_capture, site:, name: 'my-event') }
 
     it 'does not save it again' do
-      expect { subject }.not_to change { site.reload.event_captures.size }
+      expect { subject }.not_to(change { site.reload.event_captures.size })
     end
   end
 
@@ -248,7 +248,7 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
       recording = site.reload.recordings.first
 
-      expect(recording.inactivity).to eq [['3125', '28410'], ['30426', '55402'], ['66031', '71252']]
+      expect(recording.inactivity).to eq [%w[3125 28410], %w[30426 55402], %w[66031 71252]]
       expect(recording.activity_duration).to eq 15770
     end
   end
@@ -273,7 +273,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'does not create a new one' do
-      expect { subject }.not_to change { Visitor.count }
+      expect { subject }.not_to(change { Visitor.count })
     end
   end
 
@@ -288,7 +288,7 @@ RSpec.describe RecordingSaveJob, type: :job do
     end
 
     it 'does not create a new one' do
-      expect { subject }.not_to change { Visitor.count }
+      expect { subject }.not_to(change { Visitor.count })
     end
 
     it 'uses the correct visitor' do

@@ -16,10 +16,10 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          recordingId: 4564564 
+          siteId: site.id,
+          recordingId: 4564564
         }
       }
       graphql_request(recording_delete_mutation, variables, user)
@@ -34,13 +34,13 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
   context 'when the recording does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          recordingId: recording.id 
+          siteId: site.id,
+          recordingId: recording.id
         }
       }
       graphql_request(recording_delete_mutation, variables, user)

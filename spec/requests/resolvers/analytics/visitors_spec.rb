@@ -47,9 +47,9 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id, new: true)
-      create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id, new: true)
-      create(:visitor, created_at: Time.new(2021, 8, 8), site_id: site.id, new: false)
+      create(:visitor, created_at: Time.new(2021, 8, 6).utc, site_id: site.id, new: true)
+      create(:visitor, created_at: Time.new(2021, 8, 7).utc, site_id: site.id, new: true)
+      create(:visitor, created_at: Time.new(2021, 8, 8).utc, site_id: site.id, new: false)
     end
 
     subject do
@@ -64,21 +64,21 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']['groupRange']).to eq(7)
       expect(response['visitors']['items']).to match([
         {
-          'allCount' => 1, 
+          'allCount' => 1,
           'dateKey' => '217',
-          'existingCount' => 0, 
+          'existingCount' => 0,
           'newCount' => 1
-        }, 
+        },
         {
-          'allCount' => 1, 
-          'dateKey' => '218', 
-          'existingCount' => 0, 
+          'allCount' => 1,
+          'dateKey' => '218',
+          'existingCount' => 0,
           'newCount' => 1
-        }, 
+        },
         {
-          'allCount' => 1, 
-          'dateKey' => '219', 
-          'existingCount' => 1, 
+          'allCount' => 1,
+          'dateKey' => '219',
+          'existingCount' => 1,
           'newCount' => 0
         }
       ])
@@ -90,12 +90,12 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     before do
-      visitor = create(:visitor)
+      create(:visitor)
 
-      create(:visitor, created_at: Time.new(2021, 8, 7), site_id: site.id)
-      create(:visitor, created_at: Time.new(2021, 8, 6), site_id: site.id)
-      create(:visitor, created_at: Time.new(2021, 8, 5), site_id: site.id)
-      create(:visitor, created_at: Time.new(2021, 7, 5), site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 7).utc, site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 6).utc, site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 8, 5).utc, site_id: site.id)
+      create(:visitor, created_at: Time.new(2021, 7, 5).utc, site_id: site.id)
     end
 
     subject do
@@ -110,21 +110,21 @@ RSpec.describe Resolvers::Analytics::Visitors, type: :request do
       expect(response['visitors']['groupRange']).to eq(7)
       expect(response['visitors']['items']).to match([
         {
-          'allCount' => 1, 
-          'dateKey' => '216', 
-          'existingCount' => 0, 
+          'allCount' => 1,
+          'dateKey' => '216',
+          'existingCount' => 0,
           'newCount' => 1
-        }, 
+        },
         {
-          'allCount' => 1, 
-          'dateKey' => '217', 
-          'existingCount' => 0, 
+          'allCount' => 1,
+          'dateKey' => '217',
+          'existingCount' => 0,
           'newCount' => 1
-        }, 
+        },
         {
-          'allCount' => 1, 
-          'dateKey' => '218', 
-          'existingCount' => 0, 
+          'allCount' => 1,
+          'dateKey' => '218',
+          'existingCount' => 0,
           'newCount' => 1
         }
       ])

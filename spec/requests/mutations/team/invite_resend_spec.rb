@@ -25,10 +25,10 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     let(:team_id) { 234 }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team_id 
+          siteId: site.id,
+          teamId: team_id
         }
       }
       graphql_request(team_invite_resend_mutation, variables, user)
@@ -40,20 +40,20 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     end
 
     it 'does not send the email' do
-      expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+      expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
     end
   end
 
   context 'when the team member exists but is not pending' do
     let(:user) { create(:user) }
     let!(:site) { create(:site_with_team, owner: user) }
-    let!(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let!(:team_member) { create(:team, site:, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team_member.id 
+          siteId: site.id,
+          teamId: team_member.id
         }
       }
       graphql_request(team_invite_resend_mutation, variables, user)
@@ -71,19 +71,19 @@ RSpec.describe Mutations::Teams::InviteResend, type: :request do
     end
 
     it 'does not send the email' do
-      expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+      expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
     end
   end
 
   context 'when the team member exist and is pending' do
     let(:user) { create(:user) }
     let!(:site) { create(:site_with_team, owner: user) }
-    let!(:team_member) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
+    let!(:team_member) { create(:team, site:, role: Team::ADMIN, status: Team::PENDING) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: team_member.id
         }
       }

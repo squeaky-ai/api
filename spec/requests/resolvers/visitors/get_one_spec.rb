@@ -62,8 +62,8 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create(:visitor, site_id: site.id) }
 
-    before do  
-      create(:recording, site: site, visitor: visitor)
+    before do
+      create(:recording, site:, visitor:)
     end
 
     subject do
@@ -95,7 +95,7 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:visitor) { create(:visitor, site_id: site.id) }
 
     before do
-      create(:recording, site: site, visitor: visitor)
+      create(:recording, site:, visitor:)
     end
 
     subject do
@@ -113,10 +113,10 @@ RSpec.describe Resolvers::Visitors::GetOne, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:external_attributes) { { name: 'Bob Dylan', email: 'bobby_d@gmail.com' } }
-    let(:visitor) { create(:visitor, site_id: site.id, external_attributes: external_attributes) }
+    let(:visitor) { create(:visitor, site_id: site.id, external_attributes:) }
 
     before do
-      create(:recording, site: site, visitor: visitor)
+      create(:recording, site:, visitor:)
     end
 
     subject do

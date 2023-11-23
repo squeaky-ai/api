@@ -51,65 +51,65 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsPerSession, type: :request d
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1660276690000,
-          exited_at: 1660276750000, 
+          exited_at: 1660276750000,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1660276690001,
-          exited_at: 1660276750001, 
+          exited_at: 1660276750001,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1659945610000,
-          exited_at: 1659949210000, 
+          exited_at: 1659949210000,
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           entered_at: 1659945610000,
-          exited_at: 1659945610000, 
+          exited_at: 1659945610000,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1659605498000,
-          exited_at: 1659609098000, 
+          exited_at: 1659609098000,
           recording_id: recording_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1659605498000,
-          exited_at: 1659609098000, 
+          exited_at: 1659609098000,
           recording_id: recording_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1659605498000,
-          exited_at: 1659609098000, 
+          exited_at: 1659609098000,
           recording_id: recording_4.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           entered_at: 1659605498000,
-          exited_at: 1659609098000, 
+          exited_at: 1659609098000,
           recording_id: recording_4.id
         }
       ]
@@ -151,81 +151,81 @@ RSpec.describe Resolvers::Analytics::PerPage::VisitsPerSession, type: :request d
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1660276690000, 
-          exited_at: 1660276750000, 
+          url: '/',
+          entered_at: 1660276690000,
+          exited_at: 1660276750000,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1660276690001, 
-          exited_at: 1660276750001, 
+          url: '/',
+          entered_at: 1660276690001,
+          exited_at: 1660276750001,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1659945610000, 
-          exited_at: 1659949210000, 
+          url: '/',
+          entered_at: 1659945610000,
+          exited_at: 1659949210000,
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
-          entered_at: 1659945610000, 
-          exited_at: 1659945610000, 
+          url: '/test',
+          entered_at: 1659945610000,
+          exited_at: 1659945610000,
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1659605498000, 
-          exited_at: 1659609098000, 
+          url: '/',
+          entered_at: 1659605498000,
+          exited_at: 1659609098000,
           recording_id: recording_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1659605498000, 
-          exited_at: 1659609098000, 
+          url: '/',
+          entered_at: 1659605498000,
+          exited_at: 1659609098000,
           recording_id: recording_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1659605498000, 
-          exited_at: 1659609098000, 
+          url: '/',
+          entered_at: 1659605498000,
+          exited_at: 1659609098000,
           recording_id: recording_4.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1659605498000, 
-          exited_at: 1659609098000, 
+          url: '/',
+          entered_at: 1659605498000,
+          exited_at: 1659609098000,
           recording_id: recording_4.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1656671498000, 
-          exited_at: 1656675098000, 
+          url: '/',
+          entered_at: 1656671498000,
+          exited_at: 1656675098000,
           recording_id: recording_5.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
-          entered_at: 1656671498000, 
-          exited_at: 1656675098000, 
+          url: '/',
+          entered_at: 1656671498000,
+          exited_at: 1656675098000,
           recording_id: recording_5.id
         }
       ]

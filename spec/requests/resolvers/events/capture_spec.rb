@@ -35,8 +35,8 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
-        site_id: site.id, 
+      variables = {
+        site_id: site.id,
         page: 1,
         size: 20,
         sort: 'count__desc'
@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
       )
     end
   end
-  
+
   context 'when there is some data' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
@@ -71,8 +71,8 @@ RSpec.describe Resolvers::Events::Capture, type: :request do
     end
 
     subject do
-      variables = { 
-        site_id: site.id, 
+      variables = {
+        site_id: site.id,
         page: 1,
         size: 20,
         sort: 'count__desc'

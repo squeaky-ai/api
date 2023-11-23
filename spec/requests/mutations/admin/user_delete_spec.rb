@@ -21,14 +21,14 @@ RSpec.describe Mutations::Admin::UserDelete, type: :request do
           id: user_to_delete.id
         }
       }
-  
+
       graphql_request(admin_user_delete_mutation, variables, user)
     end
 
     it 'returns nil' do
       expect(subject['data']['adminUserDelete']).to be_nil
     end
-  
+
     it 'deletes the record' do
       subject
       expect { user_to_delete.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -45,7 +45,7 @@ RSpec.describe Mutations::Admin::UserDelete, type: :request do
           id: user_to_delete.id
         }
       }
-  
+
       graphql_request(admin_user_delete_mutation, variables, user)
     end
 
@@ -64,7 +64,7 @@ RSpec.describe Mutations::Admin::UserDelete, type: :request do
     let(:site) { create(:site_with_team) }
     let(:user_to_delete) { create(:user) }
 
-    before { create(:team, user: user_to_delete, site: site, role: Team::MEMBER) }
+    before { create(:team, user: user_to_delete, site:, role: Team::MEMBER) }
 
     subject do
       variables = {
@@ -72,7 +72,7 @@ RSpec.describe Mutations::Admin::UserDelete, type: :request do
           id: user_to_delete.id
         }
       }
-  
+
       graphql_request(admin_user_delete_mutation, variables, user)
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Mutations::Admin::UserDelete, type: :request do
     end
 
     it 'does not destroy the site' do
-      expect { subject }.not_to change { Site.exists?(site.id) }
+      expect { subject }.not_to(change { Site.exists?(site.id) })
     end
   end
 end

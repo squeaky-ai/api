@@ -29,7 +29,7 @@ class WeeklyReviewEmailsJob < ApplicationJob
     # a job for a given time period
     return [args.first[:from_date], args.first[:to_date]] unless args.empty?
 
-    now = Date.today
+    now = Time.zone.today
     now -= 1.week
 
     [now.beginning_of_week, now.end_of_week]

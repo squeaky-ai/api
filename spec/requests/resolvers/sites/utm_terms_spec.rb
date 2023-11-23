@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::UtmTerms, type: :request do
 
     it 'returns the terms' do
       response = subject['data']['site']['utmTerms']
-      expect(response).to eq ['term_1', 'term_2']
+      expect(response).to eq %w[term_1 term_2]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::UtmTerms, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['utmTerms']
-      expect(response).to eq ['term_1', 'term_2']
+      expect(response).to eq %w[term_1 term_2]
     end
   end
 end

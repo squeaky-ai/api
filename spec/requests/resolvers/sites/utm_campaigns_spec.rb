@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::UtmCampaigns, type: :request do
 
     it 'returns the campaigns' do
       response = subject['data']['site']['utmCampaigns']
-      expect(response).to eq ['campaign_1', 'campaign_2']
+      expect(response).to eq %w[campaign_1 campaign_2]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::UtmCampaigns, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['utmCampaigns']
-      expect(response).to eq ['campaign_1', 'campaign_2']
+      expect(response).to eq %w[campaign_1 campaign_2]
     end
   end
 end

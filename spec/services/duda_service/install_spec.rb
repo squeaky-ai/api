@@ -147,7 +147,7 @@ RSpec.describe DudaService::Install do
       end
 
       it 'does not recreate the user' do
-        expect { subject }.not_to change { User.all.count }
+        expect { subject }.not_to(change { User.all.count })
       end
 
       it 'does still create the team' do

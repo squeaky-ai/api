@@ -5,7 +5,7 @@ require 'rails_helper'
 event_feed_query = <<-GRAPHQL
   query($site_id: ID!, $page: Int, $size: Int, $sort: EventsFeedSort, $capture_ids: [ID!]!, $group_ids: [ID!]!, $from_date: ISO8601Date!, $to_date: ISO8601Date!) {
     site(siteId: $site_id) {
-      id      
+      id#{'      '}
       eventFeed(captureIds: $capture_ids, groupIds: $group_ids, page: $page, size: $size, sort: $sort, fromDate: $from_date, toDate: $to_date) {
         items {
           id
@@ -46,7 +46,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
 
     subject do
       variables = {
-        site_id: site.id, 
+        site_id: site.id,
         page: 1,
         size: 20,
         sort: 'timestamp__desc',
@@ -104,7 +104,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
 
     subject do
       variables = {
-        site_id: site.id, 
+        site_id: site.id,
         page: 1,
         size: 20,
         sort: 'timestamp__desc',
@@ -126,7 +126,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
           'recording' => {
             'id' => recording_1.id.to_s,
             'bookmarked' => false,
-            'sessionId' => recording_1.session_id,
+            'sessionId' => recording_1.session_id
           },
           'source' => 'web',
           'timestamp' => {
@@ -145,7 +145,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
           'recording' => {
             'id' => recording_2.id.to_s,
             'bookmarked' => false,
-            'sessionId' => recording_2.session_id,
+            'sessionId' => recording_2.session_id
           },
           'source' => 'web',
           'timestamp' => {
@@ -197,7 +197,7 @@ RSpec.describe Resolvers::Events::Feed, type: :request do
 
     subject do
       variables = {
-        site_id: site.id, 
+        site_id: site.id,
         page: 1,
         size: 20,
         sort: 'timestamp__desc',

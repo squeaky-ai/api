@@ -33,9 +33,9 @@ RSpec.describe StripeService::Billing do
     before do
       allow(Stripe::Subscription).to receive(:list)
         .with({
-          customer: billing.customer_id,
-          limit: 1
-        })
+                customer: billing.customer_id,
+                limit: 1
+              })
         .and_return(list_subscriptions_response)
 
       allow(Stripe::Subscription).to receive(:update)

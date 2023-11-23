@@ -46,7 +46,7 @@ RSpec.describe Resolvers::Errors::Counts, type: :request do
   context 'when there are some errors' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:now) { Time.new(2022, 7, 6, 5, 0, 0) }
+    let(:now) { Time.new(2022, 7, 6, 5, 0, 0).utc }
 
     before do
       ClickHouse::ErrorEvent.insert do |buffer|

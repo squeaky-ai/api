@@ -33,11 +33,11 @@ module Resolvers
         SQL
 
         visitor = Visitor
-                  .left_outer_joins(recordings: :pages)
-                  .select(query)
-                  .where('visitors.site_id = ? AND visitors.id = ?', object.id, visitor_id)
-                  .group(:id)
-                  .first
+          .left_outer_joins(recordings: :pages)
+          .select(query)
+          .where('visitors.site_id = ? AND visitors.id = ?', object.id, visitor_id)
+          .group(:id)
+          .first
 
         return unless visitor
 

@@ -60,31 +60,31 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 5).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 5).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         }
       ]
@@ -114,7 +114,7 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         'groupRange' => 7,
         'total' => 2,
         'trend' => 2,
-        'items' =>  [
+        'items' => [
           {
             'count' => 1,
             'dateKey' => '217'
@@ -138,43 +138,43 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 5).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 7, 5).to_i * 1000
         }
       ]
@@ -198,17 +198,17 @@ RSpec.describe Resolvers::Analytics::PerPage::PageViews, type: :request do
 
     it 'returns the page views' do
       response = subject['data']['site']['analytics']['perPage']
-      
+
       expect(response['pageViews']).to eq(
         'groupType' => 'daily',
         'groupRange' => 7,
         'total' => 3,
         'trend' => 3,
-        'items' =>  [
+        'items' => [
           {
             'count' => 2,
             'dateKey' => '217'
-          }, 
+          },
           {
             'count' => 1,
             'dateKey' => '218'

@@ -24,11 +24,11 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: 4324,
-          role: Team::ADMIN 
+          role: Team::ADMIN
         }
       }
       graphql_request(team_update_role_mutation, variables, user)
@@ -43,14 +43,14 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
   context 'when the role is not valid' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site:, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team.id, 
-          role: 5 
+          siteId: site.id,
+          teamId: team.id,
+          role: 5
         }
       }
       graphql_request(team_update_role_mutation, variables, user)
@@ -68,10 +68,10 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          teamId: site.team[0].id, 
-          role: Team::ADMIN 
+        input: {
+          siteId: site.id,
+          teamId: site.team[0].id,
+          role: Team::ADMIN
         }
       }
       graphql_request(team_update_role_mutation, variables, user)
@@ -86,14 +86,14 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
   context 'when the user is made an admin' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create(:team, site: site, role: Team::MEMBER, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site:, role: Team::MEMBER, status: Team::ACCEPTED) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           siteId: site.id,
-          teamId: team.id, 
-          role: Team::ADMIN 
+          teamId: team.id,
+          role: Team::ADMIN
         }
       }
       graphql_request(team_update_role_mutation, variables, user)
@@ -119,14 +119,14 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
   context 'when the user is made a member' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::ACCEPTED) }
+    let(:team) { create(:team, site:, role: Team::ADMIN, status: Team::ACCEPTED) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team.id, 
-          role: Team::MEMBER 
+          siteId: site.id,
+          teamId: team.id,
+          role: Team::MEMBER
         }
       }
       graphql_request(team_update_role_mutation, variables, user)
@@ -152,8 +152,8 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
   context 'when an admin promotes a member' do
     let(:site) { create(:site_with_team) }
 
-    let(:team1) { create(:team, site: site, role: Team::ADMIN) }
-    let(:team2) { create(:team, site: site, role: Team::MEMBER) }
+    let(:team1) { create(:team, site:, role: Team::ADMIN) }
+    let(:team2) { create(:team, site:, role: Team::MEMBER) }
 
     before do
       stub = double
@@ -162,11 +162,11 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team2.id, 
-          role: Team::ADMIN 
+          siteId: site.id,
+          teamId: team2.id,
+          role: Team::ADMIN
         }
       }
       graphql_request(team_update_role_mutation, variables, team1.user)
@@ -186,15 +186,15 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
   context 'when an admin tries to downgrade another admin' do
     let(:site) { create(:site_with_team) }
 
-    let(:team1) { create(:team, site: site, role: Team::ADMIN) }
-    let(:team2) { create(:team, site: site, role: Team::ADMIN) }
+    let(:team1) { create(:team, site:, role: Team::ADMIN) }
+    let(:team2) { create(:team, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          teamId: team2.id, 
-          role: Team::MEMBER 
+          siteId: site.id,
+          teamId: team2.id,
+          role: Team::MEMBER
         }
       }
       graphql_request(team_update_role_mutation, variables, team1.user)
@@ -206,7 +206,7 @@ RSpec.describe Mutations::Teams::UpdateRole, type: :request do
     end
 
     it 'does not modify the role' do
-      expect { subject }.not_to change { Team.find(team2.id).role }
+      expect { subject }.not_to(change { Team.find(team2.id).role })
     end
   end
 end

@@ -34,7 +34,7 @@ RSpec.describe Resolvers::Users::UserInvitation, type: :request do
       graphql_request(user_invitation, { token: user.raw_invitation_token }, nil)
     end
 
-    before { create(:team, user: user, site: site, status: Team::PENDING) }
+    before { create(:team, user:, site:, status: Team::PENDING) }
 
     it 'returns the email and pending status' do
       expect(subject['data']['userInvitation']).to eq(

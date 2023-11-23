@@ -9,7 +9,7 @@ RSpec.describe UserCleanupJob, type: :job do
 
   context 'when there are no users to delete' do
     it 'does not delete anyone' do
-      expect { subject }.not_to change { User.all.count }
+      expect { subject }.not_to(change { User.all.count })
     end
   end
 

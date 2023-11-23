@@ -57,7 +57,7 @@ RSpec.describe Mutations::Consent::Update, type: :request do
 
     before do
       Consent.create(
-        site: site,
+        site:,
         name: 'Squeaky',
         consent_method: 'widget',
         layout: 'bottom_left',
@@ -73,7 +73,7 @@ RSpec.describe Mutations::Consent::Update, type: :request do
           siteId: site.id,
           name: 'Squeaky 2',
           layout: 'center',
-          languages: ['en', 'fr'],
+          languages: %w[en fr]
         }
       }
       graphql_request(consent_update_mutation, variables, user)
@@ -85,13 +85,13 @@ RSpec.describe Mutations::Consent::Update, type: :request do
         'consentMethod' => 'widget',
         'layout' => 'center',
         'privacyPolicyUrl' => 'https://squeaky.ai/privacy',
-        'languages' => ['en', 'fr'],
+        'languages' => %w[en fr],
         'languagesDefault' => 'en'
       )
     end
 
     it 'does not create a new record' do
-      expect { subject }.not_to change { site.reload.consent.nil? }
+      expect { subject }.not_to(change { site.reload.consent.nil? })
     end
   end
 end

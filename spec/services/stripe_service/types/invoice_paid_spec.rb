@@ -31,7 +31,7 @@ RSpec.describe StripeService::Types::InvoicePaid do
     it 'stores the correct billing data' do
       subject
       billing.reload
-      
+
       expect(billing.customer_id).to eq('cus_LYkhU0zACd6T4T')
       expect(billing.status).to eq(Billing::VALID)
       expect(billing.card_type).to eq('visa')
@@ -103,22 +103,22 @@ RSpec.describe StripeService::Types::InvoicePaid do
         expect { subject }
           .to change { billing.site.reload.plan.features_enabled }
           .from(['dashboard'])
-          .to([
-            'dashboard',
-            'visitors',
-            'recordings',
-            'event_tracking',
-            'error_tracking',
-            'site_analytics',
-            'page_analytics',
-            'journeys',
-            'heatmaps_click_positions',
-            'heatmaps_click_counts',
-            'heatmaps_mouse',
-            'heatmaps_scroll',
-            'nps', 
-            'sentiment',
-            'data_export'
+          .to(%w[
+            dashboard
+            visitors
+            recordings
+            event_tracking
+            error_tracking
+            site_analytics
+            page_analytics
+            journeys
+            heatmaps_click_positions
+            heatmaps_click_counts
+            heatmaps_mouse
+            heatmaps_scroll
+            nps
+            sentiment
+            data_export
           ])
           .and change { billing.site.plan.team_member_limit }.from(5).to(nil)
           .and change { billing.site.plan.max_monthly_recordings }.from(3000).to(10000)

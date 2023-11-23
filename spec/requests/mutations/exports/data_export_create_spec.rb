@@ -24,7 +24,7 @@ RSpec.describe Mutations::Exports::DataExportCreate, type: :request do
   let(:user) { create(:user) }
   let(:site) { create(:site_with_team, owner: user) }
 
-  let(:now) { Time.new(2023, 3, 16, 12, 0, 0) }
+  let(:now) { Time.new(2023, 3, 16, 12, 0, 0).utc }
 
   before do
     allow(Time).to receive(:current).and_return(now)

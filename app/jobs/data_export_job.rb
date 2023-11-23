@@ -34,15 +34,15 @@ class DataExportJob < ApplicationJob
 
   def create_recordings_csv
     records = ::Recording
-              .includes(:nps, :sentiment)
-              .joins(:pages, :visitor)
-              .preload(:pages, :visitor)
-              .where(
-                'recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                data_export.site_id,
-                data_export.start_date,
-                data_export.end_date
-              )
+      .includes(:nps, :sentiment)
+      .joins(:pages, :visitor)
+      .preload(:pages, :visitor)
+      .where(
+        'recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
+        data_export.site_id,
+        data_export.start_date,
+        data_export.end_date
+      )
 
     return '' if records.empty?
 
@@ -53,13 +53,13 @@ class DataExportJob < ApplicationJob
 
   def create_visitors_csv
     records = ::Visitor
-              .left_outer_joins(:recordings)
-              .where(
-                'visitors.site_id = ? AND visitors.created_at BETWEEN ? AND ?',
-                data_export.site_id,
-                data_export.start_date,
-                data_export.end_date
-              )
+      .left_outer_joins(:recordings)
+      .where(
+        'visitors.site_id = ? AND visitors.created_at BETWEEN ? AND ?',
+        data_export.site_id,
+        data_export.start_date,
+        data_export.end_date
+      )
 
     return '' if records.empty?
 

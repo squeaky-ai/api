@@ -16,16 +16,16 @@ module Resolvers
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         recordings = object
-                     .recordings
-                     .includes(:nps, :sentiment)
-                     .joins(:pages, :visitor)
-                     .preload(:pages, :visitor)
-                     .where(
-                       'recordings.status = ? AND
+          .recordings
+          .includes(:nps, :sentiment)
+          .joins(:pages, :visitor)
+          .preload(:pages, :visitor)
+          .where(
+            'recordings.status = ? AND
                        to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?',
-                       Recording::ACTIVE, range.from, range.to
-                     )
-                     .order(order(sort))
+            Recording::ACTIVE, range.from, range.to
+          )
+          .order(order(sort))
 
         # Apply all the filters
         recordings = filter(recordings, filters)

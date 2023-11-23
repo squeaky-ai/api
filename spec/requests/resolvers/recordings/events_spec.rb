@@ -27,7 +27,7 @@ GRAPHQL
 RSpec.describe Resolvers::Recordings::Events, type: :request do
   let(:user) { create(:user) }
   let(:site) { create(:site_with_team, owner: user) }
-  let(:recording) { create(:recording, site: site) }
+  let(:recording) { create(:recording, site:) }
 
   let(:list_objects_v2) do
     double(contents: [
@@ -38,12 +38,12 @@ RSpec.describe Resolvers::Recordings::Events, type: :request do
   end
 
   let(:get_object) do
-    data = { href: "http://localhost/", width: 0, height: 0 }
+    data = { href: 'http://localhost/', width: 0, height: 0 }
     events = [
       {
         id: SecureRandom.uuid,
-        type: Event::META, 
-        data:, 
+        type: Event::META,
+        data:,
         timestamp: 1625389200000
       }
     ]

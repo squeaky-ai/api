@@ -10,7 +10,7 @@ RSpec.describe PlanService do
       subject { PlanService.alert_if_exceeded(site) }
 
       it 'does not send an email' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.count })
       end
 
       it 'does not add the lock in Redis' do
@@ -68,7 +68,7 @@ RSpec.describe PlanService do
       subject { PlanService.alert_if_exceeded(site) }
 
       it 'does not send an email' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.count })
       end
     end
 
@@ -102,7 +102,7 @@ RSpec.describe PlanService do
       subject { PlanService.alert_if_nearing_limit(site) }
 
       it 'does not send an email' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.count })
       end
 
       it 'does not add the lock in Redis' do
@@ -156,7 +156,7 @@ RSpec.describe PlanService do
       subject { PlanService.alert_if_nearing_limit(site) }
 
       it 'does not send an email' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.count })
       end
     end
 

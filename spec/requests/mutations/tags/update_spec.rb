@@ -15,14 +15,14 @@ RSpec.describe Mutations::Tags::Update, type: :request do
   context 'when the tag does not exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:name) { 'Teapot' }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagId: 345345345, 
+          siteId: site.id,
+          tagId: 345345345,
           name:
         }
       }
@@ -35,14 +35,14 @@ RSpec.describe Mutations::Tags::Update, type: :request do
     end
 
     it 'does not upsert a tag' do
-      expect { subject }.not_to change { recording.reload.tags.size }
+      expect { subject }.not_to(change { recording.reload.tags.size })
     end
   end
 
   context 'when the tag exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
     let(:tag) { create(:tag, site_id: site.id) }
     let(:name) { 'Saucepan' }
 
@@ -52,10 +52,10 @@ RSpec.describe Mutations::Tags::Update, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagId: tag.id.to_s, 
+          siteId: site.id,
+          tagId: tag.id.to_s,
           name:
         }
       }

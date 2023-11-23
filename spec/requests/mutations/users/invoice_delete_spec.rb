@@ -15,7 +15,7 @@ RSpec.describe Mutations::Users::InvoiceDelete, type: :request do
   let(:partner) { create(:partner, user:) }
   let!(:invoice) { create(:partner_invoice, partner:) }
 
-  subject do      
+  subject do
     variables = {
       input: {
         id: invoice.id

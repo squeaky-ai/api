@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::UtmSources, type: :request do
 
     it 'returns the sources' do
       response = subject['data']['site']['utmSources']
-      expect(response).to eq ['source_1', 'source_2']
+      expect(response).to eq %w[source_1 source_2]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::UtmSources, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['utmSources']
-      expect(response).to eq ['source_1', 'source_2']
+      expect(response).to eq %w[source_1 source_2]
     end
   end
 end

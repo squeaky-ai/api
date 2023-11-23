@@ -4,7 +4,7 @@ class DateFormatter
   def self.format(date:, timezone: 'UTC')
     return new(date, timezone).to_date_object if date.is_a?(Date)
     return new(date.to_datetime, timezone).to_date_object if date.is_a?(Time)
-    return new(Time.at(date / 1000), timezone).to_date_object if date.is_a?(Integer)
+    return new(Time.zone.at(date / 1000), timezone).to_date_object if date.is_a?(Integer)
 
     nil
   end

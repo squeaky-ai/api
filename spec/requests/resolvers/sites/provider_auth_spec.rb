@@ -46,7 +46,7 @@ RSpec.describe 'SitesProviderAuth', type: :request do
         'apiEndpoint' => nil,
         'authType' => 'bearer',
         'provider' => 'duda',
-        'providerAppUuid' => ENV['DUDA_APP_UUID'],
+        'providerAppUuid' => ENV.fetch('DUDA_APP_UUID', nil),
         'providerUuid' => auth.provider_uuid
       )
     end

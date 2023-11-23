@@ -38,9 +38,9 @@ RSpec.describe Resolvers::Feedback::NpsStats, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
     let(:visitor) { create(:visitor) }
-    let(:recording_1) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site: site, visitor: visitor) }
-    let(:recording_2) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site: site, visitor: visitor) }
-    let(:recording_3) { create(:recording, site: site, visitor: visitor) }
+    let(:recording_1) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site:, visitor:) }
+    let(:recording_2) { create(:recording, disconnected_at: Time.new(2021, 8, 3).to_i * 1000, site:, visitor:) }
+    let(:recording_3) { create(:recording, site:, visitor:) }
 
     let(:recordings) do
       [
@@ -69,9 +69,9 @@ RSpec.describe Resolvers::Feedback::NpsStats, type: :request do
     end
 
     before do
-      create(:nps, score: 5, created_at: Time.new(2021, 8, 3), recording: recording_1)
-      create(:nps, score: 3, created_at: Time.new(2021, 8, 3), recording: recording_2)
-      create(:nps, score: 3, created_at: Time.new(2020, 8, 3), recording: recording_3)
+      create(:nps, score: 5, created_at: Time.new(2021, 8, 3).utc, recording: recording_1)
+      create(:nps, score: 3, created_at: Time.new(2021, 8, 3).utc, recording: recording_2)
+      create(:nps, score: 3, created_at: Time.new(2020, 8, 3).utc, recording: recording_3)
 
       ClickHouse::Recording.insert do |buffer|
         recordings.each { |recording| buffer << recording }

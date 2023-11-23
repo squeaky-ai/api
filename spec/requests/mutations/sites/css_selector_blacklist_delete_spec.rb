@@ -15,9 +15,9 @@ RSpec.describe Mutations::Sites::CssSelectorBlacklistDelete, type: :request do
   let(:site) { create(:site_with_team, owner: user, css_selector_blacklist: ['foo']) }
 
   subject do
-    variables = { 
+    variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         selector: 'foo'
       }
     }
@@ -39,13 +39,13 @@ RSpec.describe Mutations::Sites::CssSelectorBlacklistDelete, type: :request do
     let(:site) { create(:site_with_team, owner: user, css_selector_blacklist: []) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           selector: 'foo'
         }
       }
-  
+
       graphql_request(site_css_selector_blacklist_delete_mutation, variables, user)
     end
 

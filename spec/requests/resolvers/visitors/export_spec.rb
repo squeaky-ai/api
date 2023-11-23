@@ -31,12 +31,12 @@ RSpec.describe Resolvers::Visitors::Export, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
   let(:visitor) { create(:visitor, site_id: site.id, external_attributes: { email: 'sfsdf@gmail.com' }) }
 
-  before do  
-    recording_1 = create(:recording, site: site, visitor: visitor)
-    recording_2 = create(:recording, site: site, visitor: visitor)
-    recording_3 = create(:recording, site: site, visitor: visitor)
-    recording_4 = create(:recording, site: site, visitor: visitor)
-    recording_5 = create(:recording, site: site, visitor: visitor)
+  before do
+    recording_1 = create(:recording, site:, visitor:)
+    recording_2 = create(:recording, site:, visitor:)
+    recording_3 = create(:recording, site:, visitor:)
+    recording_4 = create(:recording, site:, visitor:)
+    recording_5 = create(:recording, site:, visitor:) # rubocop:disable Lint/UselessAssignment
 
     create(:nps, recording: recording_1)
     create(:nps, recording: recording_2)
@@ -59,11 +59,11 @@ RSpec.describe Resolvers::Visitors::Export, type: :request do
           'contact' => false,
           'email' => nil,
           'score' => 5
-        }, 
+        },
         {
           'comment' => nil,
           'contact' => false,
-          'email' => nil, 
+          'email' => nil,
           'score' => 5
         }
       ],
@@ -71,7 +71,7 @@ RSpec.describe Resolvers::Visitors::Export, type: :request do
         {
           'comment' => nil,
           'score' => 5
-        }, 
+        },
         {
           'comment' => nil,
           'score' => 5

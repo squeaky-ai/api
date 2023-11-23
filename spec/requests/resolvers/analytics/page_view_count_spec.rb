@@ -43,19 +43,19 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         }
       ]
@@ -90,25 +90,25 @@ RSpec.describe Resolvers::Analytics::PageViewCount, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 7).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/', 
+          url: '/',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/test', 
+          url: '/test',
           exited_at: Time.new(2021, 8, 6).to_i * 1000
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          url: '/contact', 
+          url: '/contact',
           exited_at: Time.new(2021, 7, 6).to_i * 1000
         }
       ]

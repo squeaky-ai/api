@@ -31,7 +31,7 @@ class EventsProcessingJob < ApplicationJob
     else
       # Specific ids were given so we should only
       # update these ones
-      EventCapture.where(id: ids).each(&)
+      EventCapture.where(id: ids).find_each(&)
     end
   end
 

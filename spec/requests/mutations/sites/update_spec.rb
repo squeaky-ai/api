@@ -21,8 +21,8 @@ RSpec.describe Mutations::Sites::Update, type: :request do
 
       subject do
         variables = {
-          input: { 
-            siteId: site.id, 
+          input: {
+            siteId: site.id,
             url:
           }
         }
@@ -63,8 +63,8 @@ RSpec.describe Mutations::Sites::Update, type: :request do
 
       subject do
         variables = {
-          input: { 
-            siteId: site.id, 
+          input: {
+            siteId: site.id,
             url:
           }
         }
@@ -83,9 +83,9 @@ RSpec.describe Mutations::Sites::Update, type: :request do
 
       subject do
         variables = {
-          input: { 
-            siteId: site.id, 
-            url: 
+          input: {
+            siteId: site.id,
+            url:
           }
         }
         graphql_request(site_update_mutation, variables, user)
@@ -109,8 +109,8 @@ RSpec.describe Mutations::Sites::Update, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
+        input: {
+          siteId: site.id,
           name:
         }
       }

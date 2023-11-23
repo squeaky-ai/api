@@ -40,37 +40,37 @@ RSpec.describe Resolvers::Analytics::Countries, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           country_code: 'GB'
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           country_code: 'SE'
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           country_code: 'GB'
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           country_code: 'FR'
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           country_code: 'ZZ'
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           country_code: 'GB'
         }
       ]

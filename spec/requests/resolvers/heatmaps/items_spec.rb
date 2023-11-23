@@ -19,13 +19,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'ClickCount',
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08' 
+          from_date: '2021-08-01',
+          to_date: '2021-08-08'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -43,7 +43,7 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
 
       before do
         ClickHouse::ClickEvent.insert do |buffer|
-          5.times do |i|
+          5.times do |_i|
             buffer << {
               uuid: SecureRandom.uuid,
               site_id: site.id,
@@ -61,7 +61,7 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
             }
           end
 
-          3.times do |i|
+          3.times do |_i|
             buffer << {
               uuid: SecureRandom.uuid,
               site_id: site.id,
@@ -82,13 +82,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       end
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'ClickCount',
-          from_date: '2022-04-23', 
-          to_date: '2022-04-30' 
+          from_date: '2022-04-23',
+          to_date: '2022-04-30'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -118,13 +118,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'ClickPosition',
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08' 
+          from_date: '2021-08-01',
+          to_date: '2021-08-08'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -176,13 +176,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       end
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'ClickPosition',
-          from_date: '2022-04-23', 
-          to_date: '2022-04-30' 
+          from_date: '2022-04-23',
+          to_date: '2022-04-30'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -214,13 +214,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'Scroll',
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08' 
+          from_date: '2021-08-01',
+          to_date: '2021-08-08'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -254,13 +254,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       end
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'Scroll',
-          from_date: '2022-04-23', 
-          to_date: '2022-04-30' 
+          from_date: '2022-04-23',
+          to_date: '2022-04-30'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -285,13 +285,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       let(:site) { create(:site_with_team, owner: user) }
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'Cursor',
-          from_date: '2021-08-01', 
-          to_date: '2021-08-08' 
+          from_date: '2021-08-01',
+          to_date: '2021-08-08'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end
@@ -345,13 +345,13 @@ RSpec.describe Resolvers::Heatmaps::Items, type: :request do
       end
 
       subject do
-        variables = { 
+        variables = {
           site_id: site.id,
           device: 'Desktop',
           page: '/',
           type: 'Cursor',
-          from_date: '2022-04-23', 
-          to_date: '2022-04-30' 
+          from_date: '2022-04-23',
+          to_date: '2022-04-30'
         }
         graphql_request(heatmaps_items_query, variables, user)
       end

@@ -41,7 +41,7 @@ RSpec.describe StripeService::Types::CustomerUpdated do
         'line1' => '',
         'line2' => nil,
         'postal_code' => nil,
-        'state' => nil,
+        'state' => nil
       )
       expect(billing.tax_ids).to eq([])
     end

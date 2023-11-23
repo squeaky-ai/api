@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe StripeService::Types::Base do
-  class Instance < StripeService::Types::Base; end
+class Instance < StripeService::Types::Base; end
 
+RSpec.describe StripeService::Types::Base do
   let(:event) { double(:event) }
   let(:instance) { Instance.new(event) }
 

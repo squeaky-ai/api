@@ -28,7 +28,7 @@ RSpec.describe Mutations::Events::CaptureDeleteBulk, type: :request do
 
     variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         eventIds: [*ids, '23424234']
       }
     }

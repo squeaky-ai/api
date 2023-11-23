@@ -13,18 +13,18 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:, search:, filters:)
         events = object
-                 .event_captures
-                 .left_outer_joins(:event_groups) # So we can map &:name for #group_names
-                 .preload(:event_groups)
+          .event_captures
+          .left_outer_joins(:event_groups) # So we can map &:name for #group_names
+          .preload(:event_groups)
 
         events = search_names(events, search) if search
         events = filter_source(events, filters) if filters[:source]
         events = filter_event_type(events, filters) unless filters[:event_type].empty?
 
         events = events
-                 .order(order(sort))
-                 .page(page)
-                 .per(size)
+          .order(order(sort))
+          .page(page)
+          .per(size)
 
         {
           items: events,

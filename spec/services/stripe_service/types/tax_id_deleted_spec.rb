@@ -13,7 +13,7 @@ RSpec.describe StripeService::Types::TaxIdDeleted do
       subject { described_class.new(event).handle }
 
       it 'does nothing' do
-        expect { subject }.not_to change { billing.reload.tax_ids }
+        expect { subject }.not_to(change { billing.reload.tax_ids })
       end
     end
 

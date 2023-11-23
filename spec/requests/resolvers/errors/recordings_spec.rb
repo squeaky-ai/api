@@ -20,12 +20,12 @@ RSpec.describe Resolvers::Errors::Recordings, type: :request do
   context 'when there is no error' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:now) { Time.new(2022, 7, 6, 5, 0, 0) }
+    let(:now) { Time.new(2022, 7, 6, 5, 0, 0).utc }
 
     subject do
       today = now.strftime('%Y-%m-%d')
 
-      variables = { 
+      variables = {
         site_id: site.id,
         error_id: 'sdfdsfdsdsf',
         from_date: today,
@@ -43,7 +43,7 @@ RSpec.describe Resolvers::Errors::Recordings, type: :request do
   context 'when there are some errors' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:now) { Time.new(2022, 7, 6, 5, 0, 0) }
+    let(:now) { Time.new(2022, 7, 6, 5, 0, 0).utc }
     let(:recording) { create(:recording, site:, disconnected_at: now.to_i * 1000) }
 
     before do
@@ -66,7 +66,7 @@ RSpec.describe Resolvers::Errors::Recordings, type: :request do
     subject do
       today = now.strftime('%Y-%m-%d')
 
-      variables = { 
+      variables = {
         site_id: site.id,
         error_id: Base64.encode64('Error: Oh no!'),
         from_date: today,

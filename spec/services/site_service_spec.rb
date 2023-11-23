@@ -19,7 +19,11 @@ RSpec.describe SiteService do
       end
 
       it 'does not attempt to cache anything' do
-        subject rescue nil
+        begin
+          subject
+        rescue StandardError
+          nil
+        end
         expect(Rails.cache).not_to have_received(:fetch)
       end
     end
@@ -99,7 +103,11 @@ RSpec.describe SiteService do
       end
 
       it 'does not attempt to cache anything' do
-        subject rescue nil
+        begin
+          subject
+        rescue StandardError
+          nil
+        end
         expect(Rails.cache).not_to have_received(:fetch)
       end
     end

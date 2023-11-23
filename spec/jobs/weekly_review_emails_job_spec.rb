@@ -17,7 +17,7 @@ RSpec.describe WeeklyReviewEmailsJob, type: :job do
   before do
     today = Date.new(2022, 2, 14)
 
-    allow(Date).to receive(:today).and_return(today)
+    allow(Time.zone).to receive(:today).and_return(today)
     allow(SiteMailer).to receive(:weekly_review).and_call_original
 
     create(:recording, site: site_1, disconnected_at: 1641151425390)

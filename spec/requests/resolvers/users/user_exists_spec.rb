@@ -13,7 +13,7 @@ RSpec.describe Resolvers::Users::UserExists, type: :request do
     let(:email) { 'jimmy@gmail.com' }
 
     it 'returns false' do
-      response = graphql_request(user_exists_query, { email: email }, nil)
+      response = graphql_request(user_exists_query, { email: }, nil)
 
       expect(response['data']['userExists']).to eq false
     end
@@ -22,10 +22,10 @@ RSpec.describe Resolvers::Users::UserExists, type: :request do
   context 'when the user does exist' do
     let(:email) { 'jimmy@gmail.com' }
 
-    before { create(:user, email: email) }
+    before { create(:user, email:) }
 
     it 'returns true' do
-      response = graphql_request(user_exists_query, { email: email }, nil)
+      response = graphql_request(user_exists_query, { email: }, nil)
 
       expect(response['data']['userExists']).to eq true
     end

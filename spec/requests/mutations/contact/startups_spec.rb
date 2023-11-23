@@ -11,7 +11,7 @@ contact_startups_mutation = <<-GRAPHQL
 GRAPHQL
 
 RSpec.describe Mutations::Contact::Startups, type: :request do
- subject do
+  subject do
     variables = {
       input: {
         firstName: 'Bob',

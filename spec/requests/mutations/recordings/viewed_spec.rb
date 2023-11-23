@@ -18,9 +18,9 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: 234234 
+        input: {
+          siteId: site.id,
+          recordingId: 234234
         }
       }
       graphql_request(recording_viewed_mutation, variables, user)
@@ -35,7 +35,7 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
   context 'when the recording does exist' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     before do
       ClickHouse::Recording.insert do |buffer|
@@ -49,9 +49,9 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: recording.id 
+        input: {
+          siteId: site.id,
+          recordingId: recording.id
         }
       }
       graphql_request(recording_viewed_mutation, variables, user)
@@ -80,13 +80,13 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
   context 'when a superuser is viewing' do
     let(:user) { create(:user, superuser: true) }
     let(:site) { create(:site_with_team) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingId: recording.id 
+        input: {
+          siteId: site.id,
+          recordingId: recording.id
         }
       }
       graphql_request(recording_viewed_mutation, variables, user)
@@ -98,11 +98,11 @@ RSpec.describe Mutations::Recordings::Viewed, type: :request do
     end
 
     it 'does not update the recording in the database' do
-      expect { subject }.not_to change { Recording.find_by(id: recording.id).viewed }
+      expect { subject }.not_to(change { Recording.find_by(id: recording.id).viewed })
     end
 
     it 'does not mark the visitor as not-new' do
-      expect { subject }.not_to change { recording.visitor.reload.new }
+      expect { subject }.not_to(change { recording.visitor.reload.new })
     end
   end
 end

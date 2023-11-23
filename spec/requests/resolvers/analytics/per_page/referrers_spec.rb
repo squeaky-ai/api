@@ -54,34 +54,34 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://google.com', 
+          referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           recording_id: recording_1.id,
-          visitor_id: recording_1.visitor_id,
+          visitor_id: recording_1.visitor_id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://google.com', 
+          referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           recording_id: recording_2.id,
-          visitor_id: recording_2.visitor_id,
+          visitor_id: recording_2.visitor_id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: nil, 
+          referrer: nil,
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           recording_id: recording_3.id,
-          visitor_id: recording_3.visitor_id,
+          visitor_id: recording_3.visitor_id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           recording_id: recording_4.id,
-          visitor_id: recording_4.visitor_id,
+          visitor_id: recording_4.visitor_id
         }
       ]
     end
@@ -171,7 +171,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://google.com', 
+          referrer: 'http://google.com',
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           recording_id: recording_1.id,
           visitor_id: recording_1.visitor_id
@@ -179,7 +179,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: nil, 
+          referrer: nil,
           disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           recording_id: recording_2.id,
           visitor_id: recording_2.visitor_id
@@ -187,7 +187,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           recording_id: recording_3.id,
           visitor_id: recording_3.visitor_id
@@ -195,7 +195,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           recording_id: recording_4.id,
           visitor_id: recording_4.visitor_id
@@ -203,7 +203,7 @@ RSpec.describe Resolvers::Analytics::PerPage::Referrers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          referrer: 'http://facebook.com', 
+          referrer: 'http://facebook.com',
           disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           recording_id: recording_5.id,
           visitor_id: recording_5.visitor_id

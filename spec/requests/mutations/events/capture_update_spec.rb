@@ -29,7 +29,7 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           eventId: 12312321312,
           name: 'My event',
           rules: [
@@ -50,11 +50,11 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
       expect(event).to eq(nil)
     end
   end
-  
+
   context 'when the capture exists' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:last_counted_at) { Time.new(2022, 01, 01) }
+    let(:last_counted_at) { Time.new(2022, 0o1, 0o1).utc }
     let!(:event) { create(:event_capture, site:, name: 'Old Name', count: 5, last_counted_at:) }
 
     before do
@@ -64,7 +64,7 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
     subject do
       variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           eventId: event.id,
           name: 'New Name',
           rules: [
@@ -100,9 +100,15 @@ RSpec.describe Mutations::Events::CaptureUpdate, type: :request do
 
     it 'updates the capture' do
       expect { subject }.to change { event.reload.name }.from('Old Name').to('New Name')
-                       .and change { event.count }.from(5).to(0)
-                       .and change { event.last_counted_at }.from(last_counted_at).to(nil)
-                       .and change { event.rules }.from([]).to([{ 'value' => '/test', 'matcher' => 'equals', 'condition' => 'or' }])
+        .and change { event.count }.from(5).to(0)
+        .and change { event.last_counted_at }.from(last_counted_at).to(nil)
+        .and change { event.rules }.from([]).to([
+          {
+            'value' => '/test',
+            'matcher' => 'equals',
+            'condition' => 'or'
+          }
+        ])
     end
   end
 end

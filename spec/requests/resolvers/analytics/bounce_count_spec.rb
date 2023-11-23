@@ -25,10 +25,10 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
+    variables = {
       site_id: site.id,
       from_date: '2022-10-23',
-      to_date: '2022-10-30' 
+      to_date: '2022-10-30'
     }
     graphql_request(analytics_bounce_count_query, variables, user)
   end
@@ -51,36 +51,36 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          entered_at: 1667028000074, 
-          exited_at: 1667028026074, 
+          entered_at: 1667028000074,
+          exited_at: 1667028026074,
           bounced_on: true
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          entered_at: 1667028001074, 
-          exited_at: 1667028026074, 
+          entered_at: 1667028001074,
+          exited_at: 1667028026074,
           bounced_on: false
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          entered_at: 1667028002074, 
-          exited_at: 1667028026074, 
+          entered_at: 1667028002074,
+          exited_at: 1667028026074,
           bounced_on: false
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          entered_at: 1667028012074, 
-          exited_at: 1667028026074, 
+          entered_at: 1667028012074,
+          exited_at: 1667028026074,
           bounced_on: true
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          entered_at: 1667028014074, 
-          exited_at: 1667028026074, 
+          entered_at: 1667028014074,
+          exited_at: 1667028026074,
           bounced_on: false
         }
       ]
@@ -102,7 +102,7 @@ RSpec.describe Resolvers::Analytics::BounceCount, type: :request do
           {
             'dateKey' => '302',
             'viewCount' => 5,
-            'bounceRateCount' => 2,
+            'bounceRateCount' => 2
           }
         ]
       )

@@ -14,12 +14,12 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
   context 'when the user is not the owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
-    let!(:team) { create(:team, user: user, site: site, role: Team::ADMIN) }
+    let!(:team) { create(:team, user:, site:, role: Team::ADMIN) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_delete_mutation, variables, user)
@@ -35,7 +35,7 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     it 'does not change the size of the team' do
-      expect { subject }.not_to change { site.team.size }
+      expect { subject }.not_to(change { site.team.size })
     end
   end
 
@@ -47,9 +47,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let!(:recording_2) { create(:recording, site:) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_delete_mutation, variables, user)
@@ -89,9 +89,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let(:user_1) { create(:user) }
     let(:user_2) { create(:user) }
 
-    let!(:team_1) { create(:team, user:, site: site, role: Team::OWNER) }
-    let!(:team_2) { create(:team, user: user_1, site: site, role: Team::ADMIN) }
-    let!(:team_3) { create(:team, user: user_2, site: site, role: Team::MEMBER) }
+    let!(:team_1) { create(:team, user:, site:, role: Team::OWNER) }
+    let!(:team_2) { create(:team, user: user_1, site:, role: Team::ADMIN) }
+    let!(:team_3) { create(:team, user: user_2, site:, role: Team::MEMBER) }
 
     before do
       stub = double
@@ -101,9 +101,9 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_delete_mutation, variables, user)
@@ -126,13 +126,13 @@ RSpec.describe Mutations::Sites::Delete, type: :request do
     let(:customer_id) { SecureRandom.base36 }
 
     before do
-      Billing.create(customer_id:, site: site, user: user)
+      Billing.create(customer_id:, site:, user:)
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id 
+          siteId: site.id
         }
       }
       graphql_request(site_delete_mutation, variables, user)

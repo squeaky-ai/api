@@ -8,7 +8,7 @@ RSpec.describe EventsProcessingJob, type: :job do
   subject { described_class.perform_now }
 
   context 'when events are new' do
-    let(:now) { Time.new(2022, 7, 6, 12, 0, 0) }
+    let(:now) { Time.new(2022, 7, 6, 12, 0, 0).utc }
     let(:site) { create(:site, created_at: now - 1.day) }
     let(:recording) { create(:recording, site:) }
 
@@ -91,17 +91,37 @@ RSpec.describe EventsProcessingJob, type: :job do
 
     it 'changes the counts' do
       expect { subject }.to change { event_1.reload.count }.from(0).to(1)
-                       .and change { event_1.last_counted_at }.from(nil).to(now)
-                       .and change { event_2.reload.count }.from(0).to(1)
-                       .and change { event_2.last_counted_at }.from(nil).to(now)
-                       .and change { event_3.reload.count }.from(0).to(1)
-                       .and change { event_3.last_counted_at }.from(nil).to(now)
-                       .and change { event_4.reload.count }.from(0).to(1)
-                       .and change { event_4.last_counted_at }.from(nil).to(now)
-                       .and change { event_5.reload.count }.from(0).to(1)
-                       .and change { event_5.last_counted_at }.from(nil).to(now)
-                       .and change { event_6.reload.count }.from(0).to(1)
-                       .and change { event_6.last_counted_at }.from(nil).to(now)
+        .and change { event_1.last_counted_at }.from(nil).to(now)
+        .and change {
+               event_2.reload.count
+             }.from(0).to(1)
+        .and change {
+               event_2.last_counted_at
+             }.from(nil).to(now)
+        .and change {
+               event_3.reload.count
+             }.from(0).to(1)
+        .and change {
+               event_3.last_counted_at
+             }.from(nil).to(now)
+        .and change {
+               event_4.reload.count
+             }.from(0).to(1)
+        .and change {
+               event_4.last_counted_at
+             }.from(nil).to(now)
+        .and change {
+               event_5.reload.count
+             }.from(0).to(1)
+        .and change {
+               event_5.last_counted_at
+             }.from(nil).to(now)
+        .and change {
+               event_6.reload.count
+             }.from(0).to(1)
+        .and change {
+               event_6.last_counted_at
+             }.from(nil).to(now)
     end
   end
 

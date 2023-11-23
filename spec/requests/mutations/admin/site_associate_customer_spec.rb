@@ -25,7 +25,7 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
           customerId: 'cus_12342342342'
         }
       }
-  
+
       graphql_request(admin_site_associate_customer_mutation, variables, user)
     end
 
@@ -45,7 +45,7 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
   context 'when the billing already exists' do
     let(:user) { create(:user, superuser: true) }
     let(:site) { create(:site_with_team) }
-    
+
     before do
       create(:billing, site:, customer_id: 'cus_12342342342')
     end
@@ -57,7 +57,7 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
           customerId: 'cus_123465756756'
         }
       }
-  
+
       graphql_request(admin_site_associate_customer_mutation, variables, user)
     end
 
@@ -68,7 +68,7 @@ RSpec.describe Mutations::Admin::SiteAssociateCustomer, type: :request do
     end
 
     it 'does not update the database' do
-      expect { subject }.not_to change { site.billing.customer_id }
+      expect { subject }.not_to(change { site.billing.customer_id })
     end
   end
 end

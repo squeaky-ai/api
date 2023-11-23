@@ -11,7 +11,7 @@ RSpec.describe HeatmapsService do
     described_class.new(
       site_id: site.id,
       range:,
-      page_url: '/', 
+      page_url: '/',
       device: 'Desktop'
     )
   end

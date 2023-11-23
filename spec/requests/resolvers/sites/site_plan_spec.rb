@@ -85,9 +85,9 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'maxMonthlyRecordings' => 125000,
         'dataStorageMonths' => 12,
         'responseTimeHours' => 24,
-        'support' => [
-          'Email',
-          'Chat'
+        'support' => %w[
+          Email
+          Chat
         ]
       )
     end
@@ -240,10 +240,10 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'maxMonthlyRecordings' => 250000,
         'dataStorageMonths' => -1,
         'responseTimeHours' => 0,
-        'support' => [
-          'Email',
-          'Chat',
-          'Phone'
+        'support' => %w[
+          Email
+          Chat
+          Phone
         ]
       )
     end
@@ -260,7 +260,7 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         plan_id: 'eacfcc46-82ba-4994-9d01-19696c4e374b',
         max_monthly_recordings: 500000,
         data_storage_months: 36,
-        support: ['Email', 'Phone']
+        support: %w[Email Phone]
       )
     end
 
@@ -284,9 +284,9 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'maxMonthlyRecordings' => 500000,
         'dataStorageMonths' => 36,
         'responseTimeHours' => 0,
-        'support' => [
-          'Email',
-          'Phone'
+        'support' => %w[
+          Email
+          Phone
         ]
       )
     end

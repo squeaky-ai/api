@@ -39,9 +39,9 @@ RSpec.describe Mutations::Sites::Create, type: :request do
 
     subject do
       variables = {
-        input: { 
-          url:, 
-          name: 'Cowbell' 
+        input: {
+          url:,
+          name: 'Cowbell'
         }
       }
       graphql_request(site_create_mutation, variables, user)
@@ -54,16 +54,16 @@ RSpec.describe Mutations::Sites::Create, type: :request do
     end
   end
 
-  context 'when a site with this url does not exist' do 
+  context 'when a site with this url does not exist' do
     context 'when the url is invalid' do
       let(:url) { 'sdfsjkldfjsdklfsd' }
       let(:user) { create(:user) }
 
       subject do
         variables = {
-          input: { 
-            url:, 
-            name: 'Arctic Monkeys' 
+          input: {
+            url:,
+            name: 'Arctic Monkeys'
           }
         }
         graphql_request(site_create_mutation, variables, user)
@@ -80,9 +80,9 @@ RSpec.describe Mutations::Sites::Create, type: :request do
 
       subject do
         variables = {
-          input: { 
-            url:, 
-            name: 'Arctic Monkeys' 
+          input: {
+            url:,
+            name: 'Arctic Monkeys'
           }
         }
         graphql_request(site_create_mutation, variables, user)
@@ -100,8 +100,8 @@ RSpec.describe Mutations::Sites::Create, type: :request do
 
       subject do
         variables = {
-          input: { 
-            url:, 
+          input: {
+            url:,
             name:
           }
         }

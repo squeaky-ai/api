@@ -17,9 +17,9 @@ RSpec.describe Mutations::Teams::Update, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: 4324,
           linkedDataVisible: true
         }
@@ -36,13 +36,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when a member tries to make a change' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    
+
     let(:team) { create(:team, site:, role: Team::MEMBER) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: 4324,
           linkedDataVisible: true
         }
@@ -59,13 +59,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when an admin tries to modify an owner' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    
+
     let(:team) { create(:team, site:, role: Team::MEMBER) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: user.id,
           linkedDataVisible: true
         }
@@ -82,13 +82,13 @@ RSpec.describe Mutations::Teams::Update, type: :request do
   context 'when the user can make the change' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    
+
     let(:team) { create(:team, site:, role: Team::MEMBER, linked_data_visible: false) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
+          siteId: site.id,
           teamId: team.id,
           linkedDataVisible: true
         }

@@ -66,7 +66,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team) }
 
-    before { create(:team, user: user, site: site, role: Team::MEMBER) }
+    before { create(:team, user:, site:, role: Team::MEMBER) }
 
     subject do
       variables = {}
@@ -78,7 +78,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     end
 
     it 'does not destroy the site' do
-      expect { subject }.not_to change { Site.exists?(site.id) }
+      expect { subject }.not_to(change { Site.exists?(site.id) })
     end
   end
 
@@ -89,7 +89,7 @@ RSpec.describe Mutations::Users::Delete, type: :request do
     let(:customer_id) { SecureRandom.base36 }
 
     before do
-      Billing.create(customer_id:, site: site, user: user)
+      Billing.create(customer_id:, site:, user:)
 
       allow_any_instance_of(StripeService::Billing).to receive(:delete_customer)
     end

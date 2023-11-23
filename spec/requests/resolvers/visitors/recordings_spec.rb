@@ -57,10 +57,10 @@ RSpec.describe Resolvers::Visitors::Recordings, type: :request do
     let(:visitor) { create(:visitor, site_id: site.id) }
 
     before do
-      create(:recording, site: site, page_urls: ['/'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/', '/contact'], visitor: visitor)
-      create(:recording, site: site, page_urls: ['/contact'], status: Recording::DELETED, visitor: visitor)
-      create(:recording, site: site, page_urls: ['/contact'])
+      create(:recording, site:, page_urls: ['/'], visitor:)
+      create(:recording, site:, page_urls: ['/', '/contact'], visitor:)
+      create(:recording, site:, page_urls: ['/contact'], status: Recording::DELETED, visitor:)
+      create(:recording, site:, page_urls: ['/contact'])
     end
 
     subject do

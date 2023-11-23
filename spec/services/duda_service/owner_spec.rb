@@ -6,7 +6,7 @@ RSpec.describe DudaService::Owner do
   let(:site_name) { SecureRandom.uuid }
   let(:api_endpoint) { 'https://test-api.com' }
   let(:response) { double(:response, body: response_body, code: 200) }
-  
+
   let(:auth) do
     {
       'type' => 'bearer',

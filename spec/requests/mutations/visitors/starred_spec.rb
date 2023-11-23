@@ -17,11 +17,11 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          visitorId: SecureRandom.base36, 
-          starred: false 
+          siteId: site.id,
+          visitorId: SecureRandom.base36,
+          starred: false
         }
       }
       graphql_request(visitor_starred_mutation, variables, user)
@@ -38,15 +38,15 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create(:visitor, site_id: site.id) }
-      
-      before { create(:recording, site: site, visitor: visitor) }
+
+      before { create(:recording, site:, visitor:) }
 
       subject do
-        variables = { 
+        variables = {
           input: {
-            siteId: site.id, 
-            visitorId: visitor.id, 
-            starred: true 
+            siteId: site.id,
+            visitorId: visitor.id,
+            starred: true
           }
         }
         graphql_request(visitor_starred_mutation, variables, user)
@@ -66,15 +66,15 @@ RSpec.describe Mutations::Visitors::Starred, type: :request do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
       let(:visitor) { create(:visitor, starred: true, site_id: site.id) }
-      
-      before { create(:recording, site: site, visitor: visitor) }
+
+      before { create(:recording, site:, visitor:) }
 
       subject do
-        variables = { 
+        variables = {
           input: {
-            siteId: site.id, 
-            visitorId: visitor.id, 
-            starred: false 
+            siteId: site.id,
+            visitorId: visitor.id,
+            starred: false
           }
         }
         graphql_request(visitor_starred_mutation, variables, user)

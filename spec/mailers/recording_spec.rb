@@ -11,7 +11,7 @@ RSpec.describe RecordingMailer, type: :mailer do
         expect(mail.to).to eq nil
       end
     end
-    
+
     describe 'when the site exists' do
       let(:site) { create(:site_with_team) }
       let(:mail) { described_class.first_recording(site.id) }

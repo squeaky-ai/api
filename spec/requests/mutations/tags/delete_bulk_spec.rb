@@ -17,10 +17,10 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagIds: [234234] 
+          siteId: site.id,
+          tagIds: [234234]
         }
       }
       graphql_request(tags_delete_mutation, variables, user)
@@ -38,10 +38,10 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
     let!(:tag) { Tag.create(name: 'Foo', site_id: site.id) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagIds: [tag.id, 23423423] 
+          siteId: site.id,
+          tagIds: [tag.id, 23423423]
         }
       }
       graphql_request(tags_delete_mutation, variables, user)
@@ -64,10 +64,10 @@ RSpec.describe Mutations::Tags::DeleteBulk, type: :request do
     let!(:tag_2) { Tag.create(name: 'Bar', site_id: site.id) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          siteId: site.id, 
-          tagIds: [tag_1.id, tag_2.id] 
+          siteId: site.id,
+          tagIds: [tag_1.id, tag_2.id]
         }
       }
       graphql_request(tags_delete_mutation, variables, user)

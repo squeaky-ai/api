@@ -22,16 +22,16 @@ RSpec.describe Mutations::Admin::SiteTeamDelete, type: :request do
           id: site.owner.id
         }
       }
-  
+
       graphql_request(admin_site_team_delete_mutation, variables, user)
     end
 
     it 'returns nil' do
       expect(subject['data']['adminSiteTeamDelete']).to be_nil
     end
-  
+
     it 'does not delete the record' do
-      expect { subject }.not_to change { site.team.size }
+      expect { subject }.not_to(change { site.team.size })
     end
   end
 
@@ -47,14 +47,14 @@ RSpec.describe Mutations::Admin::SiteTeamDelete, type: :request do
           id: team.id
         }
       }
-  
+
       graphql_request(admin_site_team_delete_mutation, variables, user)
     end
 
     it 'returns nil' do
       expect(subject['data']['adminSiteTeamDelete']).to be_nil
     end
-  
+
     it 'deletes delete the record' do
       subject
       expect { team.reload }.to raise_error(ActiveRecord::RecordNotFound)

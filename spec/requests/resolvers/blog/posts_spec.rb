@@ -73,8 +73,8 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
       expect(response['tags']).to match_array(['Tag 1', 'Tag 2', 'Tag 3'])
       expect(response['posts']).to match_array([
         {
-          'author' =>  {
-            'image' =>  'https://cdn.squeaky.ai/blog/lewis.jpg',
+          'author' => {
+            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg',
             'name' => 'Lewis Monteith'
           },
           'body' => 'Hello world',
@@ -257,7 +257,6 @@ RSpec.describe Resolvers::Blog::Posts, type: :request do
 
     it 'only returns posts that have those tags and category' do
       response = subject['data']['blogPosts']
-      category = response['posts'].pluck('category').uniq
       tags = response['posts'].pluck('tags').flatten
 
       expect(response['posts'].size).to eq(1)

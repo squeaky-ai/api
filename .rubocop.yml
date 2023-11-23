@@ -4,7 +4,6 @@ AllCops:
   NewCops: enable
   Exclude:
     - db/**/*
-    - spec/**/*
 
 Layout/LineLength:
   Max: 140
@@ -14,6 +13,8 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Max: 50
+  Exclude:
+    - spec/**/*
 
 Metrics/ClassLength:
   Max: 275
@@ -34,3 +35,22 @@ Rails/WhereEquals:
 
 Rails/DynamicFindBy:
   Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Style/NumericLiterals:
+  Exclude:
+    - spec/**/*
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented

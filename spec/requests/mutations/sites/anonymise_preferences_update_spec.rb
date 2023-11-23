@@ -16,9 +16,9 @@ RSpec.describe Mutations::Sites::AnonymisePreferencesUpdate, type: :request do
   let(:site) { create(:site_with_team, owner: user) }
 
   subject do
-    variables = { 
+    variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         textEnabled: false,
         formsEnabled: false
       }
@@ -29,7 +29,7 @@ RSpec.describe Mutations::Sites::AnonymisePreferencesUpdate, type: :request do
 
   it 'updates the value' do
     expect { subject }.to change { site.reload.anonymise_form_inputs }.from(true).to(false)
-                     .and change { site.anonymise_text }.from(true).to(false)
+      .and change { site.anonymise_text }.from(true).to(false)
   end
 
   it 'returns the updated value' do

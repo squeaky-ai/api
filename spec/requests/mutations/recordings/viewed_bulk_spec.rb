@@ -18,9 +18,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingIds: ['23423423423'], 
+        input: {
+          siteId: site.id,
+          recordingIds: ['23423423423'],
           viewed: true
         }
       }
@@ -37,9 +37,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let!(:recording_1) { create(:recording, viewed: true, site: site) }
-    let!(:recording_2) { create(:recording, site: site) }
-    let!(:recording_3) { create(:recording, site: site) }
+    let!(:recording_1) { create(:recording, viewed: true, site:) }
+    let!(:recording_2) { create(:recording, site:) }
+    let!(:recording_3) { create(:recording, site:) }
 
     before do
       ClickHouse::Recording.insert do |buffer|
@@ -55,9 +55,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
+        input: {
+          siteId: site.id,
+          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'],
           viewed: true
         }
       }
@@ -108,9 +108,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let!(:recording_1) { create(:recording, viewed: true, site: site) }
-    let!(:recording_2) { create(:recording, site: site) }
-    let!(:recording_3) { create(:recording, viewed: true, site: site) }
+    let!(:recording_1) { create(:recording, viewed: true, site:) }
+    let!(:recording_2) { create(:recording, site:) }
+    let!(:recording_3) { create(:recording, viewed: true, site:) }
 
     before do
       ClickHouse::Recording.insert do |buffer|
@@ -127,9 +127,9 @@ RSpec.describe Mutations::Recordings::ViewedBulk, type: :request do
 
     subject do
       variables = {
-        input: { 
-          siteId: site.id, 
-          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'], 
+        input: {
+          siteId: site.id,
+          recordingIds: [recording_1.id.to_s, recording_2.id.to_s, '1231232131'],
           viewed: false
         }
       }

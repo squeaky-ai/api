@@ -61,7 +61,7 @@ RSpec.describe Resolvers::Admin::SitesBundles, type: :request do
             'name' => 'bundle_1',
             'plan' => {
               'name' => 'Free'
-            },
+            }
           },
           {
             'name' => 'bundle_2',

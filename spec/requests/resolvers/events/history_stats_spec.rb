@@ -10,7 +10,7 @@ event_history_stats_query = <<-GRAPHQL
         type
         count
         uniqueTriggers
-        averageEventsPerVisitor 
+        averageEventsPerVisitor#{' '}
       }
     }
   }
@@ -22,7 +22,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         site_id: site.id,
         group_ids: [],
         capture_ids: [],
@@ -82,7 +82,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/',
-            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0).utc + i.days).to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -93,7 +93,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/test',
-            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0).utc + i.days).to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -104,7 +104,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             site_id: site.id,
             recording_id: recording.id,
             url: '/something_else',
-            exited_at: (Time.new(2022, 6, 2, 12, 0, 0) + i.days).utc.to_i * 1000,
+            exited_at: (Time.new(2022, 6, 2, 12, 0, 0).utc + i.days).to_i * 1000,
             visitor_id: recording.visitor_id
           }
         end
@@ -112,7 +112,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         site_id: site.id,
         group_ids: [group_1.id, group_2.id],
         capture_ids: [capture_1.id, capture_2.id],

@@ -5,13 +5,13 @@ class Nps < ApplicationRecord
 
   def self.get_scores_between(site_id, from_date, to_date)
     results = select('nps.created_at, nps.score')
-              .joins(:recording)
-              .where(
-                'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
-                site_id,
-                from_date,
-                to_date
-              )
+      .joins(:recording)
+      .where(
+        'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',
+        site_id,
+        from_date,
+        to_date
+      )
 
     results.map do |r|
       {

@@ -23,7 +23,7 @@ RSpec.describe Mutations::Exports::DataExportDelete, type: :request do
   subject do
     variables = {
       input: {
-        siteId: site.id, 
+        siteId: site.id,
         dataExportId: data_export.id
       }
     }

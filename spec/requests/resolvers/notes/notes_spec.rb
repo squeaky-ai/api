@@ -54,7 +54,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when there are several notes' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     subject do
       variables = { site_id: site.id, size: 5, page: 1 }
@@ -62,7 +62,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
     end
 
     before do
-      5.times { create(:note, recording_id: recording.id, user: user) }
+      5.times { create(:note, recording_id: recording.id, user:) }
     end
 
     it 'returns the items' do
@@ -84,10 +84,10 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when paginating' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site) }
+    let(:recording) { create(:recording, site:) }
 
     before do
-      5.times { create(:note, recording_id: recording.id, user: user) }
+      5.times { create(:note, recording_id: recording.id, user:) }
     end
 
     subject do
@@ -105,7 +105,7 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
       expect(response['pagination']).to eq(
         {
           'pageSize' => 2,
-          'total' => 5,
+          'total' => 5
         }
       )
     end
@@ -114,10 +114,10 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
   context 'when the recording is soft deleted' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site: site, status: Recording::DELETED) }
-    
+    let(:recording) { create(:recording, site:, status: Recording::DELETED) }
+
     before do
-      create(:note, recording_id: recording.id, user: user)
+      create(:note, recording_id: recording.id, user:)
     end
 
     subject do

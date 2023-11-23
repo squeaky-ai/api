@@ -27,10 +27,10 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          token:, 
-          password: 'dfgdfgdfg' 
+          token:,
+          password: 'dfgdfgdfg'
         }
       }
       graphql_request(team_invite_accept_mutation, variables, nil)
@@ -56,10 +56,10 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         input: {
-          token: user.raw_invitation_token, 
-          password: 'sdfsfdsf' 
+          token: user.raw_invitation_token,
+          password: 'sdfsfdsf'
         }
       }
       graphql_request(team_invite_accept_mutation, variables, nil)
@@ -80,17 +80,17 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     context 'when it is a new user' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let!(:team) { create(:team, user: invite_user, site: site, role: Team::ADMIN, status: Team::PENDING) }
+      let!(:team) { create(:team, user: invite_user, site:, role: Team::ADMIN, status: Team::PENDING) }
 
       before do
         allow(OnboardingMailerService).to receive(:enqueue)
       end
 
       subject do
-        variables = { 
+        variables = {
           input: {
-            token: team.user.raw_invitation_token, 
-            password: 'sdfsdfsdf' 
+            token: team.user.raw_invitation_token,
+            password: 'sdfsdfsdf'
           }
         }
         graphql_request(team_invite_accept_mutation, variables, nil)
@@ -101,11 +101,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       end
 
       it 'updates the password' do
-        expect { subject }.to change { User.find(team.user.id).encrypted_password }
+        expect { subject }.to(change { User.find(team.user.id).encrypted_password })
       end
 
       it 'does not send any emails' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
       end
 
       it 'enqueues the onboarding emails' do
@@ -117,7 +117,7 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
     context 'when it is an existing user' do
       let(:user) { create(:user) }
       let(:site) { create(:site_with_team, owner: user) }
-      let!(:team) { create(:team, site: site, role: Team::ADMIN, status: Team::PENDING) }
+      let!(:team) { create(:team, site:, role: Team::ADMIN, status: Team::PENDING) }
 
       before do
         allow(OnboardingMailerService).to receive(:enqueue)
@@ -125,9 +125,9 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
 
       subject do
         team.user.invite_to_team!
-        variables = { 
+        variables = {
           input: {
-            token: team.user.reload.raw_invitation_token 
+            token: team.user.reload.raw_invitation_token
           }
         }
         graphql_request(team_invite_accept_mutation, variables, nil)
@@ -138,11 +138,11 @@ RSpec.describe Mutations::Teams::InviteAccept, type: :request do
       end
 
       it 'does not update the password' do
-        expect { subject }.not_to change { User.find(team.user.id).encrypted_password }
+        expect { subject }.not_to(change { User.find(team.user.id).encrypted_password })
       end
 
       it 'does not send any emails' do
-        expect { subject }.not_to change { ActionMailer::Base.deliveries.size }
+        expect { subject }.not_to(change { ActionMailer::Base.deliveries.size })
       end
 
       it 'does not enqueue the onboarding emails' do

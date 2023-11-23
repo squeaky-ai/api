@@ -27,7 +27,7 @@ RSpec.describe Resolvers::Analytics::PagesPerSession, type: :request do
 
     it 'returns 0' do
       response = subject['data']['site']['analytics']
-      expect(response['pagesPerSession']).to eq ({ 'average' => 0, 'trend' => 0 })
+      expect(response['pagesPerSession']).to eq({ 'average' => 0, 'trend' => 0 })
     end
   end
 
@@ -76,7 +76,7 @@ RSpec.describe Resolvers::Analytics::PagesPerSession, type: :request do
 
     it 'returns the average number of views' do
       response = subject['data']['site']['analytics']
-      expect(response['pagesPerSession']).to eq ({ 'average' => 1.5, 'trend' => 1.5 })
+      expect(response['pagesPerSession']).to eq({ 'average' => 1.5, 'trend' => 1.5 })
     end
   end
 

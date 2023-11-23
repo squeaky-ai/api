@@ -28,7 +28,7 @@ RSpec.describe Mutations::Admin::UserPartnerCreate, type: :request do
           slug: 'my-company'
         }
       }
-  
+
       graphql_request(admin_partner_create_mutation, variables, user)
     end
 
@@ -44,7 +44,7 @@ RSpec.describe Mutations::Admin::UserPartnerCreate, type: :request do
     end
 
     it 'does not create a partner' do
-      expect { subject }.not_to change { Partner.all.size }
+      expect { subject }.not_to(change { Partner.all.size })
     end
   end
 
@@ -60,7 +60,7 @@ RSpec.describe Mutations::Admin::UserPartnerCreate, type: :request do
           slug: 'my-company'
         }
       }
-  
+
       graphql_request(admin_partner_create_mutation, variables, user)
     end
 
@@ -83,7 +83,7 @@ RSpec.describe Mutations::Admin::UserPartnerCreate, type: :request do
       let(:user) { create(:user, superuser: true) }
       let(:user_to_become_partner) { create(:user) }
       let!(:partner) { create(:partner, slug: 'my-company', user: create(:user)) }
-  
+
       subject do
         variables = {
           input: {
@@ -92,7 +92,7 @@ RSpec.describe Mutations::Admin::UserPartnerCreate, type: :request do
             slug: 'my-company'
           }
         }
-    
+
         graphql_request(admin_partner_create_mutation, variables, user)
       end
 

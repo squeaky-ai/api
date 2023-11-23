@@ -51,30 +51,30 @@ RSpec.describe Resolvers::Changelog::Posts, type: :request do
       response = subject['data']['changelogPosts']
       expect(response).to match_array([
         {
-          'author' =>  {
-            'image' =>  'https://cdn.squeaky.ai/blog/lewis.jpg', 
+          'author' => {
+            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg',
             'name' => 'Lewis Monteith'
-          }, 
-          'body' => 'Hello world', 
-          'draft' => false, 
-          'metaDescription' => 'Meta Description', 
-          'metaImage' => 'https://cdn.squeaky.ai/image.png', 
-          'slug' => '/category/title', 
-          'title' => 'Title', 
-          'createdAt' => anything, 
+          },
+          'body' => 'Hello world',
+          'draft' => false,
+          'metaDescription' => 'Meta Description',
+          'metaImage' => 'https://cdn.squeaky.ai/image.png',
+          'slug' => '/category/title',
+          'title' => 'Title',
+          'createdAt' => anything,
           'updatedAt' => anything
-        }, 
+        },
         {
           'author' => {
-            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg', 
+            'image' => 'https://cdn.squeaky.ai/blog/lewis.jpg',
             'name' => 'Lewis Monteith'
-          }, 
-          'body' => 'Hello world', 
-          'draft' => false, 
-          'metaDescription' => 'Meta Description', 
-          'metaImage' => 'https://cdn.squeaky.ai/image.png', 
-          'slug' => '/category/title', 
-          'title' => 'Title', 
+          },
+          'body' => 'Hello world',
+          'draft' => false,
+          'metaDescription' => 'Meta Description',
+          'metaImage' => 'https://cdn.squeaky.ai/image.png',
+          'slug' => '/category/title',
+          'title' => 'Title',
           'createdAt' => anything,
           'updatedAt' => anything
         }
@@ -87,8 +87,8 @@ RSpec.describe Resolvers::Changelog::Posts, type: :request do
       before do
         create(:changelog, draft: true)
       end
-  
-      subject do  
+
+      subject do
         graphql_request(changelog_posts_query, {}, nil)
       end
 
@@ -104,8 +104,8 @@ RSpec.describe Resolvers::Changelog::Posts, type: :request do
       before do
         create(:changelog, draft: true)
       end
-  
-      subject do  
+
+      subject do
         graphql_request(changelog_posts_query, {}, user)
       end
 
@@ -121,8 +121,8 @@ RSpec.describe Resolvers::Changelog::Posts, type: :request do
       before do
         create(:changelog, draft: true)
       end
-  
-      subject do  
+
+      subject do
         graphql_request(changelog_posts_query, {}, user)
       end
 

@@ -11,10 +11,10 @@ module Resolvers
 
       def resolve_with_timings(page:, size:, sort:)
         visitors = Visitor
-                   .joins(:recordings)
-                   .where('recordings.id IN (?)', recording_ids)
-                   .order(order(sort))
-                   .group('visitors.id')
+          .joins(:recordings)
+          .where('recordings.id IN (?)', recording_ids)
+          .order(order(sort))
+          .group('visitors.id')
 
         visitors = visitors.page(page).per(size)
 

@@ -58,7 +58,7 @@ RSpec.describe Resolvers::Sites::UtmContents, type: :request do
 
     it 'returns the contents' do
       response = subject['data']['site']['utmContents']
-      expect(response).to eq ['content_1', 'content_2']
+      expect(response).to eq %w[content_1 content_2]
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Resolvers::Sites::UtmContents, type: :request do
 
     it 'returns them deduped' do
       response = subject['data']['site']['utmContents']
-      expect(response).to eq ['content_1', 'content_2']
+      expect(response).to eq %w[content_1 content_2]
     end
   end
 end

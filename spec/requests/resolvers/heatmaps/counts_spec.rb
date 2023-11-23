@@ -22,13 +22,13 @@ RSpec.describe Resolvers::Heatmaps::Counts, type: :request do
     let(:site) { create(:site_with_team, owner: user) }
 
     subject do
-      variables = { 
+      variables = {
         site_id: site.id,
         device: 'Desktop',
         page: '/',
         type: 'ClickCount',
-        from_date: '2021-08-01', 
-        to_date: '2021-08-08' 
+        from_date: '2021-08-01',
+        to_date: '2021-08-08'
       }
       graphql_request(heatmaps_counts_query, variables, user)
     end
@@ -39,7 +39,7 @@ RSpec.describe Resolvers::Heatmaps::Counts, type: :request do
       expect(response).to eq(
         'desktop' => 0,
         'tablet' => 0,
-        'mobile' => 0,
+        'mobile' => 0
       )
     end
   end
@@ -174,13 +174,13 @@ RSpec.describe Resolvers::Heatmaps::Counts, type: :request do
     end
 
     subject do
-      variables = { 
+      variables = {
         site_id: site.id,
         device: 'Desktop',
         page: '/',
-        type: 'ClickCount', 
-        from_date: '2022-04-23', 
-        to_date: '2022-04-30' 
+        type: 'ClickCount',
+        from_date: '2022-04-23',
+        to_date: '2022-04-30'
       }
       graphql_request(heatmaps_counts_query, variables, user)
     end

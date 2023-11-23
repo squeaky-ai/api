@@ -15,7 +15,7 @@ RSpec.describe Mutations::Users::ReferralCreate, type: :request do
     let(:user) { create(:user) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           url: 'https://foo.co.uk'
         }
@@ -33,7 +33,7 @@ RSpec.describe Mutations::Users::ReferralCreate, type: :request do
     let!(:partner) { create(:partner, user:) }
 
     subject do
-      variables = { 
+      variables = {
         input: {
           url: 'https://foo.co.uk'
         }

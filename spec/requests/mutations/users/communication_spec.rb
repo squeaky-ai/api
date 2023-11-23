@@ -5,7 +5,7 @@ require 'rails_helper'
 communication_update_mutation = <<-GRAPHQL
   mutation ($input: UsersCommunicationInput!) {
     userCommunication(input: $input) {
-      id 
+      id#{' '}
       communication {
         knowledgeSharingEmail
         marketingAndSpecialOffersEmail
@@ -31,7 +31,7 @@ RSpec.describe Mutations::Users::Communication, type: :request do
           monthlyReviewEmail: true,
           productUpdatesEmail: true,
           marketingAndSpecialOffersEmail: true,
-          knowledgeSharingEmail: true,
+          knowledgeSharingEmail: true
         }
       }
       graphql_request(communication_update_mutation, variables, user)
@@ -94,7 +94,7 @@ RSpec.describe Mutations::Users::Communication, type: :request do
     end
 
     it 'does not create a new record' do
-      expect { subject }.not_to change { user.reload.communication.nil? }
+      expect { subject }.not_to(change { user.reload.communication.nil? })
     end
   end
 end

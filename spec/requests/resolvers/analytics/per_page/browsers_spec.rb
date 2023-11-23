@@ -57,21 +57,21 @@ RSpec.describe Resolvers::Analytics::PerPage::Browsers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           browser: 'Firefox',
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           browser: 'Safari',
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 7, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           browser: 'Chrome',
           recording_id: recording_3.id
         }
@@ -153,28 +153,28 @@ RSpec.describe Resolvers::Analytics::PerPage::Browsers, type: :request do
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 7).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 7).to_i * 1000,
           browser: 'Firefox',
           recording_id: recording_1.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           browser: 'Safari',
           recording_id: recording_2.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 8, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 8, 6).to_i * 1000,
           browser: 'Safari',
           recording_id: recording_3.id
         },
         {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          disconnected_at: Time.new(2021, 7, 6).to_i * 1000, 
+          disconnected_at: Time.new(2021, 7, 6).to_i * 1000,
           browser: 'Safari',
           recording_id: recording_4.id
         }
