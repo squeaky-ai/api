@@ -10,7 +10,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins do |source|
-      if source == Rails.application.config.web_host
+      if source == Rails.application.config.web_host || source == Rails.application.config.app_host
         # If the request is coming from our own domain
         # we can return early and skip the call to the
         # database
