@@ -12,6 +12,7 @@ module Types
       field :api_endpoint, String, null: true
       field :provider_app_uuid, String, null: true
       field :sdk_url, String, null: true
+      field :publish_history, [String, { null: false }], null: false
     end
   end
 end

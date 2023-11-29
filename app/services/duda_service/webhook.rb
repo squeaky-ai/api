@@ -12,6 +12,8 @@ module DudaService
       case event_type
       when 'DOMAIN_UPDATED'
         process_domain_updated
+      when 'PUBLISH'
+        process_duda_published
       else
         Rails.logger.info("Ignoring Duda webhook with event_type: #{event_type}")
       end
@@ -21,9 +23,17 @@ module DudaService
 
     attr_reader :event_type, :data, :resource_data
 
+    def site
+      @site ||= ::Site.find_by!(uuid: resource_data['site_name'])
+    end
+
     def process_domain_updated
-      site = ::Site.find_by!(uuid: resource_data['site_name'])
       site.update(url: domain, name:)
+    end
+
+    def process_duda_published
+      site.provider_auth.publish_history << Time.current.iso8601
+      site.provider_auth.save
     end
 
     def domain

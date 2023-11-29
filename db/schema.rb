@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_29_211029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,9 +42,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.string "meta_image", null: false
     t.string "meta_description", null: false
     t.string "slug", null: false
-    t.string "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "body", null: false
     t.string "scripts", default: [], null: false, array: true
     t.boolean "covering_enabled", default: true
   end
@@ -103,12 +103,12 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
   create_table "event_captures", force: :cascade do |t|
     t.string "name", null: false
     t.integer "event_type", null: false
-    t.integer "count", default: 0, null: false
     t.json "rules", default: [], null: false
     t.datetime "last_counted_at"
     t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "count", default: 0, null: false
     t.string "source"
     t.string "name_alias"
     t.index ["name", "site_id"], name: "index_event_captures_on_name_and_site_id", unique: true
@@ -122,9 +122,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
 
   create_table "event_groups", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "site_id"
     t.index ["site_id"], name: "index_event_groups_on_site_id"
   end
 
@@ -201,10 +201,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.date "due_at"
     t.date "paid_at"
     t.integer "amount", null: false
-    t.string "currency", null: false
     t.bigint "partner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", null: false
     t.index ["partner_id"], name: "index_partner_invoices_on_partner_id"
   end
 
@@ -223,13 +223,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.integer "data_storage_months"
     t.integer "response_time_hours"
     t.string "support", default: [], null: false, array: true
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "sso_enabled", default: false, null: false
     t.boolean "audit_trail_enabled", default: false, null: false
     t.boolean "private_instance_enabled", default: false, null: false
     t.string "notes"
-    t.bigint "site_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "team_member_limit"
     t.string "features_enabled", default: [], array: true
     t.string "plan_id", null: false
@@ -247,6 +247,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.bigint "site_id"
     t.string "deep_link_url"
     t.string "sdk_url"
+    t.string "publish_history", default: [], array: true
     t.index ["site_id"], name: "index_provider_auth_on_site_id"
   end
 
@@ -263,7 +264,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.bigint "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "visitor_id"
+    t.bigint "visitor_id", null: false
     t.string "referrer"
     t.integer "device_x", default: -1, null: false
     t.integer "device_y", default: -1, null: false
@@ -348,6 +349,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_02_065610) do
     t.boolean "superuser_access_enabled", default: false
     t.string "routes", default: [], null: false, array: true
     t.boolean "ingest_enabled", default: true, null: false
+    t.boolean "consent_enabled", default: false, null: false
     t.boolean "anonymise_text", default: true, null: false
     t.integer "site_type"
     t.string "provider"

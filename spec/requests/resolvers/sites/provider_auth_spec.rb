@@ -12,6 +12,7 @@ sites_provider_auth_query = <<-GRAPHQL
         authType
         apiEndpoint
         providerAppUuid
+        publishHistory
       }
     }
   }
@@ -47,7 +48,8 @@ RSpec.describe 'SitesProviderAuth', type: :request do
         'authType' => 'bearer',
         'provider' => 'duda',
         'providerAppUuid' => ENV.fetch('DUDA_APP_UUID', nil),
-        'providerUuid' => auth.provider_uuid
+        'providerUuid' => auth.provider_uuid,
+        'publishHistory' => []
       )
     end
   end
