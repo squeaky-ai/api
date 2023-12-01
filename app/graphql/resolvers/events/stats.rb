@@ -103,7 +103,7 @@ module Resolvers
             count: result['count'],
             average_events_per_visitor: result['count'].to_f / result['unique_triggers'],
             unique_triggers: result['unique_triggers'],
-            average_session_duration: recording_stats['average_session_duration'],
+            average_session_duration: recording_stats['average_session_duration'].to_i,
             browsers: recording_stats['browsers'],
             referrers: recording_stats['referrers']
           }
@@ -188,8 +188,8 @@ module Resolvers
       def to_string_record(tally)
         tally.map do |key, value|
           {
-            key:,
-            value:
+            key: key.to_s,
+            value: value.to_s
           }
         end
       end
