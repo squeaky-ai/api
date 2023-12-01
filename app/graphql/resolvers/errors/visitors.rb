@@ -42,7 +42,7 @@ module Resolvers
         visitors = visitors.page(page).per(size)
 
         {
-          items: visitors,
+          items: format_visitors(visitors),
           pagination: {
             page_size: size,
             total: visitors.total_count,
@@ -52,6 +52,33 @@ module Resolvers
       end
 
       private
+
+      def format_visitors(visitors)
+        visitors.map do |visitor|
+          hash = {
+            id: visitor.id,
+            visitor_id: visitor.visitor_id,
+            viewed: visitor.viewed,
+            recording_count: {
+              total: visitor.total_recording_count,
+              new: visitor.new_recording_count
+            },
+            first_viewed_at: visitor.first_viewed_at,
+            last_activity_at: visitor.last_activity_at,
+            language: Locale.get_language(visitor.locale),
+            page_views_count: { total: 0, unique: 0 }, # This is expensive for many visitors, don't try it
+            starred: visitor.starred,
+            linked_data: visitor.linked_data,
+            devices: visitor.devices.map { |device| Devices.format(device) },
+            countries: Countries.to_code_and_name(visitor.country_codes),
+            source: visitor.source,
+            average_recording_duration: visitor.average_recording_duration,
+            created_at: visitor.created_at
+          }
+
+          Struct.new(*hash.keys).new(*hash.values)
+        end
+      end
 
       def recording_ids
         sql = <<-SQL.squish
