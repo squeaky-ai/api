@@ -24,6 +24,10 @@ class Visitor < ApplicationRecord
     find_by("site_id = ? AND external_attributes->>'id' = ?", site_id, id.to_s)
   end
 
+  def viewed
+    viewed?
+  end
+
   def viewed?
     recordings.filter(&:viewed).size.positive?
   end
