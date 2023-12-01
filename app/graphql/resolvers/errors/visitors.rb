@@ -10,8 +10,31 @@ module Resolvers
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
 
       def resolve_with_timings(page:, size:, sort:)
+        query = <<-SQL.squish
+          visitors.*,
+          BOOL_OR(recordings.viewed) viewed,
+          MIN(recordings.connected_at) first_viewed_at,
+          MAX(recordings.disconnected_at) last_activity_at,
+          MIN(recordings.locale) locale,
+          SUM(recordings.pages_count) page_views_count,
+          AVG(recordings.activity_duration) average_recording_duration,
+          COUNT(DISTINCT recordings.id) total_recording_count,
+          COUNT(DISTINCT CASE WHEN recordings.viewed THEN NULL ELSE recordings.id END) new_recording_count,
+          ARRAY_AGG(DISTINCT(recordings.country_code)) country_codes,
+          JSON_AGG(JSON_BUILD_OBJECT(
+            'browser',     recordings.browser,
+            'useragent',   recordings.useragent,
+            'viewport_x',  recordings.viewport_x,
+            'viewport_y',  recordings.viewport_y,
+            'device_x',    recordings.device_x,
+            'device_y',    recordings.device_y,
+            'device_type', recordings.device_type
+          )) devices
+        SQL
+
         visitors = Visitor
-          .joins(:recordings)
+          .left_outer_joins(:recordings)
+          .select(query)
           .where('recordings.id IN (?)', recording_ids)
           .order(order(sort))
           .group('visitors.id')
