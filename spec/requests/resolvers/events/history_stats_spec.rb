@@ -12,6 +12,7 @@ event_history_stats_query = <<-GRAPHQL
         uniqueTriggers
         averageEventsPerVisitor
         averageSessionDuration
+        recordingsCount
         browsers {
           key
           value
@@ -145,6 +146,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             'uniqueTriggers' => 1,
             'averageEventsPerVisitor' => 5.0,
             'averageSessionDuration' => 5000,
+            'recordingsCount' => 1,
             'browsers' => [
               {
                 'key' => 'Chrome',
@@ -165,6 +167,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             'uniqueTriggers' => 1,
             'averageEventsPerVisitor' => 3.0,
             'averageSessionDuration' => 5000,
+            'recordingsCount' => 1,
             'browsers' => [
               {
                 'key' => 'Chrome',
@@ -185,6 +188,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             'uniqueTriggers' => 2,
             'averageEventsPerVisitor' => 4.0,
             'averageSessionDuration' => 5000,
+            'recordingsCount' => 2,
             'browsers' => [
               {
                 'key' => 'Chrome',
@@ -205,6 +209,7 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
             'uniqueTriggers' => 0,
             'averageEventsPerVisitor' => 0.0,
             'averageSessionDuration' => 0,
+            'recordingsCount' => 0,
             'browsers' => [],
             'referrers' => []
           }

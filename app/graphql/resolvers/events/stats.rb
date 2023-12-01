@@ -95,7 +95,8 @@ module Resolvers
       def format_capture_events(results)
         results.map do |result|
           # This is n+1 but should be fast enough
-          recording_stats = fetch_recordings_stats(result['recording_ids'].uniq)
+          recording_ids = result['recording_ids'].uniq
+          recording_stats = fetch_recordings_stats(recording_ids)
 
           {
             id: result['event_id'],
@@ -105,7 +106,8 @@ module Resolvers
             unique_triggers: result['unique_triggers'],
             average_session_duration: recording_stats['average_session_duration'].to_i,
             browsers: recording_stats['browsers'],
-            referrers: recording_stats['referrers']
+            referrers: recording_stats['referrers'],
+            recordings_count: recording_ids.size
           }
         end
       end
@@ -131,11 +133,12 @@ module Resolvers
           unique_triggers: capture[:unique_triggers],
           average_session_duration: capture[:average_session_duration],
           browsers: to_string_record(capture[:browsers].tally),
-          referrers: to_string_record(capture[:referrers].tally)
+          referrers: to_string_record(capture[:referrers].tally),
+          recordings_count: capture[:recordings_count]
         }
       end
 
-      def aggregate_group(id, groups, capture_events_with_counts)
+      def aggregate_group(id, groups, capture_events_with_counts) # rubocop:disable Metrics/AbcSize
         # Find the group that matches this id
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group
@@ -150,6 +153,7 @@ module Resolvers
         average_session_duration = Maths.average(captures.pluck(:average_session_duration))
         browsers = to_string_record(captures.pluck(:browsers).flatten.tally)
         referrers = to_string_record(captures.pluck(:referrers).flatten.tally)
+        recordings_count = captures.pluck(:recordings_count).sum
 
         {
           event_or_group_id: group.id,
@@ -160,7 +164,8 @@ module Resolvers
           unique_triggers:,
           average_session_duration:,
           browsers:,
-          referrers:
+          referrers:,
+          recordings_count:
         }
       end
 
