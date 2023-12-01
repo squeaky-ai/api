@@ -18,6 +18,8 @@ module Resolvers
 
         visitors = visitors.page(page).per(size)
 
+        puts 'DEBUG VISITORS', visitors.to_json
+
         {
           items: visitors,
           pagination: {

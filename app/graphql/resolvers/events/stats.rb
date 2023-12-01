@@ -121,7 +121,10 @@ module Resolvers
           count: capture[:count],
           type: 'capture',
           average_events_per_visitor: capture[:average_events_per_visitor],
-          unique_triggers: capture[:unique_triggers]
+          unique_triggers: capture[:unique_triggers],
+          average_session_duration: 0,
+          browsers: [],
+          referrers: []
         }
       end
 
@@ -130,7 +133,7 @@ module Resolvers
         group = groups.detect { |g| g.id.to_s == id }
         # Get a list of all the event capture ids for this group
         capture_ids = group.event_captures.map(&:id).map(&:to_s)
-        # Get al ist of all the capture_events_with_counts that
+        # Get a list of all the capture_events_with_counts that
         # are in the list of capture_ids
         captures = capture_events_with_counts.filter { |c| capture_ids.include?(c[:id]) }
 
@@ -144,7 +147,10 @@ module Resolvers
           type: 'group',
           count:,
           average_events_per_visitor:,
-          unique_triggers:
+          unique_triggers:,
+          average_session_duration: 0,
+          browsers: [],
+          referrers: []
         }
       end
     end

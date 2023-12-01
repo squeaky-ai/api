@@ -75,7 +75,7 @@ Rails.application.configure do
   config.action_cable.logger.level = Logger::WARN
 
   config.web_host = 'http://localhost:3333'
-  config.app_host = 'http://localhost:3333'
+  config.app_host = 'http://localhost:3000'
 
   config.squeaky_site_id = 1
 end

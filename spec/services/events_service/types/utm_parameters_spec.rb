@@ -22,7 +22,8 @@ RSpec.describe EventsService::Types::UtmParameters do
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             recordings
           WHERE
@@ -45,7 +46,8 @@ RSpec.describe EventsService::Types::UtmParameters do
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             recordings
           WHERE
@@ -68,7 +70,8 @@ RSpec.describe EventsService::Types::UtmParameters do
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             recordings
           WHERE
@@ -91,7 +94,8 @@ RSpec.describe EventsService::Types::UtmParameters do
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             recordings
           WHERE
@@ -114,7 +118,8 @@ RSpec.describe EventsService::Types::UtmParameters do
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event.name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             recordings
           WHERE

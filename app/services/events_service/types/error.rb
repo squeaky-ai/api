@@ -9,7 +9,8 @@ module EventsService
             COUNT(*) count,
             COUNT(DISTINCT visitor_id) unique_triggers,
             '#{event_name}' as event_name,
-            '#{event.id}' as event_id
+            '#{event.id}' as event_id,
+            groupArray(recording_id) recording_ids
           FROM
             error_events
           WHERE
