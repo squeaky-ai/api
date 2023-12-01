@@ -10,7 +10,16 @@ event_history_stats_query = <<-GRAPHQL
         type
         count
         uniqueTriggers
-        averageEventsPerVisitor#{' '}
+        averageEventsPerVisitor
+        averageSessionDuration
+        browsers {
+          key
+          value
+        }
+        referrers {
+          key
+          value
+        }
       }
     }
   }
@@ -71,7 +80,10 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
         buffer << {
           uuid: SecureRandom.uuid,
           site_id: site.id,
-          recording_id: recording.id
+          recording_id: recording.id,
+          activity_duration: 5000,
+          browser: 'Chrome',
+          referrer: 'https://google.com'
         }
       end
 
@@ -127,32 +139,74 @@ RSpec.describe Resolvers::Events::Stats, type: :request do
       expect(response).to match_array(
         [
           {
-            'averageEventsPerVisitor' => 4.0,
-            'uniqueTriggers' => 2,
-            'count' => 8,
-            'name' => 'Group 1',
-            'type' => 'group'
-          },
-          {
-            'averageEventsPerVisitor' => 0.0,
-            'uniqueTriggers' => 0,
-            'count' => 0,
-            'name' => 'Group 2',
-            'type' => 'group'
-          },
-          {
-            'averageEventsPerVisitor' => 5.0,
-            'uniqueTriggers' => 1,
-            'count' => 5,
             'name' => 'Capture 1',
-            'type' => 'capture'
+            'type' => 'capture',
+            'count' => 5,
+            'uniqueTriggers' => 1,
+            'averageEventsPerVisitor' => 5.0,
+            'averageSessionDuration' => 5000,
+            'browsers' => [
+              {
+                'key' => 'Chrome',
+                'value' => '1'
+              }
+            ],
+            'referrers' => [
+              {
+                'key' => 'https://google.com',
+                'value' => '1'
+              }
+            ]
           },
           {
-            'averageEventsPerVisitor' => 3.0,
-            'uniqueTriggers' => 1,
-            'count' => 3,
             'name' => 'Capture 2',
-            'type' => 'capture'
+            'type' => 'capture',
+            'count' => 3,
+            'uniqueTriggers' => 1,
+            'averageEventsPerVisitor' => 3.0,
+            'averageSessionDuration' => 5000,
+            'browsers' => [
+              {
+                'key' => 'Chrome',
+                'value' => '1'
+              }
+            ],
+            'referrers' => [
+              {
+                'key' => 'https://google.com',
+                'value' => '1'
+              }
+            ]
+          },
+          {
+            'name' => 'Group 1',
+            'type' => 'group',
+            'count' => 8,
+            'uniqueTriggers' => 2,
+            'averageEventsPerVisitor' => 4.0,
+            'averageSessionDuration' => 5000,
+            'browsers' => [
+              {
+                'key' => 'Chrome',
+                'value' => '2'
+              }
+            ],
+            'referrers' => [
+              {
+                'key' => 'https://google.com',
+                'value' => '2'
+              }
+            ]
+          },
+          {
+            'name' => 'Group 2',
+            'type' => 'group',
+            'count' => 0,
+            'uniqueTriggers' => 0,
+            'averageEventsPerVisitor' => 0.0,
+            'averageSessionDuration' => 0,
+            'browsers' => [],
+            'referrers' => []
           }
         ]
       )

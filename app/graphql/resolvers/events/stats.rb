@@ -77,7 +77,8 @@ module Resolvers
             results.event_id event_id,
             results.unique_triggers,
             results.count count,
-            results.event_name
+            results.event_name,
+            results.recording_ids
           FROM (#{union_queries.join(' ')}) results
         SQL
 
@@ -93,12 +94,18 @@ module Resolvers
 
       def format_capture_events(results)
         results.map do |result|
+          # This is n+1 but should be fast enough
+          recording_stats = fetch_recordings_stats(result['recording_ids'].uniq)
+
           {
             id: result['event_id'],
             name: result['event_name'],
             count: result['count'],
             average_events_per_visitor: result['count'].to_f / result['unique_triggers'],
-            unique_triggers: result['unique_triggers']
+            unique_triggers: result['unique_triggers'],
+            average_session_duration: recording_stats['average_session_duration'],
+            browsers: recording_stats['browsers'],
+            referrers: recording_stats['referrers']
           }
         end
       end
@@ -122,9 +129,9 @@ module Resolvers
           type: 'capture',
           average_events_per_visitor: capture[:average_events_per_visitor],
           unique_triggers: capture[:unique_triggers],
-          average_session_duration: 0,
-          browsers: [],
-          referrers: []
+          average_session_duration: capture[:average_session_duration],
+          browsers: to_string_record(capture[:browsers].tally),
+          referrers: to_string_record(capture[:referrers].tally)
         }
       end
 
@@ -140,6 +147,9 @@ module Resolvers
         count = captures.pluck(:count).sum
         unique_triggers = captures.pluck(:unique_triggers).sum
         average_events_per_visitor = Maths.average(captures.pluck(:average_events_per_visitor))
+        average_session_duration = Maths.average(captures.pluck(:average_session_duration))
+        browsers = to_string_record(captures.pluck(:browsers).flatten.tally)
+        referrers = to_string_record(captures.pluck(:referrers).flatten.tally)
 
         {
           event_or_group_id: group.id,
@@ -148,10 +158,40 @@ module Resolvers
           count:,
           average_events_per_visitor:,
           unique_triggers:,
-          average_session_duration: 0,
-          browsers: [],
-          referrers: []
+          average_session_duration:,
+          browsers:,
+          referrers:
         }
+      end
+
+      def fetch_recordings_stats(recording_ids)
+        sql = <<-SQL.squish
+          SELECT
+            AVG(activity_duration) average_session_duration,
+            groupArray(browser) browsers,
+            groupArray(referrer) referrers
+          FROM
+            recordings
+          WHERE
+            site_id = :site_id AND
+            recording_id IN (:recording_ids)
+        SQL
+
+        variables = {
+          site_id: object.id,
+          recording_ids:
+        }
+
+        Sql::ClickHouse.select_one(sql, variables)
+      end
+
+      def to_string_record(tally)
+        tally.map do |key, value|
+          {
+            key:,
+            value:
+          }
+        end
       end
     end
   end

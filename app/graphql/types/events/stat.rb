@@ -12,8 +12,8 @@ module Types
       field :average_events_per_visitor, Float, null: false
       field :average_session_duration, Integer, null: false
       field :unique_triggers, Integer, null: false
-      field :browsers, [String, { null: false }], null: false
-      field :referrers, [String, { null: false }], null: false
+      field :browsers, [Types::Common::StringRecord, { null: false }], null: false
+      field :referrers, [Types::Common::StringRecord, { null: false }], null: false
     end
   end
 end
