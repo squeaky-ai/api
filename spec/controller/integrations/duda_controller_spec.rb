@@ -231,7 +231,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
       subject
 
       expect(response).to have_http_status(302)
-      expect(response.headers['Location']).to eq("#{Rails.application.config.app_host}/sites/#{site.id}/dashboard?free_trial_began=1")
+      expect(response.headers['Location']).to eq("#{Rails.application.config.app_host}/sites/#{site.id}/dashboard/?free_trial_began=1")
     end
 
     it 'stores the sdk url' do
@@ -245,7 +245,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
         subject
 
         expect(response).to have_http_status(302)
-        expect(response.headers['Location']).to eq("#{Rails.application.config.app_host}/sites/#{site.id}/dashboard")
+        expect(response.headers['Location']).to eq("#{Rails.application.config.app_host}/sites/#{site.id}/dashboard/")
       end
     end
   end

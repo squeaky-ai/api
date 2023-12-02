@@ -66,8 +66,8 @@ RSpec.describe Mutations::Subscriptions::Create, type: :request do
                 metadata: {
                   site: site.name
                 },
-                success_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription?billing_setup_success=1",
-                cancel_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription?billing_setup_success=0",
+                success_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription/?billing_setup_success=1",
+                cancel_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription/?billing_setup_success=0",
                 mode: 'subscription',
                 line_items: [
                   {

@@ -23,7 +23,7 @@ RSpec.describe Mutations::Subscriptions::Portal, type: :request do
     allow(Stripe::BillingPortal::Session).to receive(:create)
       .with({
               customer: billing.customer_id,
-              return_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription"
+              return_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription/"
             })
       .and_return(portal_response)
   end
