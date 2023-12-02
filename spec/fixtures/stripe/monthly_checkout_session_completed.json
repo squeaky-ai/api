@@ -11,7 +11,7 @@
       "status": null
     },
     "billing_address_collection": null,
-    "cancel_url": "https://squeaky.ai/app/sites/1/settings/subscription?billing_setup_success=0",
+    "cancel_url": "https://app.squeaky.ai/sites/1/settings/subscription?billing_setup_success=0",
     "client_reference_id": null,
     "consent": null,
     "consent_collection": null,
@@ -60,7 +60,7 @@
     "status": "complete",
     "submit_type": null,
     "subscription": "sub_1KrcuGLJ9zG7aLW8ZewbpPxD",
-    "success_url": "https://squeaky.ai/app/sites/1/settings/subscription?billing_setup_success=1",
+    "success_url": "https://app.squeaky.ai/sites/1/settings/subscription?billing_setup_success=1",
     "total_details": {
       "amount_discount": 0,
       "amount_shipping": 0,

@@ -52,7 +52,7 @@ module StripeService
     def create_billing_portal_session(customer_id)
       response = Stripe::BillingPortal::Session.create(
         customer: customer_id,
-        return_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription"
+        return_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription"
       )
 
       response['url']
@@ -77,8 +77,8 @@ module StripeService
         metadata: {
           site: site.name
         },
-        success_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=1",
-        cancel_url: "#{Rails.application.config.web_host}/app/sites/#{site.id}/settings/subscription?billing_setup_success=0",
+        success_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription?billing_setup_success=1",
+        cancel_url: "#{Rails.application.config.app_host}/sites/#{site.id}/settings/subscription?billing_setup_success=0",
         mode: 'subscription',
         line_items: [
           {

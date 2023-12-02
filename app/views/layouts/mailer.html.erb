@@ -145,7 +145,7 @@
     <body>
       <div class="wrapper">
         <div class="header">
-          <a href="<%= squeaky_url %>">
+          <a href="<%= squeaky_web_url %>">
             <img src="https://squeaky.ai/logo-dark.png" width="154" height="48" alt="Logo">
           </a>
         </div>
@@ -154,13 +154,13 @@
       <div class="footer">
         <div class="wrapper">
           <p>
-            <a href="<%= squeaky_url %>">Squeaky.ai</a>
+            <a href="<%= squeaky_web_url %>">Squeaky.ai</a>
             <span class="divider"> | </span>
             <span>Privacy-friendly analytics for the modern web.</span>
           </p>
           <p>
             <% if @unsubscribable %>
-              <a href="<%= squeaky_url(path: "/app/users/preferences") %>">Unsubscribe</a>
+              <a href="<%= squeaky_app_url(path: "/users/preferences") %>">Unsubscribe</a>
             <% end %>
           </p>
         </div>

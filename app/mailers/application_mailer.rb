@@ -13,28 +13,39 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   # Weird syntax isn't it
-  helper_method def squeaky_url(path: '', skip_deeplink: false)
+  helper_method def squeaky_web_url(path: '', skip_deeplink: false)
     # If it's not a site email or the site has
     # no provider then send them to Squeaky
     return "#{web_url}#{path}" if skip_deeplink
     return "#{web_url}#{path}" unless @site&.provider
 
-    # If they have a provider then we should send
-    # them to the deep link url
-    provider = ProviderAuth.find_by(provider_uuid: @site.uuid)
-    provider.deep_link_url
+    provider_deep_link_url
+  end
+
+  helper_method def squeaky_app_url(path: '', skip_deeplink: false)
+    # If it's not a site email or the site has
+    # no provider then send them to Squeaky
+    return "#{app_url}#{path}" if skip_deeplink
+    return "#{app_url}#{path}" unless @site&.provider
+
+    provider_deep_link_url
   end
 
   private
 
   def web_url
-    # Because this is using the api-only flag the routing
-    # doesn't seem to include any of the helpers (like root_url)
-    # so we build it from the config
-    config = Rails.application.config.action_mailer.default_url_options
-    url = "#{config[:protocol]}://#{config[:host]}"
-    url += ":#{config[:port]}" if config[:port]
-    url
+    Rails.application.config.web_host
+  end
+
+  def app_url
+    Rails.application.config.app_host
+  end
+
+  def provider_deep_link_url
+    # If they have a provider then we should send
+    # them to the deep link url
+    provider = ProviderAuth.find_by(provider_uuid: @site.uuid)
+    provider.deep_link_url
   end
 
   def fire_squeaky_event

@@ -1,6 +1,6 @@
 <p>Dear <%= @user.first_name %>,</p>
 <p>It&apos;s Chris again, I&apos;m just writing to let you know that you're officially halfway through your <b>14-day trial of Squeaky&apos;s advanced features</b> 🙂</p>
-<p>There's still plenty of time to fully explore the capabilities of our platform. Have you tried <a href="<%= squeaky_url(path: "/app/sites/#{@site.id}/events/all") %>">Event Tracking</a> yet? It might just be the killer analytics feature you've been looking for.</p>
+<p>There's still plenty of time to fully explore the capabilities of our platform. Have you tried <a href="<%= squeaky_app_url(path: "/sites/#{@site.id}/events/all") %>">Event Tracking</a> yet? It might just be the killer analytics feature you've been looking for.</p>
 <p>If you&apos;re still finding your way around, or want some tips, feel free to book an introductory demo using the button below:</p>
 <a href="https://calendly.com/squeakyai/demo-call" class="button" style="text-decoration: none; margin-bottom: 2rem;">Book Demo</a>
 <p>Enjoy the rest of your trial!</p>
