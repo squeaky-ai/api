@@ -238,6 +238,11 @@ RSpec.describe Integrations::DudaController, type: :controller do
       expect { subject }.to change { site.reload.provider_auth.sdk_url }.from(nil).to(sdk_url)
     end
 
+    it 'sets the provider cookie' do
+      subject
+      expect(response.cookies['provider']).to eq('duda')
+    end
+
     context 'when the user has previously signed in' do
       before { user.update(sign_in_count: 1) }
 

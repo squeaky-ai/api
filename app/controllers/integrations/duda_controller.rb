@@ -2,6 +2,8 @@
 
 module Integrations
   class DudaController < ApplicationController
+    include ActionController::Cookies
+
     after_action :set_same_site_cookie_value
 
     def install
@@ -43,6 +45,8 @@ module Integrations
       first_time_user = user.sign_in_count.zero?
 
       sign_in(:user, user)
+
+      set_provider_cookie
 
       # Weirdly this comes from the SSO and not the install
       duda_auth_service.store_sdk_url!
@@ -124,6 +128,10 @@ module Integrations
       # This is running in an iframe so must be set this way
       request.session_options[:secure] = true
       request.session_options[:same_site] = 'None'
+    end
+
+    def set_provider_cookie
+      cookies[:provider] = 'duda'
     end
   end
 end
