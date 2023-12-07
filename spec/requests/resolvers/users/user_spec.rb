@@ -9,6 +9,7 @@ user_query = <<-GRAPHQL
       firstName
       lastName
       email
+      currentProvider
     }
   }
 GRAPHQL
@@ -33,13 +34,40 @@ RSpec.describe Resolvers::Users::User, type: :request do
           'id' => user.id.to_s,
           'firstName' => user.first_name,
           'lastName' => user.last_name,
-          'email' => user.email
+          'email' => user.email,
+          'currentProvider' => nil
         }
       )
     end
 
     it 'updates the last_activity_at' do
       expect { subject }.to change { user.last_activity_at.nil? }.from(true).to(false)
+    end
+  end
+
+  context 'when the user has the provider cookie set' do
+    let(:user) { create(:user) }
+
+    subject do
+      context = {
+        current_user: user,
+        request:,
+        timezone: 'UTC',
+        provider: 'duda'
+      }
+      SqueakySchema.execute(user_query, context:, variables: {})
+    end
+
+    it 'returns the user' do
+      expect(subject['data']['user']).to eq(
+        {
+          'id' => user.id.to_s,
+          'firstName' => user.first_name,
+          'lastName' => user.last_name,
+          'email' => user.email,
+          'currentProvider' => 'duda'
+        }
+      )
     end
   end
 end

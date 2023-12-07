@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
+  include ActionController::Cookies
+
   def execute
     variables = prepare_variables(params[:variables])
+
+    set_provider_header
 
     render json: SqueakySchema.execute(
       params[:query],
       variables:,
       operation_name: params[:operationName],
-      context: {
-        current_user:,
-        request:,
-        timezone:
-      }
+      context:
     )
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -33,6 +33,19 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"
     end
+  end
+
+  def context
+    {
+      current_user:,
+      request:,
+      timezone:,
+      provider:
+    }
+  end
+
+  def provider
+    cookies['provider']
   end
 
   def timezone
