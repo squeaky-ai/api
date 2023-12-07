@@ -112,15 +112,4 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Product Update: March 2023')
   end
-
-  def changelog_public_roadmap(user)
-    @user = user
-    @unsubscribable = true
-
-    return if user.sites.empty?
-    return unless user.communication_enabled?(:product_updates_email)
-    return if user.first_name.blank?
-
-    mail(to: user.email, subject: 'Introducing Squeaky\'s New Changelog and Public Roadmap')
-  end
 end

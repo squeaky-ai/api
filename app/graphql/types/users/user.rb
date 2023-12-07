@@ -17,7 +17,6 @@ module Types
       field :created_at, Types::Common::Dates, null: false
       field :updated_at, Types::Common::Dates, null: true
       field :last_activity_at, Types::Common::Dates, null: true
-      field :changelog_last_viewed_at, Types::Common::Dates, null: true
       field :current_provider, String, null: true
 
       def created_at
@@ -30,10 +29,6 @@ module Types
 
       def last_activity_at
         DateFormatter.format(date: object.last_activity_at, timezone: context[:timezone])
-      end
-
-      def changelog_last_viewed_at
-        DateFormatter.format(date: object.changelog_last_viewed_at, timezone: context[:timezone])
       end
 
       def current_provider

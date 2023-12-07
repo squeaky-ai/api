@@ -56,9 +56,4 @@ class ProductUpdatesPreview < ActionMailer::Preview
     user = User.first
     ProductUpdatesMailer.march_2023(user)
   end
-
-  def changelog_public_roadmap
-    user = User.first
-    ProductUpdatesMailer.changelog_public_roadmap(user)
-  end
 end

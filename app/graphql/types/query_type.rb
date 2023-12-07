@@ -24,10 +24,6 @@ module Types
     field :blog_post, resolver: Resolvers::Blog::Post
     field :blog_posts, resolver: Resolvers::Blog::Posts
 
-    # Changelog
-    field :changelog_post, resolver: Resolvers::Changelog::Post
-    field :changelog_posts, resolver: Resolvers::Changelog::Posts
-
     # Admin
     field :admin, resolver: Resolvers::Admin::Admin
   end

@@ -8,9 +8,6 @@ module Types
     field :admin_blog_post_create, mutation: Mutations::Admin::BlogPostCreate
     field :admin_blog_post_delete, mutation: Mutations::Admin::BlogPostDelete
     field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
-    field :admin_changelog_post_create, mutation: Mutations::Admin::ChangelogPostCreate
-    field :admin_changelog_post_delete, mutation: Mutations::Admin::ChangelogPostDelete
-    field :admin_changelog_post_update, mutation: Mutations::Admin::ChangelogPostUpdate
     field :admin_user_delete, mutation: Mutations::Admin::UserDelete
     field :admin_user_partner_create, mutation: Mutations::Admin::UserPartnerCreate
     field :admin_referral_delete, mutation: Mutations::Admin::ReferralDelete
@@ -38,7 +35,6 @@ module Types
     field :user_invoice_create, mutation: Mutations::Users::InvoiceCreate
     field :user_invoice_delete, mutation: Mutations::Users::InvoiceDelete
     field :user_invoice_sign_image, mutation: Mutations::Users::InvoiceSignImage
-    field :users_changelog_viewed, mutation: Mutations::Users::ChangelogViewed
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update
