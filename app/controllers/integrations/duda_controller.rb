@@ -131,7 +131,11 @@ module Integrations
     end
 
     def set_provider_cookie
-      cookies[:provider] = 'duda'
+      cookies[:provider] = {
+        value: 'duda',
+        secure: true,
+        same_site: 'None'
+      }
     end
   end
 end

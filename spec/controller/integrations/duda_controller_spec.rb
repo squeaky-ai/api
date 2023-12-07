@@ -240,7 +240,7 @@ RSpec.describe Integrations::DudaController, type: :controller do
 
     it 'sets the provider cookie' do
       subject
-      expect(response.cookies['provider']).to eq('duda')
+      expect(cookies['provider']).to eq('duda')
     end
 
     context 'when the user has previously signed in' do
