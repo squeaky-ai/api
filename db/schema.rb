@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_11_163428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,29 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
     t.boolean "covering_enabled", default: true
   end
 
+  create_table "click_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "url"
+    t.string "selector"
+    t.string "text"
+    t.bigint "timestamp"
+    t.integer "coordinates_x"
+    t.integer "coordinates_y"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.integer "relative_to_element_x"
+    t.integer "relative_to_element_y"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_click_events_on_recording_id"
+    t.index ["site_id"], name: "index_click_events_on_site_id"
+    t.index ["visitor_id"], name: "index_click_events_on_visitor_id"
+  end
+
   create_table "communications", force: :cascade do |t|
     t.boolean "onboarding_email", null: false
     t.boolean "weekly_review_email", null: false
@@ -76,6 +99,44 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
     t.index ["site_id"], name: "index_consents_on_site_id"
   end
 
+  create_table "cursor_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "url"
+    t.string "coordinates"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.bigint "timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_cursor_events_on_recording_id"
+    t.index ["site_id"], name: "index_cursor_events_on_site_id"
+    t.index ["visitor_id"], name: "index_cursor_events_on_visitor_id"
+  end
+
+  create_table "custom_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "data"
+    t.string "url"
+    t.string "source"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.bigint "timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_custom_events_on_recording_id"
+    t.index ["site_id"], name: "index_custom_events_on_site_id"
+    t.index ["visitor_id"], name: "index_custom_events_on_visitor_id"
+  end
+
   create_table "data_exports", force: :cascade do |t|
     t.string "filename", null: false
     t.integer "export_type", null: false
@@ -86,6 +147,28 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["site_id"], name: "index_data_exports_on_site_id"
+  end
+
+  create_table "error_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "filename"
+    t.string "message"
+    t.string "url"
+    t.string "stack"
+    t.bigint "timestamp"
+    t.integer "line_number"
+    t.integer "col_number"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_error_events_on_recording_id"
+    t.index ["site_id"], name: "index_error_events_on_site_id"
+    t.index ["visitor_id"], name: "index_error_events_on_visitor_id"
   end
 
   create_table "event_captures", force: :cascade do |t|
@@ -163,6 +246,28 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
     t.datetime "updated_at", null: false
     t.string "email"
     t.index ["recording_id"], name: "index_nps_on_recording_id"
+  end
+
+  create_table "page_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "url"
+    t.bigint "entered_at"
+    t.bigint "exited_at"
+    t.bigint "duration"
+    t.bigint "activity_duration"
+    t.boolean "bounced_on"
+    t.boolean "exited_on"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_page_events_on_recording_id"
+    t.index ["site_id"], name: "index_page_events_on_site_id"
+    t.index ["visitor_id"], name: "index_page_events_on_visitor_id"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -295,6 +400,25 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_103211) do
     t.index ["partner_id"], name: "index_referrals_on_partner_id"
     t.index ["site_id"], name: "index_referrals_on_site_id"
     t.index ["url"], name: "index_referrals_on_url", unique: true
+  end
+
+  create_table "scroll_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "url"
+    t.bigint "timestamp"
+    t.integer "x"
+    t.integer "y"
+    t.integer "viewport_x"
+    t.integer "viewport_y"
+    t.integer "device_x"
+    t.integer "device_y"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "site_id"
+    t.bigint "recording_id"
+    t.bigint "visitor_id"
+    t.index ["recording_id"], name: "index_scroll_events_on_recording_id"
+    t.index ["site_id"], name: "index_scroll_events_on_site_id"
+    t.index ["visitor_id"], name: "index_scroll_events_on_visitor_id"
   end
 
   create_table "sentiments", force: :cascade do |t|
