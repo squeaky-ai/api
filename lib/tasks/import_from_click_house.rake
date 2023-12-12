@@ -10,6 +10,8 @@ task :import_from_click_house, [:model] => :environment do |_task, args|
   batch_size = 10_000
 
   loop do
+    puts "Backfilling page #{page}"
+
     records = Sql::ClickHouse.select_all(
       "SELECT * FROM #{click_house_class.table_name} LIMIT #{batch_size} OFFSET #{page * batch_size}"
     )
