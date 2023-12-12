@@ -39,6 +39,13 @@ RSpec.describe RecordingDeleteJob, type: :job do
     expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}")).to eq(0)
     expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}")).to eq(0)
     expect(Sql::ClickHouse.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}")).to eq(0)
+
+    expect(ClickEvent.where('site_id = ?', site.id).count).to eq(0)
+    expect(CursorEvent.where('site_id = ?', site.id).count).to eq(0)
+    expect(CustomEvent.where('site_id = ?', site.id).count).to eq(0)
+    expect(ErrorEvent.where('site_id = ?', site.id).count).to eq(0)
+    expect(PageEvent.where('site_id = ?', site.id).count).to eq(0)
+    expect(ScrollEvent.where('site_id = ?', site.id).count).to eq(0)
   end
 
   context 'when a visitor has some other recordings that are in the data retention window' do

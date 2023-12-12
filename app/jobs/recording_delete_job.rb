@@ -38,7 +38,14 @@ class RecordingDeleteJob < ApplicationJob
       ClickHouse::ErrorEvent,
       ClickHouse::PageEvent,
       ClickHouse::Recording,
-      ClickHouse::ScrollEvent
+      ClickHouse::ScrollEvent,
+      # TODO: Delete above when migrated
+      ClickEvent,
+      CursorEvent,
+      CustomEvent,
+      ErrorEvent,
+      PageEvent,
+      ScrollEvent
     ].each { |c| c.delete_from_recordings(recording_ids:) }
   end
 
