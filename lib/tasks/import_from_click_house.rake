@@ -18,14 +18,15 @@ task :import_from_click_house, [:model] => :environment do |_task, args|
 
     records = records.map { |x| x.except('uuid') }
 
-    if records.zero?
+    if records.empty?
       puts "Completed after #{page} pages"
       break
-      
     end
 
     pg_class.insert_all(records) # rubocop:disable Rails/SkipsModelValidations
+    nil
   end
 
   puts 'Done!'
+  nil
 end
