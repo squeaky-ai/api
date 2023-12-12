@@ -27,7 +27,7 @@ module Types
       field :tags, [Types::Tags::Tag, { null: false }], null: false
       field :notes, [Types::Notes::Note, { null: false }], null: false
       field :events, resolver: Resolvers::Recordings::Events
-      field :visitor, Types::Visitors::Visitor, null: false
+      field :visitor, resolver: Resolvers::Recordings::Visitor
       field :nps, Types::Feedback::NpsResponseItem, null: true
       field :sentiment, Types::Feedback::SentimentResponseItem, null: true
       field :activity_duration, GraphQL::Types::BigInt, null: true
