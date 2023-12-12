@@ -24,6 +24,9 @@ task :import_from_click_house, [:model] => :environment do |_task, args|
     end
 
     pg_class.insert_all(records) # rubocop:disable Rails/SkipsModelValidations
+
+    page += 1
+
     nil
   end
 
