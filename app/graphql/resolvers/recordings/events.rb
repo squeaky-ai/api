@@ -7,7 +7,7 @@ module Resolvers
 
       argument :page, Integer, required: false, default_value: 1
 
-      def resolve_with_timings(page:)
+      def resolve(page:)
         files = RecordingEventsService.list(recording: object)
 
         return nil if files.empty?

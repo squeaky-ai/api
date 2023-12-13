@@ -6,7 +6,7 @@ module Resolvers
       class ExitRate < Resolvers::Base
         type Types::Analytics::PerPage::ExitRate, null: false
 
-        def resolve_with_timings
+        def resolve
           current = exit_rate(object.range.from, object.range.to)
           trend = exit_rate(object.range.trend_from, object.range.trend_to)
 

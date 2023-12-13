@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve_with_timings(team_id:)
+      def resolve(team_id:)
         old_owner = site.owner
         new_owner = site.member(team_id)
 

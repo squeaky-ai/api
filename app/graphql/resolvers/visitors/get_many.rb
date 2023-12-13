@@ -13,7 +13,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
+      def resolve(page:, size:, search:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         query = <<-SQL.squish

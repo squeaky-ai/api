@@ -5,7 +5,7 @@ module Resolvers
     class SitesCount < Resolvers::Base
       type Integer, null: false
 
-      def resolve_with_timings
+      def resolve
         Rails.cache.fetch('data_cache:AdminSitesCount', expires_in: 1.hour) do
           ::Site.all.count
         end

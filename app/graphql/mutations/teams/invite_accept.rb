@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Teams::Team
 
-      def resolve_with_timings(token:, password: nil)
+      def resolve(token:, password: nil)
         user = User.find_by_invitation_token(token, true)
         raise Exceptions::TeamInviteInvalid unless user
 

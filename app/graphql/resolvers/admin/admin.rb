@@ -5,7 +5,7 @@ module Resolvers
     class Admin < Resolvers::Base
       type Types::Admin::Admin, null: false
 
-      def resolve_with_timings
+      def resolve
         raise Exceptions::Unauthorized unless context[:current_user]&.superuser?
 
         {}

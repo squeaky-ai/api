@@ -7,7 +7,7 @@ module Resolvers
 
       SQUEAKY_SITE_ID = 82
 
-      def resolve_with_timings
+      def resolve
         users = Partner.includes(:user).map(&:user)
 
         map_visitors_to_users(users)

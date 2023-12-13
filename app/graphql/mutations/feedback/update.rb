@@ -35,7 +35,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         feedback = fetch_or_create_feedback
 
         args.delete(:nps_hide_logo) if args[:nps_hide_logo] && site.plan.free?

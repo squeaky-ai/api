@@ -8,6 +8,9 @@ module Mutations
 
       @user.superuser? ? authorize_superuser(args) : authorize_normal_user(args)
 
+      # No need to pass this around everywhere
+      args.delete(:site_id) if args[:site_id]
+
       true
     end
 

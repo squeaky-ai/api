@@ -21,7 +21,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         consent = fetch_or_create_consent
 
         consent.assign_attributes(args)

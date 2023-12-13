@@ -6,7 +6,7 @@ module Resolvers
       class Countries < Resolvers::Base
         type [Types::Analytics::Country, { null: false }], null: false
 
-        def resolve_with_timings
+        def resolve
           countries.map do |country|
             {
               name: ::Countries.get_country(country['country_code']),

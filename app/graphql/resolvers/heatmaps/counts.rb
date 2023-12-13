@@ -5,7 +5,7 @@ module Resolvers
     class Counts < Resolvers::Base
       type Types::Heatmaps::Counts, null: false
 
-      def resolve_with_timings
+      def resolve
         range = DateRange.new(from_date: object.from_date, to_date: object.to_date, timezone: context[:timezone])
 
         sql = <<-SQL.squish

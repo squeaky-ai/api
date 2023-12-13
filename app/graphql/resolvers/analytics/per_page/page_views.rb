@@ -6,7 +6,7 @@ module Resolvers
       class PageViews < Resolvers::Base
         type Types::Analytics::PageViews, null: false
 
-        def resolve_with_timings
+        def resolve
           date_format, group_type, group_range = Charts.date_groups(object.range.from, object.range.to, clickhouse: true)
 
           current_page_views = page_views(date_format, object.range.from, object.range.to)

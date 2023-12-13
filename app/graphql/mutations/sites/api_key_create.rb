@@ -15,7 +15,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings
+      def resolve
         site.update(api_key: SecureRandom.uuid)
         site
       end

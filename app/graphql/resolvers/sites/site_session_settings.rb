@@ -7,7 +7,7 @@ module Resolvers
 
       argument :site_id, String, required: true
 
-      def resolve_with_timings(site_id:)
+      def resolve(site_id:)
         site = ::Site.new(uuid: site_id)
         DataCacheService::Sites::Settings.new(site:, user: context[:current_user]).call
       end

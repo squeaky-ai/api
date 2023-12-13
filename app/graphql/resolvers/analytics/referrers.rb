@@ -8,7 +8,7 @@ module Resolvers
       argument :page, Integer, required: false, default_value: 1
       argument :size, Integer, required: false, default_value: 10
 
-      def resolve_with_timings(page:, size:)
+      def resolve(page:, size:)
         total_visitors_count = DataCacheService::Visitors::Count.new(
           site: object.site,
           from_date: object.range.from,

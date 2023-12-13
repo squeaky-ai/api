@@ -7,7 +7,7 @@ module Resolvers
 
       argument :token, String, required: true
 
-      def resolve_with_timings(token:)
+      def resolve(token:)
         ::User.find_team_invitation(token)
       end
     end

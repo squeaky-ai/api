@@ -13,7 +13,7 @@ module Resolvers
       argument :group_ids, [ID], required: true
       argument :capture_ids, [ID], required: true
 
-      def resolve_with_timings(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:) # rubocop:disable Metrics/ParameterLists
+      def resolve(page:, size:, sort:, from_date:, to_date:, group_ids:, capture_ids:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         capture_events = event_captures(group_ids, capture_ids)

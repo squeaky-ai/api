@@ -5,7 +5,7 @@ module Resolvers
     class NpsReplies < Resolvers::Base
       type Types::Feedback::NpsReplies, null: false
 
-      def resolve_with_timings
+      def resolve
         responses = get_replies(object.range.from, object.range.to)
         previous_responses = get_replies(object.range.trend_from, object.range.trend_to)
 

@@ -5,7 +5,7 @@ module Resolvers
     class Groups < Resolvers::Base
       type [Types::Events::Group, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         groups = object.event_groups
         captures = object.event_captures.joins(:event_groups).preload(:event_groups)
 

@@ -13,7 +13,7 @@ module Mutations
 
       type Types::Sites::Site
 
-      def resolve_with_timings(name:, url:, site_type: Site::WEBSITE)
+      def resolve(name:, url:, site_type: Site::WEBSITE)
         site = Site.create(
           name:,
           site_type:,

@@ -5,7 +5,7 @@ module Resolvers
     class SentimentRatings < Resolvers::Base
       type Types::Feedback::SentimentRatings, null: false
 
-      def resolve_with_timings
+      def resolve
         current_results = get_results(object.range.from, object.range.to)
         previous_results = get_results(object.range.trend_from, object.range.trend_to)
 

@@ -5,7 +5,7 @@ module Resolvers
     class Latest < Resolvers::Base
       type 'Types::Recordings::Recording', null: true
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             recording_id

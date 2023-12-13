@@ -5,7 +5,7 @@ module Resolvers
     class VisitsAt < Resolvers::Base
       type [Types::Analytics::VisitAt, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             formatDateTime(toDateTime(disconnected_at / 1000, :timezone), '%u,%H') day_hour,

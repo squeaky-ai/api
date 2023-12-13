@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(team_id:)
+      def resolve(team_id:)
         member = site.member(team_id)
         member.user.invite!(user, { site_name: site.name }) if member&.pending?
 

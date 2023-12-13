@@ -18,7 +18,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(start_date:, end_date:, export_type:)
+      def resolve(start_date:, end_date:, export_type:)
         data_export = DataExport.create!(
           site:,
           start_date:,

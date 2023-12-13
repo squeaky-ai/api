@@ -7,7 +7,7 @@ module Resolvers
 
       argument :site_id, ID, required: true
 
-      def resolve_with_timings(site_id:)
+      def resolve(site_id:)
         ::Site.find_by(id: site_id)
       end
     end

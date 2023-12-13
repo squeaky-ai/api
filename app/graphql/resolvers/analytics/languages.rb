@@ -9,7 +9,7 @@ module Resolvers
     class Languages < Resolvers::Base
       type [Types::Analytics::Language, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         # This shouldn't be necessary but the language isn't known until
         # after it comes out the database, so the unknowns are scrattered
         # everywhere

@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
-      def resolve_with_timings(tag_id:, name:)
+      def resolve(tag_id:, name:)
         tag = site.tags.find_by_id(tag_id)
 
         tag&.update(name:)

@@ -9,7 +9,7 @@ module Resolvers
         argument :page, Integer, required: false, default_value: 1
         argument :size, Integer, required: false, default_value: 10
 
-        def resolve_with_timings(page:, size:)
+        def resolve(page:, size:)
           response = referrers(page, size)
 
           {

@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Users::Referral
 
-      def resolve_with_timings(url:)
+      def resolve(url:)
         return unless user.partner
 
         referral = Referral.create(url: uri(url), partner: user.partner)

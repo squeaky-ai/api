@@ -7,7 +7,7 @@ module Resolvers
 
       argument :user_id, ID, required: true
 
-      def resolve_with_timings(user_id:)
+      def resolve(user_id:)
         user = ::User.find_by(id: user_id)
 
         user.visitor = visitor_for_user(user) if user

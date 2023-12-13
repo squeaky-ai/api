@@ -5,7 +5,7 @@ module Resolvers
     class Roles < Resolvers::Base
       type Types::Admin::Roles, null: false
 
-      def resolve_with_timings
+      def resolve
         roles = Team.select(:role).group(:role).count
 
         {

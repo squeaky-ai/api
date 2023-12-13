@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Sites::Bundle
 
-      def resolve_with_timings(site_id:, bundle_id:)
+      def resolve(site_id:, bundle_id:)
         site = Site.find(site_id)
         site_bundle = SiteBundle.find(bundle_id)
 

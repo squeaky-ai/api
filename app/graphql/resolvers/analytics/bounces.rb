@@ -7,7 +7,7 @@ module Resolvers
 
       argument :size, Integer, required: false, default_value: 5
 
-      def resolve_with_timings(size:)
+      def resolve(size:)
         sql = <<-SQL.squish
           SELECT
             x.url url,

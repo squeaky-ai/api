@@ -5,7 +5,7 @@ module Resolvers
     class AverageSessionDuration < Resolvers::Base
       type Integer, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             AVG(activity_duration) average_session_duration

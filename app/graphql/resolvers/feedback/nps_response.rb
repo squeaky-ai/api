@@ -10,7 +10,7 @@ module Resolvers
       argument :sort, Types::Feedback::NpsResponseSort, required: false, default_value: 'timestamp__desc'
       argument :filters, Types::Feedback::NpsResponseFilters, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:, filters:)
+      def resolve(page:, size:, sort:, filters:)
         query = Nps.joins(recording: :visitor)
           .where(
             'recordings.site_id = ? AND nps.created_at::date >= ? AND nps.created_at::date <= ?',

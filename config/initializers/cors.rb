@@ -28,7 +28,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
         else
           # This is noisy so avoid using logger.warn
           Rails.logger.info "Request is using CORS, #{source} is invalid"
-          Stats.count('invalid_cors')
           false
         end
       end

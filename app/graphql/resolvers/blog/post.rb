@@ -7,7 +7,7 @@ module Resolvers
 
       argument :slug, String, required: true
 
-      def resolve_with_timings(slug:)
+      def resolve(slug:)
         blog = ::Blog.find_by_slug(slug)
 
         return nil if blog&.draft && !context[:current_user]&.superuser?

@@ -12,7 +12,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(page:, size:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
+      def resolve(page:, size:, sort:, filters:, from_date:, to_date:) # rubocop:disable Metrics/ParameterLists
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         recordings = object

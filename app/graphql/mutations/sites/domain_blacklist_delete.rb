@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(value:)
+      def resolve(value:)
         site.domain_blacklist = site.domain_blacklist.reject { |b| b['value'] == value }
         site.save
 

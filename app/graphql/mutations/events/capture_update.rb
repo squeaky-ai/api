@@ -20,7 +20,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(event_id:, name:, name_alias:, rules:, group_ids:)
+      def resolve(event_id:, name:, name_alias:, rules:, group_ids:)
         event = site.event_captures.find_by(id: event_id)
 
         return nil unless event

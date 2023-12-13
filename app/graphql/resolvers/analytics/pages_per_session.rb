@@ -5,7 +5,7 @@ module Resolvers
     class PagesPerSession < Resolvers::Base
       type Types::Analytics::PagesPerSession, null: false
 
-      def resolve_with_timings
+      def resolve
         current_average = get_average_count(object.range.from, object.range.to)
         previous_average = get_average_count(object.range.trend_from, object.range.trend_to)
 

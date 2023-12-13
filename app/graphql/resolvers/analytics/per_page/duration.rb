@@ -6,7 +6,7 @@ module Resolvers
       class Duration < Resolvers::Base
         type Types::Analytics::PerPage::Duration, null: false
 
-        def resolve_with_timings
+        def resolve
           current = duration(object.range.from, object.range.to)
           trend = duration(object.range.trend_from, object.range.trend_to)
 

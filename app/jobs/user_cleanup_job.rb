@@ -20,7 +20,6 @@ class UserCleanupJob < ApplicationJob
       next if user.created_at > now - 48.hours
 
       logger.info("Destroying user #{user.id} as they did not confirm after 48 hours")
-      Stats.count('destroyed_unconfirmed_user')
 
       count += 1
 

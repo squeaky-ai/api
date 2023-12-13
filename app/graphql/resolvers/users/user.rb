@@ -5,7 +5,7 @@ module Resolvers
     class User < Resolvers::Base
       type Types::Users::User, null: true
 
-      def resolve_with_timings
+      def resolve
         user = context[:current_user]
         user&.touch :last_activity_at # rubocop:disable Rails/SkipsModelValidations
         user

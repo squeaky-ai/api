@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(type:, value:)
+      def resolve(type:, value:)
         site.domain_blacklist << { type:, value: }
 
         if type == 'domain'

@@ -5,7 +5,7 @@ module Resolvers
     class Languages < Resolvers::Base
       type [String, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         DataCacheService::Sites::Languages.new(site: object).call
       end
     end

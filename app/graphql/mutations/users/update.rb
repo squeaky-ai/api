@@ -13,7 +13,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         should_send_email = send_email?
 
         user.update!(args)

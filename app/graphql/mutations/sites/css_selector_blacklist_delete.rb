@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(selector:)
+      def resolve(selector:)
         selectors = site.css_selector_blacklist.reject { |s| s == selector }
         site.update(css_selector_blacklist: selectors.uniq)
 

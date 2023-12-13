@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Analytics::BrowsersSort, required: false, default_value: 'count__desc'
 
-      def resolve_with_timings(page:, size:, sort:)
+      def resolve(page:, size:, sort:)
         total_recordings_count = DataCacheService::Recordings::Count.new(
           site: object.site,
           from_date: object.range.from,

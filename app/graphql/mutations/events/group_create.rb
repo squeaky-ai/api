@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(name:)
+      def resolve(name:)
         group = site.event_groups.find_or_create_by(name:)
 
         site.event_groups << group unless site.event_groups.include?(group)

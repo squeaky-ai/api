@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(name:, value:)
+      def resolve(name:, value:)
         site.ip_blacklist << { name:, value: }
         site.save
 

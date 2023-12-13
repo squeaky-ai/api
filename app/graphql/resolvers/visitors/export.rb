@@ -5,7 +5,7 @@ module Resolvers
     class Export < Resolvers::Base
       type 'Types::Visitors::Export', null: false
 
-      def resolve_with_timings
+      def resolve
         visitor = Visitor.find(object.id)
 
         {

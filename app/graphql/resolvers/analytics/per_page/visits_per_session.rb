@@ -6,7 +6,7 @@ module Resolvers
       class VisitsPerSession < Resolvers::Base
         type Types::Analytics::PerPage::VisitsPerSession, null: false
 
-        def resolve_with_timings
+        def resolve
           current = visits_per_session(object.range.from, object.range.to)
           trend = visits_per_session(object.range.trend_from, object.range.trend_to)
 

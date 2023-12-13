@@ -5,7 +5,7 @@ module Resolvers
     class BounceCount < Resolvers::Base
       type Types::Analytics::BounceCounts, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             COUNT(*) view_count,

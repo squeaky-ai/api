@@ -8,7 +8,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(from_date:, to_date:)
+      def resolve(from_date:, to_date:)
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         {

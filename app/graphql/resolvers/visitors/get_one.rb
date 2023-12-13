@@ -7,7 +7,7 @@ module Resolvers
 
       argument :visitor_id, GraphQL::Types::ID, required: true
 
-      def resolve_with_timings(visitor_id:)
+      def resolve(visitor_id:)
         VisitorService.new.find_by_id(site_id: object.id, visitor_id:)
       end
     end

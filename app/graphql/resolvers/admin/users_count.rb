@@ -5,7 +5,7 @@ module Resolvers
     class UsersCount < Resolvers::Base
       type Integer, null: false
 
-      def resolve_with_timings
+      def resolve
         Rails.cache.fetch('data_cache:AdminUsersCount', expires_in: 1.hour) do
           ::User.all.count
         end

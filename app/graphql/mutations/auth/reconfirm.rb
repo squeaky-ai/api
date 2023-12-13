@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve_with_timings(email:)
+      def resolve(email:)
         user = User.send_confirmation_instructions({ email: })
 
         unless user.errors.empty?

@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Visitors::Sort, required: false, default_value: 'last_activity_at__desc'
 
-      def resolve_with_timings(page:, size:, sort:)
+      def resolve(page:, size:, sort:)
         query = <<-SQL.squish
           visitors.*,
           BOOL_OR(recordings.viewed) viewed,

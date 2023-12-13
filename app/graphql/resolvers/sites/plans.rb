@@ -7,7 +7,7 @@ module Resolvers
 
       argument :site_id, ID, required: false
 
-      def resolve_with_timings(site_id: nil)
+      def resolve(site_id: nil)
         ::PlansDecorator.new(plans: ::Plans.to_a, site: fetch_site(site_id)).decrorate
       end
 

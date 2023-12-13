@@ -5,7 +5,7 @@ module Resolvers
     class NpsStats < Resolvers::Base
       type Types::Feedback::NpsStats, null: false
 
-      def resolve_with_timings
+      def resolve
         {
           displays: displays_count,
           ratings: ratings_count

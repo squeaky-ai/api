@@ -7,7 +7,7 @@ module Resolvers
 
       argument :slug, String, required: true
 
-      def resolve_with_timings(slug:)
+      def resolve(slug:)
         ::Partner.find_by(slug:)&.name
       end
     end

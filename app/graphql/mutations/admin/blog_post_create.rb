@@ -21,7 +21,7 @@ module Mutations
 
       type Types::Blog::Post
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         post = Blog.new
         post.assign_attributes(args)
         post.save!

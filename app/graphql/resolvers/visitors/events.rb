@@ -9,7 +9,7 @@ module Resolvers
       argument :size, Integer, required: false, default_value: 10
       argument :sort, Types::Events::FeedSort, required: false, default_value: 'timestamp__desc'
 
-      def resolve_with_timings(page:, size:, sort:)
+      def resolve(page:, size:, sort:)
         results = events(page, size, sort)
         total_count = events_counts
         recordings = recordings(results)

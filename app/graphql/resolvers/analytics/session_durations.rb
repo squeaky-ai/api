@@ -5,7 +5,7 @@ module Resolvers
     class SessionDurations < Resolvers::Base
       type Types::Analytics::SessionDurations, null: false
 
-      def resolve_with_timings
+      def resolve
         current_average = get_average_duration(object.range.from, object.range.to)
         previous_average = get_average_duration(object.range.trend_from, object.range.trend_to)
 

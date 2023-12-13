@@ -5,7 +5,7 @@ module Resolvers
     class BlogImages < Resolvers::Base
       type [String, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         client = Aws::S3::Client.new(region: 'eu-west-1')
 
         items = client

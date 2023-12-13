@@ -17,7 +17,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         communication = user.communication || ::Communication.create!(
           user_id: user.id,
           onboarding_email: true,

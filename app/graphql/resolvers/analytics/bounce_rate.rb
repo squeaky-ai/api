@@ -5,7 +5,7 @@ module Resolvers
     class BounceRate < Resolvers::Base
       type Types::Analytics::BounceRate, null: false
 
-      def resolve_with_timings
+      def resolve
         current = bounce_rate(object.range.from, object.range.to)
         trend = bounce_rate(object.range.trend_from, object.range.trend_to)
 

@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Admin::Site
 
-      def resolve_with_timings(site_id:, customer_id:)
+      def resolve(site_id:, customer_id:)
         site = Site.find(site_id)
 
         return site if site.billing

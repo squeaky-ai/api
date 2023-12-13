@@ -5,7 +5,7 @@ module Resolvers
     class NpsGroups < Resolvers::Base
       type Types::Feedback::NpsGroups, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT nps.score
           FROM nps

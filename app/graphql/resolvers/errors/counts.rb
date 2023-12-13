@@ -9,7 +9,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(from_date:, to_date:, error_id: nil)
+      def resolve(from_date:, to_date:, error_id: nil)
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         date_format, group_type, group_range = Charts.date_groups(range.from, range.to, clickhouse: true)

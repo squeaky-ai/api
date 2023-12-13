@@ -5,7 +5,7 @@ module Resolvers
     class Details < Resolvers::Base
       type Types::Errors::Details, null: true
 
-      def resolve_with_timings
+      def resolve
         error_details = result
         return nil unless error_details
 

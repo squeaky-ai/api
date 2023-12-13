@@ -11,7 +11,7 @@ module Resolvers
       argument :search, String, required: false, default_value: nil
       argument :filters, Types::Events::CaptureFilters, required: false, default_value: {}
 
-      def resolve_with_timings(page:, size:, sort:, search:, filters:)
+      def resolve(page:, size:, sort:, search:, filters:)
         events = object
           .event_captures
           .left_outer_joins(:event_groups) # So we can map &:name for #group_names

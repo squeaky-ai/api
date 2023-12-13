@@ -15,7 +15,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve_with_timings(site_id:, visitor_id:, session_id:, score:, comment:)
+      def resolve(site_id:, visitor_id:, session_id:, score:, comment:)
         # This is the same structure as regular
         # events that get pushed into the websocket
         # queue

@@ -10,7 +10,7 @@ module Resolvers
       argument :sort, Types::Feedback::SentimentResponseSort, required: false, default_value: 'timestamp__desc'
       argument :filters, Types::Feedback::SentimentResponseFilters, required: false, default_value: nil
 
-      def resolve_with_timings(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength
+      def resolve(page:, size:, sort:, filters:) # rubocop:disable Metrics/MethodLength
         query = Sentiment
           .joins(recording: :visitor)
           .where(

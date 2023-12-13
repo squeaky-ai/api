@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(enabled:)
+      def resolve(enabled:)
         site.update(magic_erasure_enabled: enabled)
 
         SiteService.delete_cache(user, site)

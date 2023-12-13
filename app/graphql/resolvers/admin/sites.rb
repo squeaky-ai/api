@@ -10,7 +10,7 @@ module Resolvers
       argument :search, String, required: false, default_value: nil
       argument :sort, Types::Admin::SiteSort, required: false, default_value: 'created_at__desc'
 
-      def resolve_with_timings(page:, size:, search:, sort:)
+      def resolve(page:, size:, search:, sort:)
         sites = ::Site
           .unscoped
           .includes(%i[teams users plan billing site_bundles_site])

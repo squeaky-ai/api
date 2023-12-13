@@ -68,8 +68,6 @@ class Site < ApplicationRecord
   def verify!
     return if verified_at
 
-    Stats.count('site_verified')
-
     update!(verified_at: Time.current)
   end
 

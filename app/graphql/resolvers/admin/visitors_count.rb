@@ -5,7 +5,7 @@ module Resolvers
     class VisitorsCount < Resolvers::Base
       type Integer, null: false
 
-      def resolve_with_timings
+      def resolve
         Visitor.count
       end
     end

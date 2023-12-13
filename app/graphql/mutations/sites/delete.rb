@@ -15,7 +15,7 @@ module Mutations
         [Team::OWNER]
       end
 
-      def resolve_with_timings
+      def resolve
         fire_squeaky_event
 
         # Send an email to everyone in the team besides the owner

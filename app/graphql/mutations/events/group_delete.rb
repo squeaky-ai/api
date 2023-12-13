@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(group_id:)
+      def resolve(group_id:)
         group = site.event_groups.find_by(id: group_id)
 
         group&.destroy

@@ -5,7 +5,7 @@ module Resolvers
     class PagesPerSession < Resolvers::Base
       type Float, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT AVG(count)
           FROM (

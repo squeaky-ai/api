@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(route:)
+      def resolve(route:)
         site.routes = site.routes.reject { |r| r == route }
         site.save
 

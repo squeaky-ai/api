@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(team_id:)
+      def resolve(team_id:)
         team = site.member(team_id)
 
         return team if team.owner?

@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(recording_id:)
+      def resolve(recording_id:)
         recording = site.recordings.find_by(id: recording_id)
 
         raise Exceptions::RecordingNotFound unless recording

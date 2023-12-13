@@ -5,7 +5,7 @@ module Resolvers
     class UsersStored < Resolvers::Base
       type [Types::Admin::UsersStored, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         Rails.cache.fetch('data_cache:AdminUsersStored', expires_in: 1.hour) do
           sql = <<-SQL.squish
             SELECT

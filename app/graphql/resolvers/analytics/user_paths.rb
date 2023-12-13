@@ -8,7 +8,7 @@ module Resolvers
       argument :page, String, required: true
       argument :position, Types::Analytics::PathPosition, required: true
 
-      def resolve_with_timings(page:, position:)
+      def resolve(page:, position:)
         paths = paths(position, page)
         referrers = referrers(paths)
         routes = object.site.routes

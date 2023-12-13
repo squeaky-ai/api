@@ -5,7 +5,7 @@ module Resolvers
     class DaysSinceLastRecording < Resolvers::Base
       type Integer, null: false
 
-      def resolve_with_timings
+      def resolve
         DataCacheService::Recordings::DaysSinceLastRecording.new(
           site: object,
           expires_in: 1.hour

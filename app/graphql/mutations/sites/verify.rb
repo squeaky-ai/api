@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings
+      def resolve
         # The user may want to validate more than once
         # so we store a timestamp rather than a boolean
         script_tag_exists? ? site.verify! : site.unverify!

@@ -10,7 +10,6 @@ class RecordingMailer < ApplicationMailer
 
     return if emails.empty?
 
-    Stats.count('recording_mailer_first_recording')
     mail(to: emails, subject: 'Your first Squeaky recording is in! 👀')
   end
 
@@ -23,7 +22,6 @@ class RecordingMailer < ApplicationMailer
 
     return if emails.empty?
 
-    Stats.count('recording_mailer_first_recording_followup')
     mail(to: emails, subject: 'Capture only the right data')
   end
 

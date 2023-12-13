@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(email:, password:)
+      def resolve(email:, password:)
         user = User.new(email:, password:)
 
         user.save

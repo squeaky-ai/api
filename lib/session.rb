@@ -176,9 +176,7 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def exists?
-    exists = Recording.exists?(session_id: @session_id)
-    Stats.count('session_exists') if exists
-    exists
+    Recording.exists?(session_id: @session_id)
   end
 
   delegate :inactivity, to: :activity

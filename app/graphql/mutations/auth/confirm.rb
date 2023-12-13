@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(token:)
+      def resolve(token:)
         user = User.confirm_by_token(token)
 
         unless user.errors.empty?

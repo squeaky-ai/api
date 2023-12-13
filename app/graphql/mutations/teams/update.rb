@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(team_id:, linked_data_visible:)
+      def resolve(team_id:, linked_data_visible:)
         team = site.member(team_id)
 
         raise Exceptions::TeamNotFound unless team

@@ -8,7 +8,6 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    Stats.count('free_trial_mailer_first')
     mail(to: @user.email, subject: 'Your free trial of Squeaky\'s paid features has started...')
   end
 
@@ -19,7 +18,6 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    Stats.count('free_trial_mailer_second')
     mail(to: @user.email, subject: 'You\'re halfway through your advanced features trial - are you making the most of it?')
   end
 
@@ -30,7 +28,6 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    Stats.count('free_trial_mailer_third')
     mail(to: @user.email, subject: 'Only 2 days left - maximize your Squeaky experience')
   end
 
@@ -41,7 +38,6 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    Stats.count('free_trial_mailer_forth')
     mail(to: @user.email, subject: 'Your trial of Squeaky\'s premium features has ended...')
   end
 

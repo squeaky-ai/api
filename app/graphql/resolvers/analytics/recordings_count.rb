@@ -5,7 +5,7 @@ module Resolvers
     class RecordingsCount < Resolvers::Base
       type Types::Analytics::RecordingsCount, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             COUNT(*) total,

@@ -5,7 +5,7 @@ module Resolvers
     class Consent < Resolvers::Base
       type Types::Consent::Consent, null: false
 
-      def resolve_with_timings
+      def resolve
         object.consent || ::Consent.create_with_defaults(object)
       end
     end

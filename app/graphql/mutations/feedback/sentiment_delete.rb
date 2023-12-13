@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(sentiment_id:)
+      def resolve(sentiment_id:)
         sentiment = site.sentiments.find_by(id: sentiment_id)
 
         raise Exceptions::SentimentNotFound unless sentiment

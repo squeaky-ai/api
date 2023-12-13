@@ -7,7 +7,7 @@ module Resolvers
 
       MIN_PAGE_DURATION = 3000
 
-      def resolve_with_timings
+      def resolve
         ::Recording
           .joins(:pages, :visitor)
           .preload(:pages, :visitor)

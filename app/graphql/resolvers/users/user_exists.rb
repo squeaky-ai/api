@@ -7,7 +7,7 @@ module Resolvers
 
       argument :email, String, required: true
 
-      def resolve_with_timings(email:)
+      def resolve(email:)
         ::User.exists?(email:)
       end
     end

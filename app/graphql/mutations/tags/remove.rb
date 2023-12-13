@@ -17,7 +17,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN, Team::MEMBER]
       end
 
-      def resolve_with_timings(recording_id:, tag_id:)
+      def resolve(recording_id:, tag_id:)
         tag = site.tags.find_by_id(tag_id)
         recording = site.recordings.find_by_id(recording_id)
 

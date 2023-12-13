@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(recording_ids:)
+      def resolve(recording_ids:)
         recordings = site.recordings.where(id: recording_ids)
 
         return [] if recordings.empty?

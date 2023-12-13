@@ -5,7 +5,7 @@ module Resolvers
     class SiteRecordingsCounts < Resolvers::Base
       type Types::Admin::SiteRecordingsCounts, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             (COUNT(*)) as total_all,

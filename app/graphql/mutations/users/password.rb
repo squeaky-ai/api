@@ -13,7 +13,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(**args)
+      def resolve(**args)
         user.update_with_password(args)
 
         # For some reason devise errors do not cause user.valid? to

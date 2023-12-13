@@ -19,7 +19,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(type:, name:, rules:, group_ids:)
+      def resolve(type:, name:, rules:, group_ids:)
         groups = EventGroup.where(id: group_ids, site_id: site.id)
 
         event = EventCapture.create(

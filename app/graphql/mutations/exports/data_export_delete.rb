@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(data_export_id:)
+      def resolve(data_export_id:)
         data_export = site.data_exports.find(data_export_id)
         data_export.destroy
 

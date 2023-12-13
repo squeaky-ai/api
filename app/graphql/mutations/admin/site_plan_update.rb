@@ -21,7 +21,7 @@ module Mutations
 
       type Types::Admin::Site
 
-      def resolve_with_timings(site_id:, **args)
+      def resolve(site_id:, **args)
         site = Site.find(site_id)
         site.plan.update(args)
 

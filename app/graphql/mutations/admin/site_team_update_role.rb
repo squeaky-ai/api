@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Teams::Team
 
-      def resolve_with_timings(id:, role:)
+      def resolve(id:, role:)
         team = Team.find(id)
         team.update(role:)
 

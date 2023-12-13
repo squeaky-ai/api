@@ -5,7 +5,7 @@ module Resolvers
     class Sites < Resolvers::Base
       type [Types::Sites::Site, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         raise Exceptions::Unauthorized unless context[:current_user]
 
         # We don't show pending sites to the user in the UI

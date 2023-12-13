@@ -12,7 +12,7 @@ module Mutations
 
       type Types::Users::User
 
-      def resolve_with_timings(password:, reset_password_token:)
+      def resolve(password:, reset_password_token:)
         user = User.reset_password_by_token({ password:, reset_password_token: })
 
         unless user.errors.empty?

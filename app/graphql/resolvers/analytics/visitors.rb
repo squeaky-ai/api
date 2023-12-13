@@ -5,7 +5,7 @@ module Resolvers
     class Visitors < Resolvers::Base
       type Types::Analytics::Visitors, null: false
 
-      def resolve_with_timings
+      def resolve
         sql = <<-SQL.squish
           SELECT
             COUNT(*) all_count,

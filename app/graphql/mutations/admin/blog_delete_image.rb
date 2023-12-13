@@ -11,7 +11,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve_with_timings(key:)
+      def resolve(key:)
         client = Aws::S3::Client.new(region: 'eu-west-1')
 
         client.delete_object(bucket: 'cdn.squeaky.ai', key:)

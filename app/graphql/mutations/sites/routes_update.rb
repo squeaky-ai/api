@@ -16,7 +16,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(routes:)
+      def resolve(routes:)
         site.routes = routes
         site.routes_will_change!
         site.save

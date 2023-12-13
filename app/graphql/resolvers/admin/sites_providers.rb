@@ -5,7 +5,7 @@ module Resolvers
     class SitesProviders < Resolvers::Base
       type [Types::Admin::SitesProvider, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         Rails.cache.fetch('data_cache:AdminSitesProviders', expires_in: 1.hour) do
           sql = <<-SQL.squish
             SELECT

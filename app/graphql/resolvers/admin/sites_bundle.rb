@@ -7,7 +7,7 @@ module Resolvers
 
       argument :bundle_id, ID, required: true
 
-      def resolve_with_timings(bundle_id:)
+      def resolve(bundle_id:)
         bundle = ::SiteBundle.find(bundle_id)
 
         site_ids = bundle.site_bundles_sites.map(&:site_id)

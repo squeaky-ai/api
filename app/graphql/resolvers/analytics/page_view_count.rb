@@ -5,7 +5,7 @@ module Resolvers
     class PageViewCount < Resolvers::Base
       type Types::Analytics::PageViewCount, null: false
 
-      def resolve_with_timings
+      def resolve
         total_count = total
         trend_count = trend
 

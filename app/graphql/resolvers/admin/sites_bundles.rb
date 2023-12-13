@@ -5,7 +5,7 @@ module Resolvers
     class SitesBundles < Resolvers::Base
       type [Types::Sites::Bundle, { null: false }], null: false
 
-      def resolve_with_timings
+      def resolve
         SiteBundle.includes(:site_bundles_sites).all
       end
     end

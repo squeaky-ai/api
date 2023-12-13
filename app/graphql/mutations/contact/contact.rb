@@ -15,7 +15,7 @@ module Mutations
 
       type Types::Common::GenericSuccess
 
-      def resolve_with_timings(first_name:, last_name:, email:, subject:, message:)
+      def resolve(first_name:, last_name:, email:, subject:, message:)
         ContactMailer.contact(
           first_name:,
           last_name:,

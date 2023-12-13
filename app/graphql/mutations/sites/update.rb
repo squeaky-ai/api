@@ -18,7 +18,7 @@ module Mutations
         [Team::OWNER, Team::ADMIN]
       end
 
-      def resolve_with_timings(name: nil, url: nil, site_type: nil)
+      def resolve(name: nil, url: nil, site_type: nil)
         update = {}
         update[:name] = name if name
         update[:site_type] = site_type if site_type

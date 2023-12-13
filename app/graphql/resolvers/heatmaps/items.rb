@@ -5,7 +5,7 @@ module Resolvers
     class Items < Resolvers::Base
       type String, null: false # The whole thing is stringified because it creates too many objects
 
-      def resolve_with_timings
+      def resolve
         case object.type
         when 'ClickCount'
           heatmaps_instance.click_counts.to_json

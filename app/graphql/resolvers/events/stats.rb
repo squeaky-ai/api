@@ -10,7 +10,7 @@ module Resolvers
       argument :from_date, GraphQL::Types::ISO8601Date, required: true
       argument :to_date, GraphQL::Types::ISO8601Date, required: true
 
-      def resolve_with_timings(group_ids:, capture_ids:, from_date:, to_date:)
+      def resolve(group_ids:, capture_ids:, from_date:, to_date:)
         range = DateRange.new(from_date:, to_date:, timezone: context[:timezone])
 
         # Get a list of all the capture events including ones
