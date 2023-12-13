@@ -25,7 +25,6 @@ Rails.application.routes.draw do
       post 'stripe', to: 'stripe#index'
     end
 
-    resources :invoices, only: [:show]
     resources :data_exports, only: [:show]
 
     resources :events, only: [:create]

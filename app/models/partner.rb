@@ -6,21 +6,6 @@ class Partner < ApplicationRecord
   belongs_to :user
 
   has_many :referrals
-  has_many :partner_invoices
 
   has_many :sites, through: :referrals
-
-  delegate :all_time_commission, to: :commission
-
-  delegate :pay_outs, to: :commission
-
-  def invoices
-    partner_invoices
-  end
-
-  private
-
-  def commission
-    @commission ||= CommissionService.new(self)
-  end
 end

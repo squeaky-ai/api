@@ -9,9 +9,6 @@ module Types
       field :name, String, null: false
       field :slug, String, null: false
       field :referrals, resolver: Resolvers::Users::Referrals
-      field :invoices, [Types::Users::Invoice, { null: false }], null: false
-      field :all_time_commission, [Types::Users::Payment, { null: false }], null: false
-      field :pay_outs, [Types::Users::Payment, { null: false }], null: false
     end
   end
 end

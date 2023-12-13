@@ -74,7 +74,7 @@ Rails.application.configure do
   config.action_cable.logger = ActiveSupport::Logger.new($stdout)
   config.action_cable.logger.level = Logger::WARN
 
-  config.hosts = ['api.squeaky.test']
+  config.hosts = ['localhost', 'api.squeaky.test']
 
   config.web_host = 'http://squeaky.test'
   config.app_host = 'http://app.squeaky.test'

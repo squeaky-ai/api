@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_11_163428) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_13_171958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -285,20 +285,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_11_163428) do
     t.index ["exited_at"], name: "index_pages_on_exited_at"
     t.index ["recording_id"], name: "index_pages_on_recording_id"
     t.index ["site_id"], name: "index_pages_on_site_id"
-  end
-
-  create_table "partner_invoices", force: :cascade do |t|
-    t.string "filename", null: false
-    t.integer "status", null: false
-    t.date "issued_at"
-    t.date "due_at"
-    t.date "paid_at"
-    t.integer "amount", null: false
-    t.bigint "partner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "currency", null: false
-    t.index ["partner_id"], name: "index_partner_invoices_on_partner_id"
   end
 
   create_table "partners", force: :cascade do |t|

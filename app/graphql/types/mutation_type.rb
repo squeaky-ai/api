@@ -18,7 +18,6 @@ module Types
     field :admin_site_team_delete, mutation: Mutations::Admin::SiteTeamDelete
     field :admin_site_team_update_role, mutation: Mutations::Admin::SiteTeamUpdateRole
     field :admin_site_bundles_create, mutation: Mutations::Admin::SiteBundlesCreate
-    field :admin_partner_invoice_update, mutation: Mutations::Admin::PartnerInvoiceUpdate
     # Auth
     field :auth_confirm, mutation: Mutations::Auth::Confirm
     field :auth_reconfirm, mutation: Mutations::Auth::Reconfirm
@@ -32,9 +31,6 @@ module Types
     field :user_communication, mutation: Mutations::Users::Communication
     field :user_referral_create, mutation: Mutations::Users::ReferralCreate
     field :user_referral_delete, mutation: Mutations::Users::ReferralDelete
-    field :user_invoice_create, mutation: Mutations::Users::InvoiceCreate
-    field :user_invoice_delete, mutation: Mutations::Users::InvoiceDelete
-    field :user_invoice_sign_image, mutation: Mutations::Users::InvoiceSignImage
     # Sites
     field :site_create, mutation: Mutations::Sites::Create
     field :site_update, mutation: Mutations::Sites::Update
