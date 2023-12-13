@@ -28,13 +28,6 @@ Rails.application.routes.draw do
     resources :invoices, only: [:show]
     resources :data_exports, only: [:show]
 
-    resources :sites do
-      get '/heatmaps/cursors', to: 'sites/heatmaps#cursors'
-      get '/heatmaps/click_counts', to: 'sites/heatmaps#click_counts'
-      get '/heatmaps/click_positions', to: 'sites/heatmaps#click_positions'
-      get '/heatmaps/scrolls', to: 'sites/heatmaps#scrolls'
-    end
-
     resources :events, only: [:create]
     resources :visitors, only: [:create]
 

@@ -76,6 +76,7 @@ Rails.application.configure do
 
   config.web_host = 'http://localhost:3333'
   config.app_host = 'http://localhost:3000'
+  config.api_host = 'http://localhost:4000'
 
   config.squeaky_site_id = 1
 end

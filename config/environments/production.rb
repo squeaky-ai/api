@@ -93,6 +93,7 @@ Rails.application.configure do
 
   config.web_host = ENV.fetch('WEB_HOST', 'https://squeaky.ai')
   config.app_host = ENV.fetch('APP_HOST', 'https://app.squeaky.ai')
+  config.api_host = ENV.fetch('API_HOST', 'https://api.squeaky.ai')
 
   config.squeaky_site_id = 82
 end

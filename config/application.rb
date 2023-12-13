@@ -41,7 +41,7 @@ module Squeaky
     config.action_cable.disable_request_forgery_protection = true
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months
+    config.middleware.use ActionDispatch::Session::CookieStore, key: 'session', expire_after: 3.months, domain: :all
 
     config.plans = config_for(:plans)
     config.countries = config_for(:countries)
