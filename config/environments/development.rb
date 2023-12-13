@@ -41,7 +41,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :test
 
-  config.action_mailer.default_url_options = { protocol: 'http', host: 'localhost', port: 3333 }
+  config.action_mailer.default_url_options = { protocol: 'http', host: 'squeaky.test', port: 80 }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -74,9 +74,11 @@ Rails.application.configure do
   config.action_cable.logger = ActiveSupport::Logger.new($stdout)
   config.action_cable.logger.level = Logger::WARN
 
-  config.web_host = 'http://localhost:3333'
-  config.app_host = 'http://localhost:3000'
-  config.api_host = 'http://localhost:4000'
+  config.hosts = ['api.squeaky.test']
+
+  config.web_host = 'http://squeaky.test'
+  config.app_host = 'http://app.squeaky.test'
+  config.api_host = 'http://api.squeaky.test'
 
   config.squeaky_site_id = 1
 end
