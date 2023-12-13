@@ -5,7 +5,7 @@ require 'httparty'
 class SqueakyClient
   include HTTParty
 
-  base_uri 'https://squeaky.ai'
+  base_uri 'https://api.squeaky.ai'
 
   def add_event(name:, data:, user_id: nil)
     body = {

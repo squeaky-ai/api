@@ -48,7 +48,7 @@ irb> RecordingSaveJob.perform_now('site_id' => '<site_uuid>', 'visitor_id' => '<
 
 ### Running the stripe webhook locally
 ```shell
-$ stripe listen --forward-to localhost:3333/api/webhooks/stripe
+$ stripe listen --forward-to localhost:4000/api/webhooks/stripe
 ```
 
 ### Usage

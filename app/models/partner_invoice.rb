@@ -7,6 +7,6 @@ class PartnerInvoice < ApplicationRecord
   PAID = 1
 
   def invoice_url
-    "#{Rails.application.config.web_host}/api/invoices/#{id}"
+    "#{Rails.application.config.api_host}/api/invoices/#{id}"
   end
 end
