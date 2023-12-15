@@ -5,18 +5,10 @@ class RecordingSaveJob < ApplicationJob
 
   sidekiq_options retry: 0
 
-  before_perform do |job|
-    args = job.arguments.first
-    key = "job_lock::#{args['site_id']}::#{args['visitor_id']}::#{args['session_id']}"
-
-    raise StandardError, "RecordingSaveJob lock hit for #{key}" if Cache.redis.get(key)
-
-    Cache.redis.set(key, '1')
-    Cache.redis.expire(key, 7200)
-  end
-
   def perform(*args)
     message = args.first.symbolize_keys
+
+    return if lock_hit?(message)
 
     @session = Session.new(message)
     @site = Site.find_by(uuid: session.site_id)
@@ -37,6 +29,17 @@ class RecordingSaveJob < ApplicationJob
   private
 
   attr_reader :site, :session, :recording, :visitor
+
+  def lock_hit?(message)
+    key = "job_lock::#{message[:site_id]}::#{message[:visitor_id]}::#{message[:session_id]}"
+
+    return true if Cache.redis.get(key)
+
+    Cache.redis.set(key, '1')
+    Cache.redis.expire(key, 7200)
+
+    false
+  end
 
   def store_session!
     ActiveRecord::Base.transaction do
@@ -152,20 +155,41 @@ class RecordingSaveJob < ApplicationJob
     EventCapture.create_names_for_site!(site, event_names, EventCapture::WEB)
   end
 
-  def valid? # rubocop:disable Metrics/CyclomaticComplexity
-    return false unless site
+  def valid? # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+    unless site
+      Rails.logger.info 'Recording did not save because there was no site'
+      return false
+    end
 
-    return false if blacklisted_visitor?
+    if blacklisted_visitor?
+      Rails.logger.info 'Recording did not save because the visitor was blacklisted'
+      return false
+    end
 
-    return false unless session.events?
+    unless session.events?
+      Rails.logger.info 'Recording did not save because there were not events'
+      return false
+    end
 
-    return false if session.duration.zero?
+    if session.duration.zero?
+      Rails.logger.info 'Recording did not save because the duration was 0'
+      return false
+    end
 
-    return false unless session.recording?
+    unless session.recording?
+      Rails.logger.info 'Recording did not save because the recording check failed'
+      return false
+    end
 
-    return false if session.exists?
+    if session.exists?
+      Rails.logger.info 'Recording did not save because the session exists'
+      return false
+    end
 
-    return false if session.pages.empty?
+    if session.pages.empty?
+      Rails.logger.info 'Recording did not save because there were no pages'
+      return false
+    end
 
     true
   end

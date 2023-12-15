@@ -212,11 +212,8 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and_return('1')
     end
 
-    it 'raises an error' do
-      expect { subject }.to raise_error(
-        StandardError,
-        "RecordingSaveJob lock hit for job_lock::#{event['site_id']}::#{event['visitor_id']}::#{event['session_id']}"
-      )
+    it 'does not store the recording' do
+      expect { subject }.not_to(change { site.reload.recordings.size })
     end
   end
 
