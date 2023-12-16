@@ -4,6 +4,19 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
+  # Ping endpoint for the ALB to check health
+  get 'ping', to: 'ping#index'
+
+  # GraphQL endpoint
+  post 'graphql', to: 'graphql#execute'
+
+  # Sidekiq dashboard and GraphQL playground
+  # are only for superusers
+  authenticate :user, ->(u) { u.superuser? } do
+    mount Sidekiq::Web => '/sidekiq'
+    mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
+  end
+
   scope 'api' do
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
@@ -13,13 +26,6 @@ Rails.application.routes.draw do
 
     # Required to load devise
     devise_for :users, only: []
-
-    # Sidekiq dashboard and GraphQL playground
-    # are only for superusers
-    authenticate :user, ->(u) { u.superuser? } do
-      mount Sidekiq::Web => '/sidekiq'
-      mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
-    end
 
     namespace :webhooks do
       post 'stripe', to: 'stripe#index'
