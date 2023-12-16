@@ -17,6 +17,21 @@ Rails.application.routes.draw do
     mount GraphqlPlayground::Rails::Engine, at: 'playground', graphql_path: 'graphql'
   end
 
+  # Required to load devise
+  devise_for :users, only: []
+
+  scope 'auth' do
+    devise_scope :user do
+      post 'sign_in', to: 'auth/sessions#create', as: :user_session
+      delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
+    end
+  end
+
+  resources :data_exports, only: [:show]
+
+  resources :events, only: [:create]
+  resources :visitors, only: [:create]
+
   scope 'api' do
     # Ping endpoint for the ALB to check health
     get 'ping', to: 'ping#index'
@@ -24,23 +39,8 @@ Rails.application.routes.draw do
     # GraphQL endpoint
     post 'graphql', to: 'graphql#execute'
 
-    # Required to load devise
-    devise_for :users, only: []
-
     namespace :webhooks do
       post 'stripe', to: 'stripe#index'
-    end
-
-    resources :data_exports, only: [:show]
-
-    resources :events, only: [:create]
-    resources :visitors, only: [:create]
-
-    scope 'auth' do
-      devise_scope :user do
-        post 'sign_in', to: 'auth/sessions#create', as: :user_session
-        delete 'sign_out', to: 'auth/sessions#destroy', as: :destroy_user_session
-      end
     end
 
     scope 'integrations' do

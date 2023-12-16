@@ -48,13 +48,13 @@ irb> RecordingSaveJob.perform_now('site_id' => '<site_uuid>', 'visitor_id' => '<
 
 ### Running the stripe webhook locally
 ```shell
-$ stripe listen --forward-to localhost:4000/api/webhooks/stripe
+$ stripe listen --forward-to localhost:4000/webhooks/stripe
 ```
 
 ### Usage
-- [Playground](http://localhost:4000/api/playground/) (disabled in production unless you're a superuser)
-- [GraphQL Endpoint](http://localhost:4000/api/graphql)
-- [Sidekiq](http://localhost:4000/api/sidekiq)
+- [Playground](http://api.squeaky.test/playground/) (disabled in production unless you're a superuser)
+- [GraphQL Endpoint](http://api.squeaky.test/graphql)
+- [Sidekiq](http://api.squeaky.test/sidekiq)
 
 ### Accessing the Rails console in production
 You'll need jq installed (`brew install jq`), then run the following:

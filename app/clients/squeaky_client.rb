@@ -14,7 +14,7 @@ class SqueakyClient
       data: data.to_json
     }.to_json
 
-    self.class.post('/api/events', body:, headers:, timeout:)
+    self.class.post('/events', body:, headers:, timeout:)
   end
 
   private

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Auth::SessionsController, type: :request do
-  describe 'POST /api/auth/sign_in' do
+  describe 'POST /auth/sign_in' do
     let(:headers) do
       {
         'Accept' => 'application/json',
@@ -11,7 +11,7 @@ RSpec.describe Auth::SessionsController, type: :request do
       }
     end
 
-    subject { post '/api/auth/sign_in', params: params.to_json, headers: }
+    subject { post '/auth/sign_in', params: params.to_json, headers: }
 
     context 'when the user does not exist' do
       let(:params) do
@@ -72,7 +72,7 @@ RSpec.describe Auth::SessionsController, type: :request do
     end
   end
 
-  describe 'DELETE /api/auth/sign_out' do
+  describe 'DELETE /auth/sign_out' do
     let(:headers) do
       {
         'Accept' => 'application/json',
@@ -80,7 +80,7 @@ RSpec.describe Auth::SessionsController, type: :request do
       }
     end
 
-    subject { delete '/api/auth/sign_out', headers: }
+    subject { delete '/auth/sign_out', headers: }
 
     it 'returns a 204 status' do
       subject

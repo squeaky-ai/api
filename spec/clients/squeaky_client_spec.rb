@@ -18,11 +18,11 @@ RSpec.describe SqueakyClient do
     it 'sends the expected payload' do
       subject
       expect(described_class).to have_received(:post).with(
-        '/api/events',
+        '/events',
         body: {
           name:,
           user_id:,
-          data: data.to_json,
+          data: data.to_json
         }.to_json,
         headers: {
           'Accept' => 'application/json',
