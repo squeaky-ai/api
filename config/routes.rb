@@ -46,6 +46,20 @@ Rails.application.routes.draw do
     end
   end
 
+  # TODO: Remove
+
+  scope 'api' do
+    scope 'integrations' do
+      scope 'websitebuilder', as: 'duda' do # they do not allow you to have the word duda in there
+        post 'install', to: 'integrations/duda#install'
+        post 'uninstall', to: 'integrations/duda#uninstall'
+        post 'change_plan', to: 'integrations/duda#change_plan'
+        get 'sso', to: 'integrations/duda#sso'
+        post 'webhook', to: 'integrations/duda#webhook'
+      end
+    end
+  end
+
   root to: 'application#not_found'
   match '*anything', to: 'application#not_found', via: %i[get post]
 end
