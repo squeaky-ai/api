@@ -37,7 +37,6 @@ module Squeaky
 
     config.eager_load_paths << Rails.root.join('lib')
 
-    config.action_cable.mount_path = '/api/in' # TODO: Remove
     config.action_cable.mount_path = '/in'
     config.action_cable.disable_request_forgery_protection = true
 

@@ -32,25 +32,17 @@ Rails.application.routes.draw do
   resources :events, only: [:create]
   resources :visitors, only: [:create]
 
-  scope 'api' do
-    # Ping endpoint for the ALB to check health
-    get 'ping', to: 'ping#index'
+  namespace :webhooks do
+    post 'stripe', to: 'stripe#index'
+  end
 
-    # GraphQL endpoint
-    post 'graphql', to: 'graphql#execute'
-
-    namespace :webhooks do
-      post 'stripe', to: 'stripe#index'
-    end
-
-    scope 'integrations' do
-      scope 'websitebuilder', as: 'duda' do # they do not allow you to have the word duda in there
-        post 'install', to: 'integrations/duda#install'
-        post 'uninstall', to: 'integrations/duda#uninstall'
-        post 'change_plan', to: 'integrations/duda#change_plan'
-        get 'sso', to: 'integrations/duda#sso'
-        post 'webhook', to: 'integrations/duda#webhook'
-      end
+  scope 'integrations' do
+    scope 'websitebuilder', as: 'duda' do # they do not allow you to have the word duda in there
+      post 'install', to: 'integrations/duda#install'
+      post 'uninstall', to: 'integrations/duda#uninstall'
+      post 'change_plan', to: 'integrations/duda#change_plan'
+      get 'sso', to: 'integrations/duda#sso'
+      post 'webhook', to: 'integrations/duda#webhook'
     end
   end
 
