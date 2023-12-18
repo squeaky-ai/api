@@ -17,6 +17,7 @@ module Types
       field :magic_erasure_enabled, Boolean, null: false
       field :consent, Types::Consent::Consent, null: true
       field :feedback, Types::Feedback::Feedback, null: true
+      field :recordings_enabled, Boolean, null: false
     end
   end
 end
