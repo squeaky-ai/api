@@ -50,11 +50,27 @@ RSpec.describe Resolvers::Admin::SiteRecordingsCounts, type: :request do
       let(:user) { create(:user, superuser: true) }
       let!(:site) { create(:site) }
 
+      let(:recordings) do
+        [
+          create(:recording, site:),
+          create(:recording, site:, status: Recording::ANALYTICS_ONLY),
+          create(:recording, site:, created_at: 2.months.ago),
+          create(:recording, site:, created_at: 2.months.ago, status: Recording::ANALYTICS_ONLY)
+        ]
+      end
+
       before do
-        create(:recording, site:)
-        create(:recording, site:, status: Recording::ANALYTICS_ONLY)
-        create(:recording, site:, created_at: 2.months.ago)
-        create(:recording, site:, created_at: 2.months.ago, status: Recording::ANALYTICS_ONLY)
+        ClickHouse::Recording.insert do |buffer|
+          recordings.each do |recording|
+            buffer << {
+              uuid: SecureRandom.uuid,
+              site_id: recording.site.id,
+              recording_id: recording.id,
+              status: recording.status,
+              disconnected_at: recording.created_at.to_i * 1000
+            }
+          end
+        end
       end
 
       it 'returns the counts' do

@@ -140,14 +140,7 @@ class RecordingSaveJob < ApplicationJob
       ClickHouse::ErrorEvent,
       ClickHouse::PageEvent,
       ClickHouse::CursorEvent,
-      ClickHouse::ScrollEvent,
-      # Remove above once migrated
-      ClickEvent,
-      CustomEvent,
-      ErrorEvent,
-      PageEvent,
-      CursorEvent,
-      ScrollEvent
+      ClickHouse::ScrollEvent
     ].each { |model| model.create_from_session(recording, session) }
   end
 

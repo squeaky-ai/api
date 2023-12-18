@@ -13,9 +13,12 @@ module Resolvers
               (COUNT(*) FILTER(WHERE verified_at IS NOT NULL)) as verified_count,
               (COUNT(*) FILTER(WHERE verified_at IS NULL)) as unverified_count,
               created_at::date date
-            FROM sites
-            GROUP BY date
-            ORDER BY date ASC;
+            FROM
+              sites
+            GROUP BY
+              date
+            ORDER BY
+              date ASC;
           SQL
 
           Sql.execute(sql)

@@ -12,11 +12,13 @@ module Resolvers
             COUNT(v.id) FILTER(WHERE v.new IS TRUE) new_count
           FROM (
             SELECT
-              visitors.id, visitors.new
+              visitors.id,
+              visitors.new
             FROM
               visitors
             WHERE
-              visitors.site_id = :site_id AND visitors.created_at::date AT TIME ZONE :timezone BETWEEN :from_date AND :to_date
+              visitors.site_id = :site_id AND
+              visitors.created_at::date AT TIME ZONE :timezone BETWEEN :from_date AND :to_date
             GROUP BY visitors.id
           ) v;
         SQL

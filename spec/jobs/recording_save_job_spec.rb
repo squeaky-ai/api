@@ -127,16 +127,6 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}") }.from(0).to(1)
     end
 
-    it 'stores all the event data' do
-      expect { subject }
-        .to change { ClickEvent.where(site_id: site.id).count }.from(0).to(3)
-        .and change { CustomEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { ErrorEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { PageEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { CursorEvent.where(site_id: site.id).count }.from(0).to(21)
-        .and change { ScrollEvent.where(site_id: site.id).count }.from(0).to(40)
-    end
-
     it 'writes the events to S3' do
       subject
 
@@ -321,16 +311,6 @@ RSpec.describe RecordingSaveJob, type: :job do
         .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM cursor_events WHERE site_id = #{site.id}") }.from(0).to(21)
         .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}") }.from(0).to(40)
         .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}") }.from(0).to(1)
-    end
-
-    it 'stores all the event data' do
-      expect { subject }
-        .to change { ClickEvent.where(site_id: site.id).count }.from(0).to(3)
-        .and change { CustomEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { ErrorEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { PageEvent.where(site_id: site.id).count }.from(0).to(1)
-        .and change { CursorEvent.where(site_id: site.id).count }.from(0).to(21)
-        .and change { ScrollEvent.where(site_id: site.id).count }.from(0).to(40)
     end
 
     it 'does note write the events to S3' do
