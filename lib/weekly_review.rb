@@ -31,7 +31,7 @@ class WeeklyReview
   end
 
   def site
-    @site ||= Site.find(@site_id)
+    @site ||= Site.find(site_id)
   end
 
   def members
@@ -39,6 +39,8 @@ class WeeklyReview
   end
 
   private
+
+  attr_reader :site_id
 
   def total_visitors
     sql = <<-SQL.squish
@@ -51,7 +53,7 @@ class WeeklyReview
       ) v;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first['count']
   end
 
@@ -67,7 +69,7 @@ class WeeklyReview
       ) v;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first['count']
   end
 
@@ -78,7 +80,7 @@ class WeeklyReview
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first['count']
   end
 
@@ -89,7 +91,7 @@ class WeeklyReview
       WHERE recordings.viewed = FALSE AND recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first['count']
   end
 
@@ -100,7 +102,7 @@ class WeeklyReview
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
 
-    response = Sql.execute(sql, [@site_id, from_date, to_date])
+    response = Sql.execute(sql, [site_id, from_date, to_date])
     duration = response.first&.[]('average_session_duration') || 0
 
     {
@@ -133,7 +135,7 @@ class WeeklyReview
       ) c;
     SQL
 
-    response = Sql.execute(sql, [@site_id, from_date, to_date])
+    response = Sql.execute(sql, [site_id, from_date, to_date])
     pages_count = response.first['avg'].to_f
 
     {
@@ -164,7 +166,7 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
 
     return nil unless response.first
 
@@ -181,7 +183,7 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first&.[]('referrer') || @site.url
   end
 
@@ -195,7 +197,7 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     Countries.get_country(response.first&.[]('country_code')) || 'Unknown'
   end
 
@@ -209,7 +211,7 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first&.[]('browser')
   end
 
@@ -224,7 +226,7 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     visitor = response.first
 
     {
@@ -244,14 +246,14 @@ class WeeklyReview
       LIMIT 1;
     SQL
 
-    response = Sql.execute(sql, [@site_id, @from_date, @to_date])
+    response = Sql.execute(sql, [site_id, @from_date, @to_date])
     response.first&.[]('url')
   end
 
   def feedback_nps
     {
       enabled: site.nps_enabled?,
-      score: Nps.get_score_between(@site_id, @from_date, @to_date)
+      score: Nps.get_score_between(site_id, @from_date, @to_date)
     }
   end
 
@@ -259,7 +261,7 @@ class WeeklyReview
     range = DateRange.new(from_date: @from_date, to_date: @to_date)
 
     current_week = feedback_nps[:score]
-    previous_week = Nps.get_score_between(@site_id, range.trend_from, range.trend_to)
+    previous_week = Nps.get_score_between(site_id, range.trend_from, range.trend_to)
 
     {
       trend: to_two_decimal_places(current_week - previous_week),
@@ -275,7 +277,7 @@ class WeeklyReview
       WHERE recordings.site_id = ? AND to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?;
     SQL
 
-    response = Sql.execute(sql, [@site_id, from_date, to_date])
+    response = Sql.execute(sql, [site_id, from_date, to_date])
 
     {
       enabled: site.sentiment_enabled?,

@@ -193,13 +193,13 @@ class Session # rubocop:disable Metrics/ClassLength
   end
 
   def clean_up!
-    Cache.redis.del("events::#{@site_id}::#{@visitor_id}::#{@session_id}")
+    Cache.redis.del("events::#{site_id}::#{visitor_id}::#{session_id}")
   end
 
   private
 
   def fetch_and_process_events
-    key = "events::#{@site_id}::#{@visitor_id}::#{@session_id}"
+    key = "events::#{site_id}::#{visitor_id}::#{session_id}"
 
     events = Cache
       .redis

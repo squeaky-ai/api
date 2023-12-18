@@ -9,8 +9,8 @@ module Resolvers
         Rails.cache.fetch('data_cache:AdminSitesProviders', expires_in: 1.hour) do
           sql = <<-SQL.squish
             SELECT
-              COUNT(*) count,
-              DISTINCT(COALESCE(provider, 'None')) provider_name
+              DISTINCT(COALESCE(provider, 'None')) provider_name,
+              COUNT(*) count
             FROM
               sites
             GROUP BY
