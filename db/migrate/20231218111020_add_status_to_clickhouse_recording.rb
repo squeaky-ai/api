@@ -10,7 +10,6 @@ class AddStatusToClickhouseRecording < ActiveRecord::Migration[7.1]
     )
   end
 
-
   def down
     ClickHouse.connection.drop_column(
       'recordings',
