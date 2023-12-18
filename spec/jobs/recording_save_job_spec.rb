@@ -309,7 +309,7 @@ RSpec.describe RecordingSaveJob, type: :job do
 
   context 'when the site does not have the recordings feature enabled' do
     before do
-      site.plan.update(features_enabled: [])
+      site.plan.update(features_enabled: ['dashboard'])
     end
 
     it 'stores all the clickhouse data' do

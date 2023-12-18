@@ -29,7 +29,7 @@ RSpec.describe FreeTrialJob, type: :job do
         .to(500)
         .and change { site.reload.plan.features_enabled }
         .from(Types::Plans::Feature.values.keys)
-        .to(%w[dashboard visitors site_analytics heatmaps_click_positions])
+        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
     end
   end
 

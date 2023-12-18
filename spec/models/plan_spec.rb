@@ -195,7 +195,7 @@ RSpec.describe Plan, type: :model do
         .from(500)
         .to(1500)
         .and change { instance.features_enabled }
-        .from(%w[dashboard visitors site_analytics heatmaps_click_positions])
+        .from(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
         .to(Types::Plans::Feature.values.keys)
     end
 
@@ -227,7 +227,7 @@ RSpec.describe Plan, type: :model do
         .to(500)
         .and change { instance.features_enabled }
         .from(Types::Plans::Feature.values.keys)
-        .to(%w[dashboard visitors site_analytics heatmaps_click_positions])
+        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
     end
   end
 end
