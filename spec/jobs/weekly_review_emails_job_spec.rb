@@ -14,15 +14,30 @@ RSpec.describe WeeklyReviewEmailsJob, type: :job do
   let(:team_3) { create(:team, site: site_3, role: Team::MEMBER) }
   let(:team_4) { create(:team, site: site_3, role: Team::ADMIN) }
 
+  let(:recordings) do
+    [
+      create(:recording, site: site_1, disconnected_at: 1641151425390),
+      create(:recording, site: site_2, disconnected_at: 1644718425390),
+      create(:recording, site: site_3, disconnected_at: 1644331425390)
+    ]
+  end
+
   before do
     today = Date.new(2022, 2, 14)
 
     allow(Time.zone).to receive(:today).and_return(today)
     allow(SiteMailer).to receive(:weekly_review).and_call_original
 
-    create(:recording, site: site_1, disconnected_at: 1641151425390)
-    create(:recording, site: site_2, disconnected_at: 1644718425390)
-    create(:recording, site: site_3, disconnected_at: 1644331425390)
+    ClickHouse::Recording.insert do |buffer|
+      recordings.each do |recording|
+        buffer << {
+          uuid: SecureRandom.uuid,
+          site_id: recording.site.id,
+          recording_id: recording.id,
+          disconnected_at: recording.disconnected_at
+        }
+      end
+    end
   end
 
   subject { described_class.perform_now }

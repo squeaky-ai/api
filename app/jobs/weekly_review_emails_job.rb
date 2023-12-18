@@ -37,23 +37,13 @@ class WeeklyReviewEmailsJob < ApplicationJob
 
   def suitable_sites(from_date, to_date)
     sql = <<-SQL.squish
-      SELECT site_id
-      FROM (
-        SELECT
-          sites.id site_id,
-          COUNT(recordings) recordings_count
-        FROM
-          sites
-        INNER JOIN
-          recordings on recordings.site_id = sites.id
-        WHERE
-          to_timestamp(disconnected_at / 1000)::date BETWEEN ? AND ?
-        GROUP BY
-          sites.id
-      ) c
-      WHERE recordings_count > 0;
+      SELECT
+        DISTINCT(site_id)
+      FROM
+        recordings
+      WHERE toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
     SQL
 
-    Sql.execute(sql, [from_date, to_date]).pluck('site_id')
+    Sql::ClickHouse.select_all(sql, [from_date, to_date]).pluck('site_id')
   end
 end
