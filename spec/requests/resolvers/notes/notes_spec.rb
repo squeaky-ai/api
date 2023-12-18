@@ -111,10 +111,10 @@ RSpec.describe Resolvers::Notes::Notes, type: :request do
     end
   end
 
-  context 'when the recording is soft deleted' do
+  context 'when the recording is analytics only' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, site:, status: Recording::DELETED) }
+    let(:recording) { create(:recording, site:, status: Recording::ANALYTICS_ONLY) }
 
     before do
       create(:note, recording_id: recording.id, user:)

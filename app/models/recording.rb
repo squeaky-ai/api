@@ -13,8 +13,7 @@ class Recording < ApplicationRecord
   has_and_belongs_to_many :tags
 
   ACTIVE = 0
-  LOCKED = 1 # Deprecated
-  DELETED = 2
+  ANALYTICS_ONLY = 2
   ALL = [0, 1, 2].freeze
 
   MOBILE_BREAKPOINT = 320
@@ -65,8 +64,8 @@ class Recording < ApplicationRecord
     Countries.get_country(country_code)
   end
 
-  def deleted?
-    status != Recording::ACTIVE
+  def analytics_only?
+    status == ANALYTICS_ONLY
   end
 
   def self.device_expression(device)

@@ -23,6 +23,7 @@ module DataCacheService
             ingest_enabled: s.ingest_enabled,
             ip_blacklist: s.ip_blacklist,
             magic_erasure_enabled: s.magic_erasure_enabled_for_user?(user),
+            recordings_enabled: s.plan.features_enabled.include?('recordings'),
             invalid_or_exceeded_plan: s.plan.exceeded? || s.plan.invalid?,
             feedback: s.feedback,
             consent: s.consent

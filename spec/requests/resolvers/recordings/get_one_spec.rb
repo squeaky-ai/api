@@ -66,19 +66,19 @@ RSpec.describe Resolvers::Recordings::GetOne, type: :request do
     end
   end
 
-  context 'when the recording is soft deleted' do
+  context 'when the recording is analytics only' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
-    let(:recording) { create(:recording, status: Recording::DELETED, site:) }
+    let(:recording) { create(:recording, status: Recording::ANALYTICS_ONLY, site:) }
 
     subject do
       variables = { site_id: site.id, recording_id: recording.id }
       graphql_request(site_recording_query, variables, user)
     end
 
-    it 'returns the recording because it might be needed for heatmaps' do
+    it 'returns does not return the recording' do
       response = subject['data']['site']['recording']
-      expect(response).not_to be_nil
+      expect(response).to be_nil
     end
   end
 end

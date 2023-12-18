@@ -51,8 +51,8 @@ RSpec.describe Mutations::Recordings::Delete, type: :request do
       expect(response).to eq nil
     end
 
-    it 'soft deletes the recording' do
-      expect { subject }.to change { Recording.find_by(id: recording.id).deleted? }.from(false).to(true)
+    it 'sets the recording to be analytics only' do
+      expect { subject }.to change { Recording.find_by(id: recording.id).analytics_only? }.from(false).to(true)
     end
 
     it 'updates the counter cache' do

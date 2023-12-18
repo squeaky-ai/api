@@ -52,9 +52,9 @@ RSpec.describe Resolvers::Admin::SiteRecordingsCounts, type: :request do
 
       before do
         create(:recording, site:)
-        create(:recording, site:, status: Recording::DELETED)
+        create(:recording, site:, status: Recording::ANALYTICS_ONLY)
         create(:recording, site:, created_at: 2.months.ago)
-        create(:recording, site:, created_at: 2.months.ago, status: Recording::DELETED)
+        create(:recording, site:, created_at: 2.months.ago, status: Recording::ANALYTICS_ONLY)
       end
 
       it 'returns the counts' do

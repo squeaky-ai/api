@@ -60,7 +60,7 @@ RSpec.describe Mutations::Recordings::DeleteBulk, type: :request do
       expect(response).to eq []
     end
 
-    it 'soft deletes the recordings' do
+    it 'sets the recording as analytics only' do
       expect { subject }.to change { site.recordings.reload.where(status: Recording::ACTIVE).size }.from(3).to(1)
     end
 

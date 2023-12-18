@@ -27,6 +27,7 @@ module Resolvers
           LEFT JOIN
             recordings ON recordings.recording_id = page_events.recording_id
           WHERE
+            recordings.status = :recording_status AND
             recordings.recording_id NOT IN (:recording_ids) AND
             recordings.site_id = :site_id AND
             like(page_events.url, :url) AND
@@ -41,6 +42,7 @@ module Resolvers
 
         variables = {
           recording_ids: object.exclude_recording_ids.empty? ? [0] : object.exclude_recording_ids,
+          recording_status: ::Recording::ACTIVE,
           site_id: object.site.id,
           url: Paths.replace_route_with_wildcard(object.page),
           timezone: range.timezone,

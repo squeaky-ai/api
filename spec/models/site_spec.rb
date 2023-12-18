@@ -119,12 +119,12 @@ RSpec.describe Site, type: :model do
       before do
         create(:recording, site:)
         create(:recording, site:)
-        create(:recording, status: Recording::DELETED, site:)
+        create(:recording, status: Recording::ANALYTICS_ONLY, site:)
       end
 
       subject { site.recordings_count }
 
-      it 'returns the number of un-deleted recordings' do
+      it 'returns the number of recordings that can be viewed' do
         expect(subject).to eq 2
       end
     end

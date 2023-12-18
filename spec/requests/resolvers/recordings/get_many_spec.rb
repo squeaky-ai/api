@@ -112,7 +112,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
     end
   end
 
-  context 'when a recording is soft deleted' do
+  context 'when a recording is analytics only' do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
@@ -132,7 +132,7 @@ RSpec.describe Resolvers::Recordings::GetMany, type: :request do
 
     before do
       5.times.map { create(:recording, site:) }
-      create(:recording, status: Recording::DELETED, site:)
+      create(:recording, status: Recording::ANALYTICS_ONLY, site:)
     end
 
     it 'returns the items' do

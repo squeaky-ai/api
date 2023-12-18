@@ -79,6 +79,8 @@ class RecordingSaveJob < ApplicationJob
   end
 
   def persist_events!
+    return if recording.analytics_only?
+
     session.events.each_slice(250).with_index do |slice, index|
       RecordingEventsService.create(
         recording:,
@@ -197,11 +199,14 @@ class RecordingSaveJob < ApplicationJob
   def recording_status
     # Recorings less than 3 seconds aren't worth viewing but are
     # good for analytics
-    return Recording::DELETED if session.duration < 3000
+    return Recording::ANALYTICS_ONLY if session.duration < 3000
 
     # Recordings without any user interaction are also not worth
     # watching, and is likely a bot
-    return Recording::DELETED unless session.interaction?
+    return Recording::ANALYTICS_ONLY unless session.interaction?
+
+    # They don't pay for recordings so set it as analytics only
+    return Recording::ANALYTICS_ONLY unless site.plan.features_enabled.include?('recordings')
 
     Recording::ACTIVE
   end

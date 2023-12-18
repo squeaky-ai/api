@@ -23,9 +23,9 @@ module Mutations
 
         ActiveRecord::Base.transaction do
           recordings.each do |recording|
-            # Manually update the counter cache for soft deleted
+            # Manually update the counter cache for analytics only
             Visitor.decrement_counter(:recordings_count, recording.visitor.id) # rubocop:disable Rails/SkipsModelValidations
-            recordings.update(status: Recording::DELETED)
+            recordings.update(status: Recording::ANALYTICS_ONLY)
           end
         end
 

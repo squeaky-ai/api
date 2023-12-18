@@ -5,15 +5,17 @@ require 'rails_helper'
 RSpec.describe RecordingSaveJob, type: :job do
   include ActiveJob::TestHelper
 
+  let(:site) { create(:site_with_team) }
+
   before do
+    site.plan.update(features_enabled: [*site.plan.features_enabled, 'recordings'])
+
     allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
     allow(Cache.redis).to receive(:lrange).and_return(events_fixture)
   end
 
   let(:s3_client) { instance_double(Aws::S3::Client, put_object: nil) }
   let(:events_fixture) { require_fixture('events.json', compress: true) }
-
-  let(:site) { create(:site_with_team) }
 
   let(:event) do
     {
@@ -302,6 +304,39 @@ RSpec.describe RecordingSaveJob, type: :job do
       subject
       recording = site.recordings.last
       expect(recording.visitor.id).to eq(visitor.id)
+    end
+  end
+
+  context 'when the site does not have the recordings feature enabled' do
+    before do
+      site.plan.update(features_enabled: [])
+    end
+
+    it 'stores all the clickhouse data' do
+      expect { subject }
+        .to change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM click_events WHERE site_id = #{site.id}") }.from(0).to(3)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM custom_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM error_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM page_events WHERE site_id = #{site.id}") }.from(0).to(1)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM cursor_events WHERE site_id = #{site.id}") }.from(0).to(21)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM scroll_events WHERE site_id = #{site.id}") }.from(0).to(40)
+        .and change { Sql::ClickHouse.select_value("SELECT COUNT(*) FROM recordings WHERE site_id = #{site.id}") }.from(0).to(1)
+    end
+
+    it 'stores all the event data' do
+      expect { subject }
+        .to change { ClickEvent.where(site_id: site.id).count }.from(0).to(3)
+        .and change { CustomEvent.where(site_id: site.id).count }.from(0).to(1)
+        .and change { ErrorEvent.where(site_id: site.id).count }.from(0).to(1)
+        .and change { PageEvent.where(site_id: site.id).count }.from(0).to(1)
+        .and change { CursorEvent.where(site_id: site.id).count }.from(0).to(21)
+        .and change { ScrollEvent.where(site_id: site.id).count }.from(0).to(40)
+    end
+
+    it 'does note write the events to S3' do
+      subject
+
+      expect(s3_client).not_to have_received(:put_object)
     end
   end
 end

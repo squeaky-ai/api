@@ -11,8 +11,8 @@ module Resolvers
       def resolve(page:, size:)
         notes = object
           .notes
-          # If they soft delete the recording then the notes
-          # should also appear deleted
+          # If the recording has been marked as analytics only then
+          # the notes should not appear
           .where('recordings.status = ?', Recording::ACTIVE)
           .order('created_at DESC')
           .page(page)

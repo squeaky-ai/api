@@ -28,7 +28,6 @@ default: &default
       features_enabled:
         - dashboard
         - visitors
-        - recordings
         - site_analytics
         - heatmaps_click_positions
       integrations:
@@ -454,7 +453,6 @@ production:
       features_enabled:
         - dashboard
         - visitors
-        - recordings
         - site_analytics
         - heatmaps_click_positions
       integrations:

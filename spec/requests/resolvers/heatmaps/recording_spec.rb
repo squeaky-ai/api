@@ -42,7 +42,7 @@ RSpec.describe Resolvers::Heatmaps::Recording, type: :request do
     let(:user) { create(:user) }
     let(:site) { create(:site_with_team, owner: user) }
 
-    let(:recording) { create(:recording, site:) }
+    let(:recording) { create(:recording, site:, status: Recording::ACTIVE) }
 
     before do
       ClickHouse::Recording.insert do |buffer|
@@ -52,7 +52,8 @@ RSpec.describe Resolvers::Heatmaps::Recording, type: :request do
           viewport_x: 1440,
           connected_at: 1651153548000,
           disconnected_at: 1651153550000,
-          recording_id: recording.id
+          recording_id: recording.id,
+          status: recording.status
         }
       end
 

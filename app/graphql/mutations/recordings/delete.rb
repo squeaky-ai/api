@@ -22,9 +22,9 @@ module Mutations
         raise Exceptions::RecordingNotFound unless recording
 
         ActiveRecord::Base.transaction do
-          # Manually update the counter cache for soft deleted
+          # Manually update the counter cache for analytics only
           Visitor.decrement_counter(:recordings_count, recording.visitor.id) # rubocop:disable Rails/SkipsModelValidations
-          recording.update!(status: Recording::DELETED)
+          recording.update!(status: Recording::ANALYTICS_ONLY)
         end
 
         nil
