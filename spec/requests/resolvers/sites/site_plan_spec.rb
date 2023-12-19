@@ -45,8 +45,8 @@ RSpec.describe Resolvers::Sites::Plans, type: :request do
         'deprecated' => false,
         'exceeded' => false,
         'invalid' => false,
-        'maxMonthlyRecordings' => 500,
-        'dataStorageMonths' => 1,
+        'maxMonthlyRecordings' => 2500,
+        'dataStorageMonths' => 3,
         'responseTimeHours' => 336,
         'support' => [
           'Email'

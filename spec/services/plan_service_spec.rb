@@ -38,7 +38,7 @@ RSpec.describe PlanService do
         expect(SiteMailer).to have_received(:plan_exceeded).with(
           site,
           {
-            monthly_recording_count: 500,
+            monthly_recording_count: 2500,
             next_plan_name: 'Starter'
           },
           site.owner.user

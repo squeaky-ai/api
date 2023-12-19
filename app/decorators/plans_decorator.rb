@@ -22,9 +22,8 @@ class PlansDecorator
         capabilities: [
           'Website dashboard',
           'Visitor profiles',
-          'Session recording',
           'Site analytics',
-          'Heatmaps (Click)'
+          'Page analytics'
         ],
         options: []
       },
@@ -38,7 +37,7 @@ class PlansDecorator
         usage: usage(starter_plan),
         includes_capabilities_from: 'Free',
         capabilities: [
-          'Page analytics',
+          'Session recordings',
           'Heatmaps (Click and Scroll)',
           'Survey library'
         ],

@@ -137,7 +137,7 @@ RSpec.describe DudaService::Install do
       site = Site.find_by(uuid: site_name)
       plan = Plan.find_by(site_id: site['id'])
 
-      expect(plan.max_monthly_recordings).to eq(1500)
+      expect(plan.max_monthly_recordings).to eq(5000)
       expect(plan.features_enabled).to eq(Types::Plans::Feature.values.keys)
     end
 

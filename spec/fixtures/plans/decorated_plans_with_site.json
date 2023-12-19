@@ -9,7 +9,7 @@
       "free": true,
       "deprecated": false,
       "enterprise": false,
-      "max_monthly_recordings": 500,
+      "max_monthly_recordings": 2500,
       "pricing": [
         {
           "id": "price_1KQvNFLJ9zG7aLW8HEgPtppy",
@@ -30,7 +30,7 @@
           "interval": "month"
         }
       ],
-      "data_storage_months": 1,
+      "data_storage_months": 3,
       "support": [
         "Email"
       ],
@@ -40,9 +40,8 @@
       "features_enabled": [
         "dashboard",
         "visitors",
-        "recordings",
         "site_analytics",
-        "heatmaps_click_positions"
+        "page_analytics"
       ],
       "integrations": {
         "duda": "304e8866-7b29-4027-bcb3-3828204d9cfd"
@@ -51,18 +50,17 @@
     "show": true,
     "current": true,
     "usage": [
-      "500 visits per month",
+      "2,500 visits per month",
       "1 team member",
       "1 website",
-      "1 month data retention"
+      "3 months data retention"
     ],
     "includes_capabilities_from": null,
     "capabilities": [
       "Website dashboard",
       "Visitor profiles",
-      "Session recording",
       "Site analytics",
-      "Heatmaps (Click)"
+      "Page analytics"
     ],
     "options": []
   },
@@ -148,7 +146,7 @@
     ],
     "includes_capabilities_from": "Free",
     "capabilities": [
-      "Page analytics",
+      "Session recordings",
       "Heatmaps (Click and Scroll)",
       "Survey library"
     ],

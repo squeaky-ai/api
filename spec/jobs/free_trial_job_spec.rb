@@ -25,11 +25,11 @@ RSpec.describe FreeTrialJob, type: :job do
 
     it 'ends the trial' do
       expect { subject }.to change { site.reload.plan.max_monthly_recordings }
-        .from(1500)
-        .to(500)
+        .from(5000)
+        .to(2500)
         .and change { site.reload.plan.features_enabled }
         .from(Types::Plans::Feature.values.keys)
-        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+        .to(%w[dashboard visitors site_analytics page_analytics])
     end
   end
 

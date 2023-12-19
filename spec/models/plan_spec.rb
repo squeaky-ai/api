@@ -83,7 +83,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.max_monthly_recordings }
 
       it 'returns the plan default' do
-        expect(subject).to eq 500
+        expect(subject).to eq 2500
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe Plan, type: :model do
       subject { instance.data_storage_months }
 
       it 'returns the plan default' do
-        expect(subject).to eq 1
+        expect(subject).to eq 3
       end
     end
 
@@ -192,10 +192,10 @@ RSpec.describe Plan, type: :model do
 
     it 'sets the features and max recordings' do
       expect { subject }.to change { instance.max_monthly_recordings }
-        .from(500)
-        .to(1500)
+        .from(2500)
+        .to(5000)
         .and change { instance.features_enabled }
-        .from(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+        .from(%w[dashboard visitors site_analytics page_analytics])
         .to(Types::Plans::Feature.values.keys)
     end
 
@@ -223,11 +223,11 @@ RSpec.describe Plan, type: :model do
 
     it 'sets the features and max recordings' do
       expect { subject }.to change { instance.max_monthly_recordings }
-        .from(1500)
-        .to(500)
+        .from(5000)
+        .to(2500)
         .and change { instance.features_enabled }
         .from(Types::Plans::Feature.values.keys)
-        .to(%w[dashboard visitors recordings site_analytics heatmaps_click_positions])
+        .to(%w[dashboard visitors site_analytics page_analytics])
     end
   end
 end

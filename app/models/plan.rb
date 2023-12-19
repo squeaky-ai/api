@@ -89,7 +89,7 @@ class Plan < ApplicationRecord
     FreeTrialMailerService.enqueue(site)
 
     update!(
-      max_monthly_recordings: 1500,
+      max_monthly_recordings: 5000,
       features_enabled: Types::Plans::Feature.values.keys
     )
   end

@@ -5,7 +5,7 @@ default: &default
       free: true
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 500
+      max_monthly_recordings: 2500
       pricing:
         - id: price_1KQvNFLJ9zG7aLW8HEgPtppy
           currency: GBP
@@ -19,7 +19,7 @@ default: &default
           currency: USD
           amount: 0
           interval: month
-      data_storage_months: 1
+      data_storage_months: 3
       support:
         - Email
       response_time_hours: 336
@@ -28,9 +28,8 @@ default: &default
       features_enabled:
         - dashboard
         - visitors
-        - recordings
         - site_analytics
-        - heatmaps_click_positions
+        - page_analytics
       integrations:
         duda: 304e8866-7b29-4027-bcb3-3828204d9cfd
 
@@ -431,7 +430,7 @@ production:
       free: true
       deprecated: false
       enterprise: false
-      max_monthly_recordings: 500
+      max_monthly_recordings: 2500
       site_limit: 1
       pricing:
         - id: price_1Kii41LJ9zG7aLW8lPZpfUqb
@@ -454,9 +453,8 @@ production:
       features_enabled:
         - dashboard
         - visitors
-        - recordings
         - site_analytics
-        - heatmaps_click_positions
+        - page_analytics
       integrations:
         duda: 304e8866-7b29-4027-bcb3-3828204d9cfd
 
