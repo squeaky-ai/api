@@ -287,4 +287,17 @@ RSpec.describe ProductUpdatesMailer, type: :mailer do
       end
     end
   end
+
+  describe 'free_plan_changes_2023' do
+    let(:user) { create(:user) }
+    let(:mail) { described_class.free_plan_changes_2023(user) }
+
+    before { create(:site_with_team, owner: user) }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq 'Upcoming changes'
+      expect(mail.to).to eq [user.email]
+      expect(mail.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end

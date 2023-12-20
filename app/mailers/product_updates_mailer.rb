@@ -112,4 +112,11 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.email, subject: 'Product Update: March 2023')
   end
+
+  def free_plan_changes_2023(user)
+    @user = user
+    @unsubscribable = false
+
+    mail(to: user.email, subject: 'Upcoming changes')
+  end
 end
