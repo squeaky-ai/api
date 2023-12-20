@@ -9,13 +9,19 @@ namespace :product_update do
     Site.where(id: site_ids).find_each do |s|
       owner_user = s.owner.user
 
-      next unless s.team.any? { |t| t.user.last_activity_at > 6.months.ago }
+      next unless s.team.any? do |t|
+        if t.user.last_activity_at
+          t.user.last_activity_at > 6.months.ago
+        else
+          false
+        end
+      end
 
       owners.push(owner_user)
     end
 
-    unique_owners = owners.uniq(&:email)
-
-    puts "Would send emails to #{unique_owners.size} owners"
+    owners.uniq(&:email).each do |u|
+      ProductUpdatesMailer.free_plan_changes_2023(u).deliver_later
+    end
   end
 end
