@@ -71,8 +71,8 @@ module WeeklyReviewService
       previous = AverageSessionDuration.fetch(site, range.trend_from, range.trend_to)
 
       {
-        trend: milliseconds_to_mmss(average_session_duration - previous),
-        direction: average_session_duration >= previous ? 'up' : 'down'
+        trend: milliseconds_to_mmss(average_session_duration[:raw] - previous[:raw]),
+        direction: average_session_duration[:raw] >= previous[:raw] ? 'up' : 'down'
       }
     end
 
@@ -84,8 +84,8 @@ module WeeklyReviewService
       previous = PagesPerSession.fetch(site, range.trend_from, range.trend_to)
 
       {
-        trend: Maths.to_two_decimal_places(pages_per_session - previous),
-        direction: pages_per_session >= previous ? 'up' : 'down'
+        trend: Maths.to_two_decimal_places(pages_per_session[:raw] - previous[:raw]),
+        direction: pages_per_session[:raw] >= previous[:raw] ? 'up' : 'down'
       }
     end
 

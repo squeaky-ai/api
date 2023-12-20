@@ -20,10 +20,10 @@ RSpec.describe WeeklyReviewService::Generator do
     allow(WeeklyReviewService::NewVisitors).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(3)
     allow(WeeklyReviewService::TotalRecordings).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(5)
     allow(WeeklyReviewService::NewRecordings).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(1)
-    allow(WeeklyReviewService::AverageSessionDuration).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(5000)
-    allow(WeeklyReviewService::AverageSessionDuration).to receive(:fetch).with(site, date_range.trend_from, date_range.trend_to).and_return(2000)
-    allow(WeeklyReviewService::PagesPerSession).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(6)
-    allow(WeeklyReviewService::PagesPerSession).to receive(:fetch).with(site, date_range.trend_from, date_range.trend_to).and_return(4)
+    allow(WeeklyReviewService::AverageSessionDuration).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(raw: 5000, formatted: '0m 5s')
+    allow(WeeklyReviewService::AverageSessionDuration).to receive(:fetch).with(site, date_range.trend_from, date_range.trend_to).and_return(raw: 2000, formatted: '0m 2s')
+    allow(WeeklyReviewService::PagesPerSession).to receive(:fetch).with(site, date_range.from, date_range.to).and_return(raw: 6, formatted: '6.00')
+    allow(WeeklyReviewService::PagesPerSession).to receive(:fetch).with(site, date_range.trend_from, date_range.trend_to).and_return(raw: 4, formatted: '4.00')
     allow(WeeklyReviewService::BusiestDay).to receive(:fetch).with(site, date_range.from, date_range.to).and_return('Monday')
     allow(WeeklyReviewService::BiggestReferrerUrl).to receive(:fetch).with(site, date_range.from, date_range.to).and_return('https://google.com')
     allow(WeeklyReviewService::MostPopularCountry).to receive(:fetch).with(site, date_range.from, date_range.to).and_return('Belgium')
@@ -55,12 +55,18 @@ RSpec.describe WeeklyReviewService::Generator do
         new_visitors: 3,
         total_recordings: 5,
         new_recordings: 1,
-        average_session_duration: 5000,
+        average_session_duration: {
+          raw: 5000,
+          formatted: '0m 5s'
+        },
         average_session_duration_trend: {
           trend: '0m 3s',
           direction: 'up'
         },
-        pages_per_session: 6,
+        pages_per_session: {
+          raw: 6,
+          formatted: '6.00'
+        },
         pages_per_session_trend: {
           trend: '2.00',
           direction: 'up'

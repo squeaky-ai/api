@@ -3,6 +3,7 @@
 module WeeklyReviewService
   class FeedbackSentiment < Base
     def self.fetch(site, from_date, to_date)
+      # TODO: add site_id to sentiment so there's no join required
       sql = <<-SQL.squish
         SELECT
           AVG(sentiments.score)
@@ -15,7 +16,7 @@ module WeeklyReviewService
           to_timestamp(recordings.disconnected_at / 1000)::date BETWEEN ? AND ?
       SQL
 
-      response = Sql.execute(sql, [site_id, from_date, to_date])
+      response = Sql.execute(sql, [site.id, from_date, to_date])
 
       {
         enabled: site.sentiment_enabled?,
