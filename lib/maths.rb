@@ -12,4 +12,8 @@ class Maths
 
     values.sum.fdiv(values.size).round(round)
   end
+
+  def self.to_two_decimal_places(num)
+    format('%.2f', num.to_f)
+  end
 end

@@ -2,70 +2,95 @@
 
 require 'rails_helper'
 
-RSpec.describe WeeklyReviewEmailsJob, type: :job do
+RSpec.describe WeeklyReviewEmailsJob, type: :job, truncate_click_house: true do
   include ActiveJob::TestHelper
 
-  let(:site_1) { create(:site) }
-  let(:site_2) { create(:site) }
-  let(:site_3) { create(:site) }
+  let(:today) { Time.zone.today }
+  let(:last_week) { Time.zone.today - 1.week }
 
-  let(:team_1) { create(:team, site: site_1, role: Team::MEMBER) }
-  let(:team_2) { create(:team, site: site_2, role: Team::MEMBER) }
-  let(:team_3) { create(:team, site: site_3, role: Team::MEMBER) }
-  let(:team_4) { create(:team, site: site_3, role: Team::ADMIN) }
+  let!(:site_1) { create(:site) }
+  let!(:site_2) { create(:site) }
+  let!(:site_3) { create(:site) }
 
-  let(:recordings) do
-    [
-      create(:recording, site: site_1, disconnected_at: 1641151425390),
-      create(:recording, site: site_2, disconnected_at: 1644718425390),
-      create(:recording, site: site_3, disconnected_at: 1644331425390)
-    ]
+  let(:site_1_team_1) { create(:team, site: site_1, role: Team::MEMBER) }
+  let(:site_2_team_1) { create(:team, site: site_2, role: Team::MEMBER) }
+  let(:site_3_team_1) { create(:team, site: site_3, role: Team::MEMBER) }
+  let(:site_3_team_2) { create(:team, site: site_3, role: Team::ADMIN) }
+
+  let(:site_1_data_hash) { {} }
+  let(:site_2_data_hash) { {} }
+  let(:site_3_data_hash) { {} }
+
+  let(:site_2_weekly_service) do
+    instance_double(
+      WeeklyReviewService::Generator,
+      site: site_2,
+      members: [site_2_team_1],
+      to_h: site_2_data_hash
+    )
+  end
+
+  let(:site_3_weekly_service) do
+    instance_double(
+      WeeklyReviewService::Generator,
+      site: site_3,
+      members: [site_3_team_1, site_3_team_2],
+      to_h: site_3_data_hash
+    )
   end
 
   before do
-    today = Date.new(2022, 2, 14)
-
-    allow(Time.zone).to receive(:today).and_return(today)
     allow(SiteMailer).to receive(:weekly_review).and_call_original
 
+    allow(WeeklyReviewService::Generator).to receive(:new)
+      .with(
+        site_id: site_2.id,
+        from_date: last_week.beginning_of_week,
+        to_date: last_week.end_of_week
+      )
+      .and_return(site_2_weekly_service)
+
+    allow(WeeklyReviewService::Generator).to receive(:new)
+      .with(
+        site_id: site_3.id,
+        from_date: last_week.beginning_of_week,
+        to_date: last_week.end_of_week
+      )
+      .and_return(site_3_weekly_service)
+
     ClickHouse::Recording.insert do |buffer|
-      recordings.each do |recording|
-        buffer << {
-          uuid: SecureRandom.uuid,
-          site_id: recording.site.id,
-          recording_id: recording.id,
-          disconnected_at: recording.disconnected_at
-        }
-      end
+      buffer << {
+        uuid: SecureRandom.uuid,
+        site_id: site_1.id,
+        disconnected_at: (last_week - 1.week).to_time.to_i * 1000
+      }
+      buffer << {
+        uuid: SecureRandom.uuid,
+        site_id: site_2.id,
+        disconnected_at: last_week.to_time.to_i * 1000
+      }
+      buffer << {
+        uuid: SecureRandom.uuid,
+        site_id: site_3.id,
+        disconnected_at: last_week.to_time.to_i * 1000
+      }
     end
   end
 
   subject { described_class.perform_now }
 
   it 'triggers the emails for all sites that qualify' do
-    # Site 1 only had recordings in the previous week
-    expect(SiteMailer).not_to receive(:weekly_review).with(site_1, anything, team_1.user)
-    # The other 2 sites both had recordings in the time frame
-    expect(SiteMailer).to receive(:weekly_review).with(site_2, anything, team_2.user)
-    expect(SiteMailer).to receive(:weekly_review).with(site_3, anything, team_3.user)
-    expect(SiteMailer).to receive(:weekly_review).with(site_3, anything, team_4.user)
     subject
-  end
 
-  context 'when a date range is provided to the job' do
-    let(:from_date) { Date.new(2021, 12, 27) }
-    let(:to_date) { Date.new(2022, 1, 2) }
+    expect(site_2_weekly_service).to have_received(:to_h).once
+    expect(site_3_weekly_service).to have_received(:to_h).twice
 
-    subject { described_class.perform_now({ from_date:, to_date: }) }
-
-    it 'uses that instead of the previous week' do
-      # Site 1 had a recording on the 2nd January
-      expect(SiteMailer).to receive(:weekly_review).with(site_1, anything, team_1.user)
-      # The other 2 sites had recordings much later
-      expect(SiteMailer).not_to receive(:weekly_review).with(site_2, anything, team_2.user)
-      expect(SiteMailer).not_to receive(:weekly_review).with(site_3, anything, team_3.user)
-      expect(SiteMailer).not_to receive(:weekly_review).with(site_3, anything, team_4.user)
-      subject
-    end
+    # Site 1 only had recordings in the previous week
+    expect(SiteMailer).not_to have_received(:weekly_review).with(site_1, site_1_data_hash, site_1_team_1.user)
+    # Site 2 had recordings in the time period, with one team member
+    expect(SiteMailer).to have_received(:weekly_review).with(site_2, site_2_data_hash, site_2_team_1.user)
+    # Site 3 had recordings in the time period, with two team members
+    expect(SiteMailer).to have_received(:weekly_review).with(site_3, site_3_data_hash, site_3_team_1.user)
+    expect(SiteMailer).to have_received(:weekly_review).with(site_3, site_3_data_hash, site_3_team_2.user)
   end
 end

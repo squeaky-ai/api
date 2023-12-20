@@ -5,34 +5,27 @@ class WeeklyReviewEmailsJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(*args)
-    from_date, to_date = date_range(args)
-    site_ids = suitable_sites(from_date, to_date)
+  def perform(*_args)
+    from_date, to_date = date_range
 
-    logger.info "Generating weekly review emails for #{site_ids.join(',')} between #{from_date} and #{to_date}"
-
-    site_ids.each do |site_id|
-      review = WeeklyReview.new(site_id, from_date, to_date)
+    suitable_sites(from_date, to_date).each do |site_id|
+      review = WeeklyReviewService::Generator.new(site_id:, from_date:, to_date:)
 
       review.members.each do |member|
         SiteMailer.weekly_review(review.site, review.to_h, member.user).deliver_later
       end
     rescue StandardError => e
-      logger.error e
+      logger.error "Failed to build weekly review - #{e}"
     end
   end
 
   private
 
-  def date_range(args)
-    # The job could fail and we might want to rerun
-    # a job for a given time period
-    return [args.first[:from_date], args.first[:to_date]] unless args.empty?
-
+  def date_range
     now = Time.zone.today
     now -= 1.week
 
-    [now.beginning_of_week, now.end_of_week]
+    [now.beginning_of_week.to_date, now.end_of_week.to_date]
   end
 
   def suitable_sites(from_date, to_date)
@@ -41,9 +34,15 @@ class WeeklyReviewEmailsJob < ApplicationJob
         DISTINCT(site_id)
       FROM
         recordings
-      WHERE toDate(disconnected_at / 1000)::date BETWEEN ? AND ?
+      WHERE
+        toDate(disconnected_at / 1000)::date BETWEEN :from_date AND :to_date
     SQL
 
-    Sql::ClickHouse.select_all(sql, [from_date, to_date]).pluck('site_id')
+    variables = {
+      from_date:,
+      to_date:
+    }
+
+    Sql::ClickHouse.select_all(sql, variables).pluck('site_id')
   end
 end
