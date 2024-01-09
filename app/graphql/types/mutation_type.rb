@@ -10,6 +10,7 @@ module Types
     field :admin_blog_post_update, mutation: Mutations::Admin::BlogPostUpdate
     field :admin_user_delete, mutation: Mutations::Admin::UserDelete
     field :admin_user_partner_create, mutation: Mutations::Admin::UserPartnerCreate
+    field :admin_user_update, mutation: Mutations::Admin::UserUpdate
     field :admin_referral_delete, mutation: Mutations::Admin::ReferralDelete
     field :admin_site_plan_update, mutation: Mutations::Admin::SitePlanUpdate
     field :admin_site_associate_customer, mutation: Mutations::Admin::SiteAssociateCustomer
