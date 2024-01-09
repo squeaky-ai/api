@@ -128,13 +128,15 @@ module Integrations
       # This is running in an iframe so must be set this way
       request.session_options[:secure] = true
       request.session_options[:same_site] = 'None'
+      request.session_options[:partitioned] = ''
     end
 
     def set_provider_cookie
       cookies[:provider] = {
         value: 'duda',
         secure: true,
-        same_site: 'None'
+        same_site: 'None',
+        partitioned: ''
       }
     end
   end
