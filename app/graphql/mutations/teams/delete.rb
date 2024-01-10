@@ -24,7 +24,7 @@ module Mutations
         return team if team.admin? && user.admin_for?(site)
 
         team.delete
-        TeamMailer.member_removed(team.user.email, site).deliver_now
+        TeamMailer.member_removed(team.user.comms_email, site).deliver_now
 
         nil
       end

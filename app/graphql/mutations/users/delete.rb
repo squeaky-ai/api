@@ -11,7 +11,7 @@ module Mutations
 
       def resolve
         # Save this as the user will be nil
-        email = user.email
+        email = user.comms_email
 
         fire_squeaky_event
 

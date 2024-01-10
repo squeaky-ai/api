@@ -3,7 +3,7 @@
 class UserMailer < ApplicationMailer
   def updated(user)
     @user = user
-    mail(to: user.email, subject: 'Your account details have been updated.')
+    mail(to: user.comms_email, subject: 'Your account details have been updated.')
   end
 
   def destroyed(email)

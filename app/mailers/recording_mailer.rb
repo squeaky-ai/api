@@ -32,6 +32,6 @@ class RecordingMailer < ApplicationMailer
       [Team::OWNER, Team::ADMIN].include?(team.role) && team.user.communication_enabled?(:onboarding_email)
     end
 
-    members.map { |m| m.user.email }
+    members.map { |m| m.user.comms_email }
   end
 end

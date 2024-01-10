@@ -109,12 +109,12 @@ RSpec.describe Resolvers::Admin::SitesBundle, type: :request do
             'recordingCounts' => [
               {
                 'count' => 2,
-                'dateKey' => '2023/12',
+                'dateKey' => '2024/01',
                 'siteId' => site.id.to_s
               },
               {
                 'count' => 2,
-                'dateKey' => '2023/10',
+                'dateKey' => '2023/11',
                 'siteId' => site.id.to_s
               }
             ]

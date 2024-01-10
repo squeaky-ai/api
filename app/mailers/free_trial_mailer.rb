@@ -8,7 +8,7 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Your free trial of Squeaky\'s paid features has started...')
+    mail(to: @user.comms_email, subject: 'Your free trial of Squeaky\'s paid features has started...')
   end
 
   def second(site_id)
@@ -18,7 +18,7 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'You\'re halfway through your advanced features trial - are you making the most of it?')
+    mail(to: @user.comms_email, subject: 'You\'re halfway through your advanced features trial - are you making the most of it?')
   end
 
   def third(site_id)
@@ -28,7 +28,7 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Only 2 days left - maximize your Squeaky experience')
+    mail(to: @user.comms_email, subject: 'Only 2 days left - maximize your Squeaky experience')
   end
 
   def forth(site_id)
@@ -38,7 +38,7 @@ class FreeTrialMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Your trial of Squeaky\'s premium features has ended...')
+    mail(to: @user.comms_email, subject: 'Your trial of Squeaky\'s premium features has ended...')
   end
 
   private

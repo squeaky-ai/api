@@ -6,7 +6,7 @@ class SiteMailer < ApplicationMailer
     @team = team
     subject = team.owner? ? 'Site deletion follow-up' : "The team account for #{site.name} has been deleted"
 
-    mail(to: team.user.email, subject:)
+    mail(to: team.user.comms_email, subject:)
   end
 
   def weekly_review(site, data, user)
@@ -16,7 +16,7 @@ class SiteMailer < ApplicationMailer
 
     return unless user.communication_enabled?(:weekly_review_email)
 
-    mail(to: user.email, subject: 'Your Week In Review')
+    mail(to: user.comms_email, subject: 'Your Week In Review')
   end
 
   def plan_exceeded(site, data, user)
@@ -24,14 +24,14 @@ class SiteMailer < ApplicationMailer
     @user = user
     @data = data
 
-    mail(to: user.email, subject: "You've exceeded your monthly visit limit on #{site.name}")
+    mail(to: user.comms_email, subject: "You've exceeded your monthly visit limit on #{site.name}")
   end
 
   def plan_nearing_limit(site, user)
     @site = site
     @user = user
 
-    mail(to: user.email, subject: "You'll exceed your monthly visit limit soon for #{site.name}")
+    mail(to: user.comms_email, subject: "You'll exceed your monthly visit limit soon for #{site.name}")
   end
 
   def new_feedback(data, user)
@@ -41,7 +41,7 @@ class SiteMailer < ApplicationMailer
 
     return unless user.communication_enabled?(:feedback_email)
 
-    mail(to: user.email, subject: "You've got new feedback from your visitors")
+    mail(to: user.comms_email, subject: "You've got new feedback from your visitors")
   end
 
   def tracking_code_instructions(site, first_name, email)
@@ -57,6 +57,6 @@ class SiteMailer < ApplicationMailer
     @site = site
     @owner = site.owner.user
 
-    mail(to: @owner.email, subject: 'The added benefits of your new Business Plan...')
+    mail(to: @owner.comms_email, subject: 'The added benefits of your new Business Plan...')
   end
 end

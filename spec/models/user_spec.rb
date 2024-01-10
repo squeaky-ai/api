@@ -280,4 +280,24 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#comms_email' do
+    subject { user.comms_email }
+
+    context 'when the user has no provider comms email set' do
+      let(:user) { create(:user) }
+
+      it 'returns their account email' do
+        expect(subject).to eq(user.email)
+      end
+    end
+
+    context 'when the yser has a provider comms email set' do
+      let(:user) { create(:user, provider_comms_email: 'foo@bar.com') }
+
+      it 'returns their provider comms email' do
+        expect(subject).to eq(user.provider_comms_email)
+      end
+    end
+  end
 end

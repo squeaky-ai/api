@@ -27,7 +27,7 @@ module Mutations
           new_owner.update(role: Team::OWNER)
         end
 
-        TeamMailer.became_owner(new_owner.user.email, site, user).deliver_now
+        TeamMailer.became_owner(new_owner.user.comms_email, site, user).deliver_now
 
         site
       end

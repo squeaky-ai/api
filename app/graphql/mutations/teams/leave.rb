@@ -20,7 +20,7 @@ module Mutations
 
         return team if team.owner?
 
-        TeamMailer.member_left(site.owner.user.email, site, team.user).deliver_now
+        TeamMailer.member_left(site.owner.user.comms_email, site, team.user).deliver_now
         team.destroy
 
         nil

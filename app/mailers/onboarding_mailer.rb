@@ -7,7 +7,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'A welcome message from the Squeaky founders')
+    mail(to: @user.comms_email, subject: 'A welcome message from the Squeaky founders')
   end
 
   def getting_started(user_id)
@@ -16,7 +16,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Getting started with Squeaky')
+    mail(to: @user.comms_email, subject: 'Getting started with Squeaky')
   end
 
   def book_demo(user_id)
@@ -25,7 +25,7 @@ class OnboardingMailer < ApplicationMailer
 
     return unless should_send?
 
-    mail(to: @user.email, subject: 'Book your 1-on-1 introductory demo')
+    mail(to: @user.comms_email, subject: 'Book your 1-on-1 introductory demo')
   end
 
   def install_tracking_code(user_id)
@@ -39,7 +39,7 @@ class OnboardingMailer < ApplicationMailer
     # is no need to send this one
     return if @site.verified?
 
-    mail(to: @user.email, subject: 'How to install your Squeaky tracking code')
+    mail(to: @user.comms_email, subject: 'How to install your Squeaky tracking code')
   end
 
   def tracking_code_not_installed(user_id)
@@ -50,7 +50,7 @@ class OnboardingMailer < ApplicationMailer
     # They've already verified their site so there's no need
     return if @site&.verified?
 
-    mail(to: @user.email, subject: 'How can we make Squeaky work for you?')
+    mail(to: @user.comms_email, subject: 'How can we make Squeaky work for you?')
   end
 
   private

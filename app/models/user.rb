@@ -69,6 +69,10 @@ class User < ApplicationRecord
     communication[key]
   end
 
+  def comms_email
+    provider_comms_email.presence || email
+  end
+
   def self.find_team_invitation(token)
     user = User.find_by_invitation_token(token, true)
 
