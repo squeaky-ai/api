@@ -58,7 +58,7 @@ class Site < ApplicationRecord
   end
 
   def recordings_count
-    recordings.where(status: Recording::ACTIVE).count
+    Sql::ClickHouse.select_value('SELECT COUNT(*) FROM recordings WHERE site_id = ?', id)
   end
 
   def verified?

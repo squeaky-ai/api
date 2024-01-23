@@ -117,9 +117,16 @@ RSpec.describe Site, type: :model do
       let(:site) { create(:site_with_team, owner: user) }
 
       before do
-        create(:recording, site:)
-        create(:recording, site:)
-        create(:recording, status: Recording::ANALYTICS_ONLY, site:)
+        ClickHouse::Recording.insert do |buffer|
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id
+          }
+          buffer << {
+            uuid: SecureRandom.uuid,
+            site_id: site.id
+          }
+        end
       end
 
       subject { site.recordings_count }
