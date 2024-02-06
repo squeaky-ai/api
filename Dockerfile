@@ -4,8 +4,7 @@ WORKDIR /app
 
 ENV RUBY_YJIT_ENABLE=1
 
-# TODO: remove git when no longer installing gems from github
-RUN apk --update add build-base ruby-dev postgresql-dev tzdata gcompat git
+RUN apk --update add build-base ruby-dev postgresql-dev tzdata gcompat
 
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
