@@ -18,6 +18,9 @@ gem 'kaminari'
 gem 'nokogiri'
 gem 'pg', '~> 1.4.4'
 gem 'puma'
+# TODO: update when the latest rack release supports partitioned
+# https://github.com/rack/rack/issues/2130
+gem 'rack', git: 'https://github.com/rack/rack', branch: 'main'
 gem 'rack-cors'
 gem 'rails'
 gem 'redis'
