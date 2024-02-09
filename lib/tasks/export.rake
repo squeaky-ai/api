@@ -4,8 +4,8 @@ namespace :export do
   task clicks: :environment do
     sql = <<-SQL.squish
       SELECT *
-      FROM clicks
-      WHERE site_id = 82;
+      FROM click_events
+      WHERE site_id = 82
     SQL
 
     results = Sql::ClickHouse.select_all(sql)
@@ -23,7 +23,7 @@ namespace :export do
     sql = <<-SQL.squish
       SELECT *
       FROM recordings
-      WHERE site_id = 82;
+      WHERE site_id = 82
     SQL
 
     results = Sql::ClickHouse.select_all(sql)
@@ -41,7 +41,7 @@ namespace :export do
     sql = <<-SQL.squish
       SELECT *
       FROM page_events
-      WHERE site_id = 82;
+      WHERE site_id = 82
     SQL
 
     results = Sql::ClickHouse.select_all(sql)
