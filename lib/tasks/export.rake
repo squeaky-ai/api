@@ -14,8 +14,8 @@ namespace :export do
 
     client.put_object(
       body: results.to_json,
-      bucket: 'squeaky_site_export',
-      key: 'clicks'
+      bucket: 'misc.squeaky.ai',
+      key: 'squeaky_site_export/clicks'
     )
   end
 
@@ -32,8 +32,8 @@ namespace :export do
 
     client.put_object(
       body: results.to_json,
-      bucket: 'squeaky_site_export',
-      key: 'recordings'
+      bucket: 'misc.squeaky.ai',
+      key: 'squeaky_site_export/recordings'
     )
   end
 
@@ -50,8 +50,8 @@ namespace :export do
 
     client.put_object(
       body: results.to_json,
-      bucket: 'squeaky_site_export',
-      key: 'page_views'
+      bucket: 'misc.squeaky.ai',
+      key: 'squeaky_site_export/page_views'
     )
   end
 end
