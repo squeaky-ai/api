@@ -9,6 +9,11 @@ module DudaService
     end
 
     def process!
+      unless site
+        Rails.logger.warn "Site #{resource_data['site_name']} not found"
+        return
+      end
+
       case event_type
       when 'DOMAIN_UPDATED'
         process_domain_updated
@@ -24,7 +29,7 @@ module DudaService
     attr_reader :event_type, :data, :resource_data
 
     def site
-      @site ||= ::Site.find_by!(uuid: resource_data['site_name'])
+      @site ||= ::Site.find_by(uuid: resource_data['site_name'])
     end
 
     def process_domain_updated
