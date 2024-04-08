@@ -61,4 +61,9 @@ class ProductUpdatesPreview < ActionMailer::Preview
     user = User.first
     ProductUpdatesMailer.free_plan_changes_2023(user)
   end
+
+  def goodbye
+    user = User.first
+    ProductUpdatesMailer.goodbye(user)
+  end
 end

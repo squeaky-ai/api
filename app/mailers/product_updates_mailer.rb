@@ -119,4 +119,13 @@ class ProductUpdatesMailer < ApplicationMailer
 
     mail(to: user.comms_email, subject: 'Upcoming changes')
   end
+
+  def goodbye(user)
+    @user = user
+    @unsubscribable = false
+
+    return if user.first_name.blank?
+
+    mail(to: user.comms_email, subject: 'A Very Important Announcement from Squeaky')
+  end
 end

@@ -300,4 +300,17 @@ RSpec.describe ProductUpdatesMailer, type: :mailer do
       expect(mail.from).to eq ['hello@squeaky.ai']
     end
   end
+
+  describe 'goodbye' do
+    let(:user) { create(:user) }
+    let(:mail) { described_class.goodbye(user) }
+
+    before { create(:site_with_team, owner: user) }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq 'A Very Important Announcement from Squeaky'
+      expect(mail.to).to eq [user.email]
+      expect(mail.from).to eq ['hello@squeaky.ai']
+    end
+  end
 end
