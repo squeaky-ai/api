@@ -455,6 +455,7 @@ production:
         - visitors
         - site_analytics
         - page_analytics
+        - data_export
       integrations:
         duda: 304e8866-7b29-4027-bcb3-3828204d9cfd
 
